@@ -3,10 +3,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import imgAvatar from 'assets/images/img-avatar.png';
+import imgAvatar from 'assets/images/default-upload-img.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { createActivityType, editActivityType, loadResourceTypesAction, uploadActivityTypeThumbAction } from 'store/actions/resource';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import pcIcon from 'assets/images/pc-icon.png';
 
 export default function CreateActivity(props) {
   const { editMode } = props;
@@ -111,97 +113,116 @@ export default function CreateActivity(props) {
         }) => (
           <form onSubmit={handleSubmit}>
             <h2>{editMode ? 'Edit' : 'Add'} Activity Type</h2>
-            <div className="form-group-create">
-              <h3>Title</h3>
-              <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
-              <div className="error">{errors.title && touched.title && errors.title}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Image</h3>
-              <div className="img-upload-form">
-                <input
-                  type="file"
-                  name="image"
-                  onChange={(e) => {
-                    if (
-                      !(
-                        e.target.files[0].type.includes('png') ||
-                        e.target.files[0].type.includes('jpg') ||
-                        e.target.files[0].type.includes('gif') ||
-                        e.target.files[0].type.includes('jpeg') ||
-                        e.target.files[0].type.includes('svg')
-                      )
-                    ) {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Invalid file selected.',
-                      });
-                    } else if (e.target.files[0].size > 100000000) {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Selected file size should be less then 100MB.',
-                      });
-                    } else {
-                      const formData = new FormData();
-                      try {
-                        formData.append('image', e.target.files[0]);
-                        const imgurl = dispatch(uploadActivityTypeThumbAction(formData));
-                        imgurl.then((img) => {
-                          setImgActive(img);
-                          setFieldValue('image', img);
-                        });
-                      } catch (err) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Image upload failed, kindly try again.',
-                        });
-                      }
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  ref={imgUpload}
-                  style={{ display: 'none' }}
-                />
-                {imageActive ? (
-                  <>
-                    <div
-                      className="playimg"
-                      style={{
-                        backgroundImage: `url(${global.config.resourceUrl}${imageActive})`,
-                      }}
-                    />
-                    <div className="update-img" onClick={() => imgUpload.current.click()}>
-                      Update Image
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <img src={imgAvatar} alt="" />
-                    <p>Upload Image</p>
-                  </>
-                )}
-                <div className="error">{errors.image && touched.image && errors.image}</div>
-              </div>
-            </div>
-            <div className="form-group-create">
-              <h3>Order</h3>
-              <input
-                type="number"
-                name="order"
-                min="0"
-                onChange={handleChange}
-                onKeyDown={(e) => {
-                  if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
-                    e.preventDefault();
-                  }
+            <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
                 }}
-                onBlur={handleBlur}
-                value={values.order}
               />
-              <div className="error">{errors.order && touched.order && errors.order}</div>
+            <div className="create-form-inputs-group">
+              <div>
+                <div className="form-group-create">
+                  <h3>Title</h3>
+                  <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
+                  <div className="error">{errors.title && touched.title && errors.title}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Upload an image</h3>
+                  <div className="" onClick={() => imgUpload.current.click()}>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={(e) => {
+                        if (
+                          !(
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
+                          )
+                        ) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid file selected.',
+                          });
+                        } else if (e.target.files[0].size > 100000000) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
+                          });
+                        } else {
+                          const formData = new FormData();
+                          try {
+                            formData.append('image', e.target.files[0]);
+                            const imgurl = dispatch(uploadActivityTypeThumbAction(formData));
+                            imgurl.then((img) => {
+                              setImgActive(img);
+                              setFieldValue('image', img);
+                            });
+                          } catch (err) {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'Image upload failed, kindly try again.',
+                            });
+                          }
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      ref={imgUpload}
+                      style={{ display: 'none' }}
+                    />
+                    {imageActive ? (
+                      <>
+                        <img
+                        src={`${global.config.resourceUrl}${imageActive}`}
+                        style={{
+                          width: '360px',
+                          height: '215px',
+                          borderRadius: '8px',
+                        }}
+                        />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                          My device
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <img src={imgAvatar} alt="" />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                            My device
+                        </span>
+                      </>
+                    )}
+                    <div className="error">{errors.image && touched.image && errors.image}</div>
+                  </div>
+                </div>
+                
+                <div className="form-group-create">
+                  <h3>Order</h3>
+                  <input
+                    type="number"
+                    name="order"
+                    min="0"
+                    onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onBlur={handleBlur}
+                    value={values.order}
+                  />
+                  <div className="error">{errors.order && touched.order && errors.order}</div>
+                </div>
+              </div>
             </div>
             <div className="button-group">
               <button type="submit">{editMode ? 'Edit' : 'Create'} Activity Type</button>

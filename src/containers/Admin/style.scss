@@ -1035,7 +1035,7 @@
     z-index: 1060;
     height: 100%;
     overflow-y: auto;
-    padding-left: 285px;
+    // padding-left: 585px;
 
     .cross-all-pop {
       position: absolute;
@@ -1048,13 +1048,13 @@
     .inner-form-content {
       background: #fff;
       opacity: 1;
-      width: calc(100% - 285px);
       display: flex;
       justify-content: left;
       align-items: flex-start;
-      padding: 50px;
+      padding: 64px 64px 0 64px;
       height: 100%;
-      position: fixed;
+      // position: fixed;
+      float: right;
       overflow: auto;
 
       .create-form {
@@ -1093,21 +1093,21 @@
         }
         h2 {
           font-weight: 500;
-          font-size: 31.25px;
+          font-size: 32px;
           line-height: 37px;
           border-bottom: 4px solid #f8af2c;
           color: $fun-blue-1;
-          padding-bottom: 5px;
+          padding-bottom: 4px;
           width: fit-content;
-          margin-bottom: 30px;
+          margin-bottom: 36px;
         }
 
         .form-group-create {
-          margin-bottom: 10px;
+          margin-bottom: 16px;
           input,
           textarea {
-            width: 100%;
-            height: 38px;
+            width: 360px;
+            height: 36px;
             border: 1px solid #888888;
             box-sizing: border-box;
             border-radius: 3px;
@@ -1115,20 +1115,20 @@
           }
 
           textarea {
-            height: 100px;
+            height: 56px;
           }
 
           select {
-            width: 100%;
-            height: 38px;
+            width: 360px;
+            height: 36px;
             border: 1px solid #888888;
             box-sizing: border-box;
             border-radius: 3px;
           }
           h3 {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 127.85%;
-            margin: 0;
+            margin: 0 0 4px 0;
             font-weight: 400;
           }
         }
@@ -1188,14 +1188,13 @@
           button {
             background: $fun-blue-1;
             border-radius: 50px;
-            padding: 7px 20px;
             font-weight: 500;
             font-size: 14px;
             line-height: 17px;
             text-align: center;
             color: #ffffff;
             border: none;
-            padding: 10px 40px;
+            padding: 10px 24px;
             border: 1px solid$fun-blue-1;
           }
           button.cancel {
@@ -1417,7 +1416,6 @@
   display: flex;
   > div {
     flex: 1;
-    padding-right: 100px;
   }
 }
 .create-form-inputs-group-access {
@@ -1439,21 +1437,21 @@
   font-size: 14px;
   margin-top: 10px;
   // text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 10px;
   h3 {
-    margin-left: 12px !important;
+    margin-left: 10px !important;
   }
   .react-switch {
     max-width: max-content !important;
     padding-left: 5px;
     .react-switch-bg {
-      height: 20px !important;
-      width: 54px !important;
+      height: 18px !important;
+      width: 40px !important;
     }
   }
   .react-switch-handle {
-    width: 26px !important;
-    height: 26px !important;
+    width: 24px !important;
+    height: 24px !important;
     top: -2px !important;
   }
   .react-switch-handle:checked {
@@ -1566,4 +1564,25 @@
   font-size: 14px;
   line-height: 20px;
   color: #ff403b;
+}
+
+.upload-btn {
+  margin: 16px 0 0 0;
+  width: 132px;
+  height: 32px;
+  border-radius: 16px;
+  box-shadow: 0px 2px 8px 1px #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #515151;
+  font-size: 14px;
+  line-height: 20px;
+  border: 1px solid #959595;
+  padding: 8px, 24px, 8px, 19px;
+  border: 1px solid #959595;
+  img {
+    margin-right: 8px;
+  }
+  cursor: pointer;
 }
