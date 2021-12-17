@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import imgAvatar from 'assets/images/img-avatar.png';
+import imgAvatar from 'assets/images/default-upload-img.png';
+import pcIcon from 'assets/images/pc-icon.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction } from 'store/actions/resource';
@@ -138,133 +139,158 @@ export default function CreateActivityItem(props) {
         }) => (
           <form onSubmit={handleSubmit}>
             <h2>{editMode ? 'Edit' : 'Add'} Activity Item</h2>
-            <div className="form-group-create">
-              <h3>Title</h3>
-              <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
-              <div className="error">{errors.title && touched.title && errors.title}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Description</h3>
-              <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
-              <div className="error">{errors.description && touched.description && errors.description}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Image</h3>
-              <div className="img-upload-form" onClick={() => imgUpload.current.click()}>
-                <input
-                  type="file"
-                  name="image"
-                  onChange={(e) => {
-                    if (
-                      !(
-                        e.target.files[0].type.includes('png') ||
-                        e.target.files[0].type.includes('jpg') ||
-                        e.target.files[0].type.includes('gif') ||
-                        e.target.files[0].type.includes('jpeg') ||
-                        e.target.files[0].type.includes('svg')
-                      )
-                    ) {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Invalid file selected.',
-                      });
-                    } else if (e.target.files[0].size > 100000000) {
-                      Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Selected file size should be less then 100MB.',
-                      });
-                    } else {
-                      const formData = new FormData();
-                      try {
-                        formData.append('image', e.target.files[0]);
-                        const imgurl = dispatch(uploadActivityItemThumbAction(formData));
-                        imgurl.then((img) => {
-                          setImgActive(img);
-                          setFieldValue('image', img);
-                        });
-                      } catch (err) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Image upload failed, kindly try again.',
-                        });
+
+            <div className="create-form-inputs-group">
+              {/* Left container */}
+              <div style={{marginRight:"64px"}}>
+                <div className="form-group-create">
+                  <h3>Title</h3>
+                  <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
+                  <div className="error">{errors.title && touched.title && errors.title}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Description</h3>
+                  <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
+                  <div className="error">{errors.description && touched.description && errors.description}</div>
+                </div>
+                
+                <div className="form-group-create">
+                  <h3>Order</h3>
+                  <input
+                    type="number"
+                    name="order"
+                    min="0"
+                    onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                        e.preventDefault();
                       }
-                    }
-                  }}
-                  onBlur={handleBlur}
-                  ref={imgUpload}
-                  style={{ display: 'none' }}
-                />
-                {imageActive ? (
-                  <>
-                    <div
-                      className="playimg"
-                      style={{
-                        backgroundImage: `url(${global.config.resourceUrl}${imageActive})`,
-                      }}
-                    />
-                    <div className="update-img">Update Image</div>
-                  </>
-                ) : (
-                  <>
-                    <img src={imgAvatar} alt="" />
-                    <p>Upload Image</p>
-                  </>
-                )}
-                <div className="error">{errors.image && touched.image && errors.image}</div>
+                    }}
+                    onBlur={handleBlur}
+                    value={values.order}
+                  />
+                  <div className="error">{errors.order && touched.order && errors.order}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Activity Type</h3>
+                  <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
+                    <option value=""> </option>
+                    {activityTypes?.length > 0 &&
+                      activityTypes?.map((type) => (
+                        <option value={type?.id} key={type?.id}>
+                          {type?.title}
+                        </option>
+                      ))}
+                  </select>
+                  <div className="error">{errors.activity_type_id && touched.activity_type_id && errors.activity_type_id}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Category</h3>
+                  <input type="text" name="type" onChange={handleChange} onBlur={handleBlur} value={values.type} />
+                  <div className="error">{errors.type && touched.type && errors.type}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>H5P Lib</h3>
+                  <input type="text" name="h5pLib" placeholder="H5P.InteractiveVideo 1.21" onChange={handleChange} onBlur={handleBlur} value={values.h5pLib} />
+                  <div className="error">{errors.h5pLib && touched.h5pLib && errors.h5pLib}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Demo Video ID</h3>
+                  <input type="text" name="demo_video_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_video_id} />
+                  <div className="error">{errors.demo_video_id && touched.demo_video_id && errors.demo_video_id}</div>
+                </div>
+
+                <div className="form-group-create">
+                  <h3>Demo Activity ID</h3>
+                  <input type="text" name="demo_activity_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_activity_id} />
+                  <div className="error">{errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}</div>
+                </div>
               </div>
-            </div>
-            <div className="form-group-create">
-              <h3>Order</h3>
-              <input
-                type="number"
-                name="order"
-                min="0"
-                onChange={handleChange}
-                onKeyDown={(e) => {
-                  if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
-                    e.preventDefault();
-                  }
-                }}
-                onBlur={handleBlur}
-                value={values.order}
-              />
-              <div className="error">{errors.order && touched.order && errors.order}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Activity Type</h3>
-              <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
-                <option value=""> </option>
-                {activityTypes?.length > 0 &&
-                  activityTypes?.map((type) => (
-                    <option value={type?.id} key={type?.id}>
-                      {type?.title}
-                    </option>
-                  ))}
-              </select>
-              <div className="error">{errors.activity_type_id && touched.activity_type_id && errors.activity_type_id}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Category</h3>
-              <input type="text" name="type" onChange={handleChange} onBlur={handleBlur} value={values.type} />
-              <div className="error">{errors.type && touched.type && errors.type}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>H5P Lib</h3>
-              <input type="text" name="h5pLib" placeholder="H5P.InteractiveVideo 1.21" onChange={handleChange} onBlur={handleBlur} value={values.h5pLib} />
-              <div className="error">{errors.h5pLib && touched.h5pLib && errors.h5pLib}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Demo Video ID</h3>
-              <input type="text" name="demo_video_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_video_id} />
-              <div className="error">{errors.demo_video_id && touched.demo_video_id && errors.demo_video_id}</div>
-            </div>
-            <div className="form-group-create">
-              <h3>Demo Activity ID</h3>
-              <input type="text" name="demo_activity_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_activity_id} />
-              <div className="error">{errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}</div>
+              
+              {/* Right container */}
+              <div>
+                <div className="form-group-create">
+                    <h3>Upload an image</h3>
+                    <div className="" onClick={() => imgUpload.current.click()}>
+                      <input
+                        type="file"
+                        name="image"
+                        onChange={(e) => {
+                          if (
+                            !(
+                              e.target.files[0].type.includes('png') ||
+                              e.target.files[0].type.includes('jpg') ||
+                              e.target.files[0].type.includes('gif') ||
+                              e.target.files[0].type.includes('jpeg') ||
+                              e.target.files[0].type.includes('svg')
+                            )
+                          ) {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'Invalid file selected.',
+                            });
+                          } else if (e.target.files[0].size > 100000000) {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'Selected file size should be less then 100MB.',
+                            });
+                          } else {
+                            const formData = new FormData();
+                            try {
+                              formData.append('image', e.target.files[0]);
+                              const imgurl = dispatch(uploadActivityItemThumbAction(formData));
+                              imgurl.then((img) => {
+                                setImgActive(img);
+                                setFieldValue('image', img);
+                              });
+                            } catch (err) {
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Image upload failed, kindly try again.',
+                              });
+                            }
+                          }
+                        }}
+                        onBlur={handleBlur}
+                        ref={imgUpload}
+                        style={{ display: 'none' }}
+                      />
+                      {imageActive ? (
+                           <>
+                            <img
+                            src={`${global.config.resourceUrl}${imageActive}`}
+                            style={{
+                              width: '360px',
+                              height: '215px',
+                              borderRadius: '8px',
+                            }}
+                            />
+                            <span className="upload-btn">
+                              <img src={pcIcon} alt="" />
+                              My device
+                            </span>
+                          </>
+                      ) : (
+                        <>
+                          <img src={imgAvatar} alt="" />
+                          <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                            My device
+                          </span>
+                        </>
+                      )}
+                      <div className="error">{errors.image && touched.image && errors.image}</div>
+                    </div>
+                </div>
+              </div>
             </div>
             <div className="button-group">
               <button type="submit">{editMode ? 'Edit' : 'Create'} Activity Item</button>
