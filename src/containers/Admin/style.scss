@@ -1020,7 +1020,7 @@
       display: flex;
       justify-content: left;
       align-items: flex-start;
-      padding: 96px 64px 0 64px;
+      padding: 64px 64px 0 64px;
       height: 100%;
       // position: fixed;
       float: right;
@@ -1068,7 +1068,7 @@
           color: $fun-blue-1;
           padding-bottom: 4px;
           width: fit-content;
-          margin-bottom: 52px;
+          margin-bottom: 36px;
         }
 
         .form-group-create {
@@ -1406,21 +1406,21 @@
   font-size: 14px;
   margin-top: 10px;
   // text-transform: uppercase;
-  margin-right: 20px;
+  margin-right: 10px;
   h3 {
-    margin-left: 12px !important;
+    margin-left: 10px !important;
   }
   .react-switch {
     max-width: max-content !important;
     padding-left: 5px;
     .react-switch-bg {
-      height: 20px !important;
-      width: 54px !important;
+      height: 18px !important;
+      width: 40px !important;
     }
   }
   .react-switch-handle {
-    width: 26px !important;
-    height: 26px !important;
+    width: 24px !important;
+    height: 24px !important;
     top: -2px !important;
   }
   .react-switch-handle:checked {

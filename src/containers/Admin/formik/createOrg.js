@@ -153,8 +153,8 @@ export default function CreateOrg(prop) {
                 }}
               />
             <div className="create-form-inputs-group">
-
-              <div>
+              {/* Left container */}
+              <div style={{marginRight:"64px"}}>
                 <div className="form-group-create">
                   <h3>Organization Name</h3>
                   <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} />
@@ -303,7 +303,8 @@ export default function CreateOrg(prop) {
                   </div>
                 </div>
               </div>
-
+              
+              {/* Right container */}
               <div>
                 <div className="form-group-create">
                 <h3>Upload an image</h3>
@@ -382,7 +383,6 @@ export default function CreateOrg(prop) {
                 </div>
                 </div>
               </div>
-
             </div>
             
             
