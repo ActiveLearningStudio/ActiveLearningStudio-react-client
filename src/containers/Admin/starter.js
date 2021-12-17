@@ -57,6 +57,9 @@ function Starter(props) {
     libraryReqSelected,
     setLibraryReqSelected,
     setSubTypeState,
+    projectFilterObj,
+    setProjectFilterObj,
+    filterSearch,
   } = props;
   return (
     <>
@@ -102,6 +105,9 @@ function Starter(props) {
         libraryReqSelected={libraryReqSelected}
         setLibraryReqSelected={setLibraryReqSelected}
         setSubTypeState={setSubTypeState}
+        projectFilterObj={projectFilterObj}
+        setProjectFilterObj={setProjectFilterObj}
+        filterSearch={filterSearch}
       />
       {subTypeState === "All settings" && <Settings />}
       {subTypeState === "Manage Roles" ? (

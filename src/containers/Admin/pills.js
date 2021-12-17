@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { Tabs, Tab, Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,15 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
+  const [projectFilterObj, setProjectFilterObj] = useState({
+    author_id: null,
+    created_from: null,
+    created_to: null,
+    updated_from: null,
+    updated_to: null,
+    indexing: null,
+    shared: null,
+  });
   const [selectedActivityType, setSelectedActivityType] = useState(null);
   const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
@@ -104,7 +113,6 @@ export default function Pills(props) {
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
         allproject
           .then((data) => {
-            console.log(data);
             setAllProjectTab(data);
           })
           .catch((e) => setAllProjectTab([]));
@@ -165,7 +173,6 @@ export default function Pills(props) {
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size);
         allproject
           .then((data) => {
-            console.log(data);
             setAllProjectTab(data);
           })
           .catch((e) => setAllProjectTab([]));
@@ -232,7 +239,6 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        console.log(encodeQuery);
         await dispatch(getActivityItems(encodeQuery, ''));
       } else if (query === '') {
         await dispatch(getActivityItems());
@@ -281,7 +287,6 @@ export default function Pills(props) {
       result.then((data) => setLogs(data.data));
     } else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
       const result = dispatch(getLogsListing(logType.value, size, activePage));
-      console.log(result);
       result.then((data) => {
         setLogs(data.data);
       });
@@ -316,10 +321,8 @@ export default function Pills(props) {
         result.then((data) => {
           setJobs(data.data);
           if (data?.data?.length > 0) {
-            console.log(data?.data);
             setSearchAlertTogglerStats(1);
           } else {
-            console.log(data?.data);
             setSearchAlertTogglerStats(0);
           }
         });
@@ -432,7 +435,12 @@ export default function Pills(props) {
       setSubTypeState('All Settings');
     }
   }, [activeTab]);
-  // console.log(columnData)
+  const filterSearch = useCallback(
+    () => {
+      console.log(projectFilterObj);
+    },
+    [projectFilterObj],
+  );
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -636,6 +644,9 @@ export default function Pills(props) {
                 activePage={activePage}
                 subType={'all'}
                 setSubTypeState={setSubTypeState}
+                projectFilterObj={projectFilterObj}
+                setProjectFilterObj={setProjectFilterObj}
+                filterSearch={filterSearch}
                 libraryReqSelected={libraryReqSelected}
                 setLibraryReqSelected={setLibraryReqSelected}
                 setCurrentTab={setCurrentTab}

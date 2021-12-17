@@ -4,6 +4,7 @@ import React,
   useMemo,
   useEffect,
   useRef,
+  useCallback,
 } from 'react';
 import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
@@ -18,7 +19,7 @@ import {
 } from 'store/actions/admin';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import filterImg from 'assets/images/svg/filter.svg';
-import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
+// import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 // import csv from "assets/images/csv.png";
 // import pdf from "assets/images/pdf.png";
 import bulk from 'assets/images/bulk.png';
@@ -26,7 +27,7 @@ import bulk from 'assets/images/bulk.png';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
 import {
-  getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList,
+  getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization,
 } from 'store/actions/organization';
 // import { alphaNumeric } from 'utils';
 
@@ -72,6 +73,9 @@ function Controller(props) {
     libraryReqSelected,
     setLibraryReqSelected,
     setSubTypeState,
+    projectFilterObj,
+    setProjectFilterObj,
+    filterSearch,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -83,30 +87,45 @@ function Controller(props) {
   const { activityTypes } = useSelector((state) => state.admin);
   const [selectedIndexValue, setSelectedIndexValue] = useState('ALL');
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
+  const [authorName, setAuthorName] = useState('');
+  const [authorsArray, setAuthorsArray] = useState([]);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
     }
-  }, []);
-
+  }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
+      console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
         setActiveRoleInComponent(roles[0]?.display_name);
-      } else if (activeRole) {
-        setActiveRoleInComponent(roles.filter((role) => role.id === activeRole)[0]?.display_name);
+      } else if (roles?.length > 0 && activeRole) {
+        setActiveRoleInComponent(roles?.filter((role) => role.id === activeRole)[0]?.display_name);
       }
     } else if (roles?.length > 0 && subTypeState === 'Manage Roles') {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
-  }, [roles, adminState?.activeTab]);
+  }, [roles, adminState?.activeTab, subTypeState, activeRole, setActiveRole]);
   // sabtype
   // const sab = subType;
   // console.log(subTypeState);
   // console.log(subType);
-
+  const searchUserProjectFilter = useCallback(
+    async () => {
+      if (authorName.length > 2) {
+        const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
+        console.log(result?.data, 'result');
+        if (result?.data?.length > 0) {
+          setAuthorsArray(result?.data);
+        } else {
+          setAuthorsArray([]);
+        }
+      }
+    },
+    [activeOrganization?.id, authorName, dispatch],
+  );
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
     setChangeIndexValue(id);
@@ -334,8 +353,17 @@ function Controller(props) {
               <Dropdown.Menu>
                 <div className="authorName-project">
                   <label>Author</label>
-                  <input type="text" />
-                  <img src={filterSearchIcon} alt="filterSearchIcon" />
+                  <input type="text" value={authorName} onChange={(e) => { setAuthorName(e.target.value); searchUserProjectFilter(); }} />
+                  {authorName && (
+                    <div className="author-list">
+                      {authorsArray?.length > 0 ? authorsArray?.map((author) => (
+                        <>
+                          <div className="username-filter-project">{author.first_name}</div>
+                          <div className="email-filter-project">{author.email}</div>
+                        </>
+                      )) : 'No user found.'}
+                    </div>
+                  )}
                 </div>
                 <div className="createdFrom-project">
                   <label>Created</label>
@@ -348,6 +376,10 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.created_from}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, created_from: e.target.value });
+                        }}
                       />
                     </div>
                     <div className="to-project">
@@ -357,6 +389,10 @@ function Controller(props) {
                         placeholder="MM/DD/YYYY"
                         onFocus={(e) => {
                           e.target.type = 'date';
+                        }}
+                        value={projectFilterObj.created_to}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, created_to: e.target.value });
                         }}
                       />
                     </div>
@@ -373,6 +409,10 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.updated_from}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, updated_from: e.target.value });
+                        }}
                       />
                     </div>
                     <div className="to-project">
@@ -383,6 +423,10 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.updated_to}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, updated_to: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -391,35 +435,35 @@ function Controller(props) {
                   <div className="library-status">
                     <label>Library status</label>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.indexing === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 1 })} />
                       Requested
                     </span>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.indexing === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 0 })} />
                       Not Requested
                     </span>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.indexing === 3 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 3 })} />
                       Approved
                     </span>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.indexing === 2 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 2 })} />
                       Rejected
                     </span>
                   </div>
                   <div className="shared-status">
                     <label>Shared status</label>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.shared === true && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: true })} />
                       Enabled
                     </span>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.shared === false && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: false })} />
                       Not Enabled
                     </span>
                   </div>
                 </div>
-                <div type="button" className="filter-btn-project">
+                <div type="button" className="filter-btn-project" onClick={() => filterSearch()}>
                   <img src={filterImg} alt="filter" />
                   Apply Filters
                 </div>
@@ -870,46 +914,52 @@ Controller.propTypes = {
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
   setSubTypeState: PropTypes.func,
+  projectFilterObj: PropTypes.object,
+  setProjectFilterObj: PropTypes.func,
+  filterSearch: PropTypes.func,
 };
 
 Controller.defaultProps = {
-  paginationCounter: PropTypes.number,
-  search: PropTypes.bool,
-  btnText: PropTypes.string,
-  btnAction: PropTypes.string,
-  importUser: PropTypes.bool,
+  paginationCounter: false,
+  search: false,
+  btnText: '',
+  btnAction: '',
+  importUser: false,
   // jobType: PropTypes.object,
   // SetJobType: PropTypes.func,
   // logType: PropTypes.object,
   // SetLogType: PropTypes.func,
-  subTypeState: PropTypes.string,
-  filter: PropTypes.bool,
-  activeRole: PropTypes.string,
-  setActiveRole: PropTypes.func,
-  setActivePage: PropTypes.func,
-  type: PropTypes.string,
-  searchQueryActivities: PropTypes.string,
-  setSearchQueryActivities: PropTypes.func,
-  searchQuery: PropTypes.string,
-  searchQueryProject: PropTypes.string,
-  setSearchQueryProject: PropTypes.func,
+  subTypeState: '',
+  filter: '',
+  activeRole: '',
+  setActiveRole: {},
+  setActivePage: {},
+  type: '',
+  searchQueryActivities: '',
+  setSearchQueryActivities: {},
+  searchQuery: '',
+  searchQueryProject: '',
+  setSearchQueryProject: {},
   // searchQueryStats: PropTypes.string,
   // setSearchQueryStats: PropTypes.func,
-  setSearchQuery: PropTypes.func,
-  searchQueryChangeHandler: PropTypes.func,
-  searchProjectQueryChangeHandler: PropTypes.func,
-  searchActivitiesQueryHandler: PropTypes.func,
+  setSearchQuery: {},
+  searchQueryChangeHandler: {},
+  searchProjectQueryChangeHandler: {},
+  searchActivitiesQueryHandler: {},
   // searchUserReportQueryHandler: PropTypes.func,
-  size: PropTypes.number,
-  setSize: PropTypes.func,
-  roles: PropTypes.array,
-  subType: PropTypes.string,
-  setChangeIndexValue: PropTypes.func,
-  selectedActivityType: PropTypes.string,
-  setSelectedActivityType: PropTypes.func,
-  libraryReqSelected: PropTypes.bool,
-  setLibraryReqSelected: PropTypes.func,
-  setSubTypeState: PropTypes.func,
+  size: 10,
+  setSize: {},
+  roles: [],
+  subType: '',
+  setChangeIndexValue: {},
+  selectedActivityType: '',
+  setSelectedActivityType: {},
+  libraryReqSelected: false,
+  setLibraryReqSelected: {},
+  setSubTypeState: {},
+  projectFilterObj: {},
+  setProjectFilterObj: {},
+  filterSearch: {},
 };
 
 export default Controller;

@@ -118,7 +118,7 @@ const removeUserFromOrganization = (subOrgId, body) => httpService
   });
 
 const searchUserInOrganization = (id, query, page, role) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=${page}&role=${role}`)
+  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}${page ? `&page=${page}` : ''}${role ? `&role=${role}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
