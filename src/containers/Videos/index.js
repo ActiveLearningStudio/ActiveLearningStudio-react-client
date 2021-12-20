@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Buttons from "utils/Buttons/buttons";
 import TopHeading from "utils/TopHeading/topheading";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faPlus } from "@fortawesome/free-solid-svg-icons";
 import projectFolder from "assets/images/svg/myProject.svg";
 import "./style.scss";
 import HeadingText from "utils/HeadingText/headingtext";
@@ -14,10 +14,14 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import AddVideo from "./formik/addvideo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DescribeVideo from "./formik/describevideo";
+import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
+import AddVideoCard from "utils/AddVideoCard/addvideocard";
+import VidoeCardImage from "assets/images/myproject1.png";
 const Index = () => {
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState("");
+  const [myVideoCards, setMyVideoCards] = useState(false);
   return (
     <>
       {openMyVideo && (
@@ -89,26 +93,97 @@ const Index = () => {
                 id="uncontrolled-tab-example"
               >
                 <Tab eventKey="default" title="My videos">
-                  <div className="video-default-contianer">
-                    <HeadingTwo
-                      text="Start creating awesome interactive videos."
-                      className="video-heading-1"
-                    />
-                    <HeadingText
-                      text="Make your video engaging for your viewers and gather information
+                  {myVideoCards ? (
+                    <>
+                      <div className="video-default-contianer">
+                        <HeadingTwo
+                          text="Start creating awesome interactive videos."
+                          className="video-heading-1"
+                        />
+                        <HeadingText
+                          text="Make your video engaging for your viewers and gather information
 Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
-                      className="video-heading-2"
-                    />
-                    <HeadingThree
-                      text="Start by pressing “Create a video” and make your content live!"
-                      className="video-heading-3"
-                    />
-                    <div className="vedio-help">
-                      <p>
-                        Feeling lost? Go to <span>Help Center</span>
-                      </p>
-                    </div>
-                  </div>
+                          className="video-heading-2"
+                        />
+                        <HeadingThree
+                          text="Start by pressing “Create a video” and make your content live!"
+                          className="video-heading-3"
+                        />
+                        <div className="vedio-help">
+                          <p>
+                            Feeling lost? Go to <span>Help Center</span>
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="video-cards-contianer">
+                        <div className="video-cards-top-search-filter">
+                          <div className="search-bar">
+                            <input
+                              className=""
+                              type="text"
+                              placeholder="Search"
+                            />
+                            <img src={searchimg} alt="search" />
+                          </div>
+                          <div className="video-filter-bar">
+                            <FontAwesomeIcon icon={faFilter} color="#084892" />
+                            <span>Filter</span>
+                          </div>
+                        </div>
+
+                        <div className="video-cards-detail">
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </Tab>
               </Tabs>
             </div>

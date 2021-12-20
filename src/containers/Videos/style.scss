@@ -6,7 +6,7 @@
     padding: 32px 30px 30px;
     // margin: 13px 39px 81px 29px;
     border-radius: 3px;
-    height: 764px;
+    min-height: 764px;
     @media screen and (max-width: 1024px) {
       margin: 13px 20px 81px 20px;
     }
@@ -66,6 +66,58 @@
           span {
             color: $curriki-main-blue;
           }
+        }
+      }
+    }
+    .video-cards-contianer {
+      .video-cards-top-search-filter {
+        display: flex;
+        // justify-content: space-between;
+        align-items: center;
+        padding: 20px 10px;
+        width: 100%;
+        flex-wrap: wrap;
+        margin: 16px 0px 22px;
+        background-color: #f7faff;
+        .search-bar {
+          position: relative;
+          margin-right: 33px;
+          input {
+            border: none;
+            color: $fun-blue-1;
+            border-bottom: 1px solid $fun-blue-1;
+            font-weight: 400;
+            background: none;
+            font-size: 14px;
+            width: 238px;
+            padding-right: 20px;
+            &::placeholder {
+              color: $fun-blue-1;
+            }
+          }
+
+          img {
+            position: absolute;
+            right: 0;
+            bottom: 4px;
+          }
+        }
+        .video-filter-bar {
+          display: flex;
+          align-items: center;
+          span {
+            font-weight: 400;
+            color: $curriki-main-blue;
+            font-size: 18px;
+            margin-left: 12px;
+          }
+        }
+      }
+      .video-cards-detail {
+        display: flex;
+        flex-wrap: wrap;
+        .card-spacing {
+          margin-top: 16px;
         }
       }
     }
