@@ -6,14 +6,13 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
-import AddVideoTube from 'assets/images/addVideo.png';
+import AddVideoTube from 'assets/images/svg/youtube.svg';
 import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
 const AddVideo = ({ setScreenStatus }) => {
-  const [modalShow, setModalShow] = useState(false);
-  const dispatch = useDispatch();
+  const [modalShow, c] = useState(false);
   return (
     <>
       <BrightcoveModel
@@ -43,11 +42,11 @@ const AddVideo = ({ setScreenStatus }) => {
         <div className="add-video-form-tabs">
           <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
             <Tab eventKey="default" title="BrightCove">
-              <FormikVideo type={AddVideoImage} setScreenStatus={setScreenStatus} showBrowse />
+              <FormikVideo type={AddVideoImage} setScreenStatus={setScreenStatus} showBrowse setModalShow={setModalShow} />
             </Tab>
             {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
             <Tab eventKey="YouTube" title="YouTube">
-              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} />
+              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} setModalShow={setModalShow} />
             </Tab>
             {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
@@ -60,7 +59,8 @@ const AddVideo = ({ setScreenStatus }) => {
 
 export default AddVideo;
 
-const FormikVideo = ({ type, showBrowse, setScreenStatus }) => {
+const FormikVideo = ({ type, showBrowse, setScreenStatus, setModalShow }) => {
+  const dispatch = useDispatch();
   return (
     <div className="add-video-layout-formik">
       <Formik
