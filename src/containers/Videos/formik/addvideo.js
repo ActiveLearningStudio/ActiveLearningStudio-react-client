@@ -1,16 +1,19 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import TabsHeading from "utils/Tabs/tabs";
-import { Tabs, Tab } from "react-bootstrap";
-import { Formik } from "formik";
-import AddVideoImage from "assets/images/svg/addvidobright.svg";
-import Buttons from "utils/Buttons/buttons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
-import BrightcoveModel from "../model/brightmodel";
+import React, { useEffect, useState } from 'react';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import TabsHeading from 'utils/Tabs/tabs';
+import { Tabs, Tab } from 'react-bootstrap';
+import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import AddVideoImage from 'assets/images/svg/addvidobright.svg';
+import AddVideoTube from 'assets/images/addVideo.png';
+import Buttons from 'utils/Buttons/buttons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+import BrightcoveModel from '../model/brightmodel';
 const AddVideo = ({ setScreenStatus }) => {
   const [modalShow, setModalShow] = useState(false);
+  const dispatch = useDispatch();
   return (
     <>
       <BrightcoveModel
@@ -32,84 +35,23 @@ const AddVideo = ({ setScreenStatus }) => {
           </div>
           <div className="add-video-tour">
             <span>
-              <FontAwesomeIcon
-                icon={faClock}
-                color="#084892"
-                className="ml-9"
-              />
+              <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
               Tour
             </span>
           </div>
         </div>
         <div className="add-video-form-tabs">
-          <Tabs
-            className="main-tabs"
-            defaultActiveKey="default"
-            id="uncontrolled-tab-example"
-          >
-            <Tab eventKey="default" title="BrightCove"></Tab>
-            <Tab eventKey="Mydevice" title="My device"></Tab>
-            <Tab eventKey="YouTube" title="YouTube"></Tab>
-            <Tab eventKey="Vimeo" title="Vimeo"></Tab>
-            <Tab eventKey="Kaltura" title="Kaltura"></Tab>
+          <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
+            <Tab eventKey="default" title="BrightCove">
+              <FormikVideo type={AddVideoImage} setScreenStatus={setScreenStatus} showBrowse />
+            </Tab>
+            {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
+            <Tab eventKey="YouTube" title="YouTube">
+              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} />
+            </Tab>
+            {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
+            <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
           </Tabs>
-        </div>
-        <div className="add-video-layout-formik">
-          <Formik
-            initialValues={{
-              videoUrl: "",
-            }}
-            onSubmit={(values) => {}}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-              >
-                <div className="layout-title-formik-textField">
-                  <img src={AddVideoImage} />
-                  <input
-                    type="text"
-                    name="title"
-                    placeholder="Enter video ID"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.title}
-                  />
-                  <Buttons
-                    primary={true}
-                    text="Browse videos"
-                    width="146px"
-                    height="35px"
-                    hover={true}
-                    className="ml-32"
-                    onClick={() => setModalShow(true)}
-                  />
-                </div>
-              </form>
-            )}
-          </Formik>
-        </div>
-        <div className="describe-video">
-          <Buttons
-            primary={true}
-            text="Describe Video"
-            width="149px"
-            height="35px"
-            hover={true}
-            onClick={() => setScreenStatus("DescribeVideo")}
-          />
         </div>
       </div>
     </>
@@ -117,3 +59,60 @@ const AddVideo = ({ setScreenStatus }) => {
 };
 
 export default AddVideo;
+
+const FormikVideo = ({ type, showBrowse, setScreenStatus }) => {
+  return (
+    <div className="add-video-layout-formik">
+      <Formik
+        initialValues={{
+          videoUrl: '',
+        }}
+        validate={(values) => {
+          const errors = {};
+          if (!values.videoUrl) {
+            errors.videoUrl = 'Required';
+          }
+          return errors;
+        }}
+        onSubmit={(values) => {
+          setScreenStatus('DescribeVideo');
+          dispatch({
+            type: 'ADD_VIDEO_URL',
+            payload: values.videoUrl,
+          });
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <div className="layout-title-formik-textField">
+              <img src={type} />
+              <input type="text" name="videoUrl" placeholder="Enter video ID" onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
+
+              {showBrowse && <Buttons primary={true} text="Browse videos" width="146px" height="35px" hover={true} className="ml-32" onClick={() => setModalShow(true)} />}
+            </div>
+            <div className="error" style={{ color: 'red' }}>
+              {errors.videoUrl && touched.videoUrl && errors.videoUrl}
+            </div>
+            <div className="describe-video">
+              <Buttons type="submit" primary={true} text="Describe Video" width="149px" height="35px" hover={true} />
+            </div>
+          </form>
+        )}
+      </Formik>
+    </div>
+  );
+};

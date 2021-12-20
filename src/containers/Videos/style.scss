@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .myvideomain {
   .inner-content {
@@ -314,12 +314,17 @@
   }
   .add-describevideo-section-layout-formik {
     display: flex;
+
     .add-describevideo-layout-formik {
       // @media screen and (max-width: 1024px) {
       //   width: 280px;
       // }
-      max-width: 472px;
-      margin-right: 128px;
+      form {
+        display: flex;
+        justify-content: space-between;
+      }
+      // max-width: 472px;
+      // margin-right: 128px;
       // margin-top: 34px;
 
       .dec-title-formik-textField {
@@ -399,6 +404,7 @@
       }
     }
     .describe-video-upload-section {
+      margin-left: 100px;
       .uploadImage-describe-video {
         .uploadimage-box {
           width: 360px;
@@ -412,6 +418,10 @@
     position: absolute;
     bottom: 80px;
     right: 80px;
+    display: flex;
+    button {
+      margin-left: 15px;
+    }
   }
 }
 

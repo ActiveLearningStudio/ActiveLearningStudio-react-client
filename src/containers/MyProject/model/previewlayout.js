@@ -13,8 +13,9 @@ const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
-  const { type } = props;
+  const { type, title, video } = props;
   var counter = 0;
+
   useEffect(() => {
     if (type === 'videoModal') {
       dispatch(loadH5pSettingsActivity());
@@ -30,11 +31,11 @@ const PreviewLayoutModel = (props) => {
         <div className="interactive-video-H5P">
           {type === 'videoModal' ? (
             <H5PEditor
-              h5pParams={
-                '{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"https://www.youtube.com/watch?v=eQBMHXmMo6c&amp;t=31s","mime":"video/YouTube"}]}}},"metadata":{"title":"Nonscoreable Drag Text"}}'
-              }
+              h5pParams={`{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`}
               h5pLib="H5P.InteractiveVideo 1.22"
               hide={props.onHide}
+              type={type}
+              formData={props?.formData}
             />
           ) : (
             <>
