@@ -4,7 +4,7 @@ import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import TabsHeading from "utils/Tabs/tabs";
 import { Tabs, Tab } from "react-bootstrap";
 import { Formik } from "formik";
-import AddVideoImage from "assets/images/svg/addvidobright.svg";
+import AddVideoImage from "assets/images/svg/youtube.svg";
 import Buttons from "utils/Buttons/buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
