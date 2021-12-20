@@ -21,7 +21,7 @@ export default function CreateActivity(props) {
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
-      setFileActive(selectedType?.external_css_path);
+      setFileActive(selectedType?.css_path);
     } else {
       setImgActive(null);
       setFileActive(null);
@@ -34,7 +34,7 @@ export default function CreateActivity(props) {
           title: editMode ? selectedType.title : '',
           image: editMode ? selectedType.image : '',
           order: editMode ? selectedType.order : '',
-          file: editMode ? selectedType.external_css_path : '',
+          css_path: editMode ? selectedType.css_path : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -197,7 +197,7 @@ export default function CreateActivity(props) {
               <div className="img-upload-form">
                 <input
                   type="file"
-                  name="file"
+                  name="css_path"
                   accept=".css"
                   onChange={(e) => {
                     if (
@@ -226,7 +226,7 @@ export default function CreateActivity(props) {
                         const fileurl = dispatch(uploadActivityTypeFileAction(formData));
                         fileurl.then((file) => {
                           setFileActive(file);
-                          setFieldValue('file', file);
+                          setFieldValue('css_path', file);
                         });
                       } catch (err) {
                         Swal.fire({

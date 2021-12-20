@@ -254,12 +254,6 @@ const activityH5p = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityCss = (activityId) =>
-  httpService
-    .get(`/${apiVersion}/get-activity-item/${activityId}/external-css`)
-    .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
-
 const shareActivity = (activityId) =>
   httpService
     .get(`/${apiVersion}/activities/${activityId}/share`)
@@ -311,7 +305,6 @@ export default {
   h5pResourceSettingsShared,
   h5pResourceSettingsEmbed,
   activityH5p,
-  getActivityCss,
   shareActivity,
   loadH5pShared,
   removeShareActivity,
