@@ -21,6 +21,8 @@ import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 function Table(props) {
   const {
     tableHead,
+    sortCol,
+    handleSort,
     history,
     data,
     type,
@@ -182,7 +184,7 @@ function Table(props) {
           <thead>
             <tr>
               {tableHead?.map((head, keyid) =>
-                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? <th key={keyid}> {head} </th> : head !== 'Users' ? <th>{head}</th> : null
+                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? <th key={keyid}> {head} </th> : head !== 'Users' ? <th onClick={sortCol != '' ? sortCol.includes(head) ? ()=>handleSort(head,typeof subType != 'undefined' ? subType : type) : '' : ''}>{head}</th> : null
               )}
             </tr>
           </thead>
