@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import Buttons from "utils/Buttons/buttons";
 
 import { useSelector } from "react-redux";
-import UploadImage from "utils/UploadImage/uploadimage";
+import UploadImage from "utils/uploadimagev2/uploadimagev2";
 import HeadingText from "utils/HeadingText/headingtext";
 import DefaultUpload from "assets/images/defaultUpload.png";
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
@@ -18,7 +18,7 @@ import {
 const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
-  const { videoId } = useSelector((state) => state.videos);
+  const { videoId, editVideo } = useSelector((state) => state.videos);
 
   const formRef = useRef();
   return (
@@ -32,6 +32,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}
+        editVideo={editVideo}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
@@ -59,10 +60,15 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
             <Formik
               innerRef={formRef}
               initialValues={{
-                title: "",
-                description: "",
-                subject_id: "",
-                education_level_id: "",
+                title: editVideo ? editVideo.title : "",
+                description: editVideo ? editVideo.description : "",
+                subject_id: editVideo ? editVideo.subject_id : "",
+                education_level_id: editVideo
+                  ? editVideo.education_level_id
+                  : "",
+                thumb_url: editVideo?.thumb_url
+                  ? editVideo.thumb_url
+                  : undefined,
               }}
               validate={(values) => {
                 const errors = {};
@@ -137,7 +143,6 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
                           value={values.subject_id}
                         >
                           <option hidden>Select</option>
-                          <option hidden>Select</option>
                           {subjects.map((data) => (
                             <option key={data.value} value={data.subject}>
                               {data.subject}
@@ -172,6 +177,8 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
                       defuaultImage={DefaultUpload}
                       className="uploadImage-describe-video"
                       setUploadImageStatus={setUploadImageStatus}
+                      formRef={formRef}
+                      thumb_url={editVideo?.thumb_url}
                     />
                   </div>
                   <div className="describe-video">

@@ -2,29 +2,38 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import "./addvideocard.scss";
-import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
-import ProjectListDropDown from "utils/ProjectListDropDown/projectlistdropdown";
+import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEye, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
 import DropDownEdit from "utils/DropDownEdit/dropdownedit";
+import resourceService from "services/resource.service";
+
+import "./addvideocard.scss";
 
 const AddVideoCard = ({
+  setScreenStatus,
+  setOpenVideo,
   className,
-  backgroundImg,
-  title,
+  data,
   selectionStatus = false,
   setAddActivityPopUp,
-  videoId,
 }) => {
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames("curriki-utility-addvideo-card", className);
+  const dispatch = useDispatch();
   return (
     <>
       <div className={currikiUtility}>
         <div
           className="addvideo-card-top"
-          style={{ backgroundImage: `url(${backgroundImg})` }}
+          style={{
+            backgroundImage: `url(${
+              data.thumb_url?.includes("pexels.com")
+                ? data.thumb_url
+                : global.config.resourceUrl + data.thumb_url
+            })`,
+          }}
         >
           <div className="addvideo-card-dropdown">
             <DropDownEdit
@@ -33,11 +42,11 @@ const AddVideoCard = ({
             />
           </div>
           <div className="addvideo-card-title">
-            <h2>{title}</h2>
+            <h2>{data.title}</h2>
           </div>
         </div>
         <div className="addvideo-card-detail">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          <p>{data.descripiton}</p>
         </div>
 
         <div className="addvideo-card-add-share">
@@ -51,6 +60,26 @@ const AddVideoCard = ({
               icon={faEdit}
               style={{ marginRight: "12px" }}
               color="#084892"
+              onClick={async () => {
+                toast.dismiss();
+                toast.info("Loading Activity ...", {
+                  className: "project-loading",
+                  closeOnClick: false,
+                  closeButton: false,
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: 10000,
+                  icon: "",
+                });
+                // const result = await resourceService.activityH5p(data.id);
+                toast.dismiss();
+
+                dispatch({
+                  type: "SET_ACTIVE_VIDEO_SCREEN",
+                  payload: data,
+                });
+                setOpenVideo(true);
+                setScreenStatus("DescribeVideo");
+              }}
             />
           </div>
         </div>

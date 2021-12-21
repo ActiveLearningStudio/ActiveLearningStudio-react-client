@@ -24,11 +24,10 @@ const Index = () => {
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState("");
-  const [myVideoCards, setMyVideoCards] = useState(false);
+
   const videos = useSelector((state) => state.videos);
   const { activeOrganization } = useSelector((state) => state.organization);
   const { allVideos } = videos;
-  console.log("Videoes:", allVideos);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -88,6 +87,10 @@ const Index = () => {
                   onClick={() => {
                     setOpenVideo(!openMyVideo);
                     setScreenStatus("AddVideo");
+                    dispatch({
+                      type: "SET_ACTIVE_VIDEO_SCREEN",
+                      payload: "",
+                    });
                   }}
                   hover={true}
                 />
@@ -108,7 +111,7 @@ const Index = () => {
                 id="uncontrolled-tab-example"
               >
                 <Tab eventKey="default" title="My videos">
-                  {myVideoCards ? (
+                  {!allVideos.length ? (
                     <>
                       <div className="video-default-contianer">
                         <HeadingTwo
@@ -136,11 +139,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                       <div className="video-cards-contianer">
                         {/* <div className="video-cards-top-search-filter">
                           <div className="search-bar">
-                            <input
-                              className=""
-                              type="text"
-                              placeholder="Search"
-                            />
+                            <input className="" type="text" placeholder="Search" />
                             <img src={searchimg} alt="search" />
                           </div>
                           <div className="video-filter-bar">
@@ -150,23 +149,19 @@ Interactive video has over xx interactions that can be added to video, It allows
                         </div> */}
 
                         <div className="video-cards-detail">
-                          {allVideos?.data.map((video) => {
+                          {allVideos?.map((video) => {
                             return (
                               <>
                                 <AddVideoCard
+                                  setScreenStatus={setScreenStatus}
+                                  setOpenVideo={setOpenVideo}
                                   title={video.title}
-                                  backgroundImg={VidoeCardImage}
+                                  data={video}
                                   className="card-spacing"
-                                  // videoId={video.id}
                                 />
                               </>
                             );
                           })}
-                          {/* <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          /> */}
                         </div>
                       </div>
                     </>
