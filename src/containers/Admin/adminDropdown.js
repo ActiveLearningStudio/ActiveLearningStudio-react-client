@@ -422,6 +422,19 @@ const AdminDropdown = (props) => {
                     type: 'SET_ACTIVE_EDIT',
                     payload: row,
                   });
+                  dispatch(setActiveAdminForm('edit_lms'));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                &nbsp;&nbsp;Edit&nbsp;&nbsp;
+              </Dropdown.Item>
+              <Dropdown.Item
+                to="#"
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
                   dispatch(setActiveAdminForm('clone_lms'));
                 }}
               >
@@ -471,19 +484,7 @@ const AdminDropdown = (props) => {
                 <img src={Delete} alt="Preview" className="menue-img" />
                 &nbsp;&nbsp;Delete&nbsp;&nbsp;
               </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lms'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Edit&nbsp;&nbsp;
-              </Dropdown.Item>
+              
             </>
           )}
 
@@ -552,6 +553,18 @@ const AdminDropdown = (props) => {
           {type === 'LMS' && subType === 'LTI Tools' && (
             <>
               <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_lti_tool'));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
                 to="#"
                 onClick={() => {
                   Swal.showLoading();
@@ -599,18 +612,6 @@ const AdminDropdown = (props) => {
               >
                 <img src={Delete} alt="Preview" className="menue-img" />
                 Delete
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lti_tool'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                Edit
               </Dropdown.Item>
             </>
           )}
