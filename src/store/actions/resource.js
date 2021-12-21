@@ -207,10 +207,6 @@ export const resourceSaved = (saved) => async (dispatch) => {
 };
 
 export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type) => async (dispatch) => {
-  alert(metadata);
-  // try {
-  // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
-  alert(type);
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -250,6 +246,10 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       toast.success('Activity Created', {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
+      });
+      dispatch({
+        type: actionTypes.ALL_VIDEOS,
+        payload: insertedResource.activity,
       });
       hide();
     } else {

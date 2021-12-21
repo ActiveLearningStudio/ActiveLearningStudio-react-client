@@ -7,7 +7,7 @@ export const getAllVideos = (id) => async (dispatch) => {
   const result = await videoServices.getAll(id);
   dispatch({
     type: actionTypes.ALL_VIDEOS,
-    payload: result,
+    payload: result.data,
   });
 };
 
