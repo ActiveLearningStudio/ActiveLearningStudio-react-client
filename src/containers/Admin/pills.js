@@ -437,7 +437,43 @@ export default function Pills(props) {
   }, [activeTab]);
   const filterSearch = useCallback(
     () => {
-      console.log(projectFilterObj);
+      if (subTypeState === 'Library requests') {
+        const filterAPI = adminService.getAllProjectIndex(
+          activeOrganization?.id,
+          activePage,
+          projectFilterObj.indexing,
+          size,
+          projectFilterObj.author_id || null,
+          projectFilterObj.created_from || null,
+          projectFilterObj.created_to || null,
+          projectFilterObj.updated_from || null,
+          projectFilterObj.updated_to || null,
+          projectFilterObj.shared || null,
+        );
+        filterAPI
+          .then((data) => {
+            setAllProjectIndexTab(data);
+          })
+          .catch((e) => setAllProjectIndexTab([]));
+      } else {
+        const allproject = adminService.getAllProject(
+          activeOrganization?.id,
+          activePage,
+          size,
+          projectFilterObj.author_id || null,
+          projectFilterObj.created_from || null,
+          projectFilterObj.created_to || null,
+          projectFilterObj.updated_from || null,
+          projectFilterObj.updated_to || null,
+          projectFilterObj.shared || null,
+          projectFilterObj.indexing,
+        );
+        allproject
+          .then((data) => {
+            setAllProjectTab(data);
+          })
+          .catch((e) => setAllProjectTab([]));
+      }
     },
     [projectFilterObj],
   );

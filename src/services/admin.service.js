@@ -22,8 +22,9 @@ const editUserInOrganization = (user, subOrgId) => httpService
   });
 
 // project
-const getAllProject = (subOrgId, page, size) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&size=${size}`)
+const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) => httpService
+  // eslint-disable-next-line max-len
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);
@@ -55,7 +56,7 @@ const importProject = (subOrgId, projectData) => httpService
   });
 
 const getAllProjectSearch = (subOrgId, page, search, size) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&size=${size}&query=${search.replace(/#/, '%23') || ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}&query=${search.replace(/#/, '%23') || ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -75,8 +76,9 @@ const getUserProjectSearch = (subOrgId, page, search) => httpService
     return Promise.reject(err.response.data);
   });
 
-const getAllProjectIndex = (subOrgId, page, index, size) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&size=${size}`)
+const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared) => httpService
+  // eslint-disable-next-line max-len
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&size=${size}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);

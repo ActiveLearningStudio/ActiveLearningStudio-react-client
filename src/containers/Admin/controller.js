@@ -19,7 +19,7 @@ import {
 } from 'store/actions/admin';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import filterImg from 'assets/images/svg/filter.svg';
-// import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
+import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 // import csv from "assets/images/csv.png";
 // import pdf from "assets/images/pdf.png";
 import bulk from 'assets/images/bulk.png';
@@ -114,7 +114,7 @@ function Controller(props) {
   // console.log(subType);
   const searchUserProjectFilter = useCallback(
     async () => {
-      if (authorName.length > 2) {
+      if (authorName.length >= 2) {
         const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
         console.log(result?.data, 'result');
         if (result?.data?.length > 0) {
@@ -353,18 +353,32 @@ function Controller(props) {
               <Dropdown.Menu>
                 <div className="authorName-project">
                   <label>Author</label>
-                  <input type="text" value={authorName} onChange={(e) => { setAuthorName(e.target.value); searchUserProjectFilter(); }} />
-                  {authorName && (
+                  <input type="text" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
+                  <img src={filterSearchIcon} alt="filterSearchIcon" onClick={searchUserProjectFilter} />
+                  {authorName && authorName.length >= 2 && authorsArray.length > 0 && (
                     <div className="author-list">
                       {authorsArray?.length > 0 ? authorsArray?.map((author) => (
-                        <>
-                          <div className="username-filter-project">{author.first_name}</div>
-                          <div className="email-filter-project">{author.email}</div>
-                        </>
+                        <div
+                          className="single-author"
+                          onClick={() => {
+                            setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                            setAuthorName(`${author.first_name} ${author.last_name}`);
+                            setAuthorsArray([]);
+                          }}
+                        >
+                          <div className="initial">
+                            {author.first_name[0] + author.last_name[0]}
+                          </div>
+                          <div>
+                            <div className="username-filter-project">{author.first_name}</div>
+                            <div className="email-filter-project">{author.email}</div>
+                          </div>
+                        </div>
                       )) : 'No user found.'}
                     </div>
                   )}
                 </div>
+                {authorName && authorName.length < 2 && <div className="error">Enter at least 2 characters.</div>}
                 <div className="createdFrom-project">
                   <label>Created</label>
                   <div className="row-project-filter">
