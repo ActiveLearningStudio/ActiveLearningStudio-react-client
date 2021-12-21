@@ -1,8 +1,8 @@
 /* eslint-disable */
-import config from 'config';
-import { errorCatcher } from './errors';
+import config from "config";
+import { errorCatcher } from "./errors";
 
-import httpService from './http.service';
+import httpService from "./http.service";
 
 const { apiVersion } = config;
 
@@ -29,7 +29,9 @@ const addVideo = (orgId, values) =>
 
 const brightCMS = (orgId) =>
   httpService
-    .get(`/${apiVersion}/brightcove/suborganization/${orgId}/get-bc-account-list`)
+    .get(
+      `/${apiVersion}/brightcove/suborganization/${orgId}/get-bc-account-list`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
@@ -43,9 +45,20 @@ const brightCMSVideo = (values) =>
       return Promise.reject(err.response.data);
     });
 
+const getSearchVideoCard = (orgId, searchQuery) =>
+  httpService
+    .get(
+      `/${apiVersion}/suborganizations/${orgId}/stand-alone-activity?query=${searchQuery}`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      //errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
 export default {
   getAll,
   addVideo,
   brightCMS,
   brightCMSVideo,
+  getSearchVideoCard,
 };
