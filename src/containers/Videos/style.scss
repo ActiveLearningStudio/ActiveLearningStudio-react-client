@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .myvideomain {
   .inner-content {
@@ -373,7 +373,7 @@
       // }
       form {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
       }
       // max-width: 472px;
       // margin-right: 128px;
@@ -413,7 +413,7 @@
           }
         }
         input {
-          width: 380px;
+          width: 472px;
           height: 40px;
           outline: none;
           background: #ffffff;
@@ -422,7 +422,7 @@
           text-indent: 10px;
         }
         textarea {
-          width: 380px;
+          width: 472px;
           // height: 40px;
           outline: none;
           background: #ffffff;
@@ -443,7 +443,7 @@
             margin: 0;
           }
           select {
-            width: 100%;
+            width: 220px;
             height: 36px;
             background: #ffffff;
             border: 1px solid #515151;

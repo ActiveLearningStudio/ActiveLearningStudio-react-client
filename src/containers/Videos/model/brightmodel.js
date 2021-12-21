@@ -1,17 +1,17 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
-import './style.scss';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
-import { Accordion, Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
-import PreivewImage from 'assets/images/cardlistimg.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
-import HeadingThree from 'utils/HeadingThree/headingthree';
-import Buttons from 'utils/Buttons/buttons';
-import { useDispatch, useSelector } from 'react-redux';
-import { getBrightCMS, getBrightVideos } from 'store/actions/videos';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Modal } from "react-bootstrap";
+import "./style.scss";
+import HeadingTwo from "utils/HeadingTwo/headingtwo";
+import { Accordion, Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
+import PreivewImage from "assets/images/cardlistimg.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faCog } from "@fortawesome/free-solid-svg-icons";
+import HeadingThree from "utils/HeadingThree/headingthree";
+import Buttons from "utils/Buttons/buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { getBrightCMS, getBrightVideos } from "store/actions/videos";
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
   const [cms, setcms] = useState([]);
@@ -20,28 +20,49 @@ const BrightcoveModel = (props) => {
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
-      const videosResult = await dispatch(getBrightVideos(result.data?.[0]?.id));
-      console.log(videosResult);
+      const videosResult = await dispatch(
+        getBrightVideos(result.data?.[0]?.id)
+      );
+      console.log("videosResult:", videosResult);
       setcms(result.data);
       setcmsVideo(videosResult.data);
     })();
   }, []);
   return (
-    <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
-      <Modal.Header style={{ display: 'block !important' }}>
+    <Modal
+      {...props}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className="preview-layout-model"
+    >
+      <Modal.Header
+        style={{ display: "block !important" }}
+        className="modal-header-custom"
+      >
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <HeadingTwo text="Add videos from Brightcove" color="#515151" className="model-top-heading" />
+        <HeadingTwo
+          text="Add videos from Brightcove"
+          color="#515151"
+          className="model-top-heading"
+        />
       </Modal.Header>
 
-      <Modal.Body style={{ display: 'block !important' }}>
+      <Modal.Body style={{ display: "block !important" }}>
         <div>
           <Tab.Container id="left-tabs-example" defaultActiveKey="manual-1">
             <Row className="video-model-tab-row">
               <Col className="video-model-tab" sm={3}>
-                <HeadingThree text="Brightcove CMS" className="nav-menu-heading" />
+                <HeadingThree
+                  text="Brightcove CMS"
+                  className="nav-menu-heading"
+                />
                 <Nav variant="pills" className="flex-column">
                   {cms.map((data, counter) => (
-                    <div className="role-permission-tab-name" id="role-permission-tab-id">
+                    <div
+                      className="role-permission-tab-name"
+                      id="role-permission-tab-id"
+                    >
                       <Nav.Item>
                         <Nav.Link eventKey={`manual-${counter + 1}`}>
                           {data.account_name}
@@ -58,48 +79,106 @@ const BrightcoveModel = (props) => {
                     <div className="for-NetSuite-section">
                       <div className="NetSuite-section-top-header">
                         <div>
-                          <HeadingTwo text={data1.account_name} color="#515151" className="NetSuite-heading" />
+                          <HeadingTwo
+                            text={data1.account_name}
+                            color="#515151"
+                            className="NetSuite-heading"
+                          />
                         </div>
                         <div className="NetSuite-section-searching">
-                          <div className="section-searching-title" style={{ textAlign: 'right' }}>
-                            <FontAwesomeIcon icon={faCog} className="icon-setting" />
+                          {/* <div
+                            className="section-searching-title"
+                            style={{ textAlign: "right" }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCog}
+                              className="icon-setting"
+                            />
                             <span>Settings</span>
-                          </div>
+                          </div> */}
                           <div className="section-input-search">
-                            <input type="text" placeholder="Search by video ID..." />
+                            <input
+                              type="text"
+                              placeholder="Search by video ID..."
+                            />
                             <button>
-                              <FontAwesomeIcon icon={faSearch} color="#084892" />
+                              <FontAwesomeIcon
+                                icon={faSearch}
+                                color="#084892"
+                              />
                             </button>
                           </div>
                         </div>
                       </div>
 
                       <div className="NetSuite-section-table responsive-table">
-                        <table>
+                        {/* <table>
                           <thead>
                             <tr>
+                              <th></th>
                               <th>Name</th>
                               <th>Created</th>
                               <th>Video</th>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <Tab.Pane eventKey={`manual-${counter + 1}`}>
-                              <Card.Body>
+                          </thead> */}
+                        {/* <tbody> */}
+
+                        <Tab.Pane eventKey={`manual-${counter + 1}`}>
+                          <Card.Body>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Name</th>
+                                  <th>Created</th>
+                                  <th>Video</th>
+                                </tr>
+                              </thead>
+                              <tbody>
                                 {cmsVideo.map((data) => (
                                   <tr>
                                     <td>
-                                      <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" /> <img src={PreivewImage} className="image-size" />
+                                      <input
+                                        name="video"
+                                        onChange={() =>
+                                          props.setSelectedVideoId(data.id)
+                                        }
+                                        type="radio"
+                                      />
+                                    </td>
+                                    <td>
+                                      <img
+                                        src={PreivewImage}
+                                        className="image-size"
+                                      />
                                       <span>{data.name}</span>
                                     </td>
-                                    <td>{data.created_at?.split('T')[0]}</td>
+                                    <td>{data.created_at?.split("T")[0]}</td>
                                     <td>{data.id}</td>
+                                    {/* <td>
+                                      <input
+                                        name="video"
+                                        onChange={() =>
+                                          props.setSelectedVideoId(data.id)
+                                        }
+                                        type="radio"
+                                      />{" "}
+                                      <img
+                                        src={PreivewImage}
+                                        className="image-size"
+                                      />
+                                      <span>{data.name}</span>
+                                    </td>
+                                    <td>{data.created_at?.split("T")[0]}</td>
+                                    <td>{data.id}</td> */}
                                   </tr>
                                 ))}
-                              </Card.Body>
-                            </Tab.Pane>
-                          </tbody>
-                        </table>
+                              </tbody>
+                            </table>
+                          </Card.Body>
+                        </Tab.Pane>
+                        {/* </tbody> */}
+                        {/* </table> */}
                       </div>
                     </div>
                   ))}
@@ -117,7 +196,7 @@ const BrightcoveModel = (props) => {
           <div className="bright-model-btn">
             <Buttons
               onClick={() => {
-                props.setSelectedVideoId('');
+                props.setSelectedVideoId("");
                 props.onHide();
               }}
               secondary={true}

@@ -46,7 +46,7 @@ const UploadImage = ({
               ? project.thumbUrl.includes("pexels.com")
                 ? `url(${project.thumbUrl})`
                 : `url(${global.config.resourceUrl}${project.thumbUrl})`
-              : `url(${defuaultImage})`,
+              : `url(${DefaultImage})`,
           }}
         >
           {/* <img src={DefaultImage} alt="" /> */}

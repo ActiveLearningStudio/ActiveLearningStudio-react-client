@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +20,9 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
       <div className={currikiUtility}>
         <div
           className="addvideo-card-top"
-          style={{ backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})` }}
+          style={{
+            backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
+          }}
         >
           <div className="addvideo-card-dropdown">
             <DropDownEdit data={data} iconColor="white" />

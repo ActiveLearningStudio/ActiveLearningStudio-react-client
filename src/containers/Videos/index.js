@@ -26,6 +26,7 @@ const Index = () => {
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState('');
   const [modalShow, setModalShow] = useState(false);
+
   const videos = useSelector((state) => state.videos);
   const { activeOrganization } = useSelector((state) => state.organization);
   const { allVideos } = videos;
@@ -107,7 +108,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                   ) : (
                     <>
                       <div className="video-cards-contianer">
-                        <div className="video-cards-top-search-filter">
+                        {/* <div className="video-cards-top-search-filter">
                           <div className="search-bar">
                             <input className="" type="text" placeholder="Search" />
                             <img src={searchimg} alt="search" />
@@ -116,7 +117,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="video-cards-detail">
                           {allVideos?.map((video) => {

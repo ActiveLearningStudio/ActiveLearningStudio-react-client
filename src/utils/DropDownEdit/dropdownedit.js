@@ -22,7 +22,12 @@ const DropDownEdit = ({ iconColor, data }) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item>
+          <Dropdown.Item
+          // onClick={() => {
+          //   Swal.showLoading();
+          //   cloneActivity(videoId, resource.id);
+          // }}
+          >
             <FontAwesomeIcon icon={faCopy} className="mr-2" />
             Duplicate
           </Dropdown.Item>
