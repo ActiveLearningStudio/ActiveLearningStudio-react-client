@@ -42,3 +42,14 @@ export const getBrightVideos = (brightId) => async (dispatch) => {
   const result = await videoServices.brightCMSVideo({ organization_id: activeOrganization.id, id: brightId });
   return result;
 };
+export const deleteVideo = (videoID) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await videoServices.deleteVideo(activeOrganization.id, videoID);
+  dispatch({
+    type: actionTypes.REMOVE_VIDEOS,
+    payload: videoID,
+  });
+};

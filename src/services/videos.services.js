@@ -15,6 +15,15 @@ const getAll = (orgId) =>
       return Promise.reject(err.response.data);
     });
 
+const deleteVideo = (orgId, activityID) =>
+  httpService
+    .remove(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity/${activityID}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      //errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 const addVideo = (orgId, values) =>
   httpService
     .post(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity`, {
@@ -48,4 +57,5 @@ export default {
   addVideo,
   brightCMS,
   brightCMSVideo,
+  deleteVideo,
 };

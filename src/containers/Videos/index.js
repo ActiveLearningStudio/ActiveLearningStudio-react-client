@@ -19,15 +19,17 @@ import DescribeVideo from './formik/describevideo';
 import { useEffect } from 'react';
 import { getAllVideos } from 'store/actions/videos';
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
+import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 
 const Index = () => {
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState('');
-
+  const [modalShow, setModalShow] = useState(false);
   const videos = useSelector((state) => state.videos);
   const { activeOrganization } = useSelector((state) => state.organization);
   const { allVideos } = videos;
+  const [currentActivity, setCurrentActivity] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -120,7 +122,15 @@ Interactive video has over xx interactions that can be added to video, It allows
                           {allVideos?.map((video) => {
                             return (
                               <>
-                                <AddVideoCard setScreenStatus={setScreenStatus} setOpenVideo={setOpenVideo} title={video.title} data={video} className="card-spacing" />
+                                <AddVideoCard
+                                  setModalShow={setModalShow}
+                                  setCurrentActivity={setCurrentActivity}
+                                  setScreenStatus={setScreenStatus}
+                                  setOpenVideo={setOpenVideo}
+                                  title={video.title}
+                                  data={video}
+                                  className="card-spacing"
+                                />
                               </>
                             );
                           })}
@@ -134,6 +144,8 @@ Interactive video has over xx interactions that can be added to video, It allows
           </div>
         </div>
       </div>
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} activeType={'demo'} />
+
       <Footer />
     </>
   );

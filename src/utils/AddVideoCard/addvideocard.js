@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +12,7 @@ import resourceService from 'services/resource.service';
 
 import './addvideocard.scss';
 
-const AddVideoCard = ({ setScreenStatus, setOpenVideo, className, data, selectionStatus = false, setAddActivityPopUp }) => {
+const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOpenVideo, className, data, selectionStatus = false, setAddActivityPopUp }) => {
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames('curriki-utility-addvideo-card', className);
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const AddVideoCard = ({ setScreenStatus, setOpenVideo, className, data, selectio
           style={{ backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})` }}
         >
           <div className="addvideo-card-dropdown">
-            <DropDownEdit iconColor="white" />
+            <DropDownEdit data={data} iconColor="white" />
           </div>
           <div className="addvideo-card-title">
             <h2>{data.title}</h2>
@@ -35,7 +36,16 @@ const AddVideoCard = ({ setScreenStatus, setOpenVideo, className, data, selectio
 
         <div className="addvideo-card-add-share">
           <div className="btn-box">
-            <FontAwesomeIcon icon={faEye} style={{ marginRight: '12px' }} color="#084892" />
+            <FontAwesomeIcon
+              onClick={() => {
+                setCurrentActivity(data.id);
+                setModalShow(true);
+              }}
+              icon={faEye}
+              style={{ marginRight: '12px' }}
+              color="#084892"
+            />
+
             <FontAwesomeIcon
               icon={faEdit}
               style={{ marginRight: '12px' }}
