@@ -248,7 +248,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
         autoClose: 4000,
       });
       dispatch({
-        type: actionTypes.ALL_VIDEOS,
+        type: actionTypes.ADD_NEW_VIDEO,
         payload: insertedResource.activity,
       });
       hide();

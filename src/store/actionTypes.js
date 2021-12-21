@@ -441,5 +441,6 @@ export const ALL_VIDEOS = 'ALL_VIDEOS';
 export const ADD_VIDEO_URL = 'ADD_VIDEO_URL';
 export const SET_ACTIVE_VIDEO_SCREEN = 'SET_ACTIVE_VIDEO_SCREEN';
 export const REMOVE_VIDEOS = 'REMOVE_VIDEOS';
+export const ADD_NEW_VIDEO = 'ADD_NEW_VIDEO';
 // export const BRIGHT_CMS = 'BRIGHT_CMS';
 // export const BRIGHT_CMS_VIDEO = 'BRIGHT_CMS_VIDEO';

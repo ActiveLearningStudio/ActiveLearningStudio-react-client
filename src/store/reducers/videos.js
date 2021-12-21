@@ -10,22 +10,21 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.ALL_VIDEOS:
-      if (!state.allVideos.length) {
-        return {
-          ...state,
-          allVideos: action.payload,
-        };
-      } else {
-        return {
-          ...state,
-          allVideos: [...state.allVideos, action.payload],
-        };
-      }
+      return {
+        ...state,
+        allVideos: action.payload,
+      };
 
     case actionTypes.ADD_VIDEO_URL:
       return {
         ...state,
         videoId: action.payload,
+      };
+
+    case actionTypes.ADD_NEW_VIDEO:
+      return {
+        ...state,
+        allVideos: [...state.allVideos, action.payload],
       };
     case actionTypes.SET_ACTIVE_VIDEO_SCREEN:
       return {

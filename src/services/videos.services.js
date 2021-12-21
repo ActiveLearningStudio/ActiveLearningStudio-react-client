@@ -52,10 +52,28 @@ const brightCMSVideo = (values) =>
       return Promise.reject(err.response.data);
     });
 
+const videoh5pDetail = (orgId, activityId) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity/${activityId}/detail`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+
+const renderh5pvideo = (orgId, activityId) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity/${activityId}/h5p`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
   brightCMS,
   brightCMSVideo,
   deleteVideo,
+  videoh5pDetail,
+  renderh5pvideo,
 };

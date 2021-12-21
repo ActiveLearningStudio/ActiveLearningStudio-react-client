@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
-import resourceService from 'services/resource.service';
+import videoServices from 'services/videos.services';
 
 import './addvideocard.scss';
 
@@ -15,6 +15,7 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames('curriki-utility-addvideo-card', className);
   const dispatch = useDispatch();
+  const { activeOrganization } = useSelector((state) => state.organization);
   return (
     <>
       <div className={currikiUtility}>
@@ -61,12 +62,12 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                   autoClose: 10000,
                   icon: '',
                 });
-                // const result = await resourceService.activityH5p(data.id);
+                const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
                 toast.dismiss();
 
                 dispatch({
                   type: 'SET_ACTIVE_VIDEO_SCREEN',
-                  payload: data,
+                  payload: result.activity,
                 });
                 setOpenVideo(true);
                 setScreenStatus('DescribeVideo');

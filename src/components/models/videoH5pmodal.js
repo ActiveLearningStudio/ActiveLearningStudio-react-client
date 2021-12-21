@@ -11,7 +11,7 @@ function MyVerticallyCenteredModal(props) {
   const { activity } = props;
 
   return (
-    <Modal {...props} size="lg" className="video_activity" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal {...props} size="xl" className="video_activity" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           <img src={logo} alt="" />
@@ -19,13 +19,9 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Header>
 
       <Modal.Body>
-        <Tabs defaultActiveKey={'demo'} id="uncontrolled-tab-example">
-          <Tab eventKey="demo" title="Demo">
-            <Suspense fallback={<div>Loading</div>}>
-              <H5PPreview activityId={activity} tokenrequire={false} showltipreview />
-            </Suspense>
-          </Tab>
-        </Tabs>
+        <Suspense fallback={<div>Loading</div>}>
+          <H5PPreview activityId={activity} tokenrequire={false} showvideoH5p />
+        </Suspense>
       </Modal.Body>
     </Modal>
   );

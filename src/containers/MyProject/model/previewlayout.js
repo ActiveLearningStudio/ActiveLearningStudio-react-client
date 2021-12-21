@@ -32,8 +32,8 @@ const PreviewLayoutModel = (props) => {
           {type === 'videoModal' ? (
             <H5PEditor
               h5pParams={
-                props.editVideo.h5p_content
-                  ? props.editVideo.h5p_content.parameters
+                props.editVideo.h5p
+                  ? props.editVideo.h5p
                   : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
               }
               h5pLib="H5P.InteractiveVideo 1.22"
