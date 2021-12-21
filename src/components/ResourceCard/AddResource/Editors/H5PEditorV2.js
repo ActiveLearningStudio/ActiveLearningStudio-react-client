@@ -11,7 +11,7 @@ import { createResourceAction, editResourceAction } from 'store/actions/resource
 import Buttons from 'utils/Buttons/buttons';
 
 const H5PEditor = (props) => {
-  const { playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId } = props;
+  const { playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId, type } = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -53,7 +53,7 @@ const H5PEditor = (props) => {
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type));
     }
   };
   if (h5pParams === '""') {

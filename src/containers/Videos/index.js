@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import Buttons from "utils/Buttons/buttons";
 import TopHeading from "utils/TopHeading/topheading";
 import { faFilter, faPlus } from "@fortawesome/free-solid-svg-icons";
-import projectFolder from "assets/images/svg/myProject.svg";
+import { useDispatch, useSelector } from "react-redux";
+import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
+import VidoeCardImage from "assets/images/myproject1.png";
 import "./style.scss";
 import HeadingText from "utils/HeadingText/headingtext";
 import VideoImage from "assets/images/svg/Interactivevideos.svg";
@@ -14,14 +16,26 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import AddVideo from "./formik/addvideo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DescribeVideo from "./formik/describevideo";
-import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
+import { useEffect } from "react";
+import { getAllVideos } from "store/actions/videos";
 import AddVideoCard from "utils/AddVideoCard/addvideocard";
-import VidoeCardImage from "assets/images/myproject1.png";
+
 const Index = () => {
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState("");
   const [myVideoCards, setMyVideoCards] = useState(false);
+  const videos = useSelector((state) => state.videos);
+  const { activeOrganization } = useSelector((state) => state.organization);
+  const { allVideos } = videos;
+  console.log("Videoes:", allVideos);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (activeOrganization) {
+      dispatch(getAllVideos(activeOrganization.id));
+    }
+  }, [activeOrganization]);
   return (
     <>
       {openMyVideo && (
@@ -46,6 +60,7 @@ const Index = () => {
             )}
             {screenStatus == "DescribeVideo" && (
               <DescribeVideo
+                setOpenVideo={setOpenVideo}
                 setScreenStatus={setScreenStatus}
                 setUploadImageStatus={setUploadImageStatus}
               />
@@ -135,6 +150,23 @@ Interactive video has over xx interactions that can be added to video, It allows
                         </div>
 
                         <div className="video-cards-detail">
+                          {allVideos?.data.map((video) => {
+                            return (
+                              <>
+                                <AddVideoCard
+                                  title={video.title}
+                                  backgroundImg={VidoeCardImage}
+                                  className="card-spacing"
+                                />
+                              </>
+                            );
+                          })}
+                          <AddVideoCard
+                            title="Asasasa"
+                            backgroundImg={VidoeCardImage}
+                            className="card-spacing"
+                          />
+                          {/* 
                           <AddVideoCard
                             title="Asasasa"
                             backgroundImg={VidoeCardImage}
@@ -174,12 +206,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                             title="Asasasa"
                             backgroundImg={VidoeCardImage}
                             className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
+                          /> */}
                         </div>
                       </div>
                     </>

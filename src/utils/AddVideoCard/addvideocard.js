@@ -7,6 +7,7 @@ import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdow
 import ProjectListDropDown from "utils/ProjectListDropDown/projectlistdropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
+import DropDownEdit from "utils/DropDownEdit/dropdownedit";
 
 const AddVideoCard = ({
   className,
@@ -25,7 +26,7 @@ const AddVideoCard = ({
           style={{ backgroundImage: `url(${backgroundImg})` }}
         >
           <div className="addvideo-card-dropdown">
-            <ActivityCardDropDown iconColor="white" />
+            <DropDownEdit iconColor="white" />
           </div>
           <div className="addvideo-card-title">
             <h2>{title}</h2>
