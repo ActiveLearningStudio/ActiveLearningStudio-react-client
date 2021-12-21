@@ -32,6 +32,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         editVideo: action.payload,
       };
+    case actionTypes.REMOVE_VIDEOS:
+      const refreshVideo = state.allVideos.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        allVideos: refreshVideo,
+      };
     default:
       return state;
   }

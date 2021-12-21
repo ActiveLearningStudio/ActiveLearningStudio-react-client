@@ -54,3 +54,18 @@ export const getSearchVideoCard = (orgId, searchQuery) => async (dispatch) => {
     payload: result.data,
   });
 };
+
+export const deleteVideo = (videoID) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await videoServices.deleteVideo(
+    activeOrganization.id,
+    videoID
+  );
+  dispatch({
+    type: actionTypes.REMOVE_VIDEOS,
+    payload: videoID,
+  });
+};
