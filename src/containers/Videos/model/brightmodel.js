@@ -1,282 +1,108 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import "./style.scss";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import { Accordion, Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
-import PreivewImage from "assets/images/cardlistimg.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCog } from "@fortawesome/free-solid-svg-icons";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import Buttons from "utils/Buttons/buttons";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import './style.scss';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import { Accordion, Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
+import PreivewImage from 'assets/images/cardlistimg.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
+import HeadingThree from 'utils/HeadingThree/headingthree';
+import Buttons from 'utils/Buttons/buttons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBrightCMS, getBrightVideos } from 'store/actions/videos';
 const BrightcoveModel = (props) => {
+  const dispatch = useDispatch();
+  const [cms, setcms] = useState([]);
+  const [cmsVideo, setcmsVideo] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await dispatch(getBrightCMS());
+      const videosResult = await dispatch(getBrightVideos(result.data?.[0]?.id));
+      console.log(videosResult);
+      setcms(result.data);
+      setcmsVideo(videosResult.data);
+    })();
+  }, []);
   return (
-    <Modal
-      {...props}
-      size="xl"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      className="preview-layout-model"
-    >
-      <Modal.Header closeButton style={{ display: "block !important" }}>
+    <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
+      <Modal.Header style={{ display: 'block !important' }}>
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <HeadingTwo
-          text="Add videos from Brightcove"
-          color="#515151"
-          className="model-top-heading"
-        />
+        <HeadingTwo text="Add videos from Brightcove" color="#515151" className="model-top-heading" />
       </Modal.Header>
 
-      <Modal.Body style={{ display: "block !important" }}>
+      <Modal.Body style={{ display: 'block !important' }}>
         <div>
           <Tab.Container id="left-tabs-example" defaultActiveKey="manual-1">
             <Row className="video-model-tab-row">
               <Col className="video-model-tab" sm={3}>
-                <HeadingThree
-                  text="Brightcove CMS"
-                  className="nav-menu-heading"
-                />
+                <HeadingThree text="Brightcove CMS" className="nav-menu-heading" />
                 <Nav variant="pills" className="flex-column">
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-1">
-                        Internal
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-2">
-                        Production
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-3">
-                        Streams
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-4">
-                        Marketing
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-5">
-                        Sandbox
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-6">
-                        ClinicalOne
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-7">
-                        NetSuite
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
-                  <div
-                    className="role-permission-tab-name"
-                    id="role-permission-tab-id"
-                  >
-                    <Nav.Item>
-                      <Nav.Link eventKey="manual-8">
-                        OSPA
-                        <img className="image-tag" />
-                      </Nav.Link>
-                    </Nav.Item>
-                  </div>
+                  {cms.map((data, counter) => (
+                    <div className="role-permission-tab-name" id="role-permission-tab-id">
+                      <Nav.Item>
+                        <Nav.Link eventKey={`manual-${counter + 1}`}>
+                          {data.account_name}
+                          <img className="image-tag" />
+                        </Nav.Link>
+                      </Nav.Item>
+                    </div>
+                  ))}
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
                 <Tab.Content>
-                  {/* For Authoring */}
-                  <Tab.Pane eventKey="manual-1">
-                    <Card.Body>
-                      <div className="for-NetSuite-section">
-                        <div className="NetSuite-section-top-header">
-                          <div>
-                            <HeadingTwo
-                              text="NetSuite"
-                              color="#515151"
-                              className="NetSuite-heading"
-                            />
-                          </div>
-                          <div className="NetSuite-section-searching">
-                            <div
-                              className="section-searching-title"
-                              style={{ textAlign: "right" }}
-                            >
-                              <FontAwesomeIcon
-                                icon={faCog}
-                                className="icon-setting"
-                              />
-                              <span>Settings</span>
-                            </div>
-                            <div className="section-input-search">
-                              <input
-                                type="text"
-                                placeholder="Search by video ID..."
-                              />
-                              <button>
-                                <FontAwesomeIcon
-                                  icon={faSearch}
-                                  color="#084892"
-                                />
-                              </button>
-                            </div>
-                          </div>
+                  {cms.map((data1, counter) => (
+                    <div className="for-NetSuite-section">
+                      <div className="NetSuite-section-top-header">
+                        <div>
+                          <HeadingTwo text={data1.account_name} color="#515151" className="NetSuite-heading" />
                         </div>
-
-                        <div className="NetSuite-section-table responsive-table">
-                          <table>
-                            <thead>
-                              <tr>
-                                <th>{/* <input type="radio" />{" "} */}</th>
-                                <th style={{ width: "280px" }}>Name</th>
-                                <th>Created</th>
-                                <th>Video</th>
-                                <th>Updated</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <input type="radio" />{" "}
-                                </td>
-                                <td>
-                                  <img
-                                    src={PreivewImage}
-                                    className="image-size"
-                                  />
-                                  <span>Saved Searches and Logic (SA)</span>
-                                </td>
-                                <td>07/19/2021</td>
-                                <td>18279319726312389172</td>
-                                <td>00:40:39</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                        <div className="NetSuite-section-searching">
+                          <div className="section-searching-title" style={{ textAlign: 'right' }}>
+                            <FontAwesomeIcon icon={faCog} className="icon-setting" />
+                            <span>Settings</span>
+                          </div>
+                          <div className="section-input-search">
+                            <input type="text" placeholder="Search by video ID..." />
+                            <button>
+                              <FontAwesomeIcon icon={faSearch} color="#084892" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </Card.Body>
-                  </Tab.Pane>
+
+                      <div className="NetSuite-section-table responsive-table">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Created</th>
+                              <th>Video</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <Tab.Pane eventKey={`manual-${counter + 1}`}>
+                              <Card.Body>
+                                {cmsVideo.map((data) => (
+                                  <tr>
+                                    <td>
+                                      <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" /> <img src={PreivewImage} className="image-size" />
+                                      <span>{data.name}</span>
+                                    </td>
+                                    <td>{data.created_at?.split('T')[0]}</td>
+                                    <td>{data.id}</td>
+                                  </tr>
+                                ))}
+                              </Card.Body>
+                            </Tab.Pane>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ))}
                 </Tab.Content>
               </Col>
             </Row>
@@ -290,6 +116,10 @@ const BrightcoveModel = (props) => {
           </div>
           <div className="bright-model-btn">
             <Buttons
+              onClick={() => {
+                props.setSelectedVideoId('');
+                props.onHide();
+              }}
               secondary={true}
               text="Cancel"
               width="95px"
@@ -304,6 +134,9 @@ const BrightcoveModel = (props) => {
               height="32px"
               hover={true}
               // className="ml-32"
+              onClick={() => {
+                props.onHide();
+              }}
             />
           </div>
         </div>
