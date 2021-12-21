@@ -28,18 +28,17 @@ const AddVideo = ({ setScreenStatus }) => {
           <TabsHeading text="1. Add a video" tabActive={true} />
           <TabsHeading text="2. Describe video" className="ml-10" />
           <TabsHeading text="3. Add interactions" className="ml-10" />
-          <TabsHeading text="4. Optional settings" className="ml-10" />
         </div>
         <div className="add-video-title-select">
           <div className="add-video-title">
             <HeadingTwo text="Add a video" color="#084892" />
           </div>
-          <div className="add-video-tour">
+          {/* <div className="add-video-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
               Tour
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="add-video-form-tabs">
           <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">

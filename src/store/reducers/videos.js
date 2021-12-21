@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allVideos: action.payload,
       };
-    case actionTypes:
+    case actionTypes.ADD_VIDEO_URL:
       return {
         ...state,
         videoId: action.payload,

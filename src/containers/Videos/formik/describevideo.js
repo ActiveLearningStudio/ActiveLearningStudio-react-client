@@ -2,11 +2,10 @@
 import React, { useRef, useState } from 'react';
 import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import TabsHeading from 'utils/Tabs/tabs';
-import { Tabs, Tab } from 'react-bootstrap';
+
 import { Formik } from 'formik';
 import Buttons from 'utils/Buttons/buttons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+
 import { useSelector } from 'react-redux';
 import UploadImage from 'utils/UploadImage/uploadimage';
 import HeadingText from 'utils/HeadingText/headingtext';
@@ -35,18 +34,17 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus }) => {
           <TabsHeading text="1. Add a video" tabActive={true} />
           <TabsHeading text="2. Describe video" className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
-          <TabsHeading text="4. Optional settings" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
             <HeadingTwo text="Describe video" color="#084892" />
           </div>
-          <div className="add-describevideo-tour">
+          {/* <div className="add-describevideo-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
               Tour
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="add-describevideo-section-layout-formik">
           <div className="add-describevideo-layout-formik">
