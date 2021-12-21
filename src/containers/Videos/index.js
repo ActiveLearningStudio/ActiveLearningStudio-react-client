@@ -134,7 +134,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                   ) : (
                     <>
                       <div className="video-cards-contianer">
-                        <div className="video-cards-top-search-filter">
+                        {/* <div className="video-cards-top-search-filter">
                           <div className="search-bar">
                             <input
                               className=""
@@ -147,7 +147,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div>
-                        </div>
+                        </div> */}
 
                         <div className="video-cards-detail">
                           {allVideos?.data.map((video) => {
@@ -157,52 +157,12 @@ Interactive video has over xx interactions that can be added to video, It allows
                                   title={video.title}
                                   backgroundImg={VidoeCardImage}
                                   className="card-spacing"
+                                  // videoId={video.id}
                                 />
                               </>
                             );
                           })}
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          {/* 
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
-                            title="Asasasa"
-                            backgroundImg={VidoeCardImage}
-                            className="card-spacing"
-                          />
-                          <AddVideoCard
+                          {/* <AddVideoCard
                             title="Asasasa"
                             backgroundImg={VidoeCardImage}
                             className="card-spacing"

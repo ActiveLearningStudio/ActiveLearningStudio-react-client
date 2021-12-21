@@ -12,8 +12,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import "./dropdownedit.scss";
+import { cloneActivity } from "store/actions/search";
+import Swal from "sweetalert2";
 
-const DropDownEdit = ({ iconColor }) => {
+const DropDownEdit = ({ iconColor, videoId }) => {
   const IconColor = iconColor ? iconColor : "#084892";
   const dispatch = useDispatch();
   return (
@@ -28,7 +30,12 @@ const DropDownEdit = ({ iconColor }) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item>
+          <Dropdown.Item
+          // onClick={() => {
+          //   Swal.showLoading();
+          //   cloneActivity(videoId, resource.id);
+          // }}
+          >
             <FontAwesomeIcon icon={faCopy} className="mr-2" />
             Duplicate
           </Dropdown.Item>

@@ -15,6 +15,7 @@ const AddVideoCard = ({
   title,
   selectionStatus = false,
   setAddActivityPopUp,
+  videoId,
 }) => {
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames("curriki-utility-addvideo-card", className);
@@ -26,7 +27,10 @@ const AddVideoCard = ({
           style={{ backgroundImage: `url(${backgroundImg})` }}
         >
           <div className="addvideo-card-dropdown">
-            <DropDownEdit iconColor="white" />
+            <DropDownEdit
+              // videoId={videoId}
+              iconColor="white"
+            />
           </div>
           <div className="addvideo-card-title">
             <h2>{title}</h2>
