@@ -68,11 +68,21 @@ const renderh5pvideo = (orgId, activityId) =>
       return Promise.reject(err.response.data);
     });
 
+const getSearchVideoCard = (orgId, searchQuery) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity?query=${searchQuery}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      //errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
   brightCMS,
   brightCMSVideo,
+  getSearchVideoCard,
   deleteVideo,
   videoh5pDetail,
   renderh5pvideo,

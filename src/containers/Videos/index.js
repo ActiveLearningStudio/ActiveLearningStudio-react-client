@@ -17,7 +17,7 @@ import AddVideo from './formik/addvideo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DescribeVideo from './formik/describevideo';
 import { useEffect } from 'react';
-import { getAllVideos } from 'store/actions/videos';
+import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 
@@ -30,6 +30,7 @@ const Index = () => {
   const videos = useSelector((state) => state.videos);
   const { activeOrganization } = useSelector((state) => state.organization);
   const { allVideos } = videos;
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentActivity, setCurrentActivity] = useState(null);
   const dispatch = useDispatch();
 
@@ -88,6 +89,40 @@ const Index = () => {
             <div>
               <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
                 <Tab eventKey="default" title="My videos">
+                  <div className="video-cards-top-search-filter">
+                    <div className="search-bar">
+                      <input
+                        className=""
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          if (activeOrganization) {
+                            if (e.target.value.trim()) {
+                              dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                            } else {
+                              dispatch(getAllVideos(activeOrganization.id));
+                            }
+                          }
+                        }}
+                        placeholder="Search"
+                      />
+                      <img
+                        src={searchimg}
+                        alt="search"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          if (activeOrganization) {
+                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                          }
+                        }}
+                      />
+                    </div>
+                    {/* <div className="video-filter-bar">
+                            <FontAwesomeIcon icon={faFilter} color="#084892" />
+                            <span>Filter</span>
+                          </div> */}
+                  </div>
                   {!allVideos.length ? (
                     <>
                       <div className="video-default-contianer">
@@ -108,17 +143,6 @@ Interactive video has over xx interactions that can be added to video, It allows
                   ) : (
                     <>
                       <div className="video-cards-contianer">
-                        {/* <div className="video-cards-top-search-filter">
-                          <div className="search-bar">
-                            <input className="" type="text" placeholder="Search" />
-                            <img src={searchimg} alt="search" />
-                          </div>
-                          <div className="video-filter-bar">
-                            <FontAwesomeIcon icon={faFilter} color="#084892" />
-                            <span>Filter</span>
-                          </div>
-                        </div> */}
-
                         <div className="video-cards-detail">
                           {allVideos?.map((video) => {
                             return (

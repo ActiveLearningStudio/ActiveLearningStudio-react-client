@@ -1,17 +1,17 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import "./style.scss";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import { Accordion, Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
-import PreivewImage from "assets/images/cardlistimg.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCog } from "@fortawesome/free-solid-svg-icons";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import Buttons from "utils/Buttons/buttons";
-import { useDispatch, useSelector } from "react-redux";
-import { getBrightCMS, getBrightVideos } from "store/actions/videos";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import './style.scss';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import { Accordion, Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
+import PreivewImage from 'assets/images/cardlistimg.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
+import HeadingThree from 'utils/HeadingThree/headingthree';
+import Buttons from 'utils/Buttons/buttons';
+import { useDispatch, useSelector } from 'react-redux';
+import { getBrightCMS, getBrightVideos } from 'store/actions/videos';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
   const [cms, setcms] = useState([]);
@@ -20,49 +20,28 @@ const BrightcoveModel = (props) => {
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
-      const videosResult = await dispatch(
-        getBrightVideos(result.data?.[0]?.id)
-      );
-      console.log("videosResult:", videosResult);
+      const videosResult = await dispatch(getBrightVideos(result.data?.[0]?.id));
+      console.log('videosResult:', videosResult);
       setcms(result.data);
       setcmsVideo(videosResult.data);
     })();
   }, []);
   return (
-    <Modal
-      {...props}
-      size="xl"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      className="preview-layout-model"
-    >
-      <Modal.Header
-        style={{ display: "block !important" }}
-        className="modal-header-custom"
-      >
+    <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
+      <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <HeadingTwo
-          text="Add videos from Brightcove"
-          color="#515151"
-          className="model-top-heading"
-        />
+        <HeadingTwo text="Add videos from Brightcove" color="#515151" className="model-top-heading" />
       </Modal.Header>
 
-      <Modal.Body style={{ display: "block !important" }}>
+      <Modal.Body style={{ display: 'block !important' }}>
         <div>
           <Tab.Container id="left-tabs-example" defaultActiveKey="manual-1">
             <Row className="video-model-tab-row">
               <Col className="video-model-tab" sm={3}>
-                <HeadingThree
-                  text="Brightcove CMS"
-                  className="nav-menu-heading"
-                />
+                <HeadingThree text="Brightcove CMS" className="nav-menu-heading" />
                 <Nav variant="pills" className="flex-column">
                   {cms.map((data, counter) => (
-                    <div
-                      className="role-permission-tab-name"
-                      id="role-permission-tab-id"
-                    >
+                    <div className="role-permission-tab-name" id="role-permission-tab-id">
                       <Nav.Item>
                         <Nav.Link eventKey={`manual-${counter + 1}`}>
                           {data.account_name}
@@ -79,14 +58,10 @@ const BrightcoveModel = (props) => {
                     <div className="for-NetSuite-section">
                       <div className="NetSuite-section-top-header">
                         <div>
-                          <HeadingTwo
-                            text={data1.account_name}
-                            color="#515151"
-                            className="NetSuite-heading"
-                          />
+                          <HeadingTwo text={data1.account_name} color="#515151" className="NetSuite-heading" />
                         </div>
-                        <div className="NetSuite-section-searching">
-                          {/* <div
+                        {/* <div className="NetSuite-section-searching">
+                          <div
                             className="section-searching-title"
                             style={{ textAlign: "right" }}
                           >
@@ -95,7 +70,7 @@ const BrightcoveModel = (props) => {
                               className="icon-setting"
                             />
                             <span>Settings</span>
-                          </div> */}
+                          </div>
                           <div className="section-input-search">
                             <input
                               type="text"
@@ -108,7 +83,7 @@ const BrightcoveModel = (props) => {
                               />
                             </button>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="NetSuite-section-table responsive-table">
@@ -138,22 +113,13 @@ const BrightcoveModel = (props) => {
                                 {cmsVideo.map((data) => (
                                   <tr>
                                     <td>
-                                      <input
-                                        name="video"
-                                        onChange={() =>
-                                          props.setSelectedVideoId(data.id)
-                                        }
-                                        type="radio"
-                                      />
+                                      <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
                                     </td>
                                     <td>
-                                      <img
-                                        src={PreivewImage}
-                                        className="image-size"
-                                      />
+                                      <img src={PreivewImage} className="image-size" />
                                       <span>{data.name}</span>
                                     </td>
-                                    <td>{data.created_at?.split("T")[0]}</td>
+                                    <td>{data.created_at?.split('T')[0]}</td>
                                     <td>{data.id}</td>
                                     {/* <td>
                                       <input
@@ -190,13 +156,11 @@ const BrightcoveModel = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <div className="footer-bright-model">
-          <div className="model-footer-span">
-            <span>Looking to add a new account?</span>
-          </div>
+          <div className="model-footer-span">{/* <span>Looking to add a new account?</span> */}</div>
           <div className="bright-model-btn">
             <Buttons
               onClick={() => {
-                props.setSelectedVideoId("");
+                props.setSelectedVideoId('');
                 props.onHide();
               }}
               secondary={true}
