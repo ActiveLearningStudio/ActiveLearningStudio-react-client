@@ -348,8 +348,9 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
-    } if (type === 'LMS') {
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+    }
+    if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
   }, [type, activePage, activeOrganization?.id]);
@@ -359,13 +360,13 @@ export default function Pills(props) {
       setLtiTool(dataRedux.admin.ltiTools);
     }
   }, [dataRedux.admin.ltiTools]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.defaultSso) {
       setDefaultSso(dataRedux.admin.defaultSso);
     }
   }, [dataRedux.admin.defaultSso]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.lmsIntegration) {
       setLmsProject(dataRedux.admin.lmsIntegration);
@@ -384,7 +385,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
     }
   }, [type, activePage, activeOrganization?.id]);
 
@@ -426,7 +427,7 @@ export default function Pills(props) {
   }, [activeTab]);
   // console.log(columnData)
 
-  const handleSort = (column, subType) =>{
+  const handleSort = (column, subType) => {
     if (subType == 'LTI Tools') {
       //mapping column with db column for making it dynamic
       let col = '';
@@ -441,7 +442,7 @@ export default function Pills(props) {
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
     }
-  }
+  };
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -660,6 +661,7 @@ export default function Pills(props) {
                 activePage={activePage}
                 subType="all"
                 setCurrentTab={setCurrentTab}
+                setAllProjectTab={setAllProjectTab}
               />
             )}
             {type === 'Project' && subTypeState === 'Exported Projects' && (

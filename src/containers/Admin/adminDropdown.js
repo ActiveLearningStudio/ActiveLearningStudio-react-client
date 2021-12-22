@@ -38,7 +38,15 @@ import {
   getRoles,
   updatePageNumber,
 } from 'store/actions/organization';
-import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+import {
+  deleteActivityItem,
+  deleteActivityType,
+  getActivityItems,
+  loadResourceTypesAction,
+  selectActivityItem,
+  selectActivityType,
+  loadResourceItemAction,
+} from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 import EditProjectModel from './model/editprojectmodel';
 import { clone } from 'lodash';
@@ -55,6 +63,9 @@ const AdminDropdown = (props) => {
     type1,
     subType,
     activePage,
+    setLocalStateData,
+    localStateData,
+    setAllProjectTab,
     // text,
     // iconColor,
   } = props;
@@ -81,6 +92,9 @@ const AdminDropdown = (props) => {
           setModalShow(false);
         }}
         row={row}
+        activePage={activePage}
+        setAllProjectTab={setAllProjectTab}
+        activeOrganization={activeOrganization}
       />
       <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
         <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -322,7 +336,9 @@ const AdminDropdown = (props) => {
                             icon: 'success',
                             text: res?.message,
                           });
+
                           const filterProject = localStateData.filter((each) => each.id != row.id);
+                          console.log(filterProject);
                           setLocalStateData(filterProject);
                         })
                         .catch((err) => console.log(err));
@@ -367,20 +383,27 @@ const AdminDropdown = (props) => {
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       Swal.showLoading();
-                      const resultDel = await dispatch(deleteActivityType(type1.id));
-                      if (resultDel) {
-                        Swal.fire({
-                          text: 'You have successfully deleted the activity type',
-                          icon: 'success',
-                          showCancelButton: false,
-                          confirmButtonColor: '#084892',
-                          cancelButtonColor: '#d33',
-                          confirmButtonText: 'OK',
-                        }).then((result) => {
-                          if (result.isConfirmed) {
-                            dispatch(loadResourceTypesAction('', 1));
-                          }
-                        });
+                      var resultDel;
+                      if (subType === 'Activity Items') {
+                        resultDel = await dispatch(deleteActivityItem(type1.id));
+                        dispatch(loadResourceItemAction(type1.id));
+                      } else {
+                        resultDel = await dispatch(deleteActivityType(type1.id));
+
+                        if (resultDel) {
+                          Swal.fire({
+                            text: 'You have successfully deleted the activity type',
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#084892',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'OK',
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              dispatch(loadResourceTypesAction('', 1));
+                            }
+                          });
+                        }
                       }
                     }
                   });
@@ -484,7 +507,6 @@ const AdminDropdown = (props) => {
                 <img src={Delete} alt="Preview" className="menue-img" />
                 &nbsp;&nbsp;Delete&nbsp;&nbsp;
               </Dropdown.Item>
-              
             </>
           )}
 
