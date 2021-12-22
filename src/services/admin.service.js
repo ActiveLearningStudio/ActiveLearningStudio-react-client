@@ -244,6 +244,13 @@ const getLtiTools = (subOrgId, page) => httpService
 		Promise.reject(err.response.data);
 	});
 
+const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
 const createLtiTool = (subOrgId, values) => httpService
 	.post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
 	.then(({ data }) => data)
@@ -340,6 +347,7 @@ export default {
 	searchDefaultSso,
 	getAllExportedProject,
   getLtiTools,
+  getLtiToolsOrderBy,
   createLtiTool,
   updateLtiTool,
   deleteLtiTool,

@@ -35,7 +35,12 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     throw e;
   }
 };
-
+export const loadResourceItemAction = (id) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.LOAD_RESOURCE_ITEMS_REQUEST,
+    payload: id,
+  });
+};
 export const selectActivityType = (type) => (dispatch) => {
   dispatch({
     type: actionTypes.SELECTED_ACTIVITY_TYPE,
@@ -743,7 +748,9 @@ export const getSingleLayoutActivities = () => async (dispatch) => {
 
 export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const result = await resourceService.searchPreviewActivity(activeOrganization?.id, activityId);
   dispatch({
     type: actionTypes.SEARCH_PREVIEW_ACTIVITY,

@@ -155,6 +155,15 @@ export const getLtiTools = (subOrgId, page) => async (dispatch) => {
   return result;
 };
 
+export const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => async (dispatch) => {
+  const result = await adminService.getLtiToolsOrderBy(subOrgId, column, orderBy, page);
+  dispatch({
+    type: actionTypes.GET_LTI_TOOLS,
+    payload: result,
+  });
+  return result;
+};
+
 export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
   const result = await adminService.getDefaultSso(subOrgId, page);
   dispatch({
