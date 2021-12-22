@@ -14,6 +14,7 @@ import Project1 from "assets/images/teamprojects/project1.png";
 import Project2 from "assets/images/teamprojects/project2.png";
 import Project3 from "assets/images/teamprojects/project3.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SearchInterface from 'containers/Search';
 const AddTeamProjects = ({ setPageLoad }) => {
   return (
     <div className="add-team-projects">
@@ -43,11 +44,102 @@ const AddTeamProjects = ({ setPageLoad }) => {
           defaultActiveKey="Projects"
           id="uncontrolled-tab-example"
         >
-          <Tab eventKey="Projects" title="Projects"></Tab>
-          <Tab eventKey="Search" title="Search"></Tab>
+          <Tab eventKey="Projects" title="Projects">
+            <div className="flex-button-top">
+              <div className="team-controller">
+                <div className="search-and-filters">
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search project"
+                    />
+                    <img src={searchimg} alt="search" />
+                  </div>
+                </div>
+
+                <div className="team-project-btns">
+                  <div className="project-selection">
+                    <p>5 projects have been selected. </p>
+                  </div>
+                  <Buttons
+                    icon={faPlus}
+                    text="Add projects to team"
+                    primary={true}
+                    width="188px"
+                    height="32px"
+                    hover={true}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="list-of-team-projects">
+              <TeamProjectCard
+                backgroundImg={Project1}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+              <TeamProjectCard
+                backgroundImg={Project2}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+              <TeamProjectCard
+                backgroundImg={Project3}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+              <TeamProjectCard
+                backgroundImg={Project1}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+              <TeamProjectCard
+                backgroundImg={Project2}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+              <TeamProjectCard
+                backgroundImg={Project3}
+                title="The Curriki Vision"
+                className="mrt"
+              />
+            </div>
+          </Tab>
+          <Tab eventKey="Search" title="Search">
+            <div className="flex-button-top">
+              <div className="team-controller">
+                <div className="search-and-filters">
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search project"
+                    />
+                    <img src={searchimg} alt="search" />
+                  </div>
+                </div>
+
+                <div className="team-project-btns">
+                  <div className="project-selection">
+                    <p>5 projects have been selected. </p>
+                  </div>
+                  <Buttons
+                    icon={faPlus}
+                    text="Add projects to team"
+                    primary={true}
+                    width="188px"
+                    height="32px"
+                    hover={true}
+                  />
+                </div>
+              </div>
+            </div>
+            <SearchInterface fromTeam={true} />
+          </Tab>
         </Tabs>
       </div>
-      <div className="flex-button-top">
+      {/* <div className="flex-button-top">
         <div className="team-controller">
           <div className="search-and-filters">
             <div className="search-bar">
@@ -74,39 +166,8 @@ const AddTeamProjects = ({ setPageLoad }) => {
             />
           </div>
         </div>
-      </div>
-      <div className="list-of-team-projects">
-        <TeamProjectCard
-          backgroundImg={Project1}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-        <TeamProjectCard
-          backgroundImg={Project2}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-        <TeamProjectCard
-          backgroundImg={Project3}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-        <TeamProjectCard
-          backgroundImg={Project1}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-        <TeamProjectCard
-          backgroundImg={Project2}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-        <TeamProjectCard
-          backgroundImg={Project3}
-          title="The Curriki Vision"
-          className="mrt"
-        />
-      </div>
+      </div> */}
+
     </div>
   );
 };

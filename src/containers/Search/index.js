@@ -69,7 +69,7 @@ MyVerticallyCenteredModal.defaultProps = {
 };
 
 function SearchInterface(props) {
-  const { history } = props;
+  const { history, fromTeam } = props;
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
     subject: true,
@@ -249,8 +249,10 @@ function SearchInterface(props) {
         });
         setActiveSubject(tempSubject);
       }
-      // eslint-disable-next-line max-len
-      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+      if (!fromTeam) {
+        // eslint-disable-next-line max-len
+        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+      }
     }
   }, [currentOrganization]);
   useEffect(() => {
@@ -330,7 +332,7 @@ function SearchInterface(props) {
   return (
     <>
       <div>
-        <div className="search-wrapper">
+        <div className={!fromTeam && 'search-wrapper'}>
           <MyVerticallyCenteredModal
             show={modalShow}
             onHide={() => setModalShow(false)}
@@ -341,9 +343,9 @@ function SearchInterface(props) {
           <div className="content-search">
             {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
               ? (
-                <div className="search-result-main">
-                  <div className="current-org-search">{currentOrganization?.name}</div>
-                  <div className="exp-lib-cnt">Explore library content</div>
+                <div className="search-result-main" style={{ padding: fromTeam ? '16px 0px 75px 0px' : '16px 22px 75px 24px' }}>
+                  {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
+                  {!fromTeam && <div className="exp-lib-cnt">Explore library content</div>}
                   <div className="total-count" style={{ display: totalCount > 1000 || !!searchQueries ? 'block' : 'none' }}>
                     {totalCount > 10000
                       ? (
@@ -453,8 +455,10 @@ function SearchInterface(props) {
                                             });
                                             setActiveSubject(tempSubject);
                                           }
-                                          // eslint-disable-next-line max-len
-                                          history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                          if (!fromTeam) {
+                                            // eslint-disable-next-line max-len
+                                            history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                          }
                                         }
                                       }
                                     }}
@@ -602,8 +606,10 @@ function SearchInterface(props) {
                                           });
                                           setActiveSubject(tempSubject);
                                         }
-                                        // eslint-disable-next-line max-len
-                                        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                        if (!fromTeam) {
+                                          // eslint-disable-next-line max-len
+                                          history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                        }
                                       }
                                       // setModalShow(true);
                                     }}
@@ -1696,6 +1702,11 @@ function SearchInterface(props) {
 
 SearchInterface.propTypes = {
   history: PropTypes.object.isRequired,
+  fromTeam: PropTypes.bool,
+};
+
+SearchInterface.defaultProps = {
+  fromTeam: false,
 };
 
 export default SearchInterface;
