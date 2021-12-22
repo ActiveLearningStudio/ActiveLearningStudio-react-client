@@ -17,6 +17,10 @@ const INITIAL_STATE = {
   newlyCreated: null,
   newlyEdit: null,
   currentProject: null,
+  ltiTools: [],
+  defaultSso: [],
+  lmsIntegration: [],
+  removeUser: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -110,6 +114,31 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentProject: action.payload,
+      };
+    case actionTypes.GET_LTI_TOOLS:
+      return {
+        ...state,
+        ltiTools: action.payload,
+      };
+    case actionTypes.GET_DEFAULT_SSO:
+      return {
+        ...state,
+        defaultSso: action.payload,
+      };
+    case actionTypes.GET_LMS_INTEGRATION:
+      return {
+        ...state,
+        lmsIntegration: action.payload,
+      };
+    case actionTypes.SHOW_REMOVE_USER:
+      return {
+        ...state,
+        removeUser: action.payload,
+      };
+    case actionTypes.CANCEL_REMOVE_USER:
+      return {
+        ...state,
+        removeUser: null,
       };
     default:
       return state;

@@ -77,6 +77,15 @@ const getSearchVideoCard = (orgId, searchQuery) =>
       return Promise.reject(err.response.data);
     });
 
+const edith5pVideoActivity = (orgId, activityId, formData) =>
+  httpService
+    .put(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity/${activityId}`, formData)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
@@ -86,4 +95,5 @@ export default {
   deleteVideo,
   videoh5pDetail,
   renderh5pvideo,
+  edith5pVideoActivity,
 };

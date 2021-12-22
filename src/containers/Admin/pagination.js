@@ -61,8 +61,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Project' && subType === 'all' && (
@@ -78,8 +78,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               dispatch(updatePageNumber(e));
             }}
             // Editing
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Project' && subType === 'Exported Projects' && (
@@ -94,8 +94,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Project' && subType === 'index' && (
@@ -110,8 +110,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Activities' && subType === 'Activity Types' && (
@@ -125,8 +125,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Activities' && subType === 'Activity Items' && (
@@ -140,8 +140,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'LMS' && (
@@ -155,8 +155,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'DefaultSso' && (
@@ -170,8 +170,23 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Organization' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
       </div>

@@ -13,7 +13,7 @@ const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
-  const { type, title, video } = props;
+  const { type, title, video, editVideo, setOpenVideo } = props;
   var counter = 0;
 
   useEffect(() => {
@@ -30,17 +30,28 @@ const PreviewLayoutModel = (props) => {
       <Modal.Body style={{ display: 'block !important' }}>
         <div className="interactive-video-H5P">
           {type === 'videoModal' ? (
-            <H5PEditor
-              h5pParams={
-                props.editVideo.h5p
-                  ? props.editVideo.h5p
-                  : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
-              }
-              h5pLib="H5P.InteractiveVideo 1.22"
-              hide={props.onHide}
-              type={type}
-              formData={props?.formData}
-            />
+            <>
+              <div className="add-activity-form">
+                <div className="add-activity-tabs" style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Tabs text="1. Add a video" className="m-2" tabActive={true} />
+                  <Tabs text="2. Describe video" className="m-2" tabActive={true} />
+                  <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
+                </div>
+              </div>
+              <H5PEditor
+                h5pParams={
+                  props.editVideo.h5p
+                    ? props.editVideo.h5p
+                    : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                }
+                h5pLib="H5P.InteractiveVideo 1.22"
+                hide={props.onHide}
+                type={type}
+                formData={props?.formData}
+                editVideo={editVideo}
+                setOpenVideo={setOpenVideo}
+              />
+            </>
           ) : (
             <>
               <div className="add-activity-form">

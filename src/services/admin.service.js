@@ -244,6 +244,13 @@ const getLtiTools = (subOrgId, page) => httpService
 		Promise.reject(err.response.data);
 	});
 
+const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => httpService
+	.get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+	.then(({ data }) => data)
+	.catch((err) => {
+		Promise.reject(err.response.data);
+	});
+
 const createLtiTool = (subOrgId, values) => httpService
 	.post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
 	.then(({ data }) => data)
@@ -288,6 +295,26 @@ const cloneLtiTool = (subOrgId, id) => httpService
       });
     }
   });
+
+const checkUserEmail = (orgId, email) => httpService
+	.get(`${apiVersion}/suborganization/${orgId}/users/check-email?email=${email}`)
+	.then(({ data }) => data);
+
+const addUserToOrg = (subOrgId, userId, role) => httpService
+	.post(`/${apiVersion}/suborganizations/${subOrgId}/add-user`, {user_id: userId, role_id: role})
+	.then(({ data }) => data)
+	.catch((err) => {
+		errorCatcher(err.response.data);
+		Promise.reject(err.response.data);
+	});
+
+const removeUser = (subOrgId, userId, preserve) => httpService
+	.remove(`${apiVersion}/suborganizations/${subOrgId}/remove-user`, {user_id: userId, preserve_data: preserve})
+	.then(({ data }) => data)
+	.catch((err) => {
+		return Promise.reject(err.response.data);
+	});
+
 export default {
 	addUserInOrganization,
 	editUserInOrganization,
@@ -320,9 +347,13 @@ export default {
 	searchDefaultSso,
 	getAllExportedProject,
   getLtiTools,
+  getLtiToolsOrderBy,
   createLtiTool,
   updateLtiTool,
   deleteLtiTool,
   searchLtiTool,
   cloneLtiTool,
+  checkUserEmail,
+  addUserToOrg,
+  removeUser,
 };

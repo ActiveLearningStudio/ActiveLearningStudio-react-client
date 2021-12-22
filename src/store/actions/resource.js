@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Echo from 'laravel-echo';
+//import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
 import videoService from 'services/videos.services';
@@ -9,6 +9,7 @@ import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 import store from '../index';
+
 // global variable for h5p object
 let h5pid;
 
@@ -235,13 +236,14 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       content: 'place_holder',
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
+      description: metadata?.description || undefined,
     };
     if (type === 'videoModal') {
       const centralizedState = store.getState();
       const {
         organization: { activeOrganization },
       } = centralizedState;
-      const insertedResource = await videoService.addVideo(activeOrganization?.id, activity);
+      const insertedResource = await videoService.addVideo(activeOrganization?.id, { ...activity, type: 'h5p_standalone' });
       toast.dismiss();
       toast.success('Activity Created', {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -704,38 +706,38 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
   });
 };
 
-export const updatedActivity = (userId) => async () => {
-  const echo = new Echo(socketConnection.notificationSocket());
+// export const updatedActivity = (userId) => async () => {
+//   const echo = new Echo(socketConnection.notificationSocket());
 
-  echo.private('activity-update').listen('ActivityUpdatedEvent', (msg) => {
-    if (msg.userId !== userId) {
-      const path = window.location.pathname;
+//   echo.private('activity-update').listen('ActivityUpdatedEvent', (msg) => {
+//     if (msg.userId !== userId) {
+//       const path = window.location.pathname;
 
-      let message = '';
-      if (path.includes(`activity/${msg.activityId}`)) {
-        message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
-      } else if (path.includes(`playlist/${msg.playlistId}`)) {
-        message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
-      } else if (path.includes(`project/${msg.projectId}`)) {
-        message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
-      }
+//       let message = '';
+//       if (path.includes(`activity/${msg.activityId}`)) {
+//         message = 'This activity has been modified by other team member. Are you ok to refresh page to see what is updated?';
+//       } else if (path.includes(`playlist/${msg.playlistId}`)) {
+//         message = 'This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?';
+//       } else if (path.includes(`project/${msg.projectId}`)) {
+//         message = 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?';
+//       }
 
-      if (message) {
-        Swal.fire({
-          title: message,
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          denyButtonText: 'No',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
-      }
-    }
-  });
-};
+//       if (message) {
+//         Swal.fire({
+//           title: message,
+//           showDenyButton: true,
+//           showCancelButton: true,
+//           confirmButtonText: 'Yes',
+//           denyButtonText: 'No',
+//         }).then((result) => {
+//           if (result.isConfirmed) {
+//             window.location.reload();
+//           }
+//         });
+//       }
+//     }
+//   });
+// };
 
 export const getLayoutActivities = () => async (dispatch) => {
   const { data } = await resourceService.getAllLayout();
@@ -755,4 +757,17 @@ export const getSingleLayoutActivities = () => async (dispatch) => {
       payload: data,
     });
   }
+};
+
+export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await resourceService.searchPreviewActivity(activeOrganization?.id, activityId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
+    payload: result,
+  });
+  return result;
 };

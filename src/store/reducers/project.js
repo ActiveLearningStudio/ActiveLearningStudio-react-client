@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   isSharedProject: null,
   visibilityTypes: [],
   currentVisibilityType: null,
+  searchPreviewProject: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -186,6 +187,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentVisibilityType: action.payload,
+      };
+    case actionTypes.SEARCH_PREVIEW_PROJECT:
+      return {
+        ...state,
+        searchPreviewProject: action.payload,
+        projectSelect: action.payload,
       };
     default:
       return state;

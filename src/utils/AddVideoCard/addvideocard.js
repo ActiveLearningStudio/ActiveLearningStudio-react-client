@@ -33,25 +33,27 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
           </div>
         </div>
         <div className="addvideo-card-detail">
-          <p>{data.descripiton}</p>
+          <p>{data.description?.slice(0, 50)}</p>
         </div>
 
         <div className="addvideo-card-add-share">
           <div className="btn-box">
-            <FontAwesomeIcon
+            <div
               onClick={() => {
                 setCurrentActivity(data.id);
                 setModalShow(true);
               }}
-              icon={faEye}
-              style={{ marginRight: '12px' }}
-              color="#084892"
-            />
-
-            <FontAwesomeIcon
-              icon={faEdit}
-              style={{ marginRight: '12px' }}
-              color="#084892"
+            >
+              <FontAwesomeIcon icon={faEye} style={{ marginRight: '6px' }} color="#084892" />
+              View &nbsp;&nbsp;&nbsp;
+            </div>
+            <div
+              onClick={() => {
+                setCurrentActivity(data.id);
+                setModalShow(true);
+              }}
+            ></div>
+            <div
               onClick={async () => {
                 toast.dismiss();
                 toast.info('Loading Activity ...', {
@@ -72,7 +74,10 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                 setOpenVideo(true);
                 setScreenStatus('DescribeVideo');
               }}
-            />
+            >
+              <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} color="#084892" />
+              Edit
+            </div>
           </div>
         </div>
         {selectionStatus && (

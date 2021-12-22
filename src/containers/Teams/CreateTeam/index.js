@@ -67,7 +67,12 @@ function CreateTeam(props) {
     resetSelectedTeam();
     showCreate();
     if (editMode) {
-      updateSelectedTeam({ name: selectedTeam.name, description: selectedTeam.description });
+      updateSelectedTeam({
+        name: selectedTeam.name,
+        description: selectedTeam.description,
+        noovo_group_id: selectedTeam.noovo_group_id || null,
+        noovo_group_title: selectedTeam.noovo_group_title || null,
+      });
       // setSelectedMembers(selectedTeam?.users);
       // setSelectedProjects(selectedTeam?.projects.map((project) => project.id));
     }
@@ -97,6 +102,8 @@ function CreateTeam(props) {
           organization_id: organization.activeOrganization?.id,
           name: reduxform.CreateTeamForm.values.name,
           description: reduxform.CreateTeamForm.values.description,
+          noovo_group_id: reduxform.CreateTeamForm.values.noovo_group_id || null,
+          noovo_group_title: reduxform.CreateTeamForm.values.noovo_group_title || null,
           // users: selectedMembers || [],
           // projects: projectIds,
         })

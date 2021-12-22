@@ -242,7 +242,7 @@ function Controller(props) {
                 }
               }}
             />
-            <img src={searchimg} alt="search" onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
+            <img src={searchimg} alt="search" />
           </div>
         )}
         {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (

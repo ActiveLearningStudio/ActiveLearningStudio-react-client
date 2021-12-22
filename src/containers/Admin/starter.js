@@ -17,6 +17,8 @@ function Starter(props) {
     importUser,
     filter,
     tableHead,
+    sortCol,
+    handleSort,
     type,
     data,
     roles,
@@ -103,6 +105,8 @@ function Starter(props) {
       ) : (
         <TableData
           tableHead={tableHead}
+          sortCol={sortCol}
+          handleSort={handleSort}
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}

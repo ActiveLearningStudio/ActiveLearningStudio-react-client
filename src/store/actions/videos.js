@@ -1,7 +1,9 @@
 /* eslint-disable */
-import videoServices from "services/videos.services";
-import * as actionTypes from "../actionTypes";
-import store from "../index";
+import { toast } from 'react-toastify';
+
+import videoServices from 'services/videos.services';
+import * as actionTypes from '../actionTypes';
+import store from '../index';
 
 export const getAllVideos = (id) => async (dispatch) => {
   const result = await videoServices.getAll(id);
@@ -48,7 +50,7 @@ export const getBrightVideos = (brightId) => async (dispatch) => {
 
 export const getSearchVideoCard = (orgId, searchQuery) => async (dispatch) => {
   const result = await videoServices.getSearchVideoCard(orgId, searchQuery);
-  console.log("After Seacrhing:", result.data);
+  console.log('After Seacrhing:', result.data);
   dispatch({
     type: actionTypes.ALL_VIDEOS,
     payload: result.data,
@@ -60,12 +62,36 @@ export const deleteVideo = (videoID) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await videoServices.deleteVideo(
-    activeOrganization.id,
-    videoID
-  );
+  const result = await videoServices.deleteVideo(activeOrganization.id, videoID);
   dispatch({
     type: actionTypes.REMOVE_VIDEOS,
     payload: videoID,
+  });
+};
+
+export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const h5pdata = {
+    library: window.h5peditorCopy.getLibrary(),
+    parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+    action: 'create',
+  };
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
+  const result = await videoServices.edith5pVideoActivity(activeOrganization.id, videoID, { ...formData, data: h5pdata, type: 'h5p_standalone', content: 'place_holder' });
+  toast.dismiss();
+
+  dispatch({
+    type: actionTypes.EDIT_VIDEO_ACTIVITY,
+    payload: result.activity,
   });
 };

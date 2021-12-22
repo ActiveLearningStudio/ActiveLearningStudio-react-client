@@ -254,6 +254,11 @@ const loadH5pShared = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const searchPreviewActivity = (subOrgId, activityId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -287,4 +292,5 @@ export default {
   getXapi,
   getAllLayout,
   getSingleLayout,
+  searchPreviewActivity,
 };

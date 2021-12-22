@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   teamPermission: {},
   teamProjects: [],
   selectedForClone: '',
+  whiteBoardUrl: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -257,6 +258,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         selectedForClone: action.payload,
+      };
+    case actionTypes.WHITE_BOARD_URL:
+      return {
+        ...state,
+        whiteBoardUrl: action.payload,
       };
     default:
       return state;

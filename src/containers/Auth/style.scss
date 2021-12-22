@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .auth-page {
   display: flex;
@@ -43,6 +43,9 @@
       .background-img-leftpane {
         width: 718px;
         height: 476px;
+        @media (max-width: 991px) {
+          display: none;
+        }
       }
       // .auth-body-img{
       //   width: 200px;
@@ -73,11 +76,12 @@
 
   .auth-container {
     margin: auto;
+    padding: 30px 50px;
     background: #fff;
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
     height: 100%;
     margin: auto;
-    padding: 30px 70px;
+    padding: 30px 80px;
     background: #fff;
     filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.3));
     height: 100%;
@@ -221,7 +225,7 @@
       top: 25.88%;
       bottom: 69.7%;
       font-style: normal;
-      font-family: "Rubic";
+      font-family: 'Rubic';
       font-weight: 500;
       font-size: 36px;
       line-height: 44px;
@@ -233,7 +237,7 @@
       height: 32.73px;
       left: 958.91px;
       top: 665.45px;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 12px;
@@ -274,7 +278,7 @@
       line-height: 24px;
       text-align: left;
       color: #515151;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       margin-bottom: 20px;
@@ -297,10 +301,10 @@
       font-size: 16px;
       line-height: 24px;
       color: #515151;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
-      margin: 16px 0px 32px;
+      margin: 12px 0px 32px;
     }
     .auth-p2-descrip {
       font-size: 12.8px;
@@ -396,7 +400,7 @@
         height: 32px;
         box-sizing: border-box;
         border-radius: 16px;
-        font-family: "Rubic";
+        font-family: 'Rubic';
         font-size: 14px;
         line-height: 20px;
         text-align: center;
@@ -476,7 +480,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #515151;
-        font-family: "Rubic";
+        font-family: 'Rubic';
       }
     }
 
@@ -563,7 +567,7 @@
         border-radius: 3px;
       }
 
-      [type="checkbox"]:checked + span {
+      [type='checkbox']:checked + span {
         position: relative;
         display: inline-block;
         width: 18px;
@@ -577,7 +581,7 @@
           height: 8px;
           width: 3px;
           background-color: #fff;
-          content: "";
+          content: '';
           transform: translateX(5px) rotate(-45deg);
           transform-origin: left bottom;
         }
@@ -589,7 +593,7 @@
           height: 3px;
           width: 12px;
           background-color: #fff;
-          content: "";
+          content: '';
           transform: translateX(5px) rotate(-45deg);
           transform-origin: left bottom;
         }
@@ -617,7 +621,7 @@
         background: #084892;
         border: 1px solid #084892;
         box-sizing: border-box;
-        font-family: "Rubic";
+        font-family: 'Rubic';
         border-radius: 16px;
         font-weight: 400;
         font-size: 14px;
@@ -660,7 +664,7 @@
       p {
         font-size: 16px;
         color: #000;
-        font-family: "$halvetica", sans-serif;
+        font-family: '$halvetica', sans-serif;
         font-weight: 400;
 
         a {
@@ -795,4 +799,19 @@
       opacity: 1;
     }
   }
+}
+
+.hr-spacer {
+  text-align: center;
+  border-bottom: solid 1px black;
+  height: 11px;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+.hr-spacer span {
+  font-size: 15px;
+  background-color: white;
+  padding-left: 1em;
+  padding-right: 1em;
 }
