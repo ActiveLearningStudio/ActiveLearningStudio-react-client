@@ -25,6 +25,15 @@ const H5PPreview = (props) => {
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
     const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
 
+    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    let h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
+    let isBrightcoveLib = h5pContent.library === 'H5P.BrightcoveInteractiveVideo 1.0' ? true : false;
+
+    if (isBrightcoveLib) {
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+    }
+
     await Promise.all(
       newCss.map((value) => {
         const link = document.createElement('link');
@@ -44,6 +53,16 @@ const H5PPreview = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
+
+    if (isBrightcoveLib) {
+      var h5pLibLoadTime = setInterval(function (e) {
+        if ('BrightcoveInteractiveVideo' in window.H5P) {
+          clearInterval(h5pLibLoadTime);
+          window.H5P.init(document.body); // execute H5P
+          window.H5P.preventInit = undefined;
+        }
+      }, 300);
+    }
 
     setLoading(false);
   };
@@ -97,7 +116,7 @@ const H5PPreview = (props) => {
                 });
               }
             }
-          } catch (e) {}
+          } catch (e) { }
         });
 
         const stopXapi = () => clearInterval(checkXapi);
