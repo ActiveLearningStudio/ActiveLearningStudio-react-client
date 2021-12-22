@@ -178,7 +178,18 @@ export default function Pills(props) {
           })
           .catch((e) => setAllProjectTab([]));
       } else {
-        const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1, size);
+        const result = await adminService.getAllProject(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          projectFilterObj.author_id || null,
+          projectFilterObj.created_from || null,
+          projectFilterObj.created_to || null,
+          projectFilterObj.updated_from || null,
+          projectFilterObj.updated_to || null,
+          projectFilterObj.shared,
+          projectFilterObj.indexing,
+        );
         setAllProjectTab(result);
       }
     } else if (activeOrganization && type === 'Project' && currentTab === 'Exported Projects') {
@@ -202,7 +213,18 @@ export default function Pills(props) {
           })
           .catch((e) => setAllProjectIndexTab([]));
       } else {
-        const result = await adminService.getAllProjectIndex(activeOrganization?.id, activePage || 1, changeIndexValue, size);
+        const result = await adminService.getAllProjectIndex(
+          activeOrganization?.id,
+          activePage || 1,
+          changeIndexValue,
+          size,
+          projectFilterObj.author_id || undefined,
+          projectFilterObj.created_from || undefined,
+          projectFilterObj.created_to || undefined,
+          projectFilterObj.updated_from || undefined,
+          projectFilterObj.updated_to || undefined,
+          projectFilterObj.shared,
+        );
         setAllProjectIndexTab(result);
       }
     }
@@ -412,9 +434,11 @@ export default function Pills(props) {
   };
   useEffect(() => {
     if (subTypeState === 'Library requests') {
+      setActivePage(1);
       setCurrentTab('Library requests');
       setChangeIndexValue(0);
     } else if (subTypeState === 'Projects') {
+      setActivePage(1);
       setCurrentTab('Projects');
       setKey('Projects')
     }
@@ -440,19 +464,19 @@ export default function Pills(props) {
   const filterSearch = useCallback(
     () => {
       if (subTypeState === 'Library requests') {
-        const filterAPI = adminService.getAllProjectIndex(
+        const libraryrequest = adminService.getAllProjectIndex(
           activeOrganization?.id,
           activePage,
-          projectFilterObj.indexing,
+          projectFilterObj.indexing || 0,
           size,
-          projectFilterObj.author_id || null,
-          projectFilterObj.created_from || null,
-          projectFilterObj.created_to || null,
-          projectFilterObj.updated_from || null,
-          projectFilterObj.updated_to || null,
-          projectFilterObj.shared || null,
+          projectFilterObj.author_id || undefined,
+          projectFilterObj.created_from || undefined,
+          projectFilterObj.created_to || undefined,
+          projectFilterObj.updated_from || undefined,
+          projectFilterObj.updated_to || undefined,
+          projectFilterObj.shared,
         );
-        filterAPI
+        libraryrequest
           .then((data) => {
             setAllProjectIndexTab(data);
           })
@@ -467,7 +491,7 @@ export default function Pills(props) {
           projectFilterObj.created_to || null,
           projectFilterObj.updated_from || null,
           projectFilterObj.updated_to || null,
-          projectFilterObj.shared || null,
+          projectFilterObj.shared,
           projectFilterObj.indexing,
         );
         allproject
@@ -479,7 +503,6 @@ export default function Pills(props) {
     },
     [projectFilterObj],
   );
-  // console.log(columnData)
 
   const handleSort = (column, subType) => {
     if (subType == 'LTI Tools') {
@@ -497,6 +520,41 @@ export default function Pills(props) {
       setOrderBy(order);
     }
   };
+  const resetProjectFilter = () => {
+    setProjectFilterObj({
+      author_id: null,
+      created_from: null,
+      created_to: null,
+      updated_from: null,
+      updated_to: null,
+      shared: null,
+      indexing: null,
+    });
+    if (subTypeState === 'Library requests') {
+      const libraryrequest = adminService.getAllProjectIndex(
+        activeOrganization?.id,
+        activePage,
+        changeIndexValue,
+        size,
+      );
+      libraryrequest
+        .then((data) => {
+          setAllProjectIndexTab(data);
+        })
+        .catch((e) => setAllProjectIndexTab([]));
+    } else {
+      const allproject = adminService.getAllProject(
+        activeOrganization?.id,
+        activePage,
+        size,
+      );
+      allproject
+        .then((data) => {
+          setAllProjectTab(data);
+        })
+        .catch((e) => setAllProjectTab([]));
+    }
+  }
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -723,6 +781,7 @@ export default function Pills(props) {
                 setLibraryReqSelected={setLibraryReqSelected}
                 setCurrentTab={setCurrentTab}
                 setAllProjectTab={setAllProjectTab}
+                resetProjectFilter={resetProjectFilter}
               />
             )}
             {type === 'Project' && subTypeState === 'Exported Projects' && (
@@ -770,6 +829,10 @@ export default function Pills(props) {
                 setChangeIndexValue={setChangeIndexValue}
                 libraryReqSelected={libraryReqSelected}
                 setLibraryReqSelected={setLibraryReqSelected}
+                resetProjectFilter={resetProjectFilter}
+                projectFilterObj={projectFilterObj}
+                setProjectFilterObj={setProjectFilterObj}
+                filterSearch={filterSearch}
               />
             )}
             {type === 'Activities' && subTypeState === 'Activity Types' && (

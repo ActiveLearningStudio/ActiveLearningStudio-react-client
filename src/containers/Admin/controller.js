@@ -20,6 +20,7 @@ import {
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import filterImg from 'assets/images/svg/filter.svg';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
+import loader from 'assets/images/dotsloader.gif';
 // import csv from "assets/images/csv.png";
 // import pdf from "assets/images/pdf.png";
 import bulk from 'assets/images/bulk.png';
@@ -76,6 +77,7 @@ function Controller(props) {
     projectFilterObj,
     setProjectFilterObj,
     filterSearch,
+    resetProjectFilter,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -89,6 +91,7 @@ function Controller(props) {
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
   const [authorName, setAuthorName] = useState('');
   const [authorsArray, setAuthorsArray] = useState([]);
+  const [loaderImgUser, setLoaderImgUser] = useState(false);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -115,11 +118,14 @@ function Controller(props) {
   const searchUserProjectFilter = useCallback(
     async () => {
       if (authorName.length >= 2) {
+        setLoaderImgUser(true);
         const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
         console.log(result?.data, 'result');
         if (result?.data?.length > 0) {
+          setLoaderImgUser(false);
           setAuthorsArray(result?.data);
         } else {
+          setLoaderImgUser(false);
           setAuthorsArray([]);
         }
       }
@@ -354,7 +360,7 @@ function Controller(props) {
                 <div className="authorName-project">
                   <label>Author</label>
                   <input type="text" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
-                  <img src={filterSearchIcon} alt="filterSearchIcon" onClick={searchUserProjectFilter} />
+                  <img src={filterSearchIcon} alt="filterSearchIcon" className={authorName && authorsArray.length === 0 && 'close-circle'} onClick={searchUserProjectFilter} />
                   {authorName && authorName.length >= 2 && authorsArray.length > 0 && (
                     <div className="author-list">
                       {authorsArray?.length > 0 ? authorsArray?.map((author) => (
@@ -378,6 +384,7 @@ function Controller(props) {
                     </div>
                   )}
                 </div>
+                {loaderImgUser && <img src={loader} alt="loader" className="loader-img" />}
                 {authorName && authorName.length < 2 && <div className="error">Enter at least 2 characters.</div>}
                 <div className="createdFrom-project">
                   <label>Created</label>
@@ -411,6 +418,7 @@ function Controller(props) {
                       />
                     </div>
                   </div>
+                  {projectFilterObj.created_from > projectFilterObj.created_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="updatedOn-project">
                   <label>Updated</label>
@@ -444,6 +452,7 @@ function Controller(props) {
                       />
                     </div>
                   </div>
+                  {projectFilterObj.updated_from > projectFilterObj.updated_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="status-project">
                   <div className="library-status">
@@ -468,18 +477,22 @@ function Controller(props) {
                   <div className="shared-status">
                     <label>Shared status</label>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === true && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: true })} />
+                      <input type="radio" checked={projectFilterObj.shared === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 1 })} />
                       Enabled
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === false && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: false })} />
+                      <input type="radio" checked={projectFilterObj.shared === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 0 })} />
                       Not Enabled
                     </span>
                   </div>
                 </div>
-                <div type="button" className="filter-btn-project" onClick={() => filterSearch()}>
+                <div className="filter-btn-project" onClick={() => filterSearch()}>
                   <img src={filterImg} alt="filter" />
                   Apply Filters
+                </div>
+                <div className="filter-btn-project" onClick={() => { setAuthorName(''); resetProjectFilter(); }}>
+                  <FontAwesomeIcon icon="history" />
+                  Reset
                 </div>
               </Dropdown.Menu>
             </Dropdown>
@@ -931,6 +944,7 @@ Controller.propTypes = {
   projectFilterObj: PropTypes.object,
   setProjectFilterObj: PropTypes.func,
   filterSearch: PropTypes.func,
+  resetProjectFilter: PropTypes.func,
 };
 
 Controller.defaultProps = {
@@ -974,6 +988,7 @@ Controller.defaultProps = {
   projectFilterObj: {},
   setProjectFilterObj: {},
   filterSearch: {},
+  resetProjectFilter: {},
 };
 
 export default Controller;

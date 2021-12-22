@@ -78,7 +78,7 @@ const getUserProjectSearch = (subOrgId, page, search) => httpService
 
 const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared) => httpService
   // eslint-disable-next-line max-len
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&size=${size}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -86,7 +86,7 @@ const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, 
   });
 
 const userSerchIndexs = (subOrgId, page, index, search, size) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&size=${size}&query=${search.replace(/#/, '%23') || ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}&query=${search.replace(/#/, '%23') || ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

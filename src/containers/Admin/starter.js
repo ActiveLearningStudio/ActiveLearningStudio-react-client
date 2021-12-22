@@ -63,6 +63,7 @@ function Starter(props) {
     setProjectFilterObj,
     filterSearch,
     setAllProjectTab,
+    resetProjectFilter,
   } = props;
   return (
     <>
@@ -111,6 +112,7 @@ function Starter(props) {
         projectFilterObj={projectFilterObj}
         setProjectFilterObj={setProjectFilterObj}
         filterSearch={filterSearch}
+        resetProjectFilter={resetProjectFilter}
       />
       {subTypeState === 'All settings' && <Settings />}
       {subTypeState === 'Manage Roles' ? (
