@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-import Controler from "./controler";
+import Controller from "./controller";
 import TableData from "./table";
 import Userroles from "./userroles";
 import Settings from "./settings";
@@ -56,10 +56,18 @@ function Starter(props) {
     permissionRender,
     selectedActivityType,
     setSelectedActivityType,
+    libraryReqSelected,
+    setLibraryReqSelected,
+    setSubTypeState,
+    projectFilterObj,
+    setProjectFilterObj,
+    filterSearch,
+    setAllProjectTab,
+    resetProjectFilter,
   } = props;
   return (
     <>
-      <Controler
+      <Controller
         paginationCounter={paginationCounter}
         search={search}
         print={print}
@@ -98,9 +106,16 @@ function Starter(props) {
         setChangeIndexValue={setChangeIndexValue}
         selectedActivityType={selectedActivityType}
         setSelectedActivityType={setSelectedActivityType}
+        libraryReqSelected={libraryReqSelected}
+        setLibraryReqSelected={setLibraryReqSelected}
+        setSubTypeState={setSubTypeState}
+        projectFilterObj={projectFilterObj}
+        setProjectFilterObj={setProjectFilterObj}
+        filterSearch={filterSearch}
+        resetProjectFilter={resetProjectFilter}
       />
-      {subTypeState === "All settings" && <Settings />}
-      {subTypeState === "Manage Roles" ? (
+      {subTypeState === 'All settings' && <Settings />}
+      {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
@@ -119,6 +134,7 @@ function Starter(props) {
           setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
+          setAllProjectTab={setAllProjectTab}
         />
       )}
     </>

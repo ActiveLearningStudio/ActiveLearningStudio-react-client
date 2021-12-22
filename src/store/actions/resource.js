@@ -36,7 +36,12 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     throw e;
   }
 };
-
+export const loadResourceItemAction = (id) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.LOAD_RESOURCE_ITEMS_REQUEST,
+    payload: id,
+  });
+};
 export const selectActivityType = (type) => (dispatch) => {
   dispatch({
     type: actionTypes.SELECTED_ACTIVITY_TYPE,

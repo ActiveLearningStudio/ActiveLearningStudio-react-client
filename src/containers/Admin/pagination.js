@@ -73,7 +73,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             totalItemsCount={data?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab('all');
+              setCurrentTab('Projects');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
@@ -98,7 +98,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Last"
           />
         )}
-        {type === 'Project' && subType === 'index' && (
+        {type === 'Project' && subType === 'Library requests' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -106,7 +106,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             totalItemsCount={localstatePagination?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab('index');
+              setCurrentTab('Library requests');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}

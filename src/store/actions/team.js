@@ -101,12 +101,11 @@ export const createTeamAction = (data) => async (dispatch) => {
       // eslint-disable-next-line camelcase
       organization_id,
       // eslint-disable-next-line camelcase
-      noovo_group_id,
       // eslint-disable-next-line camelcase
       noovo_group_title,
     } = data;
     // eslint-disable-next-line camelcase
-    if (noovo_group_id && noovo_group_title) {
+    if (noovo_group_title) {
       const { team } = await teamService.create(
         data, activeOrganization?.id,
       );
