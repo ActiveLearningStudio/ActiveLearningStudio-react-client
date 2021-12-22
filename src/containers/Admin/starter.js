@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-import Controler from "./controler";
-import TableData from "./table";
-import Userroles from "./userroles";
-import Settings from "./settings";
+import Controler from './controler';
+import TableData from './table';
+import Userroles from './userroles';
+import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -56,6 +56,7 @@ function Starter(props) {
     permissionRender,
     selectedActivityType,
     setSelectedActivityType,
+    setAllProjectTab,
   } = props;
   return (
     <>
@@ -99,8 +100,8 @@ function Starter(props) {
         selectedActivityType={selectedActivityType}
         setSelectedActivityType={setSelectedActivityType}
       />
-      {subTypeState === "All settings" && <Settings />}
-      {subTypeState === "Manage Roles" ? (
+      {subTypeState === 'All settings' && <Settings />}
+      {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
@@ -119,6 +120,7 @@ function Starter(props) {
           setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
+          setAllProjectTab={setAllProjectTab}
         />
       )}
     </>
