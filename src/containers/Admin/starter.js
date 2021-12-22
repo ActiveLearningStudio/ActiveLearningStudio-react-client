@@ -1,7 +1,7 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 import Controller from "./controller";
 import TableData from "./table";
@@ -17,6 +17,8 @@ function Starter(props) {
     importUser,
     filter,
     tableHead,
+    sortCol,
+    handleSort,
     type,
     data,
     roles,
@@ -60,6 +62,7 @@ function Starter(props) {
     projectFilterObj,
     setProjectFilterObj,
     filterSearch,
+    setAllProjectTab,
   } = props;
   return (
     <>
@@ -109,12 +112,14 @@ function Starter(props) {
         setProjectFilterObj={setProjectFilterObj}
         filterSearch={filterSearch}
       />
-      {subTypeState === "All settings" && <Settings />}
-      {subTypeState === "Manage Roles" ? (
+      {subTypeState === 'All settings' && <Settings />}
+      {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
           tableHead={tableHead}
+          sortCol={sortCol}
+          handleSort={handleSort}
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
@@ -127,6 +132,7 @@ function Starter(props) {
           setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
+          setAllProjectTab={setAllProjectTab}
         />
       )}
     </>

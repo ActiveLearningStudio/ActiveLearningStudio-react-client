@@ -9,7 +9,7 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -58,6 +58,7 @@ export default function Pills(props) {
   const [logs, setLogs] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
   const [changeIndexValue, setChangeIndexValue] = useState('0');
+  const [orderBy, setOrderBy] = useState('ASC');
   const dataRedux = useSelector((state) => state);
   useEffect(() => {
     setKey(modules?.[0]);
@@ -351,8 +352,9 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1))
-    } if (type === 'LMS') {
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+    }
+    if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
   }, [type, activePage, activeOrganization?.id]);
@@ -387,7 +389,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1))
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
     }
   }, [type, activePage, activeOrganization?.id]);
 
@@ -477,6 +479,24 @@ export default function Pills(props) {
     },
     [projectFilterObj],
   );
+  // console.log(columnData)
+
+  const handleSort = (column, subType) => {
+    if (subType == 'LTI Tools') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Name':
+          col = 'tool_name';
+          break;
+        default:
+          col = 'tool_name';
+      }
+      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    }
+  };
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -524,6 +544,8 @@ export default function Pills(props) {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 tableHead={columnData.statereport}
+                sortCol={[]}
+                handleSort={handleSort}
                 type={type}
               />
             )}
@@ -549,6 +571,8 @@ export default function Pills(props) {
                 filter={true}
                 setActivePage={setActivePage}
                 tableHead={columnData.statejobs}
+                sortCol={[]}
+                handleSort={handleSort}
                 type={type}
               />
             )}
@@ -574,6 +598,8 @@ export default function Pills(props) {
                 activePage={activePage}
                 setActivePage={setActivePage}
                 tableHead={columnData.statelogs}
+                sortCol={[]}
+                handleSort={handleSort}
                 type={type}
               />
             )}
@@ -587,6 +613,8 @@ export default function Pills(props) {
                 importUser={true}
                 filter={false}
                 tableHead={columnData.userall}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={users}
                 activePage={activePage}
                 size={size}
@@ -615,6 +643,8 @@ export default function Pills(props) {
                 filter={false}
                 subTypeState={subTypeState}
                 tableHead={[]}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={[]}
                 activeRole={activeRole}
                 setActiveRole={setActiveRole}
@@ -632,6 +662,8 @@ export default function Pills(props) {
                 importUser={false}
                 filter={false}
                 tableHead={columnData.organization}
+                sortCol={[]}
+                handleSort={handleSort}
                 paginationCounter={true}
                 size={size}
                 setSize={setSize}
@@ -655,6 +687,8 @@ export default function Pills(props) {
                 importUser={false}
                 filter={false}
                 tableHead={columnData.lmssettings}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={lmsProject}
                 type={type}
                 setActivePage={setActivePage}
@@ -670,6 +704,8 @@ export default function Pills(props) {
                 setSize={setSize}
                 search={true}
                 tableHead={columnData.projectAll}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={allProjectTab}
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
                 type={type}
@@ -686,6 +722,7 @@ export default function Pills(props) {
                 libraryReqSelected={libraryReqSelected}
                 setLibraryReqSelected={setLibraryReqSelected}
                 setCurrentTab={setCurrentTab}
+                setAllProjectTab={setAllProjectTab}
               />
             )}
             {type === 'Project' && subTypeState === 'Exported Projects' && (
@@ -693,6 +730,8 @@ export default function Pills(props) {
                 paginationCounter={false}
                 search={false}
                 tableHead={columnData.projectUser}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={allProjectUserTab}
                 type={type}
                 setActivePage={setActivePage}
@@ -711,6 +750,8 @@ export default function Pills(props) {
                 setSize={setSize}
                 search={true}
                 tableHead={columnData.projectIndex}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={allProjectIndexTab}
                 type={type}
                 searchQuery={searchQuery}
@@ -735,6 +776,8 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityTypes}
+                sortCol={[]}
+                handleSort={handleSort}
                 subType={'Activity Types'}
                 searchQueryActivities={searchQueryActivities}
                 setSearchQueryActivities={setSearchQueryActivities}
@@ -751,6 +794,8 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityItems}
+                sortCol={[]}
+                handleSort={handleSort}
                 subType={'Activity Items'}
                 searchQueryActivities={searchQueryActivities}
                 setSearchQueryActivities={setSearchQueryActivities}
@@ -781,6 +826,8 @@ export default function Pills(props) {
                 importUser={false}
                 filter={false}
                 tableHead={columnData.defaultsso}
+                sortCol={[]}
+                handleSort={handleSort}
                 data={defaultSso}
                 type={type}
                 setActivePage={setActivePage}
@@ -801,6 +848,9 @@ export default function Pills(props) {
                 importUser={false}
                 filter={false}
                 tableHead={columnData.ltitool}
+                sortCol={columnData.ltitoolSortCol}
+                handleSort={handleSort}
+                handleSort={handleSort}
                 data={ltiTool}
                 type={type}
                 setActivePage={setActivePage}

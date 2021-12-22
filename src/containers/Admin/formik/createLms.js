@@ -206,6 +206,9 @@ export default function CreateUser(prop) {
                       </option>
                       <option value="canvas">Canvas</option>
                       <option value="safarimontage">Safari Montage</option>
+                      <option value="schoology">Schoology</option>
+                      <option value="d2l">D2L</option>
+                      <option value="sakai">Sakai</option>
                     </select>
                     <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
                   </div>

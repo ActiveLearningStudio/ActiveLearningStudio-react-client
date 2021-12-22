@@ -3,11 +3,11 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 import Buttons from 'utils/Buttons/buttons';
 import PlaylistsPage from 'containers/Playlists';
-
+import adminService from 'services/admin.service';
 import './style.scss';
 
 const EditProjectModel = (props) => {
-  const { row, onHide } = props;
+  const { row, onHide, setAllProjectTab, activePage, activeOrganization } = props;
   return (
     <Modal
       {...props}
@@ -15,7 +15,7 @@ const EditProjectModel = (props) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton />
+      <Modal.Header />
 
       <Modal.Body>
         <PlaylistsPage {...props} />
@@ -33,7 +33,18 @@ const EditProjectModel = (props) => {
             </p>
           </div>
           <div className="detail-btn">
-            <Buttons onClick={() => onHide()} text="Cancel" width="95px" height="32px" secondary className="mr-16" />
+            <Buttons
+              onClick={async () => {
+                onHide();
+                const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
+                setAllProjectTab(result);
+              }}
+              text="Close"
+              width="95px"
+              height="32px"
+              secondary
+              className="mr-16"
+            />
           </div>
         </div>
       </Modal.Footer>

@@ -65,6 +65,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         editUser: action.payload,
       };
+    case actionTypes.LOAD_RESOURCE_ITEMS_REQUEST:
+      const refreshActivityItems = state.activityItems.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        activityItems: { ...state.activityItems, data: refreshActivityItems },
+      };
     case actionTypes.GET_ACTIVITY_TYPES:
       return {
         ...state,
