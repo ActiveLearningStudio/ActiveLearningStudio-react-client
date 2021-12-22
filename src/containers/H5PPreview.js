@@ -1,21 +1,22 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
 import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
+import videoServices from 'services/videos.services';
 import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
-
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [resourceId, setResourceId] = useState(null);
 
-  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview } = props;
+  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview, showvideoH5p } = props;
 
   const dispatch = useDispatch();
 
@@ -68,6 +69,12 @@ const H5PPreview = (props) => {
             }
           } else if (showActivityPreview) {
             const response = await loadH5pResourceSettingsShared(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          } else if (showvideoH5p) {
+            const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
+
             if (response.activity) {
               await resourceLoaded(response.activity);
             }

@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 //import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
+import videoService from 'services/videos.services';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
@@ -211,9 +212,7 @@ export const resourceSaved = (saved) => async (dispatch) => {
   });
 };
 
-export const createResourceAction = (playlistId, editor, editorType, metadata, hide) => async (dispatch) => {
-  // try {
-  // h5pEditorCopy to be taken from h5papi/storage/h5p/laravel-h5p/js/laravel-h5p.js
+export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type) => async (dispatch) => {
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -240,33 +239,52 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       title: metadata?.title,
       type: 'h5p',
       content: 'place_holder',
-      subject_id: metadata.subject_id,
-      education_level_id: metadata.education_level_id,
+      subject_id: metadata?.subject_id,
+      education_level_id: metadata?.education_level_id,
+      description: metadata?.description || undefined,
     };
-    const insertedResource = await resourceService.create(activity, playlistId);
-    toast.dismiss();
-    toast.success('Activity Created', {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 4000,
-    });
+    if (type === 'videoModal') {
+      const centralizedState = store.getState();
+      const {
+        organization: { activeOrganization },
+      } = centralizedState;
+      const insertedResource = await videoService.addVideo(activeOrganization?.id, { ...activity, type: 'h5p_standalone' });
+      toast.dismiss();
+      toast.success('Activity Created', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
+      dispatch({
+        type: actionTypes.ADD_NEW_VIDEO,
+        payload: insertedResource.activity,
+      });
+      hide();
+    } else {
+      const insertedResource = await resourceService.create(activity, playlistId);
+      toast.dismiss();
+      toast.success('Activity Created', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 4000,
+      });
 
-    resourceSaved(true);
+      resourceSaved(true);
 
-    dispatch({
-      type: actionTypes.CREATE_RESOURCE,
-      playlistId,
-      resource: insertedResource,
-      editor,
-      editorType,
-    });
-    dispatch({
-      type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-    });
-    hide();
-    dispatch({
-      type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-      payload: '',
-    });
+      dispatch({
+        type: actionTypes.CREATE_RESOURCE,
+        playlistId,
+        resource: insertedResource,
+        editor,
+        editorType,
+      });
+      dispatch({
+        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+      });
+      hide();
+      dispatch({
+        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+        payload: '',
+      });
+    }
   } else {
     dispatch({
       type: actionTypes.RESOURCE_VALIDATION_ERRORS,

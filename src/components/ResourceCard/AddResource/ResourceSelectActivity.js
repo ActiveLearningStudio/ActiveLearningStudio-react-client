@@ -1,4 +1,5 @@
 /* eslint-disable */
+
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { required, FadeDiv } from 'utils';
 import { loadResourceItemsAction, showDescribeActivityAction, onChangeActivityAction, showCreateResourceActivityAction, saveSearchKeyInCreation } from 'store/actions/resource';
+
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
 // import AddResourceSidebar from './AddResourceSidebar';

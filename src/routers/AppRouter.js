@@ -53,8 +53,10 @@ const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
+const VideoPage = loadable(() => import('../containers/Videos'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
@@ -154,6 +156,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                   {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
+                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                   <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                   <PrivateRoute exact path="/org/:organization/instant-admin" showSSO={true} component={AdminPanel} />
@@ -190,7 +193,7 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                  // openCreateResourcePopup
+                    // openCreateResourcePopup
                   />
                   <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/edit" component={EditActivity} openEditResourcePopup />
 
