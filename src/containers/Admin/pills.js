@@ -13,7 +13,7 @@ import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUser
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
-  const { modules, type, subType, allProjectTab, setAllProjectTab } = props;
+  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber } = props;
 
   const [key, setKey] = useState(modules && modules[0]);
 
@@ -26,6 +26,7 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
+
   const [projectFilterObj, setProjectFilterObj] = useState({
     author_id: null,
     created_from: null,
@@ -188,7 +189,7 @@ export default function Pills(props) {
           projectFilterObj.updated_from || null,
           projectFilterObj.updated_to || null,
           projectFilterObj.shared,
-          projectFilterObj.indexing,
+          projectFilterObj.indexing
         );
         setAllProjectTab(result);
       }
@@ -223,7 +224,7 @@ export default function Pills(props) {
           projectFilterObj.created_to || undefined,
           projectFilterObj.updated_from || undefined,
           projectFilterObj.updated_to || undefined,
-          projectFilterObj.shared,
+          projectFilterObj.shared
         );
         setAllProjectIndexTab(result);
       }
@@ -440,7 +441,7 @@ export default function Pills(props) {
     } else if (subTypeState === 'Projects') {
       setActivePage(1);
       setCurrentTab('Projects');
-      setKey('Projects')
+      setKey('Projects');
     }
   }, [subTypeState]);
   useEffect(() => {
@@ -461,48 +462,45 @@ export default function Pills(props) {
       setSubTypeState('All Settings');
     }
   }, [activeTab]);
-  const filterSearch = useCallback(
-    () => {
-      if (subTypeState === 'Library requests') {
-        const libraryrequest = adminService.getAllProjectIndex(
-          activeOrganization?.id,
-          activePage,
-          projectFilterObj.indexing || 0,
-          size,
-          projectFilterObj.author_id || undefined,
-          projectFilterObj.created_from || undefined,
-          projectFilterObj.created_to || undefined,
-          projectFilterObj.updated_from || undefined,
-          projectFilterObj.updated_to || undefined,
-          projectFilterObj.shared,
-        );
-        libraryrequest
-          .then((data) => {
-            setAllProjectIndexTab(data);
-          })
-          .catch((e) => setAllProjectIndexTab([]));
-      } else {
-        const allproject = adminService.getAllProject(
-          activeOrganization?.id,
-          activePage,
-          size,
-          projectFilterObj.author_id || null,
-          projectFilterObj.created_from || null,
-          projectFilterObj.created_to || null,
-          projectFilterObj.updated_from || null,
-          projectFilterObj.updated_to || null,
-          projectFilterObj.shared,
-          projectFilterObj.indexing,
-        );
-        allproject
-          .then((data) => {
-            setAllProjectTab(data);
-          })
-          .catch((e) => setAllProjectTab([]));
-      }
-    },
-    [projectFilterObj],
-  );
+  const filterSearch = useCallback(() => {
+    if (subTypeState === 'Library requests') {
+      const libraryrequest = adminService.getAllProjectIndex(
+        activeOrganization?.id,
+        activePage,
+        projectFilterObj.indexing || 0,
+        size,
+        projectFilterObj.author_id || undefined,
+        projectFilterObj.created_from || undefined,
+        projectFilterObj.created_to || undefined,
+        projectFilterObj.updated_from || undefined,
+        projectFilterObj.updated_to || undefined,
+        projectFilterObj.shared
+      );
+      libraryrequest
+        .then((data) => {
+          setAllProjectIndexTab(data);
+        })
+        .catch((e) => setAllProjectIndexTab([]));
+    } else {
+      const allproject = adminService.getAllProject(
+        activeOrganization?.id,
+        activePage,
+        size,
+        projectFilterObj.author_id || null,
+        projectFilterObj.created_from || null,
+        projectFilterObj.created_to || null,
+        projectFilterObj.updated_from || null,
+        projectFilterObj.updated_to || null,
+        projectFilterObj.shared,
+        projectFilterObj.indexing
+      );
+      allproject
+        .then((data) => {
+          setAllProjectTab(data);
+        })
+        .catch((e) => setAllProjectTab([]));
+    }
+  }, [projectFilterObj]);
 
   const handleSort = (column, subType) => {
     if (subType == 'LTI Tools') {
@@ -531,30 +529,21 @@ export default function Pills(props) {
       indexing: null,
     });
     if (subTypeState === 'Library requests') {
-      const libraryrequest = adminService.getAllProjectIndex(
-        activeOrganization?.id,
-        activePage,
-        changeIndexValue,
-        size,
-      );
+      const libraryrequest = adminService.getAllProjectIndex(activeOrganization?.id, activePage, changeIndexValue, size);
       libraryrequest
         .then((data) => {
           setAllProjectIndexTab(data);
         })
         .catch((e) => setAllProjectIndexTab([]));
     } else {
-      const allproject = adminService.getAllProject(
-        activeOrganization?.id,
-        activePage,
-        size,
-      );
+      const allproject = adminService.getAllProject(activeOrganization?.id, activePage, size);
       allproject
         .then((data) => {
           setAllProjectTab(data);
         })
         .catch((e) => setAllProjectTab([]));
     }
-  }
+  };
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -782,6 +771,9 @@ export default function Pills(props) {
                 setCurrentTab={setCurrentTab}
                 setAllProjectTab={setAllProjectTab}
                 resetProjectFilter={resetProjectFilter}
+                setModalShow={setModalShow}
+                setrowData={setrowData}
+                setActivePageNumber={setActivePageNumber}
               />
             )}
             {type === 'Project' && subTypeState === 'Exported Projects' && (

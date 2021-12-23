@@ -86,6 +86,15 @@ const edith5pVideoActivity = (orgId, activityId, formData) =>
       return Promise.reject(err.response.data);
     });
 
+const cloneh5pvideo = (orgId, activityId, formData) =>
+  httpService
+    .post(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity/${activityId}/clone`, formData)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
@@ -96,4 +105,5 @@ export default {
   videoh5pDetail,
   renderh5pvideo,
   edith5pVideoActivity,
+  cloneh5pvideo,
 };
