@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal } from 'react-bootstrap';
 import Buttons from 'utils/Buttons/buttons';
 import PlaylistsPage from 'containers/Playlists';
@@ -8,12 +8,15 @@ import './style.scss';
 
 const EditProjectModel = (props) => {
   const { row, onHide, setAllProjectTab, activePage, activeOrganization } = props;
+
   return (
     <Modal
       {...props}
       // size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      backdrop="static"
+      keyboard={false}
     >
       <Modal.Header />
 
@@ -52,4 +55,4 @@ const EditProjectModel = (props) => {
   );
 };
 
-export default EditProjectModel;
+export default memo(EditProjectModel);

@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import Controller from "./controller";
-import TableData from "./table";
-import Userroles from "./userroles";
-import Settings from "./settings";
+import Controller from './controller';
+import TableData from './table';
+import Userroles from './userroles';
+import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -64,6 +64,9 @@ function Starter(props) {
     filterSearch,
     setAllProjectTab,
     resetProjectFilter,
+    setModalShow,
+    setrowData,
+    setActivePageNumber,
   } = props;
   return (
     <>
@@ -135,6 +138,9 @@ function Starter(props) {
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
           setAllProjectTab={setAllProjectTab}
+          setModalShow={setModalShow}
+          setrowData={setrowData}
+          setActivePageNumber={setActivePageNumber}
         />
       )}
     </>

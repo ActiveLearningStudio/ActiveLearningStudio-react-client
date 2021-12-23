@@ -4,9 +4,9 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-
+import { toast } from 'react-toastify';
 import { faEllipsisV, faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { deleteVideo } from 'store/actions/videos';
+import { deleteVideo, cloneh5pvideo } from 'store/actions/videos';
 
 import './dropdownedit.scss';
 
@@ -23,10 +23,22 @@ const DropDownEdit = ({ iconColor, data }) => {
 
         <Dropdown.Menu>
           <Dropdown.Item
-          // onClick={() => {
-          //   Swal.showLoading();
-          //   cloneActivity(videoId, resource.id);
-          // }}
+            onClick={async () => {
+              toast.info('Duplicating project...', {
+                className: 'project-loading',
+                closeOnClick: false,
+                closeButton: false,
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 10000,
+                icon: '',
+              });
+              const result = await dispatch(cloneh5pvideo(data.id));
+              toast.dismiss();
+              Swal.fire({
+                html: result.message,
+                icon: 'success',
+              });
+            }}
           >
             <FontAwesomeIcon icon={faCopy} className="mr-2" />
             Duplicate

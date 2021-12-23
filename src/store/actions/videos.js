@@ -68,6 +68,14 @@ export const deleteVideo = (videoID) => async (dispatch) => {
     payload: videoID,
   });
 };
+export const cloneh5pvideo = (videoID) => async () => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await videoServices.cloneh5pvideo(activeOrganization.id, videoID);
+  return result;
+};
 
 export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
   const centralizedState = store.getState();
