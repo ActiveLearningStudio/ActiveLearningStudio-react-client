@@ -43,7 +43,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -315,6 +315,7 @@ function AdminPanel({ showSSO }) {
               setModalShow(false);
             }}
             row={rowData}
+            showFooter={true}
             activePage={activePageNumber}
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}

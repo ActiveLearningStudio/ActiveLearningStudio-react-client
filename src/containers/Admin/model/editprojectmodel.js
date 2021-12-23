@@ -7,7 +7,7 @@ import adminService from 'services/admin.service';
 import './style.scss';
 
 const EditProjectModel = (props) => {
-  const { row, onHide, setAllProjectTab, activePage, activeOrganization } = props;
+  const { row, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
 
   return (
     <Modal
