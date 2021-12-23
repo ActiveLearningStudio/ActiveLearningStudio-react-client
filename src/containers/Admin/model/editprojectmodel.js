@@ -7,7 +7,7 @@ import adminService from 'services/admin.service';
 import './style.scss';
 
 const EditProjectModel = (props) => {
-  const { row, onHide, setAllProjectTab, activePage, activeOrganization } = props;
+  const { row, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
 
   return (
     <Modal
@@ -28,7 +28,7 @@ const EditProjectModel = (props) => {
           <div className="detail-auther">
             <p>
               Author:
-              <span> / {row?.users?.[0].name}</span>
+              <span> / {row?.users?.[0]?.name}</span>
             </p>
             <p>
               ID:
