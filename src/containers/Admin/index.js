@@ -4,7 +4,7 @@ import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveAdminForm } from 'store/actions/admin';
-
+import EditProjectModel from './model/editprojectmodel';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
 import CreateActivityItem from './formik/createActivityItem';
 import CreateActivityType from './formik/createActivity';
@@ -35,12 +35,15 @@ function AdminPanel({ showSSO }) {
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
+  const [modalShow, setModalShow] = useState(false);
+  const [rowData, setrowData] = useState(false);
+  const [activePageNumber, setActivePageNumber] = useState(false);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => { }, [activeTab]);
+  useEffect(() => {}, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -100,10 +103,13 @@ function AdminPanel({ showSSO }) {
                     <Tab eventKey="Project" title="Projects">
                       <div className="module-content">
                         <Pills
+                          setModalShow={setModalShow}
                           modules={['Projects', 'Exported Projects']}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
                           type="Project"
+                          setrowData={setrowData}
+                          setActivePageNumber={setActivePageNumber}
                         />
                       </div>
                     </Tab>
@@ -252,9 +258,7 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
-          {activeForm === 'create_user' && (
-            <CreateUser mode={activeForm} />
-          )}
+          {activeForm === 'create_user' && <CreateUser mode={activeForm} />}
           {activeForm === 'edit_user' && (
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
@@ -304,6 +308,17 @@ function AdminPanel({ showSSO }) {
             </div>
           )}
           {removeUser && <RemoveUser />}
+
+          <EditProjectModel
+            show={modalShow}
+            onHide={() => {
+              setModalShow(false);
+            }}
+            row={rowData}
+            activePage={activePageNumber}
+            setAllProjectTab={setAllProjectTab}
+            activeOrganization={activeOrganization}
+          />
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>

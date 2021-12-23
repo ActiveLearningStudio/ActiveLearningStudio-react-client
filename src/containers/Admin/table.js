@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
-import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+// import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
@@ -39,6 +39,9 @@ function Table(props) {
     setAllProjectIndexTab,
     changeProjectFromorg,
     setAllProjectTab,
+    setModalShow,
+    setrowData,
+    setActivePageNumber,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -51,6 +54,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -644,7 +648,17 @@ function Table(props) {
                           <div className="admin-panel-dropdown">
                             {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
                             <div>
-                              <AdminDropdown setAllProjectTab={setAllProjectTab} setLocalStateData={setLocalStateData} localStateData={localStateData} type={type} row={row} />
+                              <AdminDropdown
+                                activePage={activePage}
+                                setAllProjectTab={setAllProjectTab}
+                                setLocalStateData={setLocalStateData}
+                                localStateData={localStateData}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                              />
                             </div>
                           </div>
                         </td>
