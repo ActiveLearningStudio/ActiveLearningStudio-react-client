@@ -25,7 +25,7 @@ const EditProjectModel = (props) => {
           <div className="detail-auther">
             <p>
               Author:
-              <span> / {row?.users?.[0].name}</span>
+              <span> / {row?.users?.[0]?.name}</span>
             </p>
             <p>
               ID:
