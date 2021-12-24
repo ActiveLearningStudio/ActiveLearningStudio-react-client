@@ -32,8 +32,14 @@ function UserRoles({ permissionRender }) {
   const [projectView, setProjectView] = useState([]);
   const [playlistsView, setPlaylistsView] = useState([]);
   const [activitiesView, setActivitiesView] = useState([]);
+  const [organizationView, setOrganizationView] = useState([]);
   const [teamsView, setTeamsView] = useState([]);
   const projectEditDate = "ALL";
+  const organizationViewData = [
+    "organization:edit",
+    "organization:delete",
+    "organization:create",
+  ];
   const projectViewDate = [
     "project:edit",
     "project:delete",
@@ -100,6 +106,16 @@ function UserRoles({ permissionRender }) {
               permissionsId[data]?.map((val) => {
                 if (teamViewDate.includes(val.name)) {
                   setTeamsView((prevItems) => [...prevItems, String(val.id)]);
+                }
+              });
+            }
+            if (data == "Organization") {
+              permissionsId[data]?.map((val) => {
+                if (organizationViewData.includes(val.name)) {
+                  setOrganizationView((prevItems) => [
+                    ...prevItems,
+                    String(val.id),
+                  ]);
                 }
               });
             }
@@ -176,9 +192,9 @@ function UserRoles({ permissionRender }) {
     "Import",
   ];
 
-  // Administration.map((data) => {
-  //   console.log("Data:", data);
-  // });
+  Administration.map((data) => {
+    console.log("Data:", data);
+  });
 
   // const AdministrationFilter = permissionsId?.filter((data) => {
   //   Administration.map((adminData) => {
@@ -199,10 +215,11 @@ function UserRoles({ permissionRender }) {
               activityStatus: "edit",
               playlistStatus: "edit",
               teamStatus: "edit",
+              organizationC: "",
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              // console.log("values-Role-Update before:", values);
+              console.log("values-Role-Update before:", values);
 
               // if (values.projectStatus == "view") {
               //   values.permissions = values.permissions.filter((data) => {
@@ -240,7 +257,7 @@ function UserRoles({ permissionRender }) {
               //     );
               //   });
               // }
-              // console.log("values-Role-Update  after:", values);
+              console.log("values-Role-Update  after:", values);
               dispatch(updateRole(activeOrganization.id, values));
             }}
           >
@@ -628,6 +645,52 @@ function UserRoles({ permissionRender }) {
                                               &nbsp;&nbsp;
                                               {val.name}
                                             </label>
+                                          </div>
+                                        ))}
+                                      </Card.Body>
+                                    </Tab.Pane>
+                                  );
+                                }
+                                if (
+                                  data == "Organization" ||
+                                  data == "Activity"
+                                ) {
+                                  return (
+                                    <Tab.Pane eventKey={String(counter)}>
+                                      <Card.Body
+                                        style={{
+                                          background: "#f7faff",
+                                          margin: "32px",
+                                        }}
+                                      >
+                                        {permissionsId[data]?.map((val) => (
+                                          <div
+                                            className="form-grouper"
+                                            role="group"
+                                            aria-labelledby="checkbox-group"
+                                          >
+                                            <div>
+                                              <div className="form-group custom-select-style-for-sub">
+                                                <select
+                                                  name="permissions"
+                                                  onChange={handleChange}
+                                                  onBlur={handleBlur}
+                                                  value={
+                                                    String(val.id)
+                                                      ? "edit"
+                                                      : "view"
+                                                  }
+                                                >
+                                                  <option value="edit">
+                                                    Edit
+                                                  </option>
+                                                  <option value="view">
+                                                    View
+                                                  </option>
+                                                </select>
+                                                <p> {val.name}</p>
+                                              </div>
+                                            </div>
                                           </div>
                                         ))}
                                       </Card.Body>
