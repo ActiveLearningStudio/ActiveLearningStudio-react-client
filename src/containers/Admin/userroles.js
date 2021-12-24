@@ -1,65 +1,35 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import { Accordion, Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
-import PropTypes from "prop-types";
-import { Formik, Field } from "formik";
-import {
-  updateRole,
-  getAllPermissionId,
-  roleDetail,
-} from "store/actions/organization";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faAngleRight,
-  faArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from 'react';
+import { Accordion, Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Formik, Field } from 'formik';
+import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown, faAngleRight, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 function UserRoles({ permissionRender }) {
   const dispatch = useDispatch();
-  const {
-    permission,
-    activeOrganization,
-    activePermission,
-    permissionsId,
-    roles,
-  } = useSelector((state) => state.organization);
-  console.log("activePermission:", activePermission);
-  console.log("permissionsId:", permissionsId);
-  const [checkRoles, setCheckRoles] = useState("");
+  const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
+  console.log('activePermission:', activePermission);
+  console.log('permissionsId:', permissionsId);
+  const [checkRoles, setCheckRoles] = useState('');
   const [projectView, setProjectView] = useState([]);
   const [playlistsView, setPlaylistsView] = useState([]);
   const [activitiesView, setActivitiesView] = useState([]);
   const [teamsView, setTeamsView] = useState([]);
-  const projectEditDate = "ALL";
-  const projectViewDate = [
-    "project:edit",
-    "project:delete",
-    "project:create",
-    "project:upload-thumb",
-  ];
-  const activityViewDate = [
-    "activity:edit",
-    "activity:delete",
-    "activity:create",
-    "activity:upload",
-  ];
-  const playlistViewDate = [
-    "playlist:edit",
-    "playlist:delete",
-    "playlist:create",
-  ];
-  const teamViewDate = ["team:create", "team:edit", "team:delete"];
+  const projectEditDate = 'ALL';
+  const projectViewDate = ['project:edit', 'project:delete', 'project:create', 'project:upload-thumb'];
+  const activityViewDate = ['activity:edit', 'activity:delete', 'activity:create', 'activity:upload'];
+  const playlistViewDate = ['playlist:edit', 'playlist:delete', 'playlist:create'];
+  const teamViewDate = ['team:create', 'team:edit', 'team:delete'];
   useEffect(() => {
     const extractPermission = [];
     if (activePermission) {
-      activePermission?.[0]?.permissions?.map((data) =>
-        extractPermission.push(String(data.id))
-      );
+      activePermission?.[0]?.permissions?.map((data) => extractPermission.push(String(data.id)));
     }
-    console.log("extractPermission:", extractPermission);
+    console.log('extractPermission:', extractPermission);
     setCheckRoles(extractPermission);
   }, [activePermission]);
 
@@ -67,8 +37,8 @@ function UserRoles({ permissionRender }) {
     {
       !!permissionsId &&
         Object.keys(permissionsId)?.map((data, counter) => {
-          if (typeof permissionsId[data] === "object") {
-            if (data == "Project") {
+          if (typeof permissionsId[data] === 'object') {
+            if (data == 'Project') {
               permissionsId[data]?.map((val) => {
                 if (projectViewDate.includes(val.name)) {
                   // console.log("VAL View:", val.id);
@@ -76,27 +46,21 @@ function UserRoles({ permissionRender }) {
                 }
               });
             }
-            if (data == "Activity") {
+            if (data == 'Activity') {
               permissionsId[data]?.map((val) => {
                 if (activityViewDate.includes(val.name)) {
-                  setActivitiesView((prevItems) => [
-                    ...prevItems,
-                    String(val.id),
-                  ]);
+                  setActivitiesView((prevItems) => [...prevItems, String(val.id)]);
                 }
               });
             }
-            if (data == "Playlist") {
+            if (data == 'Playlist') {
               permissionsId[data]?.map((val) => {
                 if (playlistViewDate.includes(val.name)) {
-                  setPlaylistsView((prevItems) => [
-                    ...prevItems,
-                    String(val.id),
-                  ]);
+                  setPlaylistsView((prevItems) => [...prevItems, String(val.id)]);
                 }
               });
             }
-            if (data == "Team") {
+            if (data == 'Team') {
               permissionsId[data]?.map((val) => {
                 if (teamViewDate.includes(val.name)) {
                   setTeamsView((prevItems) => [...prevItems, String(val.id)]);
@@ -110,8 +74,7 @@ function UserRoles({ permissionRender }) {
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
     if (!!roles) {
-      if (roles?.length !== 0)
-        dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+      if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
     }
   }, []);
 
@@ -125,56 +88,20 @@ function UserRoles({ permissionRender }) {
       </>
     );
   };
-  const checkingAdminSelectionStatus = (
-    organization,
-    activities,
-    teams,
-    projects,
-    users,
-    integrations
-  ) => {
-    if (
-      organization == "edit" &&
-      activities == "edit" &&
-      teams == "edit" &&
-      projects == "edit" &&
-      users == "edit" &&
-      integrations == "edit"
-    ) {
-      return "edit";
-    } else if (
-      organization == "view" &&
-      activities == "view" &&
-      teams == "view" &&
-      projects == "view" &&
-      users == "view" &&
-      integrations == "view"
-    ) {
-      return "view";
+  const checkingAdminSelectionStatus = (organization, activities, teams, projects, users, integrations) => {
+    if (organization == 'edit' && activities == 'edit' && teams == 'edit' && projects == 'edit' && users == 'edit' && integrations == 'edit') {
+      return 'edit';
+    } else if (organization == 'view' && activities == 'view' && teams == 'view' && projects == 'view' && users == 'view' && integrations == 'view') {
+      return 'view';
     } else {
-      return "---";
+      return '---';
     }
   };
 
-  console.log("permissionsId:", permissionsId);
+  console.log('permissionsId:', permissionsId);
   // Hard Code
-  const Administration = [
-    "Organization",
-    "Project",
-    "Activity",
-    "User",
-    "Team",
-    "Integration",
-  ];
-  const Authoring = [
-    "Project",
-    "Playlist",
-    "Activitie",
-    "Team",
-    "Search",
-    "Export",
-    "Import",
-  ];
+  const Administration = ['Organization', 'Project', 'Activity', 'User', 'Team', 'Integration'];
+  const Authoring = ['Project', 'Playlist', 'Activitie', 'Team', 'Search', 'Export', 'Import'];
 
   // Administration.map((data) => {
   //   console.log("Data:", data);
@@ -195,10 +122,10 @@ function UserRoles({ permissionRender }) {
             initialValues={{
               role_id: activePermission?.[0]?.id,
               permissions: checkRoles,
-              projectStatus: "edit",
-              activityStatus: "edit",
-              playlistStatus: "edit",
-              teamStatus: "edit",
+              projectStatus: 'edit',
+              activityStatus: 'edit',
+              playlistStatus: 'edit',
+              teamStatus: 'edit',
             }}
             enableReinitialize
             onSubmit={async (values) => {
@@ -256,21 +183,14 @@ function UserRoles({ permissionRender }) {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group-create dynamic-roles">
-                  {permission?.Organization?.includes(
-                    "organization:edit-role"
-                  ) && (
+                  {permission?.Organization?.includes('organization:edit-role') && (
                     <div className="dynamic-roles-title-btn">
                       <div>
-                        <h2>
-                          Edit “
-                          {activePermission &&
-                            activePermission[0]?.display_name}
-                          ” permissions
-                        </h2>
+                        <h2>Edit “{activePermission && activePermission[0]?.display_name}” permissions</h2>
                       </div>
                       <div
                         className="button-group"
-                        style={{ marginTop: "17px" }}
+                        style={{ marginTop: '17px' }}
                         // style={{ display: "flex", justifyContent: "flex-end" }}
                       >
                         <button type="submit" className="curriki-white-button">
@@ -323,10 +243,7 @@ function UserRoles({ permissionRender }) {
                     <Row className="roles-permission-tab-row">
                       <Col className="roles-permission-tab" sm={2}>
                         <Nav variant="pills" className="flex-column">
-                          <div
-                            className="role-permission-tab-name"
-                            id="role-permission-tab-id"
-                          >
+                          <div className="role-permission-tab-name" id="role-permission-tab-id">
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-1">
@@ -357,13 +274,10 @@ function UserRoles({ permissionRender }) {
                             })} */}
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === "object") {
+                              if (typeof permissionsId[data] === 'object') {
                                 if (Administration.includes(data)) {
                                   return (
-                                    <div
-                                      className="role-permission-tab-name"
-                                      id="role-permission-tab-id"
-                                    >
+                                    <div className="role-permission-tab-name" id="role-permission-tab-id">
                                       <Nav.Item>
                                         <Nav.Link eventKey={String(counter)}>
                                           {data}
@@ -376,10 +290,7 @@ function UserRoles({ permissionRender }) {
                               }
                             })}
 
-                          <div
-                            className="role-permission-tab-name"
-                            id="role-permission-tab-id"
-                          >
+                          <div className="role-permission-tab-name" id="role-permission-tab-id">
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-2">
@@ -396,102 +307,70 @@ function UserRoles({ permissionRender }) {
                           {/* For All Permission */}
                           <Tab.Pane eventKey="manual-1">
                             {!!permissionsId &&
-                              Object.keys(permissionsId)?.map(
-                                (data, counter) => {
-                                  if (typeof permissionsId[data] === "object") {
-                                    if (data == "Project") {
-                                      return (
-                                        <Card.Body
-                                          style={{
-                                            background: "#f7faff",
-                                            margin: "32px",
-                                          }}
-                                        >
-                                          <div className="all-permission-tab-data">
-                                            <div className="permission-tab-title">
-                                              <label className="checkbox_section">
-                                                <input
-                                                  type="checkbox"
-                                                  name="permissions"
-                                                />
-                                                <span></span>
-                                                <p>{data}</p>
-                                              </label>
-                                              {/* {data} */}
-                                            </div>
-                                            <div className="permission-tab-data">
-                                              {permissionsId[data]?.map(
-                                                (val) => (
-                                                  <div
-                                                    className="form-grouper"
-                                                    role="group"
-                                                    aria-labelledby="checkbox-group"
-                                                  >
-                                                    <label className="checkbox_section_custom">
-                                                      <Field
-                                                        type="checkbox"
-                                                        name="permissions"
-                                                        value={String(val.id)}
-                                                        component={
-                                                          MySpecialField
-                                                        }
-                                                      />
-                                                      &nbsp;&nbsp;
-                                                      {val.name}
-                                                    </label>
-                                                  </div>
-                                                )
-                                              )}
-                                            </div>
+                              Object.keys(permissionsId)?.map((data, counter) => {
+                                if (typeof permissionsId[data] === 'object') {
+                                  if (data == 'Project') {
+                                    return (
+                                      <Card.Body
+                                        style={{
+                                          background: '#f7faff',
+                                          margin: '32px',
+                                        }}
+                                      >
+                                        <div className="all-permission-tab-data">
+                                          <div className="permission-tab-title">
+                                            <label className="checkbox_section">
+                                              <input type="checkbox" name="permissions" />
+                                              <span></span>
+                                              <p>{data}</p>
+                                            </label>
+                                            {/* {data} */}
                                           </div>
-                                        </Card.Body>
-                                      );
-                                    } else {
-                                      return (
-                                        <Card.Body
-                                          style={{
-                                            background: "#f7faff",
-                                            margin: "32px",
-                                          }}
-                                        >
-                                          <div className="all-permission-tab-data">
-                                            <div className="permission-tab-title">
-                                              <div>
-                                                <div className="form-group custom-select-style">
-                                                  <select
-                                                    name="admin"
-                                                    placeholder="Admin"
-                                                    onChange={(e) => {}}
-                                                    onBlur={handleBlur}
-                                                    value={values.admin}
-                                                  >
-                                                    <option value="edit">
-                                                      Edit
-                                                    </option>
-                                                    <option value="view">
-                                                      View
-                                                    </option>
-                                                  </select>
-                                                  <p
-                                                    style={{
-                                                      fontWeight: "bold",
-                                                    }}
-                                                  >
-                                                    {" "}
-                                                    {data}
-                                                  </p>
-                                                </div>
+                                          <div className="permission-tab-data">
+                                            {permissionsId[data]?.map((val) => (
+                                              <div className="form-grouper" role="group" aria-labelledby="checkbox-group">
+                                                <label className="checkbox_section_custom">
+                                                  <Field type="checkbox" name="permissions" value={String(val.id)} component={MySpecialField} />
+                                                  &nbsp;&nbsp;
+                                                  {val.name}
+                                                </label>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        </div>
+                                      </Card.Body>
+                                    );
+                                  } else {
+                                    return (
+                                      <Card.Body
+                                        style={{
+                                          background: '#f7faff',
+                                          margin: '32px',
+                                        }}
+                                      >
+                                        <div className="all-permission-tab-data">
+                                          <div className="permission-tab-title">
+                                            <div>
+                                              <div className="form-group custom-select-style">
+                                                <select name="admin" placeholder="Admin" onChange={(e) => {}} onBlur={handleBlur} value={values.admin}>
+                                                  <option value="edit">Edit</option>
+                                                  <option value="view">View</option>
+                                                </select>
+                                                <p
+                                                  style={{
+                                                    fontWeight: 'bold',
+                                                  }}
+                                                >
+                                                  {' '}
+                                                  {data}
+                                                </p>
                                               </div>
                                             </div>
-                                            <div className="permission-tab-data">
-                                              {permissionsId[data]?.map(
-                                                (val) => (
-                                                  <div
-                                                    className="form-grouper"
-                                                    role="group"
-                                                    aria-labelledby="checkbox-group"
-                                                  >
-                                                    {/* <label className="checkbox_section_custom">
+                                          </div>
+                                          <div className="permission-tab-data">
+                                            {permissionsId[data]?.map((val) => (
+                                              <div className="form-grouper" role="group" aria-labelledby="checkbox-group">
+                                                {/* <label className="checkbox_section_custom">
                                                       <Field
                                                         type="checkbox"
                                                         name="permissions"
@@ -503,9 +382,9 @@ function UserRoles({ permissionRender }) {
                                                       &nbsp;&nbsp;
                                                       {val.name}
                                                     </label> */}
-                                                    <div>
-                                                      <div className="form-group custom-select-style-for-sub">
-                                                        <select
+                                                <div>
+                                                  <div className="form-group custom-select-style-for-sub">
+                                                    {/* <select
                                                           name="permissions"
                                                           onChange={(e) => {}}
                                                           onBlur={handleBlur}
@@ -520,38 +399,40 @@ function UserRoles({ permissionRender }) {
                                                           <option value="view">
                                                             View
                                                           </option>
-                                                        </select>
-                                                        <p> {val.name}</p>
-                                                      </div>
-                                                    </div>
+                                                        </select> */}
+
+                                                    <Field as="select" name={val.id}>
+                                                      <option selected={permission.Organization.includes(val.name)} value="---">
+                                                        edit
+                                                      </option>
+                                                      <option value="edit" selected={!permission.Organization.includes(val.name)}>
+                                                        view
+                                                      </option>
+                                                    </Field>
+                                                    <p> {val.name}</p>
                                                   </div>
-                                                )
-                                              )}
-                                            </div>
+                                                </div>
+                                              </div>
+                                            ))}
                                           </div>
-                                        </Card.Body>
-                                      );
-                                    }
+                                        </div>
+                                      </Card.Body>
+                                    );
                                   }
                                 }
-                              )}
+                              })}
                           </Tab.Pane>
                           {/* For Authoring */}
                           <Tab.Pane eventKey="manual-2">
                             <Card.Body
                               style={{
-                                background: "#f7faff",
-                                margin: "32px",
+                                background: '#f7faff',
+                                margin: '32px',
                               }}
                             >
                               <div className="for-authoring">
                                 <div className="form-group custom-select-style-for-authoring">
-                                  <select
-                                    name="projectStatus"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values.projectStatus}
-                                  >
+                                  <select name="projectStatus" onBlur={handleBlur} onChange={handleChange} value={values.projectStatus}>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -559,12 +440,7 @@ function UserRoles({ permissionRender }) {
                                 </div>
 
                                 <div className="form-group custom-select-style-for-authoring">
-                                  <select
-                                    name="playlistStatus"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values.playlistStatus}
-                                  >
+                                  <select name="playlistStatus" onBlur={handleBlur} onChange={handleChange} value={values.playlistStatus}>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -572,12 +448,7 @@ function UserRoles({ permissionRender }) {
                                 </div>
 
                                 <div className="form-group custom-select-style-for-authoring">
-                                  <select
-                                    name="activityStatus"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values.activityStatus}
-                                  >
+                                  <select name="activityStatus" onBlur={handleBlur} onChange={handleChange} value={values.activityStatus}>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -585,12 +456,7 @@ function UserRoles({ permissionRender }) {
                                 </div>
 
                                 <div className="form-group custom-select-style-for-authoring">
-                                  <select
-                                    name="teamStatus"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values.teamStatus}
-                                  >
+                                  <select name="teamStatus" onBlur={handleBlur} onChange={handleChange} value={values.teamStatus}>
                                     <option value="edit">Edit</option>
                                     <option value="view">View</option>
                                   </select>
@@ -602,29 +468,20 @@ function UserRoles({ permissionRender }) {
 
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === "object") {
-                                if (data == "Project") {
+                              if (typeof permissionsId[data] === 'object') {
+                                if (data == 'Project') {
                                   return (
                                     <Tab.Pane eventKey={String(counter)}>
                                       <Card.Body
                                         style={{
-                                          background: "#f7faff",
-                                          margin: "32px",
+                                          background: '#f7faff',
+                                          margin: '32px',
                                         }}
                                       >
                                         {permissionsId[data]?.map((val) => (
-                                          <div
-                                            className="form-grouper"
-                                            role="group"
-                                            aria-labelledby="checkbox-group"
-                                          >
+                                          <div className="form-grouper" role="group" aria-labelledby="checkbox-group">
                                             <label className="checkbox_section_custom">
-                                              <Field
-                                                type="checkbox"
-                                                name="permissions"
-                                                value={String(val.id)}
-                                                component={MySpecialField}
-                                              />
+                                              <Field type="checkbox" name="permissions" value={String(val.id)} component={MySpecialField} />
                                               &nbsp;&nbsp;
                                               {val.name}
                                             </label>
@@ -638,16 +495,12 @@ function UserRoles({ permissionRender }) {
                                     <Tab.Pane eventKey={String(counter)}>
                                       <Card.Body
                                         style={{
-                                          background: "#f7faff",
-                                          margin: "32px",
+                                          background: '#f7faff',
+                                          margin: '32px',
                                         }}
                                       >
                                         {permissionsId[data]?.map((val) => (
-                                          <div
-                                            className="form-grouper"
-                                            role="group"
-                                            aria-labelledby="checkbox-group"
-                                          >
+                                          <div className="form-grouper" role="group" aria-labelledby="checkbox-group">
                                             {/* <label className="checkbox_section_custom">
                                               <Field
                                                 type="checkbox"
@@ -660,22 +513,10 @@ function UserRoles({ permissionRender }) {
                                             </label> */}
                                             <div>
                                               <div className="form-group custom-select-style-for-sub">
-                                                <select
-                                                  name="admin"
-                                                  placeholder="Admin"
-                                                  onChange={(e) => {}}
-                                                  onBlur={handleBlur}
-                                                  value={values.admin}
-                                                >
-                                                  <option value="---">
-                                                    ---
-                                                  </option>
-                                                  <option value="edit">
-                                                    Edit
-                                                  </option>
-                                                  <option value="view">
-                                                    View
-                                                  </option>
+                                                <select name="admin" placeholder="Admin" onChange={(e) => {}} onBlur={handleBlur} value={values.admin}>
+                                                  <option value="---">---</option>
+                                                  <option value="edit">Edit</option>
+                                                  <option value="view">View</option>
                                                 </select>
                                                 <p> {val.name}</p>
                                               </div>
@@ -722,9 +563,7 @@ function UserRoles({ permissionRender }) {
                     </Row>
                   </Tab.Container>
                   {/*  */}
-                  <div className="error">
-                    {errors.title && touched.title && errors.title}
-                  </div>
+                  <div className="error">{errors.title && touched.title && errors.title}</div>
                 </div>
               </form>
             )}
