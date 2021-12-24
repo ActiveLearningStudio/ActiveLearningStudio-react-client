@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .preview-layout-model {
   //   z-index: 999999;
   position: fixed;
@@ -21,7 +21,86 @@
       line-height: 0px !important;
     }
   }
+  .pagination-top {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: #515151;
+    padding-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
+    border-radius: 0;
+    margin: 0;
+    width: 100%;
+    float: none;
+  }
+  .pagination {
+    margin: 20px auto;
+    display: flex;
+    float: right;
+    list-style: none;
+    outline: none;
+    // Edit
+    a {
+      border: 1px solid;
+      border-radius: 50%;
+      margin: 0 2px;
+    }
+    li {
+      &:nth-of-type(1),
+      &:nth-of-type(2) {
+        a {
+          border: none;
+        }
+      }
+
+      &:nth-last-child(1),
+      &:nth-last-child(2) {
+        a {
+          border: none;
+        }
+      }
+    }
+  }
+  .pagination > .active > a {
+    background-color: $fun-blue-1;
+    border-color: $fun-blue-1;
+    color: #fff;
+  }
+  .pagination > li > a {
+    // start Edit
+    // border: 1px solid$fun-blue-1;
+    // border-radius: 67%;
+    // margin: 0 3px;
+    // End edit
+    padding: 5px 10px;
+    outline: none;
+    cursor: pointer;
+  }
+  .pagination > .active > a,
+  .pagination > .active > span,
+  .pagination > .active > a:hover,
+  .pagination > .active > span:hover,
+  .pagination > .active > a:focus,
+  .pagination > .active > span:focus {
+    background-color: $fun-blue-1;
+    border-color: $fun-blue-1;
+    outline: none;
+    // Edit
+    border-radius: 67%;
+  }
+  .pagination > li > a,
+  .pagination > li > span {
+    color: $fun-blue-1;
+  }
+  .pagination > li:first-child > a,
+  .pagination > li:first-child > span,
+  .pagination > li:last-child > a,
+  .pagination > li:last-child > span {
+    border-radius: unset;
+  }
   // Role Css Update
   .dynamic-roles-title-btn {
     padding-bottom: 23px;
@@ -101,7 +180,7 @@
       position: absolute;
       right: 5px;
       top: 15px;
-      content: url("../../../assets/images/svg/sideAngle.svg");
+      content: url('../../../assets/images/svg/sideAngle.svg');
     }
   }
   // .video-model-tab {

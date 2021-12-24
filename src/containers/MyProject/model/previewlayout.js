@@ -38,19 +38,35 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
                 </div>
               </div>
-              <H5PEditor
-                h5pParams={
-                  props.editVideo.h5p
-                    ? props.editVideo.h5p
-                    : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
-                }
-                h5pLib="H5P.InteractiveVideo 1.22"
-                hide={props.onHide}
-                type={type}
-                formData={props?.formData}
-                editVideo={editVideo}
-                setOpenVideo={setOpenVideo}
-              />
+              {video.includes('youtube.com') ? (
+                <H5PEditor
+                  h5pParams={
+                    props.editVideo.h5p
+                      ? props.editVideo.h5p
+                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                  }
+                  h5pLib="H5P.InteractiveVideo 1.22"
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                />
+              ) : (
+                <H5PEditor
+                  h5pParams={
+                    props.editVideo.h5p
+                      ? props.editVideo.h5p
+                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                  }
+                  h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                />
+              )}
             </>
           ) : (
             <>
