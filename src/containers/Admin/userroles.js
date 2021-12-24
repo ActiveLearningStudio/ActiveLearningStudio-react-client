@@ -35,11 +35,6 @@ function UserRoles({ permissionRender }) {
   const [organizationView, setOrganizationView] = useState([]);
   const [teamsView, setTeamsView] = useState([]);
   const projectEditDate = "ALL";
-  const organizationViewData = [
-    "organization:edit",
-    "organization:delete",
-    "organization:create",
-  ];
   const projectViewDate = [
     "project:edit",
     "project:delete",
@@ -109,16 +104,16 @@ function UserRoles({ permissionRender }) {
                 }
               });
             }
-            if (data == "Organization") {
-              permissionsId[data]?.map((val) => {
-                if (organizationViewData.includes(val.name)) {
-                  setOrganizationView((prevItems) => [
-                    ...prevItems,
-                    String(val.id),
-                  ]);
-                }
-              });
-            }
+            // if (data == "Organization") {
+            //   permissionsId[data]?.map((val) => {
+            //     if (organizationViewData.includes(val.name)) {
+            //       setOrganizationView((prevItems) => [
+            //         ...prevItems,
+            //         String(val.id),
+            //       ]);
+            //     }
+            //   });
+            // }
           }
         });
     }
@@ -215,7 +210,6 @@ function UserRoles({ permissionRender }) {
               activityStatus: "edit",
               playlistStatus: "edit",
               teamStatus: "edit",
-              organizationC: "",
             }}
             enableReinitialize
             onSubmit={async (values) => {
@@ -522,7 +516,7 @@ function UserRoles({ permissionRender }) {
                                                     </label> */}
                                                     <div>
                                                       <div className="form-group custom-select-style-for-sub">
-                                                        <select
+                                                        {/* <select
                                                           name="permissions"
                                                           onChange={(e) => {}}
                                                           onBlur={handleBlur}
@@ -537,7 +531,32 @@ function UserRoles({ permissionRender }) {
                                                           <option value="view">
                                                             View
                                                           </option>
-                                                        </select>
+                                                        </select> */}
+
+                                                        <Field
+                                                          as="select"
+                                                          name="permissions"
+                                                          // name={val.id}
+                                                        >
+                                                          <option
+                                                            selected={permission.Organization.includes(
+                                                              val.name
+                                                            )}
+                                                            value={val.id}
+                                                          >
+                                                            edit
+                                                          </option>
+                                                          <option
+                                                            value={val.id}
+                                                            selected={
+                                                              !permission.Organization.includes(
+                                                                val.name
+                                                              )
+                                                            }
+                                                          >
+                                                            view
+                                                          </option>
+                                                        </Field>
                                                         <p> {val.name}</p>
                                                       </div>
                                                     </div>
