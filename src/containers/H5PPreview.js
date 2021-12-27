@@ -1,56 +1,98 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-import gifLoader from 'assets/images/276.gif';
-import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
-import resourceService from 'services/resource.service';
-import * as xAPIHelper from 'helpers/xapi';
+import gifLoader from "assets/images/276.gif";
+import {
+  loadH5pResource,
+  loadH5pResourceSettingsOpen,
+  loadH5pResourceSettingsShared,
+  loadH5pResourceXapi,
+} from "store/actions/resource";
+import resourceService from "services/resource.service";
+import videoServices from "services/videos.services";
+import * as xAPIHelper from "helpers/xapi";
 
 let counter = 0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
-
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [resourceId, setResourceId] = useState(null);
 
-  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview } = props;
+  const {
+    activityId,
+    loadH5pResourceProp,
+    showLtiPreview,
+    showActivityPreview,
+    showvideoH5p,
+  } = props;
 
   const dispatch = useDispatch();
 
   const resourceLoaded = async (data) => {
     window.H5PIntegration = data.h5p.settings;
-    const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
+    const h5pWrapper = document.getElementById("curriki-h5p-wrapper");
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
-    const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
+    const newCss = data.h5p.settings.core.styles.concat(
+      data.h5p.settings.loadedCss
+    );
+
+    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    let h5pContent =
+      h5pContentKeys.length > 0
+        ? window.H5PIntegration.contents[h5pContentKeys[0]]
+        : undefined;
+    let isBrightcoveLib =
+      h5pContent.library === "H5P.BrightcoveInteractiveVideo 1.0"
+        ? true
+        : false;
+
+    if (isBrightcoveLib) {
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+    }
+
     await Promise.all(
       newCss.map((value) => {
-        const link = document.createElement('link');
+        const link = document.createElement("link");
         link.href = value;
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
+        link.type = "text/css";
+        link.rel = "stylesheet";
         document.head.appendChild(link);
         return true;
       })
     );
 
-    const newScripts = data.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
+    const newScripts = data.h5p.settings.core.scripts.concat(
+      data.h5p.settings.loadedJs
+    );
 
     newScripts.forEach((value) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = value;
       script.async = false;
       document.body.appendChild(script);
     });
+
+    if (isBrightcoveLib) {
+      var h5pLibLoadTime = setInterval(function (e) {
+        if ("BrightcoveInteractiveVideo" in window.H5P) {
+          clearInterval(h5pLibLoadTime);
+          window.H5P.init(document.body); // execute H5P
+          window.H5P.preventInit = undefined;
+        }
+      }, 300);
+    }
 
     setLoading(false);
   };
 
   useEffect(() => {
     if (resourceId !== activityId) {
-      const h5pIFrame = document.getElementsByClassName('h5p-iframe');
+      const h5pIFrame = document.getElementsByClassName("h5p-iframe");
       if (h5pIFrame.length) {
         h5pIFrame[0].remove();
       }
@@ -71,6 +113,15 @@ const H5PPreview = (props) => {
             if (response.activity) {
               await resourceLoaded(response.activity);
             }
+          } else if (showvideoH5p) {
+            const response = await videoServices.renderh5pvideo(
+              activeOrganization.id,
+              activityId
+            );
+
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
           } else {
             const response = await loadH5pResourceProp(activityId);
             if (response.activity) {
@@ -83,21 +134,33 @@ const H5PPreview = (props) => {
 
         const checkXapi = setInterval(() => {
           try {
-            const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
+            const x =
+              document.getElementsByClassName("h5p-iframe")[0].contentWindow;
             if (x.H5P) {
-              if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
+              if (
+                x.H5P.externalDispatcher &&
+                xAPIHelper.isxAPINeeded(props.match.path)
+              ) {
                 // eslint-disable-next-line no-use-before-define
                 stopXapi();
 
-                x.H5P.externalDispatcher.on('xAPI', (event) => {
+                x.H5P.externalDispatcher.on("xAPI", (event) => {
                   if (counter > 0) {
-                    dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
+                    dispatch(
+                      loadH5pResourceXapi(
+                        JSON.stringify(
+                          xAPIHelper.extendStatement(event.data.statement, {
+                            ...props,
+                          })
+                        )
+                      )
+                    );
                   }
                   counter += 1;
                 });
               }
             }
-          } catch (e) { }
+          } catch (e) {}
         });
 
         const stopXapi = () => clearInterval(checkXapi);
@@ -107,13 +170,19 @@ const H5PPreview = (props) => {
 
       setResourceId(activityId);
     }
-  }, [resourceId, activityId, showLtiPreview, showActivityPreview, loadH5pResourceProp]);
+  }, [
+    resourceId,
+    activityId,
+    showLtiPreview,
+    showActivityPreview,
+    loadH5pResourceProp,
+  ]);
 
   return (
     <>
       {!loading ? (
         <div id="curriki-h5p-wrapper">
-          <div className="loader_gif" style={{ color: 'black' }}>
+          <div className="loader_gif" style={{ color: "black" }}>
             Unable to Load Activity
           </div>
         </div>
@@ -151,4 +220,6 @@ const mapStateToProps = (state) => ({
   parentPlaylist: state.playlist.selectedPlaylist,
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(H5PPreview));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(H5PPreview)
+);
