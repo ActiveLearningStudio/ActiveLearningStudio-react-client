@@ -55,9 +55,7 @@ const PreviewLayoutModel = (props) => {
               ) : (
                 <H5PEditor
                   h5pParams={
-                    props.editVideo.h5p
-                      ? props.editVideo.h5p
-                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                    props.editVideo.h5p ? props.editVideo.h5p : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": ${video}}}},"metadata":{"title":"${title}"}}`
                   }
                   h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
                   hide={props.onHide}
