@@ -86,7 +86,7 @@ export default function CreateActivityItem(props) {
             const response = await dispatch(editActivityItem(values, selectedItem.id));
             if (response) {
               Swal.fire({
-                text: 'You have successfully updated the activity item',
+                text: 'Activity item edited successfully',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
@@ -112,7 +112,7 @@ export default function CreateActivityItem(props) {
             const response = await dispatch(createActivityItem(values));
             if (response) {
               Swal.fire({
-                text: 'You have successfully created the activity item',
+                text: 'Activity item added successfully',
                 icon: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#084892',
@@ -138,7 +138,7 @@ export default function CreateActivityItem(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit' : 'Add'} Activity Item</h2>
+            <h2>{editMode ? 'Edit' : 'Add'} activity item</h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
@@ -200,13 +200,13 @@ export default function CreateActivityItem(props) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Demo Video ID</h3>
+                  <h3>Demo video ID</h3>
                   <input type="text" name="demo_video_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_video_id} />
                   <div className="error">{errors.demo_video_id && touched.demo_video_id && errors.demo_video_id}</div>
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Demo Activity ID</h3>
+                  <h3>Demo activity ID</h3>
                   <input type="text" name="demo_activity_id" onChange={handleChange} onBlur={handleBlur} value={values.demo_activity_id} />
                   <div className="error">{errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}</div>
                 </div>
@@ -293,7 +293,7 @@ export default function CreateActivityItem(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit' : 'Create'} Activity Item</button>
+              <button type="submit">{editMode ? 'Edit' : 'Add'} activity item</button>
               <button
                 type="button"
                 className="cancel"
