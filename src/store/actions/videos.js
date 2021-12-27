@@ -36,7 +36,22 @@ export const getBrightCMS = () => async (dispatch) => {
   return result;
 };
 
-export const getBrightVideos = (brightId) => async (dispatch) => {
+export const getBrightVideos = (brightId, offset) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await videoServices.brightCMSVideo(
+    {
+      organization_id: activeOrganization.id,
+      id: brightId,
+      query_param: `&limit=6&offset=${offset}`,
+    },
+    offset
+  );
+  return result;
+};
+export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -44,6 +59,7 @@ export const getBrightVideos = (brightId) => async (dispatch) => {
   const result = await videoServices.brightCMSVideo({
     organization_id: activeOrganization.id,
     id: brightId,
+    query_param: `query=name=${videoID}`,
   });
   return result;
 };

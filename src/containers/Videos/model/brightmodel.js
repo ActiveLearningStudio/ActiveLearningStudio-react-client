@@ -8,24 +8,36 @@ import { Accordion, Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
 import PreivewImage from 'assets/images/cardlistimg.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faCog } from '@fortawesome/free-solid-svg-icons';
+import Pagination from 'react-js-pagination';
 import HeadingThree from 'utils/HeadingThree/headingthree';
 import Buttons from 'utils/Buttons/buttons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBrightCMS, getBrightVideos } from 'store/actions/videos';
+import { getBrightCMS, getBrightVideos, getBrightVideosSearch } from 'store/actions/videos';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
   const [cms, setcms] = useState([]);
   const [cmsVideo, setcmsVideo] = useState([]);
+  const [activeCms, setActiveCms] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [searchId, setSearchId] = useState(0);
 
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
-      const videosResult = await dispatch(getBrightVideos(result.data?.[0]?.id));
-      console.log('videosResult:', videosResult);
       setcms(result.data);
-      setcmsVideo(videosResult.data);
+      setActiveCms(result.data?.[0]?.id);
     })();
   }, []);
+  useEffect(() => {
+    (async () => {
+      if (activeCms) {
+        const videosResult = await dispatch(getBrightVideos(activeCms, offset * 6));
+        setTotalCount(videosResult.meta.count);
+        setcmsVideo(videosResult.data);
+      }
+    })();
+  }, [activeCms, offset]);
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
@@ -41,7 +53,14 @@ const BrightcoveModel = (props) => {
                 <HeadingThree text="Brightcove CMS" className="nav-menu-heading" />
                 <Nav variant="pills" className="flex-column">
                   {cms.map((data, counter) => (
-                    <div className="role-permission-tab-name" id="role-permission-tab-id">
+                    <div
+                      onClick={() => {
+                        setOffset(0);
+                        setActiveCms(data);
+                      }}
+                      className="role-permission-tab-name"
+                      id="role-permission-tab-id"
+                    >
                       <Nav.Item>
                         <Nav.Link eventKey={`manual-${counter + 1}`}>
                           {data.account_name}
@@ -60,30 +79,25 @@ const BrightcoveModel = (props) => {
                         <div>
                           <HeadingTwo text={data1.account_name} color="#515151" className="NetSuite-heading" />
                         </div>
-                        {/* <div className="NetSuite-section-searching">
-                          <div
-                            className="section-searching-title"
-                            style={{ textAlign: "right" }}
-                          >
-                            <FontAwesomeIcon
-                              icon={faCog}
-                              className="icon-setting"
-                            />
+                        <div className="NetSuite-section-searching">
+                          {/* <div className="section-searching-title" style={{ textAlign: 'right' }}>
+                            <FontAwesomeIcon icon={faCog} className="icon-setting" />
                             <span>Settings</span>
-                          </div>
+                          </div> */}
                           <div className="section-input-search">
-                            <input
-                              type="text"
-                              placeholder="Search by video ID..."
-                            />
-                            <button>
-                              <FontAwesomeIcon
-                                icon={faSearch}
-                                color="#084892"
-                              />
+                            <input onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video ID..." />
+                            <button
+                              onClick={async () => {
+                                setcmsVideo([]);
+                                const videosResult = await dispatch(getBrightVideosSearch(activeCms, searchId));
+                                setTotalCount(videosResult.meta.count);
+                                setcmsVideo(videosResult.data);
+                              }}
+                            >
+                              <FontAwesomeIcon icon={faSearch} color="#084892" />
                             </button>
                           </div>
-                        </div> */}
+                        </div>
                       </div>
 
                       <div className="NetSuite-section-table responsive-table">
@@ -141,6 +155,17 @@ const BrightcoveModel = (props) => {
                                 ))}
                               </tbody>
                             </table>
+
+                            <Pagination
+                              activePage={offset + 1}
+                              pageRangeDisplayed={7}
+                              itemsCountPerPage={6}
+                              totalItemsCount={totalCount}
+                              onChange={(e) => {
+                                //const newOffset = offset + 1;
+                                setOffset(e - 1);
+                              }}
+                            />
                           </Card.Body>
                         </Tab.Pane>
                         {/* </tbody> */}

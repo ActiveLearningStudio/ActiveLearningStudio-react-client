@@ -44,11 +44,12 @@ const brightCMS = (orgId) =>
       return Promise.reject(err.response.data);
     });
 
-const brightCMSVideo = (values) =>
+const brightCMSVideo = (values, offset) =>
   httpService
     .post(`/${apiVersion}/brightcove/get-bc-videos-list`, values)
     .then(({ data }) => data)
     .catch((err) => {
+      //errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
 
