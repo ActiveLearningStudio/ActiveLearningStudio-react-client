@@ -213,7 +213,8 @@ function UserRoles({ permissionRender }) {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              console.log("values-Role-Update before:", values);
+              console.log("Roles:", checkRoles);
+              console.log("values-Role-Update:", values);
 
               // if (values.projectStatus == "view") {
               //   values.permissions = values.permissions.filter((data) => {
@@ -251,7 +252,7 @@ function UserRoles({ permissionRender }) {
               //     );
               //   });
               // }
-              console.log("values-Role-Update  after:", values);
+              // console.log("values-Role-Update  after:", values);
               dispatch(updateRole(activeOrganization.id, values));
             }}
           >
@@ -290,6 +291,9 @@ function UserRoles({ permissionRender }) {
                       </div>
                     </div>
                   )}
+                  {/* <button type="submit" className="curriki-white-button">
+                    Update Role
+                  </button> */}
 
                   {/* <Accordion defaultActiveKey="0">
                     {!!permissionsId &&
@@ -470,8 +474,7 @@ function UserRoles({ permissionRender }) {
                                               <div>
                                                 <div className="form-group custom-select-style">
                                                   <select
-                                                    name="admin"
-                                                    placeholder="Admin"
+                                                    name=""
                                                     onChange={(e) => {}}
                                                     onBlur={handleBlur}
                                                     value={values.admin}
@@ -542,12 +545,18 @@ function UserRoles({ permissionRender }) {
                                                             selected={permission.Organization.includes(
                                                               val.name
                                                             )}
-                                                            value={val.id}
+                                                            // value={val.id}
+                                                            // value="---"
+                                                            value={String(
+                                                              val.id
+                                                            )}
                                                           >
                                                             edit
                                                           </option>
                                                           <option
-                                                            value={val.id}
+                                                            //value={val.id}
+                                                            // value="edit"
+                                                            value={null}
                                                             selected={
                                                               !permission.Organization.includes(
                                                                 val.name
@@ -691,19 +700,46 @@ function UserRoles({ permissionRender }) {
                                             <div>
                                               <div className="form-group custom-select-style-for-sub">
                                                 <select
-                                                  name="permissions"
-                                                  onChange={handleChange}
+                                                  name=""
+                                                  onChange={(e) => {
+                                                    if (
+                                                      e.target.value == "view"
+                                                    ) {
+                                                      values.permissions = values.permissions.filter(
+                                                        (data) => {
+                                                          return (
+                                                            data !=
+                                                            String(val.id)
+                                                          );
+                                                        }
+                                                      );
+                                                    } else {
+                                                      !values.permissions.includes(
+                                                        String(val.id)
+                                                      ) &&
+                                                        values.permissions.push(
+                                                          String(val.id)
+                                                        );
+                                                    }
+                                                  }}
                                                   onBlur={handleBlur}
-                                                  value={
-                                                    String(val.id)
-                                                      ? "edit"
-                                                      : "view"
-                                                  }
                                                 >
-                                                  <option value="edit">
+                                                  <option
+                                                    selected={permission.Organization.includes(
+                                                      val.name
+                                                    )}
+                                                    value="edit"
+                                                  >
                                                     Edit
                                                   </option>
-                                                  <option value="view">
+                                                  <option
+                                                    value="view"
+                                                    selected={
+                                                      !permission.Organization.includes(
+                                                        val.name
+                                                      )
+                                                    }
+                                                  >
                                                     View
                                                   </option>
                                                 </select>
@@ -730,32 +766,49 @@ function UserRoles({ permissionRender }) {
                                             role="group"
                                             aria-labelledby="checkbox-group"
                                           >
-                                            {/* <label className="checkbox_section_custom">
-                                              <Field
-                                                type="checkbox"
-                                                name="permissions"
-                                                value={String(val.id)}
-                                                component={MySpecialField}
-                                              />
-                                              &nbsp;&nbsp;
-                                              {val.name}
-                                            </label> */}
                                             <div>
                                               <div className="form-group custom-select-style-for-sub">
                                                 <select
-                                                  name="admin"
-                                                  placeholder="Admin"
-                                                  onChange={(e) => {}}
+                                                  name=""
+                                                  onChange={(e) => {
+                                                    if (
+                                                      e.target.value == "view"
+                                                    ) {
+                                                      values.permissions = values.permissions.filter(
+                                                        (data) => {
+                                                          return (
+                                                            data !=
+                                                            String(val.id)
+                                                          );
+                                                        }
+                                                      );
+                                                    } else {
+                                                      !values.permissions.includes(
+                                                        String(val.id)
+                                                      ) &&
+                                                        values.permissions.push(
+                                                          String(val.id)
+                                                        );
+                                                    }
+                                                  }}
                                                   onBlur={handleBlur}
-                                                  value={values.admin}
                                                 >
-                                                  <option value="---">
-                                                    ---
-                                                  </option>
-                                                  <option value="edit">
+                                                  <option
+                                                    selected={permission.Organization.includes(
+                                                      val.name
+                                                    )}
+                                                    value="edit"
+                                                  >
                                                     Edit
                                                   </option>
-                                                  <option value="view">
+                                                  <option
+                                                    value="view"
+                                                    selected={
+                                                      !permission.Organization.includes(
+                                                        val.name
+                                                      )
+                                                    }
+                                                  >
                                                     View
                                                   </option>
                                                 </select>
