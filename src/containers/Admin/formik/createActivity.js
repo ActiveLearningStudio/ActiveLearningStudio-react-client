@@ -80,7 +80,7 @@ export default function CreateActivity(props) {
             );
             if (response) {
               Swal.fire({
-                text: "You have successfully updated the activity type",
+                text: "Activity type edited successfully",
                 icon: "success",
                 showCancelButton: false,
                 confirmButtonColor: "#084892",
@@ -106,7 +106,7 @@ export default function CreateActivity(props) {
             const response = await dispatch(createActivityType(values));
             if (response) {
               Swal.fire({
-                text: "You have successfully created the activity type",
+                text: "Activity type added successfully",
                 icon: "success",
                 showCancelButton: false,
                 confirmButtonColor: "#084892",
@@ -132,7 +132,7 @@ export default function CreateActivity(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? "Edit" : "Add"} Activity Type</h2>
+            <h2>{editMode ? "Edit" : "Add"} activity type</h2>
             <FontAwesomeIcon
               icon="times"
               className="cross-all-pop"
@@ -335,7 +335,7 @@ export default function CreateActivity(props) {
             </div>
             <div className="button-group">
               <button type="submit">
-                {editMode ? "Edit" : "Create"} Activity Type
+                {editMode ? "Edit" : "Add"} activity type
               </button>
               <button
                 type="button"
