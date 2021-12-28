@@ -23,7 +23,7 @@ import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 import loader from 'assets/images/dotsloader.gif';
 // import csv from "assets/images/csv.png";
 // import pdf from "assets/images/pdf.png";
-import bulk from 'assets/images/bulk.png';
+// import bulk from 'assets/images/bulk.png';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
@@ -243,7 +243,7 @@ function Controller(props) {
           </div>
         )} */}
 
-        {!!search && type === 'Project' && (
+        {!!search && type === 'Projects' && (
           <div className="search-bar">
             <input
               className=""
@@ -309,7 +309,7 @@ function Controller(props) {
         )}
         {paginationCounter && (
           <div className="pagination-counter drop-counter ">
-            Row per page
+            Rows per page
             <span>
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">{size}</Dropdown.Toggle>
@@ -349,7 +349,7 @@ function Controller(props) {
           </div>
         )}
         {/* FILTER FOR PROJECT TABS */}
-        {type === 'Project' && (subType === 'all' || subType === 'Library requests') && (
+        {type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -482,7 +482,7 @@ function Controller(props) {
                     </span>
                     <span>
                       <input type="radio" checked={projectFilterObj.shared === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 0 })} />
-                      Not Enabled
+                      Disabled
                     </span>
                   </div>
                 </div>
@@ -491,14 +491,14 @@ function Controller(props) {
                   Apply Filters
                 </div>
                 <div className="filter-btn-project" onClick={() => { setAuthorName(''); resetProjectFilter(); }}>
-                  <FontAwesomeIcon icon="history" />
-                  Reset
+                  <FontAwesomeIcon icon="sync" />
+                  Reset All
                 </div>
               </Dropdown.Menu>
             </Dropdown>
           </div>
         )}
-        {type === 'Project' && (subType === 'all' || subType === 'Library requests') && (
+        {type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
           <button
             className="switch-libreq"
             type="button"
@@ -672,7 +672,7 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Project' && (subType === 'all' || subType === 'Library requests') && (
+        {!!importUser && type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -680,9 +680,7 @@ function Controller(props) {
               importProject.current.click();
             }}
           >
-            <div className="img-section">
-              <img src={bulk} alt="upload" />
-            </div>
+            <FontAwesomeIcon icon="sign-in-alt" />
             <div>Import Project</div>
             <input
               type="file"

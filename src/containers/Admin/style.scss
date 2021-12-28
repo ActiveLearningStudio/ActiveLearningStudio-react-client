@@ -679,13 +679,22 @@
 
     .import-user {
       display: flex;
-      align-items: start;
-      font-size: 12px;
-      text-decoration: underline;
+      align-items: center;
+      justify-content: center;
       color: $fun-blue-1;
-
-      img {
-        margin-right: 5px;
+      background: $fun-blue-1;
+      border: 1px solid $fun-blue-1;
+      box-sizing: border-box;
+      border-radius: 50px;
+      font-weight: normal;
+      font-size: 14px;
+      color: $white;
+      margin-right: 16px;
+      width: 150px;
+      min-height: 32px;
+      svg {
+        color: #f8af2c;
+        margin-right: 7px;
         width: 13px;
         margin-bottom: 1px;
       }

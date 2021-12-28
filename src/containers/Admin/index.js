@@ -100,14 +100,14 @@ function AdminPanel({ showSSO }) {
                     </div>
                   </Tab>
                   {permission?.Project?.includes('project:view') && (
-                    <Tab eventKey="Project" title="Projects">
+                    <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
                         <Pills
                           setModalShow={setModalShow}
-                          modules={['Projects', 'Exported Projects']}
+                          modules={['All Projects', 'Exported Projects']}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
-                          type="Project"
+                          type="Projects"
                           setrowData={setrowData}
                           setActivePageNumber={setActivePageNumber}
                         />
@@ -311,9 +311,7 @@ function AdminPanel({ showSSO }) {
 
           <EditProjectModel
             show={modalShow}
-            onHide={() => {
-              setModalShow(false);
-            }}
+            onHide={(type) => setModalShow(type)}
             row={rowData}
             showFooter={true}
             activePage={activePageNumber}
