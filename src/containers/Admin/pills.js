@@ -229,7 +229,7 @@ export default function Pills(props) {
         setAllProjectIndexTab(result);
       }
     }
-  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size, searchQueryProject]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {

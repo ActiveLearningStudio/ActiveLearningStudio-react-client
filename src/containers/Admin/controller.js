@@ -254,11 +254,11 @@ function Controller(props) {
                 if (e.target.value) {
                   setActivePage(1);
                   setSearchQueryProject(e.target.value);
-                  searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
+                  // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
                 } else if (e.target.value === '') {
                   setActivePage(1);
                   setSearchQueryProject('');
-                  searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
+                  // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
                 }
               }}
             />
