@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import imgAvatar from "assets/images/default-upload-img.png";
+import docAvatar from "assets/images/document-avatar.png";
 import { removeActiveAdminForm } from "store/actions/admin";
 import Swal from "sweetalert2";
 import {
