@@ -79,7 +79,7 @@ export default function CreateLtiTool(prop) {
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: res?.data,
+                payload: 'LTI tool edited successfully',
               });
             });
           } else {
@@ -98,7 +98,7 @@ export default function CreateLtiTool(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LTI tool added successfully',
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -122,7 +122,7 @@ export default function CreateLtiTool(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2>{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}LTI tool</h2>
+              <h2>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -229,7 +229,7 @@ export default function CreateLtiTool(prop) {
               </div>
               
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}LTI Tool</button>
+                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</button>
                 <button
                   type="button"
                   className="cancel"

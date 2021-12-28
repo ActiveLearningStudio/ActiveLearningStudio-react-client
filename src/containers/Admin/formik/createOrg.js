@@ -100,6 +100,7 @@ export default function CreateOrg(prop) {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
+                  dispatch(getsubOrgList(activeOrganization.id));
                 }
               });
             }
@@ -144,7 +145,7 @@ export default function CreateOrg(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit ' : 'Create '} Organization</h2>
+            <h2>{editMode ? 'Edit ' : 'Add '} organization</h2>
             <FontAwesomeIcon
               icon="times"
               className="cross-all-pop"
@@ -220,7 +221,7 @@ export default function CreateOrg(prop) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Noovo Client ID </h3>
+                  <h3>Noovo client ID </h3>
                   <input type="text" name="noovo_client_id" onChange={handleChange} onBlur={handleBlur} value={values.noovo_client_id} />
                 </div>
 
@@ -236,14 +237,14 @@ export default function CreateOrg(prop) {
 
                 <div className="toggle-group-button">
                   <div className="form-group-create">
-                    <h3>Google Classroom Publishing</h3>
+                    <h3>Google classroom publishing</h3>
                     <div className="create-form-inputs-toggles">
-                      <div className="custom-toggle-button">
+                    <div className="custom-toggle-button">
                         <Switch
-                          checked={values.gcr_project_visibility}
+                          checked={values.gcr_activity_visibility}
                           onChange={() => {
-                            setCheckedProject(!checkedProject);
-                            setFieldValue('gcr_project_visibility', !checkedProject);
+                            setCheckedActivty(!checkedActivity);
+                            setFieldValue('gcr_activity_visibility', !checkedActivity);
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -254,8 +255,9 @@ export default function CreateOrg(prop) {
                           onHandleColor="#e89e21"
                           offHandleColor="#666"
                         />
-                        <h3>Project</h3>
+                        <h3>Activity</h3>
                       </div>
+                      
                       {/* <Switch
                       checked={checked}
                       onChange={() => {
@@ -283,10 +285,10 @@ export default function CreateOrg(prop) {
                       </div>
                       <div className="custom-toggle-button">
                         <Switch
-                          checked={values.gcr_activity_visibility}
+                          checked={values.gcr_project_visibility}
                           onChange={() => {
-                            setCheckedActivty(!checkedActivity);
-                            setFieldValue('gcr_activity_visibility', !checkedActivity);
+                            setCheckedProject(!checkedProject);
+                            setFieldValue('gcr_project_visibility', !checkedProject);
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -297,7 +299,7 @@ export default function CreateOrg(prop) {
                           onHandleColor="#e89e21"
                           offHandleColor="#666"
                         />
-                        <h3>Activity</h3>
+                        <h3>Project</h3>
                       </div>
                     </div>
                   </div>
@@ -388,7 +390,7 @@ export default function CreateOrg(prop) {
 
 
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit ' : 'Create '} Organization</button>
+              <button type="submit">{editMode ? 'Edit ' : 'Add '} organization</button>
               <button
                 type="button"
                 className="cancel"
