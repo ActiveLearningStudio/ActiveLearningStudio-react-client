@@ -273,7 +273,7 @@ export default function CreateActivity(props) {
                             );
                             fileurl.then((file) => {
                               setFileActive(file);
-                              setFieldValue("file", file);
+                              setFieldValue("css_path", file);
                             });
                           } catch (err) {
                             Swal.fire({
