@@ -38,7 +38,7 @@ export default function CreateOrganization() {
   const imgUpload = useRef();
   return (
     <div className="create-organizations">
-      <h2>Add organization</h2>
+      <h2>Create Organization</h2>
       <Formik
         initialValues={{
           name: '',
@@ -293,7 +293,7 @@ export default function CreateOrganization() {
               </div>
               <div className="btn-group">
                 <button className="submit-create" type="submit">
-                  ADD ORGANIZATION
+                  CREATE ORGANIZATION
                 </button>
                 <button
                   className="cancel-create"
