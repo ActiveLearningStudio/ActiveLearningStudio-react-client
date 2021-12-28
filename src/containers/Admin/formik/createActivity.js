@@ -29,7 +29,7 @@ export default function CreateActivity(props) {
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
-      setFileActive(selectedType?.external_css_path);
+      setFileActive(selectedType?.css_path);
     } else {
       setImgActive(null);
       setFileActive(null);
@@ -42,7 +42,7 @@ export default function CreateActivity(props) {
           title: editMode ? selectedType.title : "",
           image: editMode ? selectedType.image : "",
           order: editMode ? selectedType.order : "",
-          file: editMode ? selectedType.external_css_path : "",
+          file: editMode ? selectedType.css_path : "",
         }}
         validate={(values) => {
           const errors = {};
