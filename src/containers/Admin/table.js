@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
-import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+// import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
@@ -39,6 +39,9 @@ function Table(props) {
     setAllProjectIndexTab,
     changeProjectFromorg,
     setAllProjectTab,
+    setModalShow,
+    setrowData,
+    setActivePageNumber,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -51,6 +54,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -85,7 +89,7 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === 'LMS' || type === 'Project' || type === 'DefaultSso') {
+    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso') {
       if (data?.data) {
         setLocalStateData(data?.data);
       } else {
@@ -442,7 +446,7 @@ function Table(props) {
                                 if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-                                dispatch(setActiveTab('Project'));
+                                dispatch(setActiveTab('Projects'));
                               }
                             }}
                           >
@@ -573,8 +577,8 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === 'Project' &&
-              subType === 'all' &&
+            {type === 'Projects' &&
+              subType === 'All Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData.map((row) => {
@@ -644,7 +648,17 @@ function Table(props) {
                           <div className="admin-panel-dropdown">
                             {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
                             <div>
-                              <AdminDropdown setAllProjectTab={setAllProjectTab} setLocalStateData={setLocalStateData} localStateData={localStateData} type={type} row={row} />
+                              <AdminDropdown
+                                activePage={activePage}
+                                setAllProjectTab={setAllProjectTab}
+                                setLocalStateData={setLocalStateData}
+                                localStateData={localStateData}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                              />
                             </div>
                           </div>
                         </td>
@@ -666,7 +680,7 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Project' &&
+            {type === 'Projects' &&
               subType === 'Exported Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
@@ -699,7 +713,7 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Project' &&
+            {type === 'Projects' &&
               subType === 'Library requests' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (

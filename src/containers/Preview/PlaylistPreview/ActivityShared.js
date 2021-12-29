@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -5,12 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 import { Alert } from 'react-bootstrap';
-import {
-  loadH5pResourceSettingsShared,
-  loadH5pResourceSettingsEmbed,
-  loadH5pResourceXapi,
-  searchPreviewActivityAction,
-} from 'store/actions/resource';
+import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction } from 'store/actions/resource';
+
 import * as xAPIHelper from 'helpers/xapi';
 
 import './style.scss';
@@ -43,7 +40,7 @@ const ActivityShared = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      }),
+      })
     );
 
     const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
@@ -82,15 +79,17 @@ const ActivityShared = (props) => {
             setAuthorized(true);
           });
       } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
-        dispatch(searchPreviewActivityAction(match.params.activityId)).then(async (data) => {
-          if (data) {
-            h5pInsertion(data);
-          } else {
+        dispatch(searchPreviewActivityAction(match.params.activityId))
+          .then(async (data) => {
+            if (data) {
+              h5pInsertion(data);
+            } else {
+              setAuthorized(true);
+            }
+          })
+          .catch(() => {
             setAuthorized(true);
-          }
-        }).catch(() => {
-          setAuthorized(true);
-        });
+          });
       } else if (!window.location.pathname.includes('/preview')) {
         loadH5pResourceSettingsShared(match.params.activityId)
           .then(async (data) => {

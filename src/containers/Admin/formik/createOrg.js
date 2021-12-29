@@ -51,7 +51,7 @@ export default function CreateOrg(prop) {
           api_key: editMode ? activeEdit?.api_key : undefined,
           unit_path: editMode ? activeEdit?.unit_path : undefined,
           self_registration: editMode ? activeEdit?.self_registration : false,
-          noovo_client_id: editMode ? activeEdit?.noovo_client_id : undefined,
+          noovo_client_id: editMode ? activeEdit?.noovo_client_id : null,
           gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
           gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
           gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
@@ -146,21 +146,21 @@ export default function CreateOrg(prop) {
           <form onSubmit={handleSubmit}>
             <h2>{editMode ? 'Edit ' : 'Create '} Organization</h2>
             <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
+              icon="times"
+              className="cross-all-pop"
+              onClick={() => {
+                dispatch(removeActiveAdminForm());
+              }}
+            />
             <div className="create-form-inputs-group">
               {/* Left container */}
-              <div style={{marginRight:"64px"}}>
+              <div style={{ marginRight: "64px" }}>
                 <div className="form-group-create">
                   <h3>Organization Name</h3>
                   <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} />
                   <div className="error">{errors.name && touched.name && errors.name}</div>
                 </div>
-                
+
                 <div className="form-group-create">
                   <h3>Description</h3>
                   <textarea type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
@@ -303,90 +303,90 @@ export default function CreateOrg(prop) {
                   </div>
                 </div>
               </div>
-              
+
               {/* Right container */}
               <div>
                 <div className="form-group-create">
-                <h3>Upload an image</h3>
-                <div className="" onClick={() => imgUpload.current.click()}>
-                  <input
-                    type="file"
-                    name="image"
-                    onChange={(e) => {
-                      if (
-                        !(
-                          e.target.files[0].type.includes('png') ||
-                          e.target.files[0].type.includes('jpg') ||
-                          e.target.files[0].type.includes('gif') ||
-                          e.target.files[0].type.includes('jpeg') ||
-                          e.target.files[0].type.includes('svg')
-                        )
-                      ) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Invalid file selected.',
-                        });
-                      } else if (e.target.files[0].size > 100000000) {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Selected file size should be less then 100MB.',
-                        });
-                      } else {
-                        const formData = new FormData();
-                        try {
-                          formData.append('thumb', e.target.files[0]);
-                          const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
-                          imgurl.then((img) => {
-                            setImgActive(img.data?.thumbUrl);
-                            setFieldValue('image', img.data?.thumbUrl);
-                          });
-                        } catch (err) {
+                  <h3>Upload an image</h3>
+                  <div className="" onClick={() => imgUpload.current.click()}>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={(e) => {
+                        if (
+                          !(
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
+                          )
+                        ) {
                           Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Image upload failed, kindly try again.',
+                            text: 'Invalid file selected.',
                           });
+                        } else if (e.target.files[0].size > 100000000) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
+                          });
+                        } else {
+                          const formData = new FormData();
+                          try {
+                            formData.append('thumb', e.target.files[0]);
+                            const imgurl = dispatch(uploadImage(allListState.currentOrganization?.id, formData));
+                            imgurl.then((img) => {
+                              setImgActive(img.data?.thumbUrl);
+                              setFieldValue('image', img.data?.thumbUrl);
+                            });
+                          } catch (err) {
+                            Swal.fire({
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'Image upload failed, kindly try again.',
+                            });
+                          }
                         }
-                      }
-                    }}
-                    onBlur={handleBlur}
-                    ref={imgUpload}
-                    style={{ display: 'none' }}
-                  />
-                  {imageActive ? (
-                    <>
-                      <img
-                        src={`${global.config.resourceUrl}${imageActive}`}
-                        style={{
-                          width: '360px',
-                          height: '215px',
-                          borderRadius: '8px',
-                        }}
-                      />
-                      <span className="upload-btn">
-                        <img src={pcIcon} alt="" />
-                        My device
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <img src={imgAvatar} alt="" />
-                      <span className="upload-btn">
-                      <img src={pcIcon} alt="" />
-                        My device
-                      </span>
-                    </>
-                  )}
-                  <div className="error">{errors.image && touched.image && errors.image}</div>
-                </div>
+                      }}
+                      onBlur={handleBlur}
+                      ref={imgUpload}
+                      style={{ display: 'none' }}
+                    />
+                    {imageActive ? (
+                      <>
+                        <img
+                          src={`${global.config.resourceUrl}${imageActive}`}
+                          style={{
+                            width: '360px',
+                            height: '215px',
+                            borderRadius: '8px',
+                          }}
+                        />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                          My device
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <img src={imgAvatar} alt="" />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                          My device
+                        </span>
+                      </>
+                    )}
+                    <div className="error">{errors.image && touched.image && errors.image}</div>
+                  </div>
                 </div>
               </div>
             </div>
-            
-            
-            
+
+
+
             <div className="button-group">
               <button type="submit">{editMode ? 'Edit ' : 'Create '} Organization</button>
               <button

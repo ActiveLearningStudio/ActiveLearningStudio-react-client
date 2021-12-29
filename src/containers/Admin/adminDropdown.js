@@ -1,62 +1,31 @@
 /*eslint-disable*/
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import adminService from 'services/admin.service';
 import projectService from 'services/project.service';
-import { confirmAlert } from 'react-confirm-alert';
+
 import './style.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Delete from '../../assets/images/menu-dele.svg';
 import Clone from '../../assets/images/menu-dupli.svg';
 import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import {
-  forgetSpecificFailedJob,
-  getDefaultSso,
-  getLmsProject,
-  getLtiTools,
-  retrySpecificFailedJob,
-  setActiveAdminForm,
-  setActiveTab,
-  setCurrentProject,
-  setCurrentUser,
-  showRemoveUser,
-} from 'store/actions/admin';
+import { getDefaultSso, getLmsProject, getLtiTools, setActiveAdminForm, setCurrentUser, showRemoveUser } from 'store/actions/admin';
 
-import {
-  deleteUserFromOrganization,
-  deleteOrganization,
-  getOrganization,
-  clearOrganizationState,
-  removeUserFromOrganization,
-  getRoles,
-  updatePageNumber,
-} from 'store/actions/organization';
-import {
-  deleteActivityItem,
-  deleteActivityType,
-  getActivityItems,
-  loadResourceTypesAction,
-  selectActivityItem,
-  selectActivityType,
-  loadResourceItemAction,
-} from 'store/actions/resource';
+import { deleteOrganization, getOrganization, clearOrganizationState, getRoles } from 'store/actions/organization';
+import { deleteActivityItem, deleteActivityType, loadResourceTypesAction, selectActivityItem, selectActivityType, loadResourceItemAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
-import EditProjectModel from './model/editprojectmodel';
-import { clone } from 'lodash';
+
 import SharePreviewPopup from 'components/SharePreviewPopup';
 
 const AdminDropdown = (props) => {
   const {
-    project,
-    showDeletePopup,
-    teamPermission,
     type,
     user,
     row,
@@ -66,6 +35,9 @@ const AdminDropdown = (props) => {
     setLocalStateData,
     localStateData,
     setAllProjectTab,
+    setrowData,
+    setModalShow,
+    setActivePageNumber,
     // text,
     // iconColor,
   } = props;
@@ -82,20 +54,10 @@ const AdminDropdown = (props) => {
   // useEffect(() => {
   //   setAllLms(AllLms);
   // }, [AllLms]);
-  const [modalShow, setModalShow] = useState(false);
+
   const [projectID, setProjectID] = useState('');
   return (
     <>
-      <EditProjectModel
-        show={modalShow}
-        onHide={() => {
-          setModalShow(false);
-        }}
-        row={row}
-        activePage={activePage}
-        setAllProjectTab={setAllProjectTab}
-        activeOrganization={activeOrganization}
-      />
       <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
         <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
           {/* <FontAwesomeIcon
@@ -209,7 +171,7 @@ const AdminDropdown = (props) => {
             )} */}
             </>
           )}
-          {type === 'Project' && (
+          {type === 'Projects' && (
             <>
               {' '}
               <Dropdown.Item
@@ -302,6 +264,8 @@ const AdminDropdown = (props) => {
                   // dispatch(setCurrentProject(row));
                   setModalShow(true);
                   setProjectID(row.id);
+                  setrowData(row);
+                  setActivePageNumber(activePage);
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />

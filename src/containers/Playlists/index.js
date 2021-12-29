@@ -120,6 +120,7 @@ function PlaylistsPage(props) {
     closeSafariMontageTool,
     safariMontagePublishTool,
     row,
+    showFooter,
   } = props;
 
   const projectIdFilter = match?.params?.projectId || row?.id;
@@ -539,44 +540,43 @@ function PlaylistsPage(props) {
 
                                 <div
                                   style={{
-                                    backgroundImage: `url(${
-                                      selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                        ? selectedProject.thumb_url
-                                        : global.config.resourceUrl + selectedProject.thumb_url
-                                    })`,
+                                    backgroundImage: `url(${selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                      ? selectedProject.thumb_url
+                                      : global.config.resourceUrl + selectedProject.thumb_url
+                                      })`,
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover',
                                   }}
                                   // alt="project-img"
                                   className="container-image"
-                                  // src={
-                                  //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                  //     ? selectedProject.thumb_url
-                                  //     : global.config.resourceUrl + selectedProject.thumb_url
-                                  // }
+                                // src={
+                                //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                //     ? selectedProject.thumb_url
+                                //     : global.config.resourceUrl + selectedProject.thumb_url
+                                // }
                                 />
                               </div>
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                <div className="button-flex-project-images">
-                                  <div
-                                    className="gallery"
-                                    onClick={() => {
-                                      openFile.current.click();
-                                    }}
-                                  >
-                                    <img src={computer} alt="" />
-                                    <p>My device</p>
-                                  </div>
+                                  <div className="button-flex-project-images">
+                                    <div
+                                      className="gallery"
+                                      onClick={() => {
+                                        openFile.current.click();
+                                      }}
+                                    >
+                                      <img src={computer} alt="" />
+                                      <p>My device</p>
+                                    </div>
 
-                                  <div className="pexel" onClick={() => setModalShow(true)}>
-                                    <img src={pexel} alt="pexel" />
-                                    <p>Pexels</p>
+                                    <div className="pexel" onClick={() => setModalShow(true)}>
+                                      <img src={pexel} alt="pexel" />
+                                      <p>Pexels</p>
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
@@ -749,7 +749,7 @@ function PlaylistsPage(props) {
           <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
         </Modal.Body>
       </Modal>
-      <Footer />
+      {!showFooter && <Footer />}
 
       <GoogleModel
         projectId={selectedProjectId}

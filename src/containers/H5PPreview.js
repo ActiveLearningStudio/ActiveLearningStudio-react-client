@@ -1,21 +1,22 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import gifLoader from 'assets/images/276.gif';
 import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
+import videoServices from 'services/videos.services';
 import * as xAPIHelper from 'helpers/xapi';
 
 let counter = 0;
 
 const H5PPreview = (props) => {
   const [loading, setLoading] = useState(true);
-
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [resourceId, setResourceId] = useState(null);
 
-  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview } = props;
+  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview, showvideoH5p } = props;
 
   const dispatch = useDispatch();
 
@@ -24,6 +25,15 @@ const H5PPreview = (props) => {
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
     const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
+
+    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    let h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
+    let isBrightcoveLib = h5pContent.library === 'H5P.BrightcoveInteractiveVideo 1.0' ? true : false;
+
+    if (isBrightcoveLib) {
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+    }
 
     await Promise.all(
       newCss.map((value) => {
@@ -44,6 +54,16 @@ const H5PPreview = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
+
+    if (isBrightcoveLib) {
+      var h5pLibLoadTime = setInterval(function (e) {
+        if ('BrightcoveInteractiveVideo' in window.H5P) {
+          clearInterval(h5pLibLoadTime);
+          window.H5P.init(document.body); // execute H5P
+          window.H5P.preventInit = undefined;
+        }
+      }, 300);
+    }
 
     setLoading(false);
   };
@@ -68,6 +88,12 @@ const H5PPreview = (props) => {
             }
           } else if (showActivityPreview) {
             const response = await loadH5pResourceSettingsShared(activityId);
+            if (response.activity) {
+              await resourceLoaded(response.activity);
+            }
+          } else if (showvideoH5p) {
+            const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
+
             if (response.activity) {
               await resourceLoaded(response.activity);
             }
@@ -97,7 +123,7 @@ const H5PPreview = (props) => {
                 });
               }
             }
-          } catch (e) {}
+          } catch (e) { }
         });
 
         const stopXapi = () => clearInterval(checkXapi);

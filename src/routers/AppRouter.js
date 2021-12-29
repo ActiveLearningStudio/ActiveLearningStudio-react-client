@@ -54,8 +54,10 @@ const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPageAddTeam = loadable(() => import("../containers/Teams/AddTeam"));
 const TeamsPage = loadable(() => import('../containers/Teams'));
+const VideoPage = loadable(() => import('../containers/Videos'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
 const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
+
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
@@ -218,6 +220,7 @@ const AppRouter = (props) => {
                     path="/org/:organization/teams/:teamId/projects/:projectId/add-member"
                     component={AddTeamProjectMemberPage}
                   />
+                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                   <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
                   <PrivateRoute exact path="/org/:organization/instant-admin" showSSO={true} component={AdminPanel} />

@@ -13,7 +13,7 @@ import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUser
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
-  const { modules, type, subType, allProjectTab, setAllProjectTab } = props;
+  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber } = props;
 
   const [key, setKey] = useState(modules && modules[0]);
 
@@ -26,6 +26,7 @@ export default function Pills(props) {
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(10);
+
   const [projectFilterObj, setProjectFilterObj] = useState({
     author_id: null,
     created_from: null,
@@ -39,7 +40,7 @@ export default function Pills(props) {
   const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
-  const [currentTab, setCurrentTab] = useState('all');
+  const [currentTab, setCurrentTab] = useState('All Projects');
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
@@ -108,7 +109,7 @@ export default function Pills(props) {
           setAllProjectIndexTab(data);
         });
       }
-    } else if (type === 'all') {
+    } else if (type === 'All Projects') {
       if (!!query) {
         setAllProjectTab(null);
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
@@ -169,7 +170,7 @@ export default function Pills(props) {
     setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
-    if (activeOrganization && type === 'Project' && currentTab == 'Projects') {
+    if (activeOrganization && type === 'Projects' && currentTab == 'All Projects') {
       if (searchQueryProject) {
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size);
         allproject
@@ -188,11 +189,11 @@ export default function Pills(props) {
           projectFilterObj.updated_from || null,
           projectFilterObj.updated_to || null,
           projectFilterObj.shared,
-          projectFilterObj.indexing,
+          projectFilterObj.indexing
         );
         setAllProjectTab(result);
       }
-    } else if (activeOrganization && type === 'Project' && currentTab === 'Exported Projects') {
+    } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
         userproject
@@ -204,7 +205,7 @@ export default function Pills(props) {
         const result = await adminService.getAllExportedProject(activePage || 1);
         setAllProjectUserTab(result);
       }
-    } else if (activeOrganization && type === 'Project' && currentTab === 'Library requests') {
+    } else if (activeOrganization && type === 'Projects' && currentTab === 'Library requests') {
       if (searchQueryProject) {
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject, size);
         searchapi
@@ -223,12 +224,12 @@ export default function Pills(props) {
           projectFilterObj.created_to || undefined,
           projectFilterObj.updated_from || undefined,
           projectFilterObj.updated_to || undefined,
-          projectFilterObj.shared,
+          projectFilterObj.shared
         );
         setAllProjectIndexTab(result);
       }
     }
-  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size, searchQueryProject]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
@@ -437,16 +438,16 @@ export default function Pills(props) {
       setActivePage(1);
       setCurrentTab('Library requests');
       setChangeIndexValue(0);
-    } else if (subTypeState === 'Projects') {
+    } else if (subTypeState === 'All Projects') {
       setActivePage(1);
-      setCurrentTab('Projects');
-      setKey('Projects')
+      setCurrentTab('All Projects');
+      setKey('All Projects');
     }
   }, [subTypeState]);
   useEffect(() => {
-    if (activeTab === 'Project') {
-      setSubTypeState('Projects');
-      setCurrentTab('all');
+    if (activeTab === 'Projects') {
+      setSubTypeState('All Projects');
+      setCurrentTab('All Projects');
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
@@ -461,48 +462,45 @@ export default function Pills(props) {
       setSubTypeState('All Settings');
     }
   }, [activeTab]);
-  const filterSearch = useCallback(
-    () => {
-      if (subTypeState === 'Library requests') {
-        const libraryrequest = adminService.getAllProjectIndex(
-          activeOrganization?.id,
-          activePage,
-          projectFilterObj.indexing || 0,
-          size,
-          projectFilterObj.author_id || undefined,
-          projectFilterObj.created_from || undefined,
-          projectFilterObj.created_to || undefined,
-          projectFilterObj.updated_from || undefined,
-          projectFilterObj.updated_to || undefined,
-          projectFilterObj.shared,
-        );
-        libraryrequest
-          .then((data) => {
-            setAllProjectIndexTab(data);
-          })
-          .catch((e) => setAllProjectIndexTab([]));
-      } else {
-        const allproject = adminService.getAllProject(
-          activeOrganization?.id,
-          activePage,
-          size,
-          projectFilterObj.author_id || null,
-          projectFilterObj.created_from || null,
-          projectFilterObj.created_to || null,
-          projectFilterObj.updated_from || null,
-          projectFilterObj.updated_to || null,
-          projectFilterObj.shared,
-          projectFilterObj.indexing,
-        );
-        allproject
-          .then((data) => {
-            setAllProjectTab(data);
-          })
-          .catch((e) => setAllProjectTab([]));
-      }
-    },
-    [projectFilterObj],
-  );
+  const filterSearch = useCallback(() => {
+    if (subTypeState === 'Library requests') {
+      const libraryrequest = adminService.getAllProjectIndex(
+        activeOrganization?.id,
+        activePage,
+        projectFilterObj.indexing || 0,
+        size,
+        projectFilterObj.author_id || undefined,
+        projectFilterObj.created_from || undefined,
+        projectFilterObj.created_to || undefined,
+        projectFilterObj.updated_from || undefined,
+        projectFilterObj.updated_to || undefined,
+        projectFilterObj.shared
+      );
+      libraryrequest
+        .then((data) => {
+          setAllProjectIndexTab(data);
+        })
+        .catch((e) => setAllProjectIndexTab([]));
+    } else {
+      const allproject = adminService.getAllProject(
+        activeOrganization?.id,
+        activePage,
+        size,
+        projectFilterObj.author_id || null,
+        projectFilterObj.created_from || null,
+        projectFilterObj.created_to || null,
+        projectFilterObj.updated_from || null,
+        projectFilterObj.updated_to || null,
+        projectFilterObj.shared,
+        projectFilterObj.indexing
+      );
+      allproject
+        .then((data) => {
+          setAllProjectTab(data);
+        })
+        .catch((e) => setAllProjectTab([]));
+    }
+  }, [projectFilterObj]);
 
   const handleSort = (column, subType) => {
     if (subType == 'LTI Tools') {
@@ -531,30 +529,21 @@ export default function Pills(props) {
       indexing: null,
     });
     if (subTypeState === 'Library requests') {
-      const libraryrequest = adminService.getAllProjectIndex(
-        activeOrganization?.id,
-        activePage,
-        changeIndexValue,
-        size,
-      );
+      const libraryrequest = adminService.getAllProjectIndex(activeOrganization?.id, activePage, changeIndexValue, size);
       libraryrequest
         .then((data) => {
           setAllProjectIndexTab(data);
         })
         .catch((e) => setAllProjectIndexTab([]));
     } else {
-      const allproject = adminService.getAllProject(
-        activeOrganization?.id,
-        activePage,
-        size,
-      );
+      const allproject = adminService.getAllProject(activeOrganization?.id, activePage, size);
       allproject
         .then((data) => {
           setAllProjectTab(data);
         })
         .catch((e) => setAllProjectTab([]));
     }
-  }
+  };
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -568,8 +557,8 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'Projects') {
-          setCurrentTab('all');
+        if (key === 'All Projects') {
+          setCurrentTab('All Projects');
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
         }
@@ -755,7 +744,7 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'Project' && subTypeState === 'Projects' && !libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'All Projects' && !libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -772,7 +761,7 @@ export default function Pills(props) {
                 setSearchQueryProject={setSearchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                subType={'all'}
+                subType={'All Projects'}
                 setSubTypeState={setSubTypeState}
                 projectFilterObj={projectFilterObj}
                 setProjectFilterObj={setProjectFilterObj}
@@ -782,14 +771,18 @@ export default function Pills(props) {
                 setCurrentTab={setCurrentTab}
                 setAllProjectTab={setAllProjectTab}
                 resetProjectFilter={resetProjectFilter}
+                setModalShow={setModalShow}
+                setrowData={setrowData}
+                setActivePageNumber={setActivePageNumber}
               />
             )}
-            {type === 'Project' && subTypeState === 'Exported Projects' && (
+            {type === 'Projects' && subTypeState === 'Exported Projects' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
                 search={false}
                 tableHead={columnData.projectUser}
                 sortCol={[]}
+                search={true}
                 handleSort={handleSort}
                 data={allProjectUserTab}
                 type={type}
@@ -802,7 +795,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Project' && subTypeState === 'Library requests' && libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'Library requests' && libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}

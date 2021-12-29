@@ -24,15 +24,15 @@ const editUserInOrganization = (user, subOrgId) => httpService
 // project
 const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) => httpService
   // eslint-disable-next-line max-len
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
 
-const getAllExportedProject = (days) => httpService
-  .get(`/${apiVersion}/users/notifications/export-list?page=${days}`)
+const getAllExportedProject = (page) => httpService
+  .get(`/${apiVersion}/users/notifications/export-list?page=${page}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);
@@ -78,7 +78,7 @@ const getUserProjectSearch = (subOrgId, page, search) => httpService
 
 const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared) => httpService
   // eslint-disable-next-line max-len
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared ? `&shared=${shared}` : ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
