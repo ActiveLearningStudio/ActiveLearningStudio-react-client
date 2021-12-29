@@ -113,7 +113,7 @@ export default function CreateUser(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LMS settings edited successfully',
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -138,7 +138,7 @@ export default function CreateUser(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LMS settings added successfully',
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -162,7 +162,7 @@ export default function CreateUser(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}LMS Setting</h2>
+              <h2 style={{ marginBottom: '45px' }}>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -358,7 +358,7 @@ export default function CreateUser(prop) {
               </div>
               
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}Save Settings</button>
+                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</button>
                 <button
                   type="button"
                   className="cancel"
