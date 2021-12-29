@@ -40,7 +40,7 @@ export default function Pills(props) {
   const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
-  const [currentTab, setCurrentTab] = useState('all');
+  const [currentTab, setCurrentTab] = useState('All Projects');
   const [users, setUsers] = useState(null);
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
@@ -109,7 +109,7 @@ export default function Pills(props) {
           setAllProjectIndexTab(data);
         });
       }
-    } else if (type === 'all') {
+    } else if (type === 'All Projects') {
       if (!!query) {
         setAllProjectTab(null);
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
@@ -170,7 +170,7 @@ export default function Pills(props) {
     setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
-    if (activeOrganization && type === 'Project' && currentTab == 'Projects') {
+    if (activeOrganization && type === 'Projects' && currentTab == 'All Projects') {
       if (searchQueryProject) {
         const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size);
         allproject
@@ -193,7 +193,7 @@ export default function Pills(props) {
         );
         setAllProjectTab(result);
       }
-    } else if (activeOrganization && type === 'Project' && currentTab === 'Exported Projects') {
+    } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
         const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
         userproject
@@ -205,7 +205,7 @@ export default function Pills(props) {
         const result = await adminService.getAllExportedProject(activePage || 1);
         setAllProjectUserTab(result);
       }
-    } else if (activeOrganization && type === 'Project' && currentTab === 'Library requests') {
+    } else if (activeOrganization && type === 'Projects' && currentTab === 'Library requests') {
       if (searchQueryProject) {
         const searchapi = adminService.userSerchIndexs(activeOrganization?.id, activePage, changeIndexValue, searchQueryProject, size);
         searchapi
@@ -229,7 +229,7 @@ export default function Pills(props) {
         setAllProjectIndexTab(result);
       }
     }
-  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size]);
+  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size, searchQueryProject]);
   // Activity Tab Business Logic
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
@@ -438,16 +438,16 @@ export default function Pills(props) {
       setActivePage(1);
       setCurrentTab('Library requests');
       setChangeIndexValue(0);
-    } else if (subTypeState === 'Projects') {
+    } else if (subTypeState === 'All Projects') {
       setActivePage(1);
-      setCurrentTab('Projects');
-      setKey('Projects');
+      setCurrentTab('All Projects');
+      setKey('All Projects');
     }
   }, [subTypeState]);
   useEffect(() => {
-    if (activeTab === 'Project') {
-      setSubTypeState('Projects');
-      setCurrentTab('all');
+    if (activeTab === 'Projects') {
+      setSubTypeState('All Projects');
+      setCurrentTab('All Projects');
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
@@ -557,8 +557,8 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'Projects') {
-          setCurrentTab('all');
+        if (key === 'All Projects') {
+          setCurrentTab('All Projects');
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
         }
@@ -744,7 +744,7 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'Project' && subTypeState === 'Projects' && !libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'All Projects' && !libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -761,7 +761,7 @@ export default function Pills(props) {
                 setSearchQueryProject={setSearchQueryProject}
                 setActivePage={setActivePage}
                 activePage={activePage}
-                subType={'all'}
+                subType={'All Projects'}
                 setSubTypeState={setSubTypeState}
                 projectFilterObj={projectFilterObj}
                 setProjectFilterObj={setProjectFilterObj}
@@ -776,12 +776,13 @@ export default function Pills(props) {
                 setActivePageNumber={setActivePageNumber}
               />
             )}
-            {type === 'Project' && subTypeState === 'Exported Projects' && (
+            {type === 'Projects' && subTypeState === 'Exported Projects' && (
               <Starter
-                paginationCounter={false}
+                paginationCounter={true}
                 search={false}
                 tableHead={columnData.projectUser}
                 sortCol={[]}
+                search={true}
                 handleSort={handleSort}
                 data={allProjectUserTab}
                 type={type}
@@ -794,7 +795,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Project' && subTypeState === 'Library requests' && libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'Library requests' && libraryReqSelected && (
               <Starter
                 paginationCounter={true}
                 size={size}

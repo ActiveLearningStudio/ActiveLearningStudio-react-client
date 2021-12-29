@@ -171,7 +171,7 @@ const AdminDropdown = (props) => {
             )} */}
             </>
           )}
-          {type === 'Project' && (
+          {type === 'Projects' && (
             <>
               {' '}
               <Dropdown.Item

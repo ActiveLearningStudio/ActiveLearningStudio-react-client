@@ -38,7 +38,7 @@ const EditProjectModel = (props) => {
           <div className="detail-btn">
             <Buttons
               onClick={async () => {
-                onHide();
+                onHide(false);
                 const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
                 setAllProjectTab(result);
               }}
