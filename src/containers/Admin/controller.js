@@ -504,7 +504,7 @@ function Controller(props) {
             type="button"
             style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
             onClick={() => {
-              setSubTypeState(libraryReqSelected ? 'Projects' : 'Library requests');
+              setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
