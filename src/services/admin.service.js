@@ -31,8 +31,8 @@ const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, u
     Promise.reject(err.response.data);
   });
 
-const getAllExportedProject = (page) => httpService
-  .get(`/${apiVersion}/users/notifications/export-list?page=${page}`)
+const getAllExportedProject = (page, size, query = '') => httpService
+  .get(`/${apiVersion}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);

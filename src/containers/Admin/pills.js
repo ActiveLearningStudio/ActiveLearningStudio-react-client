@@ -195,14 +195,14 @@ export default function Pills(props) {
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
+        const userproject = adminService.getAllExportedProject(activePage, size, searchQueryProject);
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
           })
           .catch((e) => setAllProjectUserTab([]));
       } else {
-        const result = await adminService.getAllExportedProject(activePage || 1);
+        const result = await adminService.getAllExportedProject(activePage || 1, size);
         setAllProjectUserTab(result);
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Library requests') {
@@ -779,6 +779,8 @@ export default function Pills(props) {
             {type === 'Projects' && subTypeState === 'Exported Projects' && (
               <Starter
                 paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={false}
                 tableHead={columnData.projectUser}
                 sortCol={[]}
