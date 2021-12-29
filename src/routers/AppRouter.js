@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React, { useEffect } from 'react';
 import {
   // Route,
@@ -52,7 +51,7 @@ const SecureProjectPreview = loadable(() => import('../containers/SecureProjectP
 const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
-const TeamsPageAddTeam = loadable(() => import("../containers/Teams/AddTeam"));
+const TeamsPageAddTeam = loadable(() => import('../containers/Teams/AddTeam'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const VideoPage = loadable(() => import('../containers/Videos'));
 const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
@@ -78,12 +77,12 @@ const AppRouter = (props) => {
   });
 
   if (
-    window.location.href.includes('/shared') ||
-    window.location.href.includes('/lti') ||
-    window.location.href.includes('/embed') ||
-    window.location.href.includes('/register') ||
-    window.location.href.includes('/forgot-password') ||
-    window.location.href.includes('gclass/launch')
+    window.location.href.includes('/shared')
+    || window.location.href.includes('/lti')
+    || window.location.href.includes('/embed')
+    || window.location.href.includes('/register')
+    || window.location.href.includes('/forgot-password')
+    || window.location.href.includes('gclass/launch')
   ) {
     document.body.classList.add('mobile-responsive');
   }
@@ -221,17 +220,7 @@ const AppRouter = (props) => {
                     component={AddTeamProjectMemberPage}
                   />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
-                  <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
-                  <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
-                  <PrivateRoute exact path="/org/:organization/instant-admin" showSSO={true} component={AdminPanel} />
-                  <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
-                  <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/edit" component={TeamsPage} editMode />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects" component={TeamsPage} projectShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/channel" component={TeamsPage} channelShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+                  <PrivateRoute exact path="/org/:organization/instant-admin" showSSO component={AdminPanel} />
 
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
@@ -265,13 +254,13 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
-                </Switch >
-              </div >
+                </Switch>
+              </div>
             </>
           )}
-        </Route >
-      </Switch >
-    </Router >
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 AppRouter.propTypes = {

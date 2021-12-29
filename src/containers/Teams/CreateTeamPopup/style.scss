@@ -66,15 +66,14 @@
         }
       }
     }
-    .teamName {
-      font-style: normal;
-      font-weight: normal;
-      font-size: 14px;
-      line-height: 20px;
-      color: #515151;
-      margin-bottom: 4px;
+    .satelliteteaminfo {
+      margin-top: 30px;
+      color: #565656;
     }
-    .description {
+    .error {
+      color: $error;
+    }
+    .label-title {
       font-style: normal;
       font-weight: normal;
       font-size: 14px;

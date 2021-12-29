@@ -1,41 +1,40 @@
-/*eslint-disable */
-import React, { useCallback, useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert } from "react-bootstrap";
+import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 import {
   getTeamPermission,
   loadSubOrganizationTeamsAction,
   loadTeamsAction,
   getWhiteBoardUrl,
-} from "store/actions/team";
+} from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 // import filterImg from 'assets/images/svg/filter.svg';
-import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
-import Footer from "components/Footer";
+import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
+import Footer from 'components/Footer';
 import {
   Link,
   // useHistory,
-} from "react-router-dom";
+} from 'react-router-dom';
 // import Swal from 'sweetalert2';
-import Buttons from "utils/Buttons/buttons";
-import WhiteBoardModal from "components/models/WhiteBoardModal";
+import Buttons from 'utils/Buttons/buttons';
+import WhiteBoardModal from 'components/models/WhiteBoardModal';
 import {
   clearOrganizationState,
   getOrganization,
   getRoles,
-} from "store/actions/organization";
-import { loadLmsAction } from "store/actions/project";
-import CreateTeam from "./CreateTeam";
-import TeamView from "./TeamCard";
-import TeamMemberView from "./TeamMemberView";
-import TeamProjectView from "./TeamProjectView";
-import ChannelPanel from "./Channel";
+} from 'store/actions/organization';
+import { loadLmsAction } from 'store/actions/project';
+import CreateTeam from './CreateTeam';
+import TeamView from './TeamCard';
+import TeamMemberView from './TeamMemberView';
+import TeamProjectView from './TeamProjectView';
+import ChannelPanel from './Channel';
 
-import "./style.scss";
-import CreateTeamPopup from "./CreateTeamPopup";
+import './style.scss';
+import CreateTeamPopup from './CreateTeamPopup';
 
 // TODO: need to remove after connect API
 // const breadCrumbData = {
@@ -60,9 +59,7 @@ function TeamsPage(props) {
     loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { teamPermission, selectedForClone } = useSelector(
-    (state) => state.team
-  );
+  const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   // const [breadCrumb, setBreadCrumb] = useState([]);
@@ -70,7 +67,7 @@ function TeamsPage(props) {
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
@@ -82,9 +79,9 @@ function TeamsPage(props) {
           await loadSubOrgTeams();
           setAlertCheck(true);
         } else if (
-          activeOrganization?.id === currentOrganization?.id &&
-          permission?.Team &&
-          !searchQuery
+          activeOrganization?.id === currentOrganization?.id
+          && permission?.Team
+          && !searchQuery
         ) {
           dispatch(loadLmsAction());
           await loadTeams();
@@ -103,26 +100,26 @@ function TeamsPage(props) {
   ]);
 
   const status = creation
-    ? "creation"
+    ? 'creation'
     : editMode
-    ? "editMode"
-    : teamShow
-    ? "teamShow"
-    : projectShow
-    ? "projectShow"
-    : overview
-    ? "teamShow"
-    : "channelShow";
+      ? 'editMode'
+      : teamShow
+        ? 'teamShow'
+        : projectShow
+          ? 'projectShow'
+          : overview
+            ? 'teamShow'
+            : 'channelShow';
 
-  const teamId = parseInt(location.pathname.split("teams/")[1], 10);
+  const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (
-      notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1 &&
-      activeOrganization?.id
+      notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1
+      && activeOrganization?.id
     ) {
       dispatch(loadTeamsAction());
     }
@@ -137,16 +134,11 @@ function TeamsPage(props) {
   // }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
     if (
-      Object.keys(teamPermission).length === 0 &&
-      organization?.currentOrganization?.id &&
-      selectedTeam?.id
+      Object.keys(teamPermission).length === 0
+      && organization?.currentOrganization?.id
+      && selectedTeam?.id
     ) {
-      dispatch(
-        getTeamPermission(
-          organization?.currentOrganization?.id,
-          selectedTeam?.id
-        )
-      );
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
   }, [selectedTeam, teamPermission]);
   useEffect(() => {
@@ -160,15 +152,15 @@ function TeamsPage(props) {
       loadTeams(searchQuery);
     }
   }, [loadTeams, searchQuery]);
-  if (location.pathname.includes("teams/") && !selectedTeam && !creation) {
+  if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
   const title = {
-    creation: "Create Team",
-    editMode: "Edit Team",
-    teamShow: `${selectedTeam ? selectedTeam.name : "Team"} Members`,
-    projectShow: `${selectedTeam ? selectedTeam.name : "Team"} Projects`,
-    channelShow: "Channels",
+    creation: 'Create Team',
+    editMode: 'Edit Team',
+    teamShow: `${selectedTeam ? selectedTeam.name : 'Team'} Members`,
+    projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
+    channelShow: 'Channels',
   };
   // const goBack = () => {
   //   history.goBack();
@@ -212,15 +204,14 @@ function TeamsPage(props) {
             <div className="organization-name">{currentOrganization?.name}</div>
             <div>
               <h1
-                className={`title${projectShow ? " project-title" : ""}${
-                  channelShow ? " channel-title" : ""
-                }`}
+                className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''
+                  }`}
               >
-                {overview ? "Teams" : title[status] || "Teams"}
+                {overview ? 'Teams' : title[status] || 'Teams'}
               </h1>
               <div className="flex-button-top">
-                {teamPermission?.Team?.includes("team:add-project") &&
-                  projectShow && (
+                {teamPermission?.Team?.includes('team:add-project')
+                  && projectShow && (
                     <Link
                       to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}
                     >
@@ -230,16 +221,16 @@ function TeamsPage(props) {
                       </div>
                     </Link>
                   )}
-                {(teamPermission?.Team?.includes("team:add-team-user") ||
-                  teamPermission?.Team?.includes("team:remove-team-user")) &&
-                  projectShow && (
+                {(teamPermission?.Team?.includes('team:add-team-user')
+                  || teamPermission?.Team?.includes('team:remove-team-user'))
+                  && projectShow && (
                     <Link
                       to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}`}
                     >
                       <div className="btn-top-page">Add/Remove Members</div>
                     </Link>
                   )}
-                {permission?.Team?.includes("team:create") && overview && (
+                {permission?.Team?.includes('team:create') && overview && (
                   <div className="team-controller">
                     <div className="search-and-filters">
                       <div className="search-bar">
@@ -249,7 +240,7 @@ function TeamsPage(props) {
                           placeholder="Search team"
                           value={searchQuery}
                           onKeyPress={(e) => {
-                            if (e.key === "Enter") {
+                            if (e.key === 'Enter') {
                               searchQueryHandler();
                             }
                           }}
@@ -279,20 +270,20 @@ function TeamsPage(props) {
                           organization.currentOrganization?.id,
                           1,
                           auth.user?.id,
-                          "team"
+                          'team',
                         );
                         handleShow();
                       }}
                     />
-                    <Link
+                    {/* <Link
                       to={`/org/${organization?.currentOrganization?.domain}/teams/create-team-design`}
                     >
                       <div className="btn-top-page">
                         <FontAwesomeIcon icon="plus" />
                         Add Team
                       </div>
-                    </Link>
-                    {/* <div
+                    </Link> */}
+                    <div
                       onClick={() => {
                         setShowCreateTeamModal(true);
                       }}
@@ -301,22 +292,19 @@ function TeamsPage(props) {
                         <FontAwesomeIcon icon="plus" />
                         Add Team
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 )}
-                {activeOrganization?.name !== currentOrganization?.name &&
-                  overview && (
+                {activeOrganization?.name !== currentOrganization?.name
+                  && overview && (
                     <Link
                       to={`/org/${organization?.currentOrganization?.domain}/teams`}
                       onClick={() => {
-                        if (
-                          permission?.Organization?.includes(
-                            "organization:view"
-                          )
-                        )
+                        if (permission?.Organization?.includes('organization:view')) {
                           dispatch(getOrganization(currentOrganization?.id));
-                        dispatch(clearOrganizationState());
-                        dispatch(getRoles());
+                          dispatch(clearOrganizationState());
+                          dispatch(getRoles());
+                        }
                       }}
                     >
                       <div className="btn-top-page">
@@ -331,7 +319,7 @@ function TeamsPage(props) {
             <>
               {overview && (
                 <div className="overview">
-                  {permission?.Team?.includes("team:view") ? (
+                  {permission?.Team?.includes('team:view') ? (
                     <>
                       {teams.length > 0 ? (
                         teams.map((team) => (
@@ -343,7 +331,8 @@ function TeamsPage(props) {
                         </Alert>
                       ) : (
                         <Alert className="alert-space" variant="warning">
-                          No team available.{" "}
+                          No team available.
+                          {' '}
                         </Alert>
                       )}
                     </>

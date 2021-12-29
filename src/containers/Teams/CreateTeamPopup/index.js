@@ -72,6 +72,7 @@ function CreateTeamPopup(props) {
                 initialValues={{
                   teamName: '',
                   description: '',
+                  noovo_group_title: '',
                 }}
                 validate={(values) => {
                   const errors = {};
@@ -92,13 +93,13 @@ function CreateTeamPopup(props) {
                   values,
                   errors,
                   touched,
-                  setFieldValue,
                   handleBlur,
                   handleSubmit,
+                  handleChange,
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                      <p className="teamName">Title</p>
+                      <p className="label-title">Title</p>
                       <input
                         type="text"
                         name="teamName"
@@ -108,17 +109,14 @@ function CreateTeamPopup(props) {
                         value={values.teamName}
                         placeholder="e.g Team name"
                         handleBlur={handleBlur}
-                        onChange={(e) => {
-                          // onPlaylistTitleChange(e);
-                          setFieldValue('teamName', e.target.value);
-                        }}
+                        onChange={handleChange}
                       />
-                      <div style={{ color: 'red' }}>
+                      <div className="error">
                         {errors.teamName && touched.teamName && errors.teamName}
                       </div>
                     </div>
                     <div className="form-group">
-                      <p className="description">Description</p>
+                      <p className="label-title">Description</p>
                       <textarea
                         type="text"
                         name="description"
@@ -127,14 +125,26 @@ function CreateTeamPopup(props) {
                         autoComplete="off"
                         value={values.description}
                         handleBlur={handleBlur}
-                        onChange={(e) => {
-                          // onPlaylistTitleChange(e);
-                          setFieldValue('description', e.target.value);
-                        }}
+                        onChange={handleChange}
                       />
-                      <div style={{ color: 'red' }}>
+                      <div className="error">
                         {errors.description && touched.description && errors.description}
                       </div>
+                    </div>
+                    <div className="form-group">
+                      <h6 className="satelliteteaminfo"> Satellite Team Information (Optional)</h6>
+                      <p className="label-title">Noovo group title</p>
+                      <input
+                        type="text"
+                        name="noovo_group_title"
+                        className="form-control"
+                        autoFocus="on"
+                        autoComplete="off"
+                        value={values.noovo_group_title}
+                        placeholder="e.g Noovo group title"
+                        handleBlur={handleBlur}
+                        onChange={handleChange}
+                      />
                     </div>
                     <div className="modal-footer">
                       <button type="submit" className="add-team-btn">
