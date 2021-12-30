@@ -7,11 +7,13 @@ import adminService from 'services/admin.service';
 import './style.scss';
 
 const EditProjectModel = (props) => {
-  const { row, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
+  const { row, show, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
 
   return (
     <Modal
-      {...props}
+      // {...props}
+      show={show}
+      onHide={onHide}
       // size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
