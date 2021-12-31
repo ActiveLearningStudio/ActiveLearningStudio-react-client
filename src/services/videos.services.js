@@ -50,7 +50,7 @@ const brightCMSVideo = (values, offset) =>
     .then(({ data }) => data)
     .catch((err) => {
       //errorCatcher(err.response.data);
-      return Promise.reject(err.response.data);
+      return err;
     });
 
 const videoh5pDetail = (orgId, activityId) =>

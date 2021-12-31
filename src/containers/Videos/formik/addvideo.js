@@ -47,7 +47,7 @@ const AddVideo = ({ setScreenStatus }) => {
             </Tab>
             {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
             <Tab eventKey="YouTube" title="YouTube">
-              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} setModalShow={setModalShow} />
+              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} />
             </Tab>
             {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
@@ -104,7 +104,9 @@ const FormikVideo = ({ type, selectedVideoId, showBrowse, setScreenStatus, setMo
               <img src={type} />
               <input type="text" name="videoUrl" placeholder="Enter video ID" onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
 
-              {showBrowse && <Buttons primary={true} text="Browse videos" width="146px" height="35px" hover={true} className="ml-32" onClick={() => setModalShow(true)} />}
+              {showBrowse && (
+                <Buttons type="button" primary={true} text="Browse videos" width="146px" height="35px" hover={true} className="ml-32" onClick={() => setModalShow(true)} />
+              )}
             </div>
             <div className="error" style={{ color: 'red' }}>
               {errors.videoUrl && touched.videoUrl && errors.videoUrl}
