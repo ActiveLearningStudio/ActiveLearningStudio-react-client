@@ -304,7 +304,7 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
-              subType === 'All Settings' &&
+              subType === 'All settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -318,7 +318,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All Settings" row={row} activePage={activePage} />
+                            <AdminDropdown type={type} subType="All settings" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
@@ -1016,10 +1016,9 @@ function Table(props) {
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
                     <tr key={row} className="admin-panel-rows">
+                      <td>{row?.site_name}</td>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
-                      <td>{row.organization.name}</td>
-                      <td>{row?.site_name}</td>
                       <td>{row.lti_client_id}</td>
                       <td>
                         <div className="admin-panel-dropdown">

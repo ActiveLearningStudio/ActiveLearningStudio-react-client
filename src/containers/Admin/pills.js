@@ -459,7 +459,7 @@ export default function Pills(props) {
     else if (activeTab === 'Organization') {
       setSubTypeState('All Organizations');
     } else if (activeTab === 'LMS') {
-      setSubTypeState('All Settings');
+      setSubTypeState('All settings');
     }
   }, [activeTab]);
   const filterSearch = useCallback(() => {
@@ -722,15 +722,15 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'LMS' && subTypeState === 'All Settings' && (
+            {type === 'LMS' && subTypeState === 'All settings' && (
               <Starter
                 paginationCounter={true}
                 size={size}
                 setSize={setSize}
-                subType={'All Settings'}
+                subType={'All settings'}
                 search={true}
                 print={false}
-                btnText="Create New LMS"
+                btnText="Add LMS settings"
                 btnAction="add_lms"
                 importUser={false}
                 filter={false}

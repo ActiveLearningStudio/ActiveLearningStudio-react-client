@@ -163,6 +163,15 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     domain: data.domain,
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || null,
+    gcr_project_visibility: data?.gcr_project_visibility || false,
+    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    tos_type: data.tos_type,
+    tos_url: data.tos_url,
+    tos_content: data.tos_content,
+    privacy_policy_type: data.privacy_policy_type,
+    privacy_policy_url: data.privacy_policy_url,
+    privacy_policy_content: data.privacy_policy_content,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -203,6 +212,12 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     gcr_project_visibility: data?.gcr_project_visibility || false,
     gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
     gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    tos_type: data.tos_type,
+    tos_url: data.tos_url,
+    tos_content: data.tos_content,
+    privacy_policy_type: data.privacy_policy_type,
+    privacy_policy_url: data.privacy_policy_url,
+    privacy_policy_content: data.privacy_policy_content,
     // admins: adminUsers,
     // users: usersList,
   };

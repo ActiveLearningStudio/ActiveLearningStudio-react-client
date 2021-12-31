@@ -135,7 +135,7 @@ function AdminPanel({ showSSO }) {
                   )}
                   <Tab eventKey="LMS" title="Integrations">
                     <div className="module-content">
-                      <Pills modules={['All Settings', 'LTI Tools']} type="LMS" />
+                      <Pills modules={['All settings', 'LTI Tools']} type="LMS" />
                     </div>
                   </Tab>
                   {/* <Tab eventKey="Settings" title="Settings">

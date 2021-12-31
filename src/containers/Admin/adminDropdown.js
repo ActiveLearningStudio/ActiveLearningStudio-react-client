@@ -400,7 +400,7 @@ const AdminDropdown = (props) => {
               )}
             </>
           )}
-          {type === 'LMS' && subType === 'All Settings' && (
+          {type === 'LMS' && subType === 'All settings' && (
             <>
               <Dropdown.Item
                 to="#"

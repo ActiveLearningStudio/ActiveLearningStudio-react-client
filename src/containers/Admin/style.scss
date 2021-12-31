@@ -1626,3 +1626,37 @@
   }
   cursor: pointer;
 }
+
+.or-seprator {
+  background: #DDDDDD;
+  height:1px;
+  margin-top:22px;
+  span {
+    background: #fff;
+    padding:10px;
+    position:relative;
+    top:-10px;
+    left: 45%
+  }
+}
+
+.tos-pp {
+  margin-top: 24px;
+  div{
+    margin-top: 16px;
+  }
+  .tos-pss-container {
+    padding: 4px 0 0 16px;
+    .tos-pp-url {
+      margin-left: 20px;
+    }
+    button {
+      width: 223px;
+      text-align: center;
+      height: 36px;
+      color: #084892;
+      background: #F7FAFF;
+      border: 1px solid #F7FAFF;
+    }
+  }
+}
