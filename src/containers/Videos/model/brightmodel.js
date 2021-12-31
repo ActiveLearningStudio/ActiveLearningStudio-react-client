@@ -20,20 +20,21 @@ const BrightcoveModel = (props) => {
   const [activeCms, setActiveCms] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [searchId, setSearchId] = useState(0);
+  const [searchId, setSearchId] = useState();
 
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
       setcms(result.data);
-      setActiveCms(result.data?.[0]?.id);
+      setActiveCms(result.data?.[0]);
     })();
   }, []);
   useEffect(() => {
     (async () => {
       if (activeCms) {
-        const videosResult = await dispatch(getBrightVideos(activeCms, offset * 6));
-        setTotalCount(videosResult.meta.count);
+        const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
+        console.log(videosResult);
+        setTotalCount(videosResult.meta?.count);
         setcmsVideo(videosResult.data);
       }
     })();
@@ -52,7 +53,7 @@ const BrightcoveModel = (props) => {
               <Col className="video-model-tab" sm={3}>
                 <HeadingThree text="Brightcove CMS" className="nav-menu-heading" />
                 <Nav variant="pills" className="flex-column">
-                  {cms.map((data, counter) => (
+                  {cms?.map((data, counter) => (
                     <div
                       onClick={() => {
                         setOffset(0);
@@ -72,59 +73,63 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
-                <Tab.Content>
-                  {cms.map((data1, counter) => (
-                    <div className="for-NetSuite-section">
-                      <div className="NetSuite-section-top-header">
-                        <div>
-                          <HeadingTwo text={data1.account_name} color="#515151" className="NetSuite-heading" />
-                        </div>
-                        <div className="NetSuite-section-searching">
-                          {/* <div className="section-searching-title" style={{ textAlign: 'right' }}>
+                <div className="for-NetSuite-section">
+                  <div className="NetSuite-section-top-header">
+                    <div>
+                      <HeadingTwo text={activeCms.account_name} color="#515151" className="NetSuite-heading" />
+                    </div>
+                    <div className="NetSuite-section-searching">
+                      {/* <div className="section-searching-title" style={{ textAlign: 'right' }}>
                             <FontAwesomeIcon icon={faCog} className="icon-setting" />
                             <span>Settings</span>
                           </div> */}
-                          <div className="section-input-search">
-                            <input onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video ID..." />
-                            <button
-                              onClick={async () => {
-                                setcmsVideo([]);
-                                const videosResult = await dispatch(getBrightVideosSearch(activeCms, searchId));
-                                setTotalCount(videosResult.meta.count);
-                                setcmsVideo(videosResult.data);
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faSearch} color="#084892" />
-                            </button>
-                          </div>
-                        </div>
+                      <div className="section-input-search">
+                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video ID..." />
+                        <button
+                          onClick={async () => {
+                            setcmsVideo([]);
+                            const videosResult = await dispatch(getBrightVideosSearch(activeCms.id, searchId));
+                            setTotalCount(videosResult.meta?.count);
+                            setcmsVideo(videosResult.data);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faSearch} color="#084892" />
+                        </button>
                       </div>
-
-                      <div className="NetSuite-section-table responsive-table">
-                        {/* <table>
-                          <thead>
-                            <tr>
-                              <th></th>
-                              <th>Name</th>
-                              <th>Created</th>
-                              <th>Video</th>
-                            </tr>
-                          </thead> */}
-                        {/* <tbody> */}
-
+                      {searchId && (
+                        <button
+                          onClick={async () => {
+                            setSearchId('');
+                            const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
+                            setTotalCount(videosResult.meta?.count);
+                            setcmsVideo(videosResult.data);
+                          }}
+                          className="reset-btn"
+                        >
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="for-NetSuite-section">
+                  <div className="NetSuite-section-table responsive-table">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Created</th>
+                          <th>Video</th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <Tab.Content>
+                      {cms?.map((data1, counter) => (
                         <Tab.Pane eventKey={`manual-${counter + 1}`}>
                           <Card.Body>
                             <table>
-                              <thead>
-                                <tr>
-                                  <th></th>
-                                  <th>Name</th>
-                                  <th>Created</th>
-                                  <th>Video</th>
-                                </tr>
-                              </thead>
                               <tbody>
-                                {cmsVideo.map((data) => (
+                                {cmsVideo?.map((data) => (
                                   <tr>
                                     <td>
                                       <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
@@ -135,45 +140,29 @@ const BrightcoveModel = (props) => {
                                     </td>
                                     <td>{data.created_at?.split('T')[0]}</td>
                                     <td>{data.id}</td>
-                                    {/* <td>
-                                      <input
-                                        name="video"
-                                        onChange={() =>
-                                          props.setSelectedVideoId(data.id)
-                                        }
-                                        type="radio"
-                                      />{" "}
-                                      <img
-                                        src={PreivewImage}
-                                        className="image-size"
-                                      />
-                                      <span>{data.name}</span>
-                                    </td>
-                                    <td>{data.created_at?.split("T")[0]}</td>
-                                    <td>{data.id}</td> */}
                                   </tr>
                                 ))}
                               </tbody>
                             </table>
 
-                            <Pagination
-                              activePage={offset + 1}
-                              pageRangeDisplayed={7}
-                              itemsCountPerPage={6}
-                              totalItemsCount={totalCount}
-                              onChange={(e) => {
-                                //const newOffset = offset + 1;
-                                setOffset(e - 1);
-                              }}
-                            />
+                            {cmsVideo?.length && (
+                              <Pagination
+                                activePage={offset + 1}
+                                pageRangeDisplayed={7}
+                                itemsCountPerPage={6}
+                                totalItemsCount={totalCount}
+                                onChange={(e) => {
+                                  //const newOffset = offset + 1;
+                                  setOffset(e - 1);
+                                }}
+                              />
+                            )}
                           </Card.Body>
                         </Tab.Pane>
-                        {/* </tbody> */}
-                        {/* </table> */}
-                      </div>
-                    </div>
-                  ))}
-                </Tab.Content>
+                      ))}
+                    </Tab.Content>
+                  </div>
+                </div>
               </Col>
             </Row>
           </Tab.Container>
