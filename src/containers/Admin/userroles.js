@@ -57,6 +57,50 @@ function UserRoles({ permissionRender }) {
     "playlist:create",
   ];
   const teamViewDate = ["team:create", "team:edit", "team:delete"];
+
+  const orgUserList = [
+    "organization:invite-members",
+    "organization:add-admin",
+    "organization:delete-admin",
+    "organization:add-user",
+    "organization:update-user",
+    "organization:delete-user",
+    "organization:remove-user",
+    "organization:view-user",
+    "organization:add-role",
+    "organization:edit-role",
+  ];
+  const orgOrgList = [
+    "organization:upload-thumb",
+    "organization:edit",
+    "organization:delete",
+    "organization:view",
+    "organization:create",
+  ];
+  const orgProjectList = [
+    "organization:edit-project",
+    "organization:delete-project",
+    "organization:export-project",
+    "organization:import-project",
+    "organization:download-project",
+    "organization:view-library-request-project",
+    "organization:review-library-request-project",
+  ];
+
+  const orgActivityList = [
+    "organization:edit-activity",
+    "organization:delete-activity",
+    "organization:view-activity",
+    "organization:create-activity",
+  ];
+  const orgSSOList = [
+    "organization:create-default-sso",
+    "organization:view-default-sso",
+    "organization:update-default-sso",
+    "organization:delete-default-sso",
+    "organization:delete-default-sso",
+  ];
+
   useEffect(() => {
     const extractPermission = [];
     if (activePermission) {
@@ -203,7 +247,8 @@ function UserRoles({ permissionRender }) {
   //   "Team",
   //   "Integration",
   // ];
-  const Administration = ["Organization"];
+  const Administration = ["Organization", "Project", "Activity", "Playlist"];
+  const AdminList = ["Organization", "Project", "Activity", "SSO", "User"];
   const Authoring = [
     "Project",
     "Playlist",
@@ -377,7 +422,7 @@ function UserRoles({ permissionRender }) {
                               </Nav.Item>
                             )}
                           </div> */}
-                          {!!permissionsId &&
+                          {/* {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
                               if (typeof permissionsId[data] === "object") {
                                 if (Administration.includes(data)) {
@@ -388,8 +433,8 @@ function UserRoles({ permissionRender }) {
                                     >
                                       <Nav.Item>
                                         <Nav.Link eventKey={String(counter)}>
-                                          {/* {data} */}
-                                          Admin Panel
+                                          {data}
+                                          
                                           <img className="image-tag" />
                                         </Nav.Link>
                                       </Nav.Item>
@@ -397,6 +442,23 @@ function UserRoles({ permissionRender }) {
                                   );
                                 }
                               }
+                            })} */}
+                          {!!permissionsId &&
+                            AdminList.map((data, counter) => {
+                              return (
+                                <div
+                                  className="role-permission-tab-name"
+                                  id="role-permission-tab-id"
+                                >
+                                  <Nav.Item>
+                                    <Nav.Link eventKey={String(counter)}>
+                                      {data}
+
+                                      <img className="image-tag" />
+                                    </Nav.Link>
+                                  </Nav.Item>
+                                </div>
+                              );
                             })}
 
                           <div
@@ -727,14 +789,14 @@ function UserRoles({ permissionRender }) {
                               </div>
                             </Card.Body>
                           </Tab.Pane>
-
-                          {!!permissionsId &&
+                          {/* For API Permissions */}
+                          {/* {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
                               if (typeof permissionsId[data] === "object") {
                                 if (data == "Project") {
                                   return (
                                     <Tab.Pane eventKey={String(counter)}>
-                                      {/* <Card.Body
+                                      <Card.Body
                                         style={{
                                           background: "#f7faff",
                                           margin: "32px",
@@ -758,7 +820,7 @@ function UserRoles({ permissionRender }) {
                                             </label>
                                           </div>
                                         ))}
-                                      </Card.Body> */}
+                                      </Card.Body>
                                       <Card.Body
                                         style={{
                                           background: "#f7faff",
@@ -896,7 +958,422 @@ function UserRoles({ permissionRender }) {
                                   );
                                 }
                               }
+                            })} */}
+                          {/* New Added Start */}
+
+                          {/* For Org List */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
+                                return (
+                                  <Tab.Pane eventKey="0">
+                                    <Card.Body
+                                      style={{
+                                        background: "#f7faff",
+                                        margin: "32px",
+                                      }}
+                                    >
+                                      {permissionsId[data]?.map((val) => {
+                                        if (orgOrgList.includes(val.name)) {
+                                          return (
+                                            <div
+                                              className="form-grouper"
+                                              role="group"
+                                              aria-labelledby="checkbox-group"
+                                            >
+                                              <div>
+                                                <div className="form-group custom-select-style-for-sub">
+                                                  <select
+                                                    name=""
+                                                    onChange={(e) => {
+                                                      if (
+                                                        e.target.value == "view"
+                                                      ) {
+                                                        values.permissions = values.permissions.filter(
+                                                          (data) => {
+                                                            return (
+                                                              data !=
+                                                              String(val.id)
+                                                            );
+                                                          }
+                                                        );
+                                                      } else {
+                                                        !values.permissions.includes(
+                                                          String(val.id)
+                                                        ) &&
+                                                          values.permissions.push(
+                                                            String(val.id)
+                                                          );
+                                                      }
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                  >
+                                                    <option
+                                                      selected={permission.Organization.includes(
+                                                        val.name
+                                                      )}
+                                                      value="edit"
+                                                    >
+                                                      Edit
+                                                    </option>
+                                                    <option
+                                                      value="view"
+                                                      selected={
+                                                        !permission.Organization.includes(
+                                                          val.name
+                                                        )
+                                                      }
+                                                    >
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p> {val.name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </Card.Body>
+                                  </Tab.Pane>
+                                );
+                              }
                             })}
+
+                          {/* For Project List */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
+                                return (
+                                  <Tab.Pane eventKey="1">
+                                    <Card.Body
+                                      style={{
+                                        background: "#f7faff",
+                                        margin: "32px",
+                                      }}
+                                    >
+                                      {permissionsId[data]?.map((val) => {
+                                        if (orgProjectList.includes(val.name)) {
+                                          return (
+                                            <div
+                                              className="form-grouper"
+                                              role="group"
+                                              aria-labelledby="checkbox-group"
+                                            >
+                                              <div>
+                                                <div className="form-group custom-select-style-for-sub">
+                                                  <select
+                                                    name=""
+                                                    onChange={(e) => {
+                                                      if (
+                                                        e.target.value == "view"
+                                                      ) {
+                                                        values.permissions = values.permissions.filter(
+                                                          (data) => {
+                                                            return (
+                                                              data !=
+                                                              String(val.id)
+                                                            );
+                                                          }
+                                                        );
+                                                      } else {
+                                                        !values.permissions.includes(
+                                                          String(val.id)
+                                                        ) &&
+                                                          values.permissions.push(
+                                                            String(val.id)
+                                                          );
+                                                      }
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                  >
+                                                    <option
+                                                      selected={permission.Organization.includes(
+                                                        val.name
+                                                      )}
+                                                      value="edit"
+                                                    >
+                                                      Edit
+                                                    </option>
+                                                    <option
+                                                      value="view"
+                                                      selected={
+                                                        !permission.Organization.includes(
+                                                          val.name
+                                                        )
+                                                      }
+                                                    >
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p> {val.name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </Card.Body>
+                                  </Tab.Pane>
+                                );
+                              }
+                            })}
+
+                          {/* For Activity List */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
+                                return (
+                                  <Tab.Pane eventKey="2">
+                                    <Card.Body
+                                      style={{
+                                        background: "#f7faff",
+                                        margin: "32px",
+                                      }}
+                                    >
+                                      {permissionsId[data]?.map((val) => {
+                                        if (
+                                          orgActivityList.includes(val.name)
+                                        ) {
+                                          return (
+                                            <div
+                                              className="form-grouper"
+                                              role="group"
+                                              aria-labelledby="checkbox-group"
+                                            >
+                                              <div>
+                                                <div className="form-group custom-select-style-for-sub">
+                                                  <select
+                                                    name=""
+                                                    onChange={(e) => {
+                                                      if (
+                                                        e.target.value == "view"
+                                                      ) {
+                                                        values.permissions = values.permissions.filter(
+                                                          (data) => {
+                                                            return (
+                                                              data !=
+                                                              String(val.id)
+                                                            );
+                                                          }
+                                                        );
+                                                      } else {
+                                                        !values.permissions.includes(
+                                                          String(val.id)
+                                                        ) &&
+                                                          values.permissions.push(
+                                                            String(val.id)
+                                                          );
+                                                      }
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                  >
+                                                    <option
+                                                      selected={permission.Organization.includes(
+                                                        val.name
+                                                      )}
+                                                      value="edit"
+                                                    >
+                                                      Edit
+                                                    </option>
+                                                    <option
+                                                      value="view"
+                                                      selected={
+                                                        !permission.Organization.includes(
+                                                          val.name
+                                                        )
+                                                      }
+                                                    >
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p> {val.name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </Card.Body>
+                                  </Tab.Pane>
+                                );
+                              }
+                            })}
+
+                          {/* For SSO List */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
+                                return (
+                                  <Tab.Pane eventKey="3">
+                                    <Card.Body
+                                      style={{
+                                        background: "#f7faff",
+                                        margin: "32px",
+                                      }}
+                                    >
+                                      {permissionsId[data]?.map((val) => {
+                                        if (orgSSOList.includes(val.name)) {
+                                          return (
+                                            <div
+                                              className="form-grouper"
+                                              role="group"
+                                              aria-labelledby="checkbox-group"
+                                            >
+                                              <div>
+                                                <div className="form-group custom-select-style-for-sub">
+                                                  <select
+                                                    name=""
+                                                    onChange={(e) => {
+                                                      if (
+                                                        e.target.value == "view"
+                                                      ) {
+                                                        values.permissions = values.permissions.filter(
+                                                          (data) => {
+                                                            return (
+                                                              data !=
+                                                              String(val.id)
+                                                            );
+                                                          }
+                                                        );
+                                                      } else {
+                                                        !values.permissions.includes(
+                                                          String(val.id)
+                                                        ) &&
+                                                          values.permissions.push(
+                                                            String(val.id)
+                                                          );
+                                                      }
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                  >
+                                                    <option
+                                                      selected={permission.Organization.includes(
+                                                        val.name
+                                                      )}
+                                                      value="edit"
+                                                    >
+                                                      Edit
+                                                    </option>
+                                                    <option
+                                                      value="view"
+                                                      selected={
+                                                        !permission.Organization.includes(
+                                                          val.name
+                                                        )
+                                                      }
+                                                    >
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p> {val.name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </Card.Body>
+                                  </Tab.Pane>
+                                );
+                              }
+                            })}
+
+                          {/* For User */}
+                          {!!permissionsId &&
+                            Object.keys(permissionsId)?.map((data, counter) => {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
+                                return (
+                                  <Tab.Pane eventKey="4">
+                                    <Card.Body
+                                      style={{
+                                        background: "#f7faff",
+                                        margin: "32px",
+                                      }}
+                                    >
+                                      {permissionsId[data]?.map((val) => {
+                                        if (orgUserList.includes(val.name)) {
+                                          return (
+                                            <div
+                                              className="form-grouper"
+                                              role="group"
+                                              aria-labelledby="checkbox-group"
+                                            >
+                                              <div>
+                                                <div className="form-group custom-select-style-for-sub">
+                                                  <select
+                                                    name=""
+                                                    onChange={(e) => {
+                                                      if (
+                                                        e.target.value == "view"
+                                                      ) {
+                                                        values.permissions = values.permissions.filter(
+                                                          (data) => {
+                                                            return (
+                                                              data !=
+                                                              String(val.id)
+                                                            );
+                                                          }
+                                                        );
+                                                      } else {
+                                                        !values.permissions.includes(
+                                                          String(val.id)
+                                                        ) &&
+                                                          values.permissions.push(
+                                                            String(val.id)
+                                                          );
+                                                      }
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                  >
+                                                    <option
+                                                      selected={permission.Organization.includes(
+                                                        val.name
+                                                      )}
+                                                      value="edit"
+                                                    >
+                                                      Edit
+                                                    </option>
+                                                    <option
+                                                      value="view"
+                                                      selected={
+                                                        !permission.Organization.includes(
+                                                          val.name
+                                                        )
+                                                      }
+                                                    >
+                                                      View
+                                                    </option>
+                                                  </select>
+                                                  <p> {val.name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                      })}
+                                    </Card.Body>
+                                  </Tab.Pane>
+                                );
+                              }
+                            })}
+
+                          {/* New Added END */}
                         </Tab.Content>
                       </Col>
                     </Row>
