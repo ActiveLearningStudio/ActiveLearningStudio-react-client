@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
@@ -13,6 +14,7 @@ import EditActivity from 'containers/EditActivity';
 import { alphabetsOnly } from 'utils';
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import editIcon from 'assets/images/project-edit.svg';
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -29,12 +31,33 @@ export default function CreateOrg(prop) {
   const [checkedActivity, setCheckedActivty] = useState(false);
   const [checkedPlaylist, setCheckedPlaylist] = useState(false);
   const [checkedProject, setCheckedProject] = useState(false);
+  const [checkedTosParent, setCheckedTosParent] = useState(true);
+  const [checkedTosUrl, setCheckedTosUrl] = useState(false);
+  const [checkedTosContent, setCheckedTosContent] = useState(false);
+  const [checkedPpParent, setCheckedPpParent] = useState(true);
+  const [checkedPpUrl, setCheckedPpUrl] = useState(false);
+  const [checkedPpContent, setCheckedPpContent] = useState(false);
   useEffect(() => {
     if (editMode) {
       setImgActive(activeEdit?.image);
       setCheckedActivty(activeEdit?.gcr_activity_visibility);
       setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
       setCheckedProject(activeEdit?.gcr_project_visibility);
+      if(activeEdit.tos_type == 'Parent'){
+        setCheckedTosParent(true);
+      } else if (activeEdit.tos_type == 'URL') {
+        setCheckedTosUrl(true)
+      } else if (activeEdit.tos_type == 'Content') {
+        setCheckedTosContent(true);
+      }
+      
+      if(activeEdit.privacy_policy_type == 'Parent'){
+        setCheckedPpParent(true);
+      } else if (activeEdit.privacy_policy_type == 'URL') {
+        setCheckedPpUrl(true)
+      } else if (activeEdit.privacy_policy_type == 'Content') {
+        setCheckedPpContent(true);
+      }
     } else {
       setImgActive(null);
     }
@@ -55,6 +78,12 @@ export default function CreateOrg(prop) {
           gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
           gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
           gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
+          tos_type: editMode ? activeEdit?.tos_type : '',
+          tos_url: editMode ? activeEdit?.tos_url : '',
+          tos_content: editMode ? activeEdit?.tos_content : '',
+          privacy_policy_type: editMode ? activeEdit?.privacy_policy_type : '',
+          privacy_policy_url: editMode ? activeEdit?.privacy_policy_url : '',
+          privacy_policy_content: editMode ? activeEdit?.privacy_policy_content : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -71,6 +100,22 @@ export default function CreateOrg(prop) {
           }
           if (!values.image) {
             errors.image = 'Required';
+          }
+          if(!values.tos_type)
+          {
+            errors.tos_type = 'Required'
+          }
+          if(values.tos_type == 'URL' && !values.tos_url)
+          {
+            errors.tos_url = 'Required'
+          }
+          if(!values.privacy_policy_type)
+          {
+            errors.privacy_policy_type = 'Required'
+          }
+          if(values.privacy_policy_type == 'URL' && !values.privacy_policy_url)
+          {
+            errors.privacy_policy_url = 'Required'
           }
 
           return errors;
@@ -100,6 +145,7 @@ export default function CreateOrg(prop) {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
+                  dispatch(getsubOrgList(activeOrganization.id));
                 }
               });
             }
@@ -144,7 +190,7 @@ export default function CreateOrg(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit ' : 'Create '} Organization</h2>
+            <h2>{editMode ? 'Edit ' : 'Add '} organization</h2>
             <FontAwesomeIcon
               icon="times"
               className="cross-all-pop"
@@ -220,7 +266,7 @@ export default function CreateOrg(prop) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Noovo Client ID </h3>
+                  <h3>Noovo client ID </h3>
                   <input type="text" name="noovo_client_id" onChange={handleChange} onBlur={handleBlur} value={values.noovo_client_id} />
                 </div>
 
@@ -236,14 +282,14 @@ export default function CreateOrg(prop) {
 
                 <div className="toggle-group-button">
                   <div className="form-group-create">
-                    <h3>Google Classroom Publishing</h3>
+                    <h3>Google classroom publishing</h3>
                     <div className="create-form-inputs-toggles">
-                      <div className="custom-toggle-button">
+                    <div className="custom-toggle-button">
                         <Switch
-                          checked={values.gcr_project_visibility}
+                          checked={values.gcr_activity_visibility}
                           onChange={() => {
-                            setCheckedProject(!checkedProject);
-                            setFieldValue('gcr_project_visibility', !checkedProject);
+                            setCheckedActivty(!checkedActivity);
+                            setFieldValue('gcr_activity_visibility', !checkedActivity);
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -254,8 +300,9 @@ export default function CreateOrg(prop) {
                           onHandleColor="#e89e21"
                           offHandleColor="#666"
                         />
-                        <h3>Project</h3>
+                        <h3>Activity</h3>
                       </div>
+                      
                       {/* <Switch
                       checked={checked}
                       onChange={() => {
@@ -283,10 +330,10 @@ export default function CreateOrg(prop) {
                       </div>
                       <div className="custom-toggle-button">
                         <Switch
-                          checked={values.gcr_activity_visibility}
+                          checked={values.gcr_project_visibility}
                           onChange={() => {
-                            setCheckedActivty(!checkedActivity);
-                            setFieldValue('gcr_activity_visibility', !checkedActivity);
+                            setCheckedProject(!checkedProject);
+                            setFieldValue('gcr_project_visibility', !checkedProject);
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -297,7 +344,7 @@ export default function CreateOrg(prop) {
                           onHandleColor="#e89e21"
                           offHandleColor="#666"
                         />
-                        <h3>Activity</h3>
+                        <h3>Project</h3>
                       </div>
                     </div>
                   </div>
@@ -382,13 +429,124 @@ export default function CreateOrg(prop) {
                     <div className="error">{errors.image && touched.image && errors.image}</div>
                   </div>
                 </div>
+
+                <div className="tos-pp">
+                  <Tabs>
+                      <Tab eventKey="terms-services" title="Terms of service">
+                          <div className="tos-pss-container">
+                            <div className="form-check">
+                                <input className="form-check-input" onChange={()=>{
+                                  setCheckedTosUrl(false);
+                                  setCheckedTosContent(false);
+                                  setCheckedTosParent(true);
+                                  setFieldValue('tos_type', 'Parent');
+                                  }} type="radio" name="tos_type" id="TosParent" checked={checkedTosParent}/>
+                                <label className="form-check-label" for="TosParent">
+                                    Use from the parent organization
+                                </label>
+                            </div>
+
+                            <div className="form-check">
+                                <input className="form-check-input" onChange={()=>{
+                                  setCheckedTosParent(false);
+                                  setCheckedTosContent(false);
+                                  setCheckedTosUrl(true);
+                                  setFieldValue('tos_type', 'URL')
+                                }} type="radio" name="tos_type" id="TosURL" checked={checkedTosUrl}/>
+                                <label className="form-check-label" for="TosURL">
+                                    Add from a URL
+                                </label>
+                                <div className="error">{errors.tos_type && touched.tos_type && errors.tos_type}</div>
+                            </div>
+                            {checkedTosUrl && (
+                              <div className="form-group-create tos-pp-url">
+                                  <h3>Terms of service URL</h3>
+                                  <input type="text" name="tos_url" onChange={handleChange} value={values.tos_url} />
+                                  <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div>
+                              </div>
+                            )}
+
+                            <p className="or-seprator"><span> Or </span></p>
+                            <button type="button" onClick={()=>{
+                              setCheckedTosContent(true);
+                              setCheckedTosUrl(false);
+                              setCheckedTosParent(false);
+                              setFieldValue('tos_type', 'Content')
+                              }}>
+                              <img src={editIcon} alt="" className="mr-3" />
+                              Build my Terms of service
+                            </button>
+                            {checkedTosContent && (
+                              <div className="form-group-create tos-pp-url">
+                                <h3>Own Terms</h3>
+                                <input type="text" name="tos_content" onChange={handleChange} value={values.tos_content} />
+                                {/* <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div> */}
+                              </div>
+                            )}
+                          </div>
+                      </Tab>
+                      <Tab eventKey="privacy-policy" title="Privacy policy">
+                        <div className="tos-pss-container">
+                          <div className="form-check">
+                              <input className="form-check-input" onChange={()=>{
+                                setCheckedPpUrl(false);
+                                setCheckedPpContent(false);
+                                setCheckedPpParent(true);
+                                setFieldValue('privacy_policy_type', 'Parent');
+                                }} type="radio" name="privacy_policy_type" id="PpParent" checked={checkedPpParent}/>
+                              <label className="form-check-label" for="PpParent">
+                                  Use from the parent organization
+                              </label>
+                          </div>
+
+                          <div className="form-check">
+                              <input className="form-check-input" onChange={()=>{
+                                setCheckedPpParent(false);
+                                setCheckedPpContent(false);
+                                setCheckedPpUrl(true);
+                                setFieldValue('privacy_policy_type', 'URL')
+                              }} type="radio" name="privacy_policy_type" id="PpURL" checked={checkedPpUrl}/>
+                              <label className="form-check-label" for="PpURL">
+                                  Add from a URL
+                              </label>
+                              <div className="error">{errors.privacy_policy_type && touched.privacy_policy_type && errors.privacy_policy_type}</div>
+                          </div>
+                          {checkedPpUrl && (
+                            <div className="form-group-create tos-pp-url">
+                                <h3>Terms of service URL</h3>
+                                <input type="text" name="privacy_policy_url" onChange={handleChange} value={values.privacy_policy_url} />
+                                <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
+                            </div>
+                          )}
+
+                          <p className="or-seprator"><span> Or </span></p>
+                          <button type="button" onClick={()=>{
+                            setCheckedPpContent(true);
+                            setCheckedPpUrl(false);
+                            setCheckedPpParent(false);
+                            setFieldValue('privacy_policy_type', 'Content')
+                            }}>
+                            <img src={editIcon} alt="" className="mr-3" />
+                            Build my Privacy Policy
+                          </button>
+                          {checkedPpContent && (
+                            <div className="form-group-create tos-pp-url">
+                              <h3>Own Terms</h3>
+                              <input type="text" name="privacy_policy_content" onChange={handleChange} value={values.privacy_policy_content} />
+                              {/* <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div> */}
+                            </div>
+                          )}
+                        </div>
+                      </Tab>
+                  </Tabs>
+                </div>
               </div>
             </div>
 
 
 
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit ' : 'Create '} Organization</button>
+              <button type="submit">{editMode ? 'Edit ' : 'Add '} organization</button>
               <button
                 type="button"
                 className="cancel"

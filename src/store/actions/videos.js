@@ -49,6 +49,7 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
     },
     offset
   );
+  console.log('result', result);
   return result;
 };
 export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => {

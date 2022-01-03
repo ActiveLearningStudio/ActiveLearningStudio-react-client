@@ -195,14 +195,14 @@ export default function Pills(props) {
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, searchQueryProject);
+        const userproject = adminService.getAllExportedProject(activePage, size, searchQueryProject);
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
           })
           .catch((e) => setAllProjectUserTab([]));
       } else {
-        const result = await adminService.getAllExportedProject(activePage || 1);
+        const result = await adminService.getAllExportedProject(activePage || 1, size);
         setAllProjectUserTab(result);
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Library requests') {
@@ -459,7 +459,7 @@ export default function Pills(props) {
     else if (activeTab === 'Organization') {
       setSubTypeState('All Organizations');
     } else if (activeTab === 'LMS') {
-      setSubTypeState('All Settings');
+      setSubTypeState('All settings');
     }
   }, [activeTab]);
   const filterSearch = useCallback(() => {
@@ -557,8 +557,9 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'All Projects') {
+        if (key === 'All Projects' || libraryReqSelected) {
           setCurrentTab('All Projects');
+          setLibraryReqSelected(false);
         } else if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
         }
@@ -721,15 +722,15 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'LMS' && subTypeState === 'All Settings' && (
+            {type === 'LMS' && subTypeState === 'All settings' && (
               <Starter
                 paginationCounter={true}
                 size={size}
                 setSize={setSize}
-                subType={'All Settings'}
+                subType={'All settings'}
                 search={true}
                 print={false}
-                btnText="Create New LMS"
+                btnText="Add LMS settings"
                 btnAction="add_lms"
                 importUser={false}
                 filter={false}
@@ -779,6 +780,8 @@ export default function Pills(props) {
             {type === 'Projects' && subTypeState === 'Exported Projects' && (
               <Starter
                 paginationCounter={true}
+                size={size}
+                setSize={setSize}
                 search={false}
                 tableHead={columnData.projectUser}
                 sortCol={[]}

@@ -197,7 +197,7 @@ function Controller(props) {
             </div>
           </>
         )}
-        {!!search && type === 'LMS' && subType === 'All Settings' && (
+        {!!search && type === 'LMS' && subType === 'All settings' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by URL or Email" value={searchQuery} onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
@@ -806,7 +806,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All Settings' && (
+        {!!btnText && type === 'LMS' && subType === 'All settings' && (
           <div className="btn-text">
             <button
               type="button"

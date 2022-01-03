@@ -60,7 +60,7 @@ const EmailCheckForm = (props) => {
         </div>
         <div className="col text-right">
           <button type="button" className="btn btn-primary addButton" onClick={doCheck}>
-            Add
+            Check Email
           </button>
         </div>
       </div>

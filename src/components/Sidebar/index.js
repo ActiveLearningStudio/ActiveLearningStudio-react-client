@@ -29,7 +29,7 @@ function Sidebar(props) {
   }, []);
 
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, currentOrganization } = organization;
 
   useEffect(() => {
     if (location.pathname.includes('teams/')) {
@@ -97,7 +97,8 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {permission?.Organization?.includes('organization:view') && (
+
+      {!currentOrganization?.parent && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/instant-admin`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">
