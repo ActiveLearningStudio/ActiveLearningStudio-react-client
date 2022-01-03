@@ -448,6 +448,7 @@ export default function Pills(props) {
     if (activeTab === 'Projects') {
       setSubTypeState('All Projects');
       setCurrentTab('All Projects');
+      setLibraryReqSelected(false);
     } else if (activeTab === 'Activities') {
       setSubTypeState('Activity Types');
     } else if (activeTab === 'Users') {
@@ -745,7 +746,7 @@ export default function Pills(props) {
               />
             )}
 
-            {type === 'Projects' && subTypeState === 'All Projects' && !libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'All Projects' && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -798,7 +799,7 @@ export default function Pills(props) {
                 searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
               />
             )}
-            {type === 'Projects' && subTypeState === 'Library requests' && libraryReqSelected && (
+            {type === 'Projects' && subTypeState === 'Library requests' && (
               <Starter
                 paginationCounter={true}
                 size={size}
