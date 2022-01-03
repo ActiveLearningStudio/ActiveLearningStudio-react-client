@@ -8,9 +8,14 @@ import './style.scss';
 
 const EditProjectModel = (props) => {
   const { row, show, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
-
+  const onClickHandler = async () => {
+    console.log(show, 'show');
+    onHide();
+    const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
+    setAllProjectTab(result);
+  };
   return (
-    <Modal
+    show && <Modal
       // {...props}
       show={show}
       onHide={onHide}
@@ -39,11 +44,7 @@ const EditProjectModel = (props) => {
           </div>
           <div className="detail-btn">
             <Buttons
-              onClick={async () => {
-                onHide(false);
-                const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
-                setAllProjectTab(result);
-              }}
+              onClick={onClickHandler}
               text="Close"
               width="95px"
               height="32px"
