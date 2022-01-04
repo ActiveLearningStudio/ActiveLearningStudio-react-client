@@ -1,14 +1,22 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .create-team-wrapper {
   margin-top: 23px;
   margin-right: 27.5em;
 
-  @media(max-width: 1540px) {
+  @media (max-width: 1540px) {
     margin-right: 1em;
   }
 
   .creation-panel {
+    .satelliteteaminfo {
+      margin-top: 30px;
+      color: #565656;
+      font-size: 20px;
+    }
+    .novoo-id {
+      margin-top: 20px !important;
+    }
     h2 {
       font-size: 16px;
     }

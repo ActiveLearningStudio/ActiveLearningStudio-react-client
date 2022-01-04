@@ -1,6 +1,6 @@
-@import "index";
-@import "react-toastify/dist/ReactToastify.css";
-@import "~bootstrap/scss/bootstrap";
+@import 'index';
+@import 'react-toastify/dist/ReactToastify.css';
+@import '~bootstrap/scss/bootstrap';
 
 body {
   margin: 0;
@@ -14,8 +14,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 *:focus {
@@ -210,7 +209,7 @@ code {
   .playlist-resource {
     max-width: 20%;
     width: 20%;
-    margin-right: 16px;
+    margin-right: 15px;
 
     &:last-child {
       margin-right: 0;
@@ -295,6 +294,32 @@ code {
   a {
     word-break: break-all !important;
   }
+}
+
+.saveclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #ffffff;
+  background: #084892;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.backclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #333;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
 }
 
 .add-role-form {

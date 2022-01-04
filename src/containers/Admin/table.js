@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
-import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
+// import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
@@ -21,6 +21,8 @@ import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 function Table(props) {
   const {
     tableHead,
+    sortCol,
+    handleSort,
     history,
     data,
     type,
@@ -36,6 +38,10 @@ function Table(props) {
     changeIndexValue,
     setAllProjectIndexTab,
     changeProjectFromorg,
+    setAllProjectTab,
+    setModalShow,
+    setrowData,
+    setActivePageNumber,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -48,6 +54,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -82,7 +89,7 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === 'LMS' || type === 'Project' || type === 'DefaultSso') {
+    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso') {
       if (data?.data) {
         setLocalStateData(data?.data);
       } else {
@@ -182,7 +189,11 @@ function Table(props) {
           <thead>
             <tr>
               {tableHead?.map((head, keyid) =>
-                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? <th key={keyid}> {head} </th> : head !== 'Users' ? <th>{head}</th> : null
+                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
+                  <th key={keyid}> {head} </th>
+                ) : head !== 'Users' ? (
+                  <th onClick={sortCol != '' ? (sortCol.includes(head) ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : '') : ''}>{head}</th>
+                ) : null
               )}
             </tr>
           </thead>
@@ -293,7 +304,7 @@ function Table(props) {
                 </tr>
               ))}
             {type === 'LMS' &&
-              subType === 'All Settings' &&
+              subType === 'All settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
@@ -307,7 +318,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All Settings" row={row} />
+                            <AdminDropdown type={type} subType="All settings" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
@@ -435,7 +446,7 @@ function Table(props) {
                                 if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-                                dispatch(setActiveTab('Project'));
+                                dispatch(setActiveTab('Projects'));
                               }
                             }}
                           >
@@ -566,8 +577,8 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === 'Project' &&
-              subType === 'all' &&
+            {type === 'Projects' &&
+              subType === 'All Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData.map((row) => {
@@ -637,7 +648,17 @@ function Table(props) {
                           <div className="admin-panel-dropdown">
                             {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
                             <div>
-                              <AdminDropdown type={type} row={row} />
+                              <AdminDropdown
+                                activePage={activePage}
+                                setAllProjectTab={setAllProjectTab}
+                                setLocalStateData={setLocalStateData}
+                                localStateData={localStateData}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                              />
                             </div>
                           </div>
                         </td>
@@ -659,7 +680,7 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Project' &&
+            {type === 'Projects' &&
               subType === 'Exported Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
@@ -692,7 +713,7 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Project' &&
+            {type === 'Projects' &&
               subType === 'Library requests' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
@@ -923,7 +944,7 @@ function Table(props) {
                           </div>
 
                           <div>
-                            <AdminDropdown type={type} item={item} />
+                            <AdminDropdown type1={item} type={type} subType={subType} />
                           </div>
                         </div>
                       </td>
@@ -995,16 +1016,15 @@ function Table(props) {
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
                     <tr key={row} className="admin-panel-rows">
+                      <td>{row?.site_name}</td>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
-                      <td>{row.organization.name}</td>
-                      <td>{row?.site_name}</td>
                       <td>{row.lti_client_id}</td>
                       <td>
                         <div className="admin-panel-dropdown">
                           <div>{row?.description}</div>
                           <div>
-                            <AdminDropdown type={type} row={row} />
+                            <AdminDropdown type={type} row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
@@ -1037,7 +1057,7 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row.lti_version}
                           <div>
-                            <AdminDropdown type={type} subType="LTI Tools" row={row} />
+                            <AdminDropdown type={type} subType="LTI Tools" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>

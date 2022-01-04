@@ -117,7 +117,7 @@ const ActivityLayout = (props) => {
         <div className="activity-layout-cards" style={{ width: '100%' }}>
           {allActivitiesSingle?.map((data) => {
             return (
-              filterData.includes(data.activityType.id) && (
+              filterData.includes(data.activityType?.id) && (
                 <LayoutCard
                   image={data.image}
                   text={data.title}

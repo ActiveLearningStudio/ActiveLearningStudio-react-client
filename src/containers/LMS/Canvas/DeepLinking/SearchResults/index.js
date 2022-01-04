@@ -65,12 +65,12 @@ const SearchResults = (props) => {
       <div className="row">
         <div className="col text-left">
           {(!!searchParams.from && searchParams.from !== 0) && (
-            <button type="button" className="pagination-buttons" onClick={previousPage}>Previous</button>
+            <button type="button" className="btn btn-primary pagination-buttons" onClick={previousPage}>Previous</button>
           )}
         </div>
         <div className="col text-right">
           {hasMoreResults && (
-            <button type="button" className="pagination-buttons" onClick={nextPage}>Next</button>
+            <button type="button" className="btn btn-primary pagination-buttons" onClick={nextPage}>Next</button>
           )}
         </div>
       </div>

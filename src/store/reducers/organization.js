@@ -134,7 +134,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_SUBORG_EDIT:
       return {
         ...state,
-        allSuborgList: state.allSuborgList.map((edit) => {
+        allSuborgList: state?.allSuborgList?.data?.map((edit) => {
           if (edit.id === action.payload.id) {
             return action.payload;
           }

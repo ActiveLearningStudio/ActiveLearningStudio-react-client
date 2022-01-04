@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
-import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction } from 'store/actions/team';
+import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction, getWhiteBoardUrl } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
 import filterImg from 'assets/images/svg/filter.svg';
@@ -14,8 +15,8 @@ import {
   // useHistory,
 } from 'react-router-dom';
 // import Swal from 'sweetalert2';
-import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
-import { loadLmsAction } from 'store/actions/project';
+
+
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -23,6 +24,10 @@ import TeamProjectView from './TeamProjectView';
 import ChannelPanel from './Channel';
 
 import './style.scss';
+import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
+import { loadLmsAction } from 'store/actions/project';
+import Buttons from "utils/Buttons/buttons";
+import WhiteBoardModal from 'components/models/WhiteBoardModal';
 
 // TODO: need to remove after connect API
 // const breadCrumbData = {
@@ -50,8 +55,12 @@ function TeamsPage(props) {
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
-  // const [breadCrumb, setBreadCrumb] = useState([]);
-  // const history = useHistory();
+  const [breadCrumb, setBreadCrumb] = useState([]);
+  const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
+  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const dataRedux = useSelector((state) => state);
+  const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
@@ -73,6 +82,7 @@ function TeamsPage(props) {
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
+  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
@@ -103,9 +113,29 @@ function TeamsPage(props) {
     projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
     channelShow: 'Channels',
   };
-  // const goBack = () => {
-  //   history.goBack();
-  // };
+  const goBack = () => {
+    history.goBack();
+  };
+
+  const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
+    dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
+  }
+
+  useEffect(() => {
+    if (dataRedux.team.whiteBoardUrl) {
+      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
+      setLoading(false);
+    }
+  }, [dataRedux.team.whiteBoardUrl]);
+
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
   return (
     <>
       {/* <div className="side-wrapper-team">
@@ -135,6 +165,19 @@ function TeamsPage(props) {
                 {overview ? 'Teams' : title[status] || 'Teams'}
               </h1>
               <div className="flex-button-top">
+                {projectShow && (
+                  <Buttons
+                    secondary={true}
+                    text="Open White Board"
+                    width="163px"
+                    height="35px"
+                    margin="15px 0 0 10px"
+                    hover={true}
+                    onClick={() => {
+                      assignWhiteBoardUrl(organization.currentOrganization?.id, selectedTeam.id, auth.user?.id, 'team')
+                      handleShow()
+                    }}
+                  />)}
                 {teamPermission?.Team?.includes('team:add-project') && projectShow && (
                   <Link to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}>
                     <div className="btn-top-page">
@@ -224,6 +267,12 @@ function TeamsPage(props) {
         </div>
       </div>
       <Footer />
+      <WhiteBoardModal
+        url={whiteBoardUrl}
+        show={show} // {props.show}
+        onHide={handleClose}
+        loading={loading}
+      />
     </>
   );
 }

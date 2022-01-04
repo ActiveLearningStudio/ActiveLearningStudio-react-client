@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -7,33 +6,41 @@ import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
-import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
+import { loadMyProjectsPreviewSharedAction, searchPreviewProjectAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import Unauthorized from 'components/Unauthorized';
 
 import './style.scss';
 
 function ProjectPreviewShared(props) {
-  const { match, sampleId, loadMyProjectsPreviewShared, setModalShow, setCurrentActivity } = props;
+  const {
+    match,
+    sampleId,
+    loadMyProjectsPreviewShared,
+    setModalShow,
+    setCurrentActivity,
+    searchPreviewProject,
+  } = props;
 
   const project = useSelector((state) => state.project);
+  const { activeOrganization } = useSelector((state) => state.organization);
   const accordion = useRef([]);
 
   const [currentProject, setCurrentProject] = useState(null);
   useEffect(() => {
-    if (sampleId) {
-      loadMyProjectsPreviewShared(sampleId);
-    } else {
-      loadMyProjectsPreviewShared(match.params.projectId);
+    if (window.location.pathname.includes('/shared')) {
+      loadMyProjectsPreviewShared(sampleId || match.params.projectId);
+    } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+      searchPreviewProject(sampleId || match.params.projectId);
     }
-  }, [match.params.projectId, sampleId]);
+  }, [activeOrganization?.id, loadMyProjectsPreviewShared, match.params.projectId, sampleId, searchPreviewProject]);
   useEffect(() => {
-    if (project && project?.isSharedProject) {
+    if (project && (project?.isSharedProject || project?.searchPreviewProject)) {
       setCurrentProject(project?.projectSelect);
-    } else if (project && !project?.isSharedProject) {
+    } else if (project && (!project?.isSharedProject || !project?.searchPreviewProject)) {
       setCurrentProject(null);
     }
-  }, [project?.projectSelect, sampleId]);
+  }, [project, project?.projectSelect, sampleId]);
 
   const settings = {
     dots: false,
@@ -51,9 +58,8 @@ function ProjectPreviewShared(props) {
   let playlists;
 
   if (currentProject) {
-    playlists =
-      currentProject.playlists &&
-      currentProject.playlists.map((playlist, counter) => {
+    playlists = currentProject.playlists
+      && currentProject.playlists.map((playlist, counter) => {
         let activities;
         if (playlist.activities.length > 0) {
           activities = playlist.activities.map((activity) => (
@@ -178,6 +184,7 @@ ProjectPreviewShared.propTypes = {
   setCurrentActivity: PropTypes.func.isRequired,
   setModalShow: PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
+  searchPreviewProject: PropTypes.func.isRequired,
 };
 
 ProjectPreviewShared.defaultProps = {
@@ -186,6 +193,7 @@ ProjectPreviewShared.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
+  searchPreviewProject: (projectId) => dispatch(searchPreviewProjectAction(projectId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared));

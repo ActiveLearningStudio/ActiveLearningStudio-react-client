@@ -61,11 +61,11 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
-        {type === 'Project' && subType === 'all' && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -73,16 +73,16 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             totalItemsCount={data?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab('all');
+              setCurrentTab('All Projects');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
             // Editing
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
-        {type === 'Project' && subType === 'Exported Projects' && (
+        {type === 'Projects' && subType === 'Exported Projects' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -94,11 +94,11 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
-        {type === 'Project' && subType === 'index' && (
+        {type === 'Projects' && subType === 'Library requests' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -106,12 +106,12 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             totalItemsCount={localstatePagination?.meta?.total}
             onChange={(e) => {
               window.scrollTo(0, 0);
-              setCurrentTab('index');
+              setCurrentTab('Library requests');
               setActivePage(e);
               dispatch(updatePageNumber(e));
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Activities' && subType === 'Activity Types' && (
@@ -125,8 +125,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Activities' && subType === 'Activity Items' && (
@@ -140,8 +140,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'LMS' && (
@@ -155,8 +155,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'DefaultSso' && (
@@ -170,8 +170,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Organization' && (
@@ -185,8 +185,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
-            firstPageText="Previous"
-            lastPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
       </div>

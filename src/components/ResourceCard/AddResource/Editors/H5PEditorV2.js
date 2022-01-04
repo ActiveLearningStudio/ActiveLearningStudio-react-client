@@ -8,10 +8,10 @@ import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
-import Buttons from 'utils/Buttons/buttons';
+import { edith5pVideoActivity } from 'store/actions/videos';
 
 const H5PEditor = (props) => {
-  const { playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId } = props;
+  const { setOpenVideo, editVideo, playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId, type } = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -34,12 +34,15 @@ const H5PEditor = (props) => {
     setSubmitAction(e.currentTarget.value);
   };
 
-  const submitResource = (event) => {
+  const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
+      } else if (editVideo) {
+        await dispatch(edith5pVideoActivity(editVideo.id, formData));
+        setOpenVideo(false);
       } else {
         const payload = {
           event,
@@ -53,7 +56,10 @@ const H5PEditor = (props) => {
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type));
+      if (type === 'videoModal') {
+        setOpenVideo(false);
+      }
     }
   };
   if (h5pParams === '""') {
@@ -131,14 +137,16 @@ const H5PEditor = (props) => {
 
           <div className="interactive-btns" style={{ marginTop: '20px' }}>
             <div className="cancel">
-              <Buttons
-                text="Back"
+              <div
+                className="backclosemodel"
                 width="151px"
                 secondary
                 onClick={() => {
                   hide();
                 }}
-              />
+              >
+                Back
+              </div>
             </div>
             <div className="save-close">
               <div
