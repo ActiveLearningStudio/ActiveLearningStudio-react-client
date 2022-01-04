@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -23,7 +23,6 @@
       }
     }
   }
-  
 
   .parent-organization-detail {
     display: flex;
@@ -446,7 +445,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -474,7 +473,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -530,7 +529,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -552,7 +551,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -878,7 +877,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         span {
           display: flex;
         }
@@ -920,7 +919,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -942,7 +941,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1424,11 +1423,26 @@
     }
   }
   .card-body {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
-
     padding: 10px 20px;
-
+    .permission {
+      background: #f7faff;
+      padding: 16px;
+      margin-bottom: 8px;
+      h6 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 0.02em;
+        color: #084892;
+        margin-bottom: 24px;
+      }
+      .permission-about {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
     .form-grouper {
       flex-basis: 33%;
       display: flex;
@@ -1533,7 +1547,7 @@
     position: relative;
 
     ::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1559,7 +1573,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1571,7 +1585,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1586,7 +1600,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1599,7 +1613,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1618,6 +1632,41 @@
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-left: 1px solid #ccc;
+
+  h2 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: #515151;
+  }
+
+  .update-permission {
+    width: 209px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(18, 179, 71, 0.08);
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-top: 16px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+
+    h5 {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 26px;
+      color: #087a2e;
+      margin-bottom: 0;
+    }
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
 }
 .roles-permission-tab-row {
   margin-right: 0 !important;
@@ -1671,7 +1720,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url("../../assets/images/svg/VectorAngleRight.svg");
+      content: url('../../assets/images/svg/VectorAngleRight.svg');
     }
   }
 }
@@ -1694,7 +1743,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url("../../assets/images/svg/angledown.svg");
+    content: url('../../assets/images/svg/angledown.svg');
   }
 }
 .checkbox_section_custom {
@@ -1767,7 +1816,7 @@
 }
 
 .custom-select-style-for-sub {
-  width: calc(100% / 4);
+  width: 260px;
   display: flex;
   align-items: center;
   margin-bottom: 0 !important;
@@ -1776,6 +1825,7 @@
     width: 80px;
     height: 28px;
     background: #e5eeff;
+    flex-shrink: 0;
     border-radius: 4px;
     font-family: $rubik;
     font-style: normal;
@@ -1784,6 +1834,7 @@
     line-height: 20px;
     color: #084892;
     border: none;
+    padding: 4px 6px 4px 8px;
   }
   p {
     margin-left: 8px;
@@ -1850,21 +1901,21 @@
 }
 
 .or-seprator {
-  background: #DDDDDD;
-  height:1px;
-  margin-top:22px;
+  background: #dddddd;
+  height: 1px;
+  margin-top: 22px;
   span {
     background: #fff;
-    padding:10px;
-    position:relative;
-    top:-10px;
-    left: 45%
+    padding: 10px;
+    position: relative;
+    top: -10px;
+    left: 45%;
   }
 }
 
 .tos-pp {
   margin-top: 24px;
-  div{
+  div {
     margin-top: 16px;
   }
   .tos-pss-container {
@@ -1877,8 +1928,8 @@
       text-align: center;
       height: 36px;
       color: #084892;
-      background: #F7FAFF;
-      border: 1px solid #F7FAFF;
+      background: #f7faff;
+      border: 1px solid #f7faff;
     }
   }
 }
