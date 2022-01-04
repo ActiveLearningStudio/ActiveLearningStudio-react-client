@@ -73,6 +73,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
+                <br />
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -135,7 +136,7 @@ const BrightcoveModel = (props) => {
                                       <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
                                     </td>
                                     <td>
-                                      <img src={PreivewImage} className="image-size" />
+                                      <img src={data?.images?.thumbnail?.src} className="image-size" />
                                       <span>{data.name}</span>
                                     </td>
                                     <td>{data.created_at?.split('T')[0]}</td>
