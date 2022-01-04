@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -445,7 +445,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -473,7 +473,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -529,7 +529,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -551,7 +551,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -877,7 +877,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         span {
           display: flex;
         }
@@ -919,7 +919,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -941,7 +941,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1247,7 +1247,7 @@
   }
 
   .user-roles {
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     padding: 0px 20px;
 
     form {
@@ -1423,11 +1423,26 @@
     }
   }
   .card-body {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
-
     padding: 10px 20px;
-
+    .permission {
+      background: #f7faff;
+      padding: 16px;
+      margin-bottom: 8px;
+      h6 {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 0.02em;
+        color: #084892;
+        margin-bottom: 24px;
+      }
+      .permission-about {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
     .form-grouper {
       flex-basis: 33%;
       display: flex;
@@ -1532,7 +1547,7 @@
     position: relative;
 
     ::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1558,7 +1573,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1570,7 +1585,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1585,7 +1600,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1598,12 +1613,270 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 20px;
   color: #ff403b;
+}
+
+// Role Css Update
+.dynamic-roles-title-btn {
+  padding-bottom: 23px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+
+  h2 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: #515151;
+  }
+
+  .update-permission {
+    width: 209px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(18, 179, 71, 0.08);
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-top: 16px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+
+    h5 {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 26px;
+      color: #087a2e;
+      margin-bottom: 0;
+    }
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+.roles-permission-tab-row {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+.roles-permission-tab {
+  border: 1px solid #ccc;
+}
+.detail-permission-tab {
+  // background: #f7faff;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.checkbox_section {
+  align-items: center;
+  display: flex;
+  input {
+    display: none;
+    &:checked + span {
+      background-image: url(../../assets/images/check.svg);
+      background-color: #2e68bf;
+    }
+  }
+  span {
+    border: 1px solid #cccc;
+    background-repeat: no-repeat;
+    background-size: 17px 9px;
+    background-position: 2px;
+    display: inline-block;
+    margin-right: 10px;
+    height: 23px;
+    width: 23px;
+    border-radius: 3px;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+#role-permission-tab-id {
+  .nav-link.active {
+    border-bottom: 4px solid transparent !important;
+    background: #f7faff !important;
+    border-radius: 4px !important;
+    font-weight: bold !important;
+    color: #084892 !important;
+
+    .image-tag {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+      content: url('../../assets/images/svg/VectorAngleRight.svg');
+    }
+  }
+}
+
+.role-permission-tab-name {
+  .nav-link {
+    font-family: $rubik !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+    color: #515151 !important;
+    text-align: left !important;
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    padding-left: 10px !important;
+    position: relative;
+  }
+  .image-tag {
+    position: absolute;
+    right: 5px;
+    top: 15px;
+    content: url('../../assets/images/svg/angledown.svg');
+  }
+}
+.checkbox_section_custom {
+  display: flex;
+}
+
+// all-permission
+.all-permission-tab-data {
+  display: flex;
+  flex-direction: column;
+  .permission-tab-title {
+    margin-bottom: 18px;
+  }
+  .permission-tab-data {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.dynamic-roles {
+  .card-body {
+    .form-grouper label {
+      padding-left: 0 !important;
+    }
+  }
+}
+
+// Admin Panel
+.admin-panel-child-selection {
+  display: flex;
+  // justify-content: space-between;
+  flex-wrap: wrap;
+}
+.admin-tag {
+  p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+  }
+}
+.custom-select-style {
+  width: calc(100% / 4);
+  display: flex;
+  align-items: center;
+  // margin-right: 40px;
+  select {
+    width: 80px;
+    height: 28px;
+    background: #e5eeff;
+    border-radius: 4px;
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    border: none;
+  }
+  p {
+    margin-left: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+.custom-select-style-for-sub {
+  width: 260px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0 !important;
+  // margin-right: 40px;
+  select {
+    width: 80px;
+    height: 28px;
+    background: #e5eeff;
+    flex-shrink: 0;
+    border-radius: 4px;
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    border: none;
+    padding: 4px 6px 4px 8px;
+  }
+  p {
+    margin-left: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+.for-authoring {
+  display: flex;
+  flex-direction: column;
+}
+.custom-select-style-for-authoring {
+  display: flex;
+  align-items: center;
+  select {
+    width: 80px;
+    height: 28px;
+    background: #e5eeff;
+    border-radius: 4px;
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    border: none;
+  }
+  p {
+    margin-left: 8px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
 }
 
 .upload-btn {
@@ -1628,21 +1901,21 @@
 }
 
 .or-seprator {
-  background: #DDDDDD;
-  height:1px;
-  margin-top:22px;
+  background: #dddddd;
+  height: 1px;
+  margin-top: 22px;
   span {
     background: #fff;
-    padding:10px;
-    position:relative;
-    top:-10px;
-    left: 45%
+    padding: 10px;
+    position: relative;
+    top: -10px;
+    left: 45%;
   }
 }
 
 .tos-pp {
   margin-top: 24px;
-  div{
+  div {
     margin-top: 16px;
   }
   .tos-pss-container {
@@ -1655,8 +1928,8 @@
       text-align: center;
       height: 36px;
       color: #084892;
-      background: #F7FAFF;
-      border: 1px solid #F7FAFF;
+      background: #f7faff;
+      border: 1px solid #f7faff;
     }
   }
 }

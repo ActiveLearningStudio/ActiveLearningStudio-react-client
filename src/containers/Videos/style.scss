@@ -231,6 +231,10 @@
     .main-tabs .nav-item.active:after {
       display: none !important;
     }
+    .nav-tabs .nav-link:hover {
+      border: none !important;
+      border-bottom: 2px solid $curriki-main-blue !important;
+    }
   }
   .add-video-layout-formik {
     // @media screen and (max-width: 1024px) {

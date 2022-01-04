@@ -339,7 +339,7 @@ function SearchInterface(props) {
           />
 
           <div className="content-search">
-            {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard'))
+            {true
               ? (
                 <div className="search-result-main">
                   <div className="current-org-search">{currentOrganization?.name}</div>
@@ -479,7 +479,7 @@ function SearchInterface(props) {
                                             <span>My Projects</span>
                                           </label>
                                         )}
-                                      {permission?.Search?.includes('search:advance')
+                                      {true
                                         && (
                                           <label>
                                             <input
@@ -494,7 +494,7 @@ function SearchInterface(props) {
                                             <span>All Shared Projects</span>
                                           </label>
                                         )}
-                                      {permission?.Search?.includes('search:advance')
+                                      {true
                                         && (
                                           <label>
                                             <input
@@ -917,7 +917,7 @@ function SearchInterface(props) {
                                             // eslint-disable-next-line max-len
                                             ? `/activity/${res.id}/preview`
                                             : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview`
+                                              ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/preview`
                                         }
                                         target="_blank"
@@ -1209,7 +1209,7 @@ function SearchInterface(props) {
                                               res.model === 'Activity'
                                                 ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1395,7 +1395,7 @@ function SearchInterface(props) {
                                                 // eslint-disable-next-line max-len
                                                 ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
@@ -1508,7 +1508,7 @@ function SearchInterface(props) {
                                                 res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                    ? `/playlist/${res.id}/preview`
+                                                    ? `/playlist/${res.id}/preview/lti`
                                                     : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
