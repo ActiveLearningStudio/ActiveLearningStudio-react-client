@@ -58,7 +58,7 @@ const AdminDropdown = (props) => {
   const [projectID, setProjectID] = useState('');
   return (
     <>
-      <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
+      <Dropdown drop="start" className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
         <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
           {/* <FontAwesomeIcon
           icon="ellipsis-v"
