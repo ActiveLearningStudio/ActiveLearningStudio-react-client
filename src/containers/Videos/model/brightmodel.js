@@ -36,6 +36,9 @@ const BrightcoveModel = (props) => {
         console.log(videosResult);
         setTotalCount(videosResult.meta?.count);
         setcmsVideo(videosResult.data);
+        if (typeof activeCms === 'object' && activeCms.hasOwnProperty('account_id')) {
+          window.brightcoveAccountId = activeCms.account_id;
+        }
       }
     })();
   }, [activeCms, offset]);
