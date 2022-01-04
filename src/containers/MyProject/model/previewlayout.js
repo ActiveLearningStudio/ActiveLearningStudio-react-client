@@ -55,7 +55,7 @@ const PreviewLayoutModel = (props) => {
               ) : (
                 <H5PEditor
                   h5pParams={
-                    props.editVideo.h5p ? props.editVideo.h5p : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": ${video}}}},"metadata":{"title":"${title}"}}`
+                    props.editVideo.h5p ? props.editVideo.h5p : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": "${video}"}}},"metadata":{"title":"${title}"}}`
                   }
                   h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
                   hide={props.onHide}
@@ -73,16 +73,16 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="1. Select  layout" tabActive={true} />
                   {
                     ((counter = 0),
-                    layout?.map((data) => {
-                      if (data.id === selectedLayout?.id && counter == 0) {
-                        counter++;
-                        return (
-                          <>
-                            <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                          </>
-                        );
-                      }
-                    }))
+                      layout?.map((data) => {
+                        if (data.id === selectedLayout?.id && counter == 0) {
+                          counter++;
+                          return (
+                            <>
+                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                            </>
+                          );
+                        }
+                      }))
                   }
                   {counter === 0 && (
                     <>
