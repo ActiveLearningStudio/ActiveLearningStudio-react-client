@@ -296,3 +296,19 @@ code {
     word-break: break-all !important;
   }
 }
+
+.add-role-form {
+  select {
+  width: 80px !important;
+  height: 28px !important;
+  background: #e5eeff;
+  border-radius: 4px;
+  font-family: "rubic";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #084892;
+  border: none !important;
+  }
+}
