@@ -74,7 +74,7 @@ function SearchForm() {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
-              } else if (permission?.Search?.includes('search:advance')) {
+              } else if (true) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
@@ -107,7 +107,7 @@ function SearchForm() {
               Swal.fire('Search field is required');
             } else if (simpleSearch.length > 255) {
               Swal.fire('Character limit should be less than 255 ');
-            } else if (permission?.Search?.includes('search:advance')) {
+            } else if (true) {
               const searchData = {
                 phrase: simpleSearch.trim(),
                 from: 0,
@@ -197,19 +197,19 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    {permission?.Search?.includes('search:dashboard') && (
+                    {true && (
                       <label>
                         <input name="type" onChange={handleChange} onBlur={handleBlur} value="private" checked={values.type === 'private'} type="radio" />
                         <span>Search My Projects</span>
                       </label>
                     )}
-                    {permission?.Search?.includes('search:advance') && (
+                    {true && (
                       <label>
                         <input name="type" onChange={handleChange} onBlur={handleBlur} value="public" checked={values.type === 'public'} type="radio" />
                         <span>Search All Shared Projects</span>
                       </label>
                     )}
-                    {permission?.Search?.includes('search:advance') && (
+                    {true && (
                       <label>
                         <input name="type" onChange={handleChange} onBlur={handleBlur} value="orgSearch" checked={values.type === 'orgSearch'} type="radio" />
                         <span>Search All Shared Projects In My Org</span>

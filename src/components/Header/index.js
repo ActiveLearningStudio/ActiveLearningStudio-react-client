@@ -24,7 +24,6 @@ function Header(props) {
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const { user } = useSelector((state) => state.auth);
-  const { permission } = stateHeader;
   const { currentOrganization } = stateHeader;
 
   return (
@@ -46,7 +45,7 @@ function Header(props) {
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex">
-          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard')) && (
+          {true && (
             <div className="search-div">
               <SearchForm />
             </div>
