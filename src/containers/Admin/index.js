@@ -311,7 +311,7 @@ function AdminPanel({ showSSO }) {
 
           <EditProjectModel
             show={modalShow}
-            onHide={(type) => setModalShow(type)}
+            onHide={() => setModalShow(false)}
             row={rowData}
             showFooter={true}
             activePage={activePageNumber}
