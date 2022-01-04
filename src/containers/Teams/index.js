@@ -7,16 +7,9 @@ import { Alert } from 'react-bootstrap';
 import { getTeamPermission, loadSubOrganizationTeamsAction, loadTeamsAction, getWhiteBoardUrl } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
-import filterImg from 'assets/images/svg/filter.svg';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import Footer from 'components/Footer';
-import {
-  Link,
-  // useHistory,
-} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 // import Swal from 'sweetalert2';
-
-
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
@@ -30,27 +23,16 @@ import Buttons from "utils/Buttons/buttons";
 import WhiteBoardModal from 'components/models/WhiteBoardModal';
 
 // TODO: need to remove after connect API
-// const breadCrumbData = {
-//   creation: 'teams/create team',
-//   editMode: 'edit team',
-//   projectShow: 'projects',
-//   channelShow: 'projects',
-//   teamShow: 'teams',
-// };
+const breadCrumbData = {
+  creation: 'teams/create team',
+  editMode: 'edit team',
+  projectShow: 'projects',
+  channelShow: 'projects',
+  teamShow: 'teams',
+};
 
 function TeamsPage(props) {
-  const {
-    location,
-    teams,
-    overview,
-    creation,
-    teamShow,
-    editMode,
-    projectShow,
-    channelShow,
-    loadTeams,
-    loadSubOrgTeams,
-  } = props;
+  const { location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
@@ -89,14 +71,14 @@ function TeamsPage(props) {
       dispatch(loadTeamsAction());
     }
   }, [notification?.today]);
-  // useEffect(() => {
-  //   let crumb = breadCrumbData[status];
-  //   if (teamShow && selectedTeam) {
-  //     crumb += `/${selectedTeam.name} Members`;
-  //   }
+  useEffect(() => {
+    let crumb = breadCrumbData[status];
+    if (teamShow && selectedTeam) {
+      crumb += `/${selectedTeam.name} Members`;
+    }
 
-  //   setBreadCrumb(crumb.split('/'));
-  // }, [selectedTeam, status, teamShow, teams]);
+    setBreadCrumb(crumb.split('/'));
+  }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
     if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && selectedTeam?.id) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
@@ -138,7 +120,7 @@ function TeamsPage(props) {
 
   return (
     <>
-      {/* <div className="side-wrapper-team">
+      <div className="side-wrapper-team">
         <div className="bread-crumb">
           <div className="main-flex-top">
             {breadCrumb.map((node, index, these) => (
@@ -155,14 +137,13 @@ function TeamsPage(props) {
             </Link>
           )}
         </div>
-      </div> */}
+      </div>
       <div className="teams-page">
-        <div className="content">
-          <div className="inner-content">
-            <div className="organization-name">{currentOrganization?.name}</div>
-            <div>
+        <div className="content-wrapper">
+          <div className="content">
+            <div className="row" style={{ justifyContent: 'space-between' }}>
               <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
-                {overview ? 'Teams' : title[status] || 'Teams'}
+                {overview ? `${activeOrganization?.name} Teams` : title[status] || 'Teams'}
               </h1>
               <div className="flex-button-top">
                 {projectShow && (
@@ -192,33 +173,21 @@ function TeamsPage(props) {
                   </Link>
                 )}
                 {permission?.Team?.includes('team:create') && overview && (
-                  <div className="team-controller">
-                    <div className="search-and-filters">
-                      <div className="search-bar">
-                        <input type="text" className="search-input" placeholder="Search team" />
-                        <img src={searchimg} alt="search" />
-                      </div>
-                      <div className="filter">
-                        <img src={filterImg} alt="filter" />
-                        Filter
-                      </div>
-                    </div>
+                  <>
                     <Link to={`/org/${organization?.currentOrganization?.domain}/teams/create-team`}>
                       <div className="btn-top-page">
-                        <FontAwesomeIcon icon="plus" />
-                        Add Team
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Team
                       </div>
                     </Link>
-                  </div>
+                  </>
                 )}
                 {activeOrganization?.name !== currentOrganization?.name && overview && (
-                  <Link
-                    to={`/org/${organization?.currentOrganization?.domain}/teams`}
-                    onClick={() => {
-                      if (permission?.Organization?.includes('organization:view')) dispatch(getOrganization(currentOrganization?.id));
-                      dispatch(clearOrganizationState());
-                      dispatch(getRoles());
-                    }}
+                  <Link to={`/org/${organization?.currentOrganization?.domain}/teams`} onClick={() => {
+                    if (permission?.Organization?.includes('organization:view')) dispatch(getOrganization(currentOrganization?.id));
+                    dispatch(clearOrganizationState());
+                    dispatch(getRoles());
+                  }}
                   >
                     <div className="btn-top-page">
                       <FontAwesomeIcon icon="arrow-left" className="mr-2" />
@@ -231,7 +200,7 @@ function TeamsPage(props) {
             </div>
             <>
               {overview && (
-                <div className="overview">
+                <div className="row overview">
                   {permission?.Team?.includes('team:view') ? (
                     <>
                       {teams.length > 0 ? (
@@ -242,8 +211,7 @@ function TeamsPage(props) {
                         </Alert>
                       ) : (
                         <Alert className="alert-space" variant="warning">
-                          No team available.
-                          {' '}
+                          No team available.{' '}
                         </Alert>
                       )}
                     </>
