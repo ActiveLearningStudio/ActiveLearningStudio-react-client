@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import adminService from 'services/admin.service';
 
 import * as actionTypes from 'store/actionTypes';
+import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store/actions/project';
 import { deleteUserFromOrganization, getOrganization, clearOrganizationState, removeUserFromOrganization, getRoles, updatePageNumber } from 'store/actions/organization';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import { Alert } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 // import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
 
@@ -54,7 +55,10 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
-
+  const indexingArray = [
+    { indexing: 0, indexing_text: 'NOT REQUESTED' }, { indexing: 1, indexing_text: 'REQUESTED' },
+    { indexing: 3, indexing_text: 'APPROVED' }, { indexing: 2, indexing_text: 'REJECTED' },
+  ]
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -614,7 +618,43 @@ function Table(props) {
 
                         <td>{row.id}</td>
                         <td>{row.users?.[0]?.name}</td>
-                        <td>{row.indexing_text}</td>
+                        <td>
+                          <div className="filter-dropdown-table">
+                            <Dropdown>
+                              <Dropdown.Toggle id="dropdown-basic">
+                                {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
+                                <FontAwesomeIcon icon="chevron-down" />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {indexingArray.map((element) => (
+                                  <Dropdown.Item onClick={async () => {
+                                    const result = await adminService.updateIndex(row.id, element.indexing);
+                                    if (result?.message) {
+                                      const editRow = {
+                                        ...row,
+                                        indexing: element.indexing,
+                                        indexing_text: element.indexing_text,
+                                      };
+                                      setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                      Swal.fire({
+                                        icon: 'success',
+                                        text: result.message,
+                                      });
+                                    } else {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        text: 'Error',
+                                      });
+                                    }
+
+                                  }}>
+                                    {element.indexing_text}
+                                  </Dropdown.Item>
+                                ))}
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
+                        </td>
                         {/* <td>{row.organization_id}</td> */}
                         {/* <td>
                           {row.shared ? (
@@ -634,16 +674,40 @@ function Table(props) {
                           )}
                         </td> */}
                         <td>
-                          {row.shared ? (
-                            <Link className="shared-link-enable" target="_blank" to={`/project/${row.id}/shared`}>
-                              <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                              Enabled
-                            </Link>
-                          ) : (
-                            <>
-                              <div className="shared-link-disable">Disabled</div>
-                            </>
-                          )}
+                          <div className="filter-dropdown-table">
+                            <Dropdown>
+                              <Dropdown.Toggle id="dropdown-basic">
+                                {row.shared ? 'Enabled' : 'Disabled'}
+                                <FontAwesomeIcon icon="chevron-down" />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <Dropdown.Item
+                                  onClick={async () => {
+                                    if (!row.shared) {
+                                      const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
+                                      if (result) {
+                                        setLocalStateData(localStateData.map((element) => element.id === row.id ? result : element));
+                                      }
+                                    }
+                                  }}
+                                >
+                                  Enable
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  onClick={async () => {
+                                    if (row.shared) {
+                                      const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
+                                      if (result) {
+                                        setLocalStateData(localStateData.map((element) => element.id === row.id ? result : element));
+                                      }
+                                    }
+                                  }}
+                                >
+                                  Disable
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
                         </td>
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
