@@ -73,7 +73,7 @@ function Controller(props) {
     setSelectedActivityType,
     libraryReqSelected,
     setLibraryReqSelected,
-    setSubTypeState,
+    // setSubTypeState,
     projectFilterObj,
     setProjectFilterObj,
     filterSearch,
@@ -349,7 +349,7 @@ function Controller(props) {
           </div>
         )}
         {/* FILTER FOR PROJECT TABS */}
-        {type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -458,19 +458,47 @@ function Controller(props) {
                   <div className="library-status">
                     <label>Library status</label>
                     <span>
-                      <input type="radio" checked={projectFilterObj.indexing === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 1 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 1 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(true);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 1 });
+                        }}
+                      />
                       Requested
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.indexing === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 0 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 0 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 0 });
+                        }}
+                      />
                       Not Requested
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.indexing === 3 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 3 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 3 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 3 });
+                        }}
+                      />
                       Approved
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.indexing === 2 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, indexing: 2 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 2 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 2 });
+                        }}
+                      />
                       Rejected
                     </span>
                   </div>
@@ -498,13 +526,13 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <button
             className="switch-libreq"
             type="button"
             style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
             onClick={() => {
-              setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
@@ -672,7 +700,7 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Projects' && (subType === 'All Projects' || subType === 'Library requests') && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -938,7 +966,7 @@ Controller.propTypes = {
   setSelectedActivityType: PropTypes.func,
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
-  setSubTypeState: PropTypes.func,
+  // setSubTypeState: PropTypes.func,
   projectFilterObj: PropTypes.object,
   setProjectFilterObj: PropTypes.func,
   filterSearch: PropTypes.func,
@@ -982,7 +1010,7 @@ Controller.defaultProps = {
   setSelectedActivityType: {},
   libraryReqSelected: false,
   setLibraryReqSelected: {},
-  setSubTypeState: {},
+  // setSubTypeState: {},
   projectFilterObj: {},
   setProjectFilterObj: {},
   filterSearch: {},

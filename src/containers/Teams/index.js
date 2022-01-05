@@ -99,7 +99,7 @@ function TeamsPage(props) {
     history.goBack();
   };
 
-  const assignWhiteBoardUrl = (orgId, objId, userId, objType) =>{
+  const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
     dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
   }
 
@@ -146,7 +146,7 @@ function TeamsPage(props) {
                 {overview ? `${activeOrganization?.name} Teams` : title[status] || 'Teams'}
               </h1>
               <div className="flex-button-top">
-                  {projectShow && (
+                {projectShow && (
                   <Buttons
                     secondary={true}
                     text="Open White Board"
@@ -154,7 +154,7 @@ function TeamsPage(props) {
                     height="35px"
                     margin="15px 0 0 10px"
                     hover={true}
-                    onClick={ () => { 
+                    onClick={() => {
                       assignWhiteBoardUrl(organization.currentOrganization?.id, selectedTeam.id, auth.user?.id, 'team')
                       handleShow()
                     }}
