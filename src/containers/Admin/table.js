@@ -188,13 +188,16 @@ function Table(props) {
         <table>
           <thead>
             <tr>
-              {tableHead?.map((head, keyid) =>
-                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
-                  <th key={keyid}> {head} </th>
-                ) : head !== 'Users' ? (
-                  <th onClick={sortCol != '' ? (sortCol.includes(head) ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : '') : ''}>{head}</th>
-                ) : null
-              )}
+              {tableHead?.map((head, keyid) => {
+                let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
+                return (
+                  head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
+                    <th key={keyid}> {head} </th>
+                  ) : head !== 'Users' ? (
+                    <th onClick={checkSolCol ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : ''} className={checkSolCol ? 'sorting-icon': ''}>{head}</th>
+                  ) : null
+                )
+                })}
             </tr>
           </thead>
           <tbody>

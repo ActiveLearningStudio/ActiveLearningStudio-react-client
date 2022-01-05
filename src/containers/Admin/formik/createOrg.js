@@ -31,10 +31,10 @@ export default function CreateOrg(prop) {
   const [checkedActivity, setCheckedActivty] = useState(false);
   const [checkedPlaylist, setCheckedPlaylist] = useState(false);
   const [checkedProject, setCheckedProject] = useState(false);
-  const [checkedTosParent, setCheckedTosParent] = useState(true);
+  const [checkedTosParent, setCheckedTosParent] = useState(false);
   const [checkedTosUrl, setCheckedTosUrl] = useState(false);
   const [checkedTosContent, setCheckedTosContent] = useState(false);
-  const [checkedPpParent, setCheckedPpParent] = useState(true);
+  const [checkedPpParent, setCheckedPpParent] = useState(false);
   const [checkedPpUrl, setCheckedPpUrl] = useState(false);
   const [checkedPpContent, setCheckedPpContent] = useState(false);
   useEffect(() => {
@@ -121,6 +121,24 @@ export default function CreateOrg(prop) {
           return errors;
         }}
         onSubmit={async (values) => {
+          if(values.privacy_policy_type === 'Parent'){
+            delete values.privacy_policy_url;
+            delete values.privacy_policy_content;
+          } else if (values.privacy_policy_type === 'URL') {
+            delete values.privacy_policy_content;            
+          } else if (values.privacy_policy_type === 'Content') {
+            delete values.privacy_policy_url;
+          }
+          
+          if(values.tos_type === 'Parent'){
+            delete values.tos_url;
+            delete values.tos_content;
+          } else if (values.tos_type === 'URL') {
+            delete values.tos_content;            
+          } else if (values.tos_type === 'Content') {
+            delete values.tos_url;
+          }
+          
           Swal.fire({
             title: 'Please Wait !',
             html: editMode ? 'Updating Organization ... ' : 'Creating Organization ... ',
@@ -272,12 +290,20 @@ export default function CreateOrg(prop) {
 
                 <div className="form-group-create">
                   <h3>Self Registration</h3>
-                  <Switch
-                    checked={values.self_registration}
-                    onChange={() => {
-                      setFieldValue('self_registration', !values.self_registration);
-                    }}
-                  />
+                  <div className="custom-toggle-button">
+                    <Switch
+                      checked={values.self_registration}
+                      onChange={() => {
+                        setFieldValue('self_registration', !values.self_registration);
+                      }}
+                      className="react-switch"
+                      handleDiameter={30}
+                      offColor="#888"
+                      onColor="#ffca70"
+                      onHandleColor="#e89e21"
+                      offHandleColor="#666"
+                    />
+                  </div>
                 </div>
 
                 <div className="toggle-group-button">
@@ -435,25 +461,25 @@ export default function CreateOrg(prop) {
                       <Tab eventKey="terms-services" title="Terms of service">
                           <div className="tos-pss-container">
                             <div className="form-check">
-                                <input className="form-check-input" onChange={()=>{
+                                <input className="form-check-input radio-custom" onChange={()=>{
                                   setCheckedTosUrl(false);
                                   setCheckedTosContent(false);
                                   setCheckedTosParent(true);
                                   setFieldValue('tos_type', 'Parent');
                                   }} type="radio" name="tos_type" id="TosParent" checked={checkedTosParent}/>
-                                <label className="form-check-label" for="TosParent">
+                                <label className="form-check-label radio-custom-label" for="TosParent">
                                     Use from the parent organization
                                 </label>
                             </div>
 
                             <div className="form-check">
-                                <input className="form-check-input" onChange={()=>{
+                                <input className="form-check-input radio-custom" onChange={()=>{
                                   setCheckedTosParent(false);
                                   setCheckedTosContent(false);
                                   setCheckedTosUrl(true);
                                   setFieldValue('tos_type', 'URL')
                                 }} type="radio" name="tos_type" id="TosURL" checked={checkedTosUrl}/>
-                                <label className="form-check-label" for="TosURL">
+                                <label className="form-check-label radio-custom-label" for="TosURL">
                                     Add from a URL
                                 </label>
                                 <div className="error">{errors.tos_type && touched.tos_type && errors.tos_type}</div>
@@ -461,7 +487,7 @@ export default function CreateOrg(prop) {
                             {checkedTosUrl && (
                               <div className="form-group-create tos-pp-url">
                                   <h3>Terms of service URL</h3>
-                                  <input type="text" name="tos_url" onChange={handleChange} value={values.tos_url} />
+                                  <input type="text" name="tos_url" onChange={handleChange} value={values.tos_url} placeholder="https://www.example.com"/>
                                   <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div>
                               </div>
                             )}
@@ -488,25 +514,25 @@ export default function CreateOrg(prop) {
                       <Tab eventKey="privacy-policy" title="Privacy policy">
                         <div className="tos-pss-container">
                           <div className="form-check">
-                              <input className="form-check-input" onChange={()=>{
+                              <input className="form-check-input radio-custom" onChange={()=>{
                                 setCheckedPpUrl(false);
                                 setCheckedPpContent(false);
                                 setCheckedPpParent(true);
                                 setFieldValue('privacy_policy_type', 'Parent');
                                 }} type="radio" name="privacy_policy_type" id="PpParent" checked={checkedPpParent}/>
-                              <label className="form-check-label" for="PpParent">
+                              <label className="form-check-label radio-custom-label" for="PpParent">
                                   Use from the parent organization
                               </label>
                           </div>
 
                           <div className="form-check">
-                              <input className="form-check-input" onChange={()=>{
+                              <input className="form-check-input radio-custom" onChange={()=>{
                                 setCheckedPpParent(false);
                                 setCheckedPpContent(false);
                                 setCheckedPpUrl(true);
                                 setFieldValue('privacy_policy_type', 'URL')
                               }} type="radio" name="privacy_policy_type" id="PpURL" checked={checkedPpUrl}/>
-                              <label className="form-check-label" for="PpURL">
+                              <label className="form-check-label radio-custom-label" for="PpURL">
                                   Add from a URL
                               </label>
                               <div className="error">{errors.privacy_policy_type && touched.privacy_policy_type && errors.privacy_policy_type}</div>
@@ -514,7 +540,7 @@ export default function CreateOrg(prop) {
                           {checkedPpUrl && (
                             <div className="form-group-create tos-pp-url">
                                 <h3>Terms of service URL</h3>
-                                <input type="text" name="privacy_policy_url" onChange={handleChange} value={values.privacy_policy_url} />
+                                <input type="text" name="privacy_policy_url" onChange={handleChange} value={values.privacy_policy_url} placeholder="https://www.example.com" />
                                 <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
                             </div>
                           )}

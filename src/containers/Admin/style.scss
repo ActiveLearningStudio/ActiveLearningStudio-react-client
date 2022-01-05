@@ -1102,7 +1102,7 @@
 
         .all-users-list {
           position: absolute;
-          top: 70px;
+          top: 585px;
           background: #fff;
           padding: 10px;
           width: 90%;
@@ -1628,21 +1628,21 @@
 }
 
 .or-seprator {
-  background: #DDDDDD;
-  height:1px;
-  margin-top:22px;
+  background: #dddddd;
+  height: 1px;
+  margin-top: 22px;
   span {
     background: #fff;
-    padding:10px;
-    position:relative;
-    top:-10px;
-    left: 45%
+    padding: 10px;
+    position: relative;
+    top: -10px;
+    left: 45%;
   }
 }
 
 .tos-pp {
   margin-top: 24px;
-  div{
+  div {
     margin-top: 16px;
   }
   .tos-pss-container {
@@ -1655,8 +1655,90 @@
       text-align: center;
       height: 36px;
       color: #084892;
-      background: #F7FAFF;
-      border: 1px solid #F7FAFF;
+      background: #f7faff;
+      border: 1px solid #f7faff;
     }
   }
+  nav {
+    .nav-link {
+      border-color: #fff !important;
+      border-bottom: 1px solid #084892 !important;
+      background-color: #fff !important;
+      color: #084892 !important;
+    }
+  }
+  .nav-link.active {
+    border-bottom: 4px solid #084892 !important;
+  }
+  input:radio {
+    content: "\f00c";
+    position: absolute;
+    display: none;
+  }
+
+  .checkbox-custom,
+  .radio-custom {
+    opacity: 0;
+    position: absolute;
+  }
+
+  .checkbox-custom,
+  .checkbox-custom-label,
+  .radio-custom,
+  .radio-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+  }
+
+  .checkbox-custom-label,
+  .radio-custom-label {
+    position: relative;
+  }
+
+  .checkbox-custom + .checkbox-custom-label:before,
+  .radio-custom + .radio-custom-label:before {
+    content: "";
+    background: #fff;
+    border: 2px solid #084892;
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    padding: 1px;
+    margin-right: 10px;
+    text-align: center;
+    position: relative;
+    top: -1px;
+  }
+
+  .checkbox-custom:checked + .checkbox-custom-label:before {
+    content: "\f00c";
+    font-family: $fontawesome;
+    background: #084892;
+    color: #fff;
+    font-size: 10px;
+  }
+
+  .radio-custom + .radio-custom-label:before {
+    border-radius: 50%;
+  }
+
+  .radio-custom:checked + .radio-custom-label:before {
+    content: "\f00c";
+    font-family: $fontawesome;
+    color: #fff;
+    background: #084892;
+    font-size: 10px;
+  }
+}
+
+.sorting-icon:after {
+  content: "\f0dc";
+  font-family: $fontawesome;
+  padding-left: 10px !important;
+  vertical-align: middle;
+  float: right;
+  cursor: pointer;
 }
