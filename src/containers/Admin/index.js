@@ -60,7 +60,7 @@ function AdminPanel({ showSSO }) {
   }, [currentOrganization]);
   return (
     <div className="admin-panel">
-      {permission?.Organization?.includes('organization:view') ? (
+      {true ? (
         <>
           <div className="content-wrapper">
             <div className="inner-content">
@@ -76,29 +76,30 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  <Tab eventKey="Organization" title="Organizations">
-                    <div className="parent-organization-detail">
-                      <div className="detailer">
-                        <h3>Main organization: {currentOrganization.name}</h3>
-                        <p>{currentOrganization.description}</p>
+                  {permission?.Organization?.includes('organization:view') &&
+                    <Tab eventKey="Organization" title="Organizations">
+                      <div className="parent-organization-detail">
+                        <div className="detailer">
+                          <h3>Main organization: {currentOrganization?.name}</h3>
+                          <p>{currentOrganization?.description}</p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            dispatch(setActiveAdminForm('edit_org'));
+                            dispatch({
+                              type: 'SET_ACTIVE_EDIT',
+                              payload: activeOrganization,
+                            });
+                          }}
+                        >
+                          <img src={editicon} alt="" />
+                          Edit organization
+                        </button>
                       </div>
-                      <button
-                        onClick={() => {
-                          dispatch(setActiveAdminForm('edit_org'));
-                          dispatch({
-                            type: 'SET_ACTIVE_EDIT',
-                            payload: activeOrganization,
-                          });
-                        }}
-                      >
-                        <img src={editicon} alt="" />
-                        Edit organization
-                      </button>
-                    </div>
-                    <div className="module-content">
-                      <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
-                    </div>
-                  </Tab>
+                      <div className="module-content">
+                        <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
+                      </div>
+                    </Tab>}
                   {permission?.Project?.includes('project:view') && (
                     <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
@@ -119,13 +120,13 @@ function AdminPanel({ showSSO }) {
                       <Pills modules={['Activity Types', 'Activity Items']} type="Activities" />
                     </div>
                   </Tab>
-                  {permission?.Organization?.includes('organization:view-user') && (
+                  {true && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
                         <Pills
                           modules={[
                             'All Users',
-                            permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null,
+                            true || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null,
                           ]}
                           type="Users"
                           subType="All Users"

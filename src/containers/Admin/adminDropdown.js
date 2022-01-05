@@ -90,7 +90,7 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:edit') && (
+              {permission?.Organization.includes('organization:view') && (
                 <>
                   <Dropdown.Item
                     onClick={async () => {

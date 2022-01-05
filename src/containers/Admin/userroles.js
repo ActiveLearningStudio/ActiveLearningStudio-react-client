@@ -18,6 +18,9 @@ function UserRoles() {
   const [playlistAuthoring, setPlaylistAuthoring] = useState([]);
   const [activityAuthoring, setActivityAuthoring] = useState([]);
   const [allActivePermission, setAllActivePermission] = useState([]);
+  const [organizationAuthoring, setOrganizationAuthoring] = useState([]);
+  const [organizationActivityAuthoring, setOrganizationActivityAuthoring] = useState([]);
+
 
   // hardcoded
   const projectViewDate = ['project:edit', 'project:delete', 'project:create', 'project:upload-thumb'];
@@ -37,7 +40,7 @@ function UserRoles() {
     'organization:add-role',
     'organization:edit-role',
   ];
-  const orgOrgList = ['organization:edit', 'organization:delete', 'organization:view', 'organization:create', 'organization:upload-thumb'];
+  const orgOrgList = ['organization:edit', 'organization:delete', 'organization:create'];
   const orgProjectList = [
     'organization:edit-project',
     'organization:delete-project',
@@ -83,6 +86,9 @@ function UserRoles() {
     setProjectAuthoring(permissionsId?.Project.filter((data) => !projectViewDate.includes(data.name)));
     setActivityAuthoring(permissionsId?.Activity.filter((data) => !activityViewDate.includes(data.name)));
     setPlaylistAuthoring(permissionsId?.Playlist.filter((data) => !playlistViewDate.includes(data.name)));
+    setOrganizationAuthoring(permissionsId?.Organization.filter((data) => !orgOrgList.includes(data.name)))
+    setOrganizationActivityAuthoring(permissionsId?.Organization.filter((data) => !orgActivityList.includes(data.name)))
+
   }, [activePermission]);
 
   useEffect(() => {
@@ -127,7 +133,7 @@ function UserRoles() {
                       <div
                         className="button-group"
                         style={{ marginTop: '17px' }}
-                        // style={{ display: "flex", justifyContent: "flex-end" }}
+                      // style={{ display: "flex", justifyContent: "flex-end" }}
                       >
                         <button type="submit" className="update-permission">
                           <img src={updateImg} alt="update" />
@@ -338,13 +344,17 @@ function UserRoles() {
                                         margin: '32px',
                                       }}
                                     >
-                                      {permissionsId[data]?.map((val) => {
-                                        if (orgOrgList.includes(val.name)) {
-                                          return (
-                                            <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />
-                                          );
-                                        }
-                                      })}
+
+                                      <Authoring
+                                        setFieldValue={setFieldValue}
+                                        type="Organization"
+                                        dataAuthoring={organizationAuthoring}
+                                        values={values}
+                                        permissionsId={permissionsId}
+                                        viewData={orgOrgList}
+                                        allActivePermission={allActivePermission}
+                                        special={"organization:view"}
+                                      />
                                     </Card.Body>
                                   </Tab.Pane>
                                 );
@@ -395,6 +405,16 @@ function UserRoles() {
                                           );
                                         }
                                       })}
+                                      <Authoring
+                                        setFieldValue={setFieldValue}
+                                        type="Activity"
+                                        dataAuthoring={setOrganizationActivityAuthoring}
+                                        values={values}
+                                        permissionsId={permissionsId}
+                                        viewData={orgActivityList}
+                                        allActivePermission={allActivePermission}
+                                        special={"organization:view-activity"}
+                                      />
                                     </Card.Body>
                                   </Tab.Pane>
                                 );
@@ -507,12 +527,13 @@ export const DropdownSelect = ({ addRole, setFieldValue, values, activePermissio
   );
 };
 
-export const Authoring = ({ addRole, setFieldValue, dataAuthoring, values, permissionsId, viewData, allActivePermission, type }) => {
+export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, values, permissionsId, viewData, allActivePermission, type }) => {
   return (
     <div className="form-group custom-select-style-for-authoring">
       <select
         onChange={(e) => {
           if (e.target.value == 'view') {
+
             var ids = [];
             var viewIds = [];
             dataAuthoring?.map((data) => ids.push(data.id));
@@ -532,10 +553,56 @@ export const Authoring = ({ addRole, setFieldValue, dataAuthoring, values, permi
                 }
               })
             );
+          } else if (e.target.value == '---') {
+
+            if (special) {
+              const specialView = permissionsId?.[type].filter(data => data.name == special)
+              if (specialView?.length) {
+                const newViewArray = values.permissions.filter(data => {
+                  if (data === String(specialView[0].id)) {
+                    return false
+                  } else {
+                    return true
+                  }
+                })
+                setFieldValue(
+                  'permissions',
+                  newViewArray
+                );
+              }
+            }
           } else {
-            const ids = [];
-            permissionsId?.[type].map((data) => ids.push(data.id));
-            setFieldValue('permissions', [...values.permissions, ...ids?.join(',').split(',')]);
+            if (special) {
+              var ids = [];
+              var viewIds = [];
+              dataAuthoring?.map((data) => ids.push(data.id));
+              ids = ids.join(',').split(',');
+
+              ids = permissionsId?.[type].filter((data) => !ids?.includes(String(data.id)));
+              ids?.map((data) => viewIds.push(data.id));
+              viewIds = viewIds.join(',').split(',');
+              console.log(viewIds)
+              if (type === 'Organization') {
+                viewIds = [...viewIds, 3]
+              } else if (type === 'Activity') {
+                viewIds = [...viewIds, 318]
+              }
+              setFieldValue('permissions', [...values.permissions, ...viewIds?.join(',').split(',')]);
+              // setFieldValue(
+              //   'permissions',
+              //   values.permissions.filter((data) => {
+              //     if (viewIds.includes(data)) {
+              //       return false;
+              //     } else {
+              //       return true;
+              //     }
+              //   })
+              // );
+            } else {
+              const ids = [];
+              permissionsId?.[type].map((data) => ids.push(data.id));
+              setFieldValue('permissions', [...values.permissions, ...ids?.join(',').split(',')]);
+            }
           }
         }}
       >
@@ -548,6 +615,7 @@ export const Authoring = ({ addRole, setFieldValue, dataAuthoring, values, permi
           </>
         ) : (
           <>
+            <option value="---">---</option>
             <option value="edit" selected={viewData?.filter((data) => allActivePermission.includes(data)).length ? true : false}>
               Edit
             </option>
