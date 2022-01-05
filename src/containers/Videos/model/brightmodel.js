@@ -42,6 +42,13 @@ const BrightcoveModel = (props) => {
       }
     })();
   }, [activeCms, offset]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'EDIT_CMS_SCREEN',
+      payload: activeCms
+    })
+  }, [activeCms])
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">

@@ -13,7 +13,7 @@ const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
-  const { type, title, video, editVideo, setOpenVideo } = props;
+  const { type, title, video, editVideo, setOpenVideo, accountId } = props;
   var counter = 0;
 
   useEffect(() => {
@@ -63,6 +63,7 @@ const PreviewLayoutModel = (props) => {
                   formData={props?.formData}
                   editVideo={editVideo}
                   setOpenVideo={setOpenVideo}
+                  accountId={accountId}
                 />
               )}
             </>
