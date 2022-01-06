@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -445,7 +445,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -473,7 +473,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -529,7 +529,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -551,7 +551,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -877,7 +877,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -919,7 +919,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -941,7 +941,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -981,6 +981,55 @@
           display: flex;
           align-items: center;
           padding-right: 4px;
+        }
+      }
+      .filter-dropdown-table {
+        display: flex;
+        align-items: center;
+        color: $fun-blue-1;
+        button {
+          display: flex;
+          align-items: center;
+          padding: 6px 8px;
+          width: auto;
+          background: none;
+          height: 36px;
+          background-color: none;
+          box-shadow: none;
+          border: 0;
+          box-sizing: border-box;
+          border-radius: 4px;
+          margin-left: 8px;
+          &:focus {
+            color: #515151;
+            box-shadow: none;
+            border: none;
+          }
+          &:after {
+            margin-left: auto;
+            background-image: none !important;
+            margin-top: 5px;
+            content: "";
+            border: none;
+          }
+        }
+        svg {
+          margin-left: 8px;
+          height: 16px;
+          width: 16px;
+        }
+        .dropdown-menu {
+          min-width: 80px !important;
+          background-color: white;
+          .dropdown-item {
+            padding: 16px 12px !important;
+          }
+        }
+        a {
+          &:hover {
+            color: #2e68bf;
+            background: #f7faff;
+          }
         }
       }
     }
@@ -1422,7 +1471,7 @@
     }
   }
   .card-body {
-    // display: flex;
+    display: flex;
     flex-wrap: wrap;
     padding: 10px 20px;
     .permission {
@@ -1546,7 +1595,7 @@
     position: relative;
 
     ::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1572,7 +1621,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1584,7 +1633,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1599,7 +1648,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1612,7 +1661,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1719,7 +1768,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url('../../assets/images/svg/VectorAngleRight.svg');
+      content: url("../../assets/images/svg/VectorAngleRight.svg");
     }
   }
 }
@@ -1742,7 +1791,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url('../../assets/images/svg/angledown.svg');
+    content: url("../../assets/images/svg/angledown.svg");
   }
 }
 .checkbox_section_custom {
@@ -2013,4 +2062,4 @@
   vertical-align: middle;
   float: right;
   cursor: pointer;
-    }
+}

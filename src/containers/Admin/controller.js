@@ -272,7 +272,6 @@ function Controller(props) {
               className=""
               type="text"
               placeholder="Search Organization"
-              value={searchQueryProject}
               onChange={(e) => {
                 if (e.target.value?.trim()) {
                   dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));

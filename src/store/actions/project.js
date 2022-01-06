@@ -337,7 +337,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
@@ -346,13 +346,13 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   const protocol = `${window.location.href.split('/')[0]}//`;
   const url = `${protocol + window.location.host}/project/${projectId}/shared`;
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
@@ -361,7 +361,7 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   Swal.fire({
     title: `You stopped sharing <strong>"${projectName}"</strong> !`,
     html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
