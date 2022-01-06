@@ -14,10 +14,7 @@ import {
 // import filterImg from 'assets/images/svg/filter.svg';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import Footer from 'components/Footer';
-import {
-  Link,
-  // useHistory,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import Swal from 'sweetalert2';
 import Buttons from 'utils/Buttons/buttons';
 import WhiteBoardModal from 'components/models/WhiteBoardModal';
@@ -47,16 +44,7 @@ import CreateTeamPopup from './CreateTeamPopup';
 
 function TeamsPage(props) {
   const {
-    location,
-    teams,
-    overview,
-    creation,
-    teamShow,
-    editMode,
-    projectShow,
-    channelShow,
-    loadTeams,
-    loadSubOrgTeams,
+    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
@@ -289,8 +277,8 @@ function TeamsPage(props) {
                       }}
                     >
                       <div className="btn-top-page">
-                        <FontAwesomeIcon icon="plus" />
-                        Add Team
+                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        Create a Team
                       </div>
                     </div>
                   </div>
@@ -318,7 +306,7 @@ function TeamsPage(props) {
             </div>
             <>
               {overview && (
-                <div className="overview">
+                <div className="team-row overview">
                   {permission?.Team?.includes('team:view') ? (
                     <>
                       {teams.length > 0 ? (

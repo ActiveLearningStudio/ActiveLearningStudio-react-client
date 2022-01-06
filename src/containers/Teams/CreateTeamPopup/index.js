@@ -133,7 +133,7 @@ function CreateTeamPopup(props) {
                     </div>
                     <div className="form-group">
                       <h6 className="satelliteteaminfo"> Satellite Team Information (Optional)</h6>
-                      <p className="label-title">Noovo group title</p>
+                      <p className="label-title">Title</p>
                       <input
                         type="text"
                         name="noovo_group_title"
@@ -141,7 +141,6 @@ function CreateTeamPopup(props) {
                         autoFocus="on"
                         autoComplete="off"
                         value={values.noovo_group_title}
-                        placeholder="e.g Noovo group title"
                         handleBlur={handleBlur}
                         onChange={handleChange}
                       />

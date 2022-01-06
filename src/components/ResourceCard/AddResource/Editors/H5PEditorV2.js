@@ -11,7 +11,7 @@ import { createResourceAction, editResourceAction } from 'store/actions/resource
 import { edith5pVideoActivity } from 'store/actions/videos';
 
 const H5PEditor = (props) => {
-  const { setOpenVideo, editVideo, playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId, type } = props;
+  const { setOpenVideo, editVideo, playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId, type, accountId } = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -56,7 +56,7 @@ const H5PEditor = (props) => {
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
       if (type === 'videoModal') {
         setOpenVideo(false);
       }
@@ -100,7 +100,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />

@@ -188,13 +188,16 @@ function Table(props) {
         <table>
           <thead>
             <tr>
-              {tableHead?.map((head, keyid) =>
-                head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
-                  <th key={keyid}> {head} </th>
-                ) : head !== 'Users' ? (
-                  <th onClick={sortCol != '' ? (sortCol.includes(head) ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : '') : ''}>{head}</th>
-                ) : null
-              )}
+              {tableHead?.map((head, keyid) => {
+                let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
+                return (
+                  head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
+                    <th key={keyid}> {head} </th>
+                  ) : head !== 'Users' ? (
+                    <th onClick={checkSolCol ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : ''} className={checkSolCol ? 'sorting-icon': ''}>{head}</th>
+                  ) : null
+                )
+                })}
             </tr>
           </thead>
           <tbody>
@@ -713,7 +716,7 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Projects' &&
+            {/* {type === 'Projects' &&
               subType === 'Library requests' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
@@ -740,17 +743,9 @@ function Table(props) {
                           </div>
                         </td>
                         <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
-
-                        {/* <td>{row.description}</td> */}
-
                         <td>{row.id}</td>
                         <td>{row.users?.[0]?.email}</td>
                         <td>{row.indexing_text}</td>
-
-                        {/* <td>{row.organization_id}</td> */}
-
-                        {/* <td>{String(row.shared)}</td> */}
-
                         <td>
                           {row.shared ? (
                             <Link className="shared-link-enable">Enabled</Link>
@@ -760,9 +755,6 @@ function Table(props) {
                             </>
                           )}
                         </td>
-                        {/* <td>{String(row.starter_project)}</td> */}
-
-                        {/* <td>{row.status_text}</td> */}
                         <td>{new Date(updateNew.toDateString()).toLocaleDateString('en-US')}</td>
                         <td>
                           <div className="links">
@@ -866,7 +858,7 @@ function Table(props) {
                     <Alert variant="primary">Loading data...</Alert>
                   </td>
                 </tr>
-              ))}
+              ))} */}
             {type === 'Activities' &&
               subType === 'Activity Types' &&
               (data ? (

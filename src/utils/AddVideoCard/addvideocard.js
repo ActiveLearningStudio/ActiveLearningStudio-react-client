@@ -65,6 +65,14 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                   icon: '',
                 });
                 const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                if (result.activity?.brightcoveData) {
+                  dispatch({
+                    type: 'EDIT_CMS_SCREEN',
+                    payload: result.activity?.brightcoveData.accountId
+                  })
+                  window.brightcoveAccountId = result.activity?.brightcoveData.accountId
+                }
+
                 toast.dismiss();
 
                 dispatch({

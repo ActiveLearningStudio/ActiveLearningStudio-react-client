@@ -13,7 +13,7 @@ const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
-  const { type, title, video, editVideo, setOpenVideo } = props;
+  const { type, title, video, editVideo, setOpenVideo, accountId } = props;
   var counter = 0;
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const PreviewLayoutModel = (props) => {
               ) : (
                 <H5PEditor
                   h5pParams={
-                    props.editVideo.h5p ? props.editVideo.h5p : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": ${video}}}},"metadata":{"title":"${title}"}}`
+                    props.editVideo.h5p ? props.editVideo.h5p : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": "${video}"}}},"metadata":{"title":"${title}"}}`
                   }
                   h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
                   hide={props.onHide}
@@ -63,6 +63,7 @@ const PreviewLayoutModel = (props) => {
                   formData={props?.formData}
                   editVideo={editVideo}
                   setOpenVideo={setOpenVideo}
+                  accountId={accountId}
                 />
               )}
             </>
@@ -73,16 +74,16 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="1. Select  layout" tabActive={true} />
                   {
                     ((counter = 0),
-                    layout?.map((data) => {
-                      if (data.id === selectedLayout?.id && counter == 0) {
-                        counter++;
-                        return (
-                          <>
-                            <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                          </>
-                        );
-                      }
-                    }))
+                      layout?.map((data) => {
+                        if (data.id === selectedLayout?.id && counter == 0) {
+                          counter++;
+                          return (
+                            <>
+                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                            </>
+                          );
+                        }
+                      }))
                   }
                   {counter === 0 && (
                     <>

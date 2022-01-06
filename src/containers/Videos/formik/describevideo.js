@@ -15,7 +15,7 @@ import { educationLevels, subjects } from 'components/ResourceCard/AddResource/d
 const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
-  const { videoId, editVideo } = useSelector((state) => state.videos);
+  const { videoId, editVideo, activecms } = useSelector((state) => state.videos);
 
   const formRef = useRef();
   return (
@@ -31,6 +31,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
         formData={formRef.current?.values}
         editVideo={editVideo}
         setOpenVideo={setOpenVideo}
+        accountId={activecms.account_id}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
@@ -147,7 +148,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                     />
                   </div>
                   <div className="describe-video">
-                    <Buttons onClick={() => setScreenStatus('AddVideo')} secondary={true} text="Back" width="162px" height="32px" hover={true} />
+                    {!editVideo && <Buttons onClick={() => setScreenStatus('AddVideo')} secondary={true} text="Back" width="162px" height="32px" hover={true} />}
                     <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>

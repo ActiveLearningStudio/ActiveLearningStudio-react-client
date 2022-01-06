@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   allVideos: [],
   videoId: '',
   editVideo: '',
+  activecms: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,6 +30,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editVideo: action.payload,
+      };
+
+    case actionTypes.EDIT_CMS_SCREEN:
+      return {
+        ...state,
+        activecms: action.payload,
       };
     case actionTypes.EDIT_VIDEO_ACTIVITY:
       const updatedData = state.allVideos.map((data) => {

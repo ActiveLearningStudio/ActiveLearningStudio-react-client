@@ -36,9 +36,19 @@ const BrightcoveModel = (props) => {
         console.log(videosResult);
         setTotalCount(videosResult.meta?.count);
         setcmsVideo(videosResult.data);
+        if (typeof activeCms === 'object' && activeCms.hasOwnProperty('account_id')) {
+          window.brightcoveAccountId = activeCms.account_id;
+        }
       }
     })();
   }, [activeCms, offset]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'EDIT_CMS_SCREEN',
+      payload: activeCms
+    })
+  }, [activeCms])
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
@@ -73,6 +83,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
+                <br />
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -135,7 +146,7 @@ const BrightcoveModel = (props) => {
                                       <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
                                     </td>
                                     <td>
-                                      <img src={PreivewImage} className="image-size" />
+                                      <img src={data?.images?.thumbnail?.src} className="image-size" />
                                       <span>{data.name}</span>
                                     </td>
                                     <td>{data.created_at?.split('T')[0]}</td>
