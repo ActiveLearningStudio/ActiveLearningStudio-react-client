@@ -1471,7 +1471,7 @@
     }
   }
   .card-body {
-    // display: flex;
+    display: flex;
     flex-wrap: wrap;
     padding: 10px 20px;
     .permission {
@@ -2062,4 +2062,4 @@
   vertical-align: middle;
   float: right;
   cursor: pointer;
-    }
+}
