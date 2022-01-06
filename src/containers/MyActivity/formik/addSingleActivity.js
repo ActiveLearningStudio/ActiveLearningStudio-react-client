@@ -11,7 +11,7 @@ import searchicon from 'assets/images/nteractiveactionssearch.png';
 import Tabs from 'utils/Tabs/tabs';
 import Buttons from 'utils/Buttons/buttons';
 import { useHistory } from 'react-router-dom';
-import { getSingleLayoutActivities } from 'store/actions/resource';
+import { getSingleLayoutActivities, loadResourceTypesAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 
 const ActivityLayout = (props) => {
@@ -32,6 +32,7 @@ const ActivityLayout = (props) => {
       autoClose: 10000,
       icon: '',
     });
+    dispatch(loadResourceTypesAction());
     dispatch(getSingleLayoutActivities());
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
@@ -45,7 +46,7 @@ const ActivityLayout = (props) => {
   }, [allActivity]);
   useEffect(() => {
     const setData = [];
-    allActivitytypes.forEach((data) => {
+    allActivitytypes?.forEach((data) => {
       setData.push(data.id);
     });
     setFilterData(setData);
@@ -89,7 +90,7 @@ const ActivityLayout = (props) => {
           </div>
 
           <div class="dropdown-content-select">
-            {allActivitytypes?.map((data, counter) => {
+            {allActivitytypes?.length > 0 && allActivitytypes?.map((data, counter) => {
               return (
                 <label>
                   <input
@@ -115,7 +116,7 @@ const ActivityLayout = (props) => {
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
-          {allActivitiesSingle?.map((data) => {
+          {allActivitiesSingle?.length > 0 && allActivitiesSingle?.map((data) => {
             return (
               filterData.includes(data.activityType?.id) && (
                 <LayoutCard
