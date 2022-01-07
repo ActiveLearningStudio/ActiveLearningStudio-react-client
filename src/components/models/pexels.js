@@ -11,7 +11,7 @@ import dotsloader from "assets/images/dotsloader.gif";
 
 import "./styles.scss";
 
-const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
+const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API);
 
 function Pexels(props) {
   const [pexelData, setPexels] = useState([]);
@@ -135,7 +135,7 @@ function Pexels(props) {
                     axios
                       .get(nextApi, {
                         headers: {
-                          Authorization: process.env.REACT_APP_PEXEL_API,
+                          Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
                         },
                       })
                       .then((res) => {

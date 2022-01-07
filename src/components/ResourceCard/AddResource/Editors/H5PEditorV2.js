@@ -73,7 +73,7 @@ const H5PEditor = (props) => {
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}></div>
         </div>
 
-        <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
+        <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
 

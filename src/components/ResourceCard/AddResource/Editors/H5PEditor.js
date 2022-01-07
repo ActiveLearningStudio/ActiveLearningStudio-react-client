@@ -122,7 +122,7 @@ const H5PEditor = (props) => {
         <input
           name="_token"
           type="hidden"
-          value={process.env.REACT_APP_H5P_KEY}
+          value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY}
         />
         <input
           type="hidden"
@@ -146,41 +146,41 @@ const H5PEditor = (props) => {
             </div>
           </div>
           {upload
-          && (
-            <div className="form-group laravel-h5p-upload-container">
-              {/* <label htmlFor="inputUpload" className="control-label col-md-3">
+            && (
+              <div className="form-group laravel-h5p-upload-container">
+                {/* <label htmlFor="inputUpload" className="control-label col-md-3">
                 Upload
               </label> */}
-              <div className="col-md-12">
-                <div className="drop-area">
-                  <input
-                    type="file"
-                    name="h5p_file"
-                    id="h5p-file"
-                    className="laravel-h5p-upload form-control"
-                    onChange={setH5pFileUpload}
-                    ref={uploadFile}
-                    style={{ cursor: 'pointer' }}
+                <div className="col-md-12">
+                  <div className="drop-area">
+                    <input
+                      type="file"
+                      name="h5p_file"
+                      id="h5p-file"
+                      className="laravel-h5p-upload form-control"
+                      onChange={setH5pFileUpload}
+                      ref={uploadFile}
+                      style={{ cursor: 'pointer' }}
                     // style={{ display: 'none' }}
-                  />
-                  <div className="upload-holder">
-                    <FontAwesomeIcon icon="file-upload" className="mr-2" />
-                    <p>
-                      Drag & Drop File or
-                      <span>
-                        &nbsp;Browse to upload
-                      </span>
-                    </p>
-                    {!!h5pFile
-                    && (
+                    />
+                    <div className="upload-holder">
+                      <FontAwesomeIcon icon="file-upload" className="mr-2" />
                       <p>
-                        Selected File:&nbsp;
-                        {h5pFile.name}
+                        Drag & Drop File or
+                        <span>
+                          &nbsp;Browse to upload
+                        </span>
                       </p>
-                    )}
+                      {!!h5pFile
+                        && (
+                          <p>
+                            Selected File:&nbsp;
+                            {h5pFile.name}
+                          </p>
+                        )}
+                    </div>
                   </div>
-                </div>
-                {/* <small className="h5p-disable-file-check helper-block">
+                  {/* <small className="h5p-disable-file-check helper-block">
                   <label>
                     <input
                       type="checkbox"
@@ -191,9 +191,9 @@ const H5PEditor = (props) => {
                     Disable file extension check
                   </label>
                 </small> */}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="form-group methods option-choose-way">
             <label className="control-label col-md-3">Method</label>

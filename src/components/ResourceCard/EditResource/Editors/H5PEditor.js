@@ -75,7 +75,7 @@ const H5PEditorEdit = (props) => {
       <input
         name="_token"
         type="hidden"
-        value={process.env.REACT_APP_H5P_KEY}
+        value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY}
       />
       <input
         type="hidden"
