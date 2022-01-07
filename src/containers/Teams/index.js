@@ -26,12 +26,13 @@ import {
 import { loadLmsAction } from 'store/actions/project';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
-import TeamMemberView from './TeamMemberView';
+// import TeamMemberView from './TeamMemberView';
 import TeamProjectView from './TeamProjectView';
 import ChannelPanel from './Channel';
 
 import './style.scss';
 import CreateTeamPopup from './CreateTeamPopup';
+import TeamDetail from './TeamDetailView';
 
 // TODO: need to remove after connect API
 // const breadCrumbData = {
@@ -87,17 +88,17 @@ function TeamsPage(props) {
     searchQuery,
   ]);
 
-  const status = creation
-    ? 'creation'
-    : editMode
-      ? 'editMode'
-      : teamShow
-        ? 'teamShow'
-        : projectShow
-          ? 'projectShow'
-          : overview
-            ? 'teamShow'
-            : 'channelShow';
+  // const status = creation
+  //   ? 'creation'
+  //   : editMode
+  //     ? 'editMode'
+  //     : teamShow
+  //       ? 'teamShow'
+  //       : projectShow
+  //         ? 'projectShow'
+  //         : overview
+  //           ? 'teamShow'
+  //           : 'channelShow';
 
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
@@ -143,13 +144,13 @@ function TeamsPage(props) {
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
-  const title = {
-    creation: 'Create Team',
-    editMode: 'Edit Team',
-    teamShow: `${selectedTeam ? selectedTeam.name : 'Team'} Members`,
-    projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
-    channelShow: 'Channels',
-  };
+  // const title = {
+  //   creation: 'Create Team',
+  //   editMode: 'Edit Team',
+  //   teamShow: `${selectedTeam ? selectedTeam.name : 'Team'} Members`,
+  //   projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
+  //   channelShow: 'Channels',
+  // };
   // const goBack = () => {
   //   history.goBack();
   // };
@@ -189,13 +190,13 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content">
           <div className="inner-content">
-            <div className="organization-name">{currentOrganization?.name}</div>
+            {overview && <div className="organization-name">{currentOrganization?.name}</div>}
             <div>
               <h1
                 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''
                   }`}
               >
-                {overview ? 'Teams' : title[status] || 'Teams'}
+                {overview && 'Teams'}
               </h1>
               <div className="flex-button-top">
                 {teamPermission?.Team?.includes('team:add-project')
@@ -337,7 +338,7 @@ function TeamsPage(props) {
                 </div>
               )}
               {teamShow && selectedTeam && (
-                <TeamMemberView team={selectedTeam} />
+                <TeamDetail team={selectedTeam} organization={currentOrganization?.name} />
               )}
               {projectShow && selectedTeam && (
                 <TeamProjectView team={selectedTeam} />

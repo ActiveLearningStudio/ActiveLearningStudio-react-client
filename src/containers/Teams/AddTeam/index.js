@@ -1,7 +1,7 @@
 /*eslint-disable */
 import React, { useState } from "react";
 import AddTeamProjects from "./addteamprojects";
-import AddTeams from "./addteams";
+import TeamDetail from "./teamDetail";
 import "./style.scss";
 
 const Index = () => {
@@ -12,7 +12,7 @@ const Index = () => {
         <div className="inner-content">
           <div>
             {pageLoad ? (
-              <AddTeams setPageLoad={setPageLoad} />
+              <TeamDetail setPageLoad={setPageLoad} />
             ) : (
               <AddTeamProjects setPageLoad={setPageLoad} />
             )}

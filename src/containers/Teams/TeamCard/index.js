@@ -52,7 +52,7 @@ function TeamCard(props) {
           onClick={() => {
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
-          to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}
+          to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
         // className="title m-0"
         >
           {name}
