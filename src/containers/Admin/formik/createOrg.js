@@ -31,10 +31,10 @@ export default function CreateOrg(prop) {
   const [checkedActivity, setCheckedActivty] = useState(false);
   const [checkedPlaylist, setCheckedPlaylist] = useState(false);
   const [checkedProject, setCheckedProject] = useState(false);
-  const [checkedTosParent, setCheckedTosParent] = useState(false);
+  const [checkedTosParent, setCheckedTosParent] = useState(true);
   const [checkedTosUrl, setCheckedTosUrl] = useState(false);
   const [checkedTosContent, setCheckedTosContent] = useState(false);
-  const [checkedPpParent, setCheckedPpParent] = useState(false);
+  const [checkedPpParent, setCheckedPpParent] = useState(true);
   const [checkedPpUrl, setCheckedPpUrl] = useState(false);
   const [checkedPpContent, setCheckedPpContent] = useState(false);
   useEffect(() => {
@@ -78,10 +78,10 @@ export default function CreateOrg(prop) {
           gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
           gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
           gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
-          tos_type: editMode ? activeEdit?.tos_type : '',
+          tos_type: editMode ? activeEdit?.tos_type : 'Parent',
           tos_url: editMode ? activeEdit?.tos_url : '',
           tos_content: editMode ? activeEdit?.tos_content : '',
-          privacy_policy_type: editMode ? activeEdit?.privacy_policy_type : '',
+          privacy_policy_type: editMode ? activeEdit?.privacy_policy_type : 'Parent',
           privacy_policy_url: editMode ? activeEdit?.privacy_policy_url : '',
           privacy_policy_content: editMode ? activeEdit?.privacy_policy_content : '',
         }}
@@ -539,7 +539,7 @@ export default function CreateOrg(prop) {
                           </div>
                           {checkedPpUrl && (
                             <div className="form-group-create tos-pp-url">
-                                <h3>Terms of service URL</h3>
+                                <h3>Privacy policy URL</h3>
                                 <input type="text" name="privacy_policy_url" onChange={handleChange} value={values.privacy_policy_url} placeholder="https://www.example.com" />
                                 <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
                             </div>

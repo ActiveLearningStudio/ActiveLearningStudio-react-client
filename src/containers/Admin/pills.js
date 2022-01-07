@@ -590,11 +590,12 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'All Projects' || libraryReqSelected) {
+        if (key === 'Exported Projects') {
+          setCurrentTab('Exported Projects');
+          setLibraryReqSelected(false);
+        } else if (key === 'All Projects' || libraryReqSelected) {
           setCurrentTab('All Projects');
           setLibraryReqSelected(false);
-        } else if (key === 'Exported Projects') {
-          setCurrentTab('Exported Projects');
         }
       }}
     >
