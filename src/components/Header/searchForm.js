@@ -61,8 +61,7 @@ function SearchForm() {
     <Dropdown>
       <div className="search-block navbtn">
         <input
-          className="search-term"
-          placeholder="Search Library Contents"
+          placeholder="Search Library"
           value={simpleSearch}
           onChange={(e) => {
             setSimpleSearch(e.target.value);
@@ -220,9 +219,9 @@ function SearchForm() {
 
                 <div
                   className="form-group"
-                // style={{
-                //   display: values.type === 'orgSearch' ? 'none' : 'block',
-                // }}
+                  // style={{
+                  //   display: values.type === 'orgSearch' ? 'none' : 'block',
+                  // }}
                 >
                   <input name="phrase" placeholder="Enter search phrase" onChange={handleChange} onBlur={handleBlur} value={values.phrase} />
                   <div className="error">{errors.phrase && touched.phrase && errors.phrase}</div>

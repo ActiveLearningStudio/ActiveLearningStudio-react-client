@@ -14,7 +14,6 @@ import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
 
 import HeaderNotification from './notification';
-import SearchForm from './searchForm';
 import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
@@ -45,11 +44,6 @@ function Header(props) {
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex">
-          {true && (
-            <div className="search-div">
-              <SearchForm />
-            </div>
-          )}
           <div className="navbar-link">
             <ul className="top-info flex-div">
               <li>
