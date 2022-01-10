@@ -249,8 +249,6 @@ export default function CreateUser(prop) {
                     {errors.organization_type && touched.organization_type && errors.organization_type}
                   </div>
                 </div>
-              </div>
-              <div className="col">
                 <div className="form-group-create">
                   <h3>Organization Name</h3>
                   <input
