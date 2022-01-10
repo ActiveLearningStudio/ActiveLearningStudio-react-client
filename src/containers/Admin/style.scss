@@ -1594,7 +1594,7 @@
   .menu {
     position: relative;
 
-    ::before {
+    &::before {
       content: " ";
       position: absolute;
       top: -11px;
