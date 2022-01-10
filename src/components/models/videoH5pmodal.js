@@ -39,14 +39,10 @@ function MyVerticallyCenteredModal(props) {
               alt="cross"
               onClick={() => {
                 if (showvideoH5p) {
-                  window.H5P = undefined;
-
+                  H5P.preventInit = true;
                   window.H5PEditor = undefined;
-
-                  window.H5PIntegration = undefined;
-
+                  window.H5PIntegration.saveFreq = false;
                   window.H5PPresave = undefined;
-
                   window.h5peditorCopy = undefined;
                 }
                 onHide();
@@ -57,6 +53,7 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Header>
 
       <Modal.Body>
+        <div id="activity-loader-alert" class="alert alert-primary" role="alert" style={{ "display": "none" }}></div>
         <Suspense fallback={<div>Loading</div>}>
           <H5PPreview
             activityId={activity}
