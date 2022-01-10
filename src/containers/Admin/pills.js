@@ -180,8 +180,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProjectIndex(
             activeOrganization?.id,
             activePage || 1,
@@ -204,8 +203,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProject(
             activeOrganization?.id,
             activePage || 1,
@@ -491,6 +489,8 @@ export default function Pills(props) {
       setSubTypeState('All Organizations');
     } else if (activeTab === 'LMS') {
       setSubTypeState('All settings');
+    } else if (activeTab === 'Video Integration') {
+      setSubTypeState('BrightCove API Settings');
     }
   }, [activeTab]);
   const filterSearch = useCallback(() => {
@@ -772,6 +772,28 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+              />
+            )}
+            {type === 'LMS' && subTypeState === 'BrightCove' && (
+              <Starter
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                subType={'BrightCove'}
+                search={true}
+                print={false}
+                btnText="Add a new CSS"
+                btnAction="add_brightcove"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.IntegrationBrightCove}
+                sortCol={[]}
+                handleSort={handleSort}
+                data={''}
+                type={type}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={''}
               />
             )}
 
