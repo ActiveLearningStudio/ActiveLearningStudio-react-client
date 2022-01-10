@@ -347,6 +347,57 @@
 }
 
 .project-headline {
+  .search-main-relaced {
+    display: flex;
+    align-items: center;
+    position: relative;
+    .dropdown-toggle::after {
+      content: none;
+    }
+    .search-div {
+      margin-right: 32px;
+    }
+    .searchicon {
+      top: 8px;
+      width: 18px;
+    }
+
+    .search-block {
+      height: 36px;
+      width: 251px;
+      border: 1px solid #084892;
+      height: 36px;
+      width: 251px;
+      border: 1px solid #084892;
+      background: #ffffff 0 0 no-repeat padding-box;
+
+      box-sizing: border-box;
+      border-radius: 20px;
+      opacity: 1;
+      text-align: left;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 19px;
+      letter-spacing: 0;
+      color: #084892;
+      padding-left: 16px;
+      padding-right: 60px;
+
+      font-family: 'Open Sans', sans-serif;
+
+      input {
+        border: none;
+        padding-top: 7px;
+      }
+    }
+    .search-block + .dropdown-menu {
+      top: 25px !important;
+      right: 0 !important;
+    }
+    .fa-chevron-down {
+      top: 8px;
+    }
+  }
   .title {
     font-weight: 500;
     font-size: 30px;
