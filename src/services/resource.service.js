@@ -188,9 +188,9 @@ const h5pToken = (dataH5p) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pSettings = () =>
+const h5pSettings = (library) =>
   httpService
-    .get(`/${apiVersion}/h5p/settings`)
+    .get(`/${apiVersion}/h5p/settings?libraryName=${library}`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
