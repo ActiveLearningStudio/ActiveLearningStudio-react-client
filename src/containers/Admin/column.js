@@ -56,6 +56,7 @@ export const columnData = {
     // 'Action',
   ],
 
+  IntegrationBrightCove: ['Studio org ID', 'Account ID', 'BrightCove email ID ', 'Account name', 'Description', 'Key', 'Secret', 'CSS'],
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   ltitool: ['Name', 'URL', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],

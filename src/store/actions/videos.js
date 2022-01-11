@@ -120,3 +120,40 @@ export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
     payload: result.activity,
   });
 };
+
+export const allBrightCove = (orgId) => async (dispatch) => {
+  const result = await videoServices.allBrightCove(orgId);
+  dispatch({
+    type: actionTypes.UP_ALL_BRIGHTCOVE,
+    payload: result.data,
+  });
+};
+
+export const addBrightCove = (orgId, data) => async (dispatch) => {
+  const result = await videoServices.addBrightCove(orgId, data);
+  dispatch({
+    type: actionTypes.NEW_BRIGHTCOVE,
+    payload: result.data,
+  });
+  return result;
+};
+
+export const deleteBrightCove = (orgId, settingId) => async (dispatch) => {
+  const result = await videoServices.deleteBrightCove(orgId, settingId);
+  if (result.message) {
+    dispatch({
+      type: actionTypes.DEL_BRIGHTCOVE,
+      payload: settingId,
+    });
+  }
+  return result;
+};
+
+export const editBrightCove = (orgId, settingId, data) => async (dispatch) => {
+  const result = await videoServices.editBrightCove(orgId, settingId, data);
+  dispatch({
+    type: actionTypes.EDIT_BRIGHTCOVE,
+    payload: result.data,
+  });
+  return result;
+};
