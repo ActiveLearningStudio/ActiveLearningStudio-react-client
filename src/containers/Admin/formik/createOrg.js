@@ -107,7 +107,7 @@ export default function CreateOrg(prop) {
           }
           if(values.tos_type == 'URL' && !values.tos_url)
           {
-            errors.tos_url = 'Required'
+            errors.tos_url = 'Terms of service URL required!'
           }
           if(!values.privacy_policy_type)
           {
@@ -115,7 +115,7 @@ export default function CreateOrg(prop) {
           }
           if(values.privacy_policy_type == 'URL' && !values.privacy_policy_url)
           {
-            errors.privacy_policy_url = 'Required'
+            errors.privacy_policy_url = 'Privacy policy URL required!'
           }
 
           return errors;
@@ -568,8 +568,9 @@ export default function CreateOrg(prop) {
                 </div>
               </div>
             </div>
-
-
+            
+            <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div>
+            <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
 
             <div className="button-group">
               <button type="submit">{editMode ? 'Edit ' : 'Add '} organization</button>
@@ -582,6 +583,7 @@ export default function CreateOrg(prop) {
               >
                 Cancel
               </button>
+              
             </div>
           </form>
         )}
