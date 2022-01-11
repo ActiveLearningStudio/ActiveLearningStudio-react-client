@@ -24,6 +24,19 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             }}
           />
         )}
+        {type === 'Organization' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+          />
+        )}
         {type === 'Stats' && subTypeState === 'Queues: Logs' && (
           <Pagination
             activePage={activePage}

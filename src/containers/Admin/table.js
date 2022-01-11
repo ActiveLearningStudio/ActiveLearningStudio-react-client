@@ -177,7 +177,7 @@ function Table(props) {
   //const history = useHistory();
   return (
     <div className="table-data">
-      {data?.data?.length > 0 && data?.meta && (
+      {((data?.data?.length > 0 && data?.meta) || localOrganizationList?.data?.length > 0 && localOrganizationList?.meta) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
@@ -1176,7 +1176,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {data?.data?.length > 0 && data?.meta && (
+      {((data?.data?.length > 0 && data?.meta) || localOrganizationList?.data?.length > 0 && localOrganizationList?.meta) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
