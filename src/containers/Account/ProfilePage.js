@@ -11,7 +11,7 @@ import { getErrors } from 'utils';
 import { updateProfileAction, loadOrganizationTypesAction } from 'store/actions/auth';
 import { getUserLmsSettingsAction } from 'store/actions/account';
 // import Header from 'components/Header';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
@@ -368,7 +368,6 @@ function ProfilePage(props) {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

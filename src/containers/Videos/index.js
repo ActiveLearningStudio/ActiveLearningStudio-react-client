@@ -219,7 +219,6 @@ Interactive video has over xx interactions that can be added to video, It allows
         activeType={"demo"}
       />
 
-      <Footer />
     </>
   );
 };

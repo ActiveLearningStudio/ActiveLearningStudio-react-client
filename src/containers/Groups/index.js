@@ -7,7 +7,7 @@ import { Alert } from 'react-bootstrap';
 import { loadGroupsAction, loadSubOrganizationGroupsAction } from 'store/actions/group';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import { Link, useHistory } from 'react-router-dom';
 // import Swal from 'sweetalert2';
 import CreateGroup from './CreateGroup';
@@ -183,7 +183,6 @@ function GroupPage(props) {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

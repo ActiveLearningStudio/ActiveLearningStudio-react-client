@@ -78,10 +78,10 @@ export default function CreateOrg(prop) {
           gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
           gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
           gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
-          tos_type: editMode ? activeEdit?.tos_type : 'Parent',
+          tos_type: editMode ? !activeEdit?.tos_type ? 'Parent' : activeEdit?.tos_type : 'Parent',
           tos_url: editMode ? activeEdit?.tos_url : '',
           tos_content: editMode ? activeEdit?.tos_content : '',
-          privacy_policy_type: editMode ? activeEdit?.privacy_policy_type : 'Parent',
+          privacy_policy_type: editMode ? !activeEdit?.privacy_policy_type ? 'Parent' : activeEdit?.privacy_policy_type : 'Parent',
           privacy_policy_url: editMode ? activeEdit?.privacy_policy_url : '',
           privacy_policy_content: editMode ? activeEdit?.privacy_policy_content : '',
         }}

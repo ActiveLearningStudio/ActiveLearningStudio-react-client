@@ -234,7 +234,6 @@ function TeamsPage(props) {
           </div>
         </div>
       </div>
-      <Footer />
       <WhiteBoardModal
         url={whiteBoardUrl}
         show={show} // {props.show}
