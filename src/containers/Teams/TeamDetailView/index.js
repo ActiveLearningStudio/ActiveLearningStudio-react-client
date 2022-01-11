@@ -9,13 +9,21 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import UserIcon from 'assets/images/svg/user.svg';
 import Deleticon from 'assets/images/svg/trash.svg';
 import Right from 'assets/images/svg/right.svg';
-import Userimg from 'assets/images/mem.png';
-import MyTeamCard from 'utils/MyTeamCard/myteamcard';
-import BackgroundTeamCardImage from 'assets/images/cardlistimg.png';
+// import MyTeamCard from 'utils/MyTeamCard/myteamcard';
+import ProjectCard from 'containers/Projects/ProjectCard';
+// import BackgroundTeamCardImage from 'assets/images/cardlistimg.png';
 
 const TeamDetail = ({ team, organization }) => {
-  // const [left, setleft] = useState(false);
-  console.log(team);
+  const [show, setShow] = useState(false);
+  const [createProject, setCreateProject] = useState(false);
+  const [editMode, seteditMode] = useState(false);
+  console.log(team, show, createProject, editMode);
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const setProjectId = () => { };
+  const showDeletePopup = () => { };
   const [toggleLeft, setToggleLeft] = useState(false);
   return (
     <div className="add-team-page">
@@ -87,59 +95,23 @@ const TeamDetail = ({ team, organization }) => {
           </div>
         </div>
         <div className="team-cards">
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
-          </div>
-          <div className="mt-16">
-            <MyTeamCard
-              title="How to use CurrikiStudio"
-              backgroundImg={BackgroundTeamCardImage}
-            />
+          <div className="row">
+            <div className="col-md-12">
+              <div className="check-home">
+                {team?.projects?.map((project) => (
+                  <div className="playlist-resource" key={project.id}>
+                    <ProjectCard
+                      project={project}
+                      showDeletePopup={showDeletePopup}
+                      handleShow={handleShow}
+                      setProjectId={setProjectId}
+                      setCreateProject={setCreateProject}
+                      seteditMode={seteditMode}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -160,36 +132,25 @@ const TeamDetail = ({ team, organization }) => {
             <option>Invite a team member</option>
           </select>
         </div>
-        <div className="right_card">
-          <div className="right_info">
-            <div>
-              <img src={Userimg} alt="" />
+        {team?.users?.map((user) => (
+          <div className="right_card">
+            <div className="right_info">
+              <div>
+                <div className="member-name-mark">
+                  <span>{`${user?.first_name ? user?.first_name[0] : ''}${user?.last_name ? user?.last_name[0] : ''}`}</span>
+                </div>
+              </div>
+              <div className={`${toggleLeft ? 'none' : ''}`}>
+                <h6>{`${user?.first_name} ${user?.last_name}`}</h6>
+                <p>{user?.email}</p>
+              </div>
             </div>
-            <div className={`${toggleLeft ? 'none' : ''}`}>
-              <h6>Master</h6>
-              <p>masterdemo@curriki.org</p>
-            </div>
-          </div>
-          <div className={`${toggleLeft ? 'none' : ''} right_label`}>
-            <button type="button">Admin</button>
-            <img src={Deleticon} alt="" />
-          </div>
-        </div>
-        <div className="right_card">
-          <div className="right_info">
-            <div>
-              <img src={Userimg} alt="" />
-            </div>
-            <div className={`${toggleLeft ? 'none' : ''}`}>
-              <h6>Master</h6>
-              <p>masterdemo@curriki.org</p>
+            <div className={`${toggleLeft ? 'none' : ''} right_label`}>
+              <span>{user?.role?.name}</span>
+              <img src={Deleticon} alt="" />
             </div>
           </div>
-          <div className={`${toggleLeft ? 'none' : ''} right_label`}>
-            <button type="button">Admin</button>
-            <img src={Deleticon} alt="" />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

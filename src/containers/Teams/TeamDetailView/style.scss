@@ -119,8 +119,79 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     width: 70%;
     // padding: 32px;
+    .check-home {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .playlist-resource {
+      max-width: 258.67px;
+      width: 258.67px;
+      margin-right: 15px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      .col-md-3.check {
+        max-width: 100%;
+        margin-bottom: 12px;
+        padding: 0;
+      }
+
+      .program-thumb {
+        height: 150px;
+      }
+
+      .program-tile {
+        position: relative;
+        min-height: 380px;
+        height: 300px;
+      }
+
+      .button-bottom {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        margin: 0;
+
+        a {
+          width: 33.3%;
+          flex: 1;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 16px;
+          color: $fun-blue-1;
+          align-items: center;
+        }
+
+        .dropdown-menu a {
+          width: 100%;
+        }
+      }
+    }
   }
   .right {
+    .member-name-mark {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border: solid 1px #e2e2e2;
+      border-radius: 50%;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+      color: #a5a5a5;
+
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: 0;
+        transform: translate(-50%, -50%);
+        font-size: 16px;
+      }
+    }
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     .toggle_btn {
       img {
@@ -196,8 +267,9 @@
       }
     }
     .right_label {
-      button {
+      span {
         background: #f7faff;
+        text-transform: capitalize;
         border-radius: 4px;
         margin-right: 10px;
         color: #2e68bf;

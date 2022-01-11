@@ -49,6 +49,9 @@
   }
   .myproject-card-detail {
     padding: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 200px;
     p {
       font-family: "Open Sans", sans-serif;
       font-style: normal;
@@ -57,6 +60,7 @@
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
+      word-break: break-all;
     }
   }
   .my-project-icons {

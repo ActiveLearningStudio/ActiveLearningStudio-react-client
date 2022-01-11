@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 // import { Link } from "react-router-dom";
 
-const MyTeamCard = ({ className, backgroundImg, title }) => {
+const MyTeamCard = ({ className, backgroundImg, title, description }) => {
   const currikiUtility = classNames(
     "curriki-utility-myproject-card",
     className
@@ -37,8 +37,7 @@ const MyTeamCard = ({ className, backgroundImg, title }) => {
       </div>
       <div className="myproject-card-detail">
         <p>
-          Within the six categories, there are over 50 learning activity types.
-          These range from Interactive Video, Flashcards.
+          {description}
         </p>
       </div>
       <div className="my-project-icons">

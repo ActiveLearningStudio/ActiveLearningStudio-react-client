@@ -129,7 +129,7 @@ function TeamsPage(props) {
     ) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
-  }, [selectedTeam, teamPermission]);
+  }, [dispatch, organization?.currentOrganization?.id, selectedTeam, teamPermission]);
   useEffect(() => {
     if (dataRedux.team.whiteBoardUrl) {
       setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
@@ -337,9 +337,9 @@ function TeamsPage(props) {
                   <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
                 </div>
               )}
-              {teamShow && selectedTeam && (
+              {(teamShow && selectedTeam) ? (
                 <TeamDetail team={selectedTeam} organization={currentOrganization?.name} />
-              )}
+              ) : Object.keys(selectedTeam).length < 0 && (<Alert className="alert-space" variant="primary"> Loading...</Alert>)}
               {projectShow && selectedTeam && (
                 <TeamProjectView team={selectedTeam} />
               )}
