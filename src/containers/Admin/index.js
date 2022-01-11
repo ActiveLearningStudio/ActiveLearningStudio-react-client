@@ -12,6 +12,7 @@ import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
 import CreateUser from './CreateUser';
 import CreateUserForm from 'containers/Admin/formik/createuser';
+import BrightCove from './formik/createBrightCove';
 import Pills from './pills';
 import Heading from './heading';
 import Breadcrump from 'utils/BreadCrump/breadcrump';
@@ -31,6 +32,7 @@ function AdminPanel({ showSSO }) {
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
+
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
@@ -43,7 +45,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => { }, [activeTab]);
+  useEffect(() => {}, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -135,9 +137,10 @@ function AdminPanel({ showSSO }) {
                   )}
                   <Tab eventKey="LMS" title="Integrations">
                     <div className="module-content">
-                      <Pills modules={['All settings', 'LTI Tools']} type="LMS" />
+                      <Pills modules={['All settings', 'LTI Tools', 'BrightCove']} type="LMS" />
                     </div>
                   </Tab>
+
                   {/* <Tab eventKey="Settings" title="Settings">
                   <div className="module-content">
                     <h2>Settings</h2>
@@ -216,6 +219,20 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
+          {activeForm === 'add_brightcove' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === 'edit_bright_form' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} editMode />
+              </div>
+            </div>
+          )}
           {activeForm === 'edit_lms' && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
@@ -266,6 +283,7 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
+
           {activeForm === 'add_default_sso' && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon

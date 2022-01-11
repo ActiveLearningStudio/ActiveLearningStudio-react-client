@@ -560,13 +560,13 @@
 .main-content-wrapper {
   width: 100%;
   padding-top: 80px;
-  padding-bottom: 45px;
+  // padding-bottom: 45px;
   // display: flex;
   float: left;
 
   .sidebar-wrapper {
     position: fixed;
-    // z-index: 1040;
+    z-index: 1040;
     width: 136px;
     height: 100%;
     padding-bottom: 100px;
@@ -752,7 +752,7 @@ hgroup,
 nav,
 section {
   margin: 0;
-  padding: 0;
+  padding: 1px;
   border: 0;
   font-size: 100%;
   vertical-align: baseline;
@@ -3014,9 +3014,8 @@ a:hover {
 .footer-img-section {
   position: fixed;
   bottom: 0;
-  z-index: 999;
   width: 100%;
-  height: 65px;
+  height: 40px;
 
   padding: 10px 30px 10px 166px;
   display: flex;
@@ -3035,12 +3034,12 @@ a:hover {
     color: $fun-blue-1;
     font-size: 12px;
     font-weight: 600;
-    text-decoration: underline;
+    // text-decoration: underline;
     font-family: $sans;
   }
 
   span {
-    font-size: 12px;
+    font-size: 14px;
     color: #515151;
     margin-right: 20px;
     font-family: $sans;
@@ -3959,4 +3958,11 @@ body.collapsed {
 .customcard30 .playlist-resource {
   max-width: 33% !important;
   width: 33% !important;
+}
+
+.terms-policy-container {
+  background: #fff;
+  padding: 32px 30px 30px;
+  margin: 36px;
+  border-radius: 3px;
 }

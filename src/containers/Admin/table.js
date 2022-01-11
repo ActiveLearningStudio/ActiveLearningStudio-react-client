@@ -56,9 +56,11 @@ function Table(props) {
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
   const indexingArray = [
-    { indexing: 0, indexing_text: 'NOT REQUESTED' }, { indexing: 1, indexing_text: 'REQUESTED' },
-    { indexing: 3, indexing_text: 'APPROVED' }, { indexing: 2, indexing_text: 'REJECTED' },
-  ]
+    { indexing: 0, indexing_text: 'NOT REQUESTED' },
+    { indexing: 1, indexing_text: 'REQUESTED' },
+    { indexing: 3, indexing_text: 'APPROVED' },
+    { indexing: 2, indexing_text: 'REJECTED' },
+  ];
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -194,14 +196,14 @@ function Table(props) {
             <tr>
               {tableHead?.map((head, keyid) => {
                 let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
-                return (
-                  head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
-                    <th key={keyid}> {head} </th>
-                  ) : head !== 'Users' ? (
-                    <th onClick={checkSolCol ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : ''} className={checkSolCol ? 'sorting-icon': ''}>{head}</th>
-                  ) : null
-                )
-                })}
+                return head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
+                  <th key={keyid}> {head} </th>
+                ) : head !== 'Users' ? (
+                  <th onClick={checkSolCol ? () => handleSort(head, typeof subType != 'undefined' ? subType : type) : ''} className={checkSolCol ? 'sorting-icon' : ''}>
+                    {head}
+                  </th>
+                ) : null;
+              })}
             </tr>
           </thead>
           <tbody>
@@ -326,6 +328,43 @@ function Table(props) {
                           {row?.description}
                           <div>
                             <AdminDropdown type={type} subType="All settings" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No integration found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'LMS' &&
+              subType === 'BrightCove' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={row} className="admin-panel-rows">
+                      <td>{row.organization?.id}</td>
+                      <td>{row.account_id}</td>
+                      <td>{row.account_email}</td>
+                      <td>{row.account_name}</td>
+                      <td>{row.description}</td>
+                      <td>{row.client_id}</td>
+                      <td>{row.client_secret}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          download
+                          <div>
+                            <AdminDropdown type={type} subType="BrightCove" row={row} activePage={activePage} />
                           </div>
                         </div>
                       </td>
@@ -627,27 +666,28 @@ function Table(props) {
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 {indexingArray.map((element) => (
-                                  <Dropdown.Item onClick={async () => {
-                                    const result = await adminService.updateIndex(row.id, element.indexing);
-                                    if (result?.message) {
-                                      const editRow = {
-                                        ...row,
-                                        indexing: element.indexing,
-                                        indexing_text: element.indexing_text,
-                                      };
-                                      setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                      Swal.fire({
-                                        icon: 'success',
-                                        text: result.message,
-                                      });
-                                    } else {
-                                      Swal.fire({
-                                        icon: 'error',
-                                        text: 'Error',
-                                      });
-                                    }
-
-                                  }}>
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      const result = await adminService.updateIndex(row.id, element.indexing);
+                                      if (result?.message) {
+                                        const editRow = {
+                                          ...row,
+                                          indexing: element.indexing,
+                                          indexing_text: element.indexing_text,
+                                        };
+                                        setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                        Swal.fire({
+                                          icon: 'success',
+                                          text: result.message,
+                                        });
+                                      } else {
+                                        Swal.fire({
+                                          icon: 'error',
+                                          text: 'Error',
+                                        });
+                                      }
+                                    }}
+                                  >
                                     {element.indexing_text}
                                   </Dropdown.Item>
                                 ))}
@@ -686,7 +726,7 @@ function Table(props) {
                                     if (!row.shared) {
                                       const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
                                       if (result) {
-                                        setLocalStateData(localStateData.map((element) => element.id === row.id ? result : element));
+                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
                                       }
                                     }
                                   }}
@@ -698,7 +738,7 @@ function Table(props) {
                                     if (row.shared) {
                                       const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
                                       if (result) {
-                                        setLocalStateData(localStateData.map((element) => element.id === row.id ? result : element));
+                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
                                       }
                                     }
                                   }}

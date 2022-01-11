@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   defaultSso: [],
   lmsIntegration: [],
   removeUser: null,
+  allbrightCove: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -146,6 +147,34 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         removeUser: null,
       };
+    case actionTypes.UP_ALL_BRIGHTCOVE:
+      return {
+        ...state,
+        allbrightCove: action.payload || [],
+      };
+    case actionTypes.NEW_BRIGHTCOVE:
+      return {
+        ...state,
+        allbrightCove: [...state.allbrightCove, action.payload],
+      };
+    case actionTypes.DEL_BRIGHTCOVE:
+      const newBrigthList = state.allbrightCove.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        allbrightCove: newBrigthList,
+      };
+    case actionTypes.EDIT_BRIGHTCOVE:
+      const newBrigthListEdit = state.allbrightCove.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        allbrightCove: newBrigthListEdit,
+      };
+
     default:
       return state;
   }

@@ -13,7 +13,6 @@ import {
 // import Sidebar from 'components/Sidebar';
 // import filterImg from 'assets/images/svg/filter.svg';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import Footer from 'components/Footer';
 import { Link } from 'react-router-dom';
 // import Swal from 'sweetalert2';
 import Buttons from 'utils/Buttons/buttons';
@@ -337,9 +336,9 @@ function TeamsPage(props) {
                   <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
                 </div>
               )}
-              {(teamShow && selectedTeam) ? (
+              {(teamShow && selectedTeam) && (
                 <TeamDetail team={selectedTeam} organization={currentOrganization?.name} />
-              ) : Object.keys(selectedTeam).length < 0 && (<Alert className="alert-space" variant="primary"> Loading...</Alert>)}
+              )}
               {projectShow && selectedTeam && (
                 <TeamProjectView team={selectedTeam} />
               )}
@@ -348,7 +347,6 @@ function TeamsPage(props) {
           </div>
         </div>
       </div>
-      <Footer />
       {showCreateTeamModal && (
         <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} />
       )}

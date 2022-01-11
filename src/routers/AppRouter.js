@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
@@ -36,6 +37,7 @@ const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityReg
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
+const termsPolicyContent = loadable(() => import('../components/Footer/termsPolicyContent'));
 const CanvasLtiLogin = loadable(() => import('../containers/Auth/CanvasLtiLogin'));
 const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
@@ -96,6 +98,7 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
+        <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute exact path="/projects/shared" component={ProjectShareTemplate} />
@@ -255,6 +258,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
                 </Switch>
+                <Footer />
               </div>
             </>
           )}
