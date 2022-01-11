@@ -10,6 +10,7 @@ import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
+import { allBrightCove } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -21,7 +22,7 @@ export default function Pills(props) {
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport } = useSelector((state) => state.admin);
+  const { activityTypes, activityItems, usersReport, allbrightCove } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -52,6 +53,7 @@ export default function Pills(props) {
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [libraryReqSelected, setLibraryReqSelected] = useState(false);
   const [lmsProject, setLmsProject] = useState(null);
+  const [lmsBrightCove, setlmsBrightCove] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
   const [ltiTool, setLtiTool] = useState(null);
   const [jobs, setJobs] = useState(null);
@@ -64,6 +66,9 @@ export default function Pills(props) {
   useEffect(() => {
     setKey(modules?.[0]);
   }, [activeTab]);
+  useEffect(() => {
+    setlmsBrightCove(allbrightCove);
+  }, [allbrightCove]);
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole));
@@ -180,8 +185,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProjectIndex(
             activeOrganization?.id,
             activePage || 1,
@@ -204,8 +208,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProject(
             activeOrganization?.id,
             activePage || 1,
@@ -409,6 +412,9 @@ export default function Pills(props) {
     if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
+    if (type === 'LMS') {
+      dispatch(allBrightCove(activeOrganization?.id, activePage || 1));
+    }
   }, [type, activePage, activeOrganization?.id]);
 
   useEffect(() => {
@@ -436,6 +442,11 @@ export default function Pills(props) {
     result.then((data) => {
       setLmsProject(data);
     });
+  };
+
+  const searchQueryChangeHandlerLMSBrightCove = (search) => {
+    setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
   };
 
   //Default SSO ***************************************
@@ -491,6 +502,8 @@ export default function Pills(props) {
       setSubTypeState('All Organizations');
     } else if (activeTab === 'LMS') {
       setSubTypeState('All settings');
+    } else if (activeTab === 'Video Integration') {
+      setSubTypeState('BrightCove API Settings');
     }
   }, [activeTab]);
   const filterSearch = useCallback(() => {
@@ -577,6 +590,7 @@ export default function Pills(props) {
         .catch((e) => setAllProjectTab([]));
     }
   };
+
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -772,6 +786,29 @@ export default function Pills(props) {
                 setActivePage={setActivePage}
                 activePage={activePage}
                 searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+              />
+            )}
+            {type === 'LMS' && subTypeState === 'BrightCove' && (
+              <Starter
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                subType={'BrightCove'}
+                search={true}
+                print={false}
+                btnText="Add a new CSS"
+                btnAction="add_brightcove"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.IntegrationBrightCove}
+                sortCol={[]}
+                handleSort={handleSort}
+                data={lmsBrightCove}
+                type={type}
+                searchQuery={searchQuery}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
               />
             )}
 
