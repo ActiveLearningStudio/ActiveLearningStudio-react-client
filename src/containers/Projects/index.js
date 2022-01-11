@@ -619,8 +619,6 @@ export const ProjectsPage = (props) => {
 
       {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 
-      <Footer />
-
       <GoogleModel
         projectId={selectedProjectId}
         show={show} // {props.show}

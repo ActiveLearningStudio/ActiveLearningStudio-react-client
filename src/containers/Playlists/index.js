@@ -52,7 +52,7 @@ import {
   clearSelectedProject,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
 import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
@@ -749,7 +749,7 @@ function PlaylistsPage(props) {
           <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
         </Modal.Body>
       </Modal>
-      {!showFooter && <Footer />}
+      {/* {!showFooter && <Footer />} */}
 
       <GoogleModel
         projectId={selectedProjectId}

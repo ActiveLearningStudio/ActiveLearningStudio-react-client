@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
 import { getTeamPermission } from 'store/actions/team';
@@ -80,7 +80,6 @@ function ActivityCreate(props) {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

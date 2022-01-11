@@ -171,7 +171,6 @@ Interactive video has over xx interactions that can be added to video, It allows
       </div>
       <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} activeType={'demo'} />
 
-      <Footer />
     </>
   );
 };

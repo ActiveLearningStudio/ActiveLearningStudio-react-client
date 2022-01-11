@@ -17,7 +17,7 @@ import MyProjectCard from "utils/MyProjectCard/myprojectcard";
 import ProjectCard1 from "assets/images/myproject1.png";
 import ProjectCard2 from "assets/images/myproject2.png";
 import ProjectCard3 from "assets/images/myproject3.png";
-import Footer from "components/Footer";
+// import Footer from "components/Footer";
 const MyProjectMain = () => {
   const playList1 = [
     { img: PlayListImage, title: "Guess the Answer" },
@@ -170,7 +170,6 @@ const MyProjectMain = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
