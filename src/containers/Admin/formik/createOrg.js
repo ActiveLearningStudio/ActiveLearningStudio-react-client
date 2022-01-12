@@ -457,7 +457,7 @@ export default function CreateOrg(prop) {
                     <Tab eventKey="terms-services" title="Terms of service">
                       <div className="tos-pss-container">
                         <div className="form-check">
-                          <input className="form-check-input radio-custom" onChange={() => {
+                          <input className="form-check-input radio-custom" onClick={() => {
                             setCheckedTosUrl(false);
                             setCheckedTosContent(false);
                             setCheckedTosParent(true);
@@ -469,7 +469,7 @@ export default function CreateOrg(prop) {
                         </div>
 
                         <div className="form-check">
-                          <input className="form-check-input radio-custom" onChange={() => {
+                          <input className="form-check-input radio-custom" onClick={() => {
                             setCheckedTosParent(false);
                             setCheckedTosContent(false);
                             setCheckedTosUrl(true);
@@ -510,7 +510,7 @@ export default function CreateOrg(prop) {
                     <Tab eventKey="privacy-policy" title="Privacy policy">
                       <div className="tos-pss-container">
                         <div className="form-check">
-                          <input className="form-check-input radio-custom" onChange={() => {
+                          <input className="form-check-input radio-custom" onClick={() => {
                             setCheckedPpUrl(false);
                             setCheckedPpContent(false);
                             setCheckedPpParent(true);
@@ -522,7 +522,7 @@ export default function CreateOrg(prop) {
                         </div>
 
                         <div className="form-check">
-                          <input className="form-check-input radio-custom" onChange={() => {
+                          <input className="form-check-input radio-custom" onClick={() => {
                             setCheckedPpParent(false);
                             setCheckedPpContent(false);
                             setCheckedPpUrl(true);
