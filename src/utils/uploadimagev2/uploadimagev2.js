@@ -94,27 +94,29 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             />
             <span>Upload</span>
           </label>
-
-          <button
-            type="button"
-            onClick={() => {
-              openFile.current.click();
-            }}
-            className="btn-mr-27"
-          >
-            <img src={computer} className="mr-20" />
-            Upload from computer
-          </button>
           <button
             type="button"
             onClick={() => {
               setModalShow(true);
               setUploadImageStatus(true);
             }}
+            className="btn-mr-27"
           >
             <img src={PixelUpload} className="mr-20" />
-            Select from Pexels
+            Pexels
           </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              openFile.current.click();
+            }}
+           
+          >
+            <img src={computer} className="mr-20" />
+            My device
+          </button>
+         
         </div>
       </div>
     </>
