@@ -1,17 +1,27 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Formik, Field } from 'formik';
-import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization';
-import updateImg from '../../assets/images/update.svg';
+import React, { useEffect, useState } from "react";
+import { Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import { Formik, Field } from "formik";
+import {
+  updateRole,
+  getAllPermissionId,
+  roleDetail,
+} from "store/actions/organization";
+import updateImg from "../../assets/images/update.svg";
 
 function UserRoles() {
   const dispatch = useDispatch();
-  const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
+  const {
+    permission,
+    activeOrganization,
+    activePermission,
+    permissionsId,
+    roles,
+  } = useSelector((state) => state.organization);
 
-  const [checkRoles, setCheckRoles] = useState('');
+  const [checkRoles, setCheckRoles] = useState("");
   // author
   const [teamsAuthoring, setTeamsAuthoring] = useState([]);
   const [projectAuthoring, setProjectAuthoring] = useState([]);
@@ -19,48 +29,85 @@ function UserRoles() {
   const [activityAuthoring, setActivityAuthoring] = useState([]);
   const [allActivePermission, setAllActivePermission] = useState([]);
   const [organizationAuthoring, setOrganizationAuthoring] = useState([]);
-  const [organizationActivityAuthoring, setOrganizationActivityAuthoring] = useState([]);
-
+  const [
+    organizationActivityAuthoring,
+    setOrganizationActivityAuthoring,
+  ] = useState([]);
 
   // hardcoded
-  const projectViewDate = ['project:edit', 'project:delete', 'project:create', 'project:upload-thumb'];
-  const activityViewDate = ['activity:edit', 'activity:delete', 'activity:create', 'activity:upload'];
-  const playlistViewDate = ['playlist:edit', 'playlist:delete', 'playlist:create'];
-  const teamViewDate = ['team:create', 'team:edit', 'team:delete'];
+  const projectViewDate = [
+    "project:edit",
+    "project:delete",
+    "project:create",
+    "project:upload-thumb",
+  ];
+  const activityViewDate = [
+    "activity:edit",
+    "activity:delete",
+    "activity:create",
+    "activity:upload",
+  ];
+  const playlistViewDate = [
+    "playlist:edit",
+    "playlist:delete",
+    "playlist:create",
+  ];
+  const teamViewDate = ["team:create", "team:edit", "team:delete"];
 
   const orgUserList = [
-    'organization:invite-members',
-    'organization:add-admin',
-    'organization:delete-admin',
-    'organization:add-user',
-    'organization:update-user',
-    'organization:delete-user',
-    'organization:remove-user',
-    'organization:view-user',
-    'organization:add-role',
-    'organization:edit-role',
+    "organization:invite-members",
+    "organization:add-admin",
+    "organization:delete-admin",
+    "organization:add-user",
+    "organization:update-user",
+    "organization:delete-user",
+    "organization:remove-user",
+    "organization:view-user",
+    "organization:add-role",
+    "organization:edit-role",
   ];
-  const orgOrgList = ['organization:edit', 'organization:delete', 'organization:create'];
+  const orgOrgList = [
+    "organization:edit",
+    "organization:delete",
+    "organization:create",
+  ];
   const orgProjectList = [
-    'organization:edit-project',
-    'organization:delete-project',
-    'organization:export-project',
-    'organization:import-project',
-    'organization:download-project',
-    'organization:view-library-request-project',
-    'organization:review-library-request-project',
+    "organization:edit-project",
+    "organization:delete-project",
+    "organization:export-project",
+    "organization:import-project",
+    "organization:download-project",
+    "organization:view-library-request-project",
+    "organization:review-library-request-project",
   ];
 
-  const orgActivityList = ['organization:edit-activity', 'organization:delete-activity', 'organization:view-activity', 'organization:create-activity'];
+  const orgActivityList = [
+    "organization:edit-activity",
+    "organization:delete-activity",
+    "organization:view-activity",
+    "organization:create-activity",
+  ];
   const orgSSOList = [
-    'organization:create-default-sso',
-    'organization:view-default-sso',
-    'organization:update-default-sso',
-    'organization:delete-default-sso',
-    'organization:delete-default-sso',
+    "organization:create-default-sso",
+    "organization:view-default-sso",
+    "organization:update-default-sso",
+    "organization:delete-default-sso",
+    "organization:delete-default-sso",
   ];
 
-  const AdminList = ['Organization', 'Project', 'Activity', 'SSO', 'User'];
+  const labelsOfProject = ["All projects", "Exported projects"];
+  const labelsOfActivity = [
+    "Activity layout",
+    "Subjects",
+    "Activity types",
+    "Education level",
+    "Activity items",
+    "Author tags",
+  ];
+  const labelsOfUser = ["Users", "Roles"];
+  const labelOfIntegration = ["LMS settings", "LTI tools"];
+  const [projectLabelStatus, setProjectLabelStatus] = useState([]);
+  const AdminList = ["Organization", "Project", "Activity", "SSO", "User"];
   useEffect(() => {
     const extractPermission = [];
     const extractPermissionNames = [];
@@ -82,19 +129,41 @@ function UserRoles() {
     setActivityAuthoring([]);
 
     // populate authoring
-    setTeamsAuthoring(permissionsId?.Team.filter((data) => !teamViewDate.includes(data.name)));
-    setProjectAuthoring(permissionsId?.Project.filter((data) => !projectViewDate.includes(data.name)));
-    setActivityAuthoring(permissionsId?.Activity.filter((data) => !activityViewDate.includes(data.name)));
-    setPlaylistAuthoring(permissionsId?.Playlist.filter((data) => !playlistViewDate.includes(data.name)));
-    setOrganizationAuthoring(permissionsId?.Organization.filter((data) => !orgOrgList.includes(data.name)))
-    setOrganizationActivityAuthoring(permissionsId?.Organization.filter((data) => !orgActivityList.includes(data.name)))
-
+    setTeamsAuthoring(
+      permissionsId?.Team.filter((data) => !teamViewDate.includes(data.name))
+    );
+    setProjectAuthoring(
+      permissionsId?.Project.filter(
+        (data) => !projectViewDate.includes(data.name)
+      )
+    );
+    setActivityAuthoring(
+      permissionsId?.Activity.filter(
+        (data) => !activityViewDate.includes(data.name)
+      )
+    );
+    setPlaylistAuthoring(
+      permissionsId?.Playlist.filter(
+        (data) => !playlistViewDate.includes(data.name)
+      )
+    );
+    setOrganizationAuthoring(
+      permissionsId?.Organization.filter(
+        (data) => !orgOrgList.includes(data.name)
+      )
+    );
+    setOrganizationActivityAuthoring(
+      permissionsId?.Organization.filter(
+        (data) => !orgActivityList.includes(data.name)
+      )
+    );
   }, [activePermission]);
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
     if (!!roles) {
-      if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
+      if (roles?.length !== 0)
+        dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
     }
   }, []);
 
@@ -125,15 +194,22 @@ function UserRoles() {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group-create dynamic-roles">
-                  {permission?.Organization?.includes('organization:edit-role') && (
+                  {permission?.Organization?.includes(
+                    "organization:edit-role"
+                  ) && (
                     <div className="dynamic-roles-title-btn">
                       <div>
-                        <h2>Edit “{activePermission && activePermission[0]?.display_name}” permissions</h2>
+                        <h2>
+                          Edit “
+                          {activePermission &&
+                            activePermission[0]?.display_name}
+                          ” permissions
+                        </h2>
                       </div>
                       <div
                         className="button-group"
-                        style={{ marginTop: '17px' }}
-                      // style={{ display: "flex", justifyContent: "flex-end" }}
+                        style={{ marginTop: "17px" }}
+                        // style={{ display: "flex", justifyContent: "flex-end" }}
                       >
                         <button type="submit" className="update-permission">
                           <img src={updateImg} alt="update" />
@@ -143,11 +219,17 @@ function UserRoles() {
                     </div>
                   )}
 
-                  <Tab.Container id="left-tabs-example" defaultActiveKey="manual-3">
+                  <Tab.Container
+                    id="left-tabs-example"
+                    defaultActiveKey="manual-3"
+                  >
                     <Row className="roles-permission-tab-row">
                       <Col className="roles-permission-tab" sm={2}>
                         <Nav variant="pills" className="flex-column">
-                          <div className="role-permission-tab-name" id="role-permission-tab-id">
+                          <div
+                            className="role-permission-tab-name"
+                            id="role-permission-tab-id"
+                          >
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-3">
@@ -160,7 +242,10 @@ function UserRoles() {
                           {!!permissionsId &&
                             AdminList.map((data, counter) => {
                               return (
-                                <div className="role-permission-tab-name" id="role-permission-tab-id">
+                                <div
+                                  className="role-permission-tab-name"
+                                  id="role-permission-tab-id"
+                                >
                                   <Nav.Item>
                                     <Nav.Link eventKey={String(counter)}>
                                       {data}
@@ -172,7 +257,10 @@ function UserRoles() {
                               );
                             })}
 
-                          <div className="role-permission-tab-name" id="role-permission-tab-id">
+                          <div
+                            className="role-permission-tab-name"
+                            id="role-permission-tab-id"
+                          >
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-2">
@@ -187,64 +275,299 @@ function UserRoles() {
                       <Col className="detail-permission-tab" sm={10}>
                         <Tab.Content>
                           <Tab.Pane eventKey="manual-3">
+                            <div className="all-permission-heading">
+                              <h6>All permissions</h6>
+                            </div>
+
                             <Card.Body
                               style={{
                                 // background: '#f7faff',
-                                margin: '32px',
+                                margin: "8px 32px 32px 10px",
                               }}
                             >
                               <div className="permission">
-                                <h6>Organiziation</h6>
-                                <div className="permission-about">
-                                  {permissionsId?.['Organization']?.map((val) => {
-                                    if (orgOrgList.includes(val.name)) {
-                                      return <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />;
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option selected value="edit">
+                                        Edit
+                                      </option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Organiziation</h6>
+                                  </div>
+                                </div>
+                                {/* <h6>Organiziation</h6> */}
+                                {/* <div className="permission-about">
+                                  {permissionsId?.["Organization"]?.map(
+                                    (val) => {
+                                      if (orgOrgList.includes(val.name)) {
+                                        return (
+                                          <DropdownSelect
+                                            setFieldValue={setFieldValue}
+                                            val={val}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            activePermission={activePermission}
+                                          />
+                                        );
+                                      }
                                     }
+                                  )}
+                                </div> */}
+                              </div>
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Project</h6>
+                                  </div>
+                                </div>
+                                {/* <h6>Project</h6> */}
+                                <div className="permission-about">
+                                  {labelsOfProject.map((data, index) => {
+                                    return (
+                                      <div className="form-group custom-select-style-for-sub">
+                                        <select
+                                          name=""
+                                          onChange={(e) => {
+                                            if (
+                                              !projectLabelStatus.find(
+                                                (data) => data.id == index
+                                              )
+                                            ) {
+                                              setProjectLabelStatus([
+                                                ...projectLabelStatus,
+                                                {
+                                                  id: index,
+                                                  value: e.target.value,
+                                                },
+                                              ]);
+                                            } else {
+                                              const objIndex = projectLabelStatus.findIndex(
+                                                (obj) => obj.id == index
+                                              );
+                                              projectLabelStatus[
+                                                objIndex
+                                              ].value = e.target.value;
+                                            }
+
+                                            // setProjectLabelStatus(
+                                            //   (oldData) => ({
+                                            //     ...oldData,
+                                            //     ...updateStatus,
+                                            //   })
+                                            // );
+                                            console.log(
+                                              "DataProject-Status",
+                                              projectLabelStatus
+                                            );
+                                          }}
+                                        >
+                                          <option value="edit">Edit</option>
+                                          <option value="view">View</option>
+                                        </select>
+                                        <p> {data}</p>
+                                      </div>
+                                    );
                                   })}
+                                  {/* {permissionsId?.["Organization"].map(
+                                    (val) => {
+                                      if (orgProjectList.includes(val.name)) {
+                                        return (
+                                          <DropdownSelect
+                                            setFieldValue={setFieldValue}
+                                            val={val}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            activePermission={activePermission}
+                                          />
+                                        );
+                                      }
+                                    }
+                                  )} */}
                                 </div>
                               </div>
                               <div className="permission">
-                                <h6>Project</h6>
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Activity</h6>
+                                  </div>
+                                </div>
+                                {/* <h6>Activity</h6> */}
                                 <div className="permission-about">
-                                  {permissionsId?.['Organization'].map((val) => {
-                                    if (orgProjectList.includes(val.name)) {
-                                      return <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />;
-                                    }
+                                  {labelsOfActivity.map((data) => {
+                                    return (
+                                      <div className="form-group custom-select-style-for-sub mb-16">
+                                        <select name="">
+                                          <option value="----">----</option>
+                                          <option selected value="edit">
+                                            Edit
+                                          </option>
+                                          <option value="view">View</option>
+                                        </select>
+                                        <p> {data}</p>
+                                      </div>
+                                    );
                                   })}
+                                  {/* {permissionsId?.["Organization"]?.map(
+                                    (val) => {
+                                      if (orgActivityList.includes(val.name)) {
+                                        return (
+                                          <DropdownSelect
+                                            setFieldValue={setFieldValue}
+                                            val={val}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            activePermission={activePermission}
+                                          />
+                                        );
+                                      }
+                                    }
+                                  )} */}
+                                </div>
+                              </div>
+                              {/* <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> SSO</h6>
+                                  </div>
+                                </div>
+                                
+                                <div className="permission-about">
+                                  {permissionsId?.["Organization"]?.map(
+                                    (val) => {
+                                      if (orgSSOList.includes(val.name)) {
+                                        return (
+                                          <DropdownSelect
+                                            setFieldValue={setFieldValue}
+                                            val={val}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            activePermission={activePermission}
+                                          />
+                                        );
+                                      }
+                                    }
+                                  )}
+                                </div>
+                              </div> */}
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> User</h6>
+                                  </div>
+                                </div>
+                                {/* <h6>User</h6> */}
+                                <div className="permission-about">
+                                  {labelsOfUser.map((data) => {
+                                    return (
+                                      <div className="form-group custom-select-style-for-sub">
+                                        <select name="">
+                                          <option value="----">----</option>
+                                          <option selected value="edit">
+                                            Edit
+                                          </option>
+                                          <option value="view">View</option>
+                                        </select>
+                                        <p> {data}</p>
+                                      </div>
+                                    );
+                                  })}
+                                  {/* {permissionsId?.["Organization"]?.map(
+                                    (val) => {
+                                      if (orgUserList.includes(val.name)) {
+                                        return (
+                                          <DropdownSelect
+                                            setFieldValue={setFieldValue}
+                                            val={val}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            activePermission={activePermission}
+                                          />
+                                        );
+                                      }
+                                    }
+                                  )} */}
                                 </div>
                               </div>
                               <div className="permission">
-                                <h6>Activity</h6>
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Team</h6>
+                                  </div>
+                                </div>
+
+                                {/* <div className="permission-about">
+                                  <p>Empty</p>
+                                </div> */}
+                              </div>
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Integrations</h6>
+                                  </div>
+                                </div>
+
                                 <div className="permission-about">
-                                  {permissionsId?.['Organization']?.map((val) => {
-                                    if (orgActivityList.includes(val.name)) {
-                                      return <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />;
-                                    }
+                                  {labelOfIntegration.map((data) => {
+                                    return (
+                                      <div className="form-group custom-select-style-for-sub">
+                                        <select name="">
+                                          <option value="----">----</option>
+                                          <option selected value="edit">
+                                            Edit
+                                          </option>
+                                          <option value="view">View</option>
+                                        </select>
+                                        <p> {data}</p>
+                                      </div>
+                                    );
                                   })}
                                 </div>
                               </div>
-                              <div className="permission">
-                                <h6>SSO</h6>
-                                <div className="permission-about">
-                                  {permissionsId?.['Organization']?.map((val) => {
-                                    if (orgSSOList.includes(val.name)) {
-                                      return <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />;
-                                    }
-                                  })}
+                              {/* <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <select name="">
+                                      <option value="----">----</option>
+                                      <option value="edit">Edit</option>
+                                      <option value="view">View</option>
+                                    </select>
+                                    <h6> Authoring</h6>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="permission">
-                                <h6>User</h6>
-                                <div className="permission-about">
-                                  {permissionsId?.['Organization']?.map((val) => {
-                                    if (orgUserList.includes(val.name)) {
-                                      return <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />;
-                                    }
-                                  })}
-                                </div>
-                              </div>
-                              <div className="permission">
-                                <h6>Authoring</h6>
+                               
 
                                 <Authoring
                                   setFieldValue={setFieldValue}
@@ -282,16 +605,26 @@ function UserRoles() {
                                   viewData={teamViewDate}
                                   allActivePermission={allActivePermission}
                                 />
-                              </div>
+                              </div> */}
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="manual-2">
                             <Card.Body
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <select name="">
+                                    <option value="----">----</option>
+                                    <option value="edit">Edit</option>
+                                    <option value="view">View</option>
+                                  </select>
+                                  <h6> Authoring</h6>
+                                </div>
+                              </div>
                               <div className="for-authoring">
                                 <Authoring
                                   setFieldValue={setFieldValue}
@@ -335,16 +668,18 @@ function UserRoles() {
 
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === 'object' && data == 'Organization') {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
                                 return (
                                   <Tab.Pane eventKey="0">
                                     <Card.Body
                                       style={{
-                                        background: '#f7faff',
-                                        margin: '32px',
+                                        background: "#f7faff",
+                                        margin: "32px",
                                       }}
                                     >
-
                                       <Authoring
                                         setFieldValue={setFieldValue}
                                         type="Organization"
@@ -352,7 +687,9 @@ function UserRoles() {
                                         values={values}
                                         permissionsId={permissionsId}
                                         viewData={orgOrgList}
-                                        allActivePermission={allActivePermission}
+                                        allActivePermission={
+                                          allActivePermission
+                                        }
                                         special={"organization:view"}
                                       />
                                     </Card.Body>
@@ -364,19 +701,30 @@ function UserRoles() {
                           {/* For Project List */}
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === 'object' && data == 'Organization') {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
                                 return (
                                   <Tab.Pane eventKey="1">
                                     <Card.Body
                                       style={{
-                                        background: '#f7faff',
-                                        margin: '32px',
+                                        background: "#f7faff",
+                                        margin: "32px",
                                       }}
                                     >
                                       {permissionsId[data]?.map((val) => {
                                         if (orgProjectList.includes(val.name)) {
                                           return (
-                                            <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />
+                                            <DropdownSelect
+                                              setFieldValue={setFieldValue}
+                                              val={val}
+                                              values={values}
+                                              handleBlur={handleBlur}
+                                              activePermission={
+                                                activePermission
+                                              }
+                                            />
                                           );
                                         }
                                       })}
@@ -389,30 +737,47 @@ function UserRoles() {
                           {/* For Activity List */}
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === 'object' && data == 'Organization') {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
                                 return (
                                   <Tab.Pane eventKey="2">
                                     <Card.Body
                                       style={{
-                                        background: '#f7faff',
-                                        margin: '32px',
+                                        background: "#f7faff",
+                                        margin: "32px",
                                       }}
                                     >
                                       {permissionsId[data]?.map((val) => {
-                                        if (orgActivityList.includes(val.name)) {
+                                        if (
+                                          orgActivityList.includes(val.name)
+                                        ) {
                                           return (
-                                            <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />
+                                            <DropdownSelect
+                                              setFieldValue={setFieldValue}
+                                              val={val}
+                                              values={values}
+                                              handleBlur={handleBlur}
+                                              activePermission={
+                                                activePermission
+                                              }
+                                            />
                                           );
                                         }
                                       })}
                                       <Authoring
                                         setFieldValue={setFieldValue}
                                         type="Activity"
-                                        dataAuthoring={setOrganizationActivityAuthoring}
+                                        dataAuthoring={
+                                          setOrganizationActivityAuthoring
+                                        }
                                         values={values}
                                         permissionsId={permissionsId}
                                         viewData={orgActivityList}
-                                        allActivePermission={allActivePermission}
+                                        allActivePermission={
+                                          allActivePermission
+                                        }
                                         special={"organization:view-activity"}
                                       />
                                     </Card.Body>
@@ -424,19 +789,30 @@ function UserRoles() {
                           {/* For SSO List */}
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === 'object' && data == 'Organization') {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
                                 return (
                                   <Tab.Pane eventKey="3">
                                     <Card.Body
                                       style={{
-                                        background: '#f7faff',
-                                        margin: '32px',
+                                        background: "#f7faff",
+                                        margin: "32px",
                                       }}
                                     >
                                       {permissionsId[data]?.map((val) => {
                                         if (orgSSOList.includes(val.name)) {
                                           return (
-                                            <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />
+                                            <DropdownSelect
+                                              setFieldValue={setFieldValue}
+                                              val={val}
+                                              values={values}
+                                              handleBlur={handleBlur}
+                                              activePermission={
+                                                activePermission
+                                              }
+                                            />
                                           );
                                         }
                                       })}
@@ -449,19 +825,30 @@ function UserRoles() {
                           {/* For User */}
                           {!!permissionsId &&
                             Object.keys(permissionsId)?.map((data, counter) => {
-                              if (typeof permissionsId[data] === 'object' && data == 'Organization') {
+                              if (
+                                typeof permissionsId[data] === "object" &&
+                                data == "Organization"
+                              ) {
                                 return (
                                   <Tab.Pane eventKey="4">
                                     <Card.Body
                                       style={{
-                                        background: '#f7faff',
-                                        margin: '32px',
+                                        background: "#f7faff",
+                                        margin: "32px",
                                       }}
                                     >
                                       {permissionsId[data]?.map((val) => {
                                         if (orgUserList.includes(val.name)) {
                                           return (
-                                            <DropdownSelect setFieldValue={setFieldValue} val={val} values={values} handleBlur={handleBlur} activePermission={activePermission} />
+                                            <DropdownSelect
+                                              setFieldValue={setFieldValue}
+                                              val={val}
+                                              values={values}
+                                              handleBlur={handleBlur}
+                                              activePermission={
+                                                activePermission
+                                              }
+                                            />
                                           );
                                         }
                                       })}
@@ -477,7 +864,9 @@ function UserRoles() {
                     </Row>
                   </Tab.Container>
                   {/*  */}
-                  <div className="error">{errors.title && touched.title && errors.title}</div>
+                  <div className="error">
+                    {errors.title && touched.title && errors.title}
+                  </div>
                 </div>
               </form>
             )}
@@ -493,7 +882,13 @@ function UserRoles() {
   );
 }
 
-export const DropdownSelect = ({ addRole, setFieldValue, values, activePermission, val }) => {
+export const DropdownSelect = ({
+  addRole,
+  setFieldValue,
+  values,
+  activePermission,
+  val,
+}) => {
   return (
     <div className="form-grouper" role="group" aria-labelledby="checkbox-group">
       <div>
@@ -501,22 +896,32 @@ export const DropdownSelect = ({ addRole, setFieldValue, values, activePermissio
           <select
             name=""
             onChange={(e) => {
-              if (e.target.value == 'view') {
+              if (e.target.value == "view") {
                 setFieldValue(
-                  'permissions',
+                  "permissions",
                   values.permissions.filter((data) => {
                     return data != String(val.id);
                   })
                 );
               } else {
-                !values.permissions.includes(String(val.id)) && setFieldValue('permissions', [...values.permissions, String(val.id)]);
+                !values.permissions.includes(String(val.id)) &&
+                  setFieldValue("permissions", [
+                    ...values.permissions,
+                    String(val.id),
+                  ]);
               }
             }}
           >
-            <option selected={values.permissions?.includes(String(val.id))} value="edit">
+            <option
+              selected={values.permissions?.includes(String(val.id))}
+              value="edit"
+            >
               Edit
             </option>
-            <option value="view" selected={!values.permissions?.includes(String(val.id))}>
+            <option
+              value="view"
+              selected={!values.permissions?.includes(String(val.id))}
+            >
               View
             </option>
           </select>
@@ -527,24 +932,35 @@ export const DropdownSelect = ({ addRole, setFieldValue, values, activePermissio
   );
 };
 
-export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, values, permissionsId, viewData, allActivePermission, type }) => {
+export const Authoring = ({
+  special,
+  addRole,
+  setFieldValue,
+  dataAuthoring,
+  values,
+  permissionsId,
+  viewData,
+  allActivePermission,
+  type,
+}) => {
   return (
     <div className="form-group custom-select-style-for-authoring">
       <select
         onChange={(e) => {
-          if (e.target.value == 'view') {
-
+          if (e.target.value == "view") {
             var ids = [];
             var viewIds = [];
             dataAuthoring?.map((data) => ids.push(data.id));
-            ids = ids.join(',').split(',');
+            ids = ids.join(",").split(",");
 
-            ids = permissionsId?.[type].filter((data) => !ids?.includes(String(data.id)));
+            ids = permissionsId?.[type].filter(
+              (data) => !ids?.includes(String(data.id))
+            );
             ids?.map((data) => viewIds.push(data.id));
-            viewIds = viewIds.join(',').split(',');
+            viewIds = viewIds.join(",").split(",");
 
             setFieldValue(
-              'permissions',
+              "permissions",
               values.permissions.filter((data) => {
                 if (viewIds.includes(data)) {
                   return false;
@@ -553,22 +969,20 @@ export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, valu
                 }
               })
             );
-          } else if (e.target.value == '---') {
-
+          } else if (e.target.value == "---") {
             if (special) {
-              const specialView = permissionsId?.[type].filter(data => data.name == special)
+              const specialView = permissionsId?.[type].filter(
+                (data) => data.name == special
+              );
               if (specialView?.length) {
-                const newViewArray = values.permissions.filter(data => {
+                const newViewArray = values.permissions.filter((data) => {
                   if (data === String(specialView[0].id)) {
-                    return false
+                    return false;
                   } else {
-                    return true
+                    return true;
                   }
-                })
-                setFieldValue(
-                  'permissions',
-                  newViewArray
-                );
+                });
+                setFieldValue("permissions", newViewArray);
               }
             }
           } else {
@@ -576,18 +990,23 @@ export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, valu
               var ids = [];
               var viewIds = [];
               dataAuthoring?.map((data) => ids.push(data.id));
-              ids = ids.join(',').split(',');
+              ids = ids.join(",").split(",");
 
-              ids = permissionsId?.[type].filter((data) => !ids?.includes(String(data.id)));
+              ids = permissionsId?.[type].filter(
+                (data) => !ids?.includes(String(data.id))
+              );
               ids?.map((data) => viewIds.push(data.id));
-              viewIds = viewIds.join(',').split(',');
-              console.log(viewIds)
-              if (type === 'Organization') {
-                viewIds = [...viewIds, 3]
-              } else if (type === 'Activity') {
-                viewIds = [...viewIds, 318]
+              viewIds = viewIds.join(",").split(",");
+              console.log(viewIds);
+              if (type === "Organization") {
+                viewIds = [...viewIds, 3];
+              } else if (type === "Activity") {
+                viewIds = [...viewIds, 318];
               }
-              setFieldValue('permissions', [...values.permissions, ...viewIds?.join(',').split(',')]);
+              setFieldValue("permissions", [
+                ...values.permissions,
+                ...viewIds?.join(",").split(","),
+              ]);
               // setFieldValue(
               //   'permissions',
               //   values.permissions.filter((data) => {
@@ -601,7 +1020,10 @@ export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, valu
             } else {
               const ids = [];
               permissionsId?.[type].map((data) => ids.push(data.id));
-              setFieldValue('permissions', [...values.permissions, ...ids?.join(',').split(',')]);
+              setFieldValue("permissions", [
+                ...values.permissions,
+                ...ids?.join(",").split(","),
+              ]);
             }
           }
         }}
@@ -616,10 +1038,26 @@ export const Authoring = ({ special, addRole, setFieldValue, dataAuthoring, valu
         ) : (
           <>
             <option value="---">---</option>
-            <option value="edit" selected={viewData?.filter((data) => allActivePermission.includes(data)).length ? true : false}>
+            <option
+              value="edit"
+              selected={
+                viewData?.filter((data) => allActivePermission.includes(data))
+                  .length
+                  ? true
+                  : false
+              }
+            >
               Edit
             </option>
-            <option value="view" selected={viewData?.filter((data) => allActivePermission.includes(data)).length ? false : true}>
+            <option
+              value="view"
+              selected={
+                viewData?.filter((data) => allActivePermission.includes(data))
+                  .length
+                  ? false
+                  : true
+              }
+            >
               View
             </option>
           </>

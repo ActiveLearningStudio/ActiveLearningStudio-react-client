@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -445,7 +445,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -473,7 +473,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -529,7 +529,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -551,7 +551,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -877,7 +877,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -919,7 +919,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -941,7 +941,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1430,6 +1430,7 @@
       background: #f7faff;
       padding: 16px;
       margin-bottom: 8px;
+
       h6 {
         font-weight: 500;
         font-size: 16px;
@@ -1441,6 +1442,9 @@
       .permission-about {
         display: flex;
         flex-wrap: wrap;
+        .mb-16 {
+          margin-bottom: 16px !important;
+        }
       }
     }
     .form-grouper {
@@ -1547,7 +1551,7 @@
     position: relative;
 
     ::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1573,7 +1577,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1585,7 +1589,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1600,7 +1604,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1613,7 +1617,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1680,6 +1684,17 @@
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  .all-permission-heading {
+    margin-top: 16px;
+    h6 {
+      margin-left: 32px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #084892;
+    }
+  }
 }
 
 .checkbox_section {
@@ -1720,7 +1735,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url('../../assets/images/svg/VectorAngleRight.svg');
+      content: url("../../assets/images/svg/VectorAngleRight.svg");
     }
   }
 }
@@ -1743,7 +1758,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url('../../assets/images/svg/angledown.svg');
+    content: url("../../assets/images/svg/angledown.svg");
   }
 }
 .checkbox_section_custom {
@@ -1814,6 +1829,9 @@
     padding-bottom: 0 !important;
   }
 }
+.selection-tab-custom {
+  margin-bottom: 24px;
+}
 
 .custom-select-style-for-sub {
   width: 260px;
@@ -1845,6 +1863,17 @@
     color: #084892;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+  }
+  h6 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.02em;
+    color: #084892;
+    margin-bottom: 24px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-left: 10px;
   }
 }
 .for-authoring {
