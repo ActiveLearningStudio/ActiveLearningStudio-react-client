@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import logo from 'assets/images/footerlogo.svg';
+import logo from 'assets/images/footerlogo.png';
 
 function Footer() {
   const organization = useSelector((state) => state.organization);

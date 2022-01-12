@@ -37,6 +37,7 @@ export const columnData = {
   ],
 
   ActivityTypes: ['Name', 'Order', 'Items'],
+  ActivityTypesSortCol: ['Order'],
 
   ActivityItems: ['Name', 'Order', 'Meta'],
 

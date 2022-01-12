@@ -561,6 +561,19 @@ export default function Pills(props) {
       dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
+    } else if (subType == 'Activity Types') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
     }
   };
   const resetProjectFilter = () => {
@@ -902,7 +915,7 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityTypes}
-                sortCol={[]}
+                sortCol={columnData.ActivityTypesSortCol}
                 handleSort={handleSort}
                 subType={'Activity Types'}
                 searchQueryActivities={searchQueryActivities}
