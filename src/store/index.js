@@ -4,15 +4,19 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const initialState = {};
-let enhancers = [];
-let composeEnhancers = null;
+const enhancers = [];
 
 if (process.env.NODE_ENV === 'development') {
-  composeEnhancers = typeof window === 'object'
-    && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+  const { devToolsExtension } = window;
+
+  if (typeof devToolsExtension === 'function') {
+    enhancers.push(devToolsExtension());
+  }
 }
 
-enhancers = composeEnhancers(applyMiddleware(thunk));
+const composedEnhancers = compose(
+  applyMiddleware(thunk),
+  ...enhancers,
+);
 
-export default createStore(rootReducer, initialState, enhancers);
+export default createStore(rootReducer, initialState, composedEnhancers);
