@@ -188,7 +188,7 @@ function Controller(props) {
         )}
         {!!search && type === 'LMS' && subType === 'All settings' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -353,21 +353,21 @@ function Controller(props) {
                     <div className="author-list">
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                            <div
-                              className="single-author"
-                              onClick={() => {
-                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
-                                setAuthorName(`${author.first_name} ${author.last_name}`);
-                                setAuthorsArray([]);
-                              }}
-                            >
-                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
-                              <div>
-                                <div className="username-filter-project">{author.first_name}</div>
-                                <div className="email-filter-project">{author.email}</div>
-                              </div>
+                          <div
+                            className="single-author"
+                            onClick={() => {
+                              setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className="username-filter-project">{author.first_name}</div>
+                              <div className="email-filter-project">{author.email}</div>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : 'No user found.'}
                     </div>
                   )}
