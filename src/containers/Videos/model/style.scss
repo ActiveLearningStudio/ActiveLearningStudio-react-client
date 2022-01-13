@@ -11,8 +11,8 @@
 
   .model-top-heading {
     h2 {
-      padding-top: 48px;
-      padding-left: 24px;
+      padding-top: 23px;
+      padding-left: 32px;
       color: #084892 !important;
       border: none !important;
       font-style: normal !important;
@@ -147,6 +147,7 @@
     // border-top: 1px solid #ccc;
     // border-right: 1px solid #ccc;
     // border-bottom: 1px solid #ccc;
+    padding-left: 24px;
   }
 
   #role-permission-tab-id {
@@ -243,6 +244,7 @@
             // line-height: 24px;
             color: #084892;
             padding-bottom: 0px !important;
+            margin-bottom: 0;
           }
         }
         .NetSuite-section-searching {
@@ -266,7 +268,7 @@
           .section-input-search {
             border: 1px solid #084892;
             border-radius: 50px;
-            height: 36px;
+            height: 32px;
             width: 320px;
             padding-left: 16px;
             padding-right: 8px;
@@ -274,6 +276,9 @@
               // height: 32px;
               width: 256px;
               border: none;
+            }
+            ::placeholder{
+              color: #084892;
             }
             button {
               // height: 32px;
@@ -290,6 +295,8 @@
         // border: 1px solid #e5e5e5;
         .responsive-table {
           overflow-x: auto;
+
+         
         }
         table {
           width: 100%;
