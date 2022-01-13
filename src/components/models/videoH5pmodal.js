@@ -30,11 +30,20 @@ function MyVerticallyCenteredModal(props) {
               alt="cross"
               onClick={() => {
                 if (showvideoH5p) {
-                  H5P.preventInit = true;
-                  window.H5PEditor = undefined;
-                  window.H5PIntegration.saveFreq = false;
-                  window.H5PPresave = undefined;
-                  window.h5peditorCopy = undefined;
+                  // Dispose H5P
+                  if (window.hasOwnProperty('H5P') && H5P.instances.length > 0) {
+                    clearTimeout(H5P.instances[0].bufferLoop);
+                    clearTimeout(H5P.instances[0].timeUpdateTimeout);
+                    if (H5P.instances[0].video.getPlayer()) {
+                      H5P.instances[0].video.getPlayer().dispose();
+                      H5P.instances[0].video.nullifyPlayer();
+                    }
+                    window.H5PEditor = undefined;
+                    window.H5P = undefined;
+                    window.H5PIntegration.saveFreq = false;
+                    window.H5PPresave = undefined;
+                    window.h5peditorCopy = undefined;
+                  }
                 }
                 onHide();
               }}
