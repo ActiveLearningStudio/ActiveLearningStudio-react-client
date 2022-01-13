@@ -5,7 +5,7 @@ import rootReducer from './reducers';
 
 const initialState = {};
 let enhancers = [];
-let composeEnhancers;
+let composeEnhancers = {};
 
 if (process.env.NODE_ENV === 'development') {
   composeEnhancers = typeof window === 'object'
