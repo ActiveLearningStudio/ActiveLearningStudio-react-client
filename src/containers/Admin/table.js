@@ -68,6 +68,8 @@ function Table(props) {
       if (project?.visibilityTypes.length === 0) {
         const { data } = await dispatch(visibilityTypes());
         setVisibilityTypeArray(data.data);
+      } else {
+        setVisibilityTypeArray(project?.visibilityTypes?.data);
       }
     })();
   }, [project?.visibilityTypes]);
@@ -709,7 +711,7 @@ function Table(props) {
                           <div className="filter-dropdown-table">
                             <Dropdown>
                               <Dropdown.Toggle id="dropdown-basic">
-                                {visibilityTypeArray.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
                                 <FontAwesomeIcon icon="chevron-down" />
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
