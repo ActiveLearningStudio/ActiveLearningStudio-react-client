@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import adminService from 'services/admin.service';
 
 import * as actionTypes from 'store/actionTypes';
-import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store/actions/project';
+import { toggleProjectShareAction, toggleProjectShareRemovedAction, visibilityTypes, updateProjectAction, getElastic, getIndexed } from 'store/actions/project';
 import { deleteUserFromOrganization, getOrganization, clearOrganizationState, removeUserFromOrganization, getRoles, updatePageNumber } from 'store/actions/organization';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from 'react-router-dom';
@@ -47,7 +47,9 @@ function Table(props) {
 
   const organization = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
+  const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   const { newlyCreated, newlyEdit } = useSelector((state) => state.admin);
+  const project = useSelector((state) => state.project);
   const { paginations } = useSelector((state) => state.ui);
   const { activeOrganization, allSuborgList, permission } = organization;
   const allState = useSelector((state) => state);
@@ -61,6 +63,16 @@ function Table(props) {
     { indexing: 3, indexing_text: 'APPROVED' },
     { indexing: 2, indexing_text: 'REJECTED' },
   ];
+  useEffect(() => {
+    (async () => {
+      if (project?.visibilityTypes.length === 0) {
+        const { data } = await dispatch(visibilityTypes());
+        setVisibilityTypeArray(data.data);
+      } else {
+        setVisibilityTypeArray(project?.visibilityTypes?.data);
+      }
+    })();
+  }, [project?.visibilityTypes]);
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -695,24 +707,34 @@ function Table(props) {
                             </Dropdown>
                           </div>
                         </td>
-                        {/* <td>{row.organization_id}</td> */}
-                        {/* <td>
-                          {row.shared ? (
-                            <Link
-                              className="shared-link"
-                              target="_blank"
-                              to={`/project/${row.id}/shared`}
-                            >
-                              <FontAwesomeIcon
-                                icon="external-link-alt"
-                                className="mr-2"
-                              />
-                              Open Shared Link
-                            </Link>
-                          ) : (
-                            <>{String(row.shared)}</>
-                          )}
-                        </td> */}
+                        <td>
+                          <div className="filter-dropdown-table">
+                            <Dropdown>
+                              <Dropdown.Toggle id="dropdown-basic">
+                                {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                <FontAwesomeIcon icon="chevron-down" />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {visibilityTypeArray?.map((element) => (
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      Swal.showLoading();
+                                      const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
+                                      if (result) {
+                                        setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
+                                      }
+                                      await dispatch(getIndexed(row.id));
+                                      await dispatch(getElastic(row.id));
+                                      Swal.close();
+                                    }}
+                                  >
+                                    {element.display_name}
+                                  </Dropdown.Item>
+                                ))}
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
+                        </td>
                         <td>
                           <div className="filter-dropdown-table">
                             <Dropdown>

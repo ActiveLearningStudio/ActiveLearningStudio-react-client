@@ -627,7 +627,7 @@ function PlaylistsPage(props) {
                               />
                             )}
                         </div>
-                        <div className="new-playlist">
+                        <div className="new-playlist status-pref">
                           <div className="dropdown">
                             <Headings text="Library Preferences:" headingType="body2" color="#515151" />
 
@@ -649,6 +649,12 @@ function PlaylistsPage(props) {
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
+                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                            <div className="library-status">
+                              <FontAwesomeIcon icon="exclamation-circle" className="mr-2" />
+                              {selectedProject?.indexing_text}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="project-share-previews">
