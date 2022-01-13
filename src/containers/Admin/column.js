@@ -28,7 +28,7 @@ export const columnData = {
     'ID',
     'Author',
     'Library status',
-    // 'Org ID',
+    'Library preferences',
     'Shared status',
     // 'Starter Project',
     // 'Status',
