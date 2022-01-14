@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 import docAvatar from 'assets/images/upload-files.png';
 import pcIcon from 'assets/images/pc-icon.png';
 
-import adminapi from '../../../services/admin.service';
+import adminapi from '../../../services/videos.services';
 
 export default function CreateBrightCove(prop) {
   const { editMode } = prop;
@@ -18,13 +18,13 @@ export default function CreateBrightCove(prop) {
   const organization = useSelector((state) => state.organization);
   const selectedType = useSelector((state) => state.resource.selectedType);
   const { id } = useSelector((state) => state.auth.user);
-  const { activeEdit } = organization;
+  const { activeEdit, activeOrganization } = organization;
   const [fileActive, setFileActive] = useState(null);
   const fileUpload = useRef();
   // const [checked, setChecked] = useState(false);
   useEffect(() => {
     if (editMode) {
-      setFileActive(selectedType?.css_path);
+      setFileActive(activeEdit?.css_path);
     } else {
       setFileActive(null);
     }
@@ -34,7 +34,7 @@ export default function CreateBrightCove(prop) {
     <div className="create-form lms-admin-form">
       <Formik
         initialValues={{
-          organization_id: editMode ? activeEdit?.organization_id : '',
+          organization_id: editMode ? activeEdit?.organization_id : activeOrganization.id,
           user_id: id,
           account_id: editMode ? activeEdit?.account_id : '',
           account_name: editMode ? activeEdit?.account_name : '',
@@ -42,6 +42,7 @@ export default function CreateBrightCove(prop) {
           client_id: editMode ? activeEdit?.client_id : '',
           client_secret: editMode ? activeEdit?.client_secret : '',
           description: editMode ? activeEdit?.description : '',
+          css_path: editMode ? activeEdit?.css_path : undefined,
         }}
         enableReinitialize
         validate={(values) => {
@@ -135,11 +136,6 @@ export default function CreateBrightCove(prop) {
                 {/* Left container */}
                 <div style={{ marginRight: '64px' }}>
                   <div className="form-group-create">
-                    <h3>Studio org ID</h3>
-                    <input type="studio_org_id" name="organization_id" onChange={handleChange} onBlur={handleBlur} value={values.organization_id} />
-                    <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
-                  </div>
-                  <div className="form-group-create">
                     <h3>Account ID</h3>
                     <input type="text" name="account_id" onChange={handleChange} onBlur={handleBlur} value={values.account_id} />
                     <div className="error">{errors.account_id && touched.account_id && errors.account_id}</div>
@@ -182,7 +178,7 @@ export default function CreateBrightCove(prop) {
                         name="file"
                         accept=".css"
                         onChange={(e) => {
-                          if (!(e.target.files[0].type.includes('css') || e.target.files[0].type.includes('scss'))) {
+                          if (!e.target.files[0].type.includes('css')) {
                             Swal.fire({
                               icon: 'error',
                               title: 'Error',
@@ -200,10 +196,11 @@ export default function CreateBrightCove(prop) {
                               formData.append('file', e.target.files[0]);
                               formData.append('fileName', e.target.files[0].name);
                               formData.append('typeName', values.title);
-                              const fileurl = dispatch(uploadActivityTypeFileAction(formData));
+                              const fileurl = adminapi.uploadCSSFile(formData);
                               fileurl.then((file) => {
-                                setFileActive(file);
-                                setFieldValue('css_path', file);
+                                console.log(file);
+                                setFileActive(file.file);
+                                setFieldValue('css_path', file.file);
                               });
                             } catch (err) {
                               Swal.fire({
@@ -228,11 +225,9 @@ export default function CreateBrightCove(prop) {
                             }}
                           >
                             <img src={docAvatar} alt="" height="34" />
-                            <p className="text-center">{fileActive.replace(/^.*[\\\/]/, '')}</p>
+                            <p className="text-center">{fileActive?.replace(/^.*[\\\/]/, '')}</p>
                           </div>
-                          <div className="update-img" onClick={() => fileUpload.current.click()}>
-                            Update File
-                          </div>
+                          <div className="update-img">Update File</div>
                         </>
                       ) : (
                         <div
@@ -248,7 +243,7 @@ export default function CreateBrightCove(prop) {
                         </div>
                       )}
                     </div>
-                    <span className="upload-btn">
+                    <span onClick={() => fileUpload.current.click()} className="upload-btn">
                       <img src={pcIcon} alt="" />
                       My device
                     </span>

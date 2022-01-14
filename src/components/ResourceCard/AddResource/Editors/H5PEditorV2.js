@@ -1,18 +1,15 @@
 /* eslint-disable  */
-import React, { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
-import { loadH5pSettingsActivity } from "store/actions/resource";
-import { Alert } from "react-bootstrap";
-import {
-  createResourceAction,
-  editResourceAction,
-} from "store/actions/resource";
-import { edith5pVideoActivity } from "store/actions/videos";
-
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
+import { loadH5pSettingsActivity } from 'store/actions/resource';
+import { Alert } from 'react-bootstrap';
+import { createResourceAction, editResourceAction } from 'store/actions/resource';
+import { edith5pVideoActivity } from 'store/actions/videos';
+import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
   const {
     setOpenVideo,
@@ -33,9 +30,9 @@ const H5PEditor = (props) => {
   } = props;
 
   const uploadFile = useRef();
-  let defaultState = "create";
+  let defaultState = 'create';
   if (upload) {
-    defaultState = "upload";
+    defaultState = 'upload';
   }
   const dispatch = useDispatch();
   const [submitAction, setSubmitAction] = useState(defaultState);
@@ -46,8 +43,8 @@ const H5PEditor = (props) => {
   };
 
   useEffect(() => {
-    if (h5pLib === "H5P.BrightcoveInteractiveVideo 1.0") {
-      loadH5pSettings("H5P.BrightcoveInteractiveVideo 1.0");
+    if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0');
     } else {
       loadH5pSettings();
     }
@@ -62,17 +59,7 @@ const H5PEditor = (props) => {
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
       if (editActivity) {
-        dispatch(
-          editResourceAction(
-            playlistId,
-            h5pLib,
-            h5pLibType,
-            activityId,
-            formData,
-            hide,
-            projectId
-          )
-        );
+        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
       } else if (editVideo) {
         await dispatch(edith5pVideoActivity(editVideo.id, formData));
         setOpenVideo(false);
@@ -82,41 +69,15 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(
-          playlistId,
-          h5pLib,
-          h5pLibType,
-          payload,
-          formData,
-          projectId,
-          hide
-        );
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide);
       }
     }
   };
-  const handleCreateResourceSubmit = async (
-    currentPlaylistId,
-    editor,
-    editorType,
-    payload,
-    formData,
-    projectId,
-    hide
-  ) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
-    if (payload.submitAction === "create") {
-      await dispatch(
-        createResourceAction(
-          currentPlaylistId,
-          editor,
-          editorType,
-          formData,
-          hide,
-          type,
-          accountId
-        )
-      );
-      if (type === "videoModal") {
+    if (payload.submitAction === 'create') {
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      if (type === 'videoModal') {
         setOpenVideo(false);
       }
     }
@@ -127,36 +88,14 @@ const H5PEditor = (props) => {
 
   return (
     <>
-      <form
-        method="POST"
-        acceptCharset="UTF-8"
-        className="form-horizontal"
-        id="laravel-h5p-form"
-      >
-        <div className="form-group" style={{ position: "inherit" }}>
-          <div
-            className="col-md-9 col-md-offset-3"
-            style={{ position: "inherit" }}
-          ></div>
+      <form method="POST" acceptCharset="UTF-8" className="form-horizontal" id="laravel-h5p-form">
+        <div className="form-group" style={{ position: 'inherit' }}>
+          <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}></div>
         </div>
 
-        <input
-          name="_token"
-          type="hidden"
-          value={process.env.REACT_APP_H5P_KEY}
-        />
-        <input
-          type="hidden"
-          name="library"
-          id="laravel-h5p-library"
-          value={h5pLib}
-        />
-        <input
-          type="hidden"
-          name="parameters"
-          id="laravel-h5p-parameters"
-          value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')}
-        />
+        <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
+        <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
+        <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
 
         <fieldset>
           <div id="laravel-h5p-create" className="form-group ">
@@ -180,7 +119,7 @@ const H5PEditor = (props) => {
                     className="laravel-h5p-upload form-control"
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
@@ -201,49 +140,44 @@ const H5PEditor = (props) => {
             </div>
           )}
 
-          <div
-            className="form-group methods option-choose-way"
-            style={{ display: "none" }}
-          >
+          <div className="form-group methods option-choose-way" style={{ display: 'none' }}>
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
               <label className="radio-inline mr-4">
-                <input
-                  type="radio"
-                  name="action"
-                  value="upload"
-                  className="laravel-h5p-type mr-2"
-                  checked={submitAction === "upload"}
-                  onChange={onSubmitActionRadioChange}
-                />
+                <input type="radio" name="action" value="upload" className="laravel-h5p-type mr-2" checked={submitAction === 'upload'} onChange={onSubmitActionRadioChange} />
                 Upload
               </label>
 
               <label className="radio-inline">
-                <input
-                  type="radio"
-                  name="action"
-                  value="create"
-                  className="laravel-h5p-type mr-2"
-                  checked={submitAction === "create"}
-                  onChange={onSubmitActionRadioChange}
-                />
+                <input type="radio" name="action" value="create" className="laravel-h5p-type mr-2" checked={submitAction === 'create'} onChange={onSubmitActionRadioChange} />
                 Create
               </label>
             </div>
           </div>
 
-          <div className="interactive-btns" style={{ marginTop: "20px" }}>
+          <div className="interactive-btns" style={{ marginTop: '20px' }}>
             <div className="cancel">
               <div
                 className="backclosemodel"
                 width="151px"
                 secondary
                 onClick={() => {
-                  hide();
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your Changes will be lost.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Close it!',
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      hide();
+                    }
+                  });
                 }}
               >
-                Back
+                Cancel
               </div>
             </div>
             <div className="save-close">
@@ -253,7 +187,7 @@ const H5PEditor = (props) => {
                   submitResource();
                 }}
               >
-                Save & Continue
+                Save & Close
               </div>
               {/* <Buttons
               text="Save"
@@ -283,8 +217,8 @@ H5PEditor.propTypes = {
 };
 
 H5PEditor.defaultProps = {
-  h5pLib: "",
-  h5pParams: "",
+  h5pLib: '',
+  h5pParams: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({

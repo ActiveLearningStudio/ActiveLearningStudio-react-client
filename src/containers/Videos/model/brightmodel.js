@@ -83,7 +83,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
-                <br />
+                {/* <br /> */}
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -137,7 +137,7 @@ const BrightcoveModel = (props) => {
                     <Tab.Content>
                       {cms?.map((data1, counter) => (
                         <Tab.Pane eventKey={`manual-${counter + 1}`}>
-                          <Card.Body>
+                          <Card.Body style={{padding: '0px'}}>
                             <table>
                               <tbody>
                                 {cmsVideo?.map((data) => (

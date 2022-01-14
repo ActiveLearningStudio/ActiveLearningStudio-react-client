@@ -121,14 +121,20 @@ export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
   });
 };
 
-export const allBrightCove = (orgId) => async (dispatch) => {
-  const result = await videoServices.allBrightCove(orgId);
+export const allBrightCove = (orgId, size, page) => async (dispatch) => {
+  const result = await videoServices.allBrightCove(orgId, size, page);
   dispatch({
     type: actionTypes.UP_ALL_BRIGHTCOVE,
-    payload: result.data,
+    payload: result,
   });
 };
-
+export const allBrightCoveSearch = (orgId, search, size, page) => async (dispatch) => {
+  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page);
+  dispatch({
+    type: actionTypes.UP_ALL_BRIGHTCOVE,
+    payload: result,
+  });
+};
 export const addBrightCove = (orgId, data) => async (dispatch) => {
   const result = await videoServices.addBrightCove(orgId, data);
   dispatch({

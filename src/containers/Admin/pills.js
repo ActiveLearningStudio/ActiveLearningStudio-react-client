@@ -10,7 +10,7 @@ import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
-import { allBrightCove } from 'store/actions/videos';
+import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -26,7 +26,7 @@ export default function Pills(props) {
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(2);
 
   const [projectFilterObj, setProjectFilterObj] = useState({
     author_id: null,
@@ -413,9 +413,9 @@ export default function Pills(props) {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
     if (type === 'LMS') {
-      dispatch(allBrightCove(activeOrganization?.id, activePage || 1));
+      dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
     }
-  }, [type, activePage, activeOrganization?.id]);
+  }, [type, size, activePage, activeOrganization?.id]);
 
   useEffect(() => {
     if (dataRedux.admin.ltiTools) {
@@ -447,6 +447,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerLMSBrightCove = (search) => {
     setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
+    dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
   };
 
   //Default SSO ***************************************
@@ -459,7 +460,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, activePage || 1);
+    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, size, activePage || 1);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -557,6 +558,19 @@ export default function Pills(props) {
           break;
         default:
           col = 'tool_name';
+      }
+      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Activity Types') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
       }
       dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
@@ -902,7 +916,7 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityTypes}
-                sortCol={[]}
+                sortCol={columnData.ActivityTypesSortCol}
                 handleSort={handleSort}
                 subType={'Activity Types'}
                 searchQueryActivities={searchQueryActivities}

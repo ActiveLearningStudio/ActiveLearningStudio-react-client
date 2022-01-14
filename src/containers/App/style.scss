@@ -566,7 +566,7 @@
 
   .sidebar-wrapper {
     position: fixed;
-    z-index: 1040;
+    z-index: 999;
     width: 136px;
     height: 100%;
     padding-bottom: 100px;
@@ -752,7 +752,7 @@ hgroup,
 nav,
 section {
   margin: 0;
-  padding: 1px;
+  padding: 0;
   border: 0;
   font-size: 100%;
   vertical-align: baseline;

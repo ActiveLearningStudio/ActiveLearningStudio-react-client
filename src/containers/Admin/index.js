@@ -138,6 +138,7 @@ function AdminPanel({ showSSO }) {
                   <Tab eventKey="LMS" title="Integrations">
                     <div className="module-content">
                       <Pills modules={['All settings', 'LTI Tools', 'BrightCove']} type="LMS" />
+                      {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
                     </div>
                   </Tab>
 
