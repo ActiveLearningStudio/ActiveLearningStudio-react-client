@@ -26,7 +26,7 @@ export default function Pills(props) {
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(2);
+  const [size, setSize] = useState(10);
 
   const [projectFilterObj, setProjectFilterObj] = useState({
     author_id: null,
@@ -810,7 +810,7 @@ export default function Pills(props) {
                 subType={'BrightCove'}
                 search={true}
                 print={false}
-                btnText="Add a new CSS"
+                btnText="Add New Entry"
                 btnAction="add_brightcove"
                 importUser={false}
                 filter={false}
