@@ -96,14 +96,20 @@ const cloneh5pvideo = (orgId, activityId, formData) =>
       return Promise.reject(err.response.data);
     });
 
-const allBrightCove = (orgId) =>
+const allBrightCove = (orgId, size = 3, page) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings`)
+    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?size=${size}&page=${page}`)
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
-
+const allBrightCoveSearch = (orgId, search, size = 3, page) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?query=${search}&size=${size}&page=${page}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
 const addBrightCove = (orgId, data) =>
   httpService
     .post(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings`, data)
@@ -130,6 +136,17 @@ const editBrightCove = (orgId, settingId, data) =>
       return Promise.reject(err.response.data);
     });
 
+const uploadCSSFile = (formData) =>
+  httpService
+    .post(`/${apiVersion}/brightcove-api-settings/upload-css  `, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
@@ -145,4 +162,6 @@ export default {
   addBrightCove,
   deleteBrightCove,
   editBrightCove,
+  uploadCSSFile,
+  allBrightCoveSearch,
 };

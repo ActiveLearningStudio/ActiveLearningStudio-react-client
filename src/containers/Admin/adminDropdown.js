@@ -128,7 +128,7 @@ const AdminDropdown = (props) => {
                     onClick={() => {
                       Swal.fire({
                         title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
+                        text: "You won't be able to image this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#084892',

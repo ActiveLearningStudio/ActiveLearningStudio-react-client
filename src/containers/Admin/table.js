@@ -189,7 +189,7 @@ function Table(props) {
   //const history = useHistory();
   return (
     <div className="table-data">
-      {((data?.data?.length > 0 && data?.meta) || localOrganizationList?.data?.length > 0 && localOrganizationList?.meta) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
@@ -374,7 +374,13 @@ function Table(props) {
                       <td>{row.client_secret}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          download
+                          {row.css_path ? (
+                            <a download href={global.config.resourceUrl + row.css_path} target="_blank">
+                              download
+                            </a>
+                          ) : (
+                            'Not Available'
+                          )}
                           <div>
                             <AdminDropdown type={type} subType="BrightCove" row={row} activePage={activePage} />
                           </div>
@@ -1198,7 +1204,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {((data?.data?.length > 0 && data?.meta) || localOrganizationList?.data?.length > 0 && localOrganizationList?.meta) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
