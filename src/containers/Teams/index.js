@@ -8,6 +8,7 @@ import {
   loadSubOrganizationTeamsAction,
   loadTeamsAction,
   getWhiteBoardUrl,
+  updateSelectedTeamAction,
 } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
@@ -33,18 +34,9 @@ import './style.scss';
 import CreateTeamPopup from './CreateTeamPopup';
 import TeamDetail from './TeamDetailView';
 
-// TODO: need to remove after connect API
-// const breadCrumbData = {
-//   creation: 'teams/create team',
-//   editMode: 'edit team',
-//   projectShow: 'projects',
-//   channelShow: 'projects',
-//   teamShow: 'teams',
-// };
-
 function TeamsPage(props) {
   const {
-    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams,
+    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
@@ -87,23 +79,16 @@ function TeamsPage(props) {
     searchQuery,
   ]);
 
-  // const status = creation
-  //   ? 'creation'
-  //   : editMode
-  //     ? 'editMode'
-  //     : teamShow
-  //       ? 'teamShow'
-  //       : projectShow
-  //         ? 'projectShow'
-  //         : overview
-  //           ? 'teamShow'
-  //           : 'channelShow';
-
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
   const auth = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    if (selectedTeam?.id) {
+      updateSelectedTeam(selectedTeam);
+    }
+  }, [selectedTeam]);
   useEffect(() => {
     if (
       notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1
@@ -112,14 +97,7 @@ function TeamsPage(props) {
       dispatch(loadTeamsAction());
     }
   }, [notification?.today]);
-  // useEffect(() => {
-  //   let crumb = breadCrumbData[status];
-  //   if (teamShow && selectedTeam) {
-  //     crumb += `/${selectedTeam.name} Members`;
-  //   }
 
-  //   setBreadCrumb(crumb.split('/'));
-  // }, [selectedTeam, status, teamShow, teams]);
   useEffect(() => {
     if (
       Object.keys(teamPermission).length === 0
@@ -140,19 +118,6 @@ function TeamsPage(props) {
       loadTeams(searchQuery);
     }
   }, [loadTeams, searchQuery]);
-  if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
-    return <></>;
-  }
-  // const title = {
-  //   creation: 'Create Team',
-  //   editMode: 'Edit Team',
-  //   teamShow: `${selectedTeam ? selectedTeam.name : 'Team'} Members`,
-  //   projectShow: `${selectedTeam ? selectedTeam.name : 'Team'} Projects`,
-  //   channelShow: 'Channels',
-  // };
-  // const goBack = () => {
-  //   history.goBack();
-  // };
 
   const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
     dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
@@ -337,7 +302,7 @@ function TeamsPage(props) {
                 </div>
               )}
               {(teamShow && selectedTeam) && (
-                <TeamDetail team={selectedTeam} organization={currentOrganization?.name} />
+                <TeamDetail team={selectedTeam} organization={currentOrganization} />
               )}
               {projectShow && selectedTeam && (
                 <TeamProjectView team={selectedTeam} />
@@ -371,6 +336,7 @@ TeamsPage.propTypes = {
   channelShow: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
   loadSubOrgTeams: PropTypes.func.isRequired,
+  updateSelectedTeam: PropTypes.func.isRequired,
 };
 
 TeamsPage.defaultProps = {
@@ -389,6 +355,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadTeams: (query) => dispatch(loadTeamsAction(query)),
   loadSubOrgTeams: () => dispatch(loadSubOrganizationTeamsAction()),
+  updateSelectedTeam: (team) => dispatch(updateSelectedTeamAction(team)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamsPage);

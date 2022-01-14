@@ -4,6 +4,7 @@ import EditTeamImage from 'assets/images/svg/editTeam.svg';
 import EditDetailImage from 'assets/images/svg/detailEdit.svg';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import './style.scss';
+import { useHistory } from 'react-router-dom';
 import Buttons from 'utils/Buttons/buttons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import UserIcon from 'assets/images/svg/user.svg';
@@ -15,6 +16,7 @@ import ProjectCard from 'containers/Projects/ProjectCard';
 
 const TeamDetail = ({ team, organization }) => {
   const [show, setShow] = useState(false);
+  const history = useHistory();
   const [createProject, setCreateProject] = useState(false);
   const [editMode, seteditMode] = useState(false);
   console.log(team, show, createProject, editMode);
@@ -28,7 +30,7 @@ const TeamDetail = ({ team, organization }) => {
   return (
     <div className="add-team-page">
       <div className={`${toggleLeft ? 'width90' : ''} left`}>
-        <div className="organization-name">{organization}</div>
+        <div className="organization-name">{organization?.name}</div>
         <div className="title-image">
           <div>
             <h1 className="title">{team?.name}</h1>
@@ -89,6 +91,7 @@ const TeamDetail = ({ team, organization }) => {
                 hover
                 onClick={() => {
                   // setPageLoad((oldStatus) => !oldStatus);
+                  history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
                 }}
               />
             </div>

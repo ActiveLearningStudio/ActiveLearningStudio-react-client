@@ -53,12 +53,9 @@ const SecureProjectPreview = loadable(() => import('../containers/SecureProjectP
 const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
-const TeamsPageAddTeam = loadable(() => import('../containers/Teams/AddTeam'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
 const VideoPage = loadable(() => import('../containers/Videos'));
-const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
-
+const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
@@ -177,15 +174,8 @@ const AppRouter = (props) => {
                   />
                   <PrivateRoute
                     exact
-                    path="/org/:organization/teams/create-team"
-                    component={TeamsPage}
-                    creation
-                  />
-                  {/* On Working Team Start */}
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/create-team-design"
-                    component={TeamsPageAddTeam}
+                    path="/org/:organization/teams/add-projects"
+                    component={TeamAddProjects}
                     creation
                   />
                   <PrivateRoute
@@ -196,31 +186,8 @@ const AppRouter = (props) => {
                   />
                   <PrivateRoute
                     exact
-                    path="/org/:organization/teams/:teamId/edit"
-                    component={TeamsPage}
-                    editMode
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/:teamId/projects"
-                    component={TeamsPage}
-                    projectShow
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/:teamId/channel"
-                    component={TeamsPage}
-                    channelShow
-                  />
-                  <PrivateRoute
-                    exact
                     path="/org/:organization/teams/:teamId/add-projects"
-                    component={AddTeamProjectsPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/:teamId/projects/:projectId/add-member"
-                    component={AddTeamProjectMemberPage}
+                    component={TeamAddProjects}
                   />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/instant-admin" showSSO component={AdminPanel} />

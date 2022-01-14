@@ -321,7 +321,7 @@ function SearchInterface(props) {
 
           <div className="content-search">
             {true ? (
-              <div className="search-result-main" style={{ padding: fromTeam ? '16px 0px 75px 0px' : '16px 22px 75px 24px' }}>
+              <div className="search-result-main">
                 {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
                 {!fromTeam && <div className="exp-lib-cnt">Explore library content</div>}
                 <div className="total-count" style={{ display: totalCount > 1000 || !!searchQueries ? 'block' : 'none' }}>
