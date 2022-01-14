@@ -130,7 +130,7 @@ export default function CreateBrightCove(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit CSS ' : 'Add a new CSS '}</h2>
+              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove Entry' : 'Add New BrightCove Entry'}</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -252,7 +252,7 @@ export default function CreateBrightCove(prop) {
               </div>
 
               <div className="button-group">
-                <button type="submit">{editMode ? 'Edit ' : 'Add '} CSS</button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

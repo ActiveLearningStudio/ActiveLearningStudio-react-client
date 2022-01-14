@@ -155,16 +155,16 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: [...state.allbrightCove, action.payload],
+        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
       };
     case actionTypes.DEL_BRIGHTCOVE:
-      const newBrigthList = state.allbrightCove.filter((data) => data.id !== action.payload);
+      const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
       return {
         ...state,
-        allbrightCove: newBrigthList,
+        allbrightCove: { ...state.allbrightCove, data: newBrigthList },
       };
     case actionTypes.EDIT_BRIGHTCOVE:
-      const newBrigthListEdit = state.allbrightCove.map((data) => {
+      const newBrigthListEdit = state.allbrightCove.data.map((data) => {
         if (data.id === action.payload.id) {
           return action.payload;
         }
@@ -172,7 +172,7 @@ export default (state = INITIAL_STATE, action) => {
       });
       return {
         ...state,
-        allbrightCove: newBrigthListEdit,
+        allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
       };
 
     default:

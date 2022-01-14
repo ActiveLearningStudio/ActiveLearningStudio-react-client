@@ -96,14 +96,14 @@ const cloneh5pvideo = (orgId, activityId, formData) =>
       return Promise.reject(err.response.data);
     });
 
-const allBrightCove = (orgId, size = 3, page) =>
+const allBrightCove = (orgId, size = 10, page) =>
   httpService
     .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?size=${size}&page=${page}`)
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
-const allBrightCoveSearch = (orgId, search, size = 3, page) =>
+const allBrightCoveSearch = (orgId, search, size = 10, page) =>
   httpService
     .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?query=${search}&size=${size}&page=${page}`)
     .then(({ data }) => data)
