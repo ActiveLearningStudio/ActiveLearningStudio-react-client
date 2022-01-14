@@ -324,6 +324,12 @@ function UserRoles() {
                           </Tab.Pane>
 
                           <Tab.Pane eventKey="0">
+                          <Card.Body
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'Organiziation'}
@@ -331,8 +337,16 @@ function UserRoles() {
                               currentFeatureView={orgView}
                               currentFeatureEdit={orgEdit}
                             />
+                         
+                            </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="1">
+                          <Card.Body
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'Project'}
@@ -340,6 +354,7 @@ function UserRoles() {
                               currentFeatureView={projectView}
                               currentFeatureEdit={projectEdit}
                             />
+                             <br />
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'import/export Projects'}
@@ -347,8 +362,16 @@ function UserRoles() {
                               currentFeatureView={projectExportView}
                               currentFeatureEdit={projectExportEdit}
                             />
+                            
+                            </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="2">
+                          <Card.Body
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'Activity'}
@@ -356,8 +379,16 @@ function UserRoles() {
                               currentFeatureView={activityView}
                               currentFeatureEdit={activityEdit}
                             />
+                           
+                            </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="3">
+                          <Card.Body
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'Default SSO'}
@@ -365,9 +396,18 @@ function UserRoles() {
                               currentFeatureView={ssoView}
                               currentFeatureEdit={ssoEdit}
                             />
+                           
+                            </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="4">
+                          <Card.Body
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
                             <NewEdit setFieldValue={setFieldValue} type={'User'} permissions={values.permissions} currentFeatureView={userView} currentFeatureEdit={userEdit} />
+                            <br />
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'Roles'}
@@ -375,6 +415,8 @@ function UserRoles() {
                               currentFeatureView={userRoleView}
                               currentFeatureEdit={userRolesEdit}
                             />
+                            
+                            </Card.Body>
                           </Tab.Pane>
                         </Tab.Content>
                       </Col>

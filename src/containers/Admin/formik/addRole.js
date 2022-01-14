@@ -156,8 +156,8 @@ export default function AddRole(props) {
               <h3>Assign Permissions</h3>
 
               <Tab.Container id="left-tabs-example" defaultActiveKey="manual-3">
-                <Row className="roles-permission-tab-row">
-                  <Col className="roles-permission-tab" sm={2}>
+                <Row className="roles-permission-tab-row" style={{flexWrap: 'inherit'}}>
+                  <Col className="roles-permission-tab"  sm={2} style={{maxWidth: '25.66667% ',}}>
                     <Nav variant="pills" className="flex-column">
                       <div className="role-permission-tab-name" id="role-permission-tab-id">
                         {!!permissionsId && (
@@ -356,9 +356,22 @@ export default function AddRole(props) {
                       </Tab.Pane>
 
                       <Tab.Pane eventKey="0">
+                      <Card.Body
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
                         <NewEdit setFieldValue={setFieldValue} type={'Organiziation'} permissions={values.permissions} currentFeatureView={orgView} currentFeatureEdit={orgEdit} />
+                      </Card.Body>
                       </Tab.Pane>
                       <Tab.Pane eventKey="1">
+                      <Card.Body
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
                         <NewEdit
                           setFieldValue={setFieldValue}
                           type={'Project'}
@@ -366,6 +379,7 @@ export default function AddRole(props) {
                           currentFeatureView={projectView}
                           currentFeatureEdit={projectEdit}
                         />
+                         <br />
                         <NewEdit
                           setFieldValue={setFieldValue}
                           type={'import/export Projects'}
@@ -373,8 +387,16 @@ export default function AddRole(props) {
                           currentFeatureView={projectExportView}
                           currentFeatureEdit={projectExportEdit}
                         />
+                       
+                        </Card.Body>
                       </Tab.Pane>
                       <Tab.Pane eventKey="2">
+                      <Card.Body
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
                         <NewEdit
                           setFieldValue={setFieldValue}
                           type={'Activity'}
@@ -382,12 +404,30 @@ export default function AddRole(props) {
                           currentFeatureView={activityView}
                           currentFeatureEdit={activityEdit}
                         />
+                       
+                        </Card.Body>
                       </Tab.Pane>
                       <Tab.Pane eventKey="3">
+                      <Card.Body
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
                         <NewEdit setFieldValue={setFieldValue} type={'Default SSO'} permissions={values.permissions} currentFeatureView={ssoView} currentFeatureEdit={ssoEdit} />
+                       
+                     </Card.Body>
                       </Tab.Pane>
                       <Tab.Pane eventKey="4">
+                      <Card.Body
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
+                       
                         <NewEdit setFieldValue={setFieldValue} type={'User'} permissions={values.permissions} currentFeatureView={userView} currentFeatureEdit={userEdit} />
+                        <br />
                         <NewEdit
                           setFieldValue={setFieldValue}
                           type={'Roles'}
@@ -395,6 +435,8 @@ export default function AddRole(props) {
                           currentFeatureView={userRoleView}
                           currentFeatureEdit={userRolesEdit}
                         />
+                        
+                        </Card.Body>
                       </Tab.Pane>
                     </Tab.Content>
                   </Col>
@@ -422,6 +464,7 @@ export default function AddRole(props) {
 }
 export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView }) => {
   return (
+    <>
     <div className="form-group custom-select-style-for-sub">
       <select
         onChange={(e) => {
@@ -466,6 +509,8 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
       </select>
       <p> {type}</p>
     </div>
+   
+    </>
   );
 };
 AddRole.propTypes = {};
