@@ -41,6 +41,7 @@ const H5PPreview = (props) => {
         link.href = value;
         link.type = 'text/css';
         link.rel = 'stylesheet';
+        link.title = 'brightcove';
         document.head.appendChild(link);
         return true;
       })
