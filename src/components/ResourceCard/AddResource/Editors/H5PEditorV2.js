@@ -44,7 +44,8 @@ const H5PEditor = (props) => {
 
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0');
+      let bcAccountId = accountId ? accountId : (typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null);
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
     } else {
       loadH5pSettings();
     }
@@ -120,7 +121,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -222,7 +223,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library) => dispatch(loadH5pSettingsActivity(library)),
+  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));
