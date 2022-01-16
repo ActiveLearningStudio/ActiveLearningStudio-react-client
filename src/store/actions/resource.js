@@ -171,8 +171,8 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
   }
 };
 
-export const loadH5pSettingsActivity = (libraryName) => async () => {
-  const response = await resourceService.h5pSettings(libraryName);
+export const loadH5pSettingsActivity = (libraryName, accountId = null) => async () => {
+  const response = await resourceService.h5pSettings(libraryName, accountId);
 
   window.H5PIntegration = response.h5p.settings;
 
