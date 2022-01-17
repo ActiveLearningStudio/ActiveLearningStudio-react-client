@@ -172,7 +172,7 @@ function PlaylistsPage(props) {
         icon: '',
       });
       loadProject(projectIdFilter);
-      loadProjectPlaylists(projectIdFilter);
+      loadProjectPlaylists(projectIdFilter, true);
     }
   }, [loadProject, activeOrganization]);
   useEffect(() => {
@@ -807,7 +807,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
+  loadProjectPlaylists: (id, skipContent) => dispatch(loadProjectPlaylistsAction(id, skipContent)),
   createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
