@@ -57,6 +57,7 @@ import DeletePopup from 'components/DeletePopup';
 import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
 import { getTeamPermission } from 'store/actions/team';
+import { getUserLmsSettingsAction } from 'store/actions/account';
 import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
@@ -121,6 +122,7 @@ function PlaylistsPage(props) {
     safariMontagePublishTool,
     row,
     showFooter,
+    getLmsSettings,
   } = props;
 
   const projectIdFilter = match?.params?.projectId || row?.id;
@@ -153,6 +155,7 @@ function PlaylistsPage(props) {
   }, []);
 
   useEffect(() => {
+    getLmsSettings();
     return () => {
       dispatch(clearSelectedProject());
     };
@@ -826,6 +829,7 @@ const mapDispatchToProps = (dispatch) => ({
   getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
+  getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
 });
 
 const mapStateToProps = (state) => ({
