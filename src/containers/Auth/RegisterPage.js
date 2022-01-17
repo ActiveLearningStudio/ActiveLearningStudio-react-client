@@ -342,7 +342,7 @@ class RegisterPage extends React.Component {
 
                           <div className="termsandcondition">
                             By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
-                            <a href="https://www.curriki.org/terms-of-service/">Terms of Use</a> and <a href="https://www.curriki.org/privacy-policy/">Privacy Policy.</a>
+                            <a href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>Terms of Use</a> and <a href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}>Privacy Policy.</a>
                           </div>
                         </>
                       )}
