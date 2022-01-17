@@ -31,18 +31,23 @@ function MyVerticallyCenteredModal(props) {
               onClick={() => {
                 if (showvideoH5p) {
                   // Dispose H5P
-                  if (window.hasOwnProperty('H5P') && H5P.instances.length > 0) {
-                    clearTimeout(H5P.instances[0].bufferLoop);
-                    clearTimeout(H5P.instances[0].timeUpdateTimeout);
-                    if (H5P.instances[0].video.getPlayer()) {
-                      H5P.instances[0].video.getPlayer().dispose();
-                      H5P.instances[0].video.nullifyPlayer();
+                  if (window.hasOwnProperty('H5P') && window.H5P !== undefined && window.H5P.instances.length > 0) {
+                    clearTimeout(window.H5P.instances[0].bufferLoop);
+                    clearTimeout(window.H5P.instances[0].timeUpdateTimeout);
+                    if (window.H5P.instances[0].video.getPlayer() && typeof window.H5P.instances[0].video.getPlayer().dispose === 'function') {
+                      window.H5P.instances[0].video.getPlayer().dispose();
+                      window.H5P.instances[0].video.nullifyPlayer();
                     }
                     window.H5PEditor = undefined;
                     window.H5P = undefined;
                     window.H5PIntegration.saveFreq = false;
                     window.H5PPresave = undefined;
                     window.h5peditorCopy = undefined;
+                    setTimeout(function () {
+                      if (document.querySelectorAll(".modal-dialog").length === 0) {
+                        document.querySelectorAll("link[title='brightcove']").forEach(e => e.remove());
+                      }
+                    }, 2000);
                   }
                 }
                 onHide();

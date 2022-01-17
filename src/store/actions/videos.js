@@ -45,7 +45,7 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
     {
       organization_id: activeOrganization.id,
       id: brightId,
-      query_param: `&limit=6&offset=${offset}`,
+      query_param: `query=-tags:curriki&limit=6&offset=${offset}`,
     },
     offset
   );
@@ -60,7 +60,7 @@ export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => 
   const result = await videoServices.brightCMSVideo({
     organization_id: activeOrganization.id,
     id: brightId,
-    query_param: `query=name=${videoID}`,
+    query_param: `query=-tags:curriki name=${videoID}`,
   });
   return result;
 };

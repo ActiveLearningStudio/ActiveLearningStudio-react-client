@@ -147,9 +147,7 @@ const getItems = (activityTypeId) =>
 const getActivityItems = (query, page) =>
   httpService
     .get(
-      `${apiVersion}/get-activity-items${
-        query ? `?query=${query.replace(/#/, "%23")}` : ""
-      }${page ? `?page=${page}` : ""}`
+      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, "%23")}` : ""}${page ? `?page=${page}` : ""}`
     )
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -188,9 +186,9 @@ const h5pToken = (dataH5p) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pSettings = (library) =>
+const h5pSettings = (library, accountId = null) =>
   httpService
-    .get(`/${apiVersion}/h5p/settings?libraryName=${library}`)
+    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
