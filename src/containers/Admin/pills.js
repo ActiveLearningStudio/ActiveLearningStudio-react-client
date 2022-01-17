@@ -572,7 +572,20 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      //dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Activity Items') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getActivityItems('', activePage || 1, col, orderBy,));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
     }
@@ -934,7 +947,7 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityItems}
-                sortCol={[]}
+                sortCol={columnData.ActivityItemsSortCol}
                 handleSort={handleSort}
                 subType={'Activity Items'}
                 searchQueryActivities={searchQueryActivities}

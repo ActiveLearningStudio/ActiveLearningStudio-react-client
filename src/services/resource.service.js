@@ -144,10 +144,10 @@ const getItems = (activityTypeId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityItems = (query, page) =>
+const getActivityItems = (query, page, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, "%23")}` : ""}${page ? `?page=${page}` : ""}`
+      `${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, "%23")}` : ""}${page ? `?page=${page}` : ""}${column ? `&order_by_column=${column}` : ""}${orderBy ? `&order_by_type=${orderBy}` : ""}`
     )
     .catch((err) => {
       errorCatcher(err.response.data);

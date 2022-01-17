@@ -40,6 +40,7 @@ export const columnData = {
   ActivityTypesSortCol: ['Order'],
 
   ActivityItems: ['Name', 'Order', 'Meta'],
+  ActivityItemsSortCol: ['Order'],
 
   userall: ['Date', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Type', 'Role'],
 
