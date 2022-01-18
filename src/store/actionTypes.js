@@ -348,6 +348,7 @@ export const ADD_GROUP_PROJECTS_FAIL = 'ADD_GROUP_PROJECTS_FAIL';
 
 /* Account */
 export const GET_USER_LMS_SETTINGS = 'GET_USER_LMS_SETTINGS';
+export const USER_LMS_SETTINGS_LOADING = 'USER_LMS_SETTINGS_LOADING';
 /* Account */
 
 /* Dashboard */

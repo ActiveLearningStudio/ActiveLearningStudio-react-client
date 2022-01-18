@@ -14,6 +14,12 @@ export default (state = INITIAL_STATE, action) => {
         userLmsSettingsLoaded: true,
       };
 
+    case actionTypes.USER_LMS_SETTINGS_LOADING:
+      return {
+        ...state,
+        userLmsSettingsLoaded: true,
+      };
+
     default:
       return state;
   }
