@@ -12,7 +12,7 @@ import {
   setActiveOrganization,
   clearHistory
 } from 'store/actions/organization';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 
 import AllOrganizations from "./allOrganization";
 import CreateOrganization from "./createOrganization";
@@ -115,7 +115,6 @@ export default function ManageOrganizations() {
           ) : <Alert style={{ marginTop: '15px' }} variant="danger">You are not authorized to view this page</Alert>}
         </div>
       </div>
-      <Footer />
     </>
   );
 }

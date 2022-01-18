@@ -21,7 +21,7 @@ const BrightcoveModel = (props) => {
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [searchId, setSearchId] = useState();
-
+  const [error, setError] = useState(null);
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
@@ -32,16 +32,28 @@ const BrightcoveModel = (props) => {
   useEffect(() => {
     (async () => {
       if (activeCms) {
-        const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
-        console.log(videosResult);
-        setTotalCount(videosResult.meta?.count);
-        setcmsVideo(videosResult.data);
+        await dispatch(getBrightVideos(activeCms.id, offset * 6))
+          .then((data) => {
+            setTotalCount(data.meta?.count);
+            setcmsVideo(data.data);
+          }).catch((err) => {
+            if (err?.errors?.length > 0) {
+              setError('No record Found')
+            }
+          })
         if (typeof activeCms === 'object' && activeCms.hasOwnProperty('account_id')) {
           window.brightcoveAccountId = activeCms.account_id;
         }
       }
     })();
   }, [activeCms, offset]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'EDIT_CMS_SCREEN',
+      payload: activeCms
+    })
+  }, [activeCms])
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
@@ -76,7 +88,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
-                <br />
+                {/* <br /> */}
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -88,19 +100,25 @@ const BrightcoveModel = (props) => {
                             <span>Settings</span>
                           </div> */}
                       <div className="section-input-search">
-                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video ID..." />
+                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or id..." />
                         <button
                           onClick={async () => {
                             setcmsVideo([]);
-                            const videosResult = await dispatch(getBrightVideosSearch(activeCms.id, searchId));
-                            setTotalCount(videosResult.meta?.count);
-                            setcmsVideo(videosResult.data);
+                            await dispatch(getBrightVideosSearch(activeCms.id, searchId))
+                              .then((data) => {
+                                setTotalCount(data.meta?.count);
+                                setcmsVideo(data.data);
+                              }).catch((err) => {
+                                if (err?.errors?.length > 0) {
+                                  setError('No record Found')
+                                }
+                              })
                           }}
                         >
                           <FontAwesomeIcon icon={faSearch} color="#084892" />
                         </button>
                       </div>
-                      {searchId && (
+                      {(
                         <button
                           onClick={async () => {
                             setSearchId('');
@@ -118,27 +136,23 @@ const BrightcoveModel = (props) => {
                 </div>
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-table responsive-table">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Created</th>
-                          <th>Video</th>
-                        </tr>
-                      </thead>
-                    </table>
                     <Tab.Content>
                       {cms?.map((data1, counter) => (
                         <Tab.Pane eventKey={`manual-${counter + 1}`}>
-                          <Card.Body>
+                          <Card.Body style={{ padding: '0px' }}>
                             <table>
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Created</th>
+                                  <th>Video</th>
+                                </tr>
+                              </thead>
                               <tbody>
-                                {cmsVideo?.map((data) => (
+                                {cmsVideo?.length > 0 && cmsVideo?.map((data) => (
                                   <tr>
                                     <td>
                                       <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
-                                    </td>
-                                    <td>
                                       <img src={data?.images?.thumbnail?.src} className="image-size" />
                                       <span>{data.name}</span>
                                     </td>
@@ -146,10 +160,24 @@ const BrightcoveModel = (props) => {
                                     <td>{data.id}</td>
                                   </tr>
                                 ))}
+                                {(searchId && cmsVideo?.length === 0 && !error) && (
+                                  <tr>
+                                    <td colSpan="3">
+                                      <Alert variant="primary" colSpan={3}>Loading...</Alert>
+                                    </td>
+                                  </tr>
+                                )}
+                                {(searchId && cmsVideo?.length === 0 && error) && (
+                                  <tr>
+                                    <td colSpan="3">
+                                      <Alert variant="danger" colSpan={3}>{error}</Alert>
+                                    </td>
+                                  </tr>
+                                )}
                               </tbody>
                             </table>
 
-                            {cmsVideo?.length && (
+                            {cmsVideo?.length > 0 && (
                               <Pagination
                                 activePage={offset + 1}
                                 pageRangeDisplayed={7}

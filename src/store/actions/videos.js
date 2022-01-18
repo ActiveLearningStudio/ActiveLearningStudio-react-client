@@ -45,7 +45,7 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
     {
       organization_id: activeOrganization.id,
       id: brightId,
-      query_param: `&limit=6&offset=${offset}`,
+      query_param: `query=-tags:curriki&limit=6&offset=${offset}`,
     },
     offset
   );
@@ -60,7 +60,7 @@ export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => 
   const result = await videoServices.brightCMSVideo({
     organization_id: activeOrganization.id,
     id: brightId,
-    query_param: `query=name=${videoID}`,
+    query_param: `query=-tags:curriki name=${videoID}`,
   });
   return result;
 };
@@ -119,4 +119,47 @@ export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
     type: actionTypes.EDIT_VIDEO_ACTIVITY,
     payload: result.activity,
   });
+};
+
+export const allBrightCove = (orgId, size, page) => async (dispatch) => {
+  const result = await videoServices.allBrightCove(orgId, size, page);
+  dispatch({
+    type: actionTypes.UP_ALL_BRIGHTCOVE,
+    payload: result,
+  });
+};
+export const allBrightCoveSearch = (orgId, search, size, page) => async (dispatch) => {
+  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page);
+  dispatch({
+    type: actionTypes.UP_ALL_BRIGHTCOVE,
+    payload: result,
+  });
+};
+export const addBrightCove = (orgId, data) => async (dispatch) => {
+  const result = await videoServices.addBrightCove(orgId, data);
+  dispatch({
+    type: actionTypes.NEW_BRIGHTCOVE,
+    payload: result.data,
+  });
+  return result;
+};
+
+export const deleteBrightCove = (orgId, settingId) => async (dispatch) => {
+  const result = await videoServices.deleteBrightCove(orgId, settingId);
+  if (result.message) {
+    dispatch({
+      type: actionTypes.DEL_BRIGHTCOVE,
+      payload: settingId,
+    });
+  }
+  return result;
+};
+
+export const editBrightCove = (orgId, settingId, data) => async (dispatch) => {
+  const result = await videoServices.editBrightCove(orgId, settingId, data);
+  dispatch({
+    type: actionTypes.EDIT_BRIGHTCOVE,
+    payload: result.data,
+  });
+  return result;
 };

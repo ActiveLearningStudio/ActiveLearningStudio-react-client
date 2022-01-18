@@ -52,7 +52,7 @@ import {
   clearSelectedProject,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
 import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
@@ -627,7 +627,7 @@ function PlaylistsPage(props) {
                               />
                             )}
                         </div>
-                        <div className="new-playlist">
+                        <div className="new-playlist status-pref">
                           <div className="dropdown">
                             <Headings text="Library Preferences:" headingType="body2" color="#515151" />
 
@@ -649,6 +649,12 @@ function PlaylistsPage(props) {
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
+                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                            <div className="library-status">
+                              <FontAwesomeIcon icon="exclamation-circle" className="mr-2" />
+                              {selectedProject?.indexing_text}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="project-share-previews">
@@ -749,7 +755,7 @@ function PlaylistsPage(props) {
           <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
         </Modal.Body>
       </Modal>
-      {!showFooter && <Footer />}
+      {/* {!showFooter && <Footer />} */}
 
       <GoogleModel
         projectId={selectedProjectId}

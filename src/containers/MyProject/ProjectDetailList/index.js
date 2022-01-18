@@ -9,7 +9,7 @@ import "./style.scss";
 import PlayListImage from "assets/images/svg/playlist1.svg";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import ProjectList from "utils/ProjectList/projectlist";
-import Footer from "components/Footer";
+// import Footer from "components/Footer";
 
 const ProjectDetailList = () => {
   const playList1 = [
@@ -84,7 +84,6 @@ const ProjectDetailList = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

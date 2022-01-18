@@ -41,6 +41,7 @@ const H5PPreview = (props) => {
         link.href = value;
         link.type = 'text/css';
         link.rel = 'stylesheet';
+        link.title = 'brightcove';
         document.head.appendChild(link);
         return true;
       })
@@ -93,7 +94,10 @@ const H5PPreview = (props) => {
             }
           } else if (showvideoH5p) {
             const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
+            if (response.activity?.brightcoveData) {
 
+              window.brightcoveAccountId = response.activity?.brightcoveData.accountId
+            }
             if (response.activity) {
               await resourceLoaded(response.activity);
             }

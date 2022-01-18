@@ -1,12 +1,5 @@
 /* eslint-disable */
-import React,
-{
-  useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback,
-} from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
@@ -28,9 +21,7 @@ import loader from 'assets/images/dotsloader.gif';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import {
-  getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization,
-} from 'store/actions/organization';
+import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
 // import { alphaNumeric } from 'utils';
 
 function Controller(props) {
@@ -116,23 +107,20 @@ function Controller(props) {
   // const sab = subType;
   // console.log(subTypeState);
   // console.log(subType);
-  const searchUserProjectFilter = useCallback(
-    async () => {
-      if (authorName.length >= 2) {
-        setLoaderImgUser(true);
-        const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
-        console.log(result?.data, 'result');
-        if (result?.data?.length > 0) {
-          setLoaderImgUser(false);
-          setAuthorsArray(result?.data);
-        } else {
-          setLoaderImgUser(false);
-          setAuthorsArray([]);
-        }
+  const searchUserProjectFilter = useCallback(async () => {
+    if (authorName.length >= 2) {
+      setLoaderImgUser(true);
+      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
+      console.log(result?.data, 'result');
+      if (result?.data?.length > 0) {
+        setLoaderImgUser(false);
+        setAuthorsArray(result?.data);
+      } else {
+        setLoaderImgUser(false);
+        setAuthorsArray([]);
       }
-    },
-    [activeOrganization?.id, authorName, dispatch],
-  );
+    }
+  }, [activeOrganization?.id, authorName, dispatch]);
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
     setChangeIndexValue(id);
@@ -200,20 +188,20 @@ function Controller(props) {
         )}
         {!!search && type === 'LMS' && subType === 'All settings' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search by URL or User Email"
-              value={searchQuery}
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
+        {!!search && type === 'LMS' && subType === 'BrightCove' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by ID or email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -273,7 +261,6 @@ function Controller(props) {
               className=""
               type="text"
               placeholder="Search Organization"
-              value={searchQueryProject}
               onChange={(e) => {
                 if (e.target.value?.trim()) {
                   dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));
@@ -364,24 +351,24 @@ function Controller(props) {
                   <img src={filterSearchIcon} alt="filterSearchIcon" className={authorName && authorsArray.length === 0 && 'close-circle'} onClick={searchUserProjectFilter} />
                   {authorName && authorName.length >= 2 && authorsArray.length > 0 && (
                     <div className="author-list">
-                      {authorsArray?.length > 0 ? authorsArray?.map((author) => (
-                        <div
-                          className="single-author"
-                          onClick={() => {
-                            setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
-                            setAuthorName(`${author.first_name} ${author.last_name}`);
-                            setAuthorsArray([]);
-                          }}
-                        >
-                          <div className="initial">
-                            {author.first_name[0] + author.last_name[0]}
-                          </div>
-                          <div>
-                            <div className="username-filter-project">{author.first_name}</div>
-                            <div className="email-filter-project">{author.email}</div>
-                          </div>
-                        </div>
-                      )) : 'No user found.'}
+                      {authorsArray?.length > 0
+                        ? authorsArray?.map((author) => (
+                            <div
+                              className="single-author"
+                              onClick={() => {
+                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                                setAuthorName(`${author.first_name} ${author.last_name}`);
+                                setAuthorsArray([]);
+                              }}
+                            >
+                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                              <div>
+                                <div className="username-filter-project">{author.first_name}</div>
+                                <div className="email-filter-project">{author.email}</div>
+                              </div>
+                            </div>
+                          ))
+                        : 'No user found.'}
                     </div>
                   )}
                 </div>
@@ -519,7 +506,13 @@ function Controller(props) {
                   <img src={filterImg} alt="filter" />
                   Apply Filters
                 </div>
-                <div className="filter-btn-project" onClick={() => { setAuthorName(''); resetProjectFilter(); }}>
+                <div
+                  className="filter-btn-project"
+                  onClick={() => {
+                    setAuthorName('');
+                    resetProjectFilter();
+                  }}
+                >
                   <FontAwesomeIcon icon="sync" />
                   Reset All
                 </div>
@@ -542,30 +535,23 @@ function Controller(props) {
           </button>
         )}
         {/* FILTER FOR ACTIVITY ITEMS */}
-        {subType === 'Activity Items'
-          && (
-            <div className="filter-dropdown-activityItems">
-              Filter by activity type
-              <span>
-                <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
+        {subType === 'Activity Items' && (
+          <div className="filter-dropdown-activityItems">
+            Filter by activity type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    {selectedActivityType && (
-                      <Dropdown.Item onClick={() => setSelectedActivityType(null)}>
-                        Select
-                      </Dropdown.Item>
-                    )}
-                    {activityTypes?.map((item) => (
-                      <Dropdown.Item onClick={() => setSelectedActivityType(item)}>
-                        {item.title}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </Dropdown>
-              </span>
-            </div>
-          )}
+                <Dropdown.Menu>
+                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
+                  {activityTypes?.map((item) => (
+                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
         {!!filter && subType === 'index' && (
           <div className="filter-dropdown drop-counter ">
             Index Value:
@@ -697,7 +683,6 @@ function Controller(props) {
         )} */}
 
         {/* ROW PER PAGE */}
-
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
@@ -867,6 +852,22 @@ function Controller(props) {
           </div>
         )}
 
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_brightcove') {
+                  dispatch(setActiveAdminForm('add_brightcove'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
         {!!btnText && type === 'DefaultSso' && permission?.Organization.includes('organization:create-default-sso') && (
           <div className="btn-text">
             <button
@@ -926,7 +927,6 @@ function Controller(props) {
           </button>
         </div>
       )} */}
-
     </div>
   );
 }

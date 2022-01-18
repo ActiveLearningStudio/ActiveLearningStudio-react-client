@@ -48,10 +48,7 @@ const brightCMSVideo = (values, offset) =>
   httpService
     .post(`/${apiVersion}/brightcove/get-bc-videos-list`, values)
     .then(({ data }) => data)
-    .catch((err) => {
-      //errorCatcher(err.response.data);
-      return err;
-    });
+    .catch((err) => Promise.reject(err.response.data));
 
 const videoh5pDetail = (orgId, activityId) =>
   httpService
@@ -96,6 +93,57 @@ const cloneh5pvideo = (orgId, activityId, formData) =>
       return Promise.reject(err.response.data);
     });
 
+const allBrightCove = (orgId, size = 10, page) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?size=${size}&page=${page}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+const allBrightCoveSearch = (orgId, search, size = 10, page) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?query=${search}&size=${size}&page=${page}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+const addBrightCove = (orgId, data) =>
+  httpService
+    .post(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+    });
+
+const deleteBrightCove = (orgId, settingId) =>
+  httpService
+    .remove(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings/${settingId}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const editBrightCove = (orgId, settingId, data) =>
+  httpService
+    .put(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings/${settingId}`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const uploadCSSFile = (formData) =>
+  httpService
+    .post(`/${apiVersion}/brightcove-api-settings/upload-css  `, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   addVideo,
@@ -107,4 +155,10 @@ export default {
   renderh5pvideo,
   edith5pVideoActivity,
   cloneh5pvideo,
+  allBrightCove,
+  addBrightCove,
+  deleteBrightCove,
+  editBrightCove,
+  uploadCSSFile,
+  allBrightCoveSearch,
 };

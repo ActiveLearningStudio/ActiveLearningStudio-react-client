@@ -10,6 +10,7 @@ import { columnData } from './column';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
+import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
@@ -21,7 +22,7 @@ export default function Pills(props) {
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport } = useSelector((state) => state.admin);
+  const { activityTypes, activityItems, usersReport, allbrightCove } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -52,6 +53,7 @@ export default function Pills(props) {
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [libraryReqSelected, setLibraryReqSelected] = useState(false);
   const [lmsProject, setLmsProject] = useState(null);
+  const [lmsBrightCove, setlmsBrightCove] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
   const [ltiTool, setLtiTool] = useState(null);
   const [jobs, setJobs] = useState(null);
@@ -64,6 +66,9 @@ export default function Pills(props) {
   useEffect(() => {
     setKey(modules?.[0]);
   }, [activeTab]);
+  useEffect(() => {
+    setlmsBrightCove(allbrightCove);
+  }, [allbrightCove]);
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole));
@@ -180,8 +185,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProjectIndex(
             activeOrganization?.id,
             activePage || 1,
@@ -204,8 +208,7 @@ export default function Pills(props) {
               setAllProjectTab(data);
             })
             .catch((e) => setAllProjectTab([]));
-        }
-        else {
+        } else {
           const result = await adminService.getAllProject(
             activeOrganization?.id,
             activePage || 1,
@@ -409,7 +412,10 @@ export default function Pills(props) {
     if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
     }
-  }, [type, activePage, activeOrganization?.id]);
+    if (type === 'LMS') {
+      dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
+    }
+  }, [type, size, activePage, activeOrganization?.id]);
 
   useEffect(() => {
     if (dataRedux.admin.ltiTools) {
@@ -438,6 +444,12 @@ export default function Pills(props) {
     });
   };
 
+  const searchQueryChangeHandlerLMSBrightCove = (search) => {
+    setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
+  };
+
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
@@ -448,7 +460,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, activePage || 1);
+    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, size, activePage || 1);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -491,6 +503,8 @@ export default function Pills(props) {
       setSubTypeState('All Organizations');
     } else if (activeTab === 'LMS') {
       setSubTypeState('All settings');
+    } else if (activeTab === 'Video Integration') {
+      setSubTypeState('BrightCove API Settings');
     }
   }, [activeTab]);
   const filterSearch = useCallback(() => {
@@ -548,6 +562,19 @@ export default function Pills(props) {
       dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
+    } else if (subType == 'Activity Types') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
     }
   };
   const resetProjectFilter = () => {
@@ -577,6 +604,7 @@ export default function Pills(props) {
         .catch((e) => setAllProjectTab([]));
     }
   };
+
   return (
     <Tabs
       defaultActiveKey={modules && modules[0]}
@@ -590,11 +618,12 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         setSearchQueryStats('');
-        if (key === 'All Projects' || libraryReqSelected) {
+        if (key === 'Exported Projects') {
+          setCurrentTab('Exported Projects');
+          setLibraryReqSelected(false);
+        } else if (key === 'All Projects' || libraryReqSelected) {
           setCurrentTab('All Projects');
           setLibraryReqSelected(false);
-        } else if (key === 'Exported Projects') {
-          setCurrentTab('Exported Projects');
         }
       }}
     >
@@ -773,6 +802,29 @@ export default function Pills(props) {
                 searchQueryChangeHandler={searchQueryChangeHandlerLMS}
               />
             )}
+            {type === 'LMS' && subTypeState === 'BrightCove' && (
+              <Starter
+                paginationCounter={true}
+                size={size}
+                setSize={setSize}
+                subType={'BrightCove'}
+                search={true}
+                print={false}
+                btnText="Add New Entry"
+                btnAction="add_brightcove"
+                importUser={false}
+                filter={false}
+                tableHead={columnData.IntegrationBrightCove}
+                sortCol={[]}
+                handleSort={handleSort}
+                data={lmsBrightCove}
+                type={type}
+                searchQuery={searchQuery}
+                setActivePage={setActivePage}
+                activePage={activePage}
+                searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
+              />
+            )}
 
             {type === 'Projects' && subTypeState === 'All Projects' && (
               <Starter
@@ -864,7 +916,7 @@ export default function Pills(props) {
               <Starter
                 search={true}
                 tableHead={columnData.ActivityTypes}
-                sortCol={[]}
+                sortCol={columnData.ActivityTypesSortCol}
                 handleSort={handleSort}
                 subType={'Activity Types'}
                 searchQueryActivities={searchQueryActivities}

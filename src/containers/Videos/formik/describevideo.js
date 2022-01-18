@@ -1,21 +1,30 @@
 /*eslint-disable*/
-import React, { useRef, useState } from 'react';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
-import TabsHeading from 'utils/Tabs/tabs';
+import React, { useRef, useState } from "react";
+import HeadingTwo from "utils/HeadingTwo/headingtwo";
+import TabsHeading from "utils/Tabs/tabs";
 
-import { Formik } from 'formik';
-import Buttons from 'utils/Buttons/buttons';
+import { Formik } from "formik";
+import Buttons from "utils/Buttons/buttons";
 
-import { useSelector } from 'react-redux';
-import UploadImage from 'utils/uploadimagev2/uploadimagev2';
-import HeadingText from 'utils/HeadingText/headingtext';
-import DefaultUpload from 'assets/images/defaultUpload.png';
-import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
-import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) => {
+import { useSelector } from "react-redux";
+import UploadImage from "utils/uploadimagev2/uploadimagev2";
+import HeadingText from "utils/HeadingText/headingtext";
+import DefaultUpload from "assets/images/defaultUpload.png";
+import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
+import {
+  educationLevels,
+  subjects,
+} from "components/ResourceCard/AddResource/dropdownData";
+const DescribeVideo = ({
+  setUploadImageStatus,
+  setScreenStatus,
+  setOpenVideo,
+}) => {
   const [modalShow, setModalShow] = useState(false);
-  const [videoTitle, setVideoTitle] = useState('');
-  const { videoId, editVideo } = useSelector((state) => state.videos);
+  const [videoTitle, setVideoTitle] = useState("");
+  const { videoId, editVideo, activecms } = useSelector(
+    (state) => state.videos
+  );
 
   const formRef = useRef();
   return (
@@ -31,11 +40,16 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
         formData={formRef.current?.values}
         editVideo={editVideo}
         setOpenVideo={setOpenVideo}
+        accountId={activecms?.account_id}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
           <TabsHeading text="1. Add a video" tabActive={true} />
-          <TabsHeading text="2. Describe video" className="ml-10" tabActive={true} />
+          <TabsHeading
+            text="2. Describe video"
+            className="ml-10"
+            tabActive={true}
+          />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
@@ -54,18 +68,22 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
             <Formik
               innerRef={formRef}
               initialValues={{
-                title: editVideo ? editVideo.title : '',
-                description: editVideo ? editVideo.description || undefined : undefined,
-                subject_id: editVideo ? editVideo.subject_id : '',
-                education_level_id: editVideo ? editVideo.education_level_id : '',
+                title: editVideo ? editVideo.title : "",
+                description: editVideo
+                  ? editVideo.description || undefined
+                  : undefined,
+                subject_id: editVideo ? editVideo.subject_id : "",
+                education_level_id: editVideo
+                  ? editVideo.education_level_id
+                  : "",
                 thumb_url: editVideo?.thumb_url
                   ? editVideo.thumb_url
-                  : 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
+                  : "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
               }}
               validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = 'Required';
+                  errors.title = "Required";
                 }
                 return errors;
               }}
@@ -73,7 +91,16 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                 setModalShow(true);
               }}
             >
-              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+              }) => (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -83,20 +110,22 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                   <div>
                     <div className="dec-title-formik-textField">
                       <span>Title</span>
-                      <p>Used for searching, reports and copyright information</p>
+                      <p>
+                        Used for searching, reports and copyright information
+                      </p>
                       <input
                         type="text"
                         name="title"
                         placeholder="Give your layout a name..."
                         onChange={(e) => {
-                          setFieldValue('title', e.target.value);
+                          setFieldValue("title", e.target.value);
                           setVideoTitle(e.target.value);
                         }}
                         onBlur={handleBlur}
                         value={values.title}
                       />
                     </div>
-                    <div className="error" style={{ color: 'red' }}>
+                    <div className="error" style={{ color: "red" }}>
                       {errors.title && touched.title && errors.title}
                     </div>
                     <div className="dec-title-formik-textField">
@@ -113,8 +142,16 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                     </div>
                     <div className="layout-formik-select">
                       <div className="formik-select mr-32">
-                        <HeadingText text="Subject" className="formik-select-title" />
-                        <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id}>
+                        <HeadingText
+                          text="Subject"
+                          className="formik-select-title"
+                        />
+                        <select
+                          name="subject_id"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.subject_id}
+                        >
                           <option hidden>Select</option>
                           {subjects.map((data) => (
                             <option key={data.value} value={data.subject}>
@@ -124,8 +161,16 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                         </select>
                       </div>
                       <div className="formik-select">
-                        <HeadingText text="Education level" className="formik-select-title" />
-                        <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
+                        <HeadingText
+                          text="Education level"
+                          className="formik-select-title"
+                        />
+                        <select
+                          name="education_level_id"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.education_level_id}
+                        >
                           <option hidden>Select</option>
                           {educationLevels.map((data) => (
                             <option key={data.value} value={data.name}>
@@ -147,8 +192,25 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                     />
                   </div>
                   <div className="describe-video">
-                    <Buttons onClick={() => setScreenStatus('AddVideo')} secondary={true} text="Back" width="162px" height="32px" hover={true} />
-                    <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                    {!editVideo && (
+                      <Buttons
+                        onClick={() => setScreenStatus("AddVideo")}
+                        secondary={true}
+                        text="Back"
+                        width="162px"
+                        height="32px"
+                        hover={true}
+                      />
+                    )}
+                    <Buttons
+                      primary={true}
+                      text="Add Interactions"
+                      width="162px"
+                      height="32px"
+                      hover={true}
+                      type="submit"
+                      
+                    />
                   </div>
                 </form>
               )}
