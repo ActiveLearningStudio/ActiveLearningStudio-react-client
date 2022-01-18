@@ -167,7 +167,7 @@ export default function AddRole(props) {
                       </div>
                     </Nav>
                   </Col>
-                  <Col className="detail-permission-tab" sm={10}>
+                  <Col className="detail-permission-tab" style={{ width: '700px' }} sm={10}>
                     <Tab.Content>
                       <Tab.Pane eventKey="manual-3">
                         <div className="all-permission-heading">
@@ -175,20 +175,25 @@ export default function AddRole(props) {
                         </div>
 
                         <Card.Body
+                          className="flex-column"
                           style={{
                             // background: '#f7faff',
                             margin: '8px 32px 32px 10px',
                           }}
                         >
                           <div className="permission">
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Organiziation'}
-                              permissions={values.permissions}
-                              currentFeatureView={orgView}
-                              currentFeatureEdit={orgEdit}
-                              bold
-                            />
+                            <div className="selection-tab-custom">
+                              <div className="form-group custom-select-style-for-sub">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Organiziation'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={orgView}
+                                  currentFeatureEdit={orgEdit}
+                                  bold
+                                />
+                              </div>
+                            </div>
                           </div>
                           <div className="permission">
                             <div className="selection-tab-custom">
@@ -355,6 +360,7 @@ export default function AddRole(props) {
                       </Tab.Pane>
                       <Tab.Pane eventKey="manual-2">
                         <Card.Body
+                          className="flex-column"
                           style={{
                             background: '#f7faff',
                             margin: '32px',

@@ -1687,9 +1687,10 @@
 
 // Role Css Update
 .dynamic-roles-title-btn {
-  padding-bottom: 23px;
-  padding-left: 20px;
-  padding-right: 20px;
+  // padding-bottom: 23px;
+  // padding-left: 20px;
+  // padding-right: 20px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1703,6 +1704,7 @@
     font-size: 18px;
     line-height: 24px;
     color: #515151;
+    margin: 0 !important;
   }
 
   .update-permission {
@@ -1713,7 +1715,7 @@
     background: rgba(18, 179, 71, 0.08);
     border-radius: 4px;
     padding: 6px 8px;
-    margin-top: 16px;
+    // margin-top: 16px;
     cursor: pointer;
     border: none;
     outline: none;
@@ -1738,6 +1740,7 @@
 }
 .roles-permission-tab {
   border: 1px solid #ccc;
+  padding: 16px;
 }
 .detail-permission-tab {
   // background: #f7faff;
@@ -1801,6 +1804,10 @@
 }
 
 .role-permission-tab-name {
+  .nav-item {
+    margin-bottom: 8px;
+    // width: 170px;
+  }
   .nav-link {
     font-family: $rubik !important;
     font-style: normal !important;

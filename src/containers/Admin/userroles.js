@@ -109,7 +109,7 @@ function UserRoles() {
                       </div>
                       <div
                         className="button-group"
-                        style={{ marginTop: '17px' }}
+                        // style={{ marginTop: '17px' }}
                         // style={{ display: "flex", justifyContent: "flex-end" }}
                       >
                         <button type="submit" className="update-permission">
@@ -169,6 +169,7 @@ function UserRoles() {
                             </div>
 
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 // background: '#f7faff',
                                 margin: '8px 32px 32px 10px',
@@ -361,6 +362,7 @@ function UserRoles() {
                           </Tab.Pane>
                           <Tab.Pane eventKey="manual-2">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
@@ -416,6 +418,7 @@ function UserRoles() {
 
                           <Tab.Pane eventKey="0">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
@@ -433,6 +436,7 @@ function UserRoles() {
                           </Tab.Pane>
                           <Tab.Pane eventKey="1">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
@@ -471,6 +475,7 @@ function UserRoles() {
                           </Tab.Pane>
                           <Tab.Pane eventKey="2">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
@@ -509,6 +514,7 @@ function UserRoles() {
                           </Tab.Pane>
                           <Tab.Pane eventKey="3">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
@@ -547,6 +553,7 @@ function UserRoles() {
                           </Tab.Pane>
                           <Tab.Pane eventKey="4">
                             <Card.Body
+                              className="flex-column"
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
