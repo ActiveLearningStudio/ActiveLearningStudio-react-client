@@ -94,7 +94,7 @@ function InviteTeam(props) {
                   selected={false}
                   user={user}
                   selectMember={setSelectedMembers}
-                  // inviteUser={handleInvite}
+                // inviteUser={handleInvite}
                 />
               ))}
             </div>

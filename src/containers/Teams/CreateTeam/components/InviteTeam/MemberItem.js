@@ -124,8 +124,8 @@ MemberItem.propTypes = {
 
 MemberItem.defaultProps = {
   selected: false,
-  selectMember: () => {},
-  inviteUser: () => {},
+  selectMember: () => { },
+  inviteUser: () => { },
 };
 
 export default MemberItem;
