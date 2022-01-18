@@ -13,8 +13,8 @@ function UserRoles() {
   const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315]);
   const [projectView, setProjectView] = useState([]);
 
-  const [projectExportView, setprojectExportView] = useState([311, 312, 313]);
-  const [projectExportEdit, setProjectExportEdit] = useState([]);
+  const [projectExportView, setprojectExportView] = useState([332]);
+  const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
 
   const [userEdit, setUserEdit] = useState([5, 6, 7, 8, 10, 11, 66]);
   const [userView, setUserView] = useState([9]);
@@ -24,13 +24,22 @@ function UserRoles() {
 
   const [orgEdit, setOrgEdit] = useState([1, 2, 4]);
   const [orgView, setOrgView] = useState([3]);
-  const AdminList = ['Organization', 'Project', 'Activity', 'SSO', 'User'];
+  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
 
   const [activityEdit, setActivityEdit] = useState([316, 317, 319]);
   const [activityView, setActivityView] = useState([318]);
 
-  const [ssoEdit, setssoEdit] = useState([257, 256, 254]);
-  const [ssoView, setssoView] = useState([255]);
+  const [activityItemEdit, setActivityItemEdit] = useState([341, 339, 338]);
+  const [activityItemView, setActivityItemView] = useState([340]);
+
+  const [activityTypeEdit, setActivityTypeEdit] = useState([337, 335, 334]);
+  const [activityTypeView, setActivityTypeView] = useState([336]);
+
+  const [lmsSettingEdit, setlmsSettingEdit] = useState([350, 348, 347]);
+  const [lmsSettingView, setLmsSettingView] = useState([349]);
+
+  const [ltiSettingEdit, setltiSettingEdit] = useState([346, 344, 343]);
+  const [ltiSettingView, setLtiSettingView] = useState([345]);
 
   const [teamEdit, setTeamEdit] = useState([40, 301, 302]);
   const [teamView, setTeamView] = useState([39]);
@@ -172,24 +181,27 @@ function UserRoles() {
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
+                                  bold
                                 />
                               </div>
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
-                                    <select name="">
-                                      <option value="----">----</option>
-                                      <option value="edit">Edit</option>
-                                      <option value="view">View</option>
-                                    </select>
-                                    <h6> Project</h6>
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Projects'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...projectView, ...projectExportView]}
+                                      currentFeatureEdit={[...projectEdit, ...projectExportEdit]}
+                                      bold
+                                    />
                                   </div>
                                 </div>
                                 {/* <h6>Project</h6> */}
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Project'}
+                                    type={'All Project'}
                                     permissions={values.permissions}
                                     currentFeatureView={projectView}
                                     currentFeatureEdit={projectEdit}
@@ -204,14 +216,33 @@ function UserRoles() {
                                 </div>
                               </div>
                               <div className="permission">
-                                {/* <h6>Activity</h6> */}
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Activities'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...activityTypeView, ...activityItemView]}
+                                      currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
+                                      bold
+                                    />
+                                  </div>
+                                </div>
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activity'}
+                                    type={'Activity types'}
                                     permissions={values.permissions}
-                                    currentFeatureView={activityView}
-                                    currentFeatureEdit={activityEdit}
+                                    currentFeatureView={activityTypeView}
+                                    currentFeatureEdit={activityTypeEdit}
+                                  />
+
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Activity Items'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={activityItemView}
+                                    currentFeatureEdit={activityItemEdit}
                                   />
                                 </div>
                               </div>
@@ -219,26 +250,28 @@ function UserRoles() {
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
-                                    <select name="">
-                                      <option value="----">----</option>
-                                      <option value="edit">Edit</option>
-                                      <option value="view">View</option>
-                                    </select>
-                                    <h6> User</h6>
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Users'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...userView, ...userRoleView]}
+                                      currentFeatureEdit={[...userEdit, ...userRolesEdit]}
+                                      bold
+                                    />
                                   </div>
                                 </div>
                                 {/* <h6>User</h6> */}
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'User'}
+                                    type={'Users'}
                                     permissions={values.permissions}
                                     currentFeatureView={userView}
                                     currentFeatureEdit={userEdit}
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Roles'}
+                                    type={'Manage Roles'}
                                     permissions={values.permissions}
                                     currentFeatureView={userRoleView}
                                     currentFeatureEdit={userRolesEdit}
@@ -249,22 +282,78 @@ function UserRoles() {
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
-                                    <select name="">
-                                      <option value="----">----</option>
-                                      <option value="edit">Edit</option>
-                                      <option value="view">View</option>
-                                    </select>
-                                    <h6> Integrations</h6>
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Integrations'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...lmsSettingView, ...ltiSettingView]}
+                                      currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit]}
+                                      bold
+                                    />
                                   </div>
                                 </div>
 
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Default SSO'}
+                                    type={'LMS Settings'}
                                     permissions={values.permissions}
-                                    currentFeatureView={ssoView}
-                                    currentFeatureEdit={ssoEdit}
+                                    currentFeatureView={lmsSettingView}
+                                    currentFeatureEdit={lmsSettingEdit}
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'LTI Tools'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={ltiSettingView}
+                                    currentFeatureEdit={ltiSettingEdit}
+                                  />
+                                </div>
+                              </div>
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Authoring'}
+                                      bold
+                                      permissions={values.permissions}
+                                      currentFeatureView={[...AuthorProjectView, ...AuthorplayListView, ...authorActivityView, ...teamView]}
+                                      currentFeatureEdit={[...AuthorProjectEdit, ...AuthorplayListEdit, ...authorActivityEdit, ...teamEdit]}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="for-authoring">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Project'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={AuthorProjectView}
+                                    currentFeatureEdit={AuthorProjectEdit}
+                                  />
+                                  <br />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Playlist'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={AuthorplayListView}
+                                    currentFeatureEdit={AuthorplayListEdit}
+                                  />
+                                  <br />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={authorActivityView}
+                                    currentFeatureEdit={authorActivityEdit}
+                                  />
+                                  <br />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Teams'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={teamView}
+                                    currentFeatureEdit={teamEdit}
                                   />
                                 </div>
                               </div>
@@ -279,12 +368,14 @@ function UserRoles() {
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
-                                  <select name="">
-                                    <option value="----">----</option>
-                                    <option value="edit">Edit</option>
-                                    <option value="view">View</option>
-                                  </select>
-                                  <h6> Authoring</h6>
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Authoring'}
+                                    bold
+                                    permissions={values.permissions}
+                                    currentFeatureView={[...AuthorProjectView, ...AuthorplayListView, ...authorActivityView, ...teamView]}
+                                    currentFeatureEdit={[...AuthorProjectEdit, ...AuthorplayListEdit, ...authorActivityEdit, ...teamEdit]}
+                                  />
                                 </div>
                               </div>
                               <div className="for-authoring">
@@ -324,98 +415,172 @@ function UserRoles() {
                           </Tab.Pane>
 
                           <Tab.Pane eventKey="0">
-                          <Card.Body
+                            <Card.Body
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
                               }}
                             >
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Organiziation'}
-                              permissions={values.permissions}
-                              currentFeatureView={orgView}
-                              currentFeatureEdit={orgEdit}
-                            />
-                         
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'Organiziation'}
+                                permissions={values.permissions}
+                                currentFeatureView={orgView}
+                                currentFeatureEdit={orgEdit}
+                                bold
+                              />
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="1">
-                          <Card.Body
+                            <Card.Body
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
                               }}
                             >
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Project'}
-                              permissions={values.permissions}
-                              currentFeatureView={projectView}
-                              currentFeatureEdit={projectEdit}
-                            />
-                             <br />
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'import/export Projects'}
-                              permissions={values.permissions}
-                              currentFeatureView={projectExportView}
-                              currentFeatureEdit={projectExportEdit}
-                            />
-                            
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Projects'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[...projectView, ...projectExportView]}
+                                    currentFeatureEdit={[...projectEdit, ...projectExportEdit]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="permission-about d-flex">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'All Project'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={projectView}
+                                  currentFeatureEdit={projectEdit}
+                                />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'import/export Projects'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={projectExportView}
+                                  currentFeatureEdit={projectExportEdit}
+                                />
+                              </div>
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="2">
-                          <Card.Body
+                            <Card.Body
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
                               }}
                             >
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Activity'}
-                              permissions={values.permissions}
-                              currentFeatureView={activityView}
-                              currentFeatureEdit={activityEdit}
-                            />
-                           
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[...activityTypeView, ...activityItemView]}
+                                    currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+                              <div className="permission-about d-flex">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Activity types'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={activityTypeView}
+                                  currentFeatureEdit={activityTypeEdit}
+                                />
+
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Activity Items'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={activityItemView}
+                                  currentFeatureEdit={activityItemEdit}
+                                />
+                              </div>
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="3">
-                          <Card.Body
+                            <Card.Body
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
                               }}
                             >
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Default SSO'}
-                              permissions={values.permissions}
-                              currentFeatureView={ssoView}
-                              currentFeatureEdit={ssoEdit}
-                            />
-                           
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Integrations'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[...lmsSettingView, ...ltiSettingView]}
+                                    currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="permission-about d-flex">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'LMS Settings'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={lmsSettingView}
+                                  currentFeatureEdit={lmsSettingEdit}
+                                />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'LTI Tools'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={ltiSettingView}
+                                  currentFeatureEdit={ltiSettingEdit}
+                                />
+                              </div>
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="4">
-                          <Card.Body
+                            <Card.Body
                               style={{
                                 background: '#f7faff',
                                 margin: '32px',
                               }}
                             >
-                            <NewEdit setFieldValue={setFieldValue} type={'User'} permissions={values.permissions} currentFeatureView={userView} currentFeatureEdit={userEdit} />
-                            <br />
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'Roles'}
-                              permissions={values.permissions}
-                              currentFeatureView={userRoleView}
-                              currentFeatureEdit={userRolesEdit}
-                            />
-                            
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Users'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[...userView, ...userRoleView]}
+                                    currentFeatureEdit={[...userEdit, ...userRolesEdit]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+                              {/* <h6>User</h6> */}
+                              <div className="permission-about d-flex">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Users'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userView}
+                                  currentFeatureEdit={userEdit}
+                                />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Manage Roles'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userRoleView}
+                                  currentFeatureEdit={userRolesEdit}
+                                />
+                              </div>
                             </Card.Body>
                           </Tab.Pane>
                         </Tab.Content>
@@ -439,22 +604,22 @@ function UserRoles() {
   );
 }
 
-export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView }) => {
+export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold }) => {
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
         onChange={(e) => {
           if (e.target.value == 'view') {
-            setFieldValue(
-              'permissions',
-              permissions.filter((data) => {
+            setFieldValue('permissions', [
+              ...permissions.filter((data) => {
                 if (currentFeatureEdit.includes(parseInt(data))) {
                   return false;
                 } else {
                   return true;
                 }
-              })
-            );
+              }),
+              ...currentFeatureView.map((e) => String(e)),
+            ]);
           } else if (e.target.value == '----') {
             const specialView = [...currentFeatureView, ...currentFeatureEdit];
 
@@ -483,7 +648,7 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
           ----
         </option>
       </select>
-      <p> {type}</p>
+      {bold ? <h6>{type}</h6> : <p> {type}</p>}
     </div>
   );
 };
