@@ -48,10 +48,7 @@ const brightCMSVideo = (values, offset) =>
   httpService
     .post(`/${apiVersion}/brightcove/get-bc-videos-list`, values)
     .then(({ data }) => data)
-    .catch((err) => {
-      //errorCatcher(err.response.data);
-      return err;
-    });
+    .catch((err) => Promise.reject(err.response.data));
 
 const videoh5pDetail = (orgId, activityId) =>
   httpService
