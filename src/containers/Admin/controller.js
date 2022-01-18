@@ -745,7 +745,7 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText && subType === 'Activity Types' && (
+        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
           <div className="btn-text">
             <button
               type="button"
@@ -760,7 +760,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subType === 'Activity Items' && (
+        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
           <div className="btn-text">
             <button
               type="button"
@@ -820,7 +820,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && (
+        {!!btnText && type === 'LMS' && subType === 'All settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -836,7 +836,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && (
+        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
           <div className="btn-text">
             <button
               type="button"

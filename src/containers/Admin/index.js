@@ -78,7 +78,7 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  {permission?.Organization?.includes('organization:view') &&
+                  {permission?.Organization?.includes('organization:view') && (
                     <Tab eventKey="Organization" title="Organizations">
                       <div className="parent-organization-detail">
                         <div className="detailer">
@@ -101,13 +101,14 @@ function AdminPanel({ showSSO }) {
                       <div className="module-content">
                         <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
                       </div>
-                    </Tab>}
-                  {permission?.Project?.includes('project:view') && (
+                    </Tab>
+                  )}
+                  {(permission?.Organization?.includes('organization:view-allproject') || permission?.Organization?.includes('organization:view-exported-project')) && (
                     <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
                         <Pills
                           setModalShow={setModalShow}
-                          modules={['All Projects', 'Exported Projects']}
+                          modules={['All Projects', permission?.Organization?.includes('organization:view-exported-project') && 'Exported Projects']}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
                           type="Projects"
@@ -117,31 +118,47 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  <Tab eventKey="Activities" title="Activities">
-                    <div className="module-content">
-                      <Pills modules={['Activity Types', 'Activity Items']} type="Activities" />
-                    </div>
-                  </Tab>
+                  {(permission?.Organization?.includes('organization:view-activity-item') || permission?.Organization?.includes('organization:view-activity-type')) && (
+                    <Tab eventKey="Activities" title="Activities">
+                      <div className="module-content">
+                        <Pills
+                          modules={[
+                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                          ]}
+                          type="Activities"
+                        />
+                      </div>
+                    </Tab>
+                  )}
                   {true && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
                         <Pills
-                          modules={[
-                            'All Users',
-                            true || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null,
-                          ]}
+                          modules={['All Users', true || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null]}
                           type="Users"
                           subType="All Users"
                         />
                       </div>
                     </Tab>
                   )}
-                  <Tab eventKey="LMS" title="Integrations">
-                    <div className="module-content">
-                      <Pills modules={['All settings', 'LTI Tools', 'BrightCove']} type="LMS" />
-                      {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
-                    </div>
-                  </Tab>
+
+                  {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
+                    <Tab eventKey="LMS" title="Integrations">
+                      <div className="module-content">
+                        <Pills
+                          modules={[
+                            permission?.Organization?.includes('organization:view-all-setting') && 'All settings',
+
+                            permission?.Organization?.includes('organization:view-lms-setting') && 'LTI Tools',
+                            'BrightCove',
+                          ]}
+                          type="LMS"
+                        />
+                        {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
+                      </div>
+                    </Tab>
+                  )}
 
                   {/* <Tab eventKey="Settings" title="Settings">
                   <div className="module-content">

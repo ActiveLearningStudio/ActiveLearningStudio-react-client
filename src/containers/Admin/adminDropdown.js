@@ -316,67 +316,136 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          {type === 'Activities' && (
+          {type === 'Activities' && subType === 'Activity Items' && (
             <>
-              {' '}
-              <Dropdown.Item
-                onClick={() => {
-                  if (subType === 'Activity Items') {
-                    selectActivityItem();
-                    dispatch(selectActivityItem(type1));
-                    dispatch(setActiveAdminForm('edit_activity_item'));
-                  } else {
-                    dispatch(selectActivityType(type1));
-                    dispatch(setActiveAdminForm('edit_activity_type'));
-                  }
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                Edit
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then(async (result) => {
-                    if (result.isConfirmed) {
-                      Swal.showLoading();
-                      var resultDel;
-                      if (subType === 'Activity Items') {
-                        resultDel = await dispatch(deleteActivityItem(type1.id));
-                        dispatch(loadResourceItemAction(type1.id));
-                      } else {
-                        resultDel = await dispatch(deleteActivityType(type1.id));
+              {permission?.Organization.includes('organization:delete-activity-item') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    if (subType === 'Activity Items') {
+                      selectActivityItem();
+                      dispatch(selectActivityItem(type1));
+                      dispatch(setActiveAdminForm('edit_activity_item'));
+                    } else {
+                      dispatch(selectActivityType(type1));
+                      dispatch(setActiveAdminForm('edit_activity_type'));
+                    }
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:edit-activity-item') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        Swal.showLoading();
+                        var resultDel;
+                        if (subType === 'Activity Items') {
+                          resultDel = await dispatch(deleteActivityItem(type1.id));
+                          dispatch(loadResourceItemAction(type1.id));
+                        } else {
+                          resultDel = await dispatch(deleteActivityType(type1.id));
 
-                        if (resultDel) {
-                          Swal.fire({
-                            text: 'You have successfully deleted the activity type',
-                            icon: 'success',
-                            showCancelButton: false,
-                            confirmButtonColor: '#084892',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'OK',
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              dispatch(loadResourceTypesAction('', 1));
-                            }
-                          });
+                          if (resultDel) {
+                            Swal.fire({
+                              text: 'You have successfully deleted the activity type',
+                              icon: 'success',
+                              showCancelButton: false,
+                              confirmButtonColor: '#084892',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'OK',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                dispatch(loadResourceTypesAction('', 1));
+                              }
+                            });
+                          }
                         }
                       }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
+            </>
+          )}
+          {type === 'Activities' && subType === 'Activity Types' && (
+            <>
+              {permission?.Organization.includes('organization:edit-activity-type') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    if (subType === 'Activity Items') {
+                      selectActivityItem();
+                      dispatch(selectActivityItem(type1));
+                      dispatch(setActiveAdminForm('edit_activity_item'));
+                    } else {
+                      dispatch(selectActivityType(type1));
+                      dispatch(setActiveAdminForm('edit_activity_type'));
                     }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                Delete
-              </Dropdown.Item>
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-activity-type') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        Swal.showLoading();
+                        var resultDel;
+                        if (subType === 'Activity Items') {
+                          resultDel = await dispatch(deleteActivityItem(type1.id));
+                          dispatch(loadResourceItemAction(type1.id));
+                        } else {
+                          resultDel = await dispatch(deleteActivityType(type1.id));
+
+                          if (resultDel) {
+                            Swal.fire({
+                              text: 'You have successfully deleted the activity type',
+                              icon: 'success',
+                              showCancelButton: false,
+                              confirmButtonColor: '#084892',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'OK',
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                dispatch(loadResourceTypesAction('', 1));
+                              }
+                            });
+                          }
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
             </>
           )}
           {type === 'Users' && (
@@ -403,75 +472,81 @@ const AdminDropdown = (props) => {
           )}
           {type === 'LMS' && subType === 'All settings' && (
             <>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lms'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Edit&nbsp;&nbsp;
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('clone_lms'));
-                }}
-              >
-                <img src={Clone} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Clone&nbsp;&nbsp;
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure you want to delete this User LMS settings?',
-                    text: 'This action is Irreversible',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      Swal.fire({
-                        title: 'LMS Srttings',
-                        icon: 'info',
-                        text: 'Deleting User LMS Settings...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                        button: false,
-                      });
-                      const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
-                      response
-                        .then((res) => {
-                          Swal.fire({
-                            icon: 'success',
-                            text: res?.message,
-                          });
-                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
-                          const filterLMS = localStateData.filter((each) => each.id != row.id);
-                          console.log(filterLMS);
-                          setLocalStateData(filterLMS);
-                        })
-                        .catch((err) => console.log(err));
-                    }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Delete&nbsp;&nbsp;
-              </Dropdown.Item>
+              {permission?.Organization.includes('organization:edit-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('edit_lms'));
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:view-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lms'));
+                  }}
+                >
+                  <img src={Clone} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Clone&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure you want to delete this User LMS settings?',
+                      text: 'This action is Irreversible',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: 'LMS Srttings',
+                          icon: 'info',
+                          text: 'Deleting User LMS Settings...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message,
+                            });
+                            dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+                            const filterLMS = localStateData.filter((each) => each.id != row.id);
+                            console.log(filterLMS);
+                            setLocalStateData(filterLMS);
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
             </>
           )}
 
@@ -539,67 +614,73 @@ const AdminDropdown = (props) => {
 
           {type === 'LMS' && subType === 'LTI Tools' && (
             <>
-              <Dropdown.Item
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lti_tool'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                Edit
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.showLoading();
-                  adminService.cloneLtiTool(activeOrganization?.id, row?.id);
-                }}
-              >
-                <img src={Clone} alt="Preview" className="menue-img" />
-                Clone
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure you want to delete this LTI Tool?',
-                    text: 'This action is Irreversible',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      Swal.fire({
-                        title: 'LTI Tool',
-                        icon: 'info',
-                        text: 'Deleting LTI Tool...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                        button: false,
-                      });
-                      const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
-                      response
-                        .then((res) => {
-                          Swal.fire({
-                            icon: 'success',
-                            text: res?.message.message,
-                          });
-                          dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
-                        })
-                        .catch((err) => console.log(err));
-                    }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                Delete
-              </Dropdown.Item>
+              {permission?.Organization.includes('organization:edit-all-setting') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('edit_lti_tool'));
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:view-all-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.showLoading();
+                    adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                  }}
+                >
+                  <img src={Clone} alt="Preview" className="menue-img" />
+                  Clone
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-all-setting') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure you want to delete this LTI Tool?',
+                      text: 'This action is Irreversible',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: 'LTI Tool',
+                          icon: 'info',
+                          text: 'Deleting LTI Tool...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message.message,
+                            });
+                            dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
             </>
           )}
           {type === 'LMS' && subType === 'BrightCove' && (

@@ -9,11 +9,11 @@ import { Authoring, DropdownSelect } from '../userroles';
 export default function AddRole(props) {
   const dispatch = useDispatch();
 
-  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315]);
+  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315, 314, 315]);
   const [projectView, setProjectView] = useState([]);
 
-  const [projectExportView, setprojectExportView] = useState([332]);
   const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
+  const [projectExportView, setprojectExportView] = useState([332]);
 
   const [userEdit, setUserEdit] = useState([5, 6, 7, 8, 10, 11, 66]);
   const [userView, setUserView] = useState([9]);

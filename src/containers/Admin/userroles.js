@@ -10,11 +10,11 @@ function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
 
-  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315]);
+  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315, 314, 315]);
   const [projectView, setProjectView] = useState([]);
 
-  const [projectExportView, setprojectExportView] = useState([332]);
   const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
+  const [projectExportView, setprojectExportView] = useState([332]);
 
   const [userEdit, setUserEdit] = useState([5, 6, 7, 8, 10, 11, 66]);
   const [userView, setUserView] = useState([9]);
@@ -52,6 +52,9 @@ function UserRoles() {
   const [allActivePermission, setAllActivePermission] = useState([]);
   const [authorActivityEdit, setAuthorActivityEdit] = useState([30, 31, 33, 34]);
   const [authorActivityView, setAuthorActivityView] = useState([32, 35, 36]);
+
+  const [authorVideoEdit, setauthorVideoEdit] = useState([]);
+  const [authorVideoView, setauthorVideoView] = useState([331]);
 
   const [checkRoles, setCheckRoles] = useState('');
 
@@ -354,6 +357,13 @@ function UserRoles() {
                                     permissions={values.permissions}
                                     currentFeatureView={teamView}
                                     currentFeatureEdit={teamEdit}
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'My interactive video'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={authorVideoView}
+                                    currentFeatureEdit={authorVideoEdit}
                                   />
                                 </div>
                               </div>

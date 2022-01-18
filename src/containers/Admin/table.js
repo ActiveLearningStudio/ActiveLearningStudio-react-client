@@ -219,7 +219,6 @@ function Table(props) {
             </tr>
           </thead>
           <tbody>
-
             {type === 'LMS' &&
               subType === 'All settings' &&
               (localStateData ? (
@@ -372,7 +371,6 @@ function Table(props) {
                                 if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-
                               }
                             }}
                           >
@@ -897,7 +895,7 @@ function Table(props) {
                           ))}
                         </div>
                         <div>
-                          <AdminDropdown type={type} type1={type1} />
+                          <AdminDropdown type={type} type1={type1} subType={subType} />
                         </div>
                       </div>
                     </td>
