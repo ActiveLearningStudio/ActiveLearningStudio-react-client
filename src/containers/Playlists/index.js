@@ -57,6 +57,7 @@ import DeletePopup from 'components/DeletePopup';
 import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
 import { getTeamPermission } from 'store/actions/team';
+import { getUserLmsSettingsAction } from 'store/actions/account';
 import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
@@ -121,6 +122,7 @@ function PlaylistsPage(props) {
     safariMontagePublishTool,
     row,
     showFooter,
+    getLmsSettings,
   } = props;
 
   const projectIdFilter = match?.params?.projectId || row?.id;
@@ -153,6 +155,7 @@ function PlaylistsPage(props) {
   }, []);
 
   useEffect(() => {
+    getLmsSettings();
     return () => {
       dispatch(clearSelectedProject());
     };
@@ -172,7 +175,7 @@ function PlaylistsPage(props) {
         icon: '',
       });
       loadProject(projectIdFilter);
-      loadProjectPlaylists(projectIdFilter);
+      loadProjectPlaylists(projectIdFilter, true);
     }
   }, [loadProject, activeOrganization]);
   useEffect(() => {
@@ -813,7 +816,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
+  loadProjectPlaylists: (id, skipContent) => dispatch(loadProjectPlaylistsAction(id, skipContent)),
   createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
@@ -832,6 +835,7 @@ const mapDispatchToProps = (dispatch) => ({
   getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
+  getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
 });
 
 const mapStateToProps = (state) => ({

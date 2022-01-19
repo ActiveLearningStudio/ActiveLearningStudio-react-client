@@ -15,12 +15,12 @@ import TeamView from './TeamCard';
 import TeamMemberView from './TeamMemberView';
 import TeamProjectView from './TeamProjectView';
 import ChannelPanel from './Channel';
-
-import './style.scss';
+import { updateSelectedTeamAction } from 'store/actions/team';
 import { clearOrganizationState, getOrganization, getRoles } from 'store/actions/organization';
 import { loadLmsAction } from 'store/actions/project';
 import Buttons from "utils/Buttons/buttons";
 import WhiteBoardModal from 'components/models/WhiteBoardModal';
+import './style.scss';
 
 // TODO: need to remove after connect API
 const breadCrumbData = {
@@ -32,7 +32,7 @@ const breadCrumbData = {
 };
 
 function TeamsPage(props) {
-  const { location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams } = props;
+  const { location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
@@ -44,28 +44,28 @@ function TeamsPage(props) {
   const dataRedux = useSelector((state) => state);
   const history = useHistory();
   const dispatch = useDispatch();
-  useEffect(() => {
-    (async () => {
-      dispatch(loadLmsAction());
-      if (activeOrganization && currentOrganization) {
-        if (activeOrganization?.id !== currentOrganization?.id) {
-          await loadSubOrgTeams();
-          setAlertCheck(true);
-        } else if (activeOrganization?.id === currentOrganization?.id && permission?.Team) {
-          await loadTeams();
-          setAlertCheck(true);
-        }
-      }
-    })();
-  }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck]);
-
   const status = creation ? 'creation' : editMode ? 'editMode' : teamShow ? 'teamShow' : projectShow ? 'projectShow' : overview ? 'teamShow' : 'channelShow';
-
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
   const auth = useSelector((state) => state.auth);
-
+  useEffect(() => {
+    if (activeOrganization && currentOrganization) {
+      dispatch(loadLmsAction());
+      if (activeOrganization?.id !== currentOrganization?.id) {
+        loadSubOrgTeams();
+        setAlertCheck(true);
+      } else if (activeOrganization?.id === currentOrganization?.id && permission?.Team) {
+        loadTeams();
+        setAlertCheck(true);
+      }
+    }
+  }, [loadTeams, loadSubOrgTeams, activeOrganization, currentOrganization, permission?.Team, setAlertCheck]);
+  useEffect(() => {
+    if (selectedTeam?.id) {
+      updateSelectedTeam(selectedTeam);
+    }
+  }, [selectedTeam])
   useEffect(() => {
     if (notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1) {
       dispatch(loadTeamsAction());
@@ -84,6 +84,13 @@ function TeamsPage(props) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
   }, [selectedTeam, teamPermission]);
+  useEffect(() => {
+    if (dataRedux.team.whiteBoardUrl) {
+      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
+      setLoading(false);
+    }
+  }, [dataRedux.team.whiteBoardUrl]);
+
   if (location.pathname.includes('teams/') && !selectedTeam && !creation) {
     return <></>;
   }
@@ -103,12 +110,7 @@ function TeamsPage(props) {
     dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
   }
 
-  useEffect(() => {
-    if (dataRedux.team.whiteBoardUrl) {
-      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
-      setLoading(false);
-    }
-  }, [dataRedux.team.whiteBoardUrl]);
+
 
   const handleShow = () => {
     setShow(true); //! state.show
@@ -142,9 +144,7 @@ function TeamsPage(props) {
         <div className="content-wrapper">
           <div className="content">
             <div className="row" style={{ justifyContent: 'space-between' }}>
-              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>
-                {overview ? `${activeOrganization?.name} Teams` : title[status] || 'Teams'}
-              </h1>
+              <h1 className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''}`}>{overview ? 'Teams' : title[status] || 'Teams'}</h1>
               <div className="flex-button-top">
                 {projectShow && (
                   <Buttons
@@ -255,6 +255,7 @@ TeamsPage.propTypes = {
   channelShow: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
   loadSubOrgTeams: PropTypes.func.isRequired,
+  updateSelectedTeam: PropTypes.func.isRequired,
 };
 
 TeamsPage.defaultProps = {
@@ -273,6 +274,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadTeams: () => dispatch(loadTeamsAction()),
   loadSubOrgTeams: () => dispatch(loadSubOrganizationTeamsAction()),
+  updateSelectedTeam: (team) => dispatch(updateSelectedTeamAction(team)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamsPage);
