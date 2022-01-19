@@ -8,9 +8,8 @@ import { addRole, getAllPermissionId } from 'store/actions/organization';
 import { Authoring, DropdownSelect } from '../userroles';
 export default function AddRole(props) {
   const dispatch = useDispatch();
-
-  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315, 314, 315]);
-  const [projectView, setProjectView] = useState([]);
+  const [projectEdit, setProjectEdit] = useState([12, 309, 310, 314, 315, 314, 315]);
+  const [projectView, setProjectView] = useState([371]);
 
   const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
   const [projectExportView, setprojectExportView] = useState([332]);
@@ -19,7 +18,7 @@ export default function AddRole(props) {
   const [userView, setUserView] = useState([9]);
 
   const [userRolesEdit, setUserRolesEdit] = useState([63, 149]);
-  const [userRoleView, setUserRoleView] = useState([]);
+  const [userRoleView, setUserRoleView] = useState([150]);
 
   const [orgEdit, setOrgEdit] = useState([1, 2, 4]);
   const [orgView, setOrgView] = useState([3]);
@@ -48,8 +47,12 @@ export default function AddRole(props) {
 
   const [AuthorplayListEdit, setAuthorPlayListEdit] = useState([24, 25, 27]);
   const [AuthorplayListView, setAuthorplayListView] = useState([26, 29, 28]);
+  const [allActivePermission, setAllActivePermission] = useState([]);
   const [authorActivityEdit, setAuthorActivityEdit] = useState([30, 31, 33, 34]);
   const [authorActivityView, setAuthorActivityView] = useState([32, 35, 36]);
+
+  const [authorVideoEdit, setauthorVideoEdit] = useState([]);
+  const [authorVideoView, setauthorVideoView] = useState([331]);
 
   const { permissionsId, activeOrganization, roles } = useSelector((state) => state.organization);
 
