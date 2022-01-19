@@ -701,11 +701,15 @@ function Table(props) {
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
-                        <td>
-                          <a href={row.link} target="_blank">
-                            Download
-                          </a>
-                        </td>
+                        {permission?.Organization?.includes('organization:download-project') ? (
+                          <td>
+                            <a href={row.link} target="_blank">
+                              Download
+                            </a>
+                          </td>
+                        ) : (
+                          <td>Not Authorized</td>
+                        )}
                       </tr>
                     );
                   })

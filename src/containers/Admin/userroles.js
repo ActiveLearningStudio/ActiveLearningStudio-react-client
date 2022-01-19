@@ -10,8 +10,8 @@ function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
 
-  const [projectEdit, setProjectEdit] = useState([12, 39, 309, 310, 314, 315, 314, 315]);
-  const [projectView, setProjectView] = useState([]);
+  const [projectEdit, setProjectEdit] = useState([12, 309, 310, 314, 315, 314, 315]);
+  const [projectView, setProjectView] = useState([371]);
 
   const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
   const [projectExportView, setprojectExportView] = useState([332]);
@@ -20,7 +20,7 @@ function UserRoles() {
   const [userView, setUserView] = useState([9]);
 
   const [userRolesEdit, setUserRolesEdit] = useState([63, 149]);
-  const [userRoleView, setUserRoleView] = useState([]);
+  const [userRoleView, setUserRoleView] = useState([150]);
 
   const [orgEdit, setOrgEdit] = useState([1, 2, 4]);
   const [orgView, setOrgView] = useState([3]);
@@ -358,12 +358,14 @@ function UserRoles() {
                                     currentFeatureView={teamView}
                                     currentFeatureEdit={teamEdit}
                                   />
+                                  <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
                                     type={'My interactive video'}
                                     permissions={values.permissions}
                                     currentFeatureView={authorVideoView}
                                     currentFeatureEdit={authorVideoEdit}
+                                    hideEdit
                                   />
                                 </div>
                               </div>
@@ -419,6 +421,15 @@ function UserRoles() {
                                   permissions={values.permissions}
                                   currentFeatureView={teamView}
                                   currentFeatureEdit={teamEdit}
+                                />
+                                <br />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'My interactive video'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={authorVideoView}
+                                  currentFeatureEdit={authorVideoEdit}
+                                  hideEdit
                                 />
                               </div>
                             </Card.Body>
@@ -614,7 +625,7 @@ function UserRoles() {
   );
 }
 
-export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold }) => {
+export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit }) => {
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
@@ -651,9 +662,11 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
         <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
           View
         </option>
-        <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
-          Edit
-        </option>
+        {!hideEdit && (
+          <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
+            Edit
+          </option>
+        )}
         <option value="----" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
           ----
         </option>

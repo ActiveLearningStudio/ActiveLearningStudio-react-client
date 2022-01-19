@@ -520,7 +520,7 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && subType === 'All Projects' && (
+        {type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <button
             className="switch-libreq"
             type="button"
@@ -686,7 +686,7 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}

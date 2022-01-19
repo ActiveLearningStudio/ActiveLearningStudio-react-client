@@ -103,12 +103,15 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(permission?.Organization?.includes('organization:view-allproject') || permission?.Organization?.includes('organization:view-exported-project')) && (
+                  {(permission?.Organization?.includes('organization:view-all-project') || permission?.Organization?.includes('organization:view-exported-project')) && (
                     <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
                         <Pills
                           setModalShow={setModalShow}
-                          modules={['All Projects', permission?.Organization?.includes('organization:view-exported-project') && 'Exported Projects']}
+                          modules={[
+                            permission?.Organization?.includes('organization:view-all-project') && 'All Projects',
+                            permission?.Organization?.includes('organization:view-exported-project') && 'Exported Projects',
+                          ]}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
                           type="Projects"

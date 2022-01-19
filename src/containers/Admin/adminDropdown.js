@@ -174,30 +174,31 @@ const AdminDropdown = (props) => {
           )}
           {type === 'Projects' && (
             <>
-              {' '}
-              <Dropdown.Item
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Please Wait !',
-                    html: 'Exporting  Project ...',
-                    allowOutsideClick: false,
-                    onBeforeOpen: () => {
-                      Swal.showLoading();
-                    },
-                  });
-                  const result = adminService.exportProject(activeOrganization.id, row.id);
-                  result.then((data) => {
-                    // console.log(data)
+              {permission?.Organization.includes('organization:export-project') && (
+                <Dropdown.Item
+                  onClick={() => {
                     Swal.fire({
-                      icon: 'success',
-                      html: data?.message,
+                      title: 'Please Wait !',
+                      html: 'Exporting  Project ...',
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
                     });
-                  });
-                }}
-              >
-                <img src={Export} alt="Preview" className="menue-img" />
-                Export
-              </Dropdown.Item>
+                    const result = adminService.exportProject(activeOrganization.id, row.id);
+                    result.then((data) => {
+                      // console.log(data)
+                      Swal.fire({
+                        icon: 'success',
+                        html: data?.message,
+                      });
+                    });
+                  }}
+                >
+                  <img src={Export} alt="Preview" className="menue-img" />
+                  Export
+                </Dropdown.Item>
+              )}
               {row.shared ? (
                 <Dropdown.Item
                   onClick={() => {
@@ -259,61 +260,65 @@ const AdminDropdown = (props) => {
                   Get shared link
                 </Dropdown.Item>
               ) : null}
-              <Dropdown.Item
-                onClick={() => {
-                  // dispatch(setActiveAdminForm("edit_project"));
-                  // dispatch(setCurrentProject(row));
-                  setModalShow(true);
-                  setProjectID(row.id);
-                  setrowData(row);
-                  setActivePageNumber(activePage);
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                Edit
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure you want to delete this Project?',
-                    text: 'This action is Irreversible',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      Swal.fire({
-                        icon: 'info',
-                        text: 'Deleting Project...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                        button: false,
-                      });
-                      const response = projectService.remove(row.id, activeOrganization.id);
-                      response
-                        .then((res) => {
-                          Swal.fire({
-                            icon: 'success',
-                            text: res?.message,
-                          });
+              {permission?.Organization.includes('organization:edit-project') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    // dispatch(setActiveAdminForm("edit_project"));
+                    // dispatch(setCurrentProject(row));
+                    setModalShow(true);
+                    setProjectID(row.id);
+                    setrowData(row);
+                    setActivePageNumber(activePage);
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-project') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure you want to delete this Project?',
+                      text: 'This action is Irreversible',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          icon: 'info',
+                          text: 'Deleting Project...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = projectService.remove(row.id, activeOrganization.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message,
+                            });
 
-                          const filterProject = localStateData.filter((each) => each.id != row.id);
-                          console.log(filterProject);
-                          setLocalStateData(filterProject);
-                        })
-                        .catch((err) => console.log(err));
-                    }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                Delete
-              </Dropdown.Item>
+                            const filterProject = localStateData.filter((each) => each.id != row.id);
+                            console.log(filterProject);
+                            setLocalStateData(filterProject);
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
             </>
           )}
           {type === 'Activities' && subType === 'Activity Items' && (
