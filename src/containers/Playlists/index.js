@@ -63,6 +63,9 @@ import CreatePlaylistPopup from './CreatePlaylistPopup';
 import Edit from '../../assets/images/menu-edit.svg';
 import Preview from '../../assets/images/preview-2.svg';
 import AddBtn from '../../assets/images/add-btn.svg';
+import Correct from '../../assets/images/svg/Correct.svg';
+import Warning from '../../assets/images/svg/Warning.svg';
+import ErrorImg from '../../assets/images/svg/Error.svg';
 
 import './style.scss';
 
@@ -648,7 +651,7 @@ function PlaylistsPage(props) {
                           </div>
                           {selectedProject?.indexing_text !== "NOT REQUESTED" && (
                             <div className="library-status">
-                              <FontAwesomeIcon icon="exclamation-circle" className="mr-2" />
+                              {<img src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg} className="mr-2" />}
                               {selectedProject?.indexing_text}
                             </div>
                           )}

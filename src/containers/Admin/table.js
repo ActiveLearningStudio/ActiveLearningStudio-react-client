@@ -684,31 +684,32 @@ function Table(props) {
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 {indexingArray.map((element) => (
-                                  <Dropdown.Item
-                                    onClick={async () => {
-                                      const result = await adminService.updateIndex(row.id, element.indexing);
-                                      if (result?.message) {
-                                        const editRow = {
-                                          ...row,
-                                          indexing: element.indexing,
-                                          indexing_text: element.indexing_text,
-                                        };
-                                        setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                        Swal.fire({
-                                          icon: 'success',
-                                          text: result.message,
-                                        });
-                                      } else {
-                                        Swal.fire({
-                                          icon: 'error',
-                                          text: 'Error',
-                                        });
-                                      }
-                                    }}
-                                  >
-                                    {element.indexing_text}
-                                  </Dropdown.Item>
-                                ))}
+                                  element.indexing_text !== 'NOT REQUESTED' && (
+                                    <Dropdown.Item
+                                      onClick={async () => {
+                                        const result = await adminService.updateIndex(row.id, element.indexing);
+                                        if (result?.message) {
+                                          const editRow = {
+                                            ...row,
+                                            indexing: element.indexing,
+                                            indexing_text: element.indexing_text,
+                                          };
+                                          setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                          Swal.fire({
+                                            icon: 'success',
+                                            text: result.message,
+                                          });
+                                        } else {
+                                          Swal.fire({
+                                            icon: 'error',
+                                            text: 'Error',
+                                          });
+                                        }
+                                      }}
+                                    >
+                                      {element.indexing_text}
+                                    </Dropdown.Item>
+                                  )))}
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
