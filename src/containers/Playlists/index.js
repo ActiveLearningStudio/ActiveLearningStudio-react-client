@@ -64,7 +64,7 @@ import Edit from 'assets/images/menu-edit.svg';
 import Preview from 'assets/images/preview-2.svg';
 import AddBtn from 'assets/images/add-btn.svg';
 import Correct from 'assets/images/svg/Correct.svg';
-import Warning from 'assets/images/svg/Warning.svg';
+import Warning from 'assets/images/svg/warning-icon.svg';
 import ErrorImg from 'assets/images/svg/Error.svg';
 
 import './style.scss';
