@@ -60,12 +60,12 @@ import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
-import Edit from '../../assets/images/menu-edit.svg';
-import Preview from '../../assets/images/preview-2.svg';
-import AddBtn from '../../assets/images/add-btn.svg';
-import Correct from '../../assets/images/svg/Correct.svg';
-import Warning from '../../assets/images/svg/Warning.svg';
-import ErrorImg from '../../assets/images/svg/Error.svg';
+import Edit from 'assets/images/menu-edit.svg';
+import Preview from 'assets/images/preview-2.svg';
+import AddBtn from 'assets/images/add-btn.svg';
+import Correct from 'assets/images/svg/Correct.svg';
+import Warning from 'assets/images/svg/Warning.svg';
+import ErrorImg from 'assets/images/svg/Error.svg';
 
 import './style.scss';
 
