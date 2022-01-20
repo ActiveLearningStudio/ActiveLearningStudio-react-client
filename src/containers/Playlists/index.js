@@ -45,8 +45,6 @@ import {
   loadLmsAction,
   // toggleProjectShareAction,
   // toggleProjectShareRemovedAction,
-  getIndexed,
-  getElastic,
   visibilityTypes,
   updateProjectAction,
   clearSelectedProject,
@@ -115,8 +113,6 @@ function PlaylistsPage(props) {
     resource,
     playlist: { playlists },
     ui,
-    getIndexedData,
-    getElasticData,
     getTeamPermissions,
     closeSafariMontageTool,
     safariMontagePublishTool,
@@ -190,8 +186,6 @@ function PlaylistsPage(props) {
 
   const editVisibility = async (type) => {
     await dispatch(updateProjectAction(projectState.selectedProject.id, { ...projectState.selectedProject, organization_visibility_type_id: type }));
-    await getIndexedData(projectState.selectedProject.id);
-    await getElasticData(projectState.selectedProject.id);
   };
 
   const handleShowCreatePlaylistModal = async (e) => {
@@ -831,8 +825,6 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   loadLms: () => dispatch(loadLmsAction()),
-  getIndexedData: (id) => dispatch(getIndexed(id)),
-  getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
   getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
