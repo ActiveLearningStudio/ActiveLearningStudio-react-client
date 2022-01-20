@@ -335,6 +335,7 @@ function UserRoles() {
                                     currentFeatureView={AuthorProjectView}
                                     currentFeatureEdit={AuthorProjectEdit}
                                   />
+
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
@@ -633,6 +634,19 @@ function UserRoles() {
 }
 
 export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit }) => {
+  // const [viewOption, setViewOption] = useState(false);
+  // const [editOption, setEditOption] = useState(false);
+  // const [noneOption, setnoneOption] = useState(false);
+  // useEffect(() => {
+  //   console.log(type);
+  //   setViewOption(currentFeatureView.some((i) => permissions.includes(String(i))));
+  //   console.log(currentFeatureView.some((i) => permissions.includes(String(i))));
+  //   setEditOption(currentFeatureEdit.some((i) => permissions.includes(String(i))));
+  //   console.log(currentFeatureEdit.some((i) => permissions.includes(String(i))));
+  //   setnoneOption(!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i))));
+  //   console.log(!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i))));
+  // }, [currentFeatureEdit, currentFeatureView]);
+
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
@@ -648,7 +662,7 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
               }),
               ...currentFeatureView.map((e) => String(e)),
             ]);
-          } else if (e.target.value == '----') {
+          } else if (e.target.value == 'none') {
             const specialView = [...currentFeatureView, ...currentFeatureEdit];
 
             if (specialView?.length) {
@@ -664,6 +678,32 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
           } else {
             setFieldValue('permissions', [...permissions, ...currentFeatureEdit.map((e) => String(e)), ...currentFeatureView.map((e) => String(e))]);
           }
+
+          if (!bold) {
+            const parentControler = e.target.parentNode.parentElement.previousElementSibling.getElementsByTagName('select')[0];
+            const sibling = e.target.parentNode.parentElement.getElementsByTagName('select');
+            const checkAllValuesInSibling = [];
+            for (var i = 0; i < sibling.length; i++) {
+              checkAllValuesInSibling.push(sibling[i]?.value);
+            }
+            const removeDuplicate = new Set(checkAllValuesInSibling);
+            if (removeDuplicate.size > 1) {
+              parentControler.value = '---';
+              console.log('values are not same', parentControler.value);
+            } else {
+              console.log('values are same', parentControler.value);
+              console.log(Array.from(removeDuplicate)[0]);
+              parentControler.value = Array.from(removeDuplicate)[0];
+            }
+            console.log(checkAllValuesInSibling);
+          } else {
+            const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName('select');
+
+            for (var i = 0; i < sibling?.length; i++) {
+              console.log(sibling[i].value, e.target.value);
+              sibling[i].value = e.target.value;
+            }
+          }
         }}
       >
         <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
@@ -674,8 +714,9 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
             Edit
           </option>
         )}
-        <option value="----" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
-          ----
+
+        <option value="none" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
+          none
         </option>
       </select>
       {bold ? <h6>{type}</h6> : <p> {type}</p>}
