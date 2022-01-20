@@ -8,57 +8,223 @@ import { addRole, getAllPermissionId } from 'store/actions/organization';
 import { Authoring, DropdownSelect } from '../userroles';
 export default function AddRole(props) {
   const dispatch = useDispatch();
-  const [projectEdit, setProjectEdit] = useState([12, 309, 310, 314, 315, 314, 315]);
-  const [projectView, setProjectView] = useState([371]);
-
-  const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
-  const [projectExportView, setprojectExportView] = useState([332]);
-
-  const [userEdit, setUserEdit] = useState([5, 6, 7, 8, 10, 11, 66]);
-  const [userView, setUserView] = useState([9]);
-
-  const [userRolesEdit, setUserRolesEdit] = useState([63, 149]);
-  const [userRoleView, setUserRoleView] = useState([150]);
-
-  const [orgEdit, setOrgEdit] = useState([1, 2, 4]);
-  const [orgView, setOrgView] = useState([3]);
+  const { permissionsId, activeOrganization, roles } = useSelector((state) => state.organization);
   const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
 
-  const [activityEdit, setActivityEdit] = useState([316, 317, 319]);
-  const [activityView, setActivityView] = useState([318]);
+  // organization all projects
+  const projectEditName = [
+    'organization:upload-thumb',
+    'organization:edit-project',
+    'organization:delete-project',
+    'organization:view-library-request-project',
+    'organization:review-library-request-project',
+  ];
+  const projectViewName = ['organization:view-all-project'];
+  const [projectEdit, setProjectEdit] = useState([12, 309, 310, 314, 315]);
+  const [projectView, setProjectView] = useState([371]);
 
-  const [activityItemEdit, setActivityItemEdit] = useState([341, 339, 338]);
-  const [activityItemView, setActivityItemView] = useState([340]);
+  // organization import/export project
+  const projectexportEditName = ['organization:export-project', 'organization:import-project', 'organization:download-project'];
+  const projectexportViewName = ['organization:view-exported-project'];
+  const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
+  const [projectExportView, setProjectExportView] = useState([332]);
 
-  const [activityTypeEdit, setActivityTypeEdit] = useState([337, 335, 334]);
-  const [activityTypeView, setActivityTypeView] = useState([336]);
+  // organization user
+  const userEditName = [
+    'organization:add-user',
+    'organization:invite-members',
+    'organization:update-user',
+    'organization:delete-user',
+    'organization:add-admin',
+    'organization:delete-admin',
+    'organization:remove-user',
+  ];
+  const userViewName = ['organization:view-user'];
+  const [userEdit, setUserEdit] = useState([]);
+  const [userView, setUserView] = useState([]);
 
-  const [lmsSettingEdit, setlmsSettingEdit] = useState([350, 348, 347]);
-  const [lmsSettingView, setLmsSettingView] = useState([349]);
+  // organization manage roles
+  const userRoleEditName = ['organization:add-role', 'organization:edit-role'];
+  const userRoleViewName = ['organization:view-role'];
+  const [userRolesEdit, setUserRolesEdit] = useState([]);
+  const [userRoleView, setUserRoleView] = useState([]);
 
-  const [ltiSettingEdit, setltiSettingEdit] = useState([346, 344, 343]);
-  const [ltiSettingView, setLtiSettingView] = useState([345]);
+  // org org
+  const orgEditName = ['organization:edit', 'organization:delete', 'organization:create'];
+  const orgViewName = ['organization:view'];
+  const [orgEdit, setOrgEdit] = useState([]);
+  const [orgView, setOrgView] = useState([]);
 
-  const [teamEdit, setTeamEdit] = useState([40, 301, 302]);
-  const [teamView, setTeamView] = useState([39]);
+  // org activity item
+  const orgActivityItemEditName = ['organization:create-activity-item', 'organization:delete-activity-item', 'organization:edit-activity-item'];
+  const orgActivityItemViewName = ['organization:view-activity-item'];
+  const [activityItemEdit, setActivityItemEdit] = useState([]);
+  const [activityItemView, setActivityItemView] = useState([]);
 
-  const [AuthorProjectEdit, setAuthorProjectEdit] = useState([13, 14, 16, 19, 20, 21, 22, 23]);
-  const [AuthorProjectView, setAuthorProjectView] = useState([15, 17, 18]);
+  // org activity type
+  const orgActivityTypeEditName = ['organization:create-activity-type', 'organization:delete-activity-type', 'organization:edit-activity-type'];
+  const orgActivityTypeViewName = ['organization:view-activity-type'];
+  const [activityTypeEdit, setActivityTypeEdit] = useState([]);
+  const [activityTypeView, setActivityTypeView] = useState([]);
 
-  const [AuthorplayListEdit, setAuthorPlayListEdit] = useState([24, 25, 27]);
-  const [AuthorplayListView, setAuthorplayListView] = useState([26, 29, 28]);
-  const [allActivePermission, setAllActivePermission] = useState([]);
-  const [authorActivityEdit, setAuthorActivityEdit] = useState([30, 31, 33, 34]);
-  const [authorActivityView, setAuthorActivityView] = useState([32, 35, 36]);
+  // org  lms type
+  const orglmsEditName = ['organization:create-lms-setting', 'organization:delete-lms-setting', 'organization:edit-lms-setting'];
+  const orglmsViewName = ['organization:view-lms-setting'];
+  const [lmsSettingEdit, setlmsSettingEdit] = useState([]);
+  const [lmsSettingView, setLmsSettingView] = useState([]);
 
+  // org all lti type
+  const orgltiEditName = ['organization:create-all-setting', 'organization:delete-all-setting', 'organization:edit-all-setting'];
+  const orgltiViewName = ['organization:view-all-setting'];
+  const [ltiSettingEdit, setltiSettingEdit] = useState([]);
+  const [ltiSettingView, setLtiSettingView] = useState([]);
+
+  // author team
+  const authorteamEditName = ['team:create', 'team:edit', 'team:delete'];
+  const authorteamViewName = ['team:view'];
+  const [teamEdit, setTeamEdit] = useState([]);
+  const [teamView, setTeamView] = useState([]);
+
+  // author project
+  const authorProjectEditName = [
+    'project:edit',
+    'project:delete',
+    'project:create',
+    'project:request-indexing',
+    'project:favorite',
+    'project:publish',
+    'project:upload-thumb',
+    'project:recent',
+  ];
+  const authorProjectViewName = ['project:view', 'project:share', 'project:clone'];
+  const [AuthorProjectEdit, setAuthorProjectEdit] = useState([]);
+  const [AuthorProjectView, setAuthorProjectView] = useState([]);
+
+  // author playlist
+  const authorPlaylistEditName = ['playlist:edit', 'playlist:delete', 'playlist:create'];
+  const authorPlaylistViewName = ['playlist:view', 'playlist:publish', 'playlist:duplicate'];
+  const [AuthorplayListEdit, setAuthorPlayListEdit] = useState([]);
+  const [AuthorplayListView, setAuthorplayListView] = useState([]);
+
+  // author activity
+  const authorActivityEditName = ['activity:edit', 'activity:delete', 'activity:create', 'activity:upload'];
+  const authorActivityViewName = ['activity:view', 'activity:share', 'activity:duplicate'];
+  const [authorActivityEdit, setAuthorActivityEdit] = useState([]);
+  const [authorActivityView, setAuthorActivityView] = useState([]);
+
+  // author video
+  const authorVideoEditName = [];
+  const authorVideoViewName = ['video:view'];
   const [authorVideoEdit, setauthorVideoEdit] = useState([]);
   const [authorVideoView, setauthorVideoView] = useState([331]);
-
-  const { permissionsId, activeOrganization, roles } = useSelector((state) => state.organization);
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
   }, []);
+
+  useEffect(() => {
+    var permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => projectEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setProjectEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => projectViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setProjectView(permissionIdArray);
+    permissionIdArray = [];
+
+    permissionsId?.Organization.filter((data) => projectexportEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setProjectExportEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => projectexportViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setProjectExportView(permissionIdArray);
+    permissionIdArray = [];
+
+    // organization user project
+    permissionsId?.Organization.filter((data) => userEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setUserEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => userViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setUserView(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => userRoleEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setUserRolesEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => userRoleViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setUserRoleView(permissionIdArray);
+    permissionIdArray = [];
+
+    // org org
+    permissionsId?.Organization.filter((data) => orgEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setOrgEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setOrgView(permissionIdArray);
+    permissionIdArray = [];
+
+    // organization activity
+    permissionsId?.Organization.filter((data) => orgActivityTypeEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setActivityTypeEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgActivityTypeViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setActivityTypeView(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgActivityItemEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setActivityItemEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgActivityItemViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setActivityItemView(permissionIdArray);
+    permissionIdArray = [];
+
+    // org lms
+    permissionsId?.Organization.filter((data) => orglmsEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setlmsSettingEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orglmsViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setLmsSettingView(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgltiEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setltiSettingEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgltiViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setLtiSettingView(permissionIdArray);
+    permissionIdArray = [];
+
+    // author project
+    permissionsId?.Project.filter((data) => authorProjectEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorProjectEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Project.filter((data) => authorProjectViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorProjectView(permissionIdArray);
+    permissionIdArray = [];
+
+    // author Playlist
+    permissionsId?.Playlist.filter((data) => authorPlaylistEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorPlayListEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Playlist.filter((data) => authorPlaylistViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorplayListView(permissionIdArray);
+    permissionIdArray = [];
+
+    // author activity
+    permissionsId?.Activity.filter((data) => authorActivityEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorActivityEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Activity.filter((data) => authorActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorActivityView(permissionIdArray);
+    permissionIdArray = [];
+
+    // author team
+    permissionsId?.Team.filter((data) => authorteamEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setTeamEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Team.filter((data) => authorteamViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setTeamView(permissionIdArray);
+    permissionIdArray = [];
+
+    // video team
+    permissionsId?.Video.filter((data) => authorVideoViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setauthorVideoView(permissionIdArray);
+    permissionIdArray = [];
+  }, [permissionsId]);
 
   const MySpecialField = ({ field }) => {
     return (
