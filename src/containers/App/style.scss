@@ -3966,3 +3966,33 @@ body.collapsed {
   margin: 36px;
   border-radius: 3px;
 }
+
+.swal2-icon {
+  width: 3em;
+  height: 3em;
+  .swal2-icon-content {
+    font-size:3em;
+  }
+}
+
+.swal2-icon.swal2-success {
+  .swal2-success-line-tip {
+    top: 1.75em !important;
+    left: 0.4em !important;
+    width: 1em !important;
+    background-color: #12B347 !important;
+  }
+  .swal2-success-line-long {
+    top: 1.4em !important;
+    right: 0.2em !important;
+    width: 2em !important;
+    background-color: #12B347 !important;
+  }
+  .swal2-success-ring {
+    border: .25em solid #12B347 !important;
+  }
+}
+
+.swal2-title{
+  font-size: 24px;
+}
