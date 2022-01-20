@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import adminService from 'services/admin.service';
 
 import * as actionTypes from 'store/actionTypes';
-import { toggleProjectShareAction, toggleProjectShareRemovedAction, visibilityTypes, updateProjectAction, getElastic, getIndexed } from 'store/actions/project';
+import { toggleProjectShareAction, toggleProjectShareRemovedAction, visibilityTypes, updateProjectAction } from 'store/actions/project';
 import { deleteUserFromOrganization, getOrganization, clearOrganizationState, removeUserFromOrganization, getRoles, updatePageNumber } from 'store/actions/organization';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from 'react-router-dom';
@@ -729,8 +729,6 @@ function Table(props) {
                                       if (result) {
                                         setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                       }
-                                      await dispatch(getIndexed(row.id));
-                                      await dispatch(getElastic(row.id));
                                       Swal.close();
                                     }}
                                   >
