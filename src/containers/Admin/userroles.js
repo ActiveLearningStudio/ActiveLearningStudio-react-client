@@ -26,8 +26,8 @@ function UserRoles() {
   // organization import/export project
   const projectexportEditName = ['organization:export-project', 'organization:import-project', 'organization:download-project'];
   const projectexportViewName = ['organization:view-exported-project'];
-  const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
-  const [projectExportView, setProjectExportView] = useState([332]);
+  const [projectExportEdit, setProjectExportEdit] = useState([]);
+  const [projectExportView, setProjectExportView] = useState([]);
 
   // organization user
   const userEditName = [
@@ -285,7 +285,7 @@ function UserRoles() {
                         </button>
                       </div>
                     </div>
-                  )}
+                   )} 
 
                   <Tab.Container id="left-tabs-example" defaultActiveKey="manual-3">
                     <Row className="roles-permission-tab-row">

@@ -85,6 +85,7 @@ function AdminPanel({ showSSO }) {
                           <h3>Main organization: {currentOrganization?.name}</h3>
                           <p>{currentOrganization?.description}</p>
                         </div>
+                        {permission?.Organization?.includes('organization:edit') && (
                         <button
                           onClick={() => {
                             dispatch(setActiveAdminForm('edit_org'));
@@ -97,6 +98,7 @@ function AdminPanel({ showSSO }) {
                           <img src={editicon} alt="" />
                           Edit organization
                         </button>
+                        )}
                       </div>
                       <div className="module-content">
                         <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
@@ -134,12 +136,15 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {true && (
+                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
                         <Pills
-                          modules={['All Users', true || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null]}
-                          type="Users"
+                         type="Users"
+                          modules={[
+                            permission?.Organization?.includes('organization:view-user') && 'All Users',
+                            permission?.Organization?.includes('organization:view-role') && 'Manage Roles',
+                          ]}
                           subType="All Users"
                         />
                       </div>
@@ -151,9 +156,9 @@ function AdminPanel({ showSSO }) {
                       <div className="module-content">
                         <Pills
                           modules={[
-                            permission?.Organization?.includes('organization:view-all-setting') && 'All settings',
+                            permission?.Organization?.includes('organization:view-lms-setting') && 'All settings',
 
-                            permission?.Organization?.includes('organization:view-lms-setting') && 'LTI Tools',
+                            permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             'BrightCove',
                           ]}
                           type="LMS"
