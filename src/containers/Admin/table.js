@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import adminService from 'services/admin.service';
 
 import * as actionTypes from 'store/actionTypes';
-import { toggleProjectShareAction, toggleProjectShareRemovedAction, visibilityTypes, updateProjectAction, getElastic, getIndexed } from 'store/actions/project';
+import { toggleProjectShareAction, toggleProjectShareRemovedAction, visibilityTypes, updateProjectAction } from 'store/actions/project';
 import { deleteUserFromOrganization, getOrganization, clearOrganizationState, removeUserFromOrganization, getRoles, updatePageNumber } from 'store/actions/organization';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, withRouter } from 'react-router-dom';
@@ -684,31 +684,32 @@ function Table(props) {
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 {indexingArray.map((element) => (
-                                  <Dropdown.Item
-                                    onClick={async () => {
-                                      const result = await adminService.updateIndex(row.id, element.indexing);
-                                      if (result?.message) {
-                                        const editRow = {
-                                          ...row,
-                                          indexing: element.indexing,
-                                          indexing_text: element.indexing_text,
-                                        };
-                                        setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                        Swal.fire({
-                                          icon: 'success',
-                                          text: result.message,
-                                        });
-                                      } else {
-                                        Swal.fire({
-                                          icon: 'error',
-                                          text: 'Error',
-                                        });
-                                      }
-                                    }}
-                                  >
-                                    {element.indexing_text}
-                                  </Dropdown.Item>
-                                ))}
+                                  element.indexing_text !== 'NOT REQUESTED' && (
+                                    <Dropdown.Item
+                                      onClick={async () => {
+                                        const result = await adminService.updateIndex(row.id, element.indexing);
+                                        if (result?.message) {
+                                          const editRow = {
+                                            ...row,
+                                            indexing: element.indexing,
+                                            indexing_text: element.indexing_text,
+                                          };
+                                          setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                          Swal.fire({
+                                            icon: 'success',
+                                            text: result.message,
+                                          });
+                                        } else {
+                                          Swal.fire({
+                                            icon: 'error',
+                                            text: 'Error',
+                                          });
+                                        }
+                                      }}
+                                    >
+                                      {element.indexing_text}
+                                    </Dropdown.Item>
+                                  )))}
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
@@ -729,8 +730,6 @@ function Table(props) {
                                       if (result) {
                                         setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                       }
-                                      await dispatch(getIndexed(row.id));
-                                      await dispatch(getElastic(row.id));
                                       Swal.close();
                                     }}
                                   >
