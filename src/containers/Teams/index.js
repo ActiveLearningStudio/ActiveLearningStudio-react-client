@@ -27,7 +27,7 @@ import { loadLmsAction } from 'store/actions/project';
 import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 // import TeamMemberView from './TeamMemberView';
-import TeamProjectView from './TeamProjectView';
+import TeamAddProjects from './TeamAddProjects';
 import ChannelPanel from './Channel';
 
 import './style.scss';
@@ -36,7 +36,7 @@ import TeamDetail from './TeamDetailView';
 
 function TeamsPage(props) {
   const {
-    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam,
+    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam, creationTeam,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
@@ -156,14 +156,16 @@ function TeamsPage(props) {
           <div className="inner-content">
             {overview && <div className="organization-name">{currentOrganization?.name}</div>}
             <div>
-              <h1
-                className={`title${projectShow ? ' project-title' : ''}${channelShow ? ' channel-title' : ''
-                  }`}
-              >
-                {overview && 'Teams'}
-              </h1>
+              {overview
+                && (
+                  <h1
+                    className="title-team"
+                  >
+                    Teams
+                  </h1>
+                )}
               <div className="flex-button-top">
-                {teamPermission?.Team?.includes('team:add-project')
+                {/* {teamPermission?.Team?.includes('team:add-project')
                   && projectShow && (
                     <Link
                       to={`/org/${organization.currentOrganization?.domain}/teams/${selectedTeam.id}/add-projects`}
@@ -182,7 +184,7 @@ function TeamsPage(props) {
                     >
                       <div className="btn-top-page">Add/Remove Members</div>
                     </Link>
-                  )}
+                  )} */}
                 {permission?.Team?.includes('team:create') && overview && (
                   <div className="team-controller">
                     <div className="search-and-filters">
@@ -301,11 +303,14 @@ function TeamsPage(props) {
                   <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
                 </div>
               )}
-              {(teamShow && selectedTeam) && (
-                <TeamDetail team={selectedTeam} organization={currentOrganization} />
+              {teamShow && selectedTeam && activeOrganization && (
+                <TeamDetail team={selectedTeam} organization={activeOrganization} />
               )}
-              {projectShow && selectedTeam && (
-                <TeamProjectView team={selectedTeam} />
+              {projectShow && selectedTeam && activeOrganization && (
+                <TeamAddProjects team={selectedTeam} organization={activeOrganization} />
+              )}
+              {creationTeam && selectedTeam && activeOrganization && (
+                <TeamAddProjects team={selectedTeam} organization={activeOrganization} />
               )}
               {channelShow && selectedTeam && <ChannelPanel />}
             </>
@@ -334,6 +339,7 @@ TeamsPage.propTypes = {
   teamShow: PropTypes.bool,
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
+  creationTeam: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
   loadSubOrgTeams: PropTypes.func.isRequired,
   updateSelectedTeam: PropTypes.func.isRequired,
@@ -346,6 +352,7 @@ TeamsPage.defaultProps = {
   teamShow: false,
   projectShow: false,
   channelShow: false,
+  creationTeam: false,
 };
 
 const mapStateToProps = (state) => ({

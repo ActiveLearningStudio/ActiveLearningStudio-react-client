@@ -297,7 +297,11 @@
     }
     .results_search {
       width: 100%;
-
+      .teams-logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.5rem !important;
+      }
       .box {
         display: flex;
         padding: 12px;
@@ -405,7 +409,7 @@
         }
       }
 
-      .content {
+      .contentbox {
         margin-top: 0;
         width: 78%;
         display: flex;

@@ -11,6 +11,7 @@ import UserIcon from 'assets/images/svg/user.svg';
 import Deleticon from 'assets/images/svg/trash.svg';
 import Right from 'assets/images/svg/right.svg';
 // import MyTeamCard from 'utils/MyTeamCard/myteamcard';
+import InviteDialog from 'components/InviteDialog';
 import ProjectCard from 'containers/Projects/ProjectCard';
 // import BackgroundTeamCardImage from 'assets/images/cardlistimg.png';
 
@@ -131,9 +132,7 @@ const TeamDetail = ({ team, organization }) => {
           <img src={UserIcon} alt="" />
         </div>
         <div className="right_select">
-          <select className={`${toggleLeft ? 'none' : ''}`}>
-            <option>Invite a team member</option>
-          </select>
+          <InviteDialog />
         </div>
         {team?.users?.map((user) => (
           <div className="right_card">

@@ -24,9 +24,9 @@
 
 // Add Team Projects Style
 .add-team-projects {
-  padding: 16px 24px;
-  margin-left: 136px !important;
-  margin-top: 0 !important;
+  // padding: 16px 24px;
+  // margin-left: 136px !important;
+  // margin-top: 0 !important;
   .team-projects-top-section {
     display: flex;
     justify-content: space-between;
@@ -162,6 +162,9 @@
   .list-of-team-projects {
     display: flex;
     flex-wrap: wrap;
+    .alert {
+      width: 100%;
+    }
     .mrt {
       margin-top: 16px;
       margin-right: 16px;

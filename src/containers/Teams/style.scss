@@ -101,26 +101,14 @@
     flex-grow: 0;
     margin: 4px 0px;
   }
-  .title {
-    margin-bottom: 8px;
-    font-family: $rubik, sans-serif;
-    font-weight: 700;
-    font-size: 20px;
+  .title-team {
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
     color: #084892;
-
-    &.project-title {
-      padding-top: 7px;
-      padding-left: 31px;
-      background: url(../../assets/images/project.svg) no-repeat 0 9px;
-      letter-spacing: -0.5px;
-    }
-
-    &.channel-title {
-      padding-top: 7px;
-      padding-left: 31px;
-      background: url(../../assets/images/users_net.svg) no-repeat 0 3px;
-      letter-spacing: -0.5px;
-    }
+    margin-bottom: 16px !important;
   }
 
   .dashboard-panel {
@@ -137,11 +125,11 @@
   //   border-color: mediumaquamarine;
   // }
 
-  label {
-    font-weight: bold;
-    margin-right: 0.5em;
-    margin-bottom: 0.3em;
-  }
+  // label {
+  //   font-weight: bold;
+  //   margin-right: 0.5em;
+  //   margin-bottom: 0.3em;
+  // }
 
   .offer-panel {
     border: solid 3px #084892;

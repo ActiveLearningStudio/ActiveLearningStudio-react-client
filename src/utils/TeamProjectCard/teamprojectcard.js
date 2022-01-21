@@ -8,8 +8,7 @@ import ProjectPlayList from "utils/ProjectPlayList/projectplaylist";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEye, faLink } from "@fortawesome/free-solid-svg-icons";
 
-const TeamProjectCard = ({ className, backgroundImg, title }) => {
-  const [selectProject, setSelectProject] = useState(false);
+const TeamProjectCard = ({ className, backgroundImg, title, setSelectProject, selectProject, project }) => {
   const currikiUtility = classNames(
     "curriki-utility-teamproject-card",
     className
@@ -18,7 +17,7 @@ const TeamProjectCard = ({ className, backgroundImg, title }) => {
     <div className={currikiUtility}>
       <div
         className={
-          selectProject
+          selectProject.includes(project.id)
             ? "teamproject-card-top select-project-status"
             : " teamproject-card-top noselect-project-status"
         }
@@ -29,13 +28,18 @@ const TeamProjectCard = ({ className, backgroundImg, title }) => {
             <input type="checkbox" />
             <span
               onClick={() => {
-                setSelectProject(!selectProject);
+                if (selectProject.includes(project.id)) {
+                  setSelectProject(selectProject.filter(item => item !== project.id));
+                } else {
+                  setSelectProject([...selectProject, project.id]);
+                }
               }}
             ></span>
           </label>
         </div>
         <div className="teamproject-card-title">
           <h2>{title}</h2>
+          <div>Created date: {project?.created_at.split('T')[0]}</div>
         </div>
       </div>
     </div>

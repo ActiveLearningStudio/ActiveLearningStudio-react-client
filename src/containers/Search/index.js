@@ -16,7 +16,7 @@ import { educationLevels, subjects } from 'components/ResourceCard/AddResource/d
 import ShareLink from 'components/ResourceCard/ShareLink';
 import { lmsPlaylist } from 'store/actions/playlist';
 import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
-
+import teamicon from 'assets/images/sidebar/users-team.svg';
 // import Header from 'components/Header';
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
@@ -52,7 +52,7 @@ MyVerticallyCenteredModal.defaultProps = {
 };
 
 function SearchInterface(props) {
-  const { history, fromTeam } = props;
+  const { history, fromTeam, selectProject, setSelectProject } = props;
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
     subject: true,
@@ -83,7 +83,7 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
-  const [activetab, setActiveTab] = useState('total');
+  const [activetab, setActiveTab] = useState(fromTeam ? 'projects' : 'total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
@@ -502,7 +502,7 @@ function SearchInterface(props) {
                                   onClick={async () => {
                                     Setfromdate(undefined);
                                     Settodate(undefined);
-                                    setActiveTab('total');
+                                    setActiveTab(fromTeam ? 'projects' : 'total');
                                     if (!searchInput.trim() && searchType !== 'orgSearch') {
                                       Swal.fire('Search field is required.');
                                     } else if (searchInput.length > 255) {
@@ -859,7 +859,7 @@ function SearchInterface(props) {
                         }
                       }}
                     >
-                      <Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
+                      {!fromTeam && (<Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
                         <div className="results_search">
                           {!!search && search.length > 0 ? (
                             search.map((res) => (
@@ -883,7 +883,7 @@ function SearchInterface(props) {
 
                                   {/* <h5>CALCULUS</h5> */}
                                 </div>
-                                <div className="content">
+                                <div className="contentbox">
                                   <div className="search-content">
                                     <a
                                       href={
@@ -1001,6 +1001,10 @@ function SearchInterface(props) {
                                             </ul>
                                           </li>
                                         )}
+                                        <Dropdown.Item>
+                                          <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                          Add to team
+                                        </Dropdown.Item>
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   )}
@@ -1100,7 +1104,7 @@ function SearchInterface(props) {
                           )
                           }
                         </div >
-                      </Tab >
+                      </Tab >)}
 
                       <Tab eventKey="projects" title={!!search && !!meta.projects ? `project (${meta.projects})` : 'project (0)'}>
                         <div className="results_search">
@@ -1128,7 +1132,7 @@ function SearchInterface(props) {
 
                                       {/* <h5>CALCULUS</h5> */}
                                     </div>
-                                    <div className="content">
+                                    <div className="contentbox">
                                       <div className="search-content">
                                         <a
                                           href={
@@ -1246,6 +1250,16 @@ function SearchInterface(props) {
                                                 </ul>
                                               </li>
                                             )}
+                                            <Dropdown.Item onClick={() => {
+                                              if (selectProject.includes(res.id) && fromTeam) {
+                                                setSelectProject(selectProject.filter(item => item !== res.id));
+                                              } else if (fromTeam && !selectProject.includes(res.id)) {
+                                                setSelectProject([...selectProject, res.id]);
+                                              }
+                                            }}>
+                                              <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                              {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}team
+                                            </Dropdown.Item>
                                           </Dropdown.Menu>
                                         </Dropdown>
                                       )}
@@ -1260,7 +1274,7 @@ function SearchInterface(props) {
                         </div>
                       </Tab>
 
-                      <Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
+                      {!fromTeam && (<Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
                         <div className="results_search">
                           {!!search && search.length > 0 ? (
                             search.map((res) => (
@@ -1287,7 +1301,7 @@ function SearchInterface(props) {
                                       {/* <h5>CALCULUS</h5> */}
                                     </div>
 
-                                    <div className="content">
+                                    <div className="contentbox">
                                       <div className="search-content">
                                         <a
                                           href={
@@ -1356,9 +1370,9 @@ function SearchInterface(props) {
                             <div className="box">No result found !</div>
                           )}
                         </div>
-                      </Tab>
+                      </Tab>)}
 
-                      <Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
+                      {!fromTeam && (<Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
                         <div className="content">
                           <div className="results_search">
                             {!!search && search.length > 0 ? (
@@ -1386,7 +1400,7 @@ function SearchInterface(props) {
                                         {/* <h5>CALCULUS</h5> */}
                                       </div>
 
-                                      <div className="content">
+                                      <div className="contentbox">
                                         <div className="search-content">
                                           <a
                                             href={
@@ -1490,7 +1504,7 @@ function SearchInterface(props) {
                             )}
                           </div>
                         </div>
-                      </Tab>
+                      </Tab>)}
                     </Tabs >
                     {totalCount > 20 && (
                       <Pagination
