@@ -336,6 +336,9 @@
           td.firstname {
             display: flex;
             align-items: center;
+            input {
+              cursor: pointer;
+            }
           }
           tr {
             border-bottom: 1px solid #dddddd;
