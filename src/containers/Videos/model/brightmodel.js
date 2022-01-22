@@ -93,7 +93,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
-                {/* <br /> */}
+                <br />
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -188,7 +188,7 @@ const BrightcoveModel = (props) => {
                                     ))
                                   ) : (
                                     <tr>
-                                      <td colSpan="3">
+                                      <td colSpan="4">
                                         <Alert variant="danger" colSpan={3}>
                                           {error}
                                         </Alert>
@@ -197,8 +197,8 @@ const BrightcoveModel = (props) => {
                                   )
                                 ) : (
                                   <tr>
-                                    <td colSpan="3">
-                                      <Alert variant="primary" colSpan={3}>
+                                    <td colSpan="4">
+                                      <Alert variant="primary" colSpan={4}>
                                         Loading...
                                       </Alert>
                                     </td>

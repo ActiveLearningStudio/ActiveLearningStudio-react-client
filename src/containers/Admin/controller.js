@@ -353,21 +353,21 @@ function Controller(props) {
                     <div className="author-list">
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                          <div
-                            className="single-author"
-                            onClick={() => {
-                              setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
-                              setAuthorName(`${author.first_name} ${author.last_name}`);
-                              setAuthorsArray([]);
-                            }}
-                          >
-                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
-                            <div>
-                              <div className="username-filter-project">{author.first_name}</div>
-                              <div className="email-filter-project">{author.email}</div>
+                            <div
+                              className="single-author"
+                              onClick={() => {
+                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                                setAuthorName(`${author.first_name} ${author.last_name}`);
+                                setAuthorsArray([]);
+                              }}
+                            >
+                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                              <div>
+                                <div className="username-filter-project">{author.first_name}</div>
+                                <div className="email-filter-project">{author.email}</div>
+                              </div>
                             </div>
-                          </div>
-                        ))
+                          ))
                         : 'No user found.'}
                     </div>
                   )}
@@ -520,7 +520,7 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && subType === 'All Projects' && (
+        {type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <button
             className="switch-libreq"
             type="button"
@@ -686,7 +686,7 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -745,7 +745,7 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText && subType === 'Activity Types' && (
+        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
           <div className="btn-text">
             <button
               type="button"
@@ -760,7 +760,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subType === 'Activity Items' && (
+        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
           <div className="btn-text">
             <button
               type="button"
@@ -820,7 +820,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && (
+        {!!btnText && type === 'LMS' && subType === 'All settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -836,7 +836,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && (
+        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
           <div className="btn-text">
             <button
               type="button"

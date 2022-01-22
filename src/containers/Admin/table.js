@@ -219,111 +219,6 @@ function Table(props) {
             </tr>
           </thead>
           <tbody>
-            {type === 'Stats' &&
-              subTypeState === 'Report' &&
-              (data?.data?.length > 0 ? (
-                data?.data?.map((row, keyid) => (
-                  <tr key={keyid}>
-                    <td>{row.first_name}</td>
-                    <td>{row.last_name}</td>
-                    <td>{row.email}</td>
-                    <td>{row.projects_count}</td>
-                    <td>{row.playlists_count}</td>
-                    <td>{row.activities_count}</td>
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Reports Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
-            {type === 'Stats' &&
-              subTypeState === 'Queues: Jobs' &&
-              (data?.data?.length > 0 ? (
-                data?.data.map((job) => (
-                  <tr>
-                    <td>{job.id}</td>
-                    <td>{job.queue}</td>
-                    <td>{job.payload}</td>
-                    <td>{job.exception}</td>
-                    <td>{job.time}</td>
-                    {jobType.value === 2 ? (
-                      <td>
-                        <div className="links">
-                          <Link
-                            onClick={() => {
-                              dispatch(retrySpecificFailedJob(job.id));
-                            }}
-                          >
-                            Retry
-                          </Link>
-                          <Link
-                            onClick={() => {
-                              dispatch(forgetSpecificFailedJob(job.id));
-                            }}
-                          >
-                            Forget
-                          </Link>
-                        </div>
-                      </td>
-                    ) : (
-                      <td>{job.action ? job.action : 'N/A'}</td>
-                    )}
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Queue: Jobs Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
-            {type === 'Stats' &&
-              subTypeState === 'Queues: Logs' &&
-              (data?.data?.length > 0 ? (
-                data?.data.map((job) => (
-                  <tr>
-                    <td>{job.name}</td>
-                    <td>
-                      {job.is_finished && job.failed && <Alert variant="danger">Failed</Alert>}
-                      {!job.is_finished && !job.failed && <Alert variant="primary">Running</Alert>}
-                      {job.is_finished && !job.failed && <Alert variant="success">Success</Alert>}
-                    </td>
-                    <td>{job.started_at}</td>
-                    <td>
-                      Queue: {job.queue} Attempt: {job.attempt}
-                    </td>
-                    <td>{job.time_elapsed}</td>
-                    <td>{job.exception_message}</td>
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Queue: Logs Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
             {type === 'LMS' &&
               subType === 'All settings' &&
               (localStateData ? (
@@ -476,9 +371,6 @@ function Table(props) {
                                 if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-                                // dispatch(setActiveTab('Project'));
-                                // dispatch(clearOrganizationState());
-                                // dispatch(getRoles());
                               }
                             }}
                           >
@@ -586,23 +478,7 @@ function Table(props) {
                           )}
                         </td>
                       )}
-                      {/* <td>
-                    {row.groups_count > 0 ? (
-                      <Link
-                        to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
-                        className="view-all"
-                        onClick={
-                          async () => {
-                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                            dispatch(clearOrganizationState());
-                            dispatch(getRoles());
-                          }
-                        }
-                      >
-                        {row.groups_count}
-                      </Link>
-                    ) : 'N/A'}
-                  </td> */}
+
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.teams_count > 0 ? (
@@ -824,11 +700,15 @@ function Table(props) {
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
-                        <td>
-                          <a href={row.link} target="_blank">
-                            Download
-                          </a>
-                        </td>
+                        {permission?.Organization?.includes('organization:download-project') ? (
+                          <td>
+                            <a href={row.link} target="_blank">
+                              Download
+                            </a>
+                          </td>
+                        ) : (
+                          <td>Not Authorized</td>
+                        )}
                       </tr>
                     );
                   })
@@ -1018,7 +898,7 @@ function Table(props) {
                           ))}
                         </div>
                         <div>
-                          <AdminDropdown type={type} type1={type1} />
+                          <AdminDropdown type={type} type1={type1} subType={subType} />
                         </div>
                       </div>
                     </td>
