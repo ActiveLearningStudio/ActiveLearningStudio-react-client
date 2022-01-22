@@ -64,7 +64,7 @@ const Index = () => {
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
-                    <TopHeading description="Curriki Studio" image={VideoImage} heading="My interactive videos" color="#084892" />
+                    <TopHeading description={activeOrganization.name} image={VideoImage} heading="My interactive videos" color="#084892" />
                     <Buttons
                       primary={true}
                       text="Create a video"

@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   isLoaded: false,
   allProject: [],
   teams: [],
-  groups: [],
+  // groups: [],
   sampleProject: [],
   updateProject: [],
 };
@@ -20,7 +20,7 @@ const Sidebar = (state = INITIAL_STATE, action) => {
         ...state,
         allProject: action.data.projects ? action.data.projects : [],
         teams: action.data.teams ? action.data.teams : [],
-        groups: action.data.groups ? action.data.groups : [],
+        // groups: action.data.groups ? action.data.groups : [],
         isLoaded: true,
       };
 

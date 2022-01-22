@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
-import groupService from 'services/group.service';
 import teamService from 'services/team.service';
 // import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
@@ -31,10 +30,10 @@ export const allSidebarProjects = () => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const { projects } = await projectService.getAll(activeOrganization.id);
   const { teams } = await teamService.getAll(activeOrganization.id);
-  const { groups } = await groupService.getAll(activeOrganization.id);
+  // const { groups } = await groupService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects, teams, groups },
+    data: { projects, teams },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {
@@ -111,16 +110,6 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_FAIL,
     });
   }
-};
-
-export const getIndexed = (projectId) => async () => {
-  const result = await projectService.getIndexed(projectId);
-  return result;
-};
-
-export const getElastic = (projectId) => async () => {
-  const result = await projectService.getelastic(projectId);
-  return result;
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
