@@ -86,18 +86,18 @@ function AdminPanel({ showSSO }) {
                           <p>{currentOrganization?.description}</p>
                         </div>
                         {permission?.Organization?.includes('organization:edit') && (
-                        <button
-                          onClick={() => {
-                            dispatch(setActiveAdminForm('edit_org'));
-                            dispatch({
-                              type: 'SET_ACTIVE_EDIT',
-                              payload: activeOrganization,
-                            });
-                          }}
-                        >
-                          <img src={editicon} alt="" />
-                          Edit organization
-                        </button>
+                          <button
+                            onClick={() => {
+                              dispatch(setActiveAdminForm('edit_org'));
+                              dispatch({
+                                type: 'SET_ACTIVE_EDIT',
+                                payload: activeOrganization,
+                              });
+                            }}
+                          >
+                            <img src={editicon} alt="" />
+                            Edit organization
+                          </button>
                         )}
                       </div>
                       <div className="module-content">
@@ -136,11 +136,11 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
+                  {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
                         <Pills
-                         type="Users"
+                          type="Users"
                           modules={[
                             permission?.Organization?.includes('organization:view-user') && 'All Users',
                             permission?.Organization?.includes('organization:view-role') && 'Manage Roles',

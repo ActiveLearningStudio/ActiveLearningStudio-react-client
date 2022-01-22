@@ -285,7 +285,7 @@ function UserRoles() {
                         </button>
                       </div>
                     </div>
-                   )} 
+                  )}
 
                   <Tab.Container id="left-tabs-example" defaultActiveKey="manual-3">
                     <Row className="roles-permission-tab-row">
@@ -852,14 +852,16 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
             }
             const removeDuplicate = new Set(checkAllValuesInSibling);
             if (removeDuplicate.size > 1) {
-              parentControler.value = '---';
+              setTimeout(() => {
+                parentControler.value = '---';
+              }, 200);
+
               console.log('values are not same', parentControler.value);
             } else {
               console.log('values are same', parentControler.value);
               console.log(Array.from(removeDuplicate)[0]);
               parentControler.value = Array.from(removeDuplicate)[0];
             }
-            console.log(checkAllValuesInSibling);
           } else {
             const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName('select');
 

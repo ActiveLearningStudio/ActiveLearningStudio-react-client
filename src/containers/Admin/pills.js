@@ -64,7 +64,7 @@ export default function Pills(props) {
   const [orderBy, setOrderBy] = useState('ASC');
   const dataRedux = useSelector((state) => state);
   useEffect(() => {
-    setKey(modules?.[0]);
+    setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
   useEffect(() => {
     setlmsBrightCove(allbrightCove);
@@ -488,25 +488,13 @@ export default function Pills(props) {
   }, [subTypeState]);
   useEffect(() => {
     if (activeTab === 'Projects') {
-      setSubTypeState('All Projects');
-      setCurrentTab('All Projects');
+      setSubTypeState(key);
+      setCurrentTab(key);
       setLibraryReqSelected(false);
-    } else if (activeTab === 'Activities') {
-      setSubTypeState('Activity Types');
-    } else if (activeTab === 'Users') {
-      setSubTypeState('All Users');
+    } else {
+      setSubTypeState(key);
     }
-    // else if (activeTab === 'Stats') {
-    //   setSubTypeState('Report');
-    // }
-    else if (activeTab === 'Organization') {
-      setSubTypeState('All Organizations');
-    } else if (activeTab === 'LMS') {
-      setSubTypeState('All settings');
-    } else if (activeTab === 'Video Integration') {
-      setSubTypeState('BrightCove API Settings');
-    }
-  }, [activeTab]);
+  }, [activeTab, key]);
   const filterSearch = useCallback(() => {
     setAllProjectTab(null);
     if (libraryReqSelected) {
