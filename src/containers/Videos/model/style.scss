@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .preview-layout-model {
   //   z-index: 999999;
   position: fixed;
@@ -189,7 +189,7 @@
       position: absolute;
       right: 5px;
       top: 15px;
-      content: url("../../../assets/images/svg/sideAngle.svg");
+      content: url('../../../assets/images/svg/sideAngle.svg');
     }
   }
   // .video-model-tab {
@@ -332,7 +332,10 @@
             font-size: 14px;
             line-height: 20px;
             color: #767676;
-            white-space: nowrap;
+          }
+          td.firstname {
+            display: flex;
+            align-items: center;
           }
           tr {
             border-bottom: 1px solid #dddddd;
