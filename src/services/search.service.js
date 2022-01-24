@@ -111,6 +111,23 @@ const getCourses = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+  const getCourseTopics = (courseId) => httpService
+  .get(`/${apiVersion}/google-classroom/topics`,'',{ course_id: courseId })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+  
+const googleClassPublishPlaylist = (projectId, courseId, topicId, playlistId, token) => httpService
+  .post(`/${apiVersion}/google-classroom/projects/${projectId}/playlists/${playlistId}/publish`, 
+  { course_id: courseId, topic_id: topicId, access_token: token })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, activityId, token) => httpService
+  .post(`/${apiVersion}/google-classroom/projects/${projectId}/playlists/${playlistId}/activities/${activityId}/publish`, 
+  { course_id: courseId, topic_id: topicId, access_token: token })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   searchResult,
   cloneProject,
@@ -120,4 +137,7 @@ export default {
   googleShareToken,
   getCourses,
   advancedSearch,
+  getCourseTopics,
+  googleClassPublishPlaylist,
+  googleClassPublishActivity,
 };

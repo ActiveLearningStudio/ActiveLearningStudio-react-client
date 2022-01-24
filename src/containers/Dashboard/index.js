@@ -14,7 +14,7 @@ import metricsService from 'services/metrics.service';
 import { getUserMetricsAction, getUserMembershipAction } from 'store/actions/metrics';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import SlideModal from 'containers/Dashboard/SlideModal';
 
 import './styles.scss';
@@ -317,7 +317,6 @@ function DashboardPage(props) {
         <SlideModal modalSection={modalSection} closeModal={() => setShowModal(false)} />
       )}
 
-      <Footer />
     </>
   );
 }

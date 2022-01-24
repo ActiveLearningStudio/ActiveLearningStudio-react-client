@@ -1,5 +1,4 @@
 import config from 'config';
-import { errorCatcher } from './errors';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -19,6 +18,11 @@ const loginSSO = (body) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const canvasSsoLogin = (body) => httpService
+  .post('/login/lti-sso', body)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const loginWithGoogle = (body) => httpService
   .post('/login/google', body)
   .then(({ data }) => data)
@@ -27,10 +31,7 @@ const loginWithGoogle = (body) => httpService
 const register = (body) => httpService
   .post('/register', body)
   .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+  .catch((err) => Promise.reject(err.response.data));
 
 const confirmEmail = (body) => httpService
   .post('/verify-email', body)
@@ -72,6 +73,11 @@ const loadOrganizationTypes = () => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const checkEmail = (email) => httpService
+  .get(`/checkemail/${email}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   me,
   login,
@@ -86,4 +92,6 @@ export default {
   searchUsers,
   loadOrganizationTypes,
   loginSSO,
+  canvasSsoLogin,
+  checkEmail,
 };

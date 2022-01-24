@@ -6,12 +6,13 @@ import { withRouter } from 'react-router-dom';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import * as actionTypes from 'store/actionTypes';
 import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
 import { clearSearch } from 'store/actions/search';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import ResourceCard from 'components/ResourceCard';
 import PlaylistCardDropdown from './PlaylistCardDropdown';
+import UploadLogo from '../../../assets/images/upload-active.svg';
 
 import './style.scss';
 
@@ -43,26 +44,28 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization, teamPermission } = this.props;
+    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
-      return (
-        <div className="alert alert-info m-3">No resource yet.</div>
-      );
+      return <div className="alert alert-info">No resource yet.</div>;
     }
 
-    return playlist.activities.map((resource, index) => (
-      (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view'))
-      && (
-      <ResourceCard
-        {...this.props}
-        resource={resource}
-        key={resource.id}
-        index={index}
-        teamPermission={teamPermission || {}}
-      />
-      )
-    ));
+    return playlist.activities.map(
+      (resource, index) =>
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view')) && (
+          <ResourceCard
+            {...this.props}
+            resource={resource}
+            key={resource.id}
+            index={index}
+            teamPermission={teamPermission || {}}
+            handleShow={handleShow}
+            setProjectId={setProjectId}
+            setProjectPlaylistId={setProjectPlaylistId}
+            setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+          />
+        )
+    );
   };
 
   onEnterPress = (e) => {
@@ -84,67 +87,55 @@ class PlaylistCard extends React.Component {
     });
 
     if (playlist.title !== title) {
-      changePlaylistTitle(projectId, playlist.id, title)
-        .catch((err) => {
-          if (err.errors) {
-            if (err.errors.title.length > 0) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: err.errors.title[0],
-              });
-            }
-          } else {
+      changePlaylistTitle(projectId, playlist.id, title).catch((err) => {
+        if (err.errors) {
+          if (err.errors.title.length > 0) {
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: err.message,
+              text: err.errors.title[0],
             });
           }
-        });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.message,
+          });
+        }
+      });
     }
   };
 
   handleClickPlaylistTitle = async () => {
     if (this.props.organization?.permission?.Playlist?.includes('playlist:edit') || this.props.teamPermission?.Team?.includes('team:edit-playlist')) {
-      this.setState({
-        editMode: true,
-      }, () => {
-        this.titleInput.focus();
-      });
+      this.setState(
+        {
+          editMode: true,
+        },
+        () => {
+          this.titleInput.focus();
+        }
+      );
     }
   };
 
   render() {
     const { editMode } = this.state;
-    const {
-      index,
-      playlist,
-      organization,
-      teamPermission,
-    } = this.props;
+    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId } = this.props;
     const { permission } = organization;
     return (
-      <Draggable
-        key={playlist.id}
-        draggableId={`${playlist.id}`}
-        index={index}
-      >
+      <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
         {(provided) => (
-          <div
-            className="list-wrapper"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
-            <div className="list">
+          <div className="list-wrapper" ref={provided.innerRef} {...provided.draggableProps}>
+            <div className="list playlist-bg">
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
-                  <div
-                    className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`}
-                    onClick={this.handleClickPlaylistTitle}
-                  >
+                  <div className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`} onClick={this.handleClickPlaylistTitle}>
                     <span>{playlist.title}</span>
-                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />}
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
+                      <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
+                    )}
                   </div>
 
                   <textarea
@@ -162,21 +153,16 @@ class PlaylistCard extends React.Component {
                     playlist={playlist}
                     handleClickPlaylistTitle={this.handleClickPlaylistTitle}
                     teamPermission={teamPermission || {}}
+                    handleShow={handleShow}
+                    setProjectId={setProjectId}
+                    setProjectPlaylistId={setProjectPlaylistId}
                   />
                 </h2>
               </div>
 
-              <Droppable
-                key={playlist.id}
-                droppableId={`${playlist.id}`}
-                type="resource"
-              >
+              <Droppable key={playlist.id} droppableId={`${playlist.id}`} type="resource">
                 {(provd) => (
-                  <div
-                    className="list-body"
-                    {...provd.droppableProps}
-                    ref={provd.innerRef}
-                  >
+                  <div className="list-body playlist-body-bg" {...provd.droppableProps} ref={provd.innerRef}>
                     <div className="playlist-resources">
                       {this.renderResources()}
                       {provd.placeholder}
@@ -184,23 +170,26 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-activity') : (permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload'))) && (
+              {(Object.keys(teamPermission).length
+                ? teamPermission?.Team?.includes('team:add-activity')
+                : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"
                     className="add-resource-to-playlist-btn"
                     onClick={() => {
                       const { clearSearchform } = this.props;
-                      this.handleAddNewResourceClick();
+                      // this.handleAddNewResourceClick();
+                      this.props.clear();
+                      this.props.openActivity(playlist, projectId);
                       clearSearchform();
                     }}
                   >
-                    <FontAwesomeIcon icon="plus-circle" className="mr-2" />
-                    Add new activity
+                    <img src={UploadLogo} alt="logo" className="mr-2" />
+                    Create or upload activity
                   </button>
                 </div>
               )}
-
             </div>
           </div>
         )}
@@ -234,6 +223,14 @@ const mapDispatchToProps = (dispatch) => ({
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
+  openActivity: (playlist, project) =>
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: 'layout',
+      playlist: playlist,
+      project: project,
+    }),
+  clear: () => dispatch({ type: actionTypes.CLEAR_STATE }),
 });
 
 const mapStateToProps = (state) => ({
@@ -241,6 +238,4 @@ const mapStateToProps = (state) => ({
   organization: state.organization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistCard));

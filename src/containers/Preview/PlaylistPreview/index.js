@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Suspense, lazy, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -14,28 +15,17 @@ import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'sto
 import { collapsedSideBar } from 'store/actions/ui';
 import Unauthorized from 'components/Unauthorized';
 import { getTeamPermission } from 'store/actions/team';
+import MyActivity from 'containers/MyActivity';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesList from './components/ActivitiesList';
-
 import './style.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
 const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
 
 function PlaylistPreview(props) {
-  const {
-    loading,
-    projectId,
-    playlistId,
-    activityId,
-    playlist,
-    loadHP,
-    loadPlaylist,
-    loadProjectPlaylists,
-    collapsed,
-    setCollapsed,
-  } = props;
+  const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists, collapsed, setCollapsed } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
   const { permission } = organization;
@@ -45,12 +35,7 @@ function PlaylistPreview(props) {
   useEffect(() => {
     window.scrollTo(0, 0);
     loadPlaylist(projectId, playlistId);
-  }, [
-    projectId,
-    playlistId,
-    activityId,
-    loadPlaylist,
-  ]);
+  }, [projectId, playlistId, activityId, loadPlaylist]);
 
   let { selectedPlaylist } = playlist;
   if (selectedPlaylist && selectedPlaylist.id !== playlistId) {
@@ -127,13 +112,12 @@ function PlaylistPreview(props) {
         confirmButtonAriaLabel: 'Stop Sharing!',
         cancelButtonText: 'Cancel',
         cancelButtonAriaLabel: 'Cancel',
-      })
-        .then(async (resp) => {
-          if (resp.isConfirmed) {
-            await removeShareActivity(currentActivityId, nameActivity);
-            loadPlaylist(projectId, playlistId);
-          }
-        });
+      }).then(async (resp) => {
+        if (resp.isConfirmed) {
+          await removeShareActivity(currentActivityId, nameActivity);
+          loadPlaylist(projectId, playlistId);
+        }
+      });
     } else {
       await shareActivity(currentActivityId);
       loadPlaylist(projectId, playlistId);
@@ -147,17 +131,8 @@ function PlaylistPreview(props) {
       customUI: ({ onClose }) => (
         <div className="share-project-preview-url project-share-check">
           <div className="mt-3 mb-2 d-flex align-items-center">
-            <a
-              href={`/activity/${currentActivityId}/shared`}
-              target="_blank"
-              rel="noreferrer"
-              style={{ flex: 1 }}
-            >
-              <input
-                id="urllink_clip"
-                style={{ width: '100%' }}
-                value={`${protocol}${window.location.host}/activity/${currentActivityId}/shared`}
-              />
+            <a href={`/activity/${currentActivityId}/shared`} target="_blank" rel="noreferrer" style={{ flex: 1 }}>
+              <input id="urllink_clip" style={{ width: '100%' }} value={`${protocol}${window.location.host}/activity/${currentActivityId}/shared`} />
             </a>
 
             <FontAwesomeIcon
@@ -187,8 +162,10 @@ function PlaylistPreview(props) {
             />
           </div>
 
-          <div className="close-btn">
-            <button type="button" onClick={onClose}>Ok</button>
+          <div className="close-btn flex-center">
+            <button type="button" className="curriki-btn-extra" onClick={onClose}>
+              Ok
+            </button>
           </div>
         </div>
       ),
@@ -201,11 +178,7 @@ function PlaylistPreview(props) {
     <>
       {loading ? (
         <div className="loading-phf-data">
-          {loading === 'loading...' ? (
-            <Unauthorized text={loading.toUpperCase()} />
-          ) : (
-            <Unauthorized showbutton text="You are unauthorized to access this!" />
-          )}
+          {loading === 'loading...' ? <Unauthorized text={loading.toUpperCase()} /> : <Unauthorized showbutton text="You are unauthorized to access this!" />}
         </div>
       ) : (
         <section className="main-page-content preview iframe-height-resource">
@@ -228,7 +201,8 @@ function PlaylistPreview(props) {
             <Link
               to={
                 projectPreview === 'true'
-                  ? `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`
+                  ? // eslint-disable-next-line no-restricted-globals
+                    { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
                   : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
               }
             >
@@ -244,11 +218,8 @@ function PlaylistPreview(props) {
                     <div className="main-heading">
                       {currentActivity && (
                         <h3>
-                          Activity:
-                          &nbsp;
-                          <span>
-                            {currentActivity.title}
-                          </span>
+                          Activity: &nbsp;
+                          <span>{currentActivity.title}</span>
                         </h3>
                       )}
                     </div>
@@ -257,18 +228,8 @@ function PlaylistPreview(props) {
                 <div className="back-header align-items-center justify-content-between">
                   <div className="right-control vd-controls">
                     <div className="slider-btn">
-                      <PreviousLink
-                        projectId={projectId}
-                        playlistId={playlistId}
-                        previousResource={previousResource}
-                        allPlaylists={allPlaylists}
-                      />
-                      <NextLink
-                        projectId={projectId}
-                        playlistId={playlistId}
-                        nextResource={nextResource}
-                        allPlaylists={allPlaylists}
-                      />
+                      <PreviousLink projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
+                      <NextLink projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
                     </div>
                   </div>
                   {/* <div>
@@ -279,10 +240,7 @@ function PlaylistPreview(props) {
                       <FontAwesomeIcon icon="undo" className="mr-2" />
                     </Link>
                   </div> */}
-                  <a
-                    onClick={() => setCollapsed()}
-                    className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
-                  >
+                  <a onClick={() => setCollapsed()} className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}>
                     <FontAwesomeIcon icon="align-right" />
                   </a>
                 </div>
@@ -292,11 +250,7 @@ function PlaylistPreview(props) {
                 <div className="item-container">
                   {currentActivity && (
                     <Suspense fallback={<div>Loading</div>}>
-                      {currentActivity.type === 'h5p' ? (
-                        <H5PPreview activityId={currentActivity.id} />
-                      ) : (
-                        <ImmersiveReaderPreview activity={currentActivity} />
-                      )}
+                      {currentActivity.type === 'h5p' ? <H5PPreview activityId={currentActivity.id} /> : <ImmersiveReaderPreview activity={currentActivity} />}
                     </Suspense>
                   )}
                 </div>
@@ -316,44 +270,10 @@ function PlaylistPreview(props) {
                     />
                   </div>
                 </Tab>
-                {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
-                  <Tab eventKey="profile" title="Share">
-                    <div className="watcher spaner">
-                      {activityShared && (
-                        <div className="shared-link" onClick={viewSharedLink}>
-                          <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                          View Shared Link
-                        </div>
-                      )}
-                      <div>
-                        Share Activity
-                        <Switch
-                          onColor="#084892"
-                          onChange={share}
-                          checked={activityShared}
-                          className="react-switch"
-                          id="material-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                        />
-                      </div>
-                    </div>
-                  </Tab>
-                )}
-                <Tab eventKey="contact" title="About">
-                  <div className="descr-">
-                    <div className="tti">
-                      description
-                    </div>
-                    <p>
-                      {selectedPlaylist.project.description}
-                    </p>
-                  </div>
-                </Tab>
               </Tabs>
             </div>
           </div>
+          <MyActivity playlistPreview />
         </section>
       )}
     </>
@@ -391,6 +311,4 @@ const mapStateToProps = (state) => ({
   loading: state.playlist.loadingH5P,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistPreview),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistPreview));

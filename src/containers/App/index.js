@@ -1,18 +1,20 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import logo from 'assets/images/oracle.svg';
 import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
-import { cloneDuplicationRequest } from 'store/actions/notification';
+// import { cloneDuplicationRequest } from 'store/actions/notification';
 import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/actions/organization';
-import { updatedActivity } from 'store/actions/resource';
-import { updatedProject } from 'store/actions/project';
-import { updatedPlaylist } from 'store/actions/playlist';
+//import { updatedActivity } from 'store/actions/resource';
+//import { updatedProject } from 'store/actions/project';
+//import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
-
 import Help from './help';
+
 import './style.scss';
 
 let runOnce = true;
@@ -28,10 +30,10 @@ function App(props) {
   useEffect(() => {
     if (userDetails) {
       if (activeOrganization) {
-        dispatch(cloneDuplicationRequest(userDetails.id));
-        dispatch(updatedProject(userDetails.id));
-        dispatch(updatedPlaylist(userDetails.id));
-        dispatch(updatedActivity(userDetails.id));
+        // dispatch(cloneDuplicationRequest(userDetails.id));
+        // dispatch(updatedProject(userDetails.id));
+        // dispatch(updatedPlaylist(userDetails.id));
+        // dispatch(updatedActivity(userDetails.id));
       }
       if (runOnce) {
         runOnce = false;
@@ -40,27 +42,36 @@ function App(props) {
             const subDomain = window.location.pathname.split('/org/')[1]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
-              result.then((data) => {
-                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
-                dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              result
+                .then((data) => {
+                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  dispatch(getAllPermission(data?.organization?.id));
+                })
+                .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           } else {
             const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replace(/\//g, '');
             (async () => {
               const result = dispatch(getBranding(subDomain));
-              result.then((data) => {
-                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
-                dispatch(getAllPermission(data?.organization?.id));
-              }).catch((err) => err && window.location.replace('/org/currikistudio'));
+              result
+                .then((data) => {
+                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  dispatch(getAllPermission(data?.organization?.id));
+                })
+                .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
-        } else if (Object.keys(permission)?.length === 0) {
-          const result = dispatch(getBranding(localStorage.getItem('current_org') || 1));
-          result.then((data) => {
-            dispatch(getOrganizationFirstTime(data?.organization?.id));
-            dispatch(getAllPermission(data?.organization?.id));
-          }).catch((err) => err && console.log('error'));
+        } else if (window.location.pathname.includes('/preview')) {
+          const subDomain = localStorage.getItem('current_org');
+          (async () => {
+            const result = dispatch(getBranding(subDomain));
+            result
+              .then((data) => {
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
+              })
+              .catch((err) => err && window.location.replace('/org/currikistudio'));
+          })();
         }
       }
     }
@@ -89,8 +100,12 @@ function App(props) {
   // }, []);
 
   useEffect(() => {
-    if ((window.location.href.includes('/login')
-      || window.location.pathname.includes('/register') || window.location.pathname.includes('/forgot-password') || window.location.pathname.includes('/reset-password'))) {
+    if (
+      window.location.href.includes('/login') ||
+      window.location.pathname.includes('/register') ||
+      window.location.pathname.includes('/forgot-password') ||
+      window.location.pathname.includes('/reset-password')
+    ) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
         dispatch(getBranding('currikistudio'));
@@ -206,15 +221,10 @@ function App(props) {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
-        <script
-          type="text/javascript"
-          id="hs-script-loader"
-          async
-          defer
-          src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
-        />
+        <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`} />
       </Helmet>
       <AppRouter />
+      <ToastContainer limit={1} />
       {Object.keys(permission)?.length === 0 && (
         <div className="loader-main-curriki-permission">
           <img src={logo} className="logo" alt="" />
@@ -225,19 +235,13 @@ function App(props) {
         <img src={logo} alt="" />
 
         <div className="text-description">
-          <h2>CurrikiStudio</h2>
+          <h2>Please use desktop browser</h2>
 
+          <p>CurrikiStudio doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a desktop or laptop computer.</p>
           <p>
-            We are changing the way the world creates and interacts with learning content.
-            Currently it is not possible to build the world&apos;s most immersive learning experiences on a mobile phone,
-            tablet or iPad.  We recommend that you use either a desktop or laptop computer.
+            Why no mobile access for authors? All learning courses built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
+            interactive, immersive learning experience, a full browser is required.
           </p>
-          <p>
-            If you don&apos;t already have a CurrikiStudio account
-          </p>
-
-          <a className="reg-btn" href="/register">CLICK HERE TO REGISTER</a>
-          <br />
 
           <p>
             To learn more click here

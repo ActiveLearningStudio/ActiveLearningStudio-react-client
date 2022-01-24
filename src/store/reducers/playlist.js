@@ -1,12 +1,17 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
   playlists: [],
+  sharedPlaylists: [],
+  sharedPlayist: null,
   showCreatePlaylistPopup: false,
   selectedPlaylist: null,
   loadingH5P: 'loading...',
+  isSharedPlaylist: null,
   isNonAvailablePlaylist: false,
+  searchPreviewPlaylist: null,
 };
 
 let newPlaylists = [];
@@ -131,11 +136,11 @@ export default (state = INITIAL_STATE, action) => {
 
     // reset playlists to empty when going to playlists dashboard
     // so that when user clicks to new playlist it will load to default empty
-    case actionTypes.LOAD_MY_PROJECTS:
-      return {
-        ...state,
-        playlists: [],
-      };
+    // case actionTypes.LOAD_MY_PROJECTS:
+    //   return {
+    //     ...state,
+    //     playlists: [],
+    //   };
 
     case actionTypes.SHOW_CREATE_PLAYLIST_MODAL:
       return {
@@ -155,11 +160,7 @@ export default (state = INITIAL_STATE, action) => {
       state.playlists.forEach((playlist, i) => {
         if (playlist.id === action.playlistId) {
           newPlaylists[i] = { resources: [], ...newPlaylists[i] };
-          newPlaylists[i].resources.push({
-            _id: action.resource.id,
-            id: action.resource.mysqlId,
-            title: action.resource.title,
-          });
+          newPlaylists[i].activities.push(action.resource.activity);
         }
       });
       return {
@@ -185,14 +186,17 @@ export default (state = INITIAL_STATE, action) => {
         plists.push(p);
       });
       if (state.selectedPlaylist) {
-        selectedPlists = state.selectedPlaylist.activities.filter((res) => res.id !== action.payload.activityId);
+        selectedPlists = state.selectedPlaylist.activities?.filter((res) => res.id !== action.payload.activityId);
       }
       return {
         ...state,
         playlists: plists,
         showCreateResourcePopup: false,
         showDeletePlaylistPopup: false,
-        selectedPlaylist: { ...state.selectedPlaylist, activities: selectedPlists },
+        selectedPlaylist: {
+          ...state.selectedPlaylist,
+          activities: selectedPlists,
+        },
       };
 
     case actionTypes.LOAD_PLAYLIST:
@@ -204,14 +208,36 @@ export default (state = INITIAL_STATE, action) => {
 
     case actionTypes.REORDER_PLAYLIST:
       // Find the changed playlist and replace with action.playlist
-      const newReorderedPlaylists = state.playlists.map(
-        (playlist) => (playlist.id === action.playlist.id ? action.playlist : playlist),
-      );
+      const newReorderedPlaylists = state.playlists.map((playlist) => (playlist.id === action.playlist.id ? action.playlist : playlist));
       return {
         ...state,
         playlists: newReorderedPlaylists,
       };
-
+    case actionTypes.ENABLE_PLAYLIST_SHARE:
+      return {
+        ...state,
+        isSharedPlaylist: action.isSharedPlaylist,
+      };
+    case actionTypes.DISABLE_PLAYLIST_SHARE:
+      return {
+        ...state,
+        isSharedPlaylist: action.isSharedPlaylist,
+      };
+    case actionTypes.LOAD_ALL_SHARED_PLAYLIST:
+      return {
+        ...state,
+        sharedPlaylists: action.sharedPlaylists,
+      };
+    case actionTypes.LOAD_SINGLE_SHARED_PLAYLIST:
+      return {
+        ...state,
+        sharedPlayist: action.sharedPlayist,
+      };
+    case actionTypes.SEARCH_PREVIEW_PLAYLIST:
+      return {
+        ...state,
+        searchPreviewPlaylist: action.payload,
+      };
     default:
       return state;
   }

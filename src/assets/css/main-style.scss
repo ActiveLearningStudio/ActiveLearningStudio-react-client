@@ -1,6 +1,6 @@
 @import 'index';
-
-@import "~bootstrap/scss/bootstrap";
+@import 'react-toastify/dist/ReactToastify.css';
+@import '~bootstrap/scss/bootstrap';
 
 body {
   margin: 0;
@@ -14,7 +14,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 *:focus {
@@ -265,4 +265,75 @@ code {
   background: #fff !important;
   padding: 25px;
   border-radius: 5px;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.curriki-btn-extra {
+  border: 0;
+  border-radius: 0.25em;
+  color: #fff;
+  font-size: 1.0625em;
+  display: inline-block;
+  border-left-color: rgb(48, 133, 214);
+  border-right-color: rgb(48, 133, 214);
+  margin: 0.3125em;
+  padding: 5px 30px;
+  box-shadow: none;
+  font-weight: 500;
+  cursor: pointer;
+  background: #084892;
+  box-shadow: 0px 2px 6px 1px rgba(8, 72, 146, 0.16);
+  border-radius: 18px;
+}
+
+.dropdown-menu.check.overflow-enhancment {
+  left: -20px !important;
+  top: 22px !important;
+  a {
+    word-break: break-all !important;
+  }
+}
+
+.saveclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #ffffff;
+  background: #084892;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.backclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #333;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.add-role-form {
+  select {
+  width: 80px !important;
+  height: 28px !important;
+  background: #e5eeff;
+  border-radius: 4px;
+  font-family: "rubic";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #084892;
+  border: none !important;
+  }
 }

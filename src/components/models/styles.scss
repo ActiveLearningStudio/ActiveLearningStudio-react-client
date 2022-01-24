@@ -31,7 +31,7 @@
 }
 
 .upload-thumbnail.check {
-  margin-bottom: 20px;
+  margin-bottom: 4px;
 
   .thumb {
     max-width: 280px;
@@ -48,45 +48,55 @@
     cursor: pointer;
 
     .imgbox {
-      height: 200px;
+      height: 150px;
       border: 1px solid #ccc;
-      max-width: 280px;
+      width: 354px;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      border-radius: 10px;
+      cursor: default;
 
       img {
+        border-radius: 10px;
         width: 100%;
-        max-height: 100%
+        max-height: 100%;
+        cursor: default;
       }
     }
 
     .button-flex {
-      margin-left: 40px;
+      width: 354px;
+      margin-top: 16px;
+      // margin-left: 40px;
       display: flex;
-      flex-direction: column;
+      // flex-direction: column;
       justify-content: space-between;
     }
 
     .gallery,
     .pexel {
-      width: 300px;
-      height: 89px;
+      width: 161px;
+      height: 36px;
       display: flex;
-      background: #00000000 0% 0% no-repeat padding-box;
-      border: 1px solid #D9DFE8;
-      border-radius: 1px;
+      // background: #00000000 0% 0% no-repeat padding-box;
+      // border: 1px solid #d9dfe8;
+      border-radius: 50px;
       opacity: 1;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-      padding-left: 20px;
+      // padding-left: 20px;
       flex-direction: row;
 
+      background: #ffffff;
+      border: 1px solid #959595;
+      box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+
       p {
-        font-weight: 400;
-        font-size: 16px;
+        // font-weight: 400;
+        // font-size: 16px;
         padding-left: 10px;
-        color: #3A3632;
+        color: #3a3632;
       }
     }
   }
@@ -110,7 +120,7 @@
   overflow-y: auto;
 
   .read-more-pexel {
-    background-color: #3A3632;
+    background-color: #3a3632;
     color: #fff;
     cursor: pointer;
     padding: 10px;
@@ -163,8 +173,6 @@
   }
 }
 
-
 .react-responsive-modal-root {
-
   z-index: 1040;
 }

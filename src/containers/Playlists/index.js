@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable */
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import computer from 'assets/images/svg/desktop.svg';
+import pexel from 'assets/images/svg/pixel.svg';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-import { Alert } from 'react-bootstrap';
-import Switch from 'react-switch';
-
+import { Alert, Modal, Dropdown } from 'react-bootstrap';
+import { uploadThumb } from 'containers/Projects/CreateProjectPopup';
+import Headings from 'curriki-design-system/dist/utils/Headings/headings';
+import PexelsAPI from 'components/models/pexels';
+import GoogleModel from 'components/models/GoogleLoginModal';
 import {
   createPlaylistAction,
   deletePlaylistAction,
@@ -16,6 +22,7 @@ import {
   loadProjectPlaylistsAction,
   reorderPlaylistsAction,
 } from 'store/actions/playlist';
+import MyActivity from 'containers/MyActivity';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import {
   deleteResourceAction,
@@ -36,30 +43,57 @@ import {
   showCreateProjectModalAction,
   loadProjectAction,
   loadLmsAction,
-  getIndexed,
-  getElastic,
+  // toggleProjectShareAction,
+  // toggleProjectShareRemovedAction,
+  visibilityTypes,
+  updateProjectAction,
+  clearSelectedProject,
 } from 'store/actions/project';
-import Footer from 'components/Footer';
+import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
+// import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
+import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
 import { getTeamPermission } from 'store/actions/team';
+import { getUserLmsSettingsAction } from 'store/actions/account';
 import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
+import Edit from 'assets/images/menu-edit.svg';
+import Preview from 'assets/images/preview-2.svg';
+import AddBtn from 'assets/images/add-btn.svg';
+import Correct from 'assets/images/svg/Correct.svg';
+import Warning from 'assets/images/svg/warning-icon.svg';
+import ErrorImg from 'assets/images/svg/Error.svg';
 
 import './style.scss';
 
 function PlaylistsPage(props) {
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState(false);
   const [error, setError] = useState(null);
+  const projectState = useSelector((state) => state.project);
   const [indexStatus, setIndexStatus] = useState(null);
   const organization = useSelector((state) => state.organization);
+  const [activeShared, setActiveShared] = useState(true);
   const team = useSelector((state) => state.team);
   const { teamPermission } = team;
+  const openFile = useRef(null);
+  const titleRef = useRef(null);
+  const descriptionRef = useRef();
   const { permission, activeOrganization } = organization;
   const state = useSelector((s) => s.project.selectedProject);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [editDescription, setEditDescription] = useState(false);
+  const [visibility, setVisibility] = useState();
+  const [modalShow, setModalShow] = useState(false);
+  const [show, setShow] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(0);
+  const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
 
   const {
     match,
@@ -68,7 +102,6 @@ function PlaylistsPage(props) {
     showCreateResourceModal,
     hideCreatePlaylistModal,
     hideCreateResourceModal,
-    openCreatePopup,
     openCreateResourcePopup,
     openEditResourcePopup,
     loadProject,
@@ -83,29 +116,67 @@ function PlaylistsPage(props) {
     resource,
     playlist: { playlists },
     ui,
-    getIndexedData,
-    getElasticData,
     getTeamPermissions,
+    closeSafariMontageTool,
+    safariMontagePublishTool,
+    row,
+    showFooter,
+    getLmsSettings,
   } = props;
+
+  const projectIdFilter = match?.params?.projectId || row?.id;
+  const [thumbUrl, setThumbUrl] = useState(selectedProject.thumbUrl);
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id) {
+    if (Object.keys(teamPermission).length === 0 && selectedProject.team_id && organization?.currentOrganization?.id && selectedProject.id === projectIdFilter) {
       getTeamPermissions(organization?.currentOrganization?.id, selectedProject?.team_id);
     }
-  }, [teamPermission, organization?.currentOrganization, selectedProject]);
+  }, [teamPermission, organization?.currentOrganization, selectedProject, projectIdFilter, getTeamPermissions]);
+  useEffect(() => {
+    setThumbUrl(projectState.thumbUrl);
+  }, [projectState.thumbUrl]);
+  useEffect(() => {
+    setActiveShared(projectState.selectedProject.shared);
+    if (projectState.selectedProject.organization_visibility_type_id === 2) {
+      setVisibility('My organization');
+    } else if (projectState.selectedProject.organization_visibility_type_id === 3) {
+      setVisibility('My Org + Parent and Child Org');
+    } else if (projectState.selectedProject.organization_visibility_type_id === 1) {
+      setVisibility('Private (only Me)');
+    } else {
+      setVisibility('All');
+    }
+  }, [projectState.selectedProject]);
+
+  useMemo(() => {
+    (async () => {
+      dispatch(visibilityTypes());
+    })();
+  }, []);
+
+  useEffect(() => {
+    getLmsSettings();
+    return () => {
+      dispatch(clearSelectedProject());
+    };
+  }, []);
+
   useEffect(() => {
     loadLms();
     window.scrollTo(0, 0);
 
-    if (
-      !openCreatePopup
-      && !openCreateResourcePopup
-      && !openEditResourcePopup
-      && activeOrganization
-    ) {
-      loadProject(match.params.projectId);
-      loadProjectPlaylists(match.params.projectId);
+    if (!showPlaylistModal && !openCreateResourcePopup && !openEditResourcePopup && activeOrganization) {
+      toast.info('Loading Playlists ...', {
+        className: 'project-loading',
+        closeOnClick: false,
+        closeButton: false,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: 10000,
+        icon: '',
+      });
+      loadProject(projectIdFilter);
+      loadProjectPlaylists(projectIdFilter, true);
     }
-  }, [loadLms, loadProject, loadProjectPlaylists, match.params.projectId, openCreatePopup, openCreateResourcePopup, openEditResourcePopup, activeOrganization]);
+  }, [loadProject, activeOrganization]);
   useEffect(() => {
     if (state.status === 2) {
       setChecked(true);
@@ -116,37 +187,8 @@ function PlaylistsPage(props) {
     setIndexStatus(state.indexing);
   }, [state]);
 
-  const handleChange = async (chked) => {
-    if (chked) {
-      Swal.fire({
-        html: '<b>SHOWCASE THIS PROJECT?</b><br><br><p>The Curriki Team is reviewing and selecting projects likes yours'
-          + ' to be showcased in the CurrikiStudio repository.</p><p>If selected, your project will be available for other authors'
-          + ' to search, preview and reuse/remix.</p>',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes! Review This Project',
-        cancelButtonText: 'Not Right Now',
-      })
-        .then(async (result) => {
-          if (result.isConfirmed) {
-            Swal.showLoading();
-            await getIndexedData(match.params.projectId);
-            Swal.showLoading();
-            const res = await getElasticData(match.params.projectId);
-            loadProject(match.params.projectId);
-            if (res.message) {
-              Swal.fire(res.message);
-            } else if (res.errors) {
-              Swal.fire(res.errors[0]);
-            }
-          }
-        });
-    } else {
-      Swal.showLoading();
-      await getIndexedData(match.params.projectId);
-      loadProject(match.params.projectId);
-    }
+  const editVisibility = async (type) => {
+    await dispatch(updateProjectAction(projectState.selectedProject.id, { ...projectState.selectedProject, organization_visibility_type_id: type }));
   };
 
   const handleShowCreatePlaylistModal = async (e) => {
@@ -154,29 +196,29 @@ function PlaylistsPage(props) {
 
     try {
       await showCreatePlaylistModal();
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/create`);
+      setShowPlaylistModal(true);
     } catch (err) {
-      // console.log(err.message);
+      console.log(err.message);
     }
   };
 
   const handleShowCreateResourceModal = (playlist) => {
     try {
       showCreateResourceModal(playlist.id);
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/create`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}/playlist/${playlist.id}/activity/create`);
     } catch (e) {
       // console.log(e.message);
     }
   };
 
-  const handleHideCreatePlaylistModal = async (e) => {
-    e.preventDefault();
+  const handleHideCreatePlaylistModal = async () => {
+    // e.preventDefault();
 
     try {
       await hideCreatePlaylistModal();
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      setShowPlaylistModal(false);
     } catch (err) {
-      // console.log(err.message);
+      console.log(err.message);
     }
   };
 
@@ -194,17 +236,16 @@ function PlaylistsPage(props) {
         confirmButtonAriaLabel: 'Yes',
         cancelButtonText: 'Cancel',
         cancelButtonAriaLabel: 'Cancel',
-      })
-        .then(async (resp) => {
-          if (resp.isConfirmed) {
-            await hideCreateResourceModal();
-            history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
-          }
-        });
+      }).then(async (resp) => {
+        if (resp.isConfirmed) {
+          await hideCreateResourceModal();
+          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
+        }
+      });
     } else {
       try {
         await hideCreateResourceModal();
-        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+        history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
       } catch (err) {
         // console.log(err.message);
       }
@@ -216,12 +257,15 @@ function PlaylistsPage(props) {
     if (e.target.value) setError(null);
   };
 
-  const handleCreatePlaylistSubmit = async (e) => {
-    e.preventDefault();
+  const handleCreatePlaylistSubmit = async () => {
+    // e.preventDefault();
     if (!/^ *$/.test(title) && title) {
       try {
-        await createPlaylist(match.params.projectId, title);
-        history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+        await createPlaylist(projectIdFilter, title);
+        // history.push(
+        //   `/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`
+        // );
+        handleHideCreatePlaylistModal();
       } catch (err) {
         if (err.errors) {
           if (err.errors.title.length > 0) {
@@ -243,70 +287,89 @@ function PlaylistsPage(props) {
       setError('* Required');
     }
   };
+  const handleRef = (e) => {
+    if (e.target.name === 'projectname') {
+      titleRef.current = e;
+    } else if (e.target.name === 'projectdescription') {
+      descriptionRef.current = e;
+    }
+  };
+  const onBlur = (e) => {
+    if (e.target.name === 'projectname') {
+      titleRef.current.blur();
+      setEditName(false);
+      if (selectedProject.name !== e.target.value && e.target.value.length <= 80) {
+        dispatch(
+          updateProjectAction(selectedProject?.id, {
+            name: e.target.value,
+            description: selectedProject.description,
+            thumb_url: thumbUrl,
+            organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+          })
+        );
+      } else if (e.target.value.length > 80) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 80 character in project title.',
+        });
+      }
+    } else if (e.target.name === 'projectdescription') {
+      descriptionRef.current.blur();
+      setEditDescription(false);
+      if (selectedProject.description !== e.target.value && e.target.value.length <= 1000) {
+        dispatch(
+          updateProjectAction(selectedProject?.id, {
+            name: selectedProject.name,
+            description: e.target.value,
+            thumb_url: thumbUrl,
+            organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+          })
+        );
+      } else if (e.target.value.length > 1000) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 1000 character in project description.',
+        });
+      }
+    }
+  };
+  const onEnterPress = (e) => {
+    if (e.charCode === 13) {
+      titleRef.current.blur();
+      descriptionRef.current.blur();
+    }
+  };
 
-  const handleCreateResourceSubmit = async (
-    currentPlaylistId,
-    editor,
-    editorType,
-    payload,
-    metadata,
-    projectId,
-  ) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, metadata, projectId) => {
     try {
       if (payload.submitAction === 'upload') {
         payload.event.preventDefault();
 
-        await createResourceByH5PUpload(
-          currentPlaylistId,
-          editor,
-          editorType,
-          payload,
-          metadata,
-          projectId,
-        );
+        await createResourceByH5PUpload(currentPlaylistId, editor, editorType, payload, metadata, projectId);
       } else {
-        await createResource(
-          currentPlaylistId,
-          editor,
-          editorType,
-          metadata,
-          projectId,
-        );
+        await createResource(currentPlaylistId, editor, editorType, metadata, projectId);
       }
 
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
     } catch (e) {
       // console.log(e.message);
     }
   };
 
-  const handleEditResourceSubmit = async (
-    currentPlaylistId,
-    editor,
-    editorType,
-    activityId,
-    metadata,
-  ) => {
+  const handleEditResourceSubmit = async (currentPlaylistId, editor, editorType, activityId, metadata) => {
     try {
-      await editResource(
-        currentPlaylistId,
-        editor,
-        editorType,
-        activityId,
-        metadata,
-      );
+      await editResource(currentPlaylistId, editor, editorType, activityId, metadata);
 
-      history.push(`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}`);
+      history.push(`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}`);
     } catch (e) {
       // console.log(e);
     }
   };
 
   const onDragEnd = (e) => {
-    if (
-      !e.destination
-      || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)
-    ) {
+    if (!e.destination || (e.destination.index === e.source.index && e.source.droppableId === e.destination.droppableId)) {
       return;
     }
 
@@ -327,10 +390,7 @@ function PlaylistsPage(props) {
         const sourceList = playlists.find((pl) => pl.id === parseInt(e.source.droppableId, 10));
         const destinationList = playlists.find((pl) => pl.id === parseInt(e.destination.droppableId, 10));
         const sourceActivities = Array.from(sourceList.activities);
-        const destActivities = destinationList.activities
-          ? Array.from(destinationList.activities)
-          : [];
-
+        const destActivities = destinationList.activities ? Array.from(destinationList.activities) : [];
         const [removed] = sourceActivities.splice(e.source.index, 1);
         destActivities.splice(e.destination.index, 0, removed);
         // Update both playlists with new activities
@@ -339,133 +399,323 @@ function PlaylistsPage(props) {
       }
 
       // Previous block caused changes to playlists
-      reorderPlaylists(match.params.projectId, orgPlaylists, playlists);
+      reorderPlaylists(projectIdFilter, orgPlaylists, playlists);
     } else {
       // playlist dropped
       const pLists = Array.from(playlists);
       const [removed] = pLists.splice(e.source.index, 1);
       pLists.splice(e.destination.index, 0, removed);
-      reorderPlaylists(match.params.projectId, orgPlaylists, pLists);
+      reorderPlaylists(projectIdFilter, orgPlaylists, pLists);
     }
   };
 
   const { showDeletePlaylistPopup, pageLoading } = ui;
+  useEffect(() => {
+    if (playlists.length > 0) {
+      toast.dismiss();
+    }
+  }, [playlists]);
+  const setUploadImage = (data) => {
+    console.log(data);
+    dispatch(
+      updateProjectAction(selectedProject?.id, {
+        name: selectedProject.name,
+        description: selectedProject.description,
+        thumb_url: data,
+        organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+      })
+    );
+  };
 
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const setProjectId = (projectId) => {
+    setSelectedProjectId(projectId);
+  };
+
+  const setProjectPlaylistId = (playlistId) => {
+    setSelectedProjectPlaylistId(playlistId);
+  };
+
+  const setProjectPlaylistActivityId = (playlistActivityId) => {
+    setSelectedProjectPlaylistActivityId(playlistActivityId);
+  };
   return (
     <>
-      <div className="content-wrapper">
-        <div className="content">
-          <div>
-            {pageLoading !== false ? (
-              <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
-            ) : (
-              <>
-                <div style={{ marginLeft: '15px' }}>
-                  {selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}
-                </div>
-                <div className="col playlist-page-project-title project-each-view">
-                  <div className="flex-se">
-                    <h1>
-                      {selectedProject ? selectedProject.name : ''}
-                    </h1>
-                    {permission?.Project?.includes('project:request-indexing') && (
-                      <div className="react-touch">
-                        <div className="publish-btn">
-                          <span style={{ color: checked ? '#333' : '$mine-shaft' }}>Showcase</span>
-                          <Switch checked={checked} onChange={handleChange} />
+      <div className={row?.id ? 'content-wrapper editprojectmodal' : 'content-wrapper'}>
+        <div className="inner-content">
+          <div className="content" style={{ minHeight: '500px' }}>
+            <PexelsAPI
+              show={modalShow}
+              project={selectedProject}
+              onHide={() => {
+                setModalShow(false);
+              }}
+              searchName="abstract"
+              setUploadImage={setUploadImage}
+            />
+            <div>
+              {pageLoading !== false ? (
+                <></>
+              ) : (
+                <>
+                  <div>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
+                  <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" style={{ lineHeight: '20px' }} className="mb-3" />
+                  <div className="col playlist-page-project-title project-each-view">
+                    <div className="flex-se project-headline-section">
+                      <div style={{ width: '100%' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div className="project-images">
+                            <label style={{ display: 'none' }}>
+                              <input
+                                ref={openFile}
+                                type="file"
+                                accept="image/x-png,image/jpeg"
+                                onChange={(e) => {
+                                  if (e.target.files.length === 0) {
+                                    return true;
+                                  }
+                                  if (
+                                    !(
+                                      e.target.files[0].type.includes('png') ||
+                                      e.target.files[0].type.includes('jpg') ||
+                                      e.target.files[0].type.includes('gif') ||
+                                      e.target.files[0].type.includes('jpeg')
+                                    )
+                                  ) {
+                                    Swal.fire({
+                                      icon: 'error',
+                                      title: 'Error',
+                                      text: 'Invalid file selected.',
+                                    });
+                                  } else if (e.target.files[0].size > 100000000) {
+                                    Swal.fire({
+                                      icon: 'error',
+                                      title: 'Error',
+                                      text: 'Selected file size should be less then 100MB.',
+                                    });
+                                  } else {
+                                    const thumbImage = uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, true);
+                                    thumbImage.then((data) => {
+                                      dispatch(
+                                        updateProjectAction(selectedProject?.id, {
+                                          name: selectedProject.name,
+                                          description: selectedProject.description,
+                                          thumb_url: data,
+                                          organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+                                        })
+                                      );
+                                    });
+                                  }
+                                }}
+                              />
+                            </label>
+                            <div
+                              title="project-img"
+                              style={{
+                                backgroundImage: selectedProject.thumb_url?.includes('pexels.com')
+                                  ? `url(${selectedProject.thumb_url})`
+                                  : `url(${global.config.resourceUrl}${selectedProject.thumb_url})`,
+                              }}
+                              className="project-image-playlistpage"
+                            />
+                            <div className="on-hover-project-image">
+                              <div className="thumb-display">
+                                <div
+                                  className="success"
+                                  style={{
+                                    color: '#515151',
+                                    marginBottom: '4px',
+                                    fontSize: '14px',
+                                  }}
+                                >
+                                  Upload Image:
+                                </div>
+
+                                <div
+                                  style={{
+                                    backgroundImage: `url(${selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                      ? selectedProject.thumb_url
+                                      : global.config.resourceUrl + selectedProject.thumb_url
+                                      })`,
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundSize: 'cover',
+                                  }}
+                                  // alt="project-img"
+                                  className="container-image"
+                                // src={
+                                //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                //     ? selectedProject.thumb_url
+                                //     : global.config.resourceUrl + selectedProject.thumb_url
+                                // }
+                                />
+                              </div>
+                              {(Object.keys(teamPermission).length
+                                ? teamPermission?.Team?.includes('team:edit-project')
+                                : permission?.Project?.includes('project:upload-thumb')) && (
+                                  <div className="button-flex-project-images">
+                                    <div
+                                      className="gallery"
+                                      onClick={() => {
+                                        openFile.current.click();
+                                      }}
+                                    >
+                                      <img src={computer} alt="" />
+                                      <p>My device</p>
+                                    </div>
+
+                                    <div className="pexel" onClick={() => setModalShow(true)}>
+                                      <img src={pexel} alt="pexel" />
+                                      <p>Pexels</p>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+                          </div>
+                          {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
+                          <textarea
+                            className="title"
+                            name="projectname"
+                            ref={titleRef}
+                            defaultValue={selectedProject ? selectedProject.name : ''}
+                            onBlur={onBlur}
+                            onKeyPress={onEnterPress}
+                            style={{ display: editName ? 'block' : 'none' }}
+                          />
+                          {!editName && (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
+                            <img
+                              src={Edit}
+                              alt="hk"
+                              className="ml-3"
+                              onClick={() => {
+                                setEditName(true);
+                                console.log(titleRef);
+                                titleRef.current.focus();
+                              }}
+                            />
+                          )}
+                        </div>
+                        <div className="paragraph">
+                          {!editDescription && <Headings text={selectedProject.description} headingType="body" color="#515151" />}
+                          <textarea
+                            className="description"
+                            ref={descriptionRef}
+                            name="projectdescription"
+                            defaultValue={selectedProject.description ? selectedProject.description : ''}
+                            onBlur={onBlur}
+                            onKeyPress={onEnterPress}
+                            style={{ display: editDescription ? 'block' : 'none' }}
+                          />
+                          {!editDescription &&
+                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit')) && (
+                              <img
+                                src={Edit}
+                                alt="hk"
+                                className="ml-4"
+                                className="ml-2"
+                                onClick={() => {
+                                  setEditDescription(true);
+                                  descriptionRef.current.focus();
+                                }}
+                              />
+                            )}
+                        </div>
+                        <div className="new-playlist status-pref">
+                          <div className="dropdown">
+                            <Headings text="Library Preferences:" headingType="body2" color="#515151" />
+
+                            <Dropdown className="d-inline mx-2" autoClose="outside">
+                              <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {projectState.visibilityTypes?.data?.map((type) => (
+                                  <Dropdown.Item>
+                                    <div
+                                      onClick={() => {
+                                        editVisibility(type.id);
+                                        setVisibility(type.display_name);
+                                      }}
+                                    >
+                                      {type.display_name}
+                                    </div>
+                                  </Dropdown.Item>
+                                ))}
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </div>
+                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                            <div className="library-status">
+                              {<img src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg} className="mr-2" />}
+                              {selectedProject?.indexing_text}
+                            </div>
+                          )}
                         </div>
                       </div>
-                    )}
+                      <div className="project-share-previews">
+                        <div className="project-preview">
+                          <Link className="dropdown-item" to={`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}/preview`}>
+                            <img src={Preview} alt="img" className="mr-2" />
+                            Project Preview
+                          </Link>
+                        </div>
+                        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-project') : permission?.Project?.includes('project:share')) && (
+                          <Projectsharing setActiveShared={setActiveShared} activeShared={activeShared} selectedProject={selectedProject} />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr style={{ margin: '16px 0 24px' }} />
+                  <div className="new-playlister">
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
-                      <button
-                        type="button"
-                        className="create-playlist-btn"
-                        onClick={handleShowCreatePlaylistModal}
-                      >
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                      <button style={{ whiteSpace: 'nowrap' }} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
+                        <img src={AddBtn} alt="add" className="mr-2" />
                         Create new playlist
                       </button>
                     )}
                   </div>
-
-                  <div className="project-preview">
-                    <Link
-                      className="dropdown-item"
-                      to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/preview`}
-                    >
-                      <FontAwesomeIcon icon="eye" className="mr-2" />
-                      Project Preview
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="index-text">
-                  {indexStatus === 1 && (
-                    <Alert variant="warning">
-                      Thank you for submitting this project for inclusion in our Showcase!
-                      Your project has been queued up! As soon as our review is completed,
-                      we will notify you right here.
-                    </Alert>
+                  {!!playlists && playlists.length > 0 ? (
+                    <DragDropContext onDragEnd={onDragEnd}>
+                      <Droppable droppableId="project-droppable-id" direction="horizontal" type="column">
+                        {(provided) => (
+                          <div id="board" className="board-custom" {...provided.droppableProps} ref={provided.innerRef}>
+                            {permission?.Playlist?.includes('playlist:view') &&
+                              playlists.map((playlist, index) => (
+                                <PlaylistCard
+                                  key={playlist.id}
+                                  index={index}
+                                  playlist={playlist}
+                                  projectId={parseInt(projectIdFilter, 10)}
+                                  handleCreateResource={handleShowCreateResourceModal}
+                                  teamPermission={teamPermission || {}}
+                                  handleShow={handleShow}
+                                  setProjectId={setProjectId}
+                                  setProjectPlaylistId={setProjectPlaylistId}
+                                  setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                                />
+                              ))}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </DragDropContext>
+                  ) : (
+                    <Alert variant="success">No playlist available, kindly create your playlist.</Alert>
                   )}
-                  {indexStatus === 2 && (
-                    <Alert variant="danger">
-                      Your project was not selected for inclusion in the Showcase.
-                      You are welcome to contact our support team, and revise
-                      and resubmit your project at any time.
-                    </Alert>
-                  )}
-                  {indexStatus === 3 && (
-                    <Alert variant="success">
-                      This project has been selected for inclusion in the CurrikiStudio Showcase
-                      and is available for other content authors to find, preview, reuse and remix.
-                    </Alert>
-                  )}
-                </div>
-
-                {!!playlists && playlists.length > 0 ? (
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable
-                      droppableId="project-droppable-id"
-                      direction="horizontal"
-                      type="column"
-                    >
-                      {(provided) => (
-                        <div
-                          id="board"
-                          className="board-custom"
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                        >
-                          {playlists.map((playlist, index) => (
-                            (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-playlist') : permission?.Playlist?.includes('playlist:view'))
-                            && (
-                              <PlaylistCard
-                                key={playlist.id}
-                                index={index}
-                                playlist={playlist}
-                                projectId={parseInt(match.params.projectId, 10)}
-                                handleCreateResource={handleShowCreateResourceModal}
-                                teamPermission={teamPermission || {}}
-                              />
-                            )
-                          ))}
-                          {provided.placeholder}
-                        </div>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
-                ) : (
-                  <Alert variant="success">
-                    No playlist available, kindly create your playlist.
-                  </Alert>
-                )}
-              </>
-            )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {openCreatePopup && (
+      {showPlaylistModal && (
         <CreatePlaylistPopup
           handleHideCreatePlaylistModal={handleHideCreatePlaylistModal}
           handleCreatePlaylistSubmit={handleCreatePlaylistSubmit}
@@ -492,19 +742,28 @@ function PlaylistsPage(props) {
         />
       )}
 
-      {resource.showPreviewResourcePopup && (
-        <PreviewResourcePage {...props} />
-      )}
+      {resource.showPreviewResourcePopup && <PreviewResourcePage {...props} />}
 
-      {showDeletePlaylistPopup && (
-        <DeletePopup
-          {...props}
-          deleteType="Playlist"
-          selectedProject={selectedProject}
-        />
-      )}
+      {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Playlist" selectedProject={selectedProject} />}
+      <MyActivity playlistPreview />
 
-      <Footer />
+      <Modal dialogClassName="safari-modal" show={safariMontagePublishTool} onHide={() => closeSafariMontageTool()} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+        </Modal.Body>
+      </Modal>
+      {/* {!showFooter && <Footer />} */}
+
+      <GoogleModel
+        projectId={selectedProjectId}
+        playlistId={selectedProjectPlaylistId}
+        activityId={selectedProjectPlaylistActivityId}
+        show={show} // {props.show}
+        onHide={handleClose}
+      />
     </>
   );
 }
@@ -512,7 +771,6 @@ function PlaylistsPage(props) {
 PlaylistsPage.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  openCreatePopup: PropTypes.bool,
   openCreateResourcePopup: PropTypes.bool,
   openEditResourcePopup: PropTypes.bool,
   playlist: PropTypes.object.isRequired,
@@ -536,10 +794,11 @@ PlaylistsPage.propTypes = {
   getIndexedData: PropTypes.func.isRequired,
   getElasticData: PropTypes.func.isRequired,
   getTeamPermissions: PropTypes.func.isRequired,
+  closeSafariMontageTool: PropTypes.func.isRequired,
+  safariMontagePublishTool: PropTypes.string.isRequired,
 };
 
 PlaylistsPage.defaultProps = {
-  openCreatePopup: false,
   openCreateResourcePopup: false,
   openEditResourcePopup: false,
 };
@@ -554,7 +813,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
+  loadProjectPlaylists: (id, skipContent) => dispatch(loadProjectPlaylistsAction(id, skipContent)),
   createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
@@ -569,9 +828,9 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   loadLms: () => dispatch(loadLmsAction()),
-  getIndexedData: (id) => dispatch(getIndexed(id)),
-  getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
+  closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
+  getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
 });
 
 const mapStateToProps = (state) => ({
@@ -579,8 +838,7 @@ const mapStateToProps = (state) => ({
   resource: state.resource,
   project: state.project,
   ui: state.ui,
+  safariMontagePublishTool: state.genericLMS.safariMontagePublishTool,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistsPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(PlaylistsPage));

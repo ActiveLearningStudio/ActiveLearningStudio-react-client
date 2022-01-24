@@ -119,7 +119,7 @@ const SummaryOutcome = (props) => {
                     <div className="score-badge">
                       <div className="score-badge-header">SCORE</div>
                       <div className="score-badge-score">
-                        {`${data.answer.score.raw} / ${data.answer.score.max}`}
+                        {data.answer.score.max !== null ? `${data.answer.score.raw} / ${data.answer.score.max}` : 'N/A'}
                       </div>
                       <div className="score-badge-header">
                         <FontAwesomeIcon icon="clock" />

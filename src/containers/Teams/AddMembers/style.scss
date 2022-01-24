@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .member-add {
   height: 46.5rem;
@@ -47,8 +47,8 @@
         input {
           width: 36%;
           padding: 9px 13px;
-          background: #F3F3F3;
-          border: solid 1px #C4C4C4;
+          background: #f3f3f3;
+          border: solid 1px #c4c4c4;
         }
 
         .invite-wrapper {
@@ -59,14 +59,14 @@
             height: 41px;
             padding: 1px 17px 0;
             background: none;
-            border: solid 1px #44CA92;
+            border: solid 1px #44ca92;
             font-size: 14px;
             letter-spacing: 0.3px;
             text-align: left;
-            color: #44CA92;
+            color: #44ca92;
 
             &:hover {
-              background: #44CA92;
+              background: #44ca92;
               color: #ffffff;
             }
           }
@@ -307,7 +307,7 @@
           }
 
           .border-top {
-            border-top: solid 1px #EEEEEE;
+            border-top: solid 1px #eeeeee;
           }
         }
       }

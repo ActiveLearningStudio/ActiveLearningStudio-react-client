@@ -30,7 +30,7 @@ export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
   const result = await organization.getOrganizationSearch(id, search);
   dispatch({
     type: actionTypes.ADD_SUBORG_LIST,
-    payload: result?.suborganization,
+    payload: result,
   });
 };
 
@@ -45,7 +45,7 @@ export const getOrganization = (id) => async (dispatch) => {
 
 export const getOrganizationFirstTime = (id) => async (dispatch) => {
   const result = await organization.getOrganization(id);
-  console.log(result);
+
   dispatch({
     type: actionTypes.ADD_ACTIVE_ORG,
     payload: result.suborganization,
@@ -58,14 +58,6 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
 
 export const getAllOrganizationforSSO = () => async (dispatch) => {
   const result = await organization.getAll();
-  dispatch({
-    type: actionTypes.ADD_ACTIVE_ORG,
-    payload: result?.data[0],
-  });
-  dispatch({
-    type: actionTypes.ADD_CURRENT_ORG,
-    payload: result?.data[0],
-  });
 
   const permissionsResult = await organization.allPermission(result?.data[0].id);
   dispatch({
@@ -78,6 +70,7 @@ export const getAllOrganizationforSSO = () => async (dispatch) => {
     type: actionTypes.ALL_ROLES,
     payload: rolesResult?.data,
   });
+  return result;
 };
 
 export const clearOrganizationState = () => (dispatch) => {
@@ -125,11 +118,11 @@ export const checkBranding = (data) => async () => {
   return result;
 };
 
-export const getsubOrgList = (id) => async (dispatch) => {
-  const result = await organization.getSubOrganizationList(id);
+export const getsubOrgList = (id, size = 10, page = 1) => async (dispatch) => {
+  const result = await organization.getSubOrganizationList(id, size, page);
   dispatch({
     type: actionTypes.ADD_SUBORG_LIST,
-    payload: result.suborganization,
+    payload: result,
   });
   return result;
 };
@@ -169,6 +162,16 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     unit_path: data.unit_path,
     domain: data.domain,
     self_registration: data.self_registration,
+    noovo_client_id: data.noovo_client_id || undefined,
+    gcr_project_visibility: data?.gcr_project_visibility || false,
+    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    tos_type: data.tos_type,
+    tos_url: data.tos_url,
+    tos_content: data.tos_content,
+    privacy_policy_type: data.privacy_policy_type,
+    privacy_policy_url: data.privacy_policy_url,
+    privacy_policy_content: data.privacy_policy_content,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -191,6 +194,10 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   //     role_id: user?.role?.id,
   //   }
   // ));
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const details = {
     name: data.name,
     description: data.description,
@@ -201,7 +208,16 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     api_key: data.api_key || '',
     unit_path: data.unit_path || '',
     self_registration: data.self_registration,
-
+    noovo_client_id: data.noovo_client_id || undefined,
+    gcr_project_visibility: data?.gcr_project_visibility || false,
+    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    tos_type: data.tos_type,
+    tos_url: data.tos_url,
+    tos_content: data.tos_content,
+    privacy_policy_type: data.privacy_policy_type,
+    privacy_policy_url: data.privacy_policy_url,
+    privacy_policy_content: data.privacy_policy_content,
     // admins: adminUsers,
     // users: usersList,
   };
@@ -211,6 +227,12 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       type: actionTypes.ADD_SUBORG_EDIT,
       payload: newOrg.suborganization,
     });
+    if (newOrg.suborganization.id === activeOrganization.id) {
+      dispatch({
+        type: actionTypes.ADD_ACTIVE_ORG,
+        payload: newOrg.suborganization,
+      });
+    }
     dispatch({
       type: 'CLEAR_ACTIVE_FORM',
     });
@@ -239,7 +261,9 @@ export const updateFeedbackScreen = (type) => (dispatch) => {
 
 export const getRoles = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const result = await organization.getRoles(activeOrganization?.id);
   dispatch({
     type: actionTypes.ALL_ROLES,
@@ -285,7 +309,9 @@ export const getOrgUsers = (id, page, activeRole) => async (dispatch) => {
 };
 
 export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
   const result = await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);
@@ -298,7 +324,9 @@ export const deleteUserFromOrganization = (id, preserveData) => async (dispatch)
 };
 
 export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
-  const { organization: { activeOrganization, users, searchUsers } } = store.getState();
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
   const result = await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);
