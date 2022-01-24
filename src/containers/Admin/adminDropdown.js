@@ -128,12 +128,12 @@ const AdminDropdown = (props) => {
                     onClick={() => {
                       Swal.fire({
                         title: 'Are you sure?',
-                        text: "You won't be able to image this!",
+                        text: "You won't be able to revert this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#084892',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Delete it',
                       }).then(async (result) => {
                         if (result.isConfirmed) {
                           Swal.showLoading();
@@ -143,9 +143,10 @@ const AdminDropdown = (props) => {
                               text: 'You have successfully deleted the organization',
                               icon: 'success',
                               showCancelButton: false,
-                              confirmButtonColor: '#084892',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'OK',
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             });
                           }
                         }
@@ -286,7 +287,7 @@ const AdminDropdown = (props) => {
                       showCancelButton: true,
                       confirmButtonColor: '#084892',
                       cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!',
+                      confirmButtonText: 'Delete it',
                     }).then((result) => {
                       if (result.isConfirmed) {
                         Swal.fire({
@@ -304,6 +305,10 @@ const AdminDropdown = (props) => {
                             Swal.fire({
                               icon: 'success',
                               text: res?.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             });
 
                             const filterProject = localStateData.filter((each) => each.id != row.id);
@@ -351,7 +356,7 @@ const AdminDropdown = (props) => {
                       showCancelButton: true,
                       confirmButtonColor: '#084892',
                       cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!',
+                      confirmButtonText: 'Delete it',
                     }).then(async (result) => {
                       if (result.isConfirmed) {
                         Swal.showLoading();
@@ -367,9 +372,10 @@ const AdminDropdown = (props) => {
                               text: 'You have successfully deleted the activity type',
                               icon: 'success',
                               showCancelButton: false,
-                              confirmButtonColor: '#084892',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'OK',
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             }).then((result) => {
                               if (result.isConfirmed) {
                                 dispatch(loadResourceTypesAction('', 1));
@@ -417,7 +423,7 @@ const AdminDropdown = (props) => {
                       showCancelButton: true,
                       confirmButtonColor: '#084892',
                       cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!',
+                      confirmButtonText: 'Delete it',
                     }).then(async (result) => {
                       if (result.isConfirmed) {
                         Swal.showLoading();
@@ -433,9 +439,10 @@ const AdminDropdown = (props) => {
                               text: 'You have successfully deleted the activity type',
                               icon: 'success',
                               showCancelButton: false,
-                              confirmButtonColor: '#084892',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'OK',
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             }).then((result) => {
                               if (result.isConfirmed) {
                                 dispatch(loadResourceTypesAction('', 1));
@@ -518,7 +525,7 @@ const AdminDropdown = (props) => {
                       showCancelButton: true,
                       confirmButtonColor: '#084892',
                       cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!',
+                      confirmButtonText: 'Delete it',
                     }).then((result) => {
                       if (result.isConfirmed) {
                         Swal.fire({
@@ -537,6 +544,10 @@ const AdminDropdown = (props) => {
                             Swal.fire({
                               icon: 'success',
                               text: res?.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             });
                             dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
                             const filterLMS = localStateData.filter((each) => each.id != row.id);
@@ -576,13 +587,13 @@ const AdminDropdown = (props) => {
                   <Dropdown.Item
                     onClick={() => {
                       Swal.fire({
-                        title: 'Are you sure you want to delete this SSO Integration?',
-                        text: 'This action is Irreversible',
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#084892',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Delete it',
                       }).then((result) => {
                         if (result.isConfirmed) {
                           Swal.fire({
@@ -600,7 +611,11 @@ const AdminDropdown = (props) => {
                             .then((res) => {
                               Swal.fire({
                                 icon: 'success',
-                                text: res?.message,
+                                text: res?.message.message,
+                                confirmButtonText: 'Close',
+                                customClass: {
+                                  confirmButton: 'confirmation-close-btn',               
+                                }
                               });
                               dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
                             })
@@ -655,7 +670,7 @@ const AdminDropdown = (props) => {
                       showCancelButton: true,
                       confirmButtonColor: '#084892',
                       cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, delete it!',
+                      confirmButtonText: 'Delete it',
                     }).then((result) => {
                       if (result.isConfirmed) {
                         Swal.fire({
@@ -674,6 +689,10 @@ const AdminDropdown = (props) => {
                             Swal.fire({
                               icon: 'success',
                               text: res?.message.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',               
+                              }
                             });
                             dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
                           })
@@ -712,7 +731,7 @@ const AdminDropdown = (props) => {
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonText: 'Delete it',
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       Swal.fire({
@@ -730,6 +749,10 @@ const AdminDropdown = (props) => {
                         Swal.fire({
                           icon: 'success',
                           text: result.message?.message,
+                          confirmButtonText: 'Close',
+                          customClass: {
+                            confirmButton: 'confirmation-close-btn',               
+                          }
                         });
                       }
                     }

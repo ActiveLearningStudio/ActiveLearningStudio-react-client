@@ -114,6 +114,10 @@ export default function CreateUser(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'LMS settings edited successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -139,6 +143,10 @@ export default function CreateUser(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'LMS settings added successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());

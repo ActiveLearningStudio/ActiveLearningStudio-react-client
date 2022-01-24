@@ -74,6 +74,10 @@ export default function CreateLtiTool(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -99,6 +103,10 @@ export default function CreateLtiTool(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'LTI tool added successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
