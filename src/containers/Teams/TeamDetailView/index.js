@@ -132,7 +132,11 @@ const TeamDetail = ({ team, organization }) => {
           <img src={UserIcon} alt="" />
         </div>
         <div className="right_select">
-          <InviteDialog />
+          <div className={`${toggleLeft ? 'none' : ''}`}>
+            <InviteDialog
+              users={team?.users}
+            />
+          </div>
         </div>
         {team?.users?.map((user) => (
           <div className="right_card">
