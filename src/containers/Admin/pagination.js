@@ -7,9 +7,11 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
   const dispatch = useDispatch();
   return (
     <div className="pagination-top">
-      <div className="pagination_state">
-        Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total}
-      </div>
+      {data?.meta && (
+        <div className="pagination_state">
+          Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total}
+        </div>
+      )}
       <div className="main-pagination">
         {type === 'Stats' && subTypeState === 'Report' && (
           <Pagination
@@ -127,7 +129,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Last"
           />
         )}
-        {type === 'Activities' && subType === 'Activity Types' && (
+        {type === 'Activities' && subType === 'Activity Types' && data?.meta && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
