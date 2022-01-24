@@ -3977,10 +3977,10 @@ body.collapsed {
 }
 
 .swal2-icon {
-  width: 2.5em;
-  height: 2.5em;
+  width: 2.5em !important;
+  height: 2.5em !important;
   .swal2-icon-content {
-    font-size:2.5em;
+    font-size:2.5em !important;
   }
 }
 
@@ -4026,6 +4026,6 @@ body.collapsed {
   border: 1px solid #084892 !important;
   width: 177px;
   height: 32px;
-  padding: 0;
+  padding: 0 !important;
 }
  
