@@ -104,6 +104,10 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -129,6 +133,10 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
               dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());

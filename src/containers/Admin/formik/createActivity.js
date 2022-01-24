@@ -83,8 +83,10 @@ export default function CreateActivity(props) {
                 text: 'Activity type edited successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: "#084892",
-                confirmButtonText: "OK",
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -109,8 +111,10 @@ export default function CreateActivity(props) {
                 text: 'Activity type added successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: "#084892",
-                confirmButtonText: "OK",
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());

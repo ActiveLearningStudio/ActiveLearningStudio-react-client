@@ -154,8 +154,10 @@ export default function CreateOrg(prop) {
                 text: 'Organization edited successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -180,8 +182,10 @@ export default function CreateOrg(prop) {
                 text: 'Organization added successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
