@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .activity-preview-card {
   width: 14rem;
@@ -13,7 +13,7 @@
     right: 20px;
     top: 10px;
   }
-  
+
   a {
     width: 100%;
   }
@@ -24,7 +24,7 @@
     font-size: 14px;
     line-height: 19px;
     letter-spacing: 0;
-    color: $mine-shaft;
+    // color: $mine-shaft;
     padding: 12px;
     border-bottom: 1px solid #eee;
   }

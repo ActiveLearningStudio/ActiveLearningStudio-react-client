@@ -123,13 +123,14 @@
     }
   }
 
-   h2 {
+  h2 {
     margin-bottom: 0 !important;
     font: normal normal 600 18px/29px $halvetica !important;
     color: $mine-shaft !important;
   }
 
-  .pexel, .gallery {
+  .pexel,
+  .gallery {
     background-color: #fff !important;
   }
   .shadowbox {
@@ -410,7 +411,7 @@ $filled: #44ca92;
       margin-left: 50px;
       font-size: 16px;
       cursor: pointer;
-      font-family: "rubik", sans-serif;
+      font-family: 'rubik', sans-serif;
       font-weight: 400;
       padding-top: 7px;
       padding-bottom: 10px;
@@ -623,7 +624,7 @@ $filled: #44ca92;
   //}
 }
 
-input[type="radio"]:checked + .activity-item {
+input[type='radio']:checked + .activity-item {
   box-shadow: 0 3px 6px #00000029;
   border: 2px solid #3A3632;
   border-radius: 4px;
@@ -642,8 +643,8 @@ input[type="radio"]:checked + .activity-item {
   }
 }
 
-.activity-label [type="radio"],
-.question-label [type="radio"] {
+.activity-label [type='radio'],
+.question-label [type='radio'] {
   display: none;
 }
 
@@ -675,7 +676,7 @@ input[type="radio"]:checked + .activity-item {
   height: 56px;
   background: #2ecf43;
   font-size: 14px;
-  font-family: "rubik", sans-serif;
+  font-family: 'rubik', sans-serif;
   font-weight: 600;
 
   &.top {
@@ -702,7 +703,7 @@ input[type="radio"]:checked + .activity-item {
   text-align: left;
   padding-left: 20px;
   font-size: 14px;
-  font-family: "rubik", sans-serif;
+  font-family: 'rubik', sans-serif;
   font-weight: 600;
 }
 
@@ -755,7 +756,7 @@ input[type="radio"]:checked + .activity-item {
     text-transform: capitalize;
     margin: 0;
     font-size: 2rem;
-    font-family: "rubik", sans-serif;
+    font-family: 'rubik', sans-serif;
     font-weight: 300;
   }
 
@@ -763,7 +764,7 @@ input[type="radio"]:checked + .activity-item {
     h2 {
       color: #565656;
       font-size: 18px;
-      font-family: "$halvetica", sans-serif;
+      font-family: '$halvetica', sans-serif;
       font-weight: 400;
       margin-top: 15px;
       margin-bottom: 15px;
@@ -806,7 +807,7 @@ input[type="radio"]:checked + .activity-item {
           text-transform: uppercase;
           text-align: center;
           font-size: 12px;
-          font-family: "rubik", sans-serif;
+          font-family: 'rubik', sans-serif;
           font-weight: 600;
         }
       }

@@ -1,13 +1,13 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Echo from 'laravel-echo';
+// import Echo from 'laravel-echo';
+import { toast } from 'react-toastify';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
-import groupService from 'services/group.service';
 import teamService from 'services/team.service';
-import socketConnection from 'services/http.service';
+// import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -30,10 +30,10 @@ export const allSidebarProjects = () => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const { projects } = await projectService.getAll(activeOrganization.id);
   const { teams } = await teamService.getAll(activeOrganization.id);
-  const { groups } = await groupService.getAll(activeOrganization.id);
+  // const { groups } = await groupService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects, teams, groups },
+    data: { projects, teams },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {
@@ -41,13 +41,32 @@ export const createProjectAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    Swal.showLoading();
+    toast.info('creating project ...', {
+      position: 'top-center',
+      hideProgressBar: false,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+    });
     const { project } = await projectService.create(data, activeOrganization.id);
-    Swal.close();
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
+    toast.dismiss();
+    if (project) {
+      toast.success('New Project Created', {
+        position: 'top-center',
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return project;
+    }
     dispatch(allSidebarProjects());
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
@@ -57,6 +76,19 @@ export const createProjectAction = (data) => async (dispatch) => {
       text: e.message || 'Something went wrong !',
     });
   }
+};
+
+export const setSelectedProject = (project) => (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_SELECTED_PROJECT,
+    payload: project,
+  });
+};
+
+export const clearSelectedProject = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_SELECTED_PROJECT,
+  });
 };
 
 export const loadProjectAction = (projectId) => async (dispatch) => {
@@ -80,28 +112,36 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
   }
 };
 
-export const getIndexed = (projectId) => async () => {
-  const result = await projectService.getIndexed(projectId);
-  return result;
-};
-
-export const getElastic = (projectId) => async () => {
-  const result = await projectService.getelastic(projectId);
-  return result;
-};
-
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
+    toast.info('Updating Project ...', {
+      position: 'top-center',
+      hideProgressBar: true,
+      icon: '',
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 5000,
+    });
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-    Swal.showLoading();
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
+    toast.dismiss();
+    toast.success('Project Edited', {
+      position: 'top-center',
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 2500,
+    });
     dispatch({
       type: actionTypes.UPDATE_PROJECT_SUCCESS,
       payload: { project },
     });
-    Swal.close();
     dispatch(allSidebarProjects());
     return project;
   } catch (e) {
@@ -111,7 +151,7 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       title: 'Error',
       text: e.message || 'Something went wrong !',
     });
-    return e;
+    return e.message;
   }
 };
 
@@ -152,9 +192,19 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     },
   };
   const centralizedState = store.getState();
+  toast.info('Uploading image...', {
+    position: 'top-center',
+    hideProgressBar: false,
+    icon: '',
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    autoClose: 30000,
+  });
   const { organization: { activeOrganization } } = centralizedState;
   const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
-
+  toast.dismiss();
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
@@ -164,12 +214,12 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
 
 export const loadMyProjectsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const { organization: { currentOrganization } } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(activeOrganization?.id);
+    const { projects } = await projectService.getAll(currentOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
@@ -188,8 +238,8 @@ export const loadMyProjectsAction = () => async (dispatch) => {
 
 export const loadMyFavProjectsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  const { projects } = await projectService.getAllFav(activeOrganization.id);
+  const { organization: { currentOrganization } } = centralizedState;
+  const { projects } = await projectService.getAllFav(currentOrganization?.id);
   dispatch({
     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
     data: { projects },
@@ -229,8 +279,8 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
 
 export const sampleProjects = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  const { projects } = await projectService.getSampleProject(activeOrganization.id);
+  const { organization: { currentOrganization } } = centralizedState;
+  const { projects } = await projectService.getSampleProject(currentOrganization?.id);
   dispatch({
     type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
     data: { projects },
@@ -272,7 +322,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
@@ -281,13 +331,13 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   const protocol = `${window.location.href.split('/')[0]}//`;
   const url = `${protocol + window.location.host}/project/${projectId}/shared`;
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
@@ -296,7 +346,7 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   Swal.fire({
     title: `You stopped sharing <strong>"${projectName}"</strong> !`,
     html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
@@ -484,15 +534,17 @@ export const getProjectCourseFromLMS = (
   playlist,
   lmsUrl,
 ) => async (dispatch, getState) => {
-  Swal.fire({
-    iconHtml: loaderImg,
-    title: 'Fetching Information....',
-    showCancelButton: false,
-    showConfirmButton: false,
-    allowOutsideClick: false,
+  const response = await toast.promise(projectService.fetchLmsDetails(lms, projectId, settingId), {
+    pending: 'Fetching information...',
+    success: 'Information fetched!',
+    error: 'Error fetching information',
+  }, {
+    className: 'project-loading',
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    closeOnClick: false,
+    closeButton: false,
   });
-
-  const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
   const globalStoreClone = getState();
   if (response) {
     dispatch({
@@ -500,7 +552,7 @@ export const getProjectCourseFromLMS = (
       lmsCourse: response.project,
       allstate: globalStoreClone,
     });
-
+    toast.dismiss();
     Swal.fire({
       title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
       text: 'Would you like to proceed?',
@@ -523,8 +575,8 @@ export const getProjectCourseFromLMS = (
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
             const counter = !!globalStoreCloneUpdated.project.lmsCourse
-            && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-              .length > 0
+              && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+                .length > 0
               ? globalStoreCloneUpdated.project.lmsCourse
                 .playlistsCopyCounter[x].counter
               : 0;
@@ -651,27 +703,43 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
   }
 };
 
-export const updatedProject = (userId) => async () => {
-  const echo = new Echo(socketConnection.notificationSocket());
+// export const updatedProject = (userId) => async () => {
+//   const echo = new Echo(socketConnection.notificationSocket());
 
-  echo.private('project-update')
-    .listen('ProjectUpdatedEvent', (msg) => {
-      if (msg.userId !== userId) {
-        const path = window.location.pathname;
-        if (path.includes(`project/${msg.projectId}`)) {
-          Swal.fire({
-            title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-          })
-            .then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-        }
-      }
-    });
+//   echo.private('project-update')
+//     .listen('ProjectUpdatedEvent', (msg) => {
+//       if (msg.userId !== userId) {
+//         const path = window.location.pathname;
+//         if (path.includes(`project/${msg.projectId}`)) {
+//           Swal.fire({
+//             title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
+//             showDenyButton: true,
+//             showCancelButton: true,
+//             confirmButtonText: 'Yes',
+//             denyButtonText: 'No',
+//           })
+//             .then((result) => {
+//               if (result.isConfirmed) {
+//                 window.location.reload();
+//               }
+//             });
+//         }
+//       }
+//     });
+// };
+
+export const clearProjectSelected = () => (dispatch) => {
+  dispatch({
+    type: actionTypes.CLEAR_PROJECT_SELECT,
+  });
+};
+
+export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.searchPreviewProject(activeOrganization?.id, projectId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_PROJECT,
+    payload: project,
+  });
 };

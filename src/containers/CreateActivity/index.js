@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 // import Header from 'components/Header';
 import { loadPlaylistAction } from 'store/actions/playlist';
@@ -51,7 +51,7 @@ function ActivityCreate(props) {
               <Link onClick={() => history.goBack()}>
                 <div className="back-playlist">
                   <FontAwesomeIcon icon="arrow-left" />
-                  Back to Playlist
+                  Back
                 </div>
               </Link>
             </div>
@@ -117,7 +117,6 @@ function ActivityCreate(props) {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

@@ -1,0 +1,125 @@
+@import "assets/css/index";
+
+.myprojectmain {
+  .inner-content {
+    background: $white;
+    padding: 32px 30px 30px;
+    margin: 13px 39px 81px 29px;
+    border-radius: 3px;
+    @media screen and (max-width: 1024px) {
+      margin: 13px 20px 81px 20px;
+    }
+    .topHeading-prject-detail {
+      display: flex;
+      flex-direction: column;
+      .topHeading {
+        display: flex;
+        justify-content: space-between;
+        // align-items: center;
+        align-items: flex-end;
+      }
+      .top-project-detail {
+        margin-top: 25px;
+        .project-title-btn {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .project-detail {
+          margin-top: 15px;
+        }
+      }
+    }
+    .top-project-detail-btn-tabs {
+      border-bottom: 1px solid $curriki-main-blue;
+      margin-top: 48px;
+      display: flex;
+      .btn-tabs {
+        border-radius: 5px;
+        border: 1px solid $curriki-main-blue;
+        border-bottom-left-radius: none;
+        border-bottom-right-radius: none;
+        margin-right: 8px;
+      }
+    }
+    .project-playlist-card {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      .playlist-card {
+        margin-right: 30px;
+      }
+    }
+  }
+}
+
+.myproject-layout {
+  margin-top: 80px;
+  .myproject-layout-title {
+    width: max-content;
+  }
+  .myproject-layout-formik {
+    width: 370px;
+    .layout-formik-input {
+      width: 100%;
+      margin-top: 33px;
+      .input-label {
+        display: flex;
+        flex-direction: column;
+      }
+      .input-field {
+        margin-top: 5px;
+      }
+      select {
+        margin-top: 3px;
+        background: $white;
+        border: 1px solid #515151;
+        box-sizing: border-box;
+        // box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+        border-radius: 4px;
+        width: 154px;
+        height: 36px;
+      }
+    }
+    .layout-formik-uploadimage {
+      margin-top: 33px;
+    }
+  }
+  .myproject-button {
+    margin-top: 81px;
+    display: flex;
+    // justify-content: flex-end;
+  }
+}
+
+.form-new-popup-myproject {
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1060;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 285px;
+  .cross-all-pop {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 99999;
+  }
+  .inner-form-content {
+    position: absolute;
+    right: 0;
+    background: #fff;
+    opacity: 1;
+    width: 470px;
+    height: 150vh;
+    padding: 50px;
+  }
+}
+.z-index {
+  z-index: 0;
+}

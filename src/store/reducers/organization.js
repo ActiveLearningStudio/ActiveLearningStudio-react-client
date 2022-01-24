@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   allOrganizations: [],
   currentOrganization: null,
   activeOrganization: null,
-  allSuborgList: null,
+  allSuborgList: [],
   newlyCreated: null,
   editOrganization: null,
   logo: '',
@@ -134,12 +134,13 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_SUBORG_EDIT:
       return {
         ...state,
-        allSuborgList: state.allSuborgList.map((edit) => {
+        allSuborgList: state?.allSuborgList?.data?.map((edit) => {
           if (edit.id === action.payload.id) {
             return action.payload;
           }
           return edit;
         }),
+        // activeOrganization: action.payload,
       };
     case actionTypes.EDIT_ORGANIZATION:
       return {

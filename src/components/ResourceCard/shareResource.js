@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
@@ -21,22 +21,13 @@ const ResourceCardDropdownShare = (props) => {
             <div className="share-project-preview-url project-share-check">
               <br />
               <h3>
-                You can now share Activity
-                {' '}
-                <strong>{resource.title}</strong>
+                You can now share Activity <strong>{resource.title}</strong>
                 <br />
                 Anyone with the link below can access your activity:
               </h3>
 
-              <a
-                target="_blank"
-                href={`/activity/${resource.id}/shared`}
-                rel="noopener noreferrer"
-              >
-                <input
-                  id="urllink_clip"
-                  value={`${protocol + window.location.host}/activity/${resource.id}/shared`}
-                />
+              <a target="_blank" href={`/activity/${resource.id}/shared`} rel="noopener noreferrer">
+                <input id="urllink_clip" value={`${protocol + window.location.host}/activity/${resource.id}/shared`} />
               </a>
 
               <span
@@ -68,8 +59,8 @@ const ResourceCardDropdownShare = (props) => {
               </span>
               <br />
 
-              <div className="close-btn">
-                <button type="button" onClick={onClose}>
+              <div className="close-btn flex-center">
+                <button className="curriki-btn-extra" type="button" onClick={onClose}>
                   Ok
                 </button>
               </div>

@@ -51,6 +51,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   if (values.standardArray && values.standardArray.length > 0) {
     if (values.type === 'orgSearch') {
       sendData = {
+        query: values.phrase || undefined,
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
@@ -85,6 +86,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     // eslint-disable-next-line no-lonely-if
     if (values.type === 'orgSearch') {
       sendData = {
+        query: values.phrase || undefined,
         h5pLibraries: values.standardArray,
         from: values.from,
         size: values.size,
@@ -128,7 +130,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       Swal.fire(response.errors.query[0]);
     }
   } else {
-    dispatch(searchRedux(response.data, values.type === 'orgSearch' ? '' : values.phrase, response.meta));
+    dispatch(searchRedux(response.data, values.phrase, response.meta));
   }
 
   return response;

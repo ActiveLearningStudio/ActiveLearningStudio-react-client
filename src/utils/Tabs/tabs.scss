@@ -1,0 +1,26 @@
+@import "assets/css/index";
+.curriki-utility-tabs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 150px;
+  .tabs {
+    height: 10px;
+    border-radius: 5px;
+    width: 100%;
+    background-color: $mercury;
+  }
+  .activeTabs {
+    background-color: #f8af2c;
+  }
+  .tab-text {
+    text-align: center;
+    p {
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 16px;
+      font-family: "Open Sans", sans-serif;
+    }
+  }
+}

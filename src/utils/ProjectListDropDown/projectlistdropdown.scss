@@ -1,0 +1,122 @@
+@import "assets/css/index";
+
+.curriki-utility-list-dropdown {
+  max-width: 283px;
+
+  //   .activity-dropdown {
+  //     display: flex;
+  //     align-items: center;
+  //     .activity-dropdown-btn {
+  //       height: 24px;
+  //       padding: 0 0 0 10px !important;
+  //       color: #868686 !important;
+  //       background: transparent !important;
+  //       border: none !important;
+  //       outline: none !important;
+  //       box-shadow: none !important;
+
+  //       &:after {
+  //         display: none;
+  //         border-top-color: white !important;
+  //       }
+  //     }
+  //   }
+  .project-dropdown-btn-list {
+    border: none;
+    span {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: $curriki-main-blue;
+      text-decoration: underline;
+    }
+    // button {
+    //   width: 122px;
+    //   border: none;
+    //   cursor: pointer;
+    //   background: #ffffff;
+    //   color: $curriki-main-blue;
+    //   box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+    //   border-radius: 4px;
+    // }
+  }
+
+  .listproject-dropdown.check {
+    width: 100%;
+    height: 100%;
+    .btn-primary {
+      background-color: transparent;
+    }
+  }
+
+  .listproject-dropdown.check {
+    .dropdown-menu {
+      min-width: 130px;
+      margin: 0;
+      padding: 0;
+      border: none;
+      box-shadow: 0 3px 20px #00000029;
+      display: flex;
+      flex-direction: column;
+      border-radius: 5px;
+
+      a {
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 19px;
+        font-family: "Open Sans", sans-serif;
+        letter-spacing: 0;
+        color: $curriki-main-blue;
+        padding: 5px 12px;
+
+        &:hover {
+          background-color: white;
+          color: white;
+        }
+
+        .fa {
+          padding-right: 5px;
+          font-size: 12px;
+          color: $mine-shaft;
+        }
+      }
+    }
+  }
+  .mr-2 {
+    margin-right: 10px;
+  }
+}
+
+.project-menu-list {
+  .projectlist-title {
+    padding: 32px 32px 16px 32px;
+    min-width: 211px;
+    p {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 20px;
+      color: $curriki-main-blue;
+    }
+  }
+  .list-project {
+    padding: 1px 32px;
+    button {
+      height: 32px;
+      padding: 0 15px;
+      border: none;
+      cursor: pointer;
+      background: #ffffff;
+      color: #515151;
+      box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
+      border-radius: 4px;
+    }
+  }
+}
+.dropdown-toggle::after {
+  content: none;
+}

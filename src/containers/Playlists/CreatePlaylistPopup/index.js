@@ -1,17 +1,20 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-
-import { FadeDiv } from 'utils';
-
 import './style.scss';
+import { slideInRight } from 'react-animations';
+import styled, { keyframes } from 'styled-components';
+import { Formik } from 'formik';
+import close from 'assets/images/grayclose.png';
 
-// TODO: need to clean up attributes
+const bounceAnimation = keyframes`${slideInRight}`;
+const BouncyDiv = styled.div`
+  animation: 0.5s ${bounceAnimation};
+`;
 function CreatePlaylistPopup(props) {
   const {
     handleCreatePlaylistSubmit,
     handleHideCreatePlaylistModal,
     onPlaylistTitleChange,
-    error,
   } = props;
 
   // remove popup when escape is pressed
@@ -29,41 +32,102 @@ function CreatePlaylistPopup(props) {
   }, [escFunction]);
 
   return (
-    <FadeDiv className="popup">
-      <form onSubmit={handleCreatePlaylistSubmit}>
-        <div className="modal fade" role="dialog" aria-hidden="true">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-body">
-                <input
-                  type="text"
-                  name="playlistName"
-                  className="playlistName form-control"
-                  autoFocus="on"
-                  autoComplete="off"
-                  placeholder="Enter playlist title..."
-                  onChange={onPlaylistTitleChange}
-                />
-                <div style={{ color: 'red' }}>
-                  {error}
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button type="submit" className="btn btn-primary add-playlist-btn">Add</button>
-                <button
-                  type="button"
-                  className="close-playlist-btn"
-                  data-dismiss="modal"
-                  onClick={handleHideCreatePlaylistModal}
-                >
-                  x
-                </button>
+    <div className="playlist-modal">
+      <div className="modal fade right" role="dialog" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <BouncyDiv className="modal-content">
+            <div className="row">
+              <div className="col-md-12">
+                <h1 className="mt-4 mb-0">
+                  <button
+                    type="button"
+                    className="close-playlist-btn"
+                    data-dismiss="modal"
+                    onClick={handleHideCreatePlaylistModal}
+                  >
+                    <img
+                      style={{
+                        cursor: 'pointer',
+                      }}
+                      src={close}
+                      alt="close"
+                    />
+                  </button>
+                </h1>
               </div>
             </div>
-          </div>
+            <div className="modal-body">
+              <div className="modal-title">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h1 className="mt-4 mb-0">
+                      <span>
+                        {' '}
+                        Add new Playlist
+                        {/* {`${editMode ? "Update" : "Create a"} Project`} */}
+                      </span>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <Formik
+                initialValues={{
+                  playlistName: '',
+                }}
+                validate={(values) => {
+                  const errors = {};
+                  if (!values.playlistName) {
+                    errors.playlistName = '* Required';
+                  }
+                  return errors;
+                }}
+                onSubmit={() => {
+                  handleCreatePlaylistSubmit();
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  setFieldValue,
+                  handleBlur,
+                  handleSubmit,
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <p className="playlistName">Playlist name</p>
+                    <input
+                      type="text"
+                      name="playlistName"
+                      className="form-control"
+                      autoFocus="on"
+                      autoComplete="off"
+                      value={values.playlistName}
+                      placeholder="Enter playlist title..."
+                      handleBlur={handleBlur}
+                      onChange={(e) => {
+                        onPlaylistTitleChange(e);
+                        setFieldValue('playlistName', e.target.value);
+                      }}
+                    />
+                    <div style={{ color: 'red' }}>
+                      {errors.playlistName && touched.playlistName && errors.playlistName}
+                    </div>
+                    <div className="modal-footer">
+                      <button type="submit" className="add-playlist-btn">
+                        <div className="add-playlist-btn-text">
+                          Add Playlist
+                        </div>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </Formik>
+            </div>
+          </BouncyDiv>
         </div>
-      </form>
-    </FadeDiv>
+      </div>
+    </div>
+
   );
 }
 
@@ -71,7 +135,6 @@ CreatePlaylistPopup.propTypes = {
   handleCreatePlaylistSubmit: PropTypes.func.isRequired,
   handleHideCreatePlaylistModal: PropTypes.func.isRequired,
   onPlaylistTitleChange: PropTypes.func.isRequired,
-  error: PropTypes.bool.isRequired,
 };
 
 export default CreatePlaylistPopup;

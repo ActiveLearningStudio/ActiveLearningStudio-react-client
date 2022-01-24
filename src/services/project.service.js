@@ -2,7 +2,6 @@ import Swal from 'sweetalert2';
 
 import config from 'config';
 import httpService from './http.service';
-import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -30,19 +29,6 @@ const get = (id, subOrgId) => httpService
   .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
-
-const getIndexed = (id) => httpService
-  .get(`/${apiVersion}/projects/${id}/status-update`)
-  .then(({ data }) => data)
-  .catch((err) => {
-    errorCatcher(err.response.data);
-    return Promise.reject(err.response.data);
-  });
-
-const getelastic = (id) => httpService
-  .get(`/${apiVersion}/projects/${id}/indexing`)
-  .then(({ data }) => data)
-  .catch((err) => err.response.data);
 
 const update = (id, project, subOrgId) => httpService
   .put(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`, project)
@@ -135,20 +121,13 @@ const getUpdatedProjects = () => httpService
 const visibilityTypes = () => httpService
   .get(`/${apiVersion}/suborganizations/visibility-types`)
   .then((data) => data)
-  .catch((err) => {
-    if (err.response.data?.message) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: err.response.data.message,
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Something went wrong, kindly try again',
-      });
-    }
-  });
+  .catch((err) => Promise.reject(err.response.data));
+
+const searchPreviewProject = (subOrgId, projectId) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/search-preview`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -167,10 +146,9 @@ export default {
   getUpdatedProjects,
   getClone,
   getReorderAll,
-  getIndexed,
-  getelastic,
   addToFav,
   getAllFav,
   shareProjects,
   visibilityTypes,
+  searchPreviewProject,
 };

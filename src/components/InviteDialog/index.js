@@ -1,10 +1,5 @@
 /* eslint-disable */
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +11,7 @@ import _sortBy from 'lodash/sortBy';
 import { inviteMembersAction, removeMemberAction } from 'store/actions/team';
 import { searchUsersAction } from 'store/actions/auth';
 import teamService from 'services/team.service';
-import { AddTeamRoles } from 'store/actions/team'
+import { AddTeamRoles } from 'store/actions/team';
 
 import './style.scss';
 
@@ -25,17 +20,7 @@ const ADD_NOTE_MODE = 1;
 const INVITE_MODE = 2;
 
 function InviteDialog(props) {
-  const {
-    isInviting,
-    users,
-    handleInvite,
-    searchedUsers,
-    searchUsers,
-    visible,
-    setShowInvite,
-    authUser,
-    isSearching,
-  } = props;
+  const { isInviting, users, handleInvite, searchedUsers, searchUsers, visible, setShowInvite, authUser, isSearching } = props;
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [emailNote, setEmailNote] = useState('');
@@ -50,8 +35,8 @@ function InviteDialog(props) {
   const [roleUser, setRoleUser] = useState([]);
   const [activeRole, setActiveRole] = useState('');
   const [activeSelectedMember, setActiveSelectedMember] = useState({});
-  const [addbtnText, setbtnText] = useState("Add Member")
-  const [selectMember, setSelectMember] = useState(false)
+  const [addbtnText, setbtnText] = useState('Add Member');
+  const [selectMember, setSelectMember] = useState(false);
   let userSelected = false;
 
   const searchInvitableMembers = _debounce((value) => {
@@ -59,32 +44,39 @@ function InviteDialog(props) {
   }, 1000);
   useEffect(() => {
     setRoleUser(roles);
-    setActiveRole(roles?.[0]?.id)
+    setActiveRole(roles?.[0]?.id);
   }, [roles]);
 
   useEffect(() => {
-    dispatch(AddTeamRoles(stateOrg.currentOrganization.id))
-  }, [])
-  const toggleInvitableUsers = useCallback((val = null) => {
-    if (userSelected === true) {
-      userSelected = false;
-    } else if (val !== null) {
-      setShowInvitableUsers(val);
-    } else {
-      setShowInvitableUsers(!showInvitableUsers);
-    }
-  }, [showInvitableUsers]);
+    dispatch(AddTeamRoles(stateOrg.currentOrganization.id));
+  }, []);
+  const toggleInvitableUsers = useCallback(
+    (val = null) => {
+      if (userSelected === true) {
+        userSelected = false;
+      } else if (val !== null) {
+        setShowInvitableUsers(val);
+      } else {
+        setShowInvitableUsers(!showInvitableUsers);
+      }
+    },
+    [showInvitableUsers]
+  );
 
-  const onChange = useCallback((e) => {
-    setEmail(e.target.value);
-    searchInvitableMembers(e.target.value);
-    toggleInvitableUsers(true);
-  }, [searchInvitableMembers, toggleInvitableUsers]);
+  const onChange = useCallback(
+    (e) => {
+      setEmail(e.target.value);
+      searchInvitableMembers(e.target.value);
+      toggleInvitableUsers(true);
+    },
+    [searchInvitableMembers, toggleInvitableUsers]
+  );
 
   const invitedUsers = users || [];
-  const usersNotInvited = _sortBy(searchedUsers.filter(
-    (usr) => [...invitedUsers, ...selectedUsers].findIndex((u) => usr.id === u.id) === -1 && usr.id !== authUser.id,
-  ), ['name']);
+  const usersNotInvited = _sortBy(
+    searchedUsers.filter((usr) => [...invitedUsers, ...selectedUsers].findIndex((u) => usr.id === u.id) === -1 && usr.id !== authUser.id),
+    ['name']
+  );
 
   const deselectUser = (u) => {
     setSelectedUsers(selectedUsers.filter((usr) => usr.id !== u.id));
@@ -110,13 +102,9 @@ function InviteDialog(props) {
 
   return (
     <div className="invite-wrapper" ref={inviteRef}>
-        <button
-          type="button"
-          className="invite-btn"
-          onClick={() => setShowInvite(!visible)}
-        >
-          Invite a Team Member
-        </button>
+      <button type="button" className="invite-btn" onClick={() => setShowInvite(!visible)}>
+        Invite a Team Member
+      </button>
 
       {visible && (
         <div onFocus={() => toggleInvitableUsers(false)} className="invite-dialog">
@@ -175,50 +163,45 @@ function InviteDialog(props) {
                           searchInvitableMembers('');
                         }}
                       >
-                        {isSearching && (
-                          <FontAwesomeIcon icon="spinner" />
-                        )}
+                        {isSearching && <FontAwesomeIcon icon="spinner" />}
                       </span>
                     </div>
-
                   </div>
 
-                  {(showInvitableUsers && usersNotInvited.length > 0) && (
+                  {showInvitableUsers && usersNotInvited.length > 0 && (
                     <div className="non-invitee-members" ref={autoPanRef}>
-                      {email && usersNotInvited.map((u) => (
-                        <div
-                          key={u.id}
-                          className="invite-member-item"
-                          data-list="true"
-                          onClick={() => {
-                            setEmail(u.email);
-                            setActiveSelectedMember(u);
-                            setShowInvitableUsers(false);
-                            userSelected = true;
-                            setSelectMember(true)
-                          }}
-                        >
-                          <div className="invite-member-name-mark">
-                            <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}`}</span>
-                          </div>
+                      {email &&
+                        usersNotInvited.map((u) => (
+                          <div
+                            key={u.id}
+                            className="invite-member-item"
+                            data-list="true"
+                            onClick={() => {
+                              setEmail(u.email);
+                              setActiveSelectedMember(u);
+                              setShowInvitableUsers(false);
+                              userSelected = true;
+                              setSelectMember(true);
+                            }}
+                          >
+                            <div className="invite-member-name-mark">
+                              <span>{`${u.first_name[0] || ''}${u.last_name[0] || ''}`}</span>
+                            </div>
 
-                          <div className="invite-member-info">
-                            <h2 className="invite-member-name">{`${u.name} (${u.email})`}</h2>
+                            <div className="invite-member-info">
+                              <h2 className="invite-member-name">{`${u.name} (${u.email})`}</h2>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                   )}
                 </div>
-                <h2>
-                  {mode === INPUT_MODE && 'Select Role'}
-
-                </h2>
+                <h2>{mode === INPUT_MODE && 'Select Role'}</h2>
                 <div>
                   <div className="input-container">
                     <select onChange={(e) => setActiveRole(e.target.value)}>
                       {roleUser?.map((roletype) => (
-                        <option value={roletype.id}>
+                        <option key={roletype.id} value={roletype.id}>
                           {roletype.name}
                         </option>
                       ))}
@@ -226,48 +209,47 @@ function InviteDialog(props) {
                   </div>
                 </div>
 
-                <button disabled={selectMember ? false: true} onClick={() => {
-                  const combine = {
-                    organization_id: stateOrg.currentOrganization.id,
-                    user_id: activeSelectedMember.id,
-                  };
-                  setbtnText('Adding ...')
-                  const result = teamService.checkUserBeforeAdd(stateOrg.currentOrganization.id, combine)
-                  result.then((data) => {
-                    setbtnText('Add Member')
-                    if (data.invited) {
-                      selectUser({
-                        ...activeSelectedMember,
+                <button
+                  disabled={selectMember ? false : true}
+                  onClick={() => {
+                    const combine = {
+                      organization_id: stateOrg.currentOrganization.id,
+                      user_id: activeSelectedMember.id,
+                    };
+                    setbtnText('Adding ...');
+                    const result = teamService.checkUserBeforeAdd(stateOrg.currentOrganization.id, combine);
+                    result
+                      .then((data) => {
+                        setbtnText('Add Member');
+                        if (data.invited) {
+                          selectUser({
+                            ...activeSelectedMember,
 
-                        role_id: activeRole
+                            role_id: activeRole,
+                          });
+                          setSelectMember(false);
+                        }
+                      })
+                      .catch((err) => {
+                        setbtnText('Add Member');
+                        setSelectMember(false);
                       });
-                      setSelectMember(false)
-                    }
-                  }).catch((err) => {
-                    setbtnText('Add Member')
-                    setSelectMember(false)
-                  });
-
-                }}>
-
+                  }}
+                >
                   {addbtnText}
                 </button>
 
                 <div className="email-input" style={{ border: 'none' }}>
                   <div className="input-box">
-                    {selectedUsers && selectedUsers.map((u) => (
-
-
-                      <span key={u.id} className="user-chip">
-                        {u.name || u.email}
-                        <span className="close-circle" onClick={() => deselectUser(u)} />
-                      </span>
-
-                    ))}
+                    {selectedUsers &&
+                      selectedUsers.map((u) => (
+                        <span key={u.id} className="user-chip">
+                          {u.name || u.email}
+                          <span className="close-circle" onClick={() => deselectUser(u)} />
+                        </span>
+                      ))}
                   </div>
                 </div>
-
-
               </>
             )}
 
@@ -283,35 +265,19 @@ function InviteDialog(props) {
             </h2>
 
             {mode === INPUT_MODE && (
-              <button
-                type="button"
-                disabled={selectedUsers.length === 0 || isInviting}
-                onClick={() => setMode(INVITE_MODE)}
-              >
+              <button type="button" disabled={selectedUsers.length === 0 || isInviting} onClick={() => setMode(INVITE_MODE)}>
                 Invite
               </button>
             )}
 
             {mode === INVITE_MODE && (
               <>
-                <button
-                  type="button"
-                  disabled={selectedUsers.length === 0 || isInviting}
-                  onClick={() => setMode(ADD_NOTE_MODE)}
-                  className="add-note"
-                >
+                <button type="button" disabled={selectedUsers.length === 0 || isInviting} onClick={() => setMode(ADD_NOTE_MODE)} className="add-note">
                   Add Note
                 </button>
-                <button
-                  type="button"
-                  disabled={selectedUsers.length === 0 || isInviting}
-                  onClick={() => handleInvite(selectedUsers, emailNote)}
-                >
+                <button type="button" disabled={selectedUsers.length === 0 || isInviting} onClick={() => handleInvite(selectedUsers, emailNote)}>
                   Send Invite
-
-                  {isInviting && (
-                    <FontAwesomeIcon icon="spinner" />
-                  )}
+                  {isInviting && <FontAwesomeIcon icon="spinner" />}
                 </button>
               </>
             )}
@@ -319,22 +285,11 @@ function InviteDialog(props) {
             {mode === ADD_NOTE_MODE && (
               <>
                 <div className="email-input">
-                  <textarea
-                    className="add-note-box"
-                    placeholder="e.g. leo"
-                    onChange={(e) => setEmailNote(e.target.value)}
-                  />
+                  <textarea className="add-note-box" placeholder="e.g. leo" onChange={(e) => setEmailNote(e.target.value)} />
                 </div>
-                <button
-                  type="button"
-                  disabled={selectedUsers.length === 0 || isInviting}
-                  onClick={() => handleInvite(selectedUsers, emailNote)}
-                >
+                <button type="button" disabled={selectedUsers.length === 0 || isInviting} onClick={() => handleInvite(selectedUsers, emailNote)}>
                   Send
-
-                  {isInviting && (
-                    <FontAwesomeIcon icon="spinner" />
-                  )}
+                  {isInviting && <FontAwesomeIcon icon="spinner" />}
                 </button>
               </>
             )}

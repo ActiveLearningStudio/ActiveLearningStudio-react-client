@@ -41,7 +41,7 @@ const AllOrganizations = () => {
                 dispatch(saveHistory(activeOrganization));
               }}
             >
-              Create Organization
+              Add organization
             </div>
           </div>
           <div className="box-all-organization">
@@ -191,7 +191,7 @@ const AllOrganizations = () => {
                 ))}
               </div>
             </div>
-          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organization available, kindly create a new one.</Alert>}
+          ) : <Alert style={{ marginTop: '15px' }} variant="warning">No Organization available, kindly add a new one.</Alert>}
         </div>
       ) : <Alert style={{ marginTop: '15px' }} variant="primary">Loading ...</Alert>
     ) : <Alert style={{ marginTop: '15px' }} variant="danger">You are not Authorized.</Alert>

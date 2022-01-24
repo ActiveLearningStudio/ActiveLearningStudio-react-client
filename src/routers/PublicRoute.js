@@ -1,28 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 const PublicRoute = ({ component: Component, isAuthenticated, ...rest }) => (
   <Route
     {...rest}
-    render={(props) => (
-      isAuthenticated ? (
-        <Redirect to="/" />
-      ) : (
-        <div>
-          <Component {...props} />
-        </div>
-      )
-    )}
+    render={(props) => {
+      if (isAuthenticated) {
+        window.location.replace('/org/');
+      } else {
+        return (
+          <div>
+            <Component {...props} />
+          </div>
+        );
+      }
+    }}
   />
 );
 
 PublicRoute.propTypes = {
-  component: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 

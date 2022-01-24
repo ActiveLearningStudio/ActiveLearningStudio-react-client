@@ -42,14 +42,14 @@ const SearchPage = (props) => {
       </div>
       <div className="row">
         <div className="col">
-          {searchPreviewActivity === null && section === 'browse' && <Browse /> }
+          {searchPreviewActivity === null && section === 'browse' && <Browse />}
           {searchPreviewActivity === null && section === 'search' && (
             <>
-              { currentPage === 'search' && <SearchForm /> }
-              { currentPage === 'results' && <SearchResults /> }
+              {currentPage === 'search' && <SearchForm />}
+              {currentPage === 'results' && <SearchResults />}
             </>
           )}
-          {searchPreviewActivity && <PreviewActivity /> }
+          {searchPreviewActivity && <PreviewActivity />}
         </div>
       </div>
     </div>

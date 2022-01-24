@@ -14,9 +14,6 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-const composedEnhancers = compose(
-  applyMiddleware(thunk),
-  ...enhancers,
-);
+const composedEnhancers = compose(applyMiddleware(thunk), ...enhancers);
 
 export default createStore(rootReducer, initialState, composedEnhancers);

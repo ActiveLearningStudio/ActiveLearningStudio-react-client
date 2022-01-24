@@ -1,0 +1,51 @@
+@import "assets/css/index";
+.curriki-utility-playlist {
+  width: 280px;
+  background: #f1f1f1;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: (0px 1px 4px rgba(8, 59, 118, 0.25));
+
+  .playlist-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .playlist-card-title {
+      h3 {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 19px;
+        color: $curriki-main-blue;
+      }
+    }
+  }
+  .playlist-items-list {
+    display: flex;
+    flex-direction: column;
+    .playlist-items {
+      display: flex;
+      align-items: center;
+      background-color: $white;
+      border-radius: 5px;
+      width: 100%;
+      height: 45px;
+      margin-bottom: 10px;
+      img {
+        width: 50px;
+        height: 35px;
+      }
+      p {
+        margin-left: 10px;
+        font-family: "Open Sans", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+}

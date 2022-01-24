@@ -1,4 +1,5 @@
 import config from 'config';
+import Swal from 'sweetalert2';
 import httpService from './http.service';
 import { errorCatcher } from './errors';
 
@@ -21,8 +22,17 @@ const editUserInOrganization = (user, subOrgId) => httpService
   });
 
 // project
-const getAllProject = (subOrgId, page) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}`)
+const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) => httpService
+  // eslint-disable-next-line max-len
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    // errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const getAllExportedProject = (page, size, query = '') => httpService
+  .get(`/${apiVersion}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);
@@ -45,8 +55,8 @@ const importProject = (subOrgId, projectData) => httpService
     return Promise.reject(err.response.data);
   });
 
-const getAllProjectSearch = (subOrgId, page, search) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&query=${search.replace(/#/, '%23') || ''}`)
+const getAllProjectSearch = (subOrgId, page, search, size) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}&query=${search.replace(/#/, '%23') || ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -66,16 +76,17 @@ const getUserProjectSearch = (subOrgId, page, search) => httpService
     return Promise.reject(err.response.data);
   });
 
-const getAllProjectIndex = (subOrgId, page, index) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}`)
+const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared) => httpService
+  // eslint-disable-next-line max-len
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject(err.response.data);
   });
 
-const userSerchIndexs = (subOrgId, page, index, search) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}&query=${search.replace(/#/, '%23') || ''}`)
+const userSerchIndexs = (subOrgId, page, index, search, size) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}&query=${search.replace(/#/, '%23') || ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -188,6 +199,121 @@ const getLogsListing = (filter, size, page, query) => httpService
     errorCatcher(err.response.data);
     Promise.reject(err.response.data);
   });
+
+const getDefaultSso = (orgId, page) => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createDefaultSso = (orgId, values) => httpService
+  .post(`${apiVersion}/organizations/${orgId}/default-sso-settings`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateDefaultSso = (orgId, id, values) => httpService
+  .put(`${apiVersion}/organizations/${orgId}/default-sso-settings/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteDefaultSso = (orgId, id) => httpService
+  .remove(`${apiVersion}/organizations/${orgId}/default-sso-settings/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const searchDefaultSso = (orgId, search, page) => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const getLtiTools = (subOrgId, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createLtiTool = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateLtiTool = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteLtiTool = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const searchLtiTool = (subOrgId, search, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const cloneLtiTool = (subOrgId, id) => httpService
+  .post(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}/clone`)
+  .then((res) => Swal.fire(res.data.message))
+  .catch((err) => {
+    if (err.response.data.errors) {
+      Swal.fire(err.response.data.errors[0]);
+    } else {
+      Swal.fire({
+        icon: 'error',
+        text: 'Something went wrong!',
+      });
+    }
+  });
+
+const checkUserEmail = (orgId, email) => httpService
+  .get(`${apiVersion}/suborganization/${orgId}/users/check-email?email=${email}`)
+  .then(({ data }) => data);
+
+const addUserToOrg = (subOrgId, userId, role) => httpService
+  .post(`/${apiVersion}/suborganizations/${subOrgId}/add-user`, { user_id: userId, role_id: role })
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    Promise.reject(err.response.data);
+  });
+
+const removeUser = (subOrgId, userId, preserve) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/remove-user`, { user_id: userId, preserve_data: preserve })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -213,4 +339,20 @@ export default {
   forgetSpecificFailedJob,
   getLogsListing,
   importProject,
+  getDefaultSso,
+  deleteDefaultSso,
+  createDefaultSso,
+  updateDefaultSso,
+  searchDefaultSso,
+  getAllExportedProject,
+  getLtiTools,
+  getLtiToolsOrderBy,
+  createLtiTool,
+  updateLtiTool,
+  deleteLtiTool,
+  searchLtiTool,
+  cloneLtiTool,
+  checkUserEmail,
+  addUserToOrg,
+  removeUser,
 };

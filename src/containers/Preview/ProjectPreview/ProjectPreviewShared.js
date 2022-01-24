@@ -6,7 +6,7 @@ import Slider from 'react-slick';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 
-import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
+import { loadMyProjectsPreviewSharedAction, searchPreviewProjectAction } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import Unauthorized from 'components/Unauthorized';
 
@@ -19,133 +19,95 @@ function ProjectPreviewShared(props) {
     loadMyProjectsPreviewShared,
     setModalShow,
     setCurrentActivity,
+    searchPreviewProject,
   } = props;
 
   const project = useSelector((state) => state.project);
+  const { activeOrganization } = useSelector((state) => state.organization);
   const accordion = useRef([]);
 
   const [currentProject, setCurrentProject] = useState(null);
-
   useEffect(() => {
-    if (project && Object.keys(project.projectSelect).length > 0) {
-      setCurrentProject(project.projectSelect);
+    if (window.location.pathname.includes('/shared')) {
+      loadMyProjectsPreviewShared(sampleId || match.params.projectId);
+    } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+      searchPreviewProject(sampleId || match.params.projectId);
     }
-  }, [project]);
+  }, [activeOrganization?.id, loadMyProjectsPreviewShared, match.params.projectId, sampleId, searchPreviewProject]);
+  useEffect(() => {
+    if (project && (project?.isSharedProject || project?.searchPreviewProject)) {
+      setCurrentProject(project?.projectSelect);
+    } else if (project && (!project?.isSharedProject || !project?.searchPreviewProject)) {
+      setCurrentProject(null);
+    }
+  }, [project, project?.projectSelect, sampleId]);
 
   const settings = {
     dots: false,
     arrows: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 5.5,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: false,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1.5,
-          slidesToScroll: 1,
-        },
-      },
-    ],
+    slidesToScroll: 4,
+    variableWidth: true,
   };
 
-  // useEffect(() => {
-  //   try {
-  //     const acc = document.getElementById('custom_accordion');
-  //     const accordions = acc ? acc.getElementsByClassName('accordion') : [];
-  //
-  //     for (let i = 0; i < accordions.length; i += 1) {
-  //       accordions[i].addEventListener('click', function () {
-  //         // eslint-disable-next-line react/no-this-in-sfc
-  //         this.classList.toggle('active');
-  //       });
-  //     }
-  //   } catch (e) {
-  //     throw e
-  //   }
-  // }, []);
-
   useEffect(() => {
-    if (sampleId) {
-      loadMyProjectsPreviewShared(sampleId);
-    } else {
-      loadMyProjectsPreviewShared(match.params.projectId);
-    }
-  }, [match.params.projectId, sampleId]);
-  useEffect(() => {
-      localStorage.setItem('lti_activity', true);
+    localStorage.setItem('lti_activity', true);
   }, []);
 
   let playlists;
 
   if (currentProject) {
-    playlists = currentProject.playlists && currentProject.playlists.map((playlist, counter) => {
-      let activities;
-      if (playlist.activities.length > 0) {
-        activities = playlist.activities.map((activity) => (
-          <ActivityCard
-            activity={activity}
-            projectId={parseInt(match.params.projectId, 10)}
-            playlistId={playlist.id}
-            key={activity.id}
-            sampleID={sampleId}
-            setModalShow={setModalShow}
-            setCurrentActivity={setCurrentActivity}
-            lti
-          />
-        ));
-      } else {
-        activities = (
-          <div className="col-md-12">
-            <div className="alert alert-info" role="alert">
-              No activity defined for this playlist.
+    playlists = currentProject.playlists
+      && currentProject.playlists.map((playlist, counter) => {
+        let activities;
+        if (playlist.activities.length > 0) {
+          activities = playlist.activities.map((activity) => (
+            <ActivityCard
+              activity={activity}
+              projectId={parseInt(match.params.projectId, 10)}
+              playlistId={playlist.id}
+              key={activity.id}
+              sampleID={sampleId}
+              setModalShow={setModalShow}
+              setCurrentActivity={setCurrentActivity}
+              lti
+            />
+          ));
+        } else {
+          activities = (
+            <div className="col-md-12">
+              <div className="alert alert-info" role="alert">
+                No activity defined for this playlist.
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <div className="check-each" key={playlist.id}>
+            <button
+              type="button"
+              ref={(el) => {
+                accordion.current[counter] = el;
+              }}
+              className={counter === 0 ? 'active accordion' : ' accordion'}
+              onClick={() => {
+                accordion.current[counter].classList.toggle('active');
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {playlist.title}
+            </button>
+
+            <div className="panel ">
+              <ul>
+                <Slider {...settings}>{activities}</Slider>
+              </ul>
             </div>
           </div>
         );
-      }
-
-      return (
-        <div className="check-each" key={playlist.id}>
-          <button
-            type="button"
-            ref={(el) => {
-              accordion.current[counter] = el;
-            }}
-            className={counter === 0 ? 'active accordion' : ' accordion'}
-            onClick={() => {
-              accordion.current[counter].classList.toggle('active');
-            }}
-          >
-            <FontAwesomeIcon icon="plus" />
-            {playlist.title}
-          </button>
-
-          <div className="panel ">
-            <ul>
-              <Slider {...settings}>{activities}</Slider>
-            </ul>
-          </div>
-        </div>
-      );
-    });
+      });
   } else {
     playlists = (
       <div className="col-md-12">
@@ -165,7 +127,7 @@ function ProjectPreviewShared(props) {
           {currentProject ? (
             <div>
               <div className="container">
-                <div className="scene flex-wrap">
+                <div className="scene flex-wrap shared-preview-custom">
                   <div className="scene-img">
                     {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
@@ -173,14 +135,12 @@ function ProjectPreviewShared(props) {
                       <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                     )}
                   </div>
-                  <div className="sce_cont">
+                  <div className="sce_cont shared-preview-custom-cont">
                     {/* <div className="collapse-toggle"><img src="/images/plusblk.png" alt="plusblk" /></div> */}
                     <ul className="bar_list flex-div">
                       <li>
                         <div className="title_lg check">
-                          <div>
-                            {currentProject.name}
-                          </div>
+                          <div>{currentProject.name}</div>
                         </div>
                       </li>
                     </ul>
@@ -191,7 +151,7 @@ function ProjectPreviewShared(props) {
               </div>
 
               <div className="container">
-                <div className="playlist-div">
+                <div className="playlist-div shared-preview-custom-playlist">
                   <div className="playlist-title-div">
                     <div className="title-md">Playlists</div>
                   </div>
@@ -203,12 +163,14 @@ function ProjectPreviewShared(props) {
                 </div>
               </div>
             </div>
+          ) : project.isSharedProject === false ? (
+            <Alert variant="danger" style={{ margin: '40px', fontSize: '1.5em' }}>
+              Project is not sharable.
+            </Alert>
           ) : (
-            project.isSharedProject === false ? (
-              <Alert variant="danger" style={{ margin: '40px', fontSize: '1.5em' }}>Project is not sharable.</Alert>
-            ) : (
-              <Alert variant="primary" style={{ margin: '20px' }}>Loading ...</Alert>
-            )
+            <Alert variant="primary" style={{ margin: '20px' }}>
+              Loading ...
+            </Alert>
           )}
         </>
       )}
@@ -222,6 +184,7 @@ ProjectPreviewShared.propTypes = {
   setCurrentActivity: PropTypes.func.isRequired,
   setModalShow: PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
+  searchPreviewProject: PropTypes.func.isRequired,
 };
 
 ProjectPreviewShared.defaultProps = {
@@ -230,8 +193,7 @@ ProjectPreviewShared.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
+  searchPreviewProject: (projectId) => dispatch(searchPreviewProjectAction(projectId)),
 });
 
-export default withRouter(
-  connect(null, mapDispatchToProps)(ProjectPreviewShared),
-);
+export default withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared));

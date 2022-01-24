@@ -1,11 +1,9 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
-.side-wrapper-team {
+.side-wrapper-team-projects {
   position: fixed;
-  padding-left: 350px;
+  padding-left: 160px;
   width: 100%;
-
-
 
   padding-right: 60px;
   // padding-bottom: 100px;
@@ -38,7 +36,7 @@
     width: 100%;
     padding: 21px 0px 11px 0px;
     background-color: #eee;
-    border-bottom: solid 1px #CBCBCB;
+    border-bottom: solid 1px #cbcbcb;
 
     span {
       margin: 0 8px;
@@ -46,7 +44,7 @@
       text-transform: capitalize;
 
       &.parent {
-        color: #5250C1;
+        color: #5250c1;
         text-decoration: underline;
       }
     }
@@ -172,7 +170,8 @@
   height: 40px;
   margin-top: 20px;
   padding-left: 32px;
-  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right 23px top 13px;
+  background: url(../../../assets/images/btn-arrow.png) #2ecf43 no-repeat right
+    23px top 13px;
   border: 0;
   border-radius: 3px;
   box-shadow: none;

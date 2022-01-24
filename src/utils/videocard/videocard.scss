@@ -1,0 +1,49 @@
+@import "../../assets/css/index";
+.curriki-utility-videocard {
+  box-sizing: border-box;
+  padding: 16px;
+  width: 392px;
+  background-color: $mercury;
+  border-radius: 8px;
+  h3 {
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: $curriki-main-blue;
+  }
+  .vidoe-section {
+    margin-top: 8px;
+    iframe {
+      border-radius: 8px;
+      outline: none;
+    }
+  }
+  .video-detail {
+    margin-top: 24px;
+    img {
+      float: left;
+    }
+    p {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: justify;
+      color: #515151;
+    }
+  }
+  .video-demo-link {
+    margin-top: 28px;
+    a {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+      color: $curriki-main-blue;
+    }
+  }
+}

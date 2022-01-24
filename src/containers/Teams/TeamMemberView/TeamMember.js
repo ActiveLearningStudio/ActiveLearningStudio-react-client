@@ -51,25 +51,25 @@ function TeamMember(props) {
     if (reamainingAdmin?.length <= 1 && role.id === 1) {
       Swal.fire({
         icon: 'warning',
-        text: 'There should be atleast one admin',
+        text: 'There should be at least one admin',
       });
     } else {
       removeMember(teamId, id, iEmail)
-      .then(() => {
-        if (id === auth.user.id) {
-          history.push(`/org/${activeOrganization.domain}/teams`);
-          dispatch(loadTeamsAction());
-        }
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to remove user.',
+        .then(() => {
+          if (id === auth.user.id) {
+            history.push(`/org/${activeOrganization.domain}/teams`);
+            dispatch(loadTeamsAction());
+          }
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to remove user.',
+          });
         });
-      });
     }
-  }, [removeMember, teamId, id, iEmail]);
+  }, [teams, role.id, teamId, removeMember, id, iEmail, auth.user.id, history, activeOrganization.domain, dispatch]);
   return (
     <>
       <div className="col-md-12 member-item">
@@ -118,18 +118,18 @@ function TeamMember(props) {
             </button>
           )}
           {(teamPermission?.Team?.includes('team:remove-team-user')
-          || teamPermission?.Team?.includes('team:add-team-user'))
-          && auth.user.id !== id && (
-            <div className="role-container">
-              <select value={activeRole} onChange={(e) => roleChangeHandler(e.target.value)}>
-                {roles?.map((roletype) => (
-                  <option value={roletype.id} key={roletype.id}>
-                    {roletype.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+            || teamPermission?.Team?.includes('team:add-team-user'))
+            && auth.user.id !== id && (
+              <div className="role-container">
+                <select value={activeRole} onChange={(e) => roleChangeHandler(e.target.value)}>
+                  {roles?.map((roletype) => (
+                    <option value={roletype.id} key={roletype.id}>
+                      {roletype.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           {teamPermission?.Team?.includes('team:remove-team-user') && (
             <button
               type="button"

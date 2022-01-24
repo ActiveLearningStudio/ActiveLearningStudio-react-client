@@ -93,14 +93,39 @@ export const createTeamAction = (data) => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
-
-    const { team } = await teamService.create(data, activeOrganization?.id);
-
+    const {
+      name,
+      description,
+      users,
+      projects,
+      // eslint-disable-next-line camelcase
+      organization_id,
+      // eslint-disable-next-line camelcase
+      // eslint-disable-next-line camelcase
+      noovo_group_title,
+    } = data;
+    // eslint-disable-next-line camelcase
+    if (noovo_group_title) {
+      const { team } = await teamService.create(
+        data, activeOrganization?.id,
+      );
+      dispatch({
+        type: actionTypes.CREATE_TEAM_SUCCESS,
+        payload: { team },
+      });
+      return team;
+    }
+    const { team } = await teamService.create({
+      name,
+      description,
+      users,
+      projects,
+      organization_id,
+    }, activeOrganization?.id);
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
       payload: { team },
     });
-
     return team;
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_TEAM_FAIL });
@@ -362,8 +387,8 @@ export const clearTeamPermissions = () => (dispatch) => {
 
 export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  const result = await teamService.getTeamProject(activeOrganization?.id, query, page);
+  const { organization: { currentOrganization } } = centralizedState;
+  const result = await teamService.getTeamProject(currentOrganization?.id, query, page);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
     payload: result.data,
@@ -388,5 +413,13 @@ export const selectedProjectForCloning = (projectName) => (dispatch) => {
   dispatch({
     type: actionTypes.PROJECT_SELECTED_FOR_CLONE,
     payload: projectName,
+  });
+};
+
+export const getWhiteBoardUrl = (orgId, objId, userId, objType) => async (dispatch) => {
+  const result = await teamService.getWhiteBoardUrl(orgId, objId, userId, objType);
+  dispatch({
+    type: actionTypes.WHITE_BOARD_URL,
+    payload: result.data?.url,
   });
 };
