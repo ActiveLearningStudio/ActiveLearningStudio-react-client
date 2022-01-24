@@ -9,9 +9,10 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
+import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject, getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
+import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 
 export default function Pills(props) {
   const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber } = props;
@@ -63,6 +64,9 @@ export default function Pills(props) {
   const [changeIndexValue, setChangeIndexValue] = useState('0');
   const [orderBy, setOrderBy] = useState('ASC');
   const dataRedux = useSelector((state) => state);
+  const [subjects, setSubjects] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
+  const [authorTag, setAuthorTag] = useState(null);
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -435,6 +439,36 @@ export default function Pills(props) {
     }
   }, [dataRedux.admin.lmsIntegration]);
 
+  useMemo(async () => {
+    if (subTypeState === 'Subjects') {
+      dispatch(getSubjects(activePage || 1))
+    }
+    if (subTypeState === 'Education Level') {
+      dispatch(getEducationLevel(activePage || 1))
+    }
+    if (subTypeState === 'Author Tags') {
+      dispatch(getAuthorTag(activePage || 1))
+    }
+  }, [type, subTypeState, activePage, activeOrganization?.id]);
+
+  useEffect(() => {
+    if (dataRedux.admin.subjects) {
+      setSubjects(dataRedux.admin.subjects);
+    }
+  }, [dataRedux.admin.subjects]);
+
+  useEffect(() => {
+    if (dataRedux.admin.education_level) {
+      setEducationLevel(dataRedux.admin.education_level);
+    }
+  }, [dataRedux.admin.education_level]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.author_tags) {
+      setAuthorTag(dataRedux.admin.author_tags);
+    }
+  }, [dataRedux.admin.author_tags]);
+  
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -859,6 +893,78 @@ export default function Pills(props) {
                   setActivePage={setActivePage}
                   activePage={activePage}
                   paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+              
+              {type === 'Activities' && subTypeState === 'Subjects' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Subjects'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new subject"
+                  btnAction="add_subject"
+                  data={subjects}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+              
+              {type === 'Activities' && subTypeState === 'Education Level' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Education Level'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new education level"
+                  btnAction="add_education_level"
+                  data={educationLevel}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+              
+              {type === 'Activities' && subTypeState === 'Author Tags' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Author Tags'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new author tag"
+                  btnAction="add_author_tag"
+                  data={authorTag}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
                   size={size}
                   setSize={setSize}
                   selectedActivityType={selectedActivityType}

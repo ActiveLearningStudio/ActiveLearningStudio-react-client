@@ -26,6 +26,9 @@ import { getRoles } from 'store/actions/organization';
 import EditProject from './formik/editProject';
 import { useHistory } from 'react-router-dom';
 import editicon from 'assets/images/edit-icon.png';
+import CreateSubject from './formik/createSubject';
+import CreateEducationLevel from './formik/createEducationLevel';
+import CreateAuthorTag from './formik/createAuthorTag';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -123,13 +126,17 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(permission?.Organization?.includes('organization:view-activity-item') || permission?.Organization?.includes('organization:view-activity-type')) && (
+                  {(permission?.Organization?.includes('organization:view-activity-item') || permission?.Organization?.includes('organization:view-activity-type') ||
+                    permission?.Organization?.includes('organization:view-activity-type')) && (
                     <Tab eventKey="Activities" title="Activities">
                       <div className="module-content">
                         <Pills
                           modules={[
                             permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
                             permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Subjects',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Education Level',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Author Tags',
                           ]}
                           type="Activities"
                         />
@@ -211,6 +218,42 @@ function AdminPanel({ showSSO }) {
                 }}
               />
               <div className="inner-form-content">{activeForm === 'add_activity_item' ? <CreateActivityItem /> : <CreateActivityItem editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_subject' || activeForm === 'edit_subject') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_subject' ? <CreateSubject /> : <CreateSubject editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_education_level' || activeForm === 'edit_education_level') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_education_level' ? <CreateEducationLevel /> : <CreateEducationLevel editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_author_tag' || activeForm === 'edit_author_tag') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_author_tag' ? <CreateAuthorTag /> : <CreateAuthorTag editMode />}</div>
             </div>
           )}
           {(activeForm === 'add_org' || activeForm === 'edit_org') && (
