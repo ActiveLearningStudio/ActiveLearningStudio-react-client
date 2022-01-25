@@ -6,6 +6,8 @@ import styled, { keyframes } from 'styled-components';
 import { Formik } from 'formik';
 import close from 'assets/images/grayclose.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
+import { setNewTeamData } from 'store/actions/team';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
@@ -14,8 +16,9 @@ const BouncyDiv = styled.div`
 function CreateTeamPopup(props) {
   const {
     setShowCreateTeamModal,
+    setCreationMode,
   } = props;
-
+  const dispatch = useDispatch();
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
@@ -146,7 +149,19 @@ function CreateTeamPopup(props) {
                       />
                     </div>
                     <div className="modal-footer">
-                      <button type="submit" className="add-team-btn">
+                      <button
+                        type="submit"
+                        className="add-team-btn"
+                        onClick={() => {
+                          dispatch(setNewTeamData({
+                            name: values.teamName,
+                            description: values.description,
+                            noovo_group_title: values.noovo_group_title,
+                          }));
+                          setShowCreateTeamModal(false);
+                          setCreationMode(true);
+                        }}
+                      >
                         <div>
                           <FontAwesomeIcon icon="plus" />
                           Save & Continue
@@ -167,6 +182,7 @@ function CreateTeamPopup(props) {
 
 CreateTeamPopup.propTypes = {
   setShowCreateTeamModal: PropTypes.func.isRequired,
+  setCreationMode: PropTypes.func.isRequired,
 };
 
 export default CreateTeamPopup;

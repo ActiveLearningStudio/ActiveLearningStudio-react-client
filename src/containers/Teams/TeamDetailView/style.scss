@@ -194,8 +194,14 @@
     }
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     .toggle_btn {
-      img {
+      svg {
+        width: 18px;
+        height: 18px;
+        color: #dddddd;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        &:hover {
+          color: #f8af2c;
+        }
       }
       background: #fff;
       position: absolute;
@@ -232,14 +238,14 @@
     .right_select {
       border-bottom: 1px solid #dddddd;
       padding: 16px 0;
-      select {
-        border-radius: 4px;
-        text-indent: 15px;
-        color: #767676;
-        font-size: 14px;
-        height: 36px;
-        width: 100%;
-      }
+      // select {
+      //   border-radius: 4px;
+      //   text-indent: 15px;
+      //   color: #767676;
+      //   font-size: 14px;
+      //   height: 36px;
+      //   width: 100%;
+      // }
     }
     .right_card {
       border-bottom: 1px solid #dddddd;
@@ -264,19 +270,103 @@
         margin: 0;
         padding: 0;
         padding-left: 10px;
+        word-break: break-all;
       }
     }
     .right_label {
-      span {
-        background: #f7faff;
-        text-transform: capitalize;
-        border-radius: 4px;
-        margin-right: 10px;
-        color: #2e68bf;
-        outline: none;
-        border: none;
-        height: 24px;
-        width: 53px;
+      display: flex;
+      align-items: center;
+      .filter-dropdown-role-team {
+        display: flex;
+        align-items: center;
+        button {
+          display: flex;
+          align-items: center;
+          box-shadow: none;
+          border: 0;
+          box-sizing: border-box;
+          height: 24px;
+          width: auto;
+          color: #2e68bf;
+          background: #f7faff;
+          border-radius: 4px;
+          margin-right: 10px;
+          padding: 4px 8px;
+          text-transform: capitalize;
+          &:focus {
+            // color: #515151;
+            box-shadow: none;
+            border: none;
+          }
+          &:after {
+            margin-left: auto;
+            background-image: none !important;
+            margin-top: 5px;
+            content: "";
+            border: none;
+          }
+          &:hover {
+            background: #e5e5e5;
+          }
+        }
+        svg {
+          margin-left: 8px;
+          height: 16px;
+          width: 16px;
+        }
+        .dropdown-menu {
+          min-width: 80px !important;
+          background-color: white;
+          .dropdown-item {
+            padding: 12px 12px !important;
+          }
+        }
+        a {
+          text-transform: capitalize;
+          &:hover {
+            color: #2e68bf;
+            background: #f7faff;
+          }
+        }
+      }
+      // & > div {
+      //   height: 24px;
+      //   width: auto;
+      //   background: #f7faff;
+      //   border-radius: 4px;
+      //   margin-right: 10px;
+      //   padding: 4px 8px;
+      // }
+      // span {
+      //   text-transform: capitalize;
+      //   color: #2e68bf;
+      //   outline: none;
+      //   border: none;
+
+      //   &:hover {
+      //     color: #ff403b;
+      //     background: rgba(255, 64, 59, 0.08);
+      //   }
+      // }
+      // svg {
+      //   width: 16px;
+      //   height: 16px;
+      //   color: #dddddd;
+      //   &:hover {
+      //     color: #ff403b;
+      //     background: rgba(255, 64, 59, 0.08);
+      //   }
+      // }
+    }
+    .delete-team-member {
+      svg {
+        width: 16px;
+        height: 16px;
+        color: #dddddd;
+        &:hover {
+          color: #ff403b;
+          background: rgba(255, 64, 59, 0.08);
+        }
       }
     }
   }

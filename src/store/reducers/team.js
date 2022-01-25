@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   showCreation: false,
   showInviting: false,
   showAssigning: false,
+  newTeam: {},
   teams: [],
   selectedTeam: {},
   roles: null,
@@ -263,6 +264,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         whiteBoardUrl: action.payload,
+      };
+    case actionTypes.NEW_TEAM:
+      return {
+        ...state,
+        newTeam: action.payload,
       };
     default:
       return state;

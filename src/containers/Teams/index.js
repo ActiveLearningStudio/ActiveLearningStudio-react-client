@@ -24,7 +24,6 @@ import {
   getRoles,
 } from 'store/actions/organization';
 import { loadLmsAction } from 'store/actions/project';
-import CreateTeam from './CreateTeam';
 import TeamView from './TeamCard';
 // import TeamMemberView from './TeamMemberView';
 import TeamAddProjects from './TeamAddProjects';
@@ -36,7 +35,7 @@ import TeamDetail from './TeamDetailView';
 
 function TeamsPage(props) {
   const {
-    location, teams, overview, creation, teamShow, editMode, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam, creationTeam,
+    location, teams, overview, teamShow, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam, creationTeam, newTeam,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
@@ -48,6 +47,7 @@ function TeamsPage(props) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [creationMode, setCreationMode] = useState(false);
   const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
@@ -154,9 +154,9 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content">
           <div className="inner-content">
-            {overview && <div className="organization-name">{currentOrganization?.name}</div>}
+            {overview && !creationMode && <div className="organization-name">{currentOrganization?.name}</div>}
             <div>
-              {overview
+              {overview && !creationMode
                 && (
                   <h1
                     className="title-team"
@@ -185,7 +185,7 @@ function TeamsPage(props) {
                       <div className="btn-top-page">Add/Remove Members</div>
                     </Link>
                   )} */}
-                {permission?.Team?.includes('team:create') && overview && (
+                {permission?.Team?.includes('team:create') && !creationMode && overview && (
                   <div className="team-controller">
                     <div className="search-and-filters">
                       <div className="search-bar">
@@ -251,7 +251,7 @@ function TeamsPage(props) {
                   </div>
                 )}
                 {activeOrganization?.name !== currentOrganization?.name
-                  && overview && (
+                  && overview && !creationMode && (
                     <Link
                       to={`/org/${organization?.currentOrganization?.domain}/teams`}
                       onClick={() => {
@@ -272,7 +272,7 @@ function TeamsPage(props) {
               </div>
             </div>
             <>
-              {overview && (
+              {overview && !creationMode && (
                 <div className="team-row overview">
                   {permission?.Team?.includes('team:view') ? (
                     <>
@@ -298,12 +298,15 @@ function TeamsPage(props) {
                   )}
                 </div>
               )}
-              {(creation || editMode) && (
+              {/* {(creation || editMode) && (
                 <div className="row sub-content">
                   <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
                 </div>
-              )}
+              )} */}
               {teamShow && selectedTeam && activeOrganization && (
+                <TeamDetail team={selectedTeam} organization={activeOrganization} />
+              )}
+              {newTeam?.name && !showCreateTeamModal && activeOrganization && (
                 <TeamDetail team={selectedTeam} organization={activeOrganization} />
               )}
               {projectShow && selectedTeam && activeOrganization && (
@@ -318,7 +321,7 @@ function TeamsPage(props) {
         </div>
       </div>
       {showCreateTeamModal && (
-        <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} />
+        <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} setCreationMode={setCreationMode} />
       )}
       <WhiteBoardModal
         url={whiteBoardUrl}
@@ -334,8 +337,6 @@ TeamsPage.propTypes = {
   location: PropTypes.object.isRequired,
   teams: PropTypes.array.isRequired,
   overview: PropTypes.bool,
-  creation: PropTypes.bool,
-  editMode: PropTypes.bool,
   teamShow: PropTypes.bool,
   projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
@@ -343,20 +344,22 @@ TeamsPage.propTypes = {
   loadTeams: PropTypes.func.isRequired,
   loadSubOrgTeams: PropTypes.func.isRequired,
   updateSelectedTeam: PropTypes.func.isRequired,
+  newTeam: PropTypes.object,
+
 };
 
 TeamsPage.defaultProps = {
   overview: false,
-  creation: false,
-  editMode: false,
   teamShow: false,
   projectShow: false,
   channelShow: false,
   creationTeam: false,
+  newTeam: {},
 };
 
 const mapStateToProps = (state) => ({
   teams: state.team.teams,
+  newTeam: state.team.newTeam,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import EditTeamImage from 'assets/images/svg/editTeam.svg';
 import EditDetailImage from 'assets/images/svg/detailEdit.svg';
@@ -8,33 +8,64 @@ import { useHistory } from 'react-router-dom';
 import Buttons from 'utils/Buttons/buttons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import UserIcon from 'assets/images/svg/user.svg';
-import Deleticon from 'assets/images/svg/trash.svg';
-import Right from 'assets/images/svg/right.svg';
+// import Deleticon from 'assets/images/svg/trash.svg';
 // import MyTeamCard from 'utils/MyTeamCard/myteamcard';
 import InviteDialog from 'components/InviteDialog';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
+import { inviteMembersAction } from 'store/actions/team';
+import { connect, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import TeamMembers from './TeamMembers';
+
 // import BackgroundTeamCardImage from 'assets/images/cardlistimg.png';
 
-const TeamDetail = ({ team, organization }) => {
+const TeamDetail = ({
+  team, organization, user, inviteMembers, newTeam,
+}) => {
   const [show, setShow] = useState(false);
   const history = useHistory();
+  const { roles } = useSelector((state) => state.team);
+  const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState([]);
   const [createProject, setCreateProject] = useState(false);
+  const [showInvite, setShowInvite] = useState(false);
   const [editMode, seteditMode] = useState(false);
+  const [toggleLeft, setToggleLeft] = useState(false);
   console.log(team, show, createProject, editMode);
+  const authUser = team?.users.find((u) => u.id === (user || {}).id);
   const handleShow = () => {
     setShow(true);
   };
-
   const setProjectId = () => { };
   const showDeletePopup = () => { };
-  const [toggleLeft, setToggleLeft] = useState(false);
+  const handleInviteNewTeam = useCallback((users, note) => {
+    setSelectUsersNewTeam([...selectedUsersNewTeam, ...users.map((u) => ({ ...u, note }))]);
+    setShowInvite(false);
+  }, [selectedUsersNewTeam]);
+  const handleInvite = useCallback((selectedUsers, emailNote) => {
+    inviteMembers(team?.id, selectedUsers, emailNote)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Successfully invited.',
+        });
+        setShowInvite(false);
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to invite user.',
+        });
+      });
+  }, [inviteMembers, team?.id]);
   return (
     <div className="add-team-page">
       <div className={`${toggleLeft ? 'width90' : ''} left`}>
         <div className="organization-name">{organization?.name}</div>
         <div className="title-image">
           <div>
-            <h1 className="title">{team?.name}</h1>
+            <h1 className="title">{team?.name || newTeam?.name}</h1>
           </div>
           <div>
             <img
@@ -47,10 +78,7 @@ const TeamDetail = ({ team, organization }) => {
         <div className="add-team-detail">
           <div className="team-detail">
             <p>
-              This project is about the influence the design of everyday objects
-              and art had have over the main historic moments of the world. With
-              this course you’ll have a big complete understanding of main
-              social design needs and the technical approach to solve them.
+              {team?.description || newTeam?.description}
               {' '}
             </p>
           </div>
@@ -125,7 +153,7 @@ const TeamDetail = ({ team, organization }) => {
           className="toggle_btn"
           onClick={() => setToggleLeft(!toggleLeft)}
         >
-          <img src={Right} alt="chevron-right" className={`${toggleLeft ? 'image_rotate' : ''}`} />
+          <FontAwesomeIcon icon="chevron-circle-right" className={`${toggleLeft ? 'image_rotate' : ''}`} />
         </button>
         <div className="right_head">
           <h1 className={`${toggleLeft ? 'none' : ''}`}>Team members </h1>
@@ -133,30 +161,40 @@ const TeamDetail = ({ team, organization }) => {
         </div>
         <div className="right_select">
           <div className={`${toggleLeft ? 'none' : ''}`}>
-            <InviteDialog
-              users={team?.users}
-            />
+            {team?.users && (
+              <InviteDialog
+                users={team?.users}
+                visible={showInvite}
+                authUser={authUser}
+                setShowInvite={setShowInvite}
+                handleInvite={handleInvite}
+              />
+            )}
+            {(newTeam?.name) && (
+              <InviteDialog
+                users={selectedUsersNewTeam}
+                visible={showInvite}
+                authUser={user}
+                setShowInvite={setShowInvite}
+                handleInvite={handleInviteNewTeam}
+              />
+            )}
           </div>
         </div>
-        {team?.users?.map((user) => (
-          <div className="right_card">
-            <div className="right_info">
-              <div>
-                <div className="member-name-mark">
-                  <span>{`${user?.first_name ? user?.first_name[0] : ''}${user?.last_name ? user?.last_name[0] : ''}`}</span>
-                </div>
-              </div>
-              <div className={`${toggleLeft ? 'none' : ''}`}>
-                <h6>{`${user?.first_name} ${user?.last_name}`}</h6>
-                <p>{user?.email}</p>
-              </div>
-            </div>
-            <div className={`${toggleLeft ? 'none' : ''} right_label`}>
-              <span>{user?.role?.name}</span>
-              <img src={Deleticon} alt="" />
-            </div>
-          </div>
-        ))}
+        {team?.users?.length > 0 && (
+          <TeamMembers
+            arrayToRender={team?.users}
+            roles={roles}
+            toggleLeft={toggleLeft}
+          />
+        )}
+        {selectedUsersNewTeam.length > 0 && (
+          <TeamMembers
+            arrayToRender={selectedUsersNewTeam}
+            roles={roles}
+            toggleLeft={toggleLeft}
+          />
+        )}
       </div>
     </div>
   );
@@ -165,6 +203,15 @@ const TeamDetail = ({ team, organization }) => {
 TeamDetail.propTypes = {
   team: PropTypes.object.isRequired,
   organization: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  newTeam: PropTypes.object.isRequired,
+  inviteMembers: PropTypes.func.isRequired,
 };
-
-export default TeamDetail;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  newTeam: state.team.newTeam,
+});
+const mapDispatchToProps = (dispatch) => ({
+  inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(TeamDetail);

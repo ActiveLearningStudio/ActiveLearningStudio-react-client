@@ -3,6 +3,12 @@ import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const setNewTeamData = (team) => (dispatch) => {
+  dispatch({
+    type: actionTypes.NEW_TEAM,
+    payload: team,
+  });
+};
 export const resetSelectedTeamAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.RESET_SELECTED_TEAM,
