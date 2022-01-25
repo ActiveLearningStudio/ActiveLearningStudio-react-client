@@ -775,6 +775,55 @@ function Controller(props) {
             </button>
           </div>
         )}
+        
+        {!!btnText && subType === 'Subjects' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_subject') {
+                  dispatch(setActiveAdminForm('add_subject'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        
+        {!!btnText && subType === 'Education Level' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_education_level') {
+                  dispatch(setActiveAdminForm('add_education_level'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        
+        {!!btnText && subType === 'Author Tags' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_author_tag') {
+                  dispatch(setActiveAdminForm('add_author_tag'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
         {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
             <button

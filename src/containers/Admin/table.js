@@ -107,7 +107,7 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso') {
+    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso' || 'Activities') {
       if (data?.data) {
         setLocalStateData(data?.data);
       } else {
@@ -727,149 +727,6 @@ function Table(props) {
                 </tr>
               ))}
 
-            {/* {type === 'Projects' &&
-              subType === 'Library requests' &&
-              (localStateData ? (
-                localStateData?.length > 0 ? (
-                  localStateData.map((row) => {
-                    const createNew = new Date(row.created_at);
-                    const updateNew = new Date(row.updated_at);
-                    return (
-                      <tr className="admin-panel-rows">
-                        <td>
-                          <div className="admin-name-img">
-                            <div
-                              style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                              }}
-                              className="admin-img"
-                            ></div>
-
-                            <Link className="admin-name" target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
-                              {row.name}
-                            </Link>
-                          </div>
-                        </td>
-                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
-                        <td>{row.id}</td>
-                        <td>{row.users?.[0]?.email}</td>
-                        <td>{row.indexing_text}</td>
-                        <td>
-                          {row.shared ? (
-                            <Link className="shared-link-enable">Enabled</Link>
-                          ) : (
-                            <>
-                              <Link className="shared-link-disable">Disabled</Link>
-                            </>
-                          )}
-                        </td>
-                        <td>{new Date(updateNew.toDateString()).toLocaleDateString('en-US')}</td>
-                        <td>
-                          <div className="links">
-                            {(row.indexing === 1 || row.indexing === 2) && (
-                              <Link
-                                style={{ padding: '4px 0' }}
-                                className="approve-label"
-                                onClick={async () => {
-                                  Swal.fire({
-                                    title: 'Please Wait !',
-                                    html: 'Approving Project ...',
-                                    allowOutsideClick: false,
-                                    onBeforeOpen: () => {
-                                      Swal.showLoading();
-                                    },
-                                  });
-                                  const result = await adminService.updateIndex(row.id, 3);
-                                  if (result?.message) {
-                                    if (changeIndexValue !== 0) {
-                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
-                                    } else {
-                                      const editRow = {
-                                        ...row,
-                                        indexing: 3,
-                                        indexing_text: 'APPROVED',
-                                      };
-                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
-                                    }
-                                    Swal.fire({
-                                      icon: 'success',
-                                      text: result.message,
-                                    });
-                                  } else {
-                                    Swal.fire({
-                                      icon: 'error',
-                                      text: 'Error',
-                                    });
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '4px' }} />
-                                Approve&nbsp;&nbsp;
-                              </Link>
-                            )}
-                            {(row.indexing === 1 || row.indexing === 3) && (
-                              <Link
-                                style={{ padding: '4px 0' }}
-                                className="reject-label"
-                                onClick={async () => {
-                                  Swal.fire({
-                                    title: 'Please Wait !',
-                                    html: 'Rejecting Project ...',
-                                    allowOutsideClick: false,
-                                    onBeforeOpen: () => {
-                                      Swal.showLoading();
-                                    },
-                                  });
-                                  const result = await adminService.updateIndex(row.id, 2);
-                                  if (result?.message) {
-                                    if (changeIndexValue !== 0) {
-                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
-                                    } else {
-                                      const editRow = {
-                                        ...row,
-                                        indexing: 2,
-                                        indexing_text: 'REJECT',
-                                      };
-                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
-                                    }
-                                    Swal.fire({
-                                      icon: 'success',
-                                      text: result.message,
-                                    });
-                                  } else {
-                                    Swal.fire({
-                                      icon: 'error',
-                                      text: 'Error',
-                                    });
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faStopCircle} style={{ marginRight: '4px' }} />
-                                Reject
-                              </Link>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">No result found.</Alert>
-                    </td>
-                  </tr>
-                )
-              ) : (
-                <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
-                  </td>
-                </tr>
-              ))} */}
             {type === 'Activities' &&
               subType === 'Activity Types' &&
               (data ? (
@@ -1009,6 +866,99 @@ function Table(props) {
               ) : (
                 <tr>
                   <td colSpan="5">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+              {type === 'Activities' && subType === 'Subjects' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'subject-'+row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row.order}
+                          <div>
+                            <AdminDropdown type={type} subType="Subjects" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No subject found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+              
+              {type === 'Activities' && subType === 'Education Level' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'edu-lvl-'+row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row.order}
+                          <div>
+                            <AdminDropdown type={type} subType="Education Level" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Education level found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+              
+              {type === 'Activities' && subType === 'Author Tags' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'edu-lvl-'+row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row.order}
+                          <div>
+                            <AdminDropdown type={type} subType="Author Tags" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Author tag found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
                     <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
