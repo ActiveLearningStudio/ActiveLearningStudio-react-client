@@ -193,7 +193,7 @@
     position: absolute;
     right: 20px;
     top: 13px;
-    color: $fun-blue-1;
+    color: #161513;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #fff;
   }
@@ -441,6 +441,10 @@
   font-family: $sans;
   padding-top: 3px;
   line-height: 20px;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .search-submit {
@@ -473,6 +477,11 @@
       font-family: $sans;
       padding-top: 3px;
       line-height: 20px;
+      color: #fff;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &:hover,
@@ -531,6 +540,11 @@
   font-weight: 400;
   width: 24px;
   margin: 0 auto;
+}
+.user-top {
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 50%;
 }
 .user-dropdown-item {
   display: block;

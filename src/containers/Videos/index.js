@@ -64,7 +64,7 @@ const Index = () => {
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
-                    <TopHeading description={activeOrganization.name} image={VideoImage} heading="My interactive videos" color="#084892" />
+                    <TopHeading description={activeOrganization.name} image={VideoImage} heading="My interactive videos" color="#161513" />
                     <Buttons
                       primary={true}
                       text="Create a video"
@@ -84,7 +84,7 @@ const Index = () => {
                   </div>
                   <div className="top-video-detail">
                     <div className="video-detail">
-                      <HeadingText text="Create and organize your activities into projects to create complete courses." color="#515151" />
+                      <HeadingText text="Create and organize your activities into projects to create complete courses." color="rgb(22, 21, 19)" />
                     </div>
                   </div>
                 </div>

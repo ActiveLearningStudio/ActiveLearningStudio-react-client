@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import storageService from 'services/storage.service';
 import { CURRENT_ORG } from 'constants/index';
 import { getAllOrganization, setCurrentOrganization, setActiveOrganization, getAllPermission, getRoles } from 'store/actions/organization';
-import menu from 'assets/images/menu.svg';
+import menu from 'assets/images/Group.png';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();

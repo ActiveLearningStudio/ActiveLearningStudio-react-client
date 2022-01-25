@@ -151,11 +151,15 @@
         height: 40px;
         left: 50px;
         top: 770px;
-        background: $fun-blue-1;
+        background: $btn-black-1;
         border-radius: 20px;
 
         img {
           width: 23px;
+        }
+
+        &:hover {
+          background: $btn-black-2;
         }
       }
 

@@ -51,11 +51,10 @@
         font-weight: 500;
         font-size: 18px;
         line-height: 21px;
-        color: #ffffff;
+        color: #f0cc71;
         word-break: break-all;
         &:hover {
           text-decoration: underline;
-          color: #ffc107;
         }
       }
     }
@@ -68,7 +67,7 @@
       font-weight: normal;
       font-size: 16px;
       line-height: 20px;
-      color: #767676;
+      color: #333;
       margin-bottom: 0 !important;
       word-break: break-all;
     }
@@ -106,7 +105,7 @@
       border: none;
       cursor: pointer;
       background: #fff;
-      color: $curriki-main-blue;
+      color: #00688c;
       // box-shadow: 0px 1px 2px 1px rgba(81, 81, 81, 0.16);
       border-radius: 4px;
 
@@ -128,6 +127,7 @@
       }
       .textinButton {
         display: none;
+        color: #00688c;
       }
     }
   }

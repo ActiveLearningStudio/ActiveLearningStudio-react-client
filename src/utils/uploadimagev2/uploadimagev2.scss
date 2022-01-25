@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .curriki-utility-uploadimageV2 {
   h3 {
     font-family: $rubik;
@@ -6,7 +6,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 20px;
-     color: #515151;
+    color: #515151;
   }
   .uploadimage-box {
     @media screen and (max-width: 1024px) {
@@ -37,9 +37,9 @@
     button {
       width: 172px;
       height: 32px;
-      display:flex;
-			justify-content:center;
-			align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       border-radius: 5px;
       text-align: center;
       border: 1px solid #515151;
@@ -48,7 +48,7 @@
       border-radius: 25px;
       box-shadow: 0px 2px 8px 1px rgba(81, 81, 81, 0.16);
       &:hover {
-        background-color: $curriki-main-blue;
+        background-color: $btn-black-2;
         color: $white;
       }
     }
@@ -63,7 +63,7 @@
     }
     .mr-20 {
       margin-right: 10px;
-			width:20px
+      width: 20px;
     }
   }
 }

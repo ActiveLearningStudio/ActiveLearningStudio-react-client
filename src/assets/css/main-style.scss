@@ -300,40 +300,52 @@ code {
   width: 150px;
   font-size: 16px;
   color: #ffffff;
-  background: #084892;
+  background: $btn-black-1;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 18px;
   height: 40px;
   cursor: pointer;
+
+  &:hover {
+    color: $btn-black-2;
+    background: $white;
+    border: 1px solid $btn-black-2;
+  }
 }
 
 .backclosemodel {
   width: 150px;
   font-size: 16px;
-  color: #333;
-  background: #ccc;
+  color: $btn-black-2;
+  // background: #ccc;
+  border: 1px solid $btn-black-2;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 18px;
   height: 40px;
   cursor: pointer;
+
+  &:hover {
+    color: $white;
+    background: $btn-black-2;
+  }
 }
 
 .add-role-form {
   select {
-  width: 80px !important;
-  height: 28px !important;
-  background: #e5eeff;
-  border-radius: 4px;
-  font-family: "rubic";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  color: #084892;
-  border: none !important;
+    width: 80px !important;
+    height: 28px !important;
+    background: #e5eeff;
+    border-radius: 4px;
+    font-family: 'rubic';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+    border: none !important;
   }
 }

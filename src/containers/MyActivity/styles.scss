@@ -435,12 +435,12 @@
           font-weight: 400;
           padding: 0;
           margin-right: 25px;
-          color: #084892 !important;
+          color: $fun-blue-1 !important;
         }
         .nav-item.active {
-          color: #084892 !important;
+          color: $fun-blue-1 !important;
           font-weight: 500;
-          border-bottom: 1px solid #084892 !important;
+          border-bottom: 1px solid $fun-blue-1 !important;
         }
       }
 

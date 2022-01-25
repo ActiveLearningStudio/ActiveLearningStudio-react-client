@@ -186,7 +186,7 @@ const AddActivity = (props) => {
                     handleSubmit();
                   }}
                 >
-                  <HeadingThree text="Describe layout" color="#084892" />
+                  <HeadingThree text="Describe layout" color="#161513" />
 
                   <div className="layout-title-formik-textField">
                     <HeadingThree text="Title" color="#515151" className="textField-title" />
@@ -228,7 +228,7 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-videoTag">
             <HeadingThree
               text={activtyMethod === 'upload' ? 'Upload activity' : activity ? 'Edit layout' : 'Create layout'}
-              color="#084892"
+              color="#161513"
               className="layout-add-activity-title"
             />
 

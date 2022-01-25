@@ -39,7 +39,7 @@ function NewProjectPage(props) {
                 </button>
                 <div className="col-md-12">
                   <h1 className="mb-0">
-                    <span> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
+                    <span style={{ color: '#161513' }}> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
                   </h1>
                 </div>
               </div>

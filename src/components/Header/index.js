@@ -8,7 +8,7 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
-import help from 'assets/images/help.svg';
+import help from 'assets/images/help-top-nav.png';
 import edit from 'assets/images/edit1.png';
 import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
@@ -69,8 +69,8 @@ function Header(props) {
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">
-                    <div className="profile-avatar">{user?.first_name[0]}</div>
-                    <p className="header-icon-text">My Profile</p>
+                    <div className="profile-avatar user-top">{user?.first_name[0]}</div>
+                    <p className="header-icon-text ">My Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">

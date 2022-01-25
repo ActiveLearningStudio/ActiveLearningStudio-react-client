@@ -59,7 +59,7 @@ const ActivityLayout = (props) => {
         <Tabs text="3. Create activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingOne text="Select activity" color="#084892" />
+        <HeadingOne text="Select activity" color="#161513" />
       </div>
       <div className="activity-layout-paragraph">
         <Headings
@@ -90,25 +90,26 @@ const ActivityLayout = (props) => {
           </div>
 
           <div class="dropdown-content-select">
-            {allActivitytypes?.length > 0 && allActivitytypes?.map((data, counter) => {
-              return (
-                <label>
-                  <input
-                    checked={filterData.includes(data.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setFilterData([...filterData, data.id]);
-                      } else {
-                        setFilterData(filterData.filter((ids) => ids !== data.id));
-                      }
-                    }}
-                    type="checkbox"
-                    name={counter}
-                  />
-                  {data.title}
-                </label>
-              );
-            })}
+            {allActivitytypes?.length > 0 &&
+              allActivitytypes?.map((data, counter) => {
+                return (
+                  <label>
+                    <input
+                      checked={filterData.includes(data.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFilterData([...filterData, data.id]);
+                        } else {
+                          setFilterData(filterData.filter((ids) => ids !== data.id));
+                        }
+                      }}
+                      type="checkbox"
+                      name={counter}
+                    />
+                    {data.title}
+                  </label>
+                );
+              })}
           </div>
         </div>
 
@@ -116,24 +117,25 @@ const ActivityLayout = (props) => {
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
-          {allActivitiesSingle?.length > 0 && allActivitiesSingle?.map((data) => {
-            return (
-              filterData.includes(data.activityType?.id) && (
-                <LayoutCard
-                  image={data.image}
-                  text={data.title}
-                  className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
-                  onClick={() => setLayout(data)}
-                  btnTextOne="Demo"
-                  btnTextTwo="Video"
-                  setCurrentActivity={setCurrentActivity}
-                  setActiveType={setActiveType}
-                  setModalShow={setModalShow}
-                  activity={data}
-                />
-              )
-            );
-          })}
+          {allActivitiesSingle?.length > 0 &&
+            allActivitiesSingle?.map((data) => {
+              return (
+                filterData.includes(data.activityType?.id) && (
+                  <LayoutCard
+                    image={data.image}
+                    text={data.title}
+                    className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
+                    onClick={() => setLayout(data)}
+                    btnTextOne="Demo"
+                    btnTextTwo="Video"
+                    setCurrentActivity={setCurrentActivity}
+                    setActiveType={setActiveType}
+                    setModalShow={setModalShow}
+                    activity={data}
+                  />
+                )
+              );
+            })}
         </div>
       </div>
       <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />

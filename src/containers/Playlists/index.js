@@ -466,7 +466,7 @@ function PlaylistsPage(props) {
               ) : (
                 <>
                   <div>{selectedProject?.team?.name ? `Team Name: ${selectedProject?.team?.name}` : null}</div>
-                  <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="#084892" style={{ lineHeight: '20px' }} className="mb-3" />
+                  <Headings text={`${organization?.currentOrganization?.name}`} headingType="body2" color="rgb(22, 21, 19)" style={{ lineHeight: '20px' }} className="mb-3" />
                   <div className="col playlist-page-project-title project-each-view">
                     <div className="flex-se project-headline-section">
                       <div style={{ width: '100%' }}>
@@ -540,46 +540,47 @@ function PlaylistsPage(props) {
 
                                 <div
                                   style={{
-                                    backgroundImage: `url(${selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                      ? selectedProject.thumb_url
-                                      : global.config.resourceUrl + selectedProject.thumb_url
-                                      })`,
+                                    backgroundImage: `url(${
+                                      selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                        ? selectedProject.thumb_url
+                                        : global.config.resourceUrl + selectedProject.thumb_url
+                                    })`,
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover',
                                   }}
                                   // alt="project-img"
                                   className="container-image"
-                                // src={
-                                //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                //     ? selectedProject.thumb_url
-                                //     : global.config.resourceUrl + selectedProject.thumb_url
-                                // }
+                                  // src={
+                                  //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                  //     ? selectedProject.thumb_url
+                                  //     : global.config.resourceUrl + selectedProject.thumb_url
+                                  // }
                                 />
                               </div>
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                  <div className="button-flex-project-images">
-                                    <div
-                                      className="gallery"
-                                      onClick={() => {
-                                        openFile.current.click();
-                                      }}
-                                    >
-                                      <img src={computer} alt="" />
-                                      <p>My device</p>
-                                    </div>
-
-                                    <div className="pexel" onClick={() => setModalShow(true)}>
-                                      <img src={pexel} alt="pexel" />
-                                      <p>Pexels</p>
-                                    </div>
+                                <div className="button-flex-project-images">
+                                  <div
+                                    className="gallery"
+                                    onClick={() => {
+                                      openFile.current.click();
+                                    }}
+                                  >
+                                    <img src={computer} alt="" />
+                                    <p>My device</p>
                                   </div>
-                                )}
+
+                                  <div className="pexel" onClick={() => setModalShow(true)}>
+                                    <img src={pexel} alt="pexel" />
+                                    <p>Pexels</p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
-                          {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
+                          {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#161513" />}
                           <textarea
                             className="title"
                             name="projectname"
@@ -649,9 +650,14 @@ function PlaylistsPage(props) {
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
-                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                          {selectedProject?.indexing_text !== 'NOT REQUESTED' && (
                             <div className="library-status">
-                              {<img src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg} className="mr-2" />}
+                              {
+                                <img
+                                  src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg}
+                                  className="mr-2"
+                                />
+                              }
                               {selectedProject?.indexing_text}
                             </div>
                           )}

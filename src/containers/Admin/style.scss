@@ -6,7 +6,7 @@
     border-bottom: none !important;
     padding: 20px 0px 16px;
     p {
-      color: #084892;
+      color: #161513;
       font-size: 22px;
       margin: 0;
     }
@@ -16,7 +16,7 @@
 
       h2 {
         margin: 0px;
-        color: #084892;
+        color: #161513;
         line-height: 28px;
         font-size: 24px;
         font-weight: 500;
@@ -29,14 +29,14 @@
     justify-content: space-between;
     padding: 24px 0px 0px;
     h3 {
-      color: #515151;
+      color: #161513;
       font-weight: 500;
       font-size: 18px;
       line-height: 24px;
       margin: 0;
     }
     p {
-      color: #515151;
+      color: #161513;
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
@@ -682,8 +682,8 @@
       align-items: center;
       justify-content: center;
       color: $fun-blue-1;
-      background: $fun-blue-1;
-      border: 1px solid $fun-blue-1;
+      background: $btn-black-1;
+      border: 1px solid $btn-black-1;
       box-sizing: border-box;
       border-radius: 50px;
       font-weight: normal;
@@ -697,6 +697,10 @@
         margin-right: 7px;
         width: 13px;
         margin-bottom: 1px;
+      }
+
+      &:hover {
+        background-color: $btn-black-2;
       }
     }
 
@@ -805,8 +809,8 @@
           width: 100%;
 
           button {
-            background: $fun-blue-1;
-            border: 1px solid $fun-blue-1;
+            background: $btn-black-1;
+            border: 1px solid $btn-black-1;
             box-sizing: border-box;
             border-radius: 50px;
             font-weight: normal;
@@ -815,6 +819,10 @@
             margin-right: 16px;
             width: 33%;
             min-height: 32px;
+
+            &:hover {
+              background-color: $btn-black-2;
+            }
           }
           .cancel-create {
             background: #e5e5e5;
@@ -823,8 +831,8 @@
         }
       }
       button {
-        background: $fun-blue-1;
-        border: 1px solid $fun-blue-1;
+        background: $btn-black-1;
+        border: 1px solid $btn-black-1;
         box-sizing: border-box;
         border-radius: 50px;
         color: $white;
@@ -833,6 +841,10 @@
         svg {
           color: #f8af2c;
           margin-right: 7px;
+        }
+
+        &:hover {
+          background-color: $btn-black-2;
         }
       }
     }
@@ -1183,7 +1195,7 @@
           font-size: 32px;
           line-height: 37px;
           border-bottom: 4px solid #f8af2c;
-          color: $fun-blue-1;
+          color: #161513;
           padding-bottom: 4px;
           width: fit-content;
           margin-bottom: 36px;
@@ -1279,7 +1291,7 @@
           padding-bottom: 40px;
 
           button {
-            background: $fun-blue-1;
+            background: $btn-black-1;
             border-radius: 50px;
             font-weight: 500;
             font-size: 14px;
@@ -1288,11 +1300,20 @@
             color: #ffffff;
             border: none;
             padding: 10px 24px;
-            border: 1px solid$fun-blue-1;
+            border: 1px solid $btn-black-1;
+
+            &:hover {
+              background: $btn-black-2;
+            }
           }
           button.cancel {
-            color: $fun-blue-1;
+            color: $btn-black-2;
             background: #fff;
+
+            &:hover {
+              background: $btn-black-1;
+              color: #fff;
+            }
           }
         }
       }

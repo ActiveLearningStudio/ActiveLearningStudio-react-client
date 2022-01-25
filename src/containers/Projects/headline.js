@@ -45,7 +45,7 @@ export default function Headline({ setCreateProject, seteditMode }) {
             )}
           </div>
         </div>
-        <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" />
+        <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="rgb(22, 21, 19)" className="top-heading-detail" />
       </div>
     </>
   );

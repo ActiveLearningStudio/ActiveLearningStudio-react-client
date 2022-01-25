@@ -93,15 +93,15 @@
         margin-right: 33px;
         input {
           border: none;
-          color: $fun-blue-1;
-          border-bottom: 1px solid $fun-blue-1;
+          color: $btn-black-1;
+          border-bottom: 1px solid $btn-black-1;
           font-weight: 400;
           background: none;
           font-size: 14px;
           width: 238px;
           padding-right: 20px;
           &::placeholder {
-            color: $fun-blue-1;
+            color: $btn-black-1;
           }
         }
 

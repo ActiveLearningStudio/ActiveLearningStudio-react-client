@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import bell from 'assets/images/bellon.svg';
+import bell from 'assets/images/Bell1.png';
 
 import { getAllNotifications, clearAllNotification } from 'store/actions/notification';
 import NotificationArea from 'containers/Notification/NotificationArea';
