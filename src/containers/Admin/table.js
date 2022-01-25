@@ -552,105 +552,121 @@ function Table(props) {
                         <td>{row.id}</td>
                         <td>{row.users?.[0]?.name}</td>
                         <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {indexingArray.map((element) => (
-                                  element.indexing_text !== 'NOT REQUESTED' && (
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={async () => {
+                                            const result = await adminService.updateIndex(row.id, element.indexing);
+                                            if (result?.message) {
+                                              const editRow = {
+                                                ...row,
+                                                indexing: element.indexing,
+                                                indexing_text: element.indexing_text,
+                                              };
+                                              setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                              Swal.fire({
+                                                icon: 'success',
+                                                text: result.message,
+                                              });
+                                            } else {
+                                              Swal.fire({
+                                                icon: 'error',
+                                                text: 'Error',
+                                              });
+                                            }
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      )
+                                  )}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            row.indexing_text
+                          )}
+                        </td>
+                        <td>
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {visibilityTypeArray?.map((element) => (
                                     <Dropdown.Item
                                       onClick={async () => {
-                                        const result = await adminService.updateIndex(row.id, element.indexing);
-                                        if (result?.message) {
-                                          const editRow = {
-                                            ...row,
-                                            indexing: element.indexing,
-                                            indexing_text: element.indexing_text,
-                                          };
-                                          setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                          Swal.fire({
-                                            icon: 'success',
-                                            text: result.message,
-                                          });
-                                        } else {
-                                          Swal.fire({
-                                            icon: 'error',
-                                            text: 'Error',
-                                          });
+                                        Swal.showLoading();
+                                        const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                         }
+                                        Swal.close();
                                       }}
                                     >
-                                      {element.indexing_text}
+                                      {element.display_name}
                                     </Dropdown.Item>
-                                  )))}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name
+                          )}
                         </td>
                         <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {visibilityTypeArray?.map((element) => (
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.shared ? 'Enabled' : 'Disabled'}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
                                   <Dropdown.Item
                                     onClick={async () => {
-                                      Swal.showLoading();
-                                      const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
+                                      if (!row.shared) {
+                                        const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                        }
                                       }
-                                      Swal.close();
                                     }}
                                   >
-                                    {element.display_name}
+                                    Enable
                                   </Dropdown.Item>
-                                ))}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {row.shared ? 'Enabled' : 'Disabled'}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <Dropdown.Item
-                                  onClick={async () => {
-                                    if (!row.shared) {
-                                      const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      if (row.shared) {
+                                        const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                        }
                                       }
-                                    }
-                                  }}
-                                >
-                                  Enable
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  onClick={async () => {
-                                    if (row.shared) {
-                                      const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
-                                      }
-                                    }
-                                  }}
-                                >
-                                  Disable
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
+                                    }}
+                                  >
+                                    Disable
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : row.shared ? (
+                            'Enabled'
+                          ) : (
+                            'Disabled'
+                          )}
                         </td>
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
@@ -871,11 +887,12 @@ function Table(props) {
                 </tr>
               ))}
 
-              {type === 'Activities' && subType === 'Subjects' &&
+            {type === 'Activities' &&
+              subType === 'Subjects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'subject-'+row.id} className="admin-panel-rows">
+                    <tr key={'subject-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
                       <td>
                         <div className="admin-panel-dropdown">
@@ -901,12 +918,13 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-              
-              {type === 'Activities' && subType === 'Education Level' &&
+
+            {type === 'Activities' &&
+              subType === 'Education Level' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'edu-lvl-'+row.id} className="admin-panel-rows">
+                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
                       <td>
                         <div className="admin-panel-dropdown">
@@ -932,12 +950,13 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-              
-              {type === 'Activities' && subType === 'Author Tags' &&
+
+            {type === 'Activities' &&
+              subType === 'Author Tags' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'edu-lvl-'+row.id} className="admin-panel-rows">
+                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
                       <td>
                         <div className="admin-panel-dropdown">

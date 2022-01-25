@@ -775,7 +775,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        
+
         {!!btnText && subType === 'Subjects' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
           <div className="btn-text">
             <button
@@ -791,7 +791,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        
+
         {!!btnText && subType === 'Education Level' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
           <div className="btn-text">
             <button
@@ -807,7 +807,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        
+
         {!!btnText && subType === 'Author Tags' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
           <div className="btn-text">
             <button
@@ -824,7 +824,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
+        {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
             <button
               type="button"
@@ -839,7 +839,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user') && (
+        {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
           <div className="btn-text">
             <button
               type="button"
