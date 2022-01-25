@@ -1,22 +1,18 @@
 /* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
 import { getAuthorTag, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
-import loader from 'assets/images/dotsloader.gif';
-import Switch from 'react-switch';
 
 export default function CreateAuthorTag(props) {
-  const { editMode, method } = props;
+  const { editMode } = props;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activeEdit } = organization;
-  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
 
   return (
     <div className="create-form lms-admin-form">
