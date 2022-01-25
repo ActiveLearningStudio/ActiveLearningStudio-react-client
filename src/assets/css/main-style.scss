@@ -295,3 +295,45 @@ code {
     word-break: break-all !important;
   }
 }
+
+.saveclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #ffffff;
+  background: #084892;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.backclosemodel {
+  width: 150px;
+  font-size: 16px;
+  color: #333;
+  background: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.add-role-form {
+  select {
+  width: 80px !important;
+  height: 28px !important;
+  background: #e5eeff;
+  border-radius: 4px;
+  font-family: "rubic";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #084892;
+  border: none !important;
+  }
+}

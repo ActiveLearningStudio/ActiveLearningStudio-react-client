@@ -45,25 +45,27 @@ import {
   loadLmsAction,
   // toggleProjectShareAction,
   // toggleProjectShareRemovedAction,
-  getIndexed,
-  getElastic,
   visibilityTypes,
   updateProjectAction,
   clearSelectedProject,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
 import Projectsharing from 'components/ProjectSharing/index';
 import AddResource from 'components/ResourceCard/AddResource';
 import { getTeamPermission } from 'store/actions/team';
+import { getUserLmsSettingsAction } from 'store/actions/account';
 import EditResource from 'components/ResourceCard/EditResource';
 import PlaylistCard from './PlaylistCard';
 import PreviewResourcePage from './PreviewResourcePage';
 import CreatePlaylistPopup from './CreatePlaylistPopup';
-import Edit from '../../assets/images/menu-edit.svg';
-import Preview from '../../assets/images/preview-2.svg';
-import AddBtn from '../../assets/images/add-btn.svg';
+import Edit from 'assets/images/menu-edit.svg';
+import Preview from 'assets/images/preview-2.svg';
+import AddBtn from 'assets/images/add-btn.svg';
+import Correct from 'assets/images/svg/Correct.svg';
+import Warning from 'assets/images/svg/warning-icon.svg';
+import ErrorImg from 'assets/images/svg/Error.svg';
 
 import './style.scss';
 
@@ -114,12 +116,12 @@ function PlaylistsPage(props) {
     resource,
     playlist: { playlists },
     ui,
-    getIndexedData,
-    getElasticData,
     getTeamPermissions,
     closeSafariMontageTool,
     safariMontagePublishTool,
     row,
+    showFooter,
+    getLmsSettings,
   } = props;
 
   const projectIdFilter = match?.params?.projectId || row?.id;
@@ -152,6 +154,7 @@ function PlaylistsPage(props) {
   }, []);
 
   useEffect(() => {
+    getLmsSettings();
     return () => {
       dispatch(clearSelectedProject());
     };
@@ -171,7 +174,7 @@ function PlaylistsPage(props) {
         icon: '',
       });
       loadProject(projectIdFilter);
-      loadProjectPlaylists(projectIdFilter);
+      loadProjectPlaylists(projectIdFilter, true);
     }
   }, [loadProject, activeOrganization]);
   useEffect(() => {
@@ -186,8 +189,6 @@ function PlaylistsPage(props) {
 
   const editVisibility = async (type) => {
     await dispatch(updateProjectAction(projectState.selectedProject.id, { ...projectState.selectedProject, organization_visibility_type_id: type }));
-    await getIndexedData(projectState.selectedProject.id);
-    await getElasticData(projectState.selectedProject.id);
   };
 
   const handleShowCreatePlaylistModal = async (e) => {
@@ -539,44 +540,43 @@ function PlaylistsPage(props) {
 
                                 <div
                                   style={{
-                                    backgroundImage: `url(${
-                                      selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                        ? selectedProject.thumb_url
-                                        : global.config.resourceUrl + selectedProject.thumb_url
-                                    })`,
+                                    backgroundImage: `url(${selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                      ? selectedProject.thumb_url
+                                      : global.config.resourceUrl + selectedProject.thumb_url
+                                      })`,
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover',
                                   }}
                                   // alt="project-img"
                                   className="container-image"
-                                  // src={
-                                  //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                  //     ? selectedProject.thumb_url
-                                  //     : global.config.resourceUrl + selectedProject.thumb_url
-                                  // }
+                                // src={
+                                //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                //     ? selectedProject.thumb_url
+                                //     : global.config.resourceUrl + selectedProject.thumb_url
+                                // }
                                 />
                               </div>
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                <div className="button-flex-project-images">
-                                  <div
-                                    className="gallery"
-                                    onClick={() => {
-                                      openFile.current.click();
-                                    }}
-                                  >
-                                    <img src={computer} alt="" />
-                                    <p>My device</p>
-                                  </div>
+                                  <div className="button-flex-project-images">
+                                    <div
+                                      className="gallery"
+                                      onClick={() => {
+                                        openFile.current.click();
+                                      }}
+                                    >
+                                      <img src={computer} alt="" />
+                                      <p>My device</p>
+                                    </div>
 
-                                  <div className="pexel" onClick={() => setModalShow(true)}>
-                                    <img src={pexel} alt="pexel" />
-                                    <p>Pexels</p>
+                                    <div className="pexel" onClick={() => setModalShow(true)}>
+                                      <img src={pexel} alt="pexel" />
+                                      <p>Pexels</p>
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
@@ -627,7 +627,7 @@ function PlaylistsPage(props) {
                               />
                             )}
                         </div>
-                        <div className="new-playlist">
+                        <div className="new-playlist status-pref">
                           <div className="dropdown">
                             <Headings text="Library Preferences:" headingType="body2" color="#515151" />
 
@@ -649,6 +649,12 @@ function PlaylistsPage(props) {
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
+                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                            <div className="library-status">
+                              {<img src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg} className="mr-2" />}
+                              {selectedProject?.indexing_text}
+                            </div>
+                          )}
                         </div>
                       </div>
                       <div className="project-share-previews">
@@ -749,7 +755,7 @@ function PlaylistsPage(props) {
           <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
         </Modal.Body>
       </Modal>
-      <Footer />
+      {/* {!showFooter && <Footer />} */}
 
       <GoogleModel
         projectId={selectedProjectId}
@@ -807,7 +813,7 @@ const mapDispatchToProps = (dispatch) => ({
   hideCreateResourceModal: () => dispatch(hideCreateResourceModalAction()),
   hidePreviewResourceModal: () => dispatch(hidePreviewResourceModalAction()),
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadProjectPlaylists: (id) => dispatch(loadProjectPlaylistsAction(id)),
+  loadProjectPlaylists: (id, skipContent) => dispatch(loadProjectPlaylistsAction(id, skipContent)),
   createResource: (id, editor, editorType, metadata, playlistId) => dispatch(createResourceAction(id, editor, editorType, metadata, playlistId)),
   editResource: (id, editor, editorType, actId, metadata) => dispatch(editResourceAction(id, editor, editorType, actId, metadata)),
   createResourceByH5PUpload: (id, editor, editorType, payload, mdata, projId) => dispatch(createResourceByH5PUploadAction(id, editor, editorType, payload, mdata, projId)),
@@ -822,10 +828,9 @@ const mapDispatchToProps = (dispatch) => ({
   uploadResourceThumbnail: () => dispatch(uploadResourceThumbnailAction()),
   reorderPlaylists: (projectId, orgPlaylists, playlists) => dispatch(reorderPlaylistsAction(projectId, orgPlaylists, playlists)),
   loadLms: () => dispatch(loadLmsAction()),
-  getIndexedData: (id) => dispatch(getIndexed(id)),
-  getElasticData: (id) => dispatch(getElastic(id)),
   getTeamPermissions: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   closeSafariMontageTool: () => dispatch(closeSafariMontageToolAction()),
+  getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
 });
 
 const mapStateToProps = (state) => ({

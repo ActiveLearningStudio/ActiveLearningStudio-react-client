@@ -3,9 +3,11 @@ import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Modal, Button, Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { cancelRemoveUser } from 'store/actions/admin';
 import adminService from 'services/admin.service';
+import userErrorImg from 'assets/images/svg/user_error.svg';
+import floppyImg from 'assets/images/svg/floppy.svg';
+import warningImg from 'assets/images/svg/warning.svg';
 import './style.scss';
 
 const RemoveUser = (props) => {
@@ -19,9 +21,6 @@ const RemoveUser = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('removeuser init');
-    console.log(user);
-    console.log(currentOrg);
   }, []);
 
   const doRemove = () => {
@@ -46,7 +45,7 @@ const RemoveUser = (props) => {
           <div className="container">
             <div className="row">
               <div className="col">
-                <FontAwesomeIcon icon="save" />
+                <img src={floppyImg} alt="floppy disk icon" />
                 <h1 className="mt-4">Do you want to keep the user&apos;s projects?</h1>
               </div>
             </div>
@@ -69,15 +68,15 @@ const RemoveUser = (props) => {
           <div className="container">
             <div className="row">
               <div className="col">
-                <FontAwesomeIcon icon="exclamation" />
+                <img src={warningImg} alt="exclamation sign icon" />
                 <h1 className="mt-4">Are you sure you want to remove this user?</h1>
-                <p>You wont be able to revert this!</p>
+                <p>You won&apos;t be able to revert this!</p>
               </div>
             </div>
             <div className="row">
               <div className="col">
                 <Button variant="secondary" className="remove-secondary m-2" onClick={() => dispatch(cancelRemoveUser())}>Cancel</Button>
-                <Button variant="primary" className="remove-primary m-2" onClick={doRemove}>Continue</Button>
+                <Button variant="primary" className="remove-primary m-2" onClick={doRemove}>Remove</Button>
               </div>
             </div>
           </div>
@@ -86,7 +85,7 @@ const RemoveUser = (props) => {
           <div className="container">
             <div className="row">
               <div className="col">
-                <FontAwesomeIcon icon="user-times" />
+                <img src={userErrorImg} alt="user deleted icon" />
                 <h1>
                   {outcome === 'success' && 'User removed!'}
                   {outcome === 'error' && 'User could not be removed'}
@@ -103,6 +102,9 @@ const RemoveUser = (props) => {
                   <strong>Organization: </strong>
                   {currentOrg.name}
                 </p>
+                {outcome === 'success' && mode === 'remove-projects' && (
+                  <h1>User&apos;s projects removed</h1>
+                )}
               </div>
             </div>
             <div className="row">

@@ -1,35 +1,41 @@
 /* eslint-disable */
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-// import PropTypes from "prop-types";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import eye from 'assets/images/svg/eye_library_req.svg';
+import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import { forgetAllFailedJobs, retryAllFailedJobs, setActiveAdminForm } from 'store/actions/admin';
+import {
+  // forgetAllFailedJobs,
+  // retryAllFailedJobs,
+  setActiveAdminForm,
+} from 'store/actions/admin';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import filterImg from 'assets/images/svg/filter.svg';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
+import loader from 'assets/images/dotsloader.gif';
 // import csv from "assets/images/csv.png";
 // import pdf from "assets/images/pdf.png";
-import bulk from 'assets/images/bulk.png';
-import InviteUser from 'containers/ManageOrganization/inviteAdmin';
-import AddUser from 'containers/ManageOrganization/addUser';
+// import bulk from 'assets/images/bulk.png';
+// import InviteUser from 'containers/ManageOrganization/inviteAdmin';
+// import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import { clearOrganizationState, getOrganization, getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList } from 'store/actions/organization';
-import { alphaNumeric } from 'utils';
+import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
+// import { alphaNumeric } from 'utils';
 
 function Controller(props) {
   const {
     paginationCounter,
     search,
-    print,
+    // print,
     btnText,
     btnAction,
     importUser,
-    jobType,
-    SetJobType,
-    logType,
-    SetLogType,
+    // jobType,
+    // SetJobType,
+    // logType,
+    // SetLogType,
     subTypeState,
     filter,
     activeRole,
@@ -41,58 +47,80 @@ function Controller(props) {
     searchQuery,
     searchQueryProject,
     setSearchQueryProject,
-    searchQueryStats,
-    setSearchQueryStats,
+    // searchQueryStats,
+    // setSearchQueryStats,
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
-    searchUserReportQueryHandler,
+    // searchUserReportQueryHandler,
     size,
     setSize,
-    tableHead,
+    // tableHead,
     roles,
-    inviteUser,
+    // inviteUser,
     subType,
     setChangeIndexValue,
     selectedActivityType,
     setSelectedActivityType,
+    libraryReqSelected,
+    setLibraryReqSelected,
+    // setSubTypeState,
+    projectFilterObj,
+    setProjectFilterObj,
+    filterSearch,
+    resetProjectFilter,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
-  const [allUsersAdded, setAllUsersAdded] = useState([]);
+  // const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
   const [activeRoleInComponent, setActiveRoleInComponent] = useState('');
   const organization = useSelector((state) => state.organization);
-  const { permission, activeOrganization, currentOrganization } = organization;
+  const { permission, activeOrganization } = organization;
   const { activityTypes } = useSelector((state) => state.admin);
-  const { activeForm } = adminState;
   const [selectedIndexValue, setSelectedIndexValue] = useState('ALL');
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
+  const [authorName, setAuthorName] = useState('');
+  const [authorsArray, setAuthorsArray] = useState([]);
+  const [loaderImgUser, setLoaderImgUser] = useState(false);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
     }
-  }, []);
-
+  }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
+      console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
         setActiveRoleInComponent(roles[0]?.display_name);
-      } else if (activeRole) {
-        setActiveRoleInComponent(roles.filter((role) => role.id === activeRole)[0]?.display_name);
+      } else if (roles?.length > 0 && activeRole) {
+        setActiveRoleInComponent(roles?.filter((role) => role.id === activeRole)[0]?.display_name);
       }
     } else if (roles?.length > 0 && subTypeState === 'Manage Roles') {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
-  }, [roles, adminState?.activeTab]);
+  }, [roles, adminState?.activeTab, subTypeState, activeRole, setActiveRole]);
   // sabtype
   // const sab = subType;
   // console.log(subTypeState);
   // console.log(subType);
-
+  const searchUserProjectFilter = useCallback(async () => {
+    if (authorName.length >= 2) {
+      setLoaderImgUser(true);
+      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
+      console.log(result?.data, 'result');
+      if (result?.data?.length > 0) {
+        setLoaderImgUser(false);
+        setAuthorsArray(result?.data);
+      } else {
+        setLoaderImgUser(false);
+        setAuthorsArray([]);
+      }
+    }
+  }, [activeOrganization?.id, authorName, dispatch]);
   const updateIndexAction = (value, id) => {
     setSelectedIndexValue(value);
     setChangeIndexValue(id);
@@ -158,22 +186,22 @@ function Controller(props) {
             </div>
           </>
         )}
-        {!!search && type === 'LMS' && subType === 'All Settings' && (
+        {!!search && type === 'LMS' && subType === 'All settings' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
 
-        {!!search && type === "LMS" && subType === 'LTI Tools' && (
+        {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search by URL or User Email"
-              value={searchQuery}
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
+        {!!search && type === 'LMS' && subType === 'BrightCove' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by ID or email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -184,7 +212,7 @@ function Controller(props) {
             <img src={searchimg} alt="search" />
           </div>
         )}
-        {!!search && type === 'Stats' && (
+        {/* {!!search && type === 'Stats' && (
           <div className="search-bar">
             <input
               className=""
@@ -202,9 +230,9 @@ function Controller(props) {
             />
             <img src={searchimg} alt="search" onClick={() => searchUserReportQueryHandler(searchQueryStats, subTypeState)} />
           </div>
-        )}
+        )} */}
 
-        {!!search && type === 'Project' && (
+        {!!search && type === 'Projects' && (
           <div className="search-bar">
             <input
               className=""
@@ -215,11 +243,11 @@ function Controller(props) {
                 if (e.target.value) {
                   setActivePage(1);
                   setSearchQueryProject(e.target.value);
-                  searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
+                  // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
                 } else if (e.target.value === '') {
                   setActivePage(1);
                   setSearchQueryProject('');
-                  searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
+                  // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
                 }
               }}
             />
@@ -233,7 +261,6 @@ function Controller(props) {
               className=""
               type="text"
               placeholder="Search Organization"
-              value={searchQueryProject}
               onChange={(e) => {
                 if (e.target.value?.trim()) {
                   dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));
@@ -270,7 +297,7 @@ function Controller(props) {
         )}
         {paginationCounter && (
           <div className="pagination-counter drop-counter ">
-            Row per page
+            Rows per page
             <span>
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">{size}</Dropdown.Toggle>
@@ -310,7 +337,7 @@ function Controller(props) {
           </div>
         )}
         {/* FILTER FOR PROJECT TABS */}
-        {type === 'Project' && (subType === 'all' || subType === 'Library requests') && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
@@ -320,9 +347,33 @@ function Controller(props) {
               <Dropdown.Menu>
                 <div className="authorName-project">
                   <label>Author</label>
-                  <input type="text" />
-                  <img src={filterSearchIcon} alt="filterSearchIcon" />
+                  <input type="text" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
+                  <img src={filterSearchIcon} alt="filterSearchIcon" className={authorName && authorsArray.length === 0 && 'close-circle'} onClick={searchUserProjectFilter} />
+                  {authorName && authorName.length >= 2 && authorsArray.length > 0 && (
+                    <div className="author-list">
+                      {authorsArray?.length > 0
+                        ? authorsArray?.map((author) => (
+                          <div
+                            className="single-author"
+                            onClick={() => {
+                              setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className="username-filter-project">{author.first_name}</div>
+                              <div className="email-filter-project">{author.email}</div>
+                            </div>
+                          </div>
+                        ))
+                        : 'No user found.'}
+                    </div>
+                  )}
                 </div>
+                {loaderImgUser && <img src={loader} alt="loader" className="loader-img" />}
+                {authorName && authorName.length < 2 && <div className="error">Enter at least 2 characters.</div>}
                 <div className="createdFrom-project">
                   <label>Created</label>
                   <div className="row-project-filter">
@@ -334,6 +385,10 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.created_from}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, created_from: e.target.value });
+                        }}
                       />
                     </div>
                     <div className="to-project">
@@ -344,9 +399,14 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.created_to}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, created_to: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
+                  {projectFilterObj.created_from > projectFilterObj.created_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="updatedOn-project">
                   <label>Updated</label>
@@ -359,6 +419,10 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.updated_from}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, updated_from: e.target.value });
+                        }}
                       />
                     </div>
                     <div className="to-project">
@@ -369,53 +433,106 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = 'date';
                         }}
+                        value={projectFilterObj.updated_to}
+                        onChange={(e) => {
+                          setProjectFilterObj({ ...projectFilterObj, updated_to: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
+                  {projectFilterObj.updated_from > projectFilterObj.updated_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="status-project">
                   <div className="library-status">
                     <label>Library status</label>
                     <span>
-                      <input type="radio" />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 1 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(true);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 1 });
+                        }}
+                      />
                       Requested
                     </span>
                     <span>
-                      <input type="radio" />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 0 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 0 });
+                        }}
+                      />
                       Not Requested
                     </span>
-                    {subType === 'Library requests' && (
-                      <>
-                        <span>
-                          <input type="radio" />
-                          Approved
-                        </span>
-                        <span>
-                          <input type="radio" />
-                          Rejected
-                        </span>
-                      </>
-                    )}
+                    <span>
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 3 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 3 });
+                        }}
+                      />
+                      Approved
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.indexing === 2 && true}
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({ ...projectFilterObj, indexing: 2 });
+                        }}
+                      />
+                      Rejected
+                    </span>
                   </div>
                   <div className="shared-status">
                     <label>Shared status</label>
                     <span>
-                      <input type="radio" />
+                      <input type="radio" checked={projectFilterObj.shared === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 1 })} />
                       Enabled
                     </span>
                     <span>
-                      <input type="radio" />
-                      Not Enabled
+                      <input type="radio" checked={projectFilterObj.shared === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 0 })} />
+                      Disabled
                     </span>
                   </div>
                 </div>
-                <div type="button" className="filter-btn-project">
+                <div className="filter-btn-project" onClick={() => filterSearch()}>
                   <img src={filterImg} alt="filter" />
                   Apply Filters
+                </div>
+                <div
+                  className="filter-btn-project"
+                  onClick={() => {
+                    setAuthorName('');
+                    resetProjectFilter();
+                  }}
+                >
+                  <FontAwesomeIcon icon="sync" />
+                  Reset All
                 </div>
               </Dropdown.Menu>
             </Dropdown>
           </div>
+        )}
+        {type === 'Projects' && subType === 'All Projects' && (
+          <button
+            className="switch-libreq"
+            type="button"
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
+            onClick={() => {
+              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              setLibraryReqSelected(!libraryReqSelected);
+            }}
+          >
+            <img src={eye} alt="eye" />
+            Library request to review
+          </button>
         )}
         {/* FILTER FOR ACTIVITY ITEMS */}
         {subType === 'Activity Items' && (
@@ -426,20 +543,15 @@ function Controller(props) {
                 <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(null)}>
-                      Select
-                    </Dropdown.Item>
-                  )}
+                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
                   {activityTypes?.map((item) => (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>
-                      {item.title}
-                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
             </span>
-          </div>)}
+          </div>
+        )}
         {!!filter && subType === 'index' && (
           <div className="filter-dropdown drop-counter ">
             Index Value:
@@ -499,7 +611,7 @@ function Controller(props) {
                         onClick={() => {
                           setActiveRoleInComponent(head.display_name);
                           if (subTypeState === 'Manage Roles') dispatch(roleDetail(activeOrganization.id, head.id));
-                          if (subTypeState === 'All Users' && activeRole != head.id) {
+                          if (subTypeState === 'All Users' && activeRole !== head.id) {
                             setSearchQuery('');
                             setActiveRole(head.id);
                             setActivePage(1);
@@ -515,7 +627,7 @@ function Controller(props) {
             </span>
           </div>
         ) : null}
-        {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
+        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
           <Dropdown name="jobType" id="jobType">
             <Dropdown.Toggle id="dropdown-basic">{jobType.display_name}</Dropdown.Toggle>
             <Dropdown.Menu>
@@ -527,8 +639,8 @@ function Controller(props) {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        )}
-        {type === 'Stats' && subTypeState === 'Queues: Logs' && (
+        )} */}
+        {/* {type === 'Stats' && subTypeState === 'Queues: Logs' && (
           <Dropdown name="logType" id="logType">
             <Dropdown.Toggle id="dropdown-basic">{logType.display_name}</Dropdown.Toggle>
             <Dropdown.Menu>
@@ -546,10 +658,11 @@ function Controller(props) {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        )}
-        {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
+        )} */}
+        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
           <div className="retryandforget">
             <button
+              type="button"
               className="retry"
               onClick={() => {
                 dispatch(retryAllFailedJobs());
@@ -558,6 +671,7 @@ function Controller(props) {
               Retry All
             </button>
             <button
+              type="button"
               className="forget"
               onClick={() => {
                 dispatch(forgetAllFailedJobs());
@@ -566,14 +680,13 @@ function Controller(props) {
               Forget All
             </button>
           </div>
-        )}
+        )} */}
 
         {/* ROW PER PAGE */}
-
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Project' && subType === 'all' && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -581,14 +694,11 @@ function Controller(props) {
               importProject.current.click();
             }}
           >
-            <div className="img-section">
-              <img src={bulk} alt="upload" />
-            </div>
+            <FontAwesomeIcon icon="sign-in-alt" />
             <div>Import Project</div>
             <input
               type="file"
               ref={importProject}
-              type="file"
               style={{ display: 'none' }}
               onChange={(e) => {
                 if (e.target.files.length === 0) {
@@ -611,7 +721,7 @@ function Controller(props) {
                     },
                     button: false,
                   });
-                  let formData = new FormData();
+                  const formData = new FormData();
                   formData.append('project', e.target.files[0]);
                   const response = adminService.importProject(activeOrganization.id, formData);
                   response.then((res) => {
@@ -638,6 +748,7 @@ function Controller(props) {
         {!!btnText && subType === 'Activity Types' && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_activity_type') {
                   dispatch(setActiveAdminForm('add_activity_type'));
@@ -652,6 +763,7 @@ function Controller(props) {
         {!!btnText && subType === 'Activity Items' && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_activity_item') {
                   dispatch(setActiveAdminForm('add_activity_item'));
@@ -666,6 +778,7 @@ function Controller(props) {
         {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_role') {
                   dispatch(setActiveAdminForm('add_role'));
@@ -680,6 +793,7 @@ function Controller(props) {
         {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user') && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'create_user') {
                   dispatch(setActiveAdminForm('create_user'));
@@ -694,6 +808,7 @@ function Controller(props) {
         {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_org') {
                   dispatch(setActiveAdminForm('add_org'));
@@ -705,9 +820,10 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All Settings' && (
+        {!!btnText && type === 'LMS' && subType === 'All settings' && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_lms') {
                   dispatch(setActiveAdminForm('add_lms'));
@@ -723,6 +839,7 @@ function Controller(props) {
         {!!btnText && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_lti_tool') {
                   dispatch(setActiveAdminForm('add_lti_tool'));
@@ -735,9 +852,26 @@ function Controller(props) {
           </div>
         )}
 
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_brightcove') {
+                  dispatch(setActiveAdminForm('add_brightcove'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
         {!!btnText && type === 'DefaultSso' && permission?.Organization.includes('organization:create-default-sso') && (
           <div className="btn-text">
             <button
+              type="button"
               onClick={() => {
                 if (btnAction === 'add_default_sso') {
                   dispatch(setActiveAdminForm('add_default_sso'));
@@ -793,16 +927,95 @@ function Controller(props) {
           </button>
         </div>
       )} */}
-
-
-
     </div>
   );
 }
+Controller.propTypes = {
+  paginationCounter: PropTypes.number,
+  search: PropTypes.bool,
+  btnText: PropTypes.string,
+  btnAction: PropTypes.string,
+  importUser: PropTypes.bool,
+  // jobType: PropTypes.object,
+  // SetJobType: PropTypes.func,
+  // logType: PropTypes.object,
+  // SetLogType: PropTypes.func,
+  subTypeState: PropTypes.string,
+  filter: PropTypes.bool,
+  activeRole: PropTypes.string,
+  setActiveRole: PropTypes.func,
+  setActivePage: PropTypes.func,
+  type: PropTypes.string,
+  searchQueryActivities: PropTypes.string,
+  setSearchQueryActivities: PropTypes.func,
+  searchQuery: PropTypes.string,
+  searchQueryProject: PropTypes.string,
+  setSearchQueryProject: PropTypes.func,
+  // searchQueryStats: PropTypes.string,
+  // setSearchQueryStats: PropTypes.func,
+  setSearchQuery: PropTypes.func,
+  searchQueryChangeHandler: PropTypes.func,
+  searchProjectQueryChangeHandler: PropTypes.func,
+  searchActivitiesQueryHandler: PropTypes.func,
+  // searchUserReportQueryHandler: PropTypes.func,
+  size: PropTypes.number,
+  setSize: PropTypes.func,
+  roles: PropTypes.array,
+  subType: PropTypes.string,
+  setChangeIndexValue: PropTypes.func,
+  selectedActivityType: PropTypes.string,
+  setSelectedActivityType: PropTypes.func,
+  libraryReqSelected: PropTypes.bool,
+  setLibraryReqSelected: PropTypes.func,
+  // setSubTypeState: PropTypes.func,
+  projectFilterObj: PropTypes.object,
+  setProjectFilterObj: PropTypes.func,
+  filterSearch: PropTypes.func,
+  resetProjectFilter: PropTypes.func,
+};
 
-// Pills.propTypes = {
-//   manage: PropTypes.object.isRequired,
-//   type:PropTypes.string.isRequired,
-// };
+Controller.defaultProps = {
+  paginationCounter: false,
+  search: false,
+  btnText: '',
+  btnAction: '',
+  importUser: false,
+  // jobType: PropTypes.object,
+  // SetJobType: PropTypes.func,
+  // logType: PropTypes.object,
+  // SetLogType: PropTypes.func,
+  subTypeState: '',
+  filter: '',
+  activeRole: '',
+  setActiveRole: {},
+  setActivePage: {},
+  type: '',
+  searchQueryActivities: '',
+  setSearchQueryActivities: {},
+  searchQuery: '',
+  searchQueryProject: '',
+  setSearchQueryProject: {},
+  // searchQueryStats: PropTypes.string,
+  // setSearchQueryStats: PropTypes.func,
+  setSearchQuery: {},
+  searchQueryChangeHandler: {},
+  searchProjectQueryChangeHandler: {},
+  searchActivitiesQueryHandler: {},
+  // searchUserReportQueryHandler: PropTypes.func,
+  size: 10,
+  setSize: {},
+  roles: [],
+  subType: '',
+  setChangeIndexValue: {},
+  selectedActivityType: '',
+  setSelectedActivityType: {},
+  libraryReqSelected: false,
+  setLibraryReqSelected: {},
+  // setSubTypeState: {},
+  projectFilterObj: {},
+  setProjectFilterObj: {},
+  filterSearch: {},
+  resetProjectFilter: {},
+};
 
 export default Controller;

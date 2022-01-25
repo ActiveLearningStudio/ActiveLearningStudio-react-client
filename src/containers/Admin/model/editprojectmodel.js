@@ -1,21 +1,31 @@
 /* eslint-disable */
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal } from 'react-bootstrap';
 import Buttons from 'utils/Buttons/buttons';
 import PlaylistsPage from 'containers/Playlists';
-
+import adminService from 'services/admin.service';
 import './style.scss';
 
 const EditProjectModel = (props) => {
-  const { row, onHide } = props;
+  const { row, show, onHide, setAllProjectTab, activePage, activeOrganization, showFooter } = props;
+  const onClickHandler = async () => {
+    console.log(show, 'show');
+    onHide();
+    const result = await adminService.getAllProject(activeOrganization?.id, activePage || 1);
+    setAllProjectTab(result);
+  };
   return (
-    <Modal
-      {...props}
+    show && <Modal
+      // {...props}
+      show={show}
+      onHide={onHide}
       // size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      backdrop="static"
+      keyboard={false}
     >
-      <Modal.Header closeButton />
+      <Modal.Header />
 
       <Modal.Body>
         <PlaylistsPage {...props} />
@@ -25,7 +35,7 @@ const EditProjectModel = (props) => {
           <div className="detail-auther">
             <p>
               Author:
-              <span> / {row?.users?.[0].name}</span>
+              <span> / {row?.users?.[0]?.name}</span>
             </p>
             <p>
               ID:
@@ -33,7 +43,14 @@ const EditProjectModel = (props) => {
             </p>
           </div>
           <div className="detail-btn">
-            <Buttons onClick={() => onHide()} text="Cancel" width="95px" height="32px" secondary className="mr-16" />
+            <Buttons
+              onClick={onClickHandler}
+              text="Close"
+              width="95px"
+              height="32px"
+              secondary
+              className="mr-16"
+            />
           </div>
         </div>
       </Modal.Footer>
@@ -41,4 +58,4 @@ const EditProjectModel = (props) => {
   );
 };
 
-export default EditProjectModel;
+export default memo(EditProjectModel);

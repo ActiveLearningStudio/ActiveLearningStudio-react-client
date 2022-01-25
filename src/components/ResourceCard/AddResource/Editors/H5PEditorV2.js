@@ -8,10 +8,26 @@ import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
-import Buttons from 'utils/Buttons/buttons';
-
+import { edith5pVideoActivity } from 'store/actions/videos';
+import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
-  const { playlistId, h5pLib, h5pLibType, formData, projectId, upload, loadH5pSettings, h5pParams, hide, editActivity, activityId } = props;
+  const {
+    setOpenVideo,
+    editVideo,
+    playlistId,
+    h5pLib,
+    h5pLibType,
+    formData,
+    projectId,
+    upload,
+    loadH5pSettings,
+    h5pParams,
+    hide,
+    editActivity,
+    activityId,
+    type,
+    accountId,
+  } = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -27,19 +43,27 @@ const H5PEditor = (props) => {
   };
 
   useEffect(() => {
-    loadH5pSettings();
+    if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
+      let bcAccountId = accountId ? accountId : (typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null);
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
+    } else {
+      loadH5pSettings();
+    }
   }, [loadH5pSettings]);
 
   const onSubmitActionRadioChange = (e) => {
     setSubmitAction(e.currentTarget.value);
   };
 
-  const submitResource = (event) => {
+  const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
     const { metadata } = parameters;
     if (metadata.title !== undefined) {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
+      } else if (editVideo) {
+        await dispatch(edith5pVideoActivity(editVideo.id, formData));
+        setOpenVideo(false);
       } else {
         const payload = {
           event,
@@ -53,7 +77,10 @@ const H5PEditor = (props) => {
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      if (type === 'videoModal') {
+        setOpenVideo(false);
+      }
     }
   };
   if (h5pParams === '""') {
@@ -94,7 +121,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -136,10 +163,22 @@ const H5PEditor = (props) => {
                 width="151px"
                 secondary
                 onClick={() => {
-                  hide();
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your Changes will be lost.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Close it!',
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      hide();
+                    }
+                  });
                 }}
               >
-                Back
+                Cancel
               </div>
             </div>
             <div className="save-close">
@@ -149,7 +188,7 @@ const H5PEditor = (props) => {
                   submitResource();
                 }}
               >
-                Save & Continue
+                Save & Close
               </div>
               {/* <Buttons
               text="Save"
@@ -184,7 +223,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: () => dispatch(loadH5pSettingsActivity()),
+  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

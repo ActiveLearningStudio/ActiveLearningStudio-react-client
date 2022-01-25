@@ -145,6 +145,7 @@ const ProjectCardDropdown = (props) => {
                     onClick={() => {
                       handleShow();
                       getProjectId(project.id);
+                      // eslint-disable-next-line react/destructuring-assignment
                       setProjectId(props.project.id);
                       dispatch(googleShare(false));
                     }}

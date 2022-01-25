@@ -246,7 +246,7 @@ const AddActivity = (props) => {
               {activtyMethod !== 'upload' && (
                 <div className="add-activity-btns">
                   <Buttons
-                    text="Create"
+                    text="Open Editor"
                     primary={true}
                     width="142px"
                     height="35px"

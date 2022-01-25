@@ -4,7 +4,7 @@ import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveAdminForm } from 'store/actions/admin';
-
+import EditProjectModel from './model/editprojectmodel';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
 import CreateActivityItem from './formik/createActivityItem';
 import CreateActivityType from './formik/createActivity';
@@ -12,6 +12,7 @@ import CreateOrg from './formik/createOrg';
 import AddRole from './formik/addRole';
 import CreateUser from './CreateUser';
 import CreateUserForm from 'containers/Admin/formik/createuser';
+import BrightCove from './formik/createBrightCove';
 import Pills from './pills';
 import Heading from './heading';
 import Breadcrump from 'utils/BreadCrump/breadcrump';
@@ -31,10 +32,14 @@ function AdminPanel({ showSSO }) {
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
+
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
+  const [modalShow, setModalShow] = useState(false);
+  const [rowData, setrowData] = useState(false);
+  const [activePageNumber, setActivePageNumber] = useState(false);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -97,13 +102,16 @@ function AdminPanel({ showSSO }) {
                     </div>
                   </Tab>
                   {permission?.Project?.includes('project:view') && (
-                    <Tab eventKey="Project" title="Projects">
+                    <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
                         <Pills
-                          modules={['All Projects', 'Library requests', 'Exported Projects']}
+                          setModalShow={setModalShow}
+                          modules={['All Projects', 'Exported Projects']}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
-                          type="Project"
+                          type="Projects"
+                          setrowData={setrowData}
+                          setActivePageNumber={setActivePageNumber}
                         />
                       </div>
                     </Tab>
@@ -129,9 +137,11 @@ function AdminPanel({ showSSO }) {
                   )}
                   <Tab eventKey="LMS" title="Integrations">
                     <div className="module-content">
-                      <Pills modules={['All Settings', 'LTI Tools']} type="LMS" />
+                      <Pills modules={['All settings', 'LTI Tools', 'BrightCove']} type="LMS" />
+                      {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
                     </div>
                   </Tab>
+
                   {/* <Tab eventKey="Settings" title="Settings">
                   <div className="module-content">
                     <h2>Settings</h2>
@@ -162,13 +172,6 @@ function AdminPanel({ showSSO }) {
           </div>
           {(activeForm === 'add_activity_type' || activeForm === 'edit_activity_type') && (
             <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
               <div className="inner-form-content">{activeForm === 'add_activity_type' ? <CreateActivityType /> : <CreateActivityType editMode />}</div>
             </div>
           )}
@@ -186,13 +189,6 @@ function AdminPanel({ showSSO }) {
           )}
           {(activeForm === 'add_org' || activeForm === 'edit_org') && (
             <div className="form-new-popup-admin">
-              <FontAwesomeIcon
-                icon="times"
-                className="cross-all-pop"
-                onClick={() => {
-                  dispatch(removeActiveAdminForm());
-                }}
-              />
               <div className="inner-form-content">{activeForm === 'add_org' ? <CreateOrg /> : <CreateOrg editMode />}</div>
             </div>
           )}
@@ -221,6 +217,20 @@ function AdminPanel({ showSSO }) {
               />
               <div className="inner-form-content">
                 <CreateLms method="create" />
+              </div>
+            </div>
+          )}
+          {activeForm === 'add_brightcove' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === 'edit_bright_form' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} editMode />
               </div>
             </div>
           )}
@@ -266,9 +276,7 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
-          {activeForm === 'create_user' && (
-            <CreateUser mode={activeForm} />
-          )}
+          {activeForm === 'create_user' && <CreateUser mode={activeForm} />}
           {activeForm === 'edit_user' && (
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
@@ -276,6 +284,7 @@ function AdminPanel({ showSSO }) {
               </div>
             </div>
           )}
+
           {activeForm === 'add_default_sso' && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
@@ -318,6 +327,16 @@ function AdminPanel({ showSSO }) {
             </div>
           )}
           {removeUser && <RemoveUser />}
+
+          <EditProjectModel
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            row={rowData}
+            showFooter={true}
+            activePage={activePageNumber}
+            setAllProjectTab={setAllProjectTab}
+            activeOrganization={activeOrganization}
+          />
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>

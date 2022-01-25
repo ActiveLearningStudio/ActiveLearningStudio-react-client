@@ -28,7 +28,7 @@ export const columnData = {
     'ID',
     'Author',
     'Library status',
-    // 'Org ID',
+    'Library preferences',
     'Shared status',
     // 'Starter Project',
     // 'Status',
@@ -37,6 +37,7 @@ export const columnData = {
   ],
 
   ActivityTypes: ['Name', 'Order', 'Items'],
+  ActivityTypesSortCol: ['Order'],
 
   ActivityItems: ['Name', 'Order', 'Meta'],
 
@@ -56,6 +57,8 @@ export const columnData = {
     // 'Action',
   ],
 
-  defaultsso: ['URL', 'Type', 'Organization', 'Site Name', 'Client Id', 'Description', 'Action'],
+  IntegrationBrightCove: ['Studio org ID', 'Account ID', 'BrightCove email ID ', 'Account name', 'Description', 'Key', 'Secret', 'CSS'],
+  defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   ltitool: ['Name', 'URL', 'Description', 'Version'],
+  ltitoolSortCol: ['Name'],
 };

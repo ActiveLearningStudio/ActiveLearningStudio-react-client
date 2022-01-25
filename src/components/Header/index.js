@@ -14,7 +14,6 @@ import changePassword from 'assets/images/changepassword.png';
 import logoutIcon from 'assets/images/logout.png';
 
 import HeaderNotification from './notification';
-import SearchForm from './searchForm';
 import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
@@ -24,7 +23,6 @@ function Header(props) {
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const { user } = useSelector((state) => state.auth);
-  const { permission } = stateHeader;
   const { currentOrganization } = stateHeader;
 
   return (
@@ -46,11 +44,6 @@ function Header(props) {
           </div>
         </div>
         <div className="tophd_right flexdiv search-div  d-flex">
-          {(permission?.Search?.includes('search:advance') || permission?.Search?.includes('search:dashboard')) && (
-            <div className="search-div">
-              <SearchForm />
-            </div>
-          )}
           <div className="navbar-link">
             <ul className="top-info flex-div">
               <li>

@@ -9,7 +9,7 @@ import loader from 'assets/images/loader.svg';
 import { getErrors } from 'utils';
 import { updatePasswordAction } from 'store/actions/auth';
 // import Header from 'components/Header';
-import Footer from 'components/Footer';
+// import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
 import Error from '../Auth/Error';
 
@@ -181,7 +181,6 @@ function ChangePasswordPage(props) {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

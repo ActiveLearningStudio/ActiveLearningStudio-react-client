@@ -15,11 +15,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 
-const UploadImage = ({ className, setUploadImageStatus }) => {
+const UploadImage = ({
+  className,
+  setUploadImageStatus,
+  title,
+  defuaultImage,
+}) => {
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames("curriki-utility-uploadimage", className);
   const project = useSelector((state) => state.project);
   const openFile = useRef();
+  defuaultImage == null ? defuaultImage : DefaultImage;
   return (
     <>
       <PexelsAPI
@@ -32,7 +38,7 @@ const UploadImage = ({ className, setUploadImageStatus }) => {
         searchName="abstract"
       />
       <div className={currikiUtility}>
-        <p>Upload an image</p>
+        <p>{title}</p>
         <div
           className="uploadimage-box"
           style={{

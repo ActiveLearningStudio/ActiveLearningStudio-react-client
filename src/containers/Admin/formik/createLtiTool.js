@@ -79,7 +79,7 @@ export default function CreateLtiTool(prop) {
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: res?.data,
+                payload: 'LTI tool edited successfully',
               });
             });
           } else {
@@ -98,7 +98,7 @@ export default function CreateLtiTool(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LTI tool added successfully',
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -122,120 +122,114 @@ export default function CreateLtiTool(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2>{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}LTI tool</h2>
+              <h2>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</h2>
 
               <div className="create-form-inputs-group">
-                <div className="form-group-create">
-                  <h3>Tool name</h3>
-                  <input type="text" name="tool_name" onChange={handleChange} onBlur={handleBlur} value={values.tool_name} />
-                  <div className="error">{errors.tool_name && touched.tool_name && errors.tool_name}</div>
-                </div>
-                <div className="form-group-create">
-                  <h3>Custom parameters</h3>
-                  <input type="text" name="tool_custom_parameter" onChange={handleChange} onBlur={handleBlur} value={values.tool_custom_parameter} />
-                  <div className="error">{errors.tool_custom_parameter && touched.tool_custom_parameter && errors.tool_custom_parameter}</div>
-                </div>
-              </div>
+                {/* Left container */}
+                <div>
+                  <div className="form-group-create">
+                    <h3>Tool name</h3>
+                    <input type="text" name="tool_name" onChange={handleChange} onBlur={handleBlur} value={values.tool_name} />
+                    <div className="error">{errors.tool_name && touched.tool_name && errors.tool_name}</div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create">
-                  <h3>Tool URL</h3>
-                  <input type="text" name="tool_url" onChange={handleChange} onBlur={handleBlur} value={values.tool_url} />
-                  <div className="error">{errors.tool_url && touched.tool_url && errors.tool_url}</div>
-                </div>
-                <div className="form-group-create">
-                  <h3>Content selection URL</h3>
-                  <input type="text" name="tool_content_selection_url" onChange={handleChange} onBlur={handleBlur} value={values.tool_content_selection_url} />
-                  <div className="error">{errors.tool_content_selection_url && touched.tool_content_selection_url && errors.tool_content_selection_url}</div>
-                </div>
-              </div>
+                  <div className="form-group-create">
+                    <h3>Tool URL</h3>
+                    <input type="text" name="tool_url" onChange={handleChange} onBlur={handleBlur} value={values.tool_url} />
+                    <div className="error">{errors.tool_url && touched.tool_url && errors.tool_url}</div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create">
+                  <div className="form-group-create">
                     <h3>Tool Description</h3>
                     <textarea type="text" name="tool_description" onChange={handleChange} onBlur={handleBlur} value={values.tool_description} />
                     <div className="error">{errors.tool_description && touched.tool_description && errors.tool_description}</div>
-                </div>
-              </div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create">
-                  <h3>LTI version</h3>
-                  <select name="lti_version" onChange={handleChange} onBlur={handleBlur} value={values.lti_version}>
-                    <option defaultValue="LTI-1p0" value="LTI-1p0">LTI-1p0</option>
-                    <option value="LTI-1p3">LTI-1p3</option>
-                  </select>
-                  <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
-                </div>
-              </div>
+                  <div className="form-group-create">
+                    <h3>LTI version</h3>
+                    <select name="lti_version" onChange={handleChange} onBlur={handleBlur} value={values.lti_version}>
+                      <option defaultValue="LTI-1p0" value="LTI-1p0">LTI-1p0</option>
+                      <option value="LTI-1p3">LTI-1p3</option>
+                    </select>
+                    <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create">
-                  <h3>Consumer Key</h3>
-                  <input type="text" name="tool_consumer_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_consumer_key} />
-                  <div className="error">{errors.tool_consumer_key && touched.tool_consumer_key && errors.tool_consumer_key}</div>
-                </div>
-              </div>
+                  <div className="form-group-create">
+                    <h3>Consumer Key</h3>
+                    <input type="text" name="tool_consumer_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_consumer_key} />
+                    <div className="error">{errors.tool_consumer_key && touched.tool_consumer_key && errors.tool_consumer_key}</div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create">
-                  <h3>Access Key</h3>
-                  <input type="text" name="tool_secret_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_secret_key} />
-                  <div className="error">{errors.tool_secret_key && touched.tool_secret_key && errors.tool_secret_key}</div>
-                </div>
-              </div>
+                  <div className="form-group-create">
+                    <h3>Access Key</h3>
+                    <input type="text" name="tool_secret_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_secret_key} />
+                    <div className="error">{errors.tool_secret_key && touched.tool_secret_key && errors.tool_secret_key}</div>
+                  </div>
 
-              <div className="create-form-inputs-group">
-                <div className="form-group-create" style={{ position: 'relative' }}>
-                    <h3>User &nbsp; (search users from dropdown list only)</h3>
-                    <input
-                      type="text"
-                      name="name"
-                      autoComplete="off"
-                      onChange={async (e) => {
-                        setFieldValue('name', e.target.value);
-                        if (e.target.value == '') {
-                          setStateOrgUsers([]);
-                          return;
-                        }
-                        setLoaderlmsImgUser(true);
-                        const lmsApi = authapi.searchUsers(e.target.value);
-                        lmsApi.then((data) => {
-                          setLoaderlmsImgUser(false);
+                  <div className="form-group-create">
+                    <h3>Custom parameters</h3>
+                    <input type="text" name="tool_custom_parameter" onChange={handleChange} onBlur={handleBlur} value={values.tool_custom_parameter} />
+                    <div className="error">{errors.tool_custom_parameter && touched.tool_custom_parameter && errors.tool_custom_parameter}</div>
+                  </div>
 
-                          setStateOrgUsers(data?.users);
-                        });
-                      }}
-                      onBlur={handleBlur}
-                      value={values.name}
-                    />
-                    {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
-                    {stateOrgUsers?.length > 0 && (
-                      <ul className="all-users-list">
-                        {stateOrgUsers?.map((user) => (
-                          <li
-                            value={user}
-                            onClick={() => {
-                              setFieldValue('user_id', user.id);
-                              setFieldValue('name', user.name);
+                  <div className="form-group-create">
+                    <h3>Content selection URL</h3>
+                    <input type="text" name="tool_content_selection_url" onChange={handleChange} onBlur={handleBlur} value={values.tool_content_selection_url} />
+                    <div className="error">{errors.tool_content_selection_url && touched.tool_content_selection_url && errors.tool_content_selection_url}</div>
+                  </div>
+
+                  <div className="form-group-create">
+                        <h3>User &nbsp; (search users from dropdown list only)</h3>
+                        <input
+                          type="text"
+                          name="name"
+                          autoComplete="off"
+                          onChange={async (e) => {
+                            setFieldValue('name', e.target.value);
+                            if (e.target.value == '') {
                               setStateOrgUsers([]);
-                            }}
-                          >
-                            {user.name}
-                            <p>
-                              Email: &nbsp;
-                              {user.email}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
+                              return;
+                            }
+                            setLoaderlmsImgUser(true);
+                            const lmsApi = authapi.searchUsers(e.target.value);
+                            lmsApi.then((data) => {
+                              setLoaderlmsImgUser(false);
+
+                              setStateOrgUsers(data?.users);
+                            });
+                          }}
+                          onBlur={handleBlur}
+                          value={values.name}
+                        />
+                        {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+                        {stateOrgUsers?.length > 0 && (
+                          <ul className="all-users-list">
+                            {stateOrgUsers?.map((user) => (
+                              <li
+                                value={user}
+                                onClick={() => {
+                                  setFieldValue('user_id', user.id);
+                                  setFieldValue('name', user.name);
+                                  setStateOrgUsers([]);
+                                }}
+                              >
+                                {user.name}
+                                <p>
+                                  Email: &nbsp;
+                                  {user.email}
+                                </p>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
+                  </div>
+
                 </div>
               </div>
-
+              
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}LTI Tool</button>
+                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</button>
                 <button
                   type="button"
                   className="cancel"

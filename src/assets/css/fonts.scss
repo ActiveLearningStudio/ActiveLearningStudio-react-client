@@ -1,6 +1,7 @@
 $rubik: 'rubic';
 $halvetica: 'halvetica';
 $sans: 'Open Sans', sans-serif;
+$fontawesome: 'FontAwesome';
 
 @font-face {
   font-family: $rubik;
@@ -222,4 +223,9 @@ $sans: 'Open Sans', sans-serif;
   font-weight: bold;
   font-style: italic;
   font-display: swap;
+}
+
+@font-face {
+  font-family: $fontawesome;
+  src: url('../fonts/fontawesome-webfont.ttf') format('truetype');
 }
