@@ -126,7 +126,8 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(permission?.Organization?.includes('organization:view-activity-item') || permission?.Organization?.includes('organization:view-activity-type') ||
+                  {(permission?.Organization?.includes('organization:view-activity-item') ||
+                    permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
                     <Tab eventKey="Activities" title="Activities">
                       <div className="module-content">

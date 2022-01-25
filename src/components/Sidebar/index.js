@@ -86,7 +86,7 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {true && (
+      {permission?.Organization?.length && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">

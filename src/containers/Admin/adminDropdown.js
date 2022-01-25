@@ -145,8 +145,8 @@ const AdminDropdown = (props) => {
                               showCancelButton: false,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             });
                           }
                         }
@@ -307,8 +307,8 @@ const AdminDropdown = (props) => {
                               text: res?.message,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             });
 
                             const filterProject = localStateData.filter((each) => each.id != row.id);
@@ -374,8 +374,8 @@ const AdminDropdown = (props) => {
                               showCancelButton: false,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             }).then((result) => {
                               if (result.isConfirmed) {
                                 dispatch(loadResourceTypesAction('', 1));
@@ -441,8 +441,8 @@ const AdminDropdown = (props) => {
                               showCancelButton: false,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             }).then((result) => {
                               if (result.isConfirmed) {
                                 dispatch(loadResourceTypesAction('', 1));
@@ -505,8 +505,8 @@ const AdminDropdown = (props) => {
                             text: 'Subject deleted successfully',
                             confirmButtonText: 'Close',
                             customClass: {
-                              confirmButton: 'confirmation-close-btn',               
-                            }
+                              confirmButton: 'confirmation-close-btn',
+                            },
                           });
                           dispatch(getSubjects(activePage || 1));
                         })
@@ -520,7 +520,7 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          
+
           {type === 'Activities' && subType === 'Education Level' && (
             <>
               <Dropdown.Item
@@ -565,8 +565,8 @@ const AdminDropdown = (props) => {
                             text: 'Education level deleted successfully',
                             confirmButtonText: 'Close',
                             customClass: {
-                              confirmButton: 'confirmation-close-btn',               
-                            }
+                              confirmButton: 'confirmation-close-btn',
+                            },
                           });
                           dispatch(getEducationLevel(activePage || 1));
                         })
@@ -580,7 +580,7 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          
+
           {type === 'Activities' && subType === 'Author Tags' && (
             <>
               <Dropdown.Item
@@ -622,11 +622,11 @@ const AdminDropdown = (props) => {
                         .then((res) => {
                           Swal.fire({
                             icon: 'success',
-                            text: "Author tag deleted successfully",
+                            text: 'Author tag deleted successfully',
                             confirmButtonText: 'Close',
                             customClass: {
-                              confirmButton: 'confirmation-close-btn',               
-                            }
+                              confirmButton: 'confirmation-close-btn',
+                            },
                           });
                           dispatch(getAuthorTag(activePage || 1));
                         })
@@ -680,7 +680,7 @@ const AdminDropdown = (props) => {
                   &nbsp;&nbsp;Edit&nbsp;&nbsp;
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:view-lms-setting') && (
+              {permission?.Organization.includes('organization:edit-lms-setting') && (
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
@@ -727,8 +727,8 @@ const AdminDropdown = (props) => {
                               text: res?.message,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             });
                             dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
                             const filterLMS = localStateData.filter((each) => each.id != row.id);
@@ -795,8 +795,8 @@ const AdminDropdown = (props) => {
                                 text: res?.message.message,
                                 confirmButtonText: 'Close',
                                 customClass: {
-                                  confirmButton: 'confirmation-close-btn',               
-                                }
+                                  confirmButton: 'confirmation-close-btn',
+                                },
                               });
                               dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
                             })
@@ -829,7 +829,7 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:view-all-setting') && (
+              {permission?.Organization.includes('organization:edit-all-setting') && (
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
@@ -872,8 +872,8 @@ const AdminDropdown = (props) => {
                               text: res?.message.message,
                               confirmButtonText: 'Close',
                               customClass: {
-                                confirmButton: 'confirmation-close-btn',               
-                              }
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             });
                             dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
                           })
@@ -932,8 +932,8 @@ const AdminDropdown = (props) => {
                           text: result.message?.message,
                           confirmButtonText: 'Close',
                           customClass: {
-                            confirmButton: 'confirmation-close-btn',               
-                          }
+                            confirmButton: 'confirmation-close-btn',
+                          },
                         });
                       }
                     }
