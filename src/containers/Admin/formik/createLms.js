@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
-import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
+import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
@@ -15,52 +15,41 @@ export default function CreateUser(prop) {
   const { editMode, method, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
-  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
+  const {activeEdit} = organization
+  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false)
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
-  // const [checked, setChecked] = useState(false);
-  const [checkedActivity, setCheckedActivty] = useState(false);
-  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
-  const [checkedProject, setCheckedProject] = useState(false);
-  useEffect(() => {
-    if (editMode && !clone) {
-      // setChecked(activeEdit?.published);
-      setCheckedActivty(activeEdit?.activity_visibility);
-      setCheckedPlaylist(activeEdit?.playlist_visibility);
-      setCheckedProject(activeEdit?.project_visibility);
+  const [checked, setChecked] = useState(false);
+  useEffect(()=>{
+    if(editMode && !clone) {
+      setChecked(activeEdit?.published)
     }
-  }, [activeEdit, editMode]);
+  },[activeEdit, editMode])
   return (
-    <div className="create-form lms-admin-form">
+    <div className="create-form">
       <Formik
         initialValues={{
           lms_url: editMode ? activeEdit?.lms_url : '',
           lms_access_token: editMode ? activeEdit?.lms_access_token : '',
           site_name: editMode ? activeEdit?.site_name : '',
-          user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
+          user_id : editMode ? clone ? '':activeEdit?.user?.id : '',
           lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
-          lms_name: editMode ? activeEdit?.lms_name || 'moodle' : 'moodle',
+          lms_name: editMode ? activeEdit?.lms_name: '',
           lms_access_key: editMode ? activeEdit?.lms_access_key : '',
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
-          description: editMode ? activeEdit?.description : '',
-          name: editMode ? (clone ? '' : activeEdit?.user?.name) : '',
-          lms_login_id: editMode ? activeEdit?.lms_login_id : '',
-          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
-          // published: editMode ? (clone ? false : activeEdit?.published) : false,
-          organization_id: organization?.activeOrganization?.id,
-          activity_visibility: editMode ? (clone ? false : activeEdit?.activity_visibility) : false,
-          playlist_visibility: editMode ? (clone ? false : activeEdit?.playlist_visibility) : false,
-          project_visibility: editMode ? (clone ? false : activeEdit?.project_visibility) : false,
+          description: editMode ? activeEdit?.description : "",
+          name: editMode ? clone ? '':activeEdit?.user?.name : '',
+          lms_login_id: editMode ? activeEdit?.lms_login_id : "",
+          lti_client_id: editMode ? activeEdit?.lti_client_id : "",
+          published:editMode ? clone ? false:activeEdit?.published: false,
+
+
         }}
         validate={(values) => {
           const errors = {};
           if (!values.lms_url) {
             errors.lms_url = 'required';
-          }
-          if (!values.lms_access_token) {
-            errors.lms_access_token = 'required';
           }
           if (!values.lms_access_token) {
             errors.lms_access_token = 'required';
@@ -71,22 +60,21 @@ export default function CreateUser(prop) {
           if (!values.lti_client_id) {
             errors.lti_client_id = 'required';
           }
-
-          if (!values.lms_name) {
-            errors.lms_name = 'required';
-          }
+          // if (!values.moodle) {
+          //   errors.moodle = 'required';
+          // }
 
           // if (!values.canvas) {
-          //   errors.canvas = 'Required';
+          //   errors.canvas = 'required';
           // }
           // if (!values.access_key) {
-          //   errors.access_key = 'Required';
+          //   errors.access_key = 'required';
           // }
           // if (!values.secret_key) {
-          //   errors.secret_key = 'Required';
+          //   errors.secret_key = 'required';
           // }
           // if (!values.description) {
-          //   errors.description = 'Required';
+          //   errors.description = 'required';
           // }
           if (!values.user_id) {
             errors.user_id = 'Required';
@@ -109,23 +97,20 @@ export default function CreateUser(prop) {
               button: false,
             });
 
-            const result = adminapi.updateLmsProject(organization?.activeOrganization?.id, activeEdit?.id, values);
-            result.then((res) => {
+
+            const result =  adminapi.updateLmsProject(activeEdit?.id, values);
+            result.then(res => {
               Swal.fire({
-                icon: 'success',
-                text: 'LMS settings edited successfully',
-                confirmButtonText: 'Close',
-                customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
-              });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+                icon:'success',
+                text:res?.message
+              })
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
                 payload: res?.data,
               });
-            });
+            })
+
           } else {
             Swal.fire({
               title: 'Users',
@@ -138,23 +123,21 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            const result = adminapi.createLmsProject(organization?.activeOrganization?.id, values);
-            result.then((res) => {
+            const result =  adminapi.createLmsProject(values);
+            result.then(res => {
               Swal.fire({
-                icon: 'success',
-                text: 'LMS settings added successfully',
-                confirmButtonText: 'Close',
-                customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
-              });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+                icon:'success',
+                text:res?.message
+              })
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
                 payload: res?.data,
               });
-            });
+            })
+
+
+
           }
         }}
       >
@@ -169,214 +152,205 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</h2>
-
-              <div className="create-form-inputs-group">
-                {/* Left container */}
-                <div style={{marginRight:"64px"}}>
-                  <div className="form-group-create">
-                    <h3>LMS URL</h3>
-                    <input type="text" name="lms_url" onChange={handleChange} onBlur={handleBlur} value={values.lms_url} />
-                    <div className="error">{errors.lms_url && touched.lms_url && errors.lms_url}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>LMS Access Token</h3>
-                    <input type="text" name="lms_access_token" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_token} />
-                    <div className="error">{errors.lms_access_token && touched.lms_access_token && errors.lms_access_token}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>Site Name</h3>
-                    <input type="site_name" name="site_name" onChange={handleChange} onBlur={handleBlur} value={values.site_name} />
-                    <div className="error">{errors.site_name && touched.site_name && errors.site_name}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>LTI Client ID</h3>
-                    <input type="lti_client_id" name="lti_client_id" onChange={handleChange} onBlur={handleBlur} value={values.lti_client_id} />
-                    <div className="error">{errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>LMS Name</h3>
-                    {/* <input
-                  type="text"
-                  name="role"
+            <h2>{editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting</h2>
+            <div className="form-group-create">
+              <h3>LMS URL</h3>
+              <input
+                type="text"
+                name="lms_url"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_url}
+              />
+              <div className="error">
+                {errors.lms_url && touched.lms_url && errors.lms_url}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>LMS Access Token</h3>
+              <input
+                type="text"
+                name="lms_access_token"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_access_token}
+              />
+              <div className="error">
+                {errors.lms_access_token && touched.lms_access_token && errors.lms_access_token}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Site Name</h3>
+              <input
+                type="site_name"
+                name="site_name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.site_name}
+              />
+              <div className="error">
+                {errors.site_name && touched.site_name && errors.site_name}
+              </div>
+            </div>
+            {/* {!editMode ? */}
+              <div className="form-group-create">
+                <h3>LTI Client ID</h3>
+                <input
+                  type="lti_client_id"
+                  name="lti_client_id"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.role}
-                /> */}
-                    <select className="lms-option" name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                      <option selected value="moodle">
-                        Moodle
-                      </option>
-                      <option value="canvas">Canvas</option>
-                      <option value="safarimontage">Safari Montage</option>
-                      <option value="schoology">Schoology</option>
-                      <option value="d2l">D2L</option>
-                      <option value="sakai">Sakai</option>
-                    </select>
-                    <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>Access Key</h3>
-                    <input type="text" name="lms_access_key" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_key} />
-                    <div className="error">{errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}</div>
-                  </div>
-
+                  value={values.lti_client_id}
+                />
+                <div className="error">
+                  {errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}
                 </div>
+              </div>
+            {/* //   : null
+            // } */}
+            <div className="form-group-create">
+              <h3>LMS Name</h3>
+              {/* <input
+                type="text"
+                name="role"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.role}
+              /> */}
+              <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
+                <option value="moodle">Moodle</option>
+                <option value="canvas">Canvas</option>
+                <option value="safarimontage">Safari Montage</option>
 
-                {/* Right Container */}
-                <div>
-                  <div className="form-group-create">
-                    <h3>Secret Key</h3>
-                    <input type="text" name="lms_access_secret" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_secret} />
-                    <div className="error">{errors.lms_access_secret && touched.lms_access_secret && errors.lms_access_secret}</div>
-                  </div>
+              </select>
+              <div className="error">
+                {errors.lms_name && touched.lms_name && errors.lms_name}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Access Key</h3>
+              <input
+                type="text"
+                name="lms_access_key"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_access_key}
+              />
+              <div className="error">
+                {errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Secret Key</h3>
+              <input
+                type="text"
+                name="lms_access_secret"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_access_secret}
+              />
+              <div className="error">
+                {errors.lms_access_secret && touched.lms_access_secret && errors.lms_access_secret}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Description</h3>
+              <textarea
+                type="text"
+                name="description"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.description}
+              />
+              <div className="error">
+                {errors.description && touched.description && errors.description}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>LMS Login ID</h3>
+              <input
+                type="text"
+                name="lms_login_id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lms_login_id}
+              />
+              <div className="error">
+                {errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}
+              </div>
+            </div>
+            <div className="form-group-create">
+              <h3>Published</h3>
+                <Switch checked={checked} onChange={()=>{
+                setChecked(!checked)
+                setFieldValue('published', !checked)
+              }} />
+            </div>
+            <div className="form-group-create" style={{ position: 'relative' }}>
+              <h3>User &nbsp; (search users from dropdown list only)</h3>
+              <input
+                type="text"
+                name="name"
+                autoComplete="off"
+                onChange={async (e) => {
+                  setFieldValue('name', e.target.value);
+                  if (e.target.value == "") {
+                    setStateOrgUsers([]);
+                    return;
+                  }
+                  setLoaderlmsImgUser(true);
+                  const lmsApi = authapi.searchUsers(e.target.value);
+                  lmsApi.then((data) => {
+                    setLoaderlmsImgUser(false);
 
-                  <div className="form-group-create">
-                    <h3>Description</h3>
-                    <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
-                    <div className="error">{errors.description && touched.description && errors.description}</div>
-                  </div>
+                    setStateOrgUsers(data?.users);
+                    
 
-                  <div className="form-group-create">
-                    <h3>LMS Login ID</h3>
-                    <input type="text" name="lms_login_id" onChange={handleChange} onBlur={handleBlur} value={values.lms_login_id} />
-                    <div className="error">{errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}</div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>Visibility</h3>
-                    <div className="create-form-inputs-toggles">
-                      <div className="custom-toggle-button">
-                        <Switch
-                          checked={checkedActivity}
-                          onChange={() => {
-                            setCheckedActivty(!checkedActivity);
-                            setFieldValue('activity_visibility', !checkedActivity);
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
-                          offHandleColor="#666"
-                        />
-                        <h3>Activity</h3>
-                      </div>
-                      {/* <Switch
-                  checked={checked}
-                  onChange={() => {
-                    setChecked(!checked);
-                    setFieldValue("published", !checked);
-                  }}
-                /> */}
-                      <div className="custom-toggle-button">
-                        <Switch
-                          checked={checkedPlaylist}
-                          onChange={() => {
-                            setCheckedPlaylist(!checkedPlaylist);
-                            setFieldValue('playlist_visibility', !checkedPlaylist);
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
-                          offHandleColor="#666"
-                        />
-                        <h3>Playlist</h3>
-                      </div>
-                      <div className="custom-toggle-button">
-                        <Switch
-                          checked={checkedProject}
-                          onChange={() => {
-                            setCheckedProject(!checkedProject);
-                            setFieldValue('project_visibility', !checkedProject);
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
-                          offHandleColor="#666"
-                        />
-                        <h3>Project</h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>User &nbsp; (search users from dropdown list only)</h3>
-                    <input
-                      type="text"
-                      name="name"
-                      autoComplete="off"
-                      onChange={async (e) => {
-                        setFieldValue('name', e.target.value);
-                        if (e.target.value == '') {
-                          setStateOrgUsers([]);
-                          return;
-                        }
-                        setLoaderlmsImgUser(true);
-                        const lmsApi = authapi.searchUsers(e.target.value);
-                        lmsApi.then((data) => {
-                          setLoaderlmsImgUser(false);
-
-                          setStateOrgUsers(data?.users);
-                        });
+                  })
+                }}
+                onBlur={handleBlur}
+                value={values.name}
+              />
+              {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+              {stateOrgUsers?.length > 0 && (
+                <ul className="all-users-list">
+                  {stateOrgUsers?.map((user) => (
+                    <li
+                      value={user}
+                      onClick={() => {
+                        setFieldValue('user_id', user.id);
+                        setFieldValue('name', user.first_name);
+                        setStateOrgUsers([]);
                       }}
-                      onBlur={handleBlur}
-                      value={values.name}
-                    />
-                    {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
-                    {stateOrgUsers?.length > 0 && (
-                      <ul className="all-users-list">
-                        {stateOrgUsers?.map((user) => (
-                          <li
-                            value={user}
-                            onClick={() => {
-                              setFieldValue('user_id', user.id);
-                              setFieldValue('name', user.first_name);
-                              setStateOrgUsers([]);
-                            }}
-                          >
-                            {user.first_name}
-                            <p>
-                              Email: &nbsp;
-                              {user.email}
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
-                  </div>
-                </div>
+                    >
+                      {user.first_name}
+                      <p>
+                        Email:
+                        &nbsp;
+                        {user.email}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="error">
+                {errors.user_id && touched.user_id && errors.user_id}
               </div>
-              
-              <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</button>
-                <button
-                  type="button"
-                  className="cancel"
-                  onClick={() => {
-                    dispatch(removeActiveAdminForm());
-                  }}
-                >
-                  Cancel
-                </button>
-              </div>
+            </div>
+
+            <div className="button-group">
+              <button type="submit">
+              {editMode ? clone ? 'Create ' : 'Edit ' : 'Create '}LMS Setting
+              </button>
+              <button
+                type="button"
+                className="cancel"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              >
+                Cancel
+              </button>
             </div>
           </form>
         )}
@@ -385,4 +359,6 @@ export default function CreateUser(prop) {
   );
 }
 
-CreateUser.propTypes = {};
+CreateUser.propTypes = {
+
+};
