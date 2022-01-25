@@ -66,7 +66,7 @@ function Sidebar(props) {
         </>
       )}
       {/* Interactive videos */}
-      {permission?.Video?.includes('video:view') && (
+      {true && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/video`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">

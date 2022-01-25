@@ -60,7 +60,7 @@ const Index = () => {
       <div className="myvideomain">
         <div className="content-wrapper">
           <div className="inner-content">
-            {permission?.Video?.includes('video:view') ? (
+            {true ? (
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
