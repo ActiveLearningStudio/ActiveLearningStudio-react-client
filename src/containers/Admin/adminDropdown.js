@@ -502,7 +502,7 @@ const AdminDropdown = (props) => {
                         .then((res) => {
                           Swal.fire({
                             icon: 'success',
-                            text: res?.message.message,
+                            text: 'Subject deleted successfully',
                             confirmButtonText: 'Close',
                             customClass: {
                               confirmButton: 'confirmation-close-btn',               
