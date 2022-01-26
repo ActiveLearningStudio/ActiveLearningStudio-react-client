@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import Controler from './controler';
+import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
 import Settings from './settings';
@@ -17,6 +17,8 @@ function Starter(props) {
     importUser,
     filter,
     tableHead,
+    sortCol,
+    handleSort,
     type,
     data,
     roles,
@@ -38,6 +40,7 @@ function Starter(props) {
     setSearchQueryStats,
     setSearchQuery,
     subTypeState,
+    setAllProjectIndexTab,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
@@ -49,11 +52,25 @@ function Starter(props) {
     inviteUser,
     setCurrentTab,
     setChangeIndexValue,
+    changeIndexValue,
     permissionRender,
+    selectedActivityType,
+    setSelectedActivityType,
+    libraryReqSelected,
+    setLibraryReqSelected,
+    setSubTypeState,
+    projectFilterObj,
+    setProjectFilterObj,
+    filterSearch,
+    setAllProjectTab,
+    resetProjectFilter,
+    setModalShow,
+    setrowData,
+    setActivePageNumber,
   } = props;
   return (
     <>
-      <Controler
+      <Controller
         paginationCounter={paginationCounter}
         search={search}
         print={print}
@@ -83,20 +100,31 @@ function Starter(props) {
         searchUserReportQueryHandler={searchUserReportQueryHandler}
         searchQueryChangeHandler={searchQueryChangeHandler}
         importUser={importUser}
+        setAllProjectIndexTab={setAllProjectIndexTab}
         filter={filter}
         tableHead={tableHead}
         inviteUser={inviteUser}
         roles={roles}
         subType={subType}
         setChangeIndexValue={setChangeIndexValue}
-
+        selectedActivityType={selectedActivityType}
+        setSelectedActivityType={setSelectedActivityType}
+        libraryReqSelected={libraryReqSelected}
+        setLibraryReqSelected={setLibraryReqSelected}
+        setSubTypeState={setSubTypeState}
+        projectFilterObj={projectFilterObj}
+        setProjectFilterObj={setProjectFilterObj}
+        filterSearch={filterSearch}
+        resetProjectFilter={resetProjectFilter}
       />
-      {subTypeState === 'All settings' && <Settings /> }
-      {subTypeState === "Manage Roles" ? (
+      {subTypeState === 'All settings' && <Settings />}
+      {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
           tableHead={tableHead}
+          sortCol={sortCol}
+          handleSort={handleSort}
           activePage={activePage}
           setActivePage={setActivePage}
           searchAlertToggler={searchAlertToggler}
@@ -105,8 +133,14 @@ function Starter(props) {
           jobType={jobType}
           data={data}
           subType={subType}
+          changeIndexValue={changeIndexValue}
+          setAllProjectIndexTab={setAllProjectIndexTab}
           subTypeState={subTypeState}
           setCurrentTab={setCurrentTab}
+          setAllProjectTab={setAllProjectTab}
+          setModalShow={setModalShow}
+          setrowData={setrowData}
+          setActivePageNumber={setActivePageNumber}
         />
       )}
     </>
@@ -114,7 +148,7 @@ function Starter(props) {
 }
 
 Starter.propTypes = {
-  manage: PropTypes.object.isRequired,
+  manage: PropTypes.object,
   type: PropTypes.string.isRequired,
 };
 

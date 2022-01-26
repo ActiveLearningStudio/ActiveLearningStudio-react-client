@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import img from '../../assets/images/icon-folder.svg';
+// import img from '../../assets/images/icon-folder.svg';
 import './style.scss';
 
 const Heading = () => {
@@ -8,7 +8,6 @@ const Heading = () => {
   return (
     <div className="main-heading">
       <div className="secand-heading">
-        <img src={img} alt="logo" />
         <h2>
           Manage&nbsp;
           {name}
