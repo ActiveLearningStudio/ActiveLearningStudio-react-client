@@ -8,6 +8,7 @@ import {
   faAngleLeft,
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
 // import Project1 from 'assets/images/teamprojects/project1.png';
 // import Project2 from 'assets/images/teamprojects/project2.png';
@@ -18,8 +19,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadMyProjectsAction } from 'store/actions/project';
 
 const AddTeamProjects = (props) => {
-  const { organization, team } = props;
+  const { organization, team, setCreationMode } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectProject, setSelectProject] = useState([]);
@@ -59,6 +61,15 @@ const AddTeamProjects = (props) => {
         </div>
         <div
           className="back-to-section"
+          onClick={() => {
+            if (team?.id) {
+              history.push(`/org/${organization?.domain}/teams/${team?.id}`);
+              setCreationMode(false);
+            } else {
+              history.push(`/org/${organization?.domain}/teams`);
+              setCreationMode(true);
+            }
+          }}
         >
           <FontAwesomeIcon icon={faAngleLeft} className="back-icon" />
           <span>Back to team</span>
@@ -167,6 +178,7 @@ const AddTeamProjects = (props) => {
 AddTeamProjects.propTypes = {
   team: PropTypes.object,
   organization: PropTypes.object.isRequired,
+  setCreationMode: PropTypes.func.isRequired,
 };
 
 AddTeamProjects.defaultProps = { team: {} };

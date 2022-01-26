@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import EditTeamImage from 'assets/images/svg/editTeam.svg';
 import EditDetailImage from 'assets/images/svg/detailEdit.svg';
@@ -13,7 +13,9 @@ import UserIcon from 'assets/images/svg/user.svg';
 import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
-import { inviteMembersAction } from 'store/actions/team';
+import {
+  changeUserRole, getTeamPermission, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData,
+} from 'store/actions/team';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import TeamMembers from './TeamMembers';
@@ -21,12 +23,13 @@ import TeamMembers from './TeamMembers';
 // import BackgroundTeamCardImage from 'assets/images/cardlistimg.png';
 
 const TeamDetail = ({
-  team, organization, user, inviteMembers, newTeam,
+  team, organization, user, inviteMembers, newTeam, setCreationMode, newTeamData, removeProject, changeUserRoleAction, loadTeam, getTeamPermissionAction, removeMember,
 }) => {
   const [show, setShow] = useState(false);
   const history = useHistory();
   const { roles } = useSelector((state) => state.team);
-  const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState([]);
+  const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState(newTeam?.users?.length > 0 ? newTeam.users : []);
+  const currentTeamUser = useMemo(() => (team?.users?.length > 0 ? team.users : []), [team?.users]);
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [editMode, seteditMode] = useState(false);
@@ -37,11 +40,59 @@ const TeamDetail = ({
     setShow(true);
   };
   const setProjectId = () => { };
-  const showDeletePopup = () => { };
+  // Team member delete handler function
+  const deleteTeamMemberHandler = (userToDelete) => {
+    if (team?.id) {
+      const remainingAdmin = team?.users?.filter((singleRole) => singleRole?.role?.id === 1);
+      if (remainingAdmin?.length <= 1 && userToDelete?.role.id === 1) {
+        Swal.fire({
+          icon: 'warning',
+          text: 'There should be at least one admin',
+        });
+      } else {
+        removeMember(team?.id, userToDelete?.id, userToDelete?.email)
+          .then(() => {
+            if (userToDelete?.id === user.id) {
+              history.push(`/org/${organization.domain}/teams`);
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to remove user.',
+            });
+          });
+      }
+    } else if (newTeam?.name) {
+      setSelectUsersNewTeam((prevState) => prevState.filter((u) => u.id !== userToDelete.id));
+    }
+  };
+  // Deleting current team project handler
+  const showDeletePopup = useCallback(
+    (projectId) => {
+      removeProject(team?.id, projectId).catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to remove project.',
+        });
+      });
+    },
+    [removeProject, team?.id],
+  );
+  // User Role change handler for current team
+  const roleChangeHandler = async (roleId, userId) => {
+    await changeUserRoleAction(team?.id, { user_id: userId, role_id: roleId });
+    await loadTeam(team?.id);
+    await getTeamPermissionAction(organization?.id, team?.id);
+  };
+  // Invite handler for new team
   const handleInviteNewTeam = useCallback((users, note) => {
     setSelectUsersNewTeam([...selectedUsersNewTeam, ...users.map((u) => ({ ...u, note }))]);
     setShowInvite(false);
   }, [selectedUsersNewTeam]);
+  // Invite handler for current team
   const handleInvite = useCallback((selectedUsers, emailNote) => {
     inviteMembers(team?.id, selectedUsers, emailNote)
       .then(() => {
@@ -119,8 +170,17 @@ const TeamDetail = ({
                 height="32px"
                 hover
                 onClick={() => {
-                  // setPageLoad((oldStatus) => !oldStatus);
-                  history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
+                  if (team?.id) {
+                    history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
+                  } else if (newTeam?.name) {
+                    if (newTeam?.users) {
+                      newTeamData({ ...newTeam, users: [...newTeam?.users, ...selectedUsersNewTeam] });
+                    } else {
+                      newTeamData({ ...newTeam, users: [...selectedUsersNewTeam] });
+                    }
+                    setCreationMode(false);
+                    history.push(`/org/${organization?.domain}/teams/add-projects`);
+                  }
                 }}
               />
             </div>
@@ -181,18 +241,22 @@ const TeamDetail = ({
             )}
           </div>
         </div>
-        {team?.users?.length > 0 && (
+        {currentTeamUser?.length > 0 && (
           <TeamMembers
-            arrayToRender={team?.users}
+            arrayToRender={currentTeamUser}
             roles={roles}
             toggleLeft={toggleLeft}
+            roleChangeHandler={roleChangeHandler}
+            deleteTeamMemberHandler={deleteTeamMemberHandler}
           />
         )}
         {selectedUsersNewTeam.length > 0 && (
           <TeamMembers
             arrayToRender={selectedUsersNewTeam}
+            setSelectUsersNewTeam={setSelectUsersNewTeam}
             roles={roles}
             toggleLeft={toggleLeft}
+            deleteTeamMemberHandler={deleteTeamMemberHandler}
           />
         )}
       </div>
@@ -204,8 +268,19 @@ TeamDetail.propTypes = {
   team: PropTypes.object.isRequired,
   organization: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
-  newTeam: PropTypes.object.isRequired,
+  newTeam: PropTypes.object,
+  newTeamData: PropTypes.func.isRequired,
   inviteMembers: PropTypes.func.isRequired,
+  removeProject: PropTypes.func.isRequired,
+  changeUserRoleAction: PropTypes.func.isRequired,
+  getTeamPermissionAction: PropTypes.func.isRequired,
+  removeMember: PropTypes.func.isRequired,
+  loadTeam: PropTypes.func.isRequired,
+  setCreationMode: PropTypes.func,
+};
+TeamDetail.defaultProps = {
+  setCreationMode: () => { },
+  newTeam: {},
 };
 const mapStateToProps = (state) => ({
   user: state.auth.user,
@@ -213,5 +288,11 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
+  newTeamData: (newTeam) => dispatch(setNewTeamData(newTeam)),
+  removeProject: (teamId, projectId) => dispatch(removeProjectAction(teamId, projectId)),
+  changeUserRoleAction: (teamId, userDetail) => dispatch(changeUserRole(teamId, userDetail)),
+  loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
+  getTeamPermissionAction: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
+  removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetail);

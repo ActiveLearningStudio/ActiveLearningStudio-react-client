@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import close from 'assets/images/grayclose.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
-import { setNewTeamData } from 'store/actions/team';
+import { setNewTeamData, updateSelectedTeamAction } from 'store/actions/team';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
@@ -96,7 +96,6 @@ function CreateTeamPopup(props) {
                   values,
                   errors,
                   touched,
-                  handleBlur,
                   handleSubmit,
                   handleChange,
                 }) => (
@@ -111,7 +110,6 @@ function CreateTeamPopup(props) {
                         autoComplete="off"
                         value={values.teamName}
                         placeholder="e.g Team name"
-                        handleBlur={handleBlur}
                         onChange={handleChange}
                       />
                       <div className="error">
@@ -127,7 +125,6 @@ function CreateTeamPopup(props) {
                         autoFocus="on"
                         autoComplete="off"
                         value={values.description}
-                        handleBlur={handleBlur}
                         onChange={handleChange}
                       />
                       <div className="error">
@@ -144,7 +141,6 @@ function CreateTeamPopup(props) {
                         autoFocus="on"
                         autoComplete="off"
                         value={values.noovo_group_title}
-                        handleBlur={handleBlur}
                         onChange={handleChange}
                       />
                     </div>
@@ -158,6 +154,7 @@ function CreateTeamPopup(props) {
                             description: values.description,
                             noovo_group_title: values.noovo_group_title,
                           }));
+                          dispatch(updateSelectedTeamAction({}));
                           setShowCreateTeamModal(false);
                           setCreationMode(true);
                         }}

@@ -306,14 +306,14 @@ function TeamsPage(props) {
               {teamShow && selectedTeam && activeOrganization && (
                 <TeamDetail team={selectedTeam} organization={activeOrganization} />
               )}
-              {newTeam?.name && !showCreateTeamModal && activeOrganization && (
-                <TeamDetail team={selectedTeam} organization={activeOrganization} />
+              {creationMode && !showCreateTeamModal && activeOrganization && (
+                <TeamDetail team={selectedTeam} organization={activeOrganization} setCreationMode={setCreationMode} />
               )}
               {projectShow && selectedTeam && activeOrganization && (
                 <TeamAddProjects team={selectedTeam} organization={activeOrganization} />
               )}
-              {creationTeam && selectedTeam && activeOrganization && (
-                <TeamAddProjects team={selectedTeam} organization={activeOrganization} />
+              {creationTeam && newTeam?.name && activeOrganization && (
+                <TeamAddProjects team={newTeam} organization={activeOrganization} setCreationMode={setCreationMode} />
               )}
               {channelShow && selectedTeam && <ChannelPanel />}
             </>

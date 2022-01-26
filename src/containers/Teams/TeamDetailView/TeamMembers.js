@@ -8,6 +8,9 @@ const TeamMembers = (props) => {
     arrayToRender,
     toggleLeft,
     roles,
+    setSelectUsersNewTeam,
+    roleChangeHandler,
+    deleteTeamMemberHandler,
   } = props;
   return (
     <>
@@ -28,19 +31,35 @@ const TeamMembers = (props) => {
             <div className="filter-dropdown-role-team">
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">
-                  {element?.role?.name}
+                  {element?.role?.name || roles?.filter((role) => role.id === element.role_id)[0].name}
                   <FontAwesomeIcon icon="chevron-down" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   {roles?.map((role) => (
-                    <Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        if (element.role_id) {
+                          const newRoleArray = arrayToRender?.filter((value) => {
+                            if (value.role_id === element.role_id) {
+                              // eslint-disable-next-line no-param-reassign
+                              value.role_id = role.id;
+                              return value;
+                            }
+                            return value;
+                          });
+                          setSelectUsersNewTeam(newRoleArray);
+                        } else if (element?.role?.id) {
+                          roleChangeHandler(role.id, element.id);
+                        }
+                      }}
+                    >
                       {role.name}
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
             </div>
-            <div className="delete-team-member">
+            <div className="delete-team-member" onClick={() => deleteTeamMemberHandler(element)}>
               <FontAwesomeIcon icon="trash-alt" />
             </div>
           </div>
@@ -54,5 +73,8 @@ TeamMembers.propTypes = {
   arrayToRender: PropTypes.array.isRequired,
   roles: PropTypes.array.isRequired,
   toggleLeft: PropTypes.bool.isRequired,
+  setSelectUsersNewTeam: PropTypes.func.isRequired,
+  roleChangeHandler: PropTypes.func.isRequired,
+  deleteTeamMemberHandler: PropTypes.func.isRequired,
 };
 export default TeamMembers;
