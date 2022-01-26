@@ -224,7 +224,7 @@
       font-size: 18px;
       line-height: 25px;
       letter-spacing: 0;
-      color: #084892;
+      color: #161513;
       left: 66.53%;
       right: 5%;
       top: 25.88%;
@@ -247,7 +247,11 @@
       font-weight: normal;
       font-size: 12px;
       line-height: 16px;
-      color: #515151;
+      color: #3f3a36;
+
+      a {
+        color: #bb501c;
+      }
     }
     @media (max-width: 767px) {
       padding: 25px;
@@ -306,7 +310,7 @@
     .auth-Pdescrip {
       font-size: 16px;
       line-height: 24px;
-      color: #515151;
+      color: #161513;
       font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
@@ -315,7 +319,7 @@
     .auth-p2-descrip {
       font-size: 12.8px;
       line-height: 122.8%;
-      color: #515151;
+      color: #161513;
 
       a {
         color: $curriki-main-blue;
@@ -356,12 +360,17 @@
       @media (max-width: 767px) {
         margin-bottom: 25px;
       }
+      a {
+        color: #bb501c !important;
+        text-decoration: underline;
+        cursor: pointer;
+      }
       .bkbtn {
         display: flex;
         justify-content: flex-end;
         padding-bottom: 50px;
         a {
-          color: $curriki-main-blue;
+          color: #bb501c !important;
           text-decoration: underline;
           cursor: pointer;
           padding-left: 10px;
@@ -484,7 +493,7 @@
       span {
         font-size: 14px;
         line-height: 20px;
-        color: #515151;
+        color: #161513;
         font-family: 'Rubic';
       }
     }
@@ -555,7 +564,7 @@
         line-height: 26px;
         font-family: $sans;
         letter-spacing: 0;
-        color: $mine-shaft !important;
+        color: #bb501c !important;
         opacity: 0.8;
         display: flex;
         align-items: center;
@@ -610,7 +619,7 @@
       // padding-right: 10px;
 
       a {
-        color: #285aa5 !important;
+        color: #bb501c !important;
         font-family: $sans;
         font-weight: 400;
       }

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import foldericon from 'assets/images/svg/projectFolder.svg';
+import foldericon from 'assets/images/icon-folder.svg';
 import { useSelector } from 'react-redux';
 import { setCurrentVisibilityType } from 'store/actions/project';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';

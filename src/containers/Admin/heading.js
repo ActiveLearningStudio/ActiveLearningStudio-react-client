@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import img from '../../assets/images/project80.png';
+import img from '../../assets/images/icon-folder.svg';
 import './style.scss';
 
 const Heading = () => {
@@ -16,6 +16,6 @@ const Heading = () => {
         </h2>
       </div>
     </div>
-    );
+  );
 };
 export default Heading;

@@ -85,13 +85,15 @@ function ForgotPasswordPage(props) {
           <Error error={error} />
 
           <div className="form-group">
-            <button type="submit" className="signUp-btn submit" disabled={isLoading || isDisabled}>
+            <button type="submit" className="signUp-btn submit btn btn-primary submit" disabled={isLoading || isDisabled}>
               {isLoading ? <img src={loader} alt="" /> : 'Send Reset Password Link'}
             </button>
           </div>
 
           <div className="form-group text-center">
-            <Link to="/login">Back to Login</Link>
+            <Link style={{ color: '#BB501C;' }} to="/login">
+              Back to Login
+            </Link>
           </div>
         </form>
       </div>

@@ -1,10 +1,9 @@
-
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
     p {
-      color: #084892;
+      color: #161513;
       font-size: 22px;
       margin: 0;
     }
@@ -20,7 +19,7 @@
 
       h2 {
         margin: 0 0px 6px 5px;
-        color: #084892;
+        color: #161513;
       }
     }
   }
@@ -99,7 +98,7 @@
       font-weight: 500;
       font-size: 20px;
       line-height: 24px;
-      color: #515151;
+      color: #161513;
       margin-top: 30px;
       margin-bottom: 0px;
     }
@@ -138,7 +137,6 @@
       margin-right: 8px;
       margin-top: 3px;
       margin-bottom: 3px;
-
     }
 
     .retryandforget {
@@ -249,7 +247,7 @@
         }
 
         .dropdown-toggle {
-          color: $fun-blue-1;
+          color: #6b8f63;
           background-color: transparent;
           font-weight: normal;
           font-size: 14px;
@@ -332,8 +330,8 @@
           width: 100%;
 
           button {
-            background: $fun-blue-1;
-            border: 1px solid $fun-blue-1;
+            background: $btn-black-1;
+            border: 1px solid $btn-black-1;
             box-sizing: border-box;
             border-radius: 50px;
             font-weight: normal;
@@ -342,6 +340,10 @@
             margin-right: 16px;
             width: 33%;
             min-height: 32px;
+
+            &:hover {
+              background: $btn-black-2;
+            }
           }
           .cancel-create {
             background: #e5e5e5;
@@ -350,8 +352,8 @@
         }
       }
       button {
-        background: $fun-blue-1;
-        border: 1px solid $fun-blue-1;
+        background: $btn-black-1;
+        border: 1px solid $btn-black-1;
         box-sizing: border-box;
         border-radius: 50px;
         color: $white;
@@ -361,21 +363,26 @@
           color: #f8af2c;
           margin-right: 7px;
         }
+
+        &:hover {
+          background: $btn-black-2;
+        }
       }
     }
   }
 
   .table-data {
-    border:1px solid #e5e5e5;
+    border: 1px solid #e5e5e5;
     .responsive-table {
       overflow-x: auto;
     }
     table {
       width: 100%;
 
-      td,th {
-        border: 1px solid #C4C4C4;
-        padding:16px;
+      td,
+      th {
+        border: 1px solid #c4c4c4;
+        padding: 16px;
         span {
           display: flex;
         }
@@ -509,36 +516,36 @@
         width: 100%;
         height: 80%;
 
-      .all-users-list {
-        position: absolute;
-        top: 70px;
-        background: #fff;
-        padding: 10px;
-        width: 90%;
-        max-height: 140px;
-        overflow: auto;
-        border: 1px solid #ccc;
-        z-index:11;
+        .all-users-list {
+          position: absolute;
+          top: 70px;
+          background: #fff;
+          padding: 10px;
+          width: 90%;
+          max-height: 140px;
+          overflow: auto;
+          border: 1px solid #ccc;
+          z-index: 11;
 
-        li {
-         font-size: 14px;
-         padding: 5px 0px;
-         border-bottom: 1px solid #ccc;
-         color: $fun-blue-1;
-         cursor: pointer;
+          li {
+            font-size: 14px;
+            padding: 5px 0px;
+            border-bottom: 1px solid #ccc;
+            color: $fun-blue-1;
+            cursor: pointer;
 
-         &:hover {
-           text-decoration: underline;
-         }
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          p {
+            font-size: 11px;
+            text-decoration: underline;
+            margin-bottom: 0px;
+            color: #ccc;
+          }
         }
-
-        p{
-          font-size: 11px;
-          text-decoration: underline;
-          margin-bottom: 0px;
-          color :#ccc;
-        }
-      }
         h2 {
           font-weight: 500;
           font-size: 31.25px;
@@ -643,7 +650,7 @@
             color: #ffffff;
             border: none;
             padding: 10px 40px;
-            border: 1px solid$fun-blue-1;
+            border: 1px solid $fun-blue-1;
           }
           button.cancel {
             color: $fun-blue-1;
@@ -659,7 +666,7 @@
     padding: 0px 20px;
 
     form {
-      width:100%;
+      width: 100%;
       margin-bottom: 20px;
     }
 
@@ -672,7 +679,6 @@
     .box-group {
       display: flex;
       justify-content: space-between;
-
 
       .top-cat {
         width: 15%;
@@ -821,6 +827,24 @@
     }
     label {
       cursor: pointer;
+    }
+  }
+  .button-group {
+    button {
+      background: $btn-black-1;
+      border: 1px solid $btn-black-1;
+      box-sizing: border-box;
+      border-radius: 50px;
+      font-weight: normal;
+      font-size: 14px;
+      color: $white;
+      margin-right: 16px;
+      width: 113px;
+      min-height: 32px;
+
+      &:hover {
+        background: $btn-black-2;
+      }
     }
   }
   .card-body {
