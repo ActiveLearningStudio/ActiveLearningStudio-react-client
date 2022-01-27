@@ -6,6 +6,33 @@
   margin-top: 0px;
   border-radius: 3px;
 }
+.team-detail-page {
+  .content {
+    position: relative;
+    overflow: visible;
+    padding: 16px 24px;
+    margin-left: 136px !important;
+    margin-top: 0px !important;
+    .team-row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .inner-content {
+      padding: 16px 24px;
+      min-height: 600px;
+      background: #ffffff;
+    }
+    .overview {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .sub-content {
+      background: #fff;
+      padding: 71px 20px 100px 47px;
+    }
+  }
+}
 .add-team-page {
   .organization-name {
     font-family: "Open Sans", sans-serif;

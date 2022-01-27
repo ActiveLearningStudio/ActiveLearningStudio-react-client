@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
+import { deleteTeamAction, getTeamPermission, updateSelectedTeamAction } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import Delete from 'assets/images/menu-dele.svg';
@@ -50,6 +50,9 @@ function TeamCard(props) {
       <div className="team-title">
         <Link
           onClick={() => {
+            dispatch(updateSelectedTeamAction({
+              id, name, description, users, projects,
+            }));
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
           to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}

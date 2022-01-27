@@ -31,7 +31,7 @@ const TeamMembers = (props) => {
             <div className="filter-dropdown-role-team">
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">
-                  {element?.role?.name || roles?.filter((role) => role.id === element.role_id)[0].name}
+                  {element?.role?.name || roles?.filter((role) => role.id === element.role_id)[0]?.name}
                   <FontAwesomeIcon icon="chevron-down" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

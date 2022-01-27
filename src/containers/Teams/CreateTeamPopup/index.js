@@ -1,13 +1,14 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
+import { Link } from 'react-router-dom';
 import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 import { Formik } from 'formik';
 import close from 'assets/images/grayclose.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
-import { setNewTeamData, updateSelectedTeamAction } from 'store/actions/team';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNewTeamData } from 'store/actions/team';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
@@ -16,9 +17,9 @@ const BouncyDiv = styled.div`
 function CreateTeamPopup(props) {
   const {
     setShowCreateTeamModal,
-    setCreationMode,
   } = props;
   const dispatch = useDispatch();
+  const { activeOrganization } = useSelector((state) => state.organization);
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
@@ -145,25 +146,23 @@ function CreateTeamPopup(props) {
                       />
                     </div>
                     <div className="modal-footer">
-                      <button
-                        type="submit"
+                      <Link
                         className="add-team-btn"
+                        to={`/org/${activeOrganization?.domain}/teams/team-detail`}
                         onClick={() => {
                           dispatch(setNewTeamData({
                             name: values.teamName,
                             description: values.description,
                             noovo_group_title: values.noovo_group_title,
                           }));
-                          dispatch(updateSelectedTeamAction({}));
                           setShowCreateTeamModal(false);
-                          setCreationMode(true);
                         }}
                       >
                         <div>
                           <FontAwesomeIcon icon="plus" />
                           Save & Continue
                         </div>
-                      </button>
+                      </Link>
                     </div>
                   </form>
                 )}
@@ -179,7 +178,6 @@ function CreateTeamPopup(props) {
 
 CreateTeamPopup.propTypes = {
   setShowCreateTeamModal: PropTypes.func.isRequired,
-  setCreationMode: PropTypes.func.isRequired,
 };
 
 export default CreateTeamPopup;

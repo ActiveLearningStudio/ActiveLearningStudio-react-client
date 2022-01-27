@@ -54,6 +54,8 @@ const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
+const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
+const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
@@ -173,21 +175,23 @@ const AppRouter = (props) => {
                   />
                   <PrivateRoute
                     exact
+                    path="/org/:organization/teams/team-detail"
+                    component={TeamDetailPage}
+                  />
+                  <PrivateRoute
+                    exact
                     path="/org/:organization/teams/add-projects"
-                    component={TeamsPage}
-                    creationTeam
+                    component={TeamAddProjects}
                   />
                   <PrivateRoute
                     exact
                     path="/org/:organization/teams/:teamId"
-                    component={TeamsPage}
-                    teamShow
+                    component={TeamDetailPage}
                   />
                   <PrivateRoute
                     exact
                     path="/org/:organization/teams/:teamId/add-projects"
-                    component={TeamsPage}
-                    projectShow
+                    component={TeamAddProjects}
                   />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/instant-admin" showSSO component={AdminPanel} />

@@ -8,7 +8,6 @@ import {
   loadSubOrganizationTeamsAction,
   loadTeamsAction,
   getWhiteBoardUrl,
-  updateSelectedTeamAction,
 } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
@@ -25,17 +24,13 @@ import {
 } from 'store/actions/organization';
 import { loadLmsAction } from 'store/actions/project';
 import TeamView from './TeamCard';
-// import TeamMemberView from './TeamMemberView';
-import TeamAddProjects from './TeamAddProjects';
 import ChannelPanel from './Channel';
-
 import './style.scss';
 import CreateTeamPopup from './CreateTeamPopup';
-import TeamDetail from './TeamDetailView';
 
 function TeamsPage(props) {
   const {
-    location, teams, overview, teamShow, projectShow, channelShow, loadTeams, loadSubOrgTeams, updateSelectedTeam, creationTeam, newTeam,
+    location, teams, overview, channelShow, loadTeams, loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
@@ -47,7 +42,6 @@ function TeamsPage(props) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [creationMode, setCreationMode] = useState(false);
   const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
@@ -84,11 +78,6 @@ function TeamsPage(props) {
   const { notification } = useSelector((state) => state.notification);
   const auth = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (selectedTeam?.id) {
-      updateSelectedTeam(selectedTeam);
-    }
-  }, [selectedTeam]);
   useEffect(() => {
     if (
       notification?.today[0]?.data.message.indexOf(selectedForClone) !== -1
@@ -154,9 +143,9 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content">
           <div className="inner-content">
-            {overview && !creationMode && <div className="organization-name">{currentOrganization?.name}</div>}
+            {overview && <div className="organization-name">{currentOrganization?.name}</div>}
             <div>
-              {overview && !creationMode
+              {overview
                 && (
                   <h1
                     className="title-team"
@@ -185,7 +174,7 @@ function TeamsPage(props) {
                       <div className="btn-top-page">Add/Remove Members</div>
                     </Link>
                   )} */}
-                {permission?.Team?.includes('team:create') && !creationMode && overview && (
+                {permission?.Team?.includes('team:create') && overview && (
                   <div className="team-controller">
                     <div className="search-and-filters">
                       <div className="search-bar">
@@ -251,7 +240,7 @@ function TeamsPage(props) {
                   </div>
                 )}
                 {activeOrganization?.name !== currentOrganization?.name
-                  && overview && !creationMode && (
+                  && overview && (
                     <Link
                       to={`/org/${organization?.currentOrganization?.domain}/teams`}
                       onClick={() => {
@@ -268,11 +257,10 @@ function TeamsPage(props) {
                       </div>
                     </Link>
                   )}
-                {projectShow && <></>}
               </div>
             </div>
             <>
-              {overview && !creationMode && (
+              {overview && (
                 <div className="team-row overview">
                   {permission?.Team?.includes('team:view') ? (
                     <>
@@ -298,30 +286,13 @@ function TeamsPage(props) {
                   )}
                 </div>
               )}
-              {/* {(creation || editMode) && (
-                <div className="row sub-content">
-                  <CreateTeam editMode={editMode} selectedTeam={selectedTeam} />
-                </div>
-              )} */}
-              {teamShow && selectedTeam && activeOrganization && (
-                <TeamDetail team={selectedTeam} organization={activeOrganization} />
-              )}
-              {creationMode && !showCreateTeamModal && activeOrganization && (
-                <TeamDetail team={selectedTeam} organization={activeOrganization} setCreationMode={setCreationMode} />
-              )}
-              {projectShow && selectedTeam && activeOrganization && (
-                <TeamAddProjects team={selectedTeam} organization={activeOrganization} />
-              )}
-              {creationTeam && newTeam?.name && activeOrganization && (
-                <TeamAddProjects team={newTeam} organization={activeOrganization} setCreationMode={setCreationMode} />
-              )}
               {channelShow && selectedTeam && <ChannelPanel />}
             </>
           </div>
         </div>
       </div>
       {showCreateTeamModal && (
-        <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} setCreationMode={setCreationMode} />
+        <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} />
       )}
       <WhiteBoardModal
         url={whiteBoardUrl}
@@ -337,24 +308,15 @@ TeamsPage.propTypes = {
   location: PropTypes.object.isRequired,
   teams: PropTypes.array.isRequired,
   overview: PropTypes.bool,
-  teamShow: PropTypes.bool,
-  projectShow: PropTypes.bool,
   channelShow: PropTypes.bool,
-  creationTeam: PropTypes.bool,
   loadTeams: PropTypes.func.isRequired,
   loadSubOrgTeams: PropTypes.func.isRequired,
-  updateSelectedTeam: PropTypes.func.isRequired,
-  newTeam: PropTypes.object,
 
 };
 
 TeamsPage.defaultProps = {
   overview: false,
-  teamShow: false,
-  projectShow: false,
   channelShow: false,
-  creationTeam: false,
-  newTeam: {},
 };
 
 const mapStateToProps = (state) => ({
@@ -365,7 +327,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   loadTeams: (query) => dispatch(loadTeamsAction(query)),
   loadSubOrgTeams: () => dispatch(loadSubOrganizationTeamsAction()),
-  updateSelectedTeam: (team) => dispatch(updateSelectedTeamAction(team)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TeamsPage);
