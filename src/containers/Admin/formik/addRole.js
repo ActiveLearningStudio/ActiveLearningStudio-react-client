@@ -79,6 +79,12 @@ export default function AddRole(props) {
   const [ltiSettingEdit, setltiSettingEdit] = useState([]);
   const [ltiSettingView, setLtiSettingView] = useState([]);
 
+  // org brightcove
+  const orgBrightCoveEditName = ['organization:create-brightcove-setting', 'organization:delete-brightcove-setting', 'organization:edit-brightcove-setting'];
+  const orgBrightCoveViewName = ['organization:view-brightcove-setting'];
+  const [orgBrightCoveEdit, setOrgBrightCoveEdit] = useState([]);
+  const [orgBrightCoveView, setOrgBrightCoveView] = useState([]);
+
   // author team
   const authorteamEditName = ['team:create', 'team:edit', 'team:delete'];
   const authorteamViewName = ['team:view'];
@@ -186,6 +192,12 @@ export default function AddRole(props) {
     permissionIdArray = [];
     permissionsId?.Organization.filter((data) => orgltiViewName.includes(data.name) && permissionIdArray.push(data.id));
     setLtiSettingView(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgBrightCoveEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setOrgBrightCoveEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Organization.filter((data) => orgBrightCoveViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setOrgBrightCoveView(permissionIdArray);
     permissionIdArray = [];
 
     // author project
@@ -460,8 +472,8 @@ export default function AddRole(props) {
                                   setFieldValue={setFieldValue}
                                   type={'Integrations'}
                                   permissions={values.permissions}
-                                  currentFeatureView={[...lmsSettingView, ...ltiSettingView]}
-                                  currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit]}
+                                  currentFeatureView={[...lmsSettingView, ...ltiSettingView, ...orgBrightCoveView]}
+                                  currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit, ...orgBrightCoveEdit]}
                                   bold
                                 />
                               </div>
@@ -481,6 +493,13 @@ export default function AddRole(props) {
                                 permissions={values.permissions}
                                 currentFeatureView={ltiSettingView}
                                 currentFeatureEdit={ltiSettingEdit}
+                              />
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'BrightCove'}
+                                permissions={values.permissions}
+                                currentFeatureView={orgBrightCoveView}
+                                currentFeatureEdit={orgBrightCoveEdit}
                               />
                             </div>
                           </div>
@@ -701,8 +720,8 @@ export default function AddRole(props) {
                                 setFieldValue={setFieldValue}
                                 type={'Integrations'}
                                 permissions={values.permissions}
-                                currentFeatureView={[...lmsSettingView, ...ltiSettingView]}
-                                currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit]}
+                                currentFeatureView={[...lmsSettingView, ...ltiSettingView, ...orgBrightCoveView]}
+                                currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit, ...orgBrightCoveEdit]}
                                 bold
                               />
                             </div>
@@ -722,6 +741,13 @@ export default function AddRole(props) {
                               permissions={values.permissions}
                               currentFeatureView={ltiSettingView}
                               currentFeatureEdit={ltiSettingEdit}
+                            />
+                            <NewEdit
+                              setFieldValue={setFieldValue}
+                              type={'BrightCove'}
+                              permissions={values.permissions}
+                              currentFeatureView={orgBrightCoveView}
+                              currentFeatureEdit={orgBrightCoveEdit}
                             />
                           </div>
                         </Card.Body>

@@ -165,9 +165,8 @@ function AdminPanel({ showSSO }) {
                         <Pills
                           modules={[
                             permission?.Organization?.includes('organization:view-lms-setting') && 'All settings',
-
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
-                            'BrightCove',
+                            permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
                           ]}
                           type="LMS"
                         />

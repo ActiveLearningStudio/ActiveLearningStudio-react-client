@@ -9,7 +9,18 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject, getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
+import {
+  getJobListing,
+  getLogsListing,
+  getLtiTools,
+  getLtiToolsOrderBy,
+  getUserReport,
+  getDefaultSso,
+  getLmsProject,
+  getSubjects,
+  getEducationLevel,
+  getAuthorTag,
+} from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
@@ -441,13 +452,13 @@ export default function Pills(props) {
 
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activePage || 1))
+      dispatch(getSubjects(activePage || 1));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activePage || 1))
+      dispatch(getEducationLevel(activePage || 1));
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activePage || 1))
+      dispatch(getAuthorTag(activePage || 1));
     }
   }, [type, subTypeState, activePage, activeOrganization?.id]);
 
@@ -462,13 +473,13 @@ export default function Pills(props) {
       setEducationLevel(dataRedux.admin.education_level);
     }
   }, [dataRedux.admin.education_level]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.author_tags) {
       setAuthorTag(dataRedux.admin.author_tags);
     }
   }, [dataRedux.admin.author_tags]);
-  
+
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -694,6 +705,7 @@ export default function Pills(props) {
                   filter={false}
                   subTypeState={subTypeState}
                   tableHead={[]}
+                  subType="Manage Roles"
                   sortCol={[]}
                   handleSort={handleSort}
                   data={[]}
@@ -899,7 +911,7 @@ export default function Pills(props) {
                   setSelectedActivityType={setSelectedActivityType}
                 />
               )}
-              
+
               {type === 'Activities' && subTypeState === 'Subjects' && (
                 <Starter
                   search={false}
@@ -923,7 +935,7 @@ export default function Pills(props) {
                   setSelectedActivityType={setSelectedActivityType}
                 />
               )}
-              
+
               {type === 'Activities' && subTypeState === 'Education Level' && (
                 <Starter
                   search={false}
@@ -947,7 +959,7 @@ export default function Pills(props) {
                   setSelectedActivityType={setSelectedActivityType}
                 />
               )}
-              
+
               {type === 'Activities' && subTypeState === 'Author Tags' && (
                 <Starter
                   search={false}
