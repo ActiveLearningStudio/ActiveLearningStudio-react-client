@@ -25,4 +25,4 @@ WORKDIR /usr/share/nginx/html
 
 EXPOSE 80
 RUN chmod 777 -R /usr/lib/node_modules/
-CMD ["/bin/sh", "-c", "runtime-env-cra && nginx -g \"daemon off;\""]
+CMD ["/bin/sh", "-c", "runtime-env-cra && touch /usr/share/nginx/html/health.ok && nginx -g \"daemon off;\""]
