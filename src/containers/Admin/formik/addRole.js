@@ -487,6 +487,7 @@ export default function AddRole(props) {
                                 currentFeatureView={lmsSettingView}
                                 currentFeatureEdit={lmsSettingEdit}
                               />
+
                               <NewEdit
                                 setFieldValue={setFieldValue}
                                 type={'LTI Tools'}
@@ -494,13 +495,15 @@ export default function AddRole(props) {
                                 currentFeatureView={ltiSettingView}
                                 currentFeatureEdit={ltiSettingEdit}
                               />
-                              <NewEdit
-                                setFieldValue={setFieldValue}
-                                type={'BrightCove'}
-                                permissions={values.permissions}
-                                currentFeatureView={orgBrightCoveView}
-                                currentFeatureEdit={orgBrightCoveEdit}
-                              />
+                              <div className="mt-3">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'BrightCove'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={orgBrightCoveView}
+                                  currentFeatureEdit={orgBrightCoveEdit}
+                                />
+                              </div>
                             </div>
                           </div>
                           <div className="permission">
@@ -727,7 +730,7 @@ export default function AddRole(props) {
                             </div>
                           </div>
 
-                          <div className="permission-about d-flex">
+                          <div className="permission-about d-flex flex-wrap">
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'LMS Settings'}
@@ -735,6 +738,7 @@ export default function AddRole(props) {
                               currentFeatureView={lmsSettingView}
                               currentFeatureEdit={lmsSettingEdit}
                             />
+
                             <NewEdit
                               setFieldValue={setFieldValue}
                               type={'LTI Tools'}
@@ -742,13 +746,15 @@ export default function AddRole(props) {
                               currentFeatureView={ltiSettingView}
                               currentFeatureEdit={ltiSettingEdit}
                             />
-                            <NewEdit
-                              setFieldValue={setFieldValue}
-                              type={'BrightCove'}
-                              permissions={values.permissions}
-                              currentFeatureView={orgBrightCoveView}
-                              currentFeatureEdit={orgBrightCoveEdit}
-                            />
+                            <div className="mt-3">
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'BrightCove'}
+                                permissions={values.permissions}
+                                currentFeatureView={orgBrightCoveView}
+                                currentFeatureEdit={orgBrightCoveEdit}
+                              />
+                            </div>
                           </div>
                         </Card.Body>
                       </Tab.Pane>
@@ -824,79 +830,81 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
   // }, [currentFeatureEdit, currentFeatureView]);
 
   return (
-    <div className="form-group custom-select-style-for-sub">
-      <select
-        onChange={(e) => {
-          if (e.target.value == 'view') {
-            setFieldValue('permissions', [
-              ...permissions.filter((data) => {
-                if (currentFeatureEdit.includes(parseInt(data))) {
-                  return false;
-                } else {
-                  return true;
-                }
-              }),
-              ...currentFeatureView.map((e) => String(e)),
-            ]);
-          } else if (e.target.value == 'none') {
-            const specialView = [...currentFeatureView, ...currentFeatureEdit];
+    <>
+      <div className="form-group custom-select-style-for-sub">
+        <select
+          onChange={(e) => {
+            if (e.target.value == 'view') {
+              setFieldValue('permissions', [
+                ...permissions.filter((data) => {
+                  if (currentFeatureEdit.includes(parseInt(data))) {
+                    return false;
+                  } else {
+                    return true;
+                  }
+                }),
+                ...currentFeatureView.map((e) => String(e)),
+              ]);
+            } else if (e.target.value == 'none') {
+              const specialView = [...currentFeatureView, ...currentFeatureEdit];
 
-            if (specialView?.length) {
-              const newViewArray = permissions.filter((data) => {
-                if (specialView.includes(parseInt(data))) {
-                  return false;
-                } else {
-                  return true;
-                }
-              });
-              setFieldValue('permissions', newViewArray);
-            }
-          } else {
-            setFieldValue('permissions', [...permissions, ...currentFeatureEdit.map((e) => String(e)), ...currentFeatureView.map((e) => String(e))]);
-          }
-
-          if (!bold) {
-            const parentControler = e.target.parentNode.parentElement.previousElementSibling.getElementsByTagName('select')[0];
-            const sibling = e.target.parentNode.parentElement.getElementsByTagName('select');
-            const checkAllValuesInSibling = [];
-            for (var i = 0; i < sibling.length; i++) {
-              checkAllValuesInSibling.push(sibling[i]?.value);
-            }
-            const removeDuplicate = new Set(checkAllValuesInSibling);
-            if (removeDuplicate.size > 1) {
-              parentControler.value = '---';
-              console.log('values are not same', parentControler.value);
+              if (specialView?.length) {
+                const newViewArray = permissions.filter((data) => {
+                  if (specialView.includes(parseInt(data))) {
+                    return false;
+                  } else {
+                    return true;
+                  }
+                });
+                setFieldValue('permissions', newViewArray);
+              }
             } else {
-              console.log('values are same', parentControler.value);
-              console.log(Array.from(removeDuplicate)[0]);
-              parentControler.value = Array.from(removeDuplicate)[0];
+              setFieldValue('permissions', [...permissions, ...currentFeatureEdit.map((e) => String(e)), ...currentFeatureView.map((e) => String(e))]);
             }
-            console.log(checkAllValuesInSibling);
-          } else {
-            const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName('select');
 
-            for (var i = 0; i < sibling?.length; i++) {
-              console.log(sibling[i].value, e.target.value);
-              sibling[i].value = e.target.value;
+            if (!bold) {
+              const parentControler = e.target.parentNode.parentElement.previousElementSibling.getElementsByTagName('select')[0];
+              const sibling = e.target.parentNode.parentElement.getElementsByTagName('select');
+              const checkAllValuesInSibling = [];
+              for (var i = 0; i < sibling.length; i++) {
+                checkAllValuesInSibling.push(sibling[i]?.value);
+              }
+              const removeDuplicate = new Set(checkAllValuesInSibling);
+              if (removeDuplicate.size > 1) {
+                parentControler.value = '---';
+                console.log('values are not same', parentControler.value);
+              } else {
+                console.log('values are same', parentControler.value);
+                console.log(Array.from(removeDuplicate)[0]);
+                parentControler.value = Array.from(removeDuplicate)[0];
+              }
+              console.log(checkAllValuesInSibling);
+            } else {
+              const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName('select');
+
+              for (var i = 0; i < sibling?.length; i++) {
+                console.log(sibling[i].value, e.target.value);
+                sibling[i].value = e.target.value;
+              }
             }
-          }
-        }}
-      >
-        <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
-          View
-        </option>
-        {!hideEdit && (
-          <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
-            Edit
+          }}
+        >
+          <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
+            View
           </option>
-        )}
+          {!hideEdit && (
+            <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
+              Edit
+            </option>
+          )}
 
-        <option value="none" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
-          none
-        </option>
-      </select>
-      {bold ? <h6>{type}</h6> : <p> {type}</p>}
-    </div>
+          <option value="none" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
+            none
+          </option>
+        </select>
+        {bold ? <h6>{type}</h6> : <p> {type}</p>}
+      </div>
+    </>
   );
 };
 AddRole.propTypes = {};
