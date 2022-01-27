@@ -901,7 +901,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'BrightCove' && (
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
           <div className="btn-text">
             <button
               type="button"

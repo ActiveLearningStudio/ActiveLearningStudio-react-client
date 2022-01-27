@@ -888,7 +888,7 @@ const AdminDropdown = (props) => {
               )}
             </>
           )}
-          {type === 'LMS' && subType === 'BrightCove' && (
+          {type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:edit-brightcove-setting') && (
             <>
               <Dropdown.Item
                 onClick={() => {
