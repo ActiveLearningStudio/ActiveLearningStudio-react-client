@@ -6,7 +6,7 @@ import rootReducer from './reducers';
 const initialState = {};
 const enhancers = [];
 
-if (process.env.NODE_ENV === 'development') {
+if (window.__RUNTIME_CONFIG__.NODE_ENV === 'development') {
   const { devToolsExtension } = window;
 
   if (typeof devToolsExtension === 'function') {
