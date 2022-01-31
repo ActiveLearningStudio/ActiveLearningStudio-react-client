@@ -86,7 +86,8 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.2.5",
-    "lint-staged": "^10.2.11"
+    "lint-staged": "^10.2.11",
+    "redux-devtools-extension": "^2.13.9"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
