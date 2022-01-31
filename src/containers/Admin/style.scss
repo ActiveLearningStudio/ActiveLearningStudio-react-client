@@ -1490,6 +1490,7 @@
       background: #f7faff;
       padding: 16px;
       margin-bottom: 8px;
+
       h6 {
         font-weight: 500;
         font-size: 16px;
@@ -1501,6 +1502,9 @@
       .permission-about {
         display: flex;
         flex-wrap: wrap;
+        .mb-16 {
+          margin-bottom: 16px !important;
+        }
       }
     }
     .form-grouper {
@@ -1683,9 +1687,10 @@
 
 // Role Css Update
 .dynamic-roles-title-btn {
-  padding-bottom: 23px;
-  padding-left: 20px;
-  padding-right: 20px;
+  // padding-bottom: 23px;
+  // padding-left: 20px;
+  // padding-right: 20px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1699,6 +1704,7 @@
     font-size: 18px;
     line-height: 24px;
     color: #515151;
+    margin: 0 !important;
   }
 
   .update-permission {
@@ -1709,7 +1715,7 @@
     background: rgba(18, 179, 71, 0.08);
     border-radius: 4px;
     padding: 6px 8px;
-    margin-top: 16px;
+    // margin-top: 16px;
     cursor: pointer;
     border: none;
     outline: none;
@@ -1734,12 +1740,24 @@
 }
 .roles-permission-tab {
   border: 1px solid #ccc;
+  padding: 16px;
 }
 .detail-permission-tab {
   // background: #f7faff;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  .all-permission-heading {
+    margin-top: 16px;
+    h6 {
+      margin-left: 32px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #084892;
+    }
+  }
 }
 
 .checkbox_section {
@@ -1786,6 +1804,10 @@
 }
 
 .role-permission-tab-name {
+  .nav-item {
+    margin-bottom: 8px;
+    // width: 170px;
+  }
   .nav-link {
     font-family: $rubik !important;
     font-style: normal !important;
@@ -1874,6 +1896,9 @@
     padding-bottom: 0 !important;
   }
 }
+.selection-tab-custom {
+  margin-bottom: 24px;
+}
 
 .custom-select-style-for-sub {
   width: 260px;
@@ -1905,6 +1930,17 @@
     color: #084892;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+  }
+  h6 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.02em;
+    color: #084892;
+    margin-bottom: 24px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-left: 10px;
   }
 }
 .for-authoring {

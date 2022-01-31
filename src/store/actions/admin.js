@@ -68,8 +68,8 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   return result;
 };
 
-export const getActivityTypes = (query) => async (dispatch) => {
-  const result = await adminService.getActivityTypes(query);
+export const getActivityTypes = (page, column = '', orderBy = '', search = '') => async (dispatch) => {
+  const result = await adminService.getActivityTypes(page, column, orderBy, search);
   dispatch({
     type: actionTypes.GET_ACTIVITY_TYPES,
     payload: result,
@@ -193,4 +193,31 @@ export const cancelRemoveUser = () => (dispatch) => {
   dispatch({
     type: actionTypes.CANCEL_REMOVE_USER,
   });
+};
+
+export const getSubjects = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getSubjects(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_SUBECTS,
+    payload: result,
+  });
+  return result;
+};
+
+export const getEducationLevel = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getEducationLevel(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_EDUCATION_LEVEL,
+    payload: result,
+  });
+  return result;
+};
+
+export const getAuthorTag = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getAuthorTag(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_AUTHOR_TAGS,
+    payload: result,
+  });
+  return result;
 };

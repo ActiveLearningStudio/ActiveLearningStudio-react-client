@@ -577,7 +577,7 @@ export const ProjectsPage = (props) => {
                       </div>
                     </div>
                     <div className="col-md-12">
-                      {showSampleSort && teamProjects.length > 0 && (
+                      {showSampleSort && (
                         <div className="search-bar-team-tab">
                           <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
                           <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />

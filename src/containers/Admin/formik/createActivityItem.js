@@ -89,8 +89,10 @@ export default function CreateActivityItem(props) {
                 text: 'Activity item edited successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -115,8 +117,10 @@ export default function CreateActivityItem(props) {
                 text: 'Activity item added successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -177,8 +181,8 @@ export default function CreateActivityItem(props) {
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
                     <option value=""> </option>
-                    {activityTypes?.length > 0 &&
-                      activityTypes?.map((type) => (
+                    {activityTypes?.data.length > 0 &&
+                      activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
                           {type?.title}
                         </option>

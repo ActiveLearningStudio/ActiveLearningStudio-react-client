@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   lmsIntegration: [],
   removeUser: null,
   allbrightCove: null,
+  subjects: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -75,12 +76,27 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.GET_ACTIVITY_TYPES:
       return {
         ...state,
-        activityTypes: action.payload.activityTypes,
+        activityTypes: action.payload,
       };
     case actionTypes.GET_ACTIVITY_ITEMS_ADMIN:
       return {
         ...state,
         activityItems: action.payload,
+      };
+    case actionTypes.GET_SUBECTS:
+      return {
+        ...state,
+        subjects: action.payload,
+      };
+    case actionTypes.GET_EDUCATION_LEVEL:
+      return {
+        ...state,
+        education_level: action.payload,
+      };
+    case actionTypes.GET_AUTHOR_TAGS:
+      return {
+        ...state,
+        author_tags: action.payload,
       };
     case actionTypes.GET_USERS_REPORT:
       return {

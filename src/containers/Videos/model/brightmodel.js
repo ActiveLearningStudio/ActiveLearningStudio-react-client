@@ -16,7 +16,7 @@ import { getBrightCMS, getBrightVideos, getBrightVideosSearch } from 'store/acti
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
   const [cms, setcms] = useState([]);
-  const [cmsVideo, setcmsVideo] = useState([]);
+  const [cmsVideo, setcmsVideo] = useState(null);
   const [activeCms, setActiveCms] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -25,6 +25,7 @@ const BrightcoveModel = (props) => {
   useEffect(() => {
     (async () => {
       const result = await dispatch(getBrightCMS());
+
       setcms(result.data);
       setActiveCms(result.data?.[0]);
     })();
@@ -36,11 +37,14 @@ const BrightcoveModel = (props) => {
           .then((data) => {
             setTotalCount(data.meta?.count);
             setcmsVideo(data.data);
-          }).catch((err) => {
-            if (err?.errors?.length > 0) {
-              setError('No record Found')
-            }
           })
+          .catch((err) => {
+            console.log(err);
+            if (err?.errors?.length > 0) {
+              setError('No record Found');
+              setcmsVideo([]);
+            }
+          });
         if (typeof activeCms === 'object' && activeCms.hasOwnProperty('account_id')) {
           window.brightcoveAccountId = activeCms.account_id;
         }
@@ -51,9 +55,9 @@ const BrightcoveModel = (props) => {
   useEffect(() => {
     dispatch({
       type: 'EDIT_CMS_SCREEN',
-      payload: activeCms
-    })
-  }, [activeCms])
+      payload: activeCms,
+    });
+  }, [activeCms]);
   return (
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
@@ -73,6 +77,7 @@ const BrightcoveModel = (props) => {
                       onClick={() => {
                         setOffset(0);
                         setActiveCms(data);
+                        setcmsVideo(null);
                       }}
                       className="role-permission-tab-name"
                       id="role-permission-tab-id"
@@ -88,7 +93,7 @@ const BrightcoveModel = (props) => {
                 </Nav>
               </Col>
               <Col className="detail-permission-tab" sm={9}>
-                {/* <br /> */}
+                <br />
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-top-header">
                     <div>
@@ -102,35 +107,46 @@ const BrightcoveModel = (props) => {
                       <div className="section-input-search">
                         <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or id..." />
                         <button
-                          onClick={async () => {
-                            setcmsVideo([]);
-                            await dispatch(getBrightVideosSearch(activeCms.id, searchId))
+                          onClick={() => {
+                            setcmsVideo(null);
+                            dispatch(getBrightVideosSearch(activeCms.id, searchId))
                               .then((data) => {
                                 setTotalCount(data.meta?.count);
                                 setcmsVideo(data.data);
-                              }).catch((err) => {
-                                if (err?.errors?.length > 0) {
-                                  setError('No record Found')
-                                }
                               })
+                              .catch((err) => {
+                                if (err?.errors?.length > 0) {
+                                  setcmsVideo([]);
+                                  setError('No record Found');
+                                }
+                              });
                           }}
                         >
                           <FontAwesomeIcon icon={faSearch} color="#084892" />
                         </button>
                       </div>
-                      {(
+                      {
                         <button
                           onClick={async () => {
                             setSearchId('');
-                            const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
-                            setTotalCount(videosResult.meta?.count);
-                            setcmsVideo(videosResult.data);
+                            setcmsVideo(null);
+                            try {
+                              const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
+                              console.log(videosResult);
+                              setTotalCount(videosResult.meta?.count);
+                              setcmsVideo(videosResult.data);
+                            } catch (err) {
+                              if (err?.errors?.length > 0) {
+                                setcmsVideo([]);
+                                setError('No record Found');
+                              }
+                            }
                           }}
                           className="reset-btn"
                         >
                           Reset
                         </button>
-                      )}
+                      }
                     </div>
                   </div>
                 </div>
@@ -146,34 +162,66 @@ const BrightcoveModel = (props) => {
                                   <th>Name</th>
                                   <th>Created</th>
                                   <th>Video</th>
+                                  <th>Updated At</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                {cmsVideo?.length > 0 && cmsVideo?.map((data) => (
+                                {cmsVideo ? (
+                                  cmsVideo?.length > 0 ? (
+                                    cmsVideo?.map((data) => (
+                                      <tr>
+                                        <td className="firstname">
+                                          <input
+                                            name="video"
+                                            onChange={() => {
+                                              props.setSelectedVideoId(data.id);
+                                            }}
+                                            type="radio"
+                                          />
+                                          <img src={data?.images?.thumbnail?.src} className="image-size" />
+                                          <span>{data.name}</span>
+                                        </td>
+                                        <td>{data.created_at?.split('T')[0]}</td>
+                                        <td>{data.id}</td>
+                                        <td>{data.updated_at?.split('T')[0]}</td>
+                                      </tr>
+                                    ))
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="4">
+                                        <Alert variant="danger" colSpan={3}>
+                                          {error}
+                                        </Alert>
+                                      </td>
+                                    </tr>
+                                  )
+                                ) : (
                                   <tr>
-                                    <td>
-                                      <input name="video" onChange={() => props.setSelectedVideoId(data.id)} type="radio" />
-                                      <img src={data?.images?.thumbnail?.src} className="image-size" />
-                                      <span>{data.name}</span>
-                                    </td>
-                                    <td>{data.created_at?.split('T')[0]}</td>
-                                    <td>{data.id}</td>
-                                  </tr>
-                                ))}
-                                {(searchId && cmsVideo?.length === 0 && !error) && (
-                                  <tr>
-                                    <td colSpan="3">
-                                      <Alert variant="primary" colSpan={3}>Loading...</Alert>
+                                    <td colSpan="4">
+                                      <Alert variant="primary" colSpan={4}>
+                                        Loading...
+                                      </Alert>
                                     </td>
                                   </tr>
                                 )}
-                                {(searchId && cmsVideo?.length === 0 && error) && (
+                                {/* {searchId && cmsVideo?.length === 0 && !error && (
                                   <tr>
                                     <td colSpan="3">
-                                      <Alert variant="danger" colSpan={3}>{error}</Alert>
+                                      <Alert variant="primary" colSpan={3}>
+                                        Loading...
+                                      </Alert>
                                     </td>
                                   </tr>
                                 )}
+                                {searchId && cmsVideo?.length === 0 && error && (
+                                  <tr>
+                                    <td colSpan="3">
+                                      <Alert variant="danger" colSpan={3}>
+                                        {error}
+                                      </Alert>
+                                    </td>
+                                  </tr>
+                                )} */}
                               </tbody>
                             </table>
 

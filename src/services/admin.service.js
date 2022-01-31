@@ -136,8 +136,8 @@ const getLmsProjectSearch = (subOrgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getActivityTypes = (query) => httpService
-  .get(`/${apiVersion}/activity-types?query=${query}`)
+const getActivityTypes = (page, column, orderBy, search) => httpService
+  .get(`/${apiVersion}/activity-types?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -314,6 +314,99 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getSubjects = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/subjects?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createSubject = (values) => httpService
+  .post(`${apiVersion}/subjects`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateSubject = (id, values) => httpService
+  .put(`${apiVersion}/subjects/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteSubject = (id) => httpService
+  .remove(`${apiVersion}/subjects/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const getEducationLevel = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/education-levels?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createEducationLevel = (values) => httpService
+  .post(`${apiVersion}/education-levels`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateEducationLevel = (id, values) => httpService
+  .put(`${apiVersion}/education-levels/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteEducationLevel = (id) => httpService
+  .remove(`${apiVersion}/education-levels/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const getAuthorTag = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/author-tags?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createAuthorTag = (values) => httpService
+  .post(`${apiVersion}/author-tags`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateAuthorTag = (id, values) => httpService
+  .put(`${apiVersion}/author-tags/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteAuthorTag = (id) => httpService
+  .remove(`${apiVersion}/author-tags/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -355,4 +448,16 @@ export default {
   checkUserEmail,
   addUserToOrg,
   removeUser,
+  getSubjects,
+  createSubject,
+  updateSubject,
+  deleteSubject,
+  getEducationLevel,
+  createEducationLevel,
+  updateEducationLevel,
+  deleteEducationLevel,
+  getAuthorTag,
+  createAuthorTag,
+  updateAuthorTag,
+  deleteAuthorTag,
 };
