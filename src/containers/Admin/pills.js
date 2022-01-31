@@ -684,6 +684,7 @@ export default function Pills(props) {
                   activeRole={activeRole}
                   setActiveRole={setActiveRole}
                   subTypeState={'All Users'}
+                  subType={'All Users'}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                   searchQueryChangeHandler={searchQueryChangeHandler}

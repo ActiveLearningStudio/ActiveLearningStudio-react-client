@@ -435,7 +435,7 @@ function SearchInterface(props) {
 
                                 <div className="form-group">
                                   <div className="radio-btns">
-                                    {permission?.Search?.includes('search:dashboard') && (
+                                    {true && (
                                       <label>
                                         <input
                                           name="type"
