@@ -9,14 +9,26 @@ import { columnData } from './column';
 
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { getJobListing, getLogsListing, getLtiTools, getLtiToolsOrderBy, getUserReport, getDefaultSso, getLmsProject } from 'store/actions/admin';
+import {
+  getJobListing,
+  getLogsListing,
+  getLtiTools,
+  getLtiToolsOrderBy,
+  getUserReport,
+  getDefaultSso,
+  getLmsProject,
+  getSubjects,
+  getEducationLevel,
+  getAuthorTag,
+} from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
+import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 
 export default function Pills(props) {
   const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber } = props;
 
-  const [key, setKey] = useState(modules && modules[0]);
+  const [key, setKey] = useState(modules?.filter((data) => !!data)[0]);
 
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
@@ -63,8 +75,11 @@ export default function Pills(props) {
   const [changeIndexValue, setChangeIndexValue] = useState('0');
   const [orderBy, setOrderBy] = useState('ASC');
   const dataRedux = useSelector((state) => state);
+  const [subjects, setSubjects] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
+  const [authorTag, setAuthorTag] = useState(null);
   useEffect(() => {
-    setKey(modules?.[0]);
+    setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
   useEffect(() => {
     setlmsBrightCove(allbrightCove);
@@ -435,6 +450,36 @@ export default function Pills(props) {
     }
   }, [dataRedux.admin.lmsIntegration]);
 
+  useMemo(async () => {
+    if (subTypeState === 'Subjects') {
+      dispatch(getSubjects(activePage || 1));
+    }
+    if (subTypeState === 'Education Level') {
+      dispatch(getEducationLevel(activePage || 1));
+    }
+    if (subTypeState === 'Author Tags') {
+      dispatch(getAuthorTag(activePage || 1));
+    }
+  }, [type, subTypeState, activePage, activeOrganization?.id]);
+
+  useEffect(() => {
+    if (dataRedux.admin.subjects) {
+      setSubjects(dataRedux.admin.subjects);
+    }
+  }, [dataRedux.admin.subjects]);
+
+  useEffect(() => {
+    if (dataRedux.admin.education_level) {
+      setEducationLevel(dataRedux.admin.education_level);
+    }
+  }, [dataRedux.admin.education_level]);
+
+  useEffect(() => {
+    if (dataRedux.admin.author_tags) {
+      setAuthorTag(dataRedux.admin.author_tags);
+    }
+  }, [dataRedux.admin.author_tags]);
+
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -488,25 +533,13 @@ export default function Pills(props) {
   }, [subTypeState]);
   useEffect(() => {
     if (activeTab === 'Projects') {
-      setSubTypeState('All Projects');
-      setCurrentTab('All Projects');
+      setSubTypeState(key);
+      setCurrentTab(key);
       setLibraryReqSelected(false);
-    } else if (activeTab === 'Activities') {
-      setSubTypeState('Activity Types');
-    } else if (activeTab === 'Users') {
-      setSubTypeState('All Users');
+    } else {
+      setSubTypeState(key);
     }
-    // else if (activeTab === 'Stats') {
-    //   setSubTypeState('Report');
-    // }
-    else if (activeTab === 'Organization') {
-      setSubTypeState('All Organizations');
-    } else if (activeTab === 'LMS') {
-      setSubTypeState('All settings');
-    } else if (activeTab === 'Video Integration') {
-      setSubTypeState('BrightCove API Settings');
-    }
-  }, [activeTab]);
+  }, [activeTab, key]);
   const filterSearch = useCallback(() => {
     setAllProjectTab(null);
     if (libraryReqSelected) {
@@ -607,7 +640,7 @@ export default function Pills(props) {
 
   return (
     <Tabs
-      defaultActiveKey={modules && modules[0]}
+      defaultActiveKey={modules?.filter((data) => !!data)[0]}
       id="controlled-tab-example"
       activeKey={key}
       onSelect={(key) => {
@@ -627,259 +660,183 @@ export default function Pills(props) {
         }
       }}
     >
-      {modules?.map((asset) => (
-        <Tab key={asset} eventKey={asset} title={asset}>
-          <div key={asset} className="module-content-inner">
-            {type === 'Stats' && subTypeState === 'Report' && (
-              <Starter
-                paginationCounter={true}
-                search={true}
-                print={true}
-                data={userReportsStats}
-                searchUserReportQueryHandler={searchUserReportQueryHandler}
-                btnText=""
-                btnAction=""
-                searchQueryStats={searchQueryStats}
-                setSearchQueryStats={setSearchQueryStats}
-                searchAlertTogglerStats={searchAlertTogglerStats}
-                subTypeState={subTypeState}
-                importUser={false}
-                filter={true}
-                size={size}
-                setSize={setSize}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                tableHead={columnData.statereport}
-                sortCol={[]}
-                handleSort={handleSort}
-                type={type}
-              />
-            )}
-            {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
-              <Starter
-                paginationCounter={true}
-                search={true}
-                print={false}
-                data={jobs}
-                btnText=""
-                subTypeState={subTypeState}
-                searchUserReportQueryHandler={searchUserReportQueryHandler}
-                size={size}
-                jobType={jobType}
-                SetJobType={SetJobType}
-                setSize={setSize}
-                activePage={activePage}
-                btnAction=""
-                searchQueryStats={searchQueryStats}
-                setSearchQueryStats={setSearchQueryStats}
-                searchAlertTogglerStats={searchAlertTogglerStats}
-                importUser={false}
-                filter={true}
-                setActivePage={setActivePage}
-                tableHead={columnData.statejobs}
-                sortCol={[]}
-                handleSort={handleSort}
-                type={type}
-              />
-            )}
-            {type === 'Stats' && subTypeState === 'Queues: Logs' && (
-              <Starter
-                paginationCounter={true}
-                search={true}
-                print={false}
-                data={logs}
-                btnText=""
-                subTypeState={subTypeState}
-                searchUserReportQueryHandler={searchUserReportQueryHandler}
-                size={size}
-                logType={logType}
-                SetLogType={SetLogType}
-                setSize={setSize}
-                btnAction=""
-                searchQueryStats={searchQueryStats}
-                setSearchQueryStats={setSearchQueryStats}
-                searchAlertTogglerStats={searchAlertTogglerStats}
-                importUser={false}
-                filter={true}
-                activePage={activePage}
-                setActivePage={setActivePage}
-                tableHead={columnData.statelogs}
-                sortCol={[]}
-                handleSort={handleSort}
-                type={type}
-              />
-            )}
-            {type === 'Users' && subTypeState === 'All Users' && (
-              <Starter
-                paginationCounter={true}
-                search={true}
-                print={false}
-                btnText="Add user"
-                btnAction="create_user"
-                importUser={true}
-                filter={false}
-                tableHead={columnData.userall}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={users}
-                activePage={activePage}
-                size={size}
-                setSize={setSize}
-                activeRole={activeRole}
-                setActiveRole={setActiveRole}
-                subTypeState={'All Users'}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                searchQueryChangeHandler={searchQueryChangeHandler}
-                searchAlertToggler={searchAlertToggler}
-                setActivePage={setActivePage}
-                type={type}
-                roles={roles}
-                inviteUser={true}
-              />
-            )}
-            {type === 'Users' && subTypeState === 'Manage Roles' && (
-              <Starter
-                paginationCounter={false}
-                search={false}
-                print={false}
-                btnText="Add Role"
-                btnAction="add_role"
-                importUser={false}
-                filter={false}
-                subTypeState={subTypeState}
-                tableHead={[]}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={[]}
-                activeRole={activeRole}
-                setActiveRole={setActiveRole}
-                type={type}
-                roles={roles}
-                permissionRender={permission?.Organization?.includes('organization:view-role')}
-              />
-            )}
-            {type === 'Organization' && (
-              <Starter
-                search={true}
-                print={false}
-                btnText="Add Organization"
-                btnAction="add_org"
-                importUser={false}
-                filter={false}
-                tableHead={columnData.organization}
-                sortCol={[]}
-                handleSort={handleSort}
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                data={allSuborgList}
-                type={type}
-                activePage={activePage}
-                setActivePage={setActivePage}
-              />
-            )}
+      {modules
+        ?.filter((data) => !!data)
+        ?.map((asset) => (
+          <Tab key={asset} eventKey={asset} title={asset}>
+            <div key={asset} className="module-content-inner">
+              {type === 'Users' && subTypeState === 'All Users' && (
+                <Starter
+                  paginationCounter={true}
+                  search={true}
+                  print={false}
+                  btnText="Add user"
+                  btnAction="create_user"
+                  importUser={true}
+                  filter={false}
+                  tableHead={columnData.userall}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={users}
+                  activePage={activePage}
+                  size={size}
+                  setSize={setSize}
+                  activeRole={activeRole}
+                  setActiveRole={setActiveRole}
+                  subTypeState={'All Users'}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  searchQueryChangeHandler={searchQueryChangeHandler}
+                  searchAlertToggler={searchAlertToggler}
+                  setActivePage={setActivePage}
+                  type={type}
+                  roles={roles}
+                  inviteUser={true}
+                />
+              )}
+              {type === 'Users' && subTypeState === 'Manage Roles' && (
+                <Starter
+                  paginationCounter={false}
+                  search={false}
+                  print={false}
+                  btnText="Add Role"
+                  btnAction="add_role"
+                  importUser={false}
+                  filter={false}
+                  subTypeState={subTypeState}
+                  tableHead={[]}
+                  subType="Manage Roles"
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={[]}
+                  activeRole={activeRole}
+                  setActiveRole={setActiveRole}
+                  type={type}
+                  roles={roles}
+                  permissionRender={permission?.Organization?.includes('organization:view-role')}
+                />
+              )}
+              {type === 'Organization' && (
+                <Starter
+                  search={true}
+                  print={false}
+                  btnText="Add Organization"
+                  btnAction="add_org"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.organization}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  data={allSuborgList}
+                  type={type}
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                />
+              )}
 
-            {type === 'LMS' && subTypeState === 'All settings' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                subType={'All settings'}
-                search={true}
-                print={false}
-                btnText="Add LMS settings"
-                btnAction="add_lms"
-                importUser={false}
-                filter={false}
-                tableHead={columnData.lmssettings}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={lmsProject}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                searchQueryChangeHandler={searchQueryChangeHandlerLMS}
-              />
-            )}
-            {type === 'LMS' && subTypeState === 'BrightCove' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                subType={'BrightCove'}
-                search={true}
-                print={false}
-                btnText="Add New Entry"
-                btnAction="add_brightcove"
-                importUser={false}
-                filter={false}
-                tableHead={columnData.IntegrationBrightCove}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={lmsBrightCove}
-                type={type}
-                searchQuery={searchQuery}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
-              />
-            )}
+              {type === 'LMS' && subTypeState === 'All settings' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  subType={'All settings'}
+                  search={true}
+                  print={false}
+                  btnText="Add LMS settings"
+                  btnAction="add_lms"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.lmssettings}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={lmsProject}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+                />
+              )}
+              {type === 'LMS' && subTypeState === 'BrightCove' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  subType={'BrightCove'}
+                  search={true}
+                  print={false}
+                  btnText="Add New Entry"
+                  btnAction="add_brightcove"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.IntegrationBrightCove}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={lmsBrightCove}
+                  type={type}
+                  searchQuery={searchQuery}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
+                />
+              )}
 
-            {type === 'Projects' && subTypeState === 'All Projects' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                search={true}
-                tableHead={columnData.projectAll}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={allProjectTab}
-                searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-                type={type}
-                importUser={true}
-                searchQueryProject={searchQueryProject}
-                setSearchQueryProject={setSearchQueryProject}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                subType={'All Projects'}
-                setSubTypeState={setSubTypeState}
-                projectFilterObj={projectFilterObj}
-                setProjectFilterObj={setProjectFilterObj}
-                filterSearch={filterSearch}
-                libraryReqSelected={libraryReqSelected}
-                setLibraryReqSelected={setLibraryReqSelected}
-                setCurrentTab={setCurrentTab}
-                setAllProjectTab={setAllProjectTab}
-                resetProjectFilter={resetProjectFilter}
-                setModalShow={setModalShow}
-                setrowData={setrowData}
-                setActivePageNumber={setActivePageNumber}
-              />
-            )}
-            {type === 'Projects' && subTypeState === 'Exported Projects' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                search={false}
-                tableHead={columnData.projectUser}
-                sortCol={[]}
-                search={true}
-                handleSort={handleSort}
-                data={allProjectUserTab}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                subType="Exported Projects"
-                setCurrentTab={setCurrentTab}
-                searchQueryProject={searchQueryProject}
-                setSearchQueryProject={setSearchQueryProject}
-                searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-              />
-            )}
-            {/* {type === 'Projects' && subTypeState === 'Library requests' && (
+              {type === 'Projects' && subTypeState === 'All Projects' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  search={true}
+                  tableHead={columnData.projectAll}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={allProjectTab}
+                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
+                  type={type}
+                  importUser={true}
+                  searchQueryProject={searchQueryProject}
+                  setSearchQueryProject={setSearchQueryProject}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  subType={'All Projects'}
+                  setSubTypeState={setSubTypeState}
+                  projectFilterObj={projectFilterObj}
+                  setProjectFilterObj={setProjectFilterObj}
+                  filterSearch={filterSearch}
+                  libraryReqSelected={libraryReqSelected}
+                  setLibraryReqSelected={setLibraryReqSelected}
+                  setCurrentTab={setCurrentTab}
+                  setAllProjectTab={setAllProjectTab}
+                  resetProjectFilter={resetProjectFilter}
+                  setModalShow={setModalShow}
+                  setrowData={setrowData}
+                  setActivePageNumber={setActivePageNumber}
+                />
+              )}
+              {type === 'Projects' && subTypeState === 'Exported Projects' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  search={false}
+                  tableHead={columnData.projectUser}
+                  sortCol={[]}
+                  search={true}
+                  handleSort={handleSort}
+                  data={allProjectUserTab}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  subType="Exported Projects"
+                  setCurrentTab={setCurrentTab}
+                  searchQueryProject={searchQueryProject}
+                  setSearchQueryProject={setSearchQueryProject}
+                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
+                />
+              )}
+              {/* {type === 'Projects' && subTypeState === 'Library requests' && (
               <Starter
                 paginationCounter={true}
                 size={size}
@@ -912,95 +869,168 @@ export default function Pills(props) {
                 filterSearch={filterSearch}
               />
             )} */}
-            {type === 'Activities' && subTypeState === 'Activity Types' && (
-              <Starter
-                search={true}
-                tableHead={columnData.ActivityTypes}
-                sortCol={columnData.ActivityTypesSortCol}
-                handleSort={handleSort}
-                subType={'Activity Types'}
-                searchQueryActivities={searchQueryActivities}
-                setSearchQueryActivities={setSearchQueryActivities}
-                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                btnText="Add Activity Type"
-                btnAction="add_activity_type"
-                data={activityTypes}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-              />
-            )}
-            {type === 'Activities' && subTypeState === 'Activity Items' && (
-              <Starter
-                search={true}
-                tableHead={columnData.ActivityItems}
-                sortCol={[]}
-                handleSort={handleSort}
-                subType={'Activity Items'}
-                searchQueryActivities={searchQueryActivities}
-                setSearchQueryActivities={setSearchQueryActivities}
-                searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                btnText="Add Activity Item"
-                btnAction="add_activity_item"
-                data={activityItems}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                selectedActivityType={selectedActivityType}
-                setSelectedActivityType={setSelectedActivityType}
-              />
-            )}
-            {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
-            {type === 'DefaultSso' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                search={true}
-                print={false}
-                btnText="Create New Default SSO"
-                btnAction="add_default_sso"
-                importUser={false}
-                filter={false}
-                tableHead={columnData.defaultsso}
-                sortCol={[]}
-                handleSort={handleSort}
-                data={defaultSso}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
-              />
-            )}
-            {type === 'LMS' && subTypeState === 'LTI Tools' && (
-              <Starter
-                paginationCounter={true}
-                size={size}
-                setSize={setSize}
-                subType={'LTI Tools'}
-                search={true}
-                print={false}
-                btnText="Create New LTI Tool"
-                btnAction="add_lti_tool"
-                importUser={false}
-                filter={false}
-                tableHead={columnData.ltitool}
-                sortCol={columnData.ltitoolSortCol}
-                handleSort={handleSort}
-                handleSort={handleSort}
-                data={ltiTool}
-                type={type}
-                setActivePage={setActivePage}
-                activePage={activePage}
-                searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
-              />
-            )}
-          </div>
-        </Tab>
-      ))}
+
+              {type === 'Activities' && subTypeState === 'Activity Types' && (
+                <Starter
+                  search={true}
+                  tableHead={columnData.ActivityTypes}
+                  sortCol={columnData.ActivityTypesSortCol}
+                  handleSort={handleSort}
+                  subType={'Activity Types'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add Activity Type"
+                  btnAction="add_activity_type"
+                  data={activityTypes}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                />
+              )}
+              {type === 'Activities' && subTypeState === 'Activity Items' && (
+                <Starter
+                  search={true}
+                  tableHead={columnData.ActivityItems}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Activity Items'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add Activity Item"
+                  btnAction="add_activity_item"
+                  data={activityItems}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+
+              {type === 'Activities' && subTypeState === 'Subjects' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Subjects'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new subject"
+                  btnAction="add_subject"
+                  data={subjects}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+
+              {type === 'Activities' && subTypeState === 'Education Level' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Education Level'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new education level"
+                  btnAction="add_education_level"
+                  data={educationLevel}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+
+              {type === 'Activities' && subTypeState === 'Author Tags' && (
+                <Starter
+                  search={false}
+                  tableHead={columnData.subjects}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  subType={'Author Tags'}
+                  searchQueryActivities={searchQueryActivities}
+                  setSearchQueryActivities={setSearchQueryActivities}
+                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add a new author tag"
+                  btnAction="add_author_tag"
+                  data={authorTag}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  selectedActivityType={selectedActivityType}
+                  setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+              {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
+              {type === 'DefaultSso' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  search={true}
+                  print={false}
+                  btnText="Create New Default SSO"
+                  btnAction="add_default_sso"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.defaultsso}
+                  sortCol={[]}
+                  handleSort={handleSort}
+                  data={defaultSso}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+                />
+              )}
+              {type === 'LMS' && subTypeState === 'LTI Tools' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  subType={'LTI Tools'}
+                  search={true}
+                  print={false}
+                  btnText="Create New LTI Tool"
+                  btnAction="add_lti_tool"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.ltitool}
+                  sortCol={columnData.ltitoolSortCol}
+                  handleSort={handleSort}
+                  handleSort={handleSort}
+                  data={ltiTool}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
+                />
+              )}
+            </div>
+          </Tab>
+        ))}
     </Tabs>
   );
 }

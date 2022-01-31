@@ -117,16 +117,6 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
   }
 };
 
-export const getIndexed = (projectId) => async () => {
-  const result = await projectService.getIndexed(projectId);
-  return result;
-};
-
-export const getElastic = (projectId) => async () => {
-  const result = await projectService.getelastic(projectId);
-  return result;
-};
-
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;

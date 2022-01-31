@@ -194,3 +194,30 @@ export const cancelRemoveUser = () => (dispatch) => {
     type: actionTypes.CANCEL_REMOVE_USER,
   });
 };
+
+export const getSubjects = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getSubjects(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_SUBECTS,
+    payload: result,
+  });
+  return result;
+};
+
+export const getEducationLevel = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getEducationLevel(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_EDUCATION_LEVEL,
+    payload: result,
+  });
+  return result;
+};
+
+export const getAuthorTag = (page, column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getAuthorTag(page, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_AUTHOR_TAGS,
+    payload: result,
+  });
+  return result;
+};

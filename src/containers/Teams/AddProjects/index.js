@@ -64,7 +64,7 @@ function AddProjectsPage(props) {
 
   return (
     <>
-      <div className="side-wrapper-team">
+      <div className="side-wrapper-team-projects">
         <div className="bread-crumb">
           <div className="main-flex-top">
             <div>
