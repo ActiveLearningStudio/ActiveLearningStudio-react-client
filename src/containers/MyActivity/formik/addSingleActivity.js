@@ -6,12 +6,12 @@ import LayoutCard from 'utils/LayoutCard/layoutcard';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import arrowdark from 'assets/images/arrowdark.png';
 import searchicon from 'assets/images/nteractiveactionssearch.png';
 import Tabs from 'utils/Tabs/tabs';
 import Buttons from 'utils/Buttons/buttons';
 import { useHistory } from 'react-router-dom';
-import { getSingleLayoutActivities } from 'store/actions/resource';
+import { getSingleLayoutActivities, loadResourceTypesAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 
 const ActivityLayout = (props) => {
@@ -32,6 +32,7 @@ const ActivityLayout = (props) => {
       autoClose: 10000,
       icon: '',
     });
+    dispatch(loadResourceTypesAction());
     dispatch(getSingleLayoutActivities());
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
@@ -45,7 +46,7 @@ const ActivityLayout = (props) => {
   }, [allActivity]);
   useEffect(() => {
     const setData = [];
-    allActivitytypes.forEach((data) => {
+    allActivitytypes?.forEach((data) => {
       setData.push(data.id);
     });
     setFilterData(setData);
@@ -53,17 +54,18 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select activity type" tabActive={true} />
-        <Tabs text="2.Build activity" className="ml-10 " />
+        <Tabs text="1. Select layout" tabActive={true} />
+        <Tabs text="2. Select activity" tabActive={true} className="ml-10 " />
+        <Tabs text="3. Create activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingOne text="Add an activity" color="#084892" />
+        <HeadingOne text="Select activity" color="#084892" />
       </div>
       <div className="activity-layout-paragraph">
         <Headings
           headingType="body2"
           color="#515151"
-          text="Within the six categories, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
+          text="Within the five activity types, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
         />
       </div>
       <div className="search-card-singleActivity">
@@ -82,9 +84,13 @@ const ActivityLayout = (props) => {
           <img src={searchicon} className="search-icon" alt="" />
         </div>
         <div class="dropdown-activity-select">
-          <div className="dropdown-title">Filter by activity type</div>
+          <div className="dropdown-title">
+            Filter by activity type
+            <img src={arrowdark} alt="arrow" />
+          </div>
+
           <div class="dropdown-content-select">
-            {allActivitytypes?.map((data, counter) => {
+            {allActivitytypes?.length > 0 && allActivitytypes?.map((data, counter) => {
               return (
                 <label>
                   <input
@@ -110,9 +116,9 @@ const ActivityLayout = (props) => {
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
-          {allActivitiesSingle?.map((data) => {
+          {allActivitiesSingle?.length > 0 && allActivitiesSingle?.map((data) => {
             return (
-              filterData.includes(data.activityType.id) && (
+              filterData.includes(data.activityType?.id) && (
                 <LayoutCard
                   image={data.image}
                   text={data.title}

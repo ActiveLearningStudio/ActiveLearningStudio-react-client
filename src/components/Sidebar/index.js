@@ -7,7 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import teamicon from 'assets/images/sidebar/users-team.svg';
 import administrate from 'assets/images/sidebar/administrate.png';
 import foldericon from 'assets/images/svg/projectFolder.svg';
+import interactiveVideo from 'assets/images/svg/Interactivevideos.svg';
 import { allSidebarProjects } from 'store/actions/project';
+import instanceadmin from 'assets/images/Instanceadmin.svg';
 
 import './style.scss';
 import { clearTeamPermissions } from 'store/actions/team';
@@ -26,7 +28,7 @@ function Sidebar(props) {
   }, []);
 
   const organization = useSelector((state) => state.organization);
-  const { permission } = organization;
+  const { permission, currentOrganization } = organization;
 
   useEffect(() => {
     if (location.pathname.includes('teams/')) {
@@ -63,6 +65,17 @@ function Sidebar(props) {
           </Link>
         </>
       )}
+      {/* Interactive videos */}
+      {permission?.Video?.includes('video:view') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/video`} onClick={() => dispatch(clearTeamPermissions())}>
+            <div className="row-sidebar">
+              <img src={interactiveVideo} alt="" />
+              <div className="sidebar-headings">My Interactive videos</div>
+            </div>
+          </Link>
+        </>
+      )}
       {permission?.Team?.includes('team:view') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
@@ -79,6 +92,17 @@ function Sidebar(props) {
             <div className="row-sidebar">
               <img src={administrate} alt="" />
               <div className="sidebar-headings">Admin Panel</div>
+            </div>
+          </Link>
+        </>
+      )}
+
+      {!currentOrganization?.parent && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instant-admin`} onClick={() => dispatch(clearTeamPermissions())}>
+            <div className="row-sidebar">
+              <img src={instanceadmin} alt="" />
+              <div className="sidebar-headings">Instance Admin</div>
             </div>
           </Link>
         </>

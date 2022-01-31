@@ -141,18 +141,20 @@ const ResourceCardDropdown = (props) => {
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
-                <li
-                  onClick={() => {
-                    handleShow();
-                    getProjectId(match.params.projectId);
-                    setProjectId(match.params.projectId);
-                    setProjectPlaylistId(playlist.id);
-                    setProjectPlaylistActivityId(resource.id);
-                    dispatch(googleShare(false));
-                  }}
-                >
-                  <a>Google Classroom</a>
-                </li>
+                {resource?.gcr_activity_visibility && (
+                  <li
+                    onClick={() => {
+                      handleShow();
+                      getProjectId(match.params.projectId);
+                      setProjectId(match.params.projectId);
+                      setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistActivityId(resource.id);
+                      dispatch(googleShare(false));
+                    }}
+                  >
+                    <a>Google Classroom</a>
+                  </li>
+                )}
                 {lmsSettings.map((data) => {
                   return (
                     data.lms_name === 'safarimontage' &&

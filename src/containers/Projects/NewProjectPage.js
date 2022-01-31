@@ -28,19 +28,18 @@ function NewProjectPage(props) {
           <BouncyDiv className="modal-content">
             <div className="modal-title">
               <div className="row">
+                <button type="button" className="close-btn" data-dismiss="modal" onClick={() => handleCloseProjectModal(false)}>
+                  <img
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                    src={close}
+                    alt="close"
+                  />
+                </button>
                 <div className="col-md-12">
-                  <h1 className="mt-4 mb-0">
+                  <h1 className="mb-0">
                     <span> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
-
-                    <button type="button" className="close-btn" data-dismiss="modal" onClick={() => handleCloseProjectModal(false)}>
-                      <img
-                        style={{
-                          cursor: 'pointer',
-                        }}
-                        src={close}
-                        alt="close"
-                      />
-                    </button>
                   </h1>
                 </div>
               </div>

@@ -1,8 +1,8 @@
-import Echo from 'laravel-echo';
+// import Echo from 'laravel-echo';
 import Swal from 'sweetalert2';
 
 import notification from 'services/notification.service';
-import socketConnection from 'services/http.service';
+// import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 
 export const getAllNotifications = () => async (dispatch) => {
@@ -16,10 +16,16 @@ export const getAllNotifications = () => async (dispatch) => {
 };
 
 export const clearAllNotification = () => async (dispatch) => {
-  await notification.readAllNotifications();
+  const notificationData = await notification.readAllNotifications();
   dispatch({
     type: actionTypes.CLEAR_ALL_NOTIFICATION,
   });
+  if (notificationData) {
+    dispatch({
+      type: actionTypes.ADD_ALL_NOTIFICATIONS,
+      payload: notificationData,
+    });
+  }
 };
 
 export const deleteNotification = (id) => async (dispatch) => {
@@ -32,12 +38,12 @@ export const deleteNotification = (id) => async (dispatch) => {
   });
 };
 
-export const cloneDuplicationRequest = (userId) => async (dispatch) => {
-  const echo = new Echo(socketConnection.notificationSocket());
-  echo.private(`App.User.${userId}`).notification((msg) => {
-    dispatch({
-      type: actionTypes.ADD_SINGLE_NOTIFICATION,
-      newNotifications: msg,
-    });
-  });
-};
+// export const cloneDuplicationRequest = (userId) => async (dispatch) => {
+//   const echo = new Echo(socketConnection.notificationSocket());
+//   echo.private(`App.User.${userId}`).notification((msg) => {
+//     dispatch({
+//       type: actionTypes.ADD_SINGLE_NOTIFICATION,
+//       newNotifications: msg,
+//     });
+//   });
+// };

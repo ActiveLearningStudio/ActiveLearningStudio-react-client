@@ -202,7 +202,7 @@ function PlaylistPreview(props) {
               to={
                 projectPreview === 'true'
                   ? // eslint-disable-next-line no-restricted-globals
-                    { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
+                  { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
                   : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
               }
             >
@@ -268,37 +268,6 @@ function PlaylistPreview(props) {
                       playlist={playlist.selectedPlaylist}
                       teamPermission={teamPermission || {}}
                     />
-                  </div>
-                </Tab>
-                {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
-                  <Tab eventKey="profile" title="Share">
-                    <div className="watcher spaner">
-                      {activityShared && (
-                        <div className="shared-link" onClick={viewSharedLink}>
-                          <FontAwesomeIcon icon="external-link-alt" className="mr-2" />
-                          View Shared Link
-                        </div>
-                      )}
-                      <div>
-                        Share Activity
-                        <Switch
-                          onColor="#084892"
-                          onChange={share}
-                          checked={activityShared}
-                          className="react-switch"
-                          id="material-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                        />
-                      </div>
-                    </div>
-                  </Tab>
-                )}
-                <Tab eventKey="contact" title="About">
-                  <div className="descr-">
-                    <div className="tti">description</div>
-                    <p>{selectedPlaylist.project.description}</p>
                   </div>
                 </Tab>
               </Tabs>

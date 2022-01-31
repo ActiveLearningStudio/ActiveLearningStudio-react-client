@@ -139,17 +139,20 @@ const ProjectCardDropdown = (props) => {
                 Publish
               </a>
               <ul className="dropdown-menu check">
-                <li
-                  key={`googleclassroom +${project.id}`}
-                  onClick={() => {
-                    handleShow();
-                    getProjectId(project.id);
-                    setProjectId(props.project.id);
-                    dispatch(googleShare(false));
-                  }}
-                >
-                  <a>Google Classroom</a>
-                </li>
+                {project?.gcr_project_visibility && (
+                  <li
+                    key={`googleclassroom +${project.id}`}
+                    onClick={() => {
+                      handleShow();
+                      getProjectId(project.id);
+                      // eslint-disable-next-line react/destructuring-assignment
+                      setProjectId(props.project.id);
+                      dispatch(googleShare(false));
+                    }}
+                  >
+                    <a>Google Classroom</a>
+                  </li>
+                )}
 
                 {allLms.shareVendors
                   && allLms.shareVendors.map(

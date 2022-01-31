@@ -7,11 +7,11 @@ import { Helmet } from 'react-helmet';
 import logo from 'assets/images/studio_new_logo.png';
 import loader from 'assets/images/dotsloader.gif';
 import { getUserAction } from 'store/actions/auth';
-import { cloneDuplicationRequest } from 'store/actions/notification';
+// import { cloneDuplicationRequest } from 'store/actions/notification';
 import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/actions/organization';
-import { updatedActivity } from 'store/actions/resource';
-import { updatedProject } from 'store/actions/project';
-import { updatedPlaylist } from 'store/actions/playlist';
+//import { updatedActivity } from 'store/actions/resource';
+//import { updatedProject } from 'store/actions/project';
+//import { updatedPlaylist } from 'store/actions/playlist';
 import AppRouter from 'routers/AppRouter';
 import Help from './help';
 
@@ -30,10 +30,10 @@ function App(props) {
   useEffect(() => {
     if (userDetails) {
       if (activeOrganization) {
-        dispatch(cloneDuplicationRequest(userDetails.id));
-        dispatch(updatedProject(userDetails.id));
-        dispatch(updatedPlaylist(userDetails.id));
-        dispatch(updatedActivity(userDetails.id));
+        // dispatch(cloneDuplicationRequest(userDetails.id));
+        // dispatch(updatedProject(userDetails.id));
+        // dispatch(updatedPlaylist(userDetails.id));
+        // dispatch(updatedActivity(userDetails.id));
       }
       if (runOnce) {
         runOnce = false;
@@ -61,6 +61,17 @@ function App(props) {
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
           }
+        } else if (window.location.pathname.includes('/preview')) {
+          const subDomain = localStorage.getItem('current_org');
+          (async () => {
+            const result = dispatch(getBranding(subDomain));
+            result
+              .then((data) => {
+                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                dispatch(getAllPermission(data?.organization?.id));
+              })
+              .catch((err) => err && window.location.replace('/org/currikistudio'));
+          })();
         }
       }
     }

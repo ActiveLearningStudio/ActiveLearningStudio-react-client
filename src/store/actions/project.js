@@ -1,14 +1,13 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import Echo from 'laravel-echo';
+// import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
-import groupService from 'services/group.service';
 import teamService from 'services/team.service';
-import socketConnection from 'services/http.service';
+// import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -31,10 +30,10 @@ export const allSidebarProjects = () => async (dispatch) => {
   const { organization: { activeOrganization } } = centralizedState;
   const { projects } = await projectService.getAll(activeOrganization.id);
   const { teams } = await teamService.getAll(activeOrganization.id);
-  const { groups } = await groupService.getAll(activeOrganization.id);
+  // const { groups } = await groupService.getAll(activeOrganization.id);
   dispatch({
     type: actionTypes.SIDEBAR_ALL_PROJECT,
-    data: { projects, teams, groups },
+    data: { projects, teams },
   });
 };
 export const createProjectAction = (data) => async (dispatch) => {
@@ -111,16 +110,6 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_FAIL,
     });
   }
-};
-
-export const getIndexed = (projectId) => async () => {
-  const result = await projectService.getIndexed(projectId);
-  return result;
-};
-
-export const getElastic = (projectId) => async () => {
-  const result = await projectService.getelastic(projectId);
-  return result;
 };
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
@@ -333,7 +322,7 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName) => async (dispatch) => {
+export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
@@ -342,13 +331,13 @@ export const toggleProjectShareAction = (projectId, ProjectName) => async (dispa
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   const protocol = `${window.location.href.split('/')[0]}//`;
   const url = `${protocol + window.location.host}/project/${projectId}/shared`;
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, projectName) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
@@ -357,7 +346,7 @@ export const toggleProjectShareRemovedAction = (projectId, projectName) => async
     type: actionTypes.SHARE_PROJECT,
     payload: { project },
   });
-
+  if (adminPanel) return project;
   Swal.fire({
     title: `You stopped sharing <strong>"${projectName}"</strong> !`,
     html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
@@ -714,33 +703,43 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
   }
 };
 
-export const updatedProject = (userId) => async () => {
-  const echo = new Echo(socketConnection.notificationSocket());
+// export const updatedProject = (userId) => async () => {
+//   const echo = new Echo(socketConnection.notificationSocket());
 
-  echo.private('project-update')
-    .listen('ProjectUpdatedEvent', (msg) => {
-      if (msg.userId !== userId) {
-        const path = window.location.pathname;
-        if (path.includes(`project/${msg.projectId}`)) {
-          Swal.fire({
-            title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            denyButtonText: 'No',
-          })
-            .then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-        }
-      }
-    });
-};
+//   echo.private('project-update')
+//     .listen('ProjectUpdatedEvent', (msg) => {
+//       if (msg.userId !== userId) {
+//         const path = window.location.pathname;
+//         if (path.includes(`project/${msg.projectId}`)) {
+//           Swal.fire({
+//             title: 'This project has been modified by other team member. Are you ok to refresh page to see what is updated?',
+//             showDenyButton: true,
+//             showCancelButton: true,
+//             confirmButtonText: 'Yes',
+//             denyButtonText: 'No',
+//           })
+//             .then((result) => {
+//               if (result.isConfirmed) {
+//                 window.location.reload();
+//               }
+//             });
+//         }
+//       }
+//     });
+// };
 
 export const clearProjectSelected = () => (dispatch) => {
   dispatch({
     type: actionTypes.CLEAR_PROJECT_SELECT,
+  });
+};
+
+export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const { project } = await projectService.searchPreviewProject(activeOrganization?.id, projectId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_PROJECT,
+    payload: project,
   });
 };

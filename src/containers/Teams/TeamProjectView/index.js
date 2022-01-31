@@ -18,7 +18,7 @@ import { getProjectId, googleShare } from 'store/actions/gapi';
 
 function TeamProjectView(props) {
   const {
-    team: { users, projects, id },
+    team,
     user,
     removeProject,
     removeMember,
@@ -30,7 +30,7 @@ function TeamProjectView(props) {
   // const { permission } = organization;
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [show, setShow] = useState(false);
-  const authUser = users.find((u) => u.id === (user || {}).id);
+  const authUser = team?.users?.find((u) => u.id === (user || {}).id);
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
   const handleShow = () => {
@@ -45,8 +45,8 @@ function TeamProjectView(props) {
   }, [AllLms, AllLms.shareVendors]);
   // Fetch team permission if page reloads
   useEffect(() => {
-    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && id) {
-      dispatch(getTeamPermission(organization?.currentOrganization?.id, id));
+    if (Object.keys(teamPermission).length === 0 && organization?.currentOrganization?.id && team?.id) {
+      dispatch(getTeamPermission(organization?.currentOrganization?.id, team?.id));
     }
   }, [teamPermission]);
   useEffect(() => {
@@ -56,7 +56,7 @@ function TeamProjectView(props) {
   }, [notification?.today]);
   const removeProjectSubmit = useCallback(
     (projectId) => {
-      removeProject(id, projectId).catch(() => {
+      removeProject(team?.id, projectId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -64,12 +64,12 @@ function TeamProjectView(props) {
         });
       });
     },
-    [id, removeProject]
+    [team?.id, removeProject]
   );
 
   const removeMemberSubmit = useCallback(
     (projectId, userId) => {
-      removeMember(id, projectId, userId).catch(() => {
+      removeMember(team?.id, projectId, userId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -77,7 +77,7 @@ function TeamProjectView(props) {
         });
       });
     },
-    [id, removeMember]
+    [team?.id, removeMember]
   );
 
   return (
@@ -93,7 +93,7 @@ function TeamProjectView(props) {
 
       <div className="projects-wrapper">
         <div className="project-list">
-          {projects.map((project) => (
+          {team?.projects.map((project) => (
             <div key={project.id} className="project-content-item">
               <div
                 className="project-img"
@@ -130,18 +130,19 @@ function TeamProjectView(props) {
                           Publish
                         </a>
                         <ul className="dropdown-menu check">
-                          <li
-                            key={`googleclassroom + ${project.id}`}
-                            onClick={() => {
-                              handleShow();
-                              getProjectId(project.id);
-                              setSelectedProjectId(project.id);
-                              dispatch(googleShare(false));
-                            }}
-                          >
-                            <a>Google Classroom</a>
-                          </li>
-
+                          {project?.gcr_project_visibility && (
+                            <li
+                              key={`googleclassroom + ${project.id}`}
+                              onClick={() => {
+                                handleShow();
+                                getProjectId(project.id);
+                                setSelectedProjectId(project.id);
+                                dispatch(googleShare(false));
+                              }}
+                            >
+                              <a>Google Classroom</a>
+                            </li>
+                          )}
                           {allLms?.shareVendors &&
                             allLms.shareVendors.map(
                               (data) =>

@@ -47,8 +47,8 @@ const branding = (domain) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubOrganizationList = (id) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/index`)
+const getSubOrganizationList = (id, size, page) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/index?size=${size}&page=${page}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -118,7 +118,7 @@ const removeUserFromOrganization = (subOrgId, body) => httpService
   });
 
 const searchUserInOrganization = (id, query, page, role) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}&page=${page}&role=${role}`)
+  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}${page ? `&page=${page}` : ''}${role ? `&role=${role}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

@@ -1,0 +1,527 @@
+@import 'assets/css/index';
+
+.myvideomain {
+  .inner-content {
+    background: $white;
+    padding: 32px 30px 30px;
+    // margin: 13px 39px 81px 29px;
+    border-radius: 3px;
+    min-height: 764px;
+    @media screen and (max-width: 1024px) {
+      margin: 13px 20px 81px 20px;
+    }
+    .topHeading-video-detail {
+      display: flex;
+      flex-direction: column;
+      .topHeading {
+        display: flex;
+        justify-content: space-between;
+        // align-items: center;
+        align-items: flex-end;
+      }
+      .top-video-detail {
+        margin-top: 15px;
+        .video-title-btn {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .video-detail {
+          // margin-top: 15px;
+        }
+      }
+    }
+    .my-interactive-videos {
+      .top-tabs {
+        border-bottom: 1px solid #084892;
+
+        .nav-link.active {
+          border-color: #084892 #084892 #fff;
+        }
+      }
+    }
+    .video-default-contianer {
+      padding-top: 122px;
+      padding-left: 104px;
+      .video-heading-1 {
+        h2 {
+          border: none !important;
+          font-weight: 500;
+          font-size: 32px;
+          line-height: 38px;
+        }
+      }
+      .video-heading-2 {
+        width: 577px;
+        p {
+          font-size: 18px !important;
+          line-height: 26px !important;
+        }
+      }
+      .video-heading-3 {
+        margin: 24px 0;
+        h3 {
+          font-weight: 600;
+          font-size: 17px;
+          line-height: 26px;
+        }
+      }
+      .vedio-help {
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 26px;
+          span {
+            color: $curriki-main-blue;
+          }
+        }
+      }
+    }
+
+    .video-cards-top-search-filter {
+      display: flex;
+      // justify-content: space-between;
+      align-items: center;
+      padding: 20px 10px;
+      width: 100%;
+      flex-wrap: wrap;
+      margin: 16px 0px 22px;
+      background-color: #f7faff;
+      .search-bar {
+        position: relative;
+        margin-right: 33px;
+        input {
+          border: none;
+          color: $fun-blue-1;
+          border-bottom: 1px solid $fun-blue-1;
+          font-weight: 400;
+          background: none;
+          font-size: 14px;
+          width: 238px;
+          padding-right: 20px;
+          &::placeholder {
+            color: $fun-blue-1;
+          }
+        }
+
+        img {
+          position: absolute;
+          right: 0;
+          bottom: 4px;
+        }
+      }
+      .video-filter-bar {
+        display: flex;
+        align-items: center;
+        span {
+          font-weight: 400;
+          color: $curriki-main-blue;
+          font-size: 18px;
+          margin-left: 12px;
+        }
+      }
+    }
+    .video-cards-detail {
+      display: flex;
+      flex-wrap: wrap;
+      .card-spacing {
+        margin-top: 16px;
+      }
+    }
+  }
+}
+
+.form-new-popup-myvideo {
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1060;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 285px;
+  .cross-all-pop {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 99999;
+  }
+  .inner-form-content {
+    position: absolute;
+    right: 0;
+    background: #fff;
+    opacity: 1;
+    width: 1120px;
+    height: 100vh;
+    padding: 50px;
+  }
+}
+
+.add-video-form {
+  // padding: 0 50px;
+
+  .add-video-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ml-10 {
+      margin-left: 10px;
+    }
+    .mt-10 {
+      margin-top: 15px;
+    }
+  }
+  .add-video-title-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .add-video-title {
+      // margin-top: 50px;
+      width: max-content;
+      h2 {
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 38px;
+      }
+    }
+    .add-video-tour {
+      .ml-9 {
+        margin-right: 9px;
+      }
+      span {
+        cursor: pointer;
+        width: 69px;
+        height: 32px;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #084892;
+        background: #f7faff;
+        border-radius: 4px;
+        padding: 9px;
+      }
+    }
+  }
+  .add-video-form-tabs {
+    .main-tabs {
+      border-bottom: 1px solid $curriki-main-blue;
+      width: max-content;
+      .nav-item {
+        margin-top: 24px;
+        background: transparent !important;
+        color: $curriki-main-blue !important;
+        // width: 160px;
+        height: 36px;
+        padding: 8px 0px 8px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-style: normal;
+        font-weight: normal !important;
+        font-size: 14px;
+        line-height: 20px;
+
+        // margin-right: 8px;
+      }
+    }
+
+    .main-tabs .nav-item.active {
+      background-color: $white !important;
+      color: $fun-blue-1 !important;
+      border: none !important;
+      border-bottom: 4px solid $curriki-main-blue !important;
+      font-weight: 500 !important;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .main-tabs .nav-item.active:after {
+      display: none !important;
+    }
+    .nav-tabs .nav-link {
+      border: none !important;
+    }
+    .nav-tabs .nav-link:hover {
+      border: none !important;
+      border-bottom: 4px solid $curriki-main-blue !important;
+    }
+  }
+  .add-video-layout-formik {
+    // @media screen and (max-width: 1024px) {
+    //   width: 280px;
+    // }
+    // max-width: 500px;
+    // margin-top: 34px;
+
+    .layout-title-formik-textField {
+      display: flex;
+      align-items: center;
+      margin-top: 16px;
+      img {
+        width: 76px;
+        height: 32px;
+        margin-right: 16px;
+      }
+      .textField-title {
+        h3 {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 17px;
+        }
+      }
+      .textField-detailText {
+        p {
+          font-size: 12px;
+          line-height: 16px;
+        }
+      }
+      input {
+        width: 380px;
+        height: 36px;
+        outline: none;
+        background: #ffffff;
+        border: 1px solid #515151;
+        border-radius: 4px;
+        text-indent: 10px;
+      }
+      .ml-32 {
+        margin-left: 32px;
+      }
+    }
+  }
+  .describe-video {
+    position: absolute;
+    bottom: 80px;
+    right: 80px;
+  }
+}
+
+// Describe Video
+.add-describevideo-form {
+  // padding: 0 50px;
+
+  .add-describevideo-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .ml-10 {
+      margin-left: 10px;
+    }
+    .mt-10 {
+      margin-top: 15px;
+    }
+  }
+  .add-describevideo-title-select {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .add-describevideo-title {
+      // margin-top: 50px;
+      width: max-content;
+      h2 {
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 38px;
+      }
+    }
+    .add-describevideo-tour {
+      .ml-9 {
+        margin-right: 9px;
+      }
+      span {
+        cursor: pointer;
+        width: 69px;
+        height: 32px;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #084892;
+        background: #f7faff;
+        border-radius: 4px;
+        padding: 9px;
+      }
+    }
+  }
+  .add-describevideo-form-tabs {
+    .main-tabs {
+      border-bottom: 1px solid $curriki-main-blue;
+      width: max-content;
+      .nav-item {
+        margin-top: 24px;
+        background: transparent !important;
+        color: $curriki-main-blue !important;
+        // width: 160px;
+        height: 36px;
+        padding: 8px 0px 8px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-style: normal;
+        font-weight: normal !important;
+        font-size: 14px;
+        line-height: 20px;
+
+        // margin-right: 8px;
+      }
+    }
+
+    .main-tabs .nav-item.active {
+      background-color: $white !important;
+      color: $fun-blue-1 !important;
+      border: none !important;
+      border-bottom: 2px solid $curriki-main-blue !important;
+    }
+    .main-tabs .nav-item.active:after {
+      display: none !important;
+    }
+  }
+  .add-describevideo-section-layout-formik {
+    display: flex;
+
+    .add-describevideo-layout-formik {
+      // @media screen and (max-width: 1024px) {
+      //   width: 280px;
+      // }
+      form {
+        display: flex;
+        // justify-content: space-between;
+      }
+      // max-width: 472px;
+      // margin-right: 128px;
+      // margin-top: 34px;
+
+      .dec-title-formik-textField {
+        margin-top: 16px;
+        span {
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 20px;
+          display: flex;
+          color: #515151;
+        }
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 16px;
+          display: flex;
+          color: #515151;
+          margin-bottom: 0px !important;
+        }
+        .textField-title {
+          h3 {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+          }
+        }
+        .textField-detailText {
+          p {
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+        input {
+          width: 472px;
+          height: 36px;
+          outline: none;
+          background: #ffffff;
+          border: 1px solid #515151;
+          border-radius: 4px;
+          text-indent: 10px;
+        }
+        textarea {
+          width: 472px;
+          // height: 40px;
+          outline: none;
+          background: #ffffff;
+          border: 1px solid #515151;
+          border-radius: 4px;
+          text-indent: 10px;
+          padding: 8px;
+        }
+        .ml-32 {
+          margin-left: 32px;
+        }
+      }
+      .layout-formik-select {
+        margin-top: 16px;
+        display: flex;
+        .formik-select {
+          flex: 1;
+          .formik-select-title {
+            margin: 0;
+          }
+          select {
+            width: 220px;
+            height: 36px;
+            background: #ffffff;
+            border: 1px solid #515151;
+            border-radius: 4px;
+            padding: 0 8px;
+          }
+        }
+        .mr-32 {
+          margin-right: 16px;
+        }
+      }
+    }
+    .describe-video-upload-section {
+      margin-left: 100px;
+      .uploadImage-describe-video {
+        .uploadimage-box {
+          width: 360px;
+          height: 203px;
+        }
+      }
+    }
+  }
+
+  .describe-video {
+    position: absolute;
+    bottom: 80px;
+    right: 80px;
+    display: flex;
+    button {
+      margin-left: 15px;
+    }
+  }
+}
+
+.z-index {
+  z-index: 0;
+}
+
+.main-tabs .nav-item {
+  margin-top: 24px;
+  background-color: $fun-blue-1 !important;
+  color: $white !important;
+  width: 160px;
+  height: 36px;
+  padding: 8px 0px 8px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500 !important;
+  margin-right: 8px;
+}
+
+.main-tabs .nav-item.active {
+  background-color: $white !important;
+  color: $fun-blue-1 !important;
+  border-bottom: #fff !important;
+}
+.main-tabs .nav-item.active:after {
+  display: none !important;
+}

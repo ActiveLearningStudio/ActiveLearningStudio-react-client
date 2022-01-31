@@ -17,6 +17,11 @@ const INITIAL_STATE = {
   newlyCreated: null,
   newlyEdit: null,
   currentProject: null,
+  ltiTools: [],
+  defaultSso: [],
+  lmsIntegration: [],
+  removeUser: null,
+  allbrightCove: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -60,6 +65,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editUser: action.payload,
+      };
+    case actionTypes.LOAD_RESOURCE_ITEMS_REQUEST:
+      const refreshActivityItems = state.activityItems.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        activityItems: { ...state.activityItems, data: refreshActivityItems },
       };
     case actionTypes.GET_ACTIVITY_TYPES:
       return {
@@ -111,6 +122,59 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         currentProject: action.payload,
       };
+    case actionTypes.GET_LTI_TOOLS:
+      return {
+        ...state,
+        ltiTools: action.payload,
+      };
+    case actionTypes.GET_DEFAULT_SSO:
+      return {
+        ...state,
+        defaultSso: action.payload,
+      };
+    case actionTypes.GET_LMS_INTEGRATION:
+      return {
+        ...state,
+        lmsIntegration: action.payload,
+      };
+    case actionTypes.SHOW_REMOVE_USER:
+      return {
+        ...state,
+        removeUser: action.payload,
+      };
+    case actionTypes.CANCEL_REMOVE_USER:
+      return {
+        ...state,
+        removeUser: null,
+      };
+    case actionTypes.UP_ALL_BRIGHTCOVE:
+      return {
+        ...state,
+        allbrightCove: action.payload || [],
+      };
+    case actionTypes.NEW_BRIGHTCOVE:
+      return {
+        ...state,
+        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+      };
+    case actionTypes.DEL_BRIGHTCOVE:
+      const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        allbrightCove: { ...state.allbrightCove, data: newBrigthList },
+      };
+    case actionTypes.EDIT_BRIGHTCOVE:
+      const newBrigthListEdit = state.allbrightCove.data.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
+      };
+
     default:
       return state;
   }

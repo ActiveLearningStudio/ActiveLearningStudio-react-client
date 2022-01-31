@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -6,13 +8,8 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { required, FadeDiv } from 'utils';
-import {
-  loadResourceItemsAction,
-  showDescribeActivityAction,
-  onChangeActivityAction,
-  showCreateResourceActivityAction,
-  saveSearchKeyInCreation,
-} from 'store/actions/resource';
+import { loadResourceItemsAction, showDescribeActivityAction, onChangeActivityAction, showCreateResourceActivityAction, saveSearchKeyInCreation } from 'store/actions/resource';
+
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
 // import AddResourceSidebar from './AddResourceSidebar';
@@ -44,7 +41,7 @@ let ResourceSelectActivity = (props) => {
       setActivities(data);
       saveSearchKey(e.target.value.toLowerCase());
     },
-    [saveSearchKey, searchActivities],
+    [saveSearchKey, searchActivities]
   );
 
   // useEffect(() => {
@@ -64,7 +61,7 @@ let ResourceSelectActivity = (props) => {
         }
         setSearchActivities(activityItems);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, [loadResourceItems, resource.newResource.activityTypeId]);
 
   const questionsContent = activities.map((activity) => (
@@ -88,9 +85,7 @@ let ResourceSelectActivity = (props) => {
             <div
               className="activity-img"
               style={{
-                backgroundImage: activity.image.includes('pexels.com')
-                  ? `url(${activity.image})`
-                  : `url(${global.config.resourceUrl}${activity.image})`,
+                backgroundImage: activity.image.includes('pexels.com') ? `url(${activity.image})` : `url(${global.config.resourceUrl}${activity.image})`,
               }}
             />
 
@@ -162,12 +157,7 @@ let ResourceSelectActivity = (props) => {
                 <div className="col-md-12">
                   <div className="shadowbox">
                     <div className="search-box">
-                      <input
-                        type="text"
-                        placeholder="Search activity"
-                        onChange={searchActivity}
-                        defaultValue={resource.searchKey}
-                      />
+                      <input type="text" placeholder="Search activity" onChange={searchActivity} defaultValue={resource.searchKey} />
                       <FontAwesomeIcon icon="search" />
                     </div>
                   </div>
@@ -175,11 +165,7 @@ let ResourceSelectActivity = (props) => {
               </div>
 
               <div>
-                <form
-                  className="row meta-form"
-                  onSubmit={handleSubmit}
-                  autoComplete="off"
-                >
+                <form className="row meta-form" onSubmit={handleSubmit} autoComplete="off">
                   <div className="scroll-blog">
                     <div className="row">{questionsContent}</div>
                   </div>
@@ -190,12 +176,7 @@ let ResourceSelectActivity = (props) => {
         </div>
       </div>
 
-      <MyVerticallyCenteredModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        activity={currentActivity}
-        activeType={activeType}
-      />
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} activeType={activeType} />
     </>
   );
 };
@@ -242,6 +223,4 @@ const mapStateToProps = (state) => ({
   resource: state.resource,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceSelectActivity),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceSelectActivity));

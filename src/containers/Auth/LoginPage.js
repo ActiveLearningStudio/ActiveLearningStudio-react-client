@@ -144,8 +144,6 @@ class LoginPage extends React.Component {
                   )}
                   onSuccess={this.onGoogleLoginSuccess}
                   onFailure={this.onGoogleLoginFailure}
-                  // eslint-disable-next-line max-len
-                  scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                   cookiePolicy="single_host_origin"
                 />
               </div>
@@ -290,16 +288,14 @@ class LoginPage extends React.Component {
                               )}
                               onSuccess={this.onGoogleLoginSuccess}
                               onFailure={this.onGoogleLoginFailure}
-                              // eslint-disable-next-line max-len
-                              scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                               cookiePolicy="single_host_origin"
                             />
                           </div>
                         </>
                       ) : null}
                       <div className="termsandcondition">
-                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s <a href="https://www.curriki.org/terms-of-service/">Terms of Use</a> and{' '}
-                        <a href="https://www.curriki.org/privacy-policy/">Privacy Policy.</a>
+                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>Terms of Use</a> and{' '}
+                        <a target="_blank" href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}>Privacy Policy.</a>
                       </div>
                     </form>
                   </div>
