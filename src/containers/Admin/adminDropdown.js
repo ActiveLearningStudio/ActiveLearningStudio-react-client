@@ -400,10 +400,10 @@ const AdminDropdown = (props) => {
                   onClick={() => {
                     if (subType === 'Activity Items') {
                       selectActivityItem();
-                      dispatch(selectActivityItem(type1));
+                      dispatch(selectActivityItem(row));
                       dispatch(setActiveAdminForm('edit_activity_item'));
                     } else {
-                      dispatch(selectActivityType(type1));
+                      dispatch(selectActivityType(row));
                       dispatch(setActiveAdminForm('edit_activity_type'));
                     }
                   }}
@@ -429,10 +429,10 @@ const AdminDropdown = (props) => {
                         Swal.showLoading();
                         var resultDel;
                         if (subType === 'Activity Items') {
-                          resultDel = await dispatch(deleteActivityItem(type1.id));
-                          dispatch(loadResourceItemAction(type1.id));
+                          resultDel = await dispatch(deleteActivityItem(row.id));
+                          dispatch(loadResourceItemAction(row.id));
                         } else {
-                          resultDel = await dispatch(deleteActivityType(type1.id));
+                          resultDel = await dispatch(deleteActivityType(row.id));
 
                           if (resultDel) {
                             Swal.fire({

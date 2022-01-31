@@ -68,8 +68,8 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   return result;
 };
 
-export const getActivityTypes = (query) => async (dispatch) => {
-  const result = await adminService.getActivityTypes(query);
+export const getActivityTypes = (page, column = '', orderBy = '', search = '') => async (dispatch) => {
+  const result = await adminService.getActivityTypes(page, column, orderBy, search);
   dispatch({
     type: actionTypes.GET_ACTIVITY_TYPES,
     payload: result,

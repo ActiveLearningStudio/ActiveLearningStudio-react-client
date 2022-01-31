@@ -743,42 +743,54 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Activities' &&
+              {type === 'Activities' &&
               subType === 'Activity Types' &&
-              (data ? (
-                data?.map((type1) => (
-                  <tr key={type1} className="admin-panel-rows">
-                    <td>
-                      <div className="admin-name-img">
-                        <div
-                          style={{
-                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'contain',
-                          }}
-                          className="image-size"
-                        ></div>
-                        <Link className="admin-name">{type1.title}</Link>
-                      </div>
-                    </td>
-                    <td>{type1.order}</td>
-                    <td>
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-type-' + row.id} className="admin-panel-rows">
+                      <td>
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+                          <Link className="admin-name">{row.title}</Link>
+                        </div>
+                      </td>
+                      <td>{row.order}</td>
+                      <td>
                       <div className="admin-panel-dropdown">
                         <div className="admin-description2 ">
-                          {type1.activityItems.map((item) => (
+                          {row.activityItems.map((item) => (
                             <div>{item.title + ','}</div>
                           ))}
                         </div>
                         <div>
-                          <AdminDropdown type={type} type1={type1} subType={subType} />
+                          <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
                         </div>
                       </div>
                     </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No activity type found.</Alert>
+                    </td>
                   </tr>
-                ))
+                )
               ) : (
-                <Alert variant="warning">No activity type found</Alert>
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
               ))}
             {type === 'Activities' &&
               subType === 'Activity Items' &&

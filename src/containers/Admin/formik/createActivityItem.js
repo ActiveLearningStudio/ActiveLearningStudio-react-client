@@ -181,8 +181,8 @@ export default function CreateActivityItem(props) {
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
                     <option value=""> </option>
-                    {activityTypes?.length > 0 &&
-                      activityTypes?.map((type) => (
+                    {activityTypes?.data.length > 0 &&
+                      activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
                           {type?.title}
                         </option>

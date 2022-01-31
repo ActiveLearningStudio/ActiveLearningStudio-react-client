@@ -544,7 +544,7 @@ function Controller(props) {
 
                 <Dropdown.Menu>
                   {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
-                  {activityTypes?.map((item) => (
+                  {activityTypes?.data.map((item) => (
                     <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>

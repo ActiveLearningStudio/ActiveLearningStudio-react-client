@@ -20,6 +20,7 @@ import {
   getSubjects,
   getEducationLevel,
   getAuthorTag,
+  getActivityTypes,
 } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
@@ -290,9 +291,9 @@ export default function Pills(props) {
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
+    if (type === 'Activities' && subTypeState === 'Activity Types' && activePage) {
       //pagination
-      dispatch(loadResourceTypesAction('', activePage));
+      dispatch(getActivityTypes(activePage));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
@@ -605,7 +606,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      dispatch(getActivityTypes(activePage || 1, col, orderBy));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
     }

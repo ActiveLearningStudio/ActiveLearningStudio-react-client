@@ -18,15 +18,15 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const { activityTypes } = await resourceService.getTypes();
+    const result = await resourceService.getTypes();
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
-      payload: { activityTypes },
+      payload: result,
     });
     dispatch({
       type: actionTypes.GET_ACTIVITY_TYPES,
-      payload: { activityTypes },
+      payload: result,
     });
   } catch (e) {
     dispatch({

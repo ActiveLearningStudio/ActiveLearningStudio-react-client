@@ -136,8 +136,8 @@ const getLmsProjectSearch = (subOrgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getActivityTypes = (query) => httpService
-  .get(`/${apiVersion}/activity-types?query=${query}`)
+const getActivityTypes = (page, column, orderBy, search) => httpService
+  .get(`/${apiVersion}/activity-types?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
