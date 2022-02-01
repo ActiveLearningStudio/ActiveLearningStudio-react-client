@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import "./teamprojectcard.scss";
-import ActivityCardDropDown from "utils/ActivityCardDropDown/activitycarddropdown";
-import ProjectPlayList from "utils/ProjectPlayList/projectplaylist";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEye, faLink } from "@fortawesome/free-solid-svg-icons";
+import Swal from 'sweetalert2';
 
 const TeamProjectCard = ({ className, backgroundImg, title, setSelectProject, selectProject, project }) => {
   const currikiUtility = classNames(
@@ -17,7 +14,7 @@ const TeamProjectCard = ({ className, backgroundImg, title, setSelectProject, se
     <div className={currikiUtility}>
       <div
         className={
-          selectProject.includes(project.id)
+          selectProject[0] === project.id
             ? "teamproject-card-top select-project-status"
             : " teamproject-card-top noselect-project-status"
         }
@@ -25,21 +22,28 @@ const TeamProjectCard = ({ className, backgroundImg, title, setSelectProject, se
       >
         <div className="project-checkbox-select">
           <label className="checkbox_section">
-            <input type="checkbox" />
-            <span
+            <div className="assign-project-radio"
               onClick={() => {
-                if (selectProject.includes(project.id)) {
-                  setSelectProject(selectProject.filter(item => item !== project.id));
+                if (selectProject.length === 0) {
+                  setSelectProject([project.id]);
+                } else if (selectProject[0] === project.id) {
+                  setSelectProject([]);
                 } else {
-                  setSelectProject([...selectProject, project.id]);
+                  Swal.fire({
+                    icon: 'warning',
+                    title: 'Action Prohibited',
+                    text: 'You are only allowed to select 1 project.',
+                  });
                 }
               }}
-            ></span>
+            >
+              {(selectProject[0] === project.id) && <span className="checkmark" />}
+            </div>
           </label>
         </div>
         <div className="teamproject-card-title">
           <h2>{title}</h2>
-          <div>Created date: {project?.created_at.split('T')[0]}</div>
+          <div>Updated date: {project?.updated_at.split('T')[0]}</div>
         </div>
       </div>
     </div>

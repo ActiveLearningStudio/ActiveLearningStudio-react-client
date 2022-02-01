@@ -36,6 +36,7 @@ const AddTeamProjects = (props) => {
   const [loading, setLoading] = useState(true);
   const [selectProject, setSelectProject] = useState([]);
   const projectReduxState = useSelector((state) => state.project);
+  const { teamPermission } = useSelector((state) => state.team);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
     if (location.pathname.includes('/teams/add-projects') && !newTeam?.name && organization?.domain) {
@@ -47,9 +48,9 @@ const AddTeamProjects = (props) => {
   }, [organization]);
   // useEffect to add projects to new team as we select them
   useEffect(() => {
-    if (newTeam?.projects) {
+    if (newTeam?.projects && newTeam?.name) {
       newTeamData({ ...newTeam, projects: [...selectProject] });
-    } else {
+    } else if (selectProject.length > 0 && newTeam?.name) {
       newTeamData({ ...newTeam, projects: [...selectProject] });
     }
   }, [selectProject]);
@@ -133,7 +134,7 @@ const AddTeamProjects = (props) => {
                             {' '}
                           </p>
                         </div>
-                        {team?.id
+                        {teamPermission?.Team?.includes('team:add-project') && team?.id
                           && (
                             <Buttons
                               icon={faPlus}

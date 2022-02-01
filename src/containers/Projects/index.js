@@ -60,7 +60,6 @@ export const ProjectsPage = (props) => {
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
-  const [editMode, seteditMode] = useState(false);
   const [noProjectAlert, setNoProjectAlert] = useState(false);
   const samplerRef = useRef();
   const {
@@ -357,7 +356,7 @@ export const ProjectsPage = (props) => {
       <div className={`content-wrapper ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="">
-            <Headline setCreateProject={setCreateProject} seteditMode={seteditMode} />
+            <Headline setCreateProject={setCreateProject} />
             {permission?.Project?.includes('project:view') ? (
               <Tabs
                 onSelect={(eventKey) => {
@@ -417,7 +416,6 @@ export const ProjectsPage = (props) => {
                                                   setProjectId={setProjectId}
                                                   activeFilter={activeFilter}
                                                   setCreateProject={setCreateProject}
-                                                  seteditMode={seteditMode}
                                                 />
                                               </div>
                                             )}
@@ -628,7 +626,7 @@ export const ProjectsPage = (props) => {
           </div>
         </div>
       </div>
-      {createProject && <NewProjectPage editMode={editMode} {...props} handleCloseProjectModal={setCreateProject} />}
+      {createProject && <NewProjectPage {...props} handleCloseProjectModal={setCreateProject} />}
 
       {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 

@@ -139,6 +139,13 @@ export const createTeamAction = (data) => async (dispatch) => {
     throw e;
   }
 };
+export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
+  const result = await teamService.teamPermisison(orgId, TeamId);
+  dispatch({
+    type: actionTypes.ADD_TEAM_PERMISSION,
+    payload: result?.teamPermissions,
+  });
+};
 
 export const loadTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -149,7 +156,7 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
     });
 
     const { team } = await teamService.get(teamId, activeOrganization?.id);
-
+    dispatch(getTeamPermission(activeOrganization?.id, teamId));
     dispatch({
       type: actionTypes.LOAD_TEAM_SUCCESS,
       payload: { team },
@@ -374,14 +381,6 @@ export const AddTeamRoles = (orgId) => async (dispatch) => {
   dispatch({
     type: actionTypes.ADD_TEAM_ROLES,
     payload: result?.teamRoleTypes,
-  });
-};
-
-export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
-  const result = await teamService.teamPermisison(orgId, TeamId);
-  dispatch({
-    type: actionTypes.ADD_TEAM_PERMISSION,
-    payload: result?.teamPermissions,
   });
 };
 

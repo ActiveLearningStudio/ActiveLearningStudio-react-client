@@ -1251,10 +1251,16 @@ function SearchInterface(props) {
                                               </li>
                                             )}
                                             <Dropdown.Item onClick={() => {
-                                              if (selectProject.includes(res.id) && fromTeam) {
-                                                setSelectProject(selectProject.filter(item => item !== res.id));
-                                              } else if (fromTeam && !selectProject.includes(res.id)) {
-                                                setSelectProject([...selectProject, res.id]);
+                                              if (selectProject.length === 0 && fromTeam) {
+                                                setSelectProject([res.id]);
+                                              } else if (selectProject[0] === res.id && fromTeam) {
+                                                setSelectProject([]);
+                                              } else {
+                                                Swal.fire({
+                                                  icon: 'warning',
+                                                  title: 'Action Prohibited',
+                                                  text: 'You are only allowed to select 1 project.',
+                                                });
                                               }
                                             }}>
                                               <img src={teamicon} alt="teams_logo" className="teams-logo" />

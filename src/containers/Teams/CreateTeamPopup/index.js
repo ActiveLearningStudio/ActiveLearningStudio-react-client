@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 import { Formik } from 'formik';
@@ -19,6 +19,7 @@ function CreateTeamPopup(props) {
     setShowCreateTeamModal,
   } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const { activeOrganization } = useSelector((state) => state.organization);
   // remove popup when escape is pressed
   const escFunction = useCallback((event) => {
@@ -146,23 +147,27 @@ function CreateTeamPopup(props) {
                       />
                     </div>
                     <div className="modal-footer">
-                      <Link
+                      <button
+                        type="submit"
                         className="add-team-btn"
-                        to={`/org/${activeOrganization?.domain}/teams/team-detail`}
+                        // to={`/org/${activeOrganization?.domain}/teams/team-detail`}
                         onClick={() => {
-                          dispatch(setNewTeamData({
-                            name: values.teamName,
-                            description: values.description,
-                            noovo_group_title: values.noovo_group_title,
-                          }));
-                          setShowCreateTeamModal(false);
+                          if (values.description && values.teamName) {
+                            dispatch(setNewTeamData({
+                              name: values.teamName,
+                              description: values.description,
+                              noovo_group_title: values.noovo_group_title,
+                            }));
+                            setShowCreateTeamModal(false);
+                            history.push(`/org/${activeOrganization?.domain}/teams/team-detail`);
+                          }
                         }}
                       >
                         <div>
                           <FontAwesomeIcon icon="plus" />
                           Save & Continue
                         </div>
-                      </Link>
+                      </button>
                     </div>
                   </form>
                 )}

@@ -62,24 +62,27 @@
     .checkbox_section {
       align-items: center;
       display: flex;
+      .assign-project-radio {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 2px solid #084892;
+        border-radius: 50%;
+        cursor: pointer;
 
-      input {
-        display: none;
-        &:checked + span {
-          background-image: url(../../assets/images/VectorCheck.svg);
-          background-color: $white;
+        .checkmark {
+          width: 14px;
+          height: 14px;
+          background-color: #084892;
+          box-shadow: 0 3px 6px #00000029;
+          border-radius: 50%;
         }
-      }
-      span {
-        border: 1px solid #cccc;
-        background-repeat: no-repeat;
-        background-size: 13px 9px;
-        background-position: 2px;
-        display: inline-block;
-        margin-right: 10px;
-        height: 18px;
-        width: 18px;
-        border-radius: 3px;
       }
     }
   }

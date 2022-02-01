@@ -28,6 +28,7 @@ const TeamDetail = ({
   user,
   inviteMembers,
   newTeam,
+  teamPermission,
   newTeamData,
   removeProject,
   changeUserRoleAction,
@@ -43,9 +44,8 @@ const TeamDetail = ({
   const currentTeamUser = useMemo(() => (team?.users?.length > 0 ? team.users : []), [team?.users]);
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
-  const [editMode, seteditMode] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
-  console.log(team, show, createProject, editMode, newTeam);
+  console.log(team, show, createProject, newTeam);
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
@@ -186,31 +186,33 @@ const TeamDetail = ({
                       className="mr-16"
                       hover
                     />
-                    <Buttons
-                      icon={faPlus}
-                      text="Add project"
-                      primary
-                      width="128px"
-                      height="32px"
-                      hover
-                      onClick={() => {
-                        if (team?.id) {
-                          history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
-                        } else if (newTeam?.name) {
-                          if (newTeam?.users) {
-                            newTeamData({ ...newTeam, users: [...newTeam?.users, ...selectedUsersNewTeam] });
-                          } else {
-                            newTeamData({ ...newTeam, users: [...selectedUsersNewTeam] });
+                    {(teamPermission?.Team?.includes('team:add-project') || newTeam?.name) && (
+                      <Buttons
+                        icon={faPlus}
+                        text="Add project"
+                        primary
+                        width="128px"
+                        height="32px"
+                        hover
+                        onClick={() => {
+                          if (team?.id) {
+                            history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
+                          } else if (newTeam?.name) {
+                            if (newTeam?.users) {
+                              newTeamData({ ...newTeam, users: [...newTeam?.users, ...selectedUsersNewTeam] });
+                            } else {
+                              newTeamData({ ...newTeam, users: [...selectedUsersNewTeam] });
+                            }
+                            if (selectedUsersNewTeam.length > 0) {
+                              setMinimumUserFlag(false);
+                              history.push(`/org/${organization?.domain}/teams/add-projects`);
+                            } else {
+                              setMinimumUserFlag(true);
+                            }
                           }
-                          if (selectedUsersNewTeam.length > 0) {
-                            setMinimumUserFlag(false);
-                            history.push(`/org/${organization?.domain}/teams/add-projects`);
-                          } else {
-                            setMinimumUserFlag(true);
-                          }
-                        }
-                      }}
-                    />
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -226,7 +228,7 @@ const TeamDetail = ({
                             handleShow={handleShow}
                             setProjectId={setProjectId}
                             setCreateProject={setCreateProject}
-                            seteditMode={seteditMode}
+                            teamPermission={teamPermission || {}}
                           />
                         </div>
                       ))}
@@ -250,7 +252,7 @@ const TeamDetail = ({
               {minimumUserFlag && <Alert variant="danger">Invite at least 1 or more member to your team</Alert>}
               <div className="right_select">
                 <div className={`${toggleLeft ? 'none' : ''}`}>
-                  {team?.users && (
+                  {teamPermission?.Team?.includes('team:add-team-user') && team?.users && (
                     <InviteDialog
                       users={team?.users}
                       visible={showInvite}
@@ -276,6 +278,7 @@ const TeamDetail = ({
                   roles={roles}
                   toggleLeft={toggleLeft}
                   roleChangeHandler={roleChangeHandler}
+                  teamPermission={teamPermission || {}}
                   deleteTeamMemberHandler={deleteTeamMemberHandler}
                 />
               )}
@@ -302,6 +305,7 @@ TeamDetail.propTypes = {
   organization: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   newTeam: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object.isRequired,
   newTeamData: PropTypes.func.isRequired,
   inviteMembers: PropTypes.func.isRequired,
   removeProject: PropTypes.func.isRequired,
@@ -315,6 +319,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   newTeam: state.team.newTeam,
   team: state.team.selectedTeam,
+  teamPermission: state.team.teamPermission,
   organization: state.organization.activeOrganization,
 });
 const mapDispatchToProps = (dispatch) => ({

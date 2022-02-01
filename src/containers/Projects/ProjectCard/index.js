@@ -18,7 +18,7 @@ import './style.scss';
 import './projectcardstyle.scss';
 
 const ProjectCard = (props) => {
-  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, seteditMode } = props;
+  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission } = props;
   const ImgLoader = () => <img src={loader} alt="" />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -42,14 +42,16 @@ const ProjectCard = (props) => {
                   setProjectId={setProjectId}
                   iconColor="#ffffff"
                   setCreateProject={setCreateProject}
-                  seteditMode={seteditMode}
+                  teamPermission={teamPermission || {}}
                 />
               </div>
-              <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
-                <div className="myproject-card-title">
-                  <h2>{project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}</h2>
-                </div>
-              </Link>
+              {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : organization?.permission?.Project?.includes('project:view')) && (
+                <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
+                  <div className="myproject-card-title">
+                    <h2>{project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}</h2>
+                  </div>
+                </Link>
+              )}
             </div>
           </>
         )}
@@ -59,24 +61,25 @@ const ProjectCard = (props) => {
           <p>{project.description && project.description.length > 130 ? `${project.description.substring(0, 130)} ...` : project.description}</p>
         </div>
       </Link>
-
+      <div className="updated-date">
+        Updated date: {project?.updated_at?.split('T')[0]}
+      </div>
       <div className="myproject-card-add-share">
-        <button
-          type="button"
-        // title="view project"
-        >
-          <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
-            <img src={viewIcon} alt="" className="mr-3" />
-            <span className="textinButton">Preview</span>
-          </Link>
-        </button>
-        {organization?.permission?.Project?.includes('project:edit') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : organization?.permission?.Project?.includes('project:view')) && (
           <button
             type="button"
-            // title="edit project"
+          // title="view project"
+          >
+            <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
+              <img src={viewIcon} alt="" className="mr-3" />
+              <span className="textinButton">Preview</span>
+            </Link>
+          </button>
+        )}
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : organization?.permission?.Project?.includes('project:edit')) && (
+          <button
+            type="button"
             onClick={() => {
-              // setCreateProject(true)
-              // seteditMode(true)
               dispatch(setSelectedProject(project));
               history.push(`/org/${organization?.currentOrganization?.domain}/project/${project.id}`);
             }}
@@ -109,12 +112,15 @@ const ProjectCard = (props) => {
 
 ProjectCard.propTypes = {
   project: PropTypes.object.isRequired,
-
+  teamPermission: PropTypes.object,
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
   setCreateProject: PropTypes.func.isRequired,
-  seteditMode: PropTypes.func.isRequired,
+};
+
+ProjectCard.defaultProps = {
+  teamPermission: {},
 };
 
 export default ProjectCard;
