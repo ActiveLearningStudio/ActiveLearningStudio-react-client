@@ -25,17 +25,17 @@ node("currikidev") {
     
     parallel(
             "StageA": {
-                if(Jenkins.instance.getNode('currikidev').toComputer().isOnline()){
-                    node('currikidev') {
-                        stage ('currikidev') {
+                if(Jenkins.instance.getNode('${node}').toComputer().isOnline()){
+                    node('${node}') {
+                        stage ('${node}') {
                                 echo 'Copy'
                                 sh "yes | docker service update --image quay.io/curriki/client:${tag} currikistack_currikiprod-client" 
                                 echo 'Copy completed'
                         }
                     }
                 } else {
-                    stage ('currikidev') {
-                        echo "currikidev is offline"
+                    stage ('${node}') {
+                        echo "${node} is offline"
                         exit 1
                     }
                 }
