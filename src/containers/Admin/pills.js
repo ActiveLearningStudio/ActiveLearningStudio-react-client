@@ -496,6 +496,12 @@ export default function Pills(props) {
     dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
   };
 
+  const searchQueryChangeHandlerActivityItems = (search) => {
+    // setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(getActivityItems(encodeQuery, activePage || 1));
+  };
+
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
@@ -924,6 +930,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   selectedActivityType={selectedActivityType}
                   setSelectedActivityType={setSelectedActivityType}
+                  searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
                 />
               )}
 

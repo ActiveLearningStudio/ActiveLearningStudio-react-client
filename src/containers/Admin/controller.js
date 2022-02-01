@@ -280,19 +280,8 @@ function Controller(props) {
       )} */}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={(e) => {
-                if (e.target.value) {
-                  setSearchQueryActivities(e.target.value);
-                } else if (e.target.value === '') {
-                  setSearchQueryActivities('');
-                  searchActivitiesQueryHandler('', subType);
-                }
-              }}
-            />
-            <img src={searchimg} alt="search" onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)} />
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler}/>
+            <img src={searchimg} alt="search" />
           </div>
         )}
         {paginationCounter && (
