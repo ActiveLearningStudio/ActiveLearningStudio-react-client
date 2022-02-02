@@ -35,7 +35,7 @@ function AdminPanel({ showSSO }) {
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
-
+  const [users, setUsers] = useState(null);
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
@@ -154,6 +154,8 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-role') && 'Manage Roles',
                           ]}
                           subType="All Users"
+                          users={users}
+                          setUsers={setUsers}
                         />
                       </div>
                     </Tab>
@@ -192,7 +194,7 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  {permission?.Organization?.includes('organization:view-default-sso') && (
+                  {!currentOrganization?.parent && (
                     <Tab eventKey="DefaultSso" title="Default SSO Integrations">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
@@ -395,7 +397,7 @@ function AdminPanel({ showSSO }) {
               <div className="inner-form-content">{activeForm === 'add_lti_tool' ? <CreateLtiTool /> : <CreateLtiTool editMode />}</div>
             </div>
           )}
-          {removeUser && <RemoveUser />}
+          {removeUser && <RemoveUser users={users} setUsers={setUsers} />}
 
           <EditProjectModel
             show={modalShow}

@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import teamicon from 'assets/images/sidebar/users-team.svg';
 import administrate from 'assets/images/sidebar/administrate.png';
 import foldericon from 'assets/images/svg/projectFolder.svg';
+// import { allSidebarProjects } from 'store/actions/project';
 import interactiveVideo from 'assets/images/svg/Interactivevideos.svg';
 import { allSidebarProjects } from 'store/actions/project';
 import instanceadmin from 'assets/images/Instanceadmin.svg';
@@ -47,11 +48,11 @@ function Sidebar(props) {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (!allState.sidebar.isLoaded && organization.activeOrganization) {
-      dispatch(allSidebarProjects());
-    }
-  }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
+  // useEffect(() => {
+  //   if (!allState.sidebar.isLoaded && organization.activeOrganization) {
+  //     dispatch(allSidebarProjects());
+  //   }
+  // }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
 
   return (
     <aside className="sidebar-all">
@@ -99,7 +100,7 @@ function Sidebar(props) {
 
       {!currentOrganization?.parent && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instant-admin`} onClick={() => dispatch(clearTeamPermissions())}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instance-admin`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">
               <img src={instanceadmin} alt="" />
               <div className="sidebar-headings">Instance Admin</div>

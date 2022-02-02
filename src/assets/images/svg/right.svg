@@ -1,0 +1,4 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="10" cy="10" r="9" transform="rotate(-180 10 10)" fill="#DDDDDD" stroke="#DDDDDD" stroke-width="2"/>
+<path d="M8.5 6L12.3989 9.76427C12.5337 9.89447 12.5337 10.1055 12.3989 10.2357L8.5 14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+</svg>

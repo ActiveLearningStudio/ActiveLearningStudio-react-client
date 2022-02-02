@@ -8,7 +8,7 @@ import Buttons from 'utils/Buttons/buttons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import SearchForm from 'components/Header/searchForm';
 
-export default function Headline({ setCreateProject, seteditMode }) {
+export default function Headline({ setCreateProject }) {
   const organization = useSelector((state) => state.organization);
   const { currentOrganization, permission } = organization;
 
@@ -37,7 +37,6 @@ export default function Headline({ setCreateProject, seteditMode }) {
                 height="35px"
                 onClick={() => {
                   setCurrentVisibilityType(null);
-                  seteditMode(false);
                   setCreateProject(true);
                 }}
                 hover
@@ -52,6 +51,5 @@ export default function Headline({ setCreateProject, seteditMode }) {
 }
 
 Headline.propTypes = {
-  seteditMode: PropTypes.func.isRequired,
   setCreateProject: PropTypes.func.isRequired,
 };

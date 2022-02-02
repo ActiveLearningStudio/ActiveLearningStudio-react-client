@@ -27,7 +27,7 @@ import { alphaNumeric } from 'utils';
 import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 
 export default function Pills(props) {
-  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber } = props;
+  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber, users, setUsers } = props;
 
   const [key, setKey] = useState(modules?.filter((data) => !!data)[0]);
 
@@ -55,7 +55,7 @@ export default function Pills(props) {
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
   const [currentTab, setCurrentTab] = useState('All Projects');
-  const [users, setUsers] = useState(null);
+
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
   const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
