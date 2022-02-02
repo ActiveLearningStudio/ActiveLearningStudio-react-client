@@ -98,7 +98,7 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
-        <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent}/>
+        <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
         <OpenRoute exact path="/projects/shared" component={ProjectShareTemplate} />
@@ -162,7 +162,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                   <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
-                  <PrivateRoute exact path="/org/:organization/instant-admin" showSSO={true} component={AdminPanel} />
+                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO={true} component={AdminPanel} />
                   <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
                   <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
                   <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />
@@ -205,7 +205,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
                 </Switch>
-                <Footer/>
+                <Footer />
               </div>
             </>
           )}
