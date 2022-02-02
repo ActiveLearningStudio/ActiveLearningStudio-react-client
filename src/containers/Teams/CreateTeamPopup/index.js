@@ -135,7 +135,7 @@ function CreateTeamPopup(props) {
                     </div>
                     <div className="form-group">
                       <h6 className="satelliteteaminfo"> Satellite Team Information (Optional)</h6>
-                      <p className="label-title">Title</p>
+                      <p className="label-title">Noovo Group Title</p>
                       <input
                         type="text"
                         name="noovo_group_title"

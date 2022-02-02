@@ -78,8 +78,6 @@
     max-width: 800px;
     .team-detail {
       max-width: 800px;
-      min-width: 500px;
-      width: 600px;
       p {
         font-family: "Open Sans", sans-serif;
         font-style: normal;
@@ -93,7 +91,7 @@
       font-size: 14px;
       padding: 10px;
       border-color: #ececec;
-      width: inherit;
+      width: 500px;
       box-shadow: 0px 0px 7px 1px #eceaea;
       margin-top: 0px;
       margin-bottom: 0px;
@@ -107,7 +105,25 @@
       }
     }
   }
-
+  .noovo-group-title {
+    display: flex;
+    color: black;
+    textarea.noovo-title {
+      font-size: 14px;
+      padding: 10px;
+      border-color: #ececec;
+      width: inherit;
+      box-shadow: 0px 0px 7px 1px #eceaea;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      border-radius: 5px;
+    }
+    .editimage-tag {
+      margin-left: 30px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+  }
   .flex-button-top {
     display: flex;
     margin-right: 10px;

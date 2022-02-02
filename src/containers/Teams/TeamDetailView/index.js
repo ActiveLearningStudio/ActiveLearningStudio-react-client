@@ -38,9 +38,10 @@ const TeamDetail = ({
   removeMember,
 }) => {
   const [show, setShow] = useState(false);
-  const [editTeam, setEditTeam] = useState({ editName: false, editDescription: false });
+  const [editTeam, setEditTeam] = useState({ editName: false, editDescription: false, editNoovoTitle: false });
   const teamNameRef = useRef();
   const teamDescriptionRef = useRef();
+  const teamNoovoTitleRef = useRef();
   const history = useHistory();
   const { roles } = useSelector((state) => state.team);
   const [minimumUserFlag, setMinimumUserFlag] = useState(false);
@@ -144,7 +145,7 @@ const TeamDetail = ({
             organization_id: organization.activeOrganization?.id,
             name: e.target.value,
             description: team?.description,
-            noovo_group_title: null,
+            noovo_group_title: team?.noovo_group_title,
           }).then(() => {
             Swal.fire({
               icon: 'success',
@@ -177,7 +178,7 @@ const TeamDetail = ({
             organization_id: organization.activeOrganization?.id,
             name: team?.name,
             description: e.target.value,
-            noovo_group_title: null,
+            noovo_group_title: team?.noovo_group_title,
           }).then(() => {
             Swal.fire({
               icon: 'success',
@@ -201,12 +202,38 @@ const TeamDetail = ({
           text: 'Cannot enter more than 1000 character in team description.',
         });
       }
+    } else if (e.target.name === 'noovo-group-title') {
+      teamNoovoTitleRef.current.blur();
+      setEditTeam({ ...editTeam, editNoovoTitle: false });
+      if (team?.id && team?.description !== e.target.value) {
+        updateTeam(team?.id, {
+          organization_id: organization.activeOrganization?.id,
+          name: team?.name,
+          description: team?.description,
+          noovo_group_title: e.target.value,
+        }).then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully updated.',
+          });
+        })
+          .catch(() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Update Team failed, kindly try again.',
+            });
+          });
+      } else if (Object.keys(newTeam).length && newTeam?.noovo_group_title !== e.target.value) {
+        newTeamData({ ...newTeam, noovo_group_title: e.target.value });
+      }
     }
   };
   const onEnterPress = (e) => {
     if (e.charCode === 13) {
       teamNameRef?.current?.blur();
       teamDescriptionRef?.current?.blur();
+      teamNoovoTitleRef?.current?.blur();
     }
   };
   return (
@@ -231,7 +258,7 @@ const TeamDetail = ({
                   )}
                 </div>
                 <div>
-                  {!editTeam.editName && (
+                  {!editTeam.editName && teamPermission?.activeRole === 'admin' && (
                     <img
                       className="editimage-tag"
                       src={EditTeamImage}
@@ -261,7 +288,7 @@ const TeamDetail = ({
                   )}
                 </div>
                 <div className="team-edit-detail">
-                  {!editTeam.editDescription && (
+                  {!editTeam.editDescription && teamPermission?.activeRole === 'admin' && (
                     <img
                       className="editimage-tag"
                       src={EditDetailImage}
@@ -273,6 +300,34 @@ const TeamDetail = ({
                     />
                   )}
                 </div>
+              </div>
+              <div className="noovo-group-title">
+                <label>Noovo Group Title:</label>
+                {'  '}
+                {!editTeam?.editNoovoTitle ? (
+                  <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p>
+                ) : null}
+                {editTeam?.editNoovoTitle && (
+                  <textarea
+                    className="noovo-title"
+                    name="noovo-group-title"
+                    ref={teamNoovoTitleRef}
+                    defaultValue={team?.noovo_group_title || newTeam?.noovo_group_title}
+                    onBlur={onBlur}
+                    onKeyPress={onEnterPress}
+                  />
+                )}
+                {!editTeam.editNoovoTitle && teamPermission?.activeRole === 'admin' && (
+                  <img
+                    className="editimage-tag"
+                    src={EditDetailImage}
+                    alt="EditDetailImage"
+                    onClick={() => {
+                      setEditTeam({ ...editTeam, editNoovoTitle: true });
+                      teamNoovoTitleRef?.current?.focus();
+                    }}
+                  />
+                )}
               </div>
               <div className="flex-button-top">
                 <div className="team-controller">

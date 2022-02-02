@@ -20,6 +20,8 @@ function TeamCard(props) {
       description,
       users,
       projects,
+      // eslint-disable-next-line camelcase
+      noovo_group_title,
     },
   } = props;
   const dispatch = useDispatch();
@@ -51,7 +53,7 @@ function TeamCard(props) {
         <Link
           onClick={() => {
             dispatch(updateSelectedTeamAction({
-              id, name, description, users, projects,
+              id, name, description, users, projects, noovo_group_title,
             }));
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
