@@ -159,7 +159,7 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  {permission?.Organization?.includes('organization:view-default-sso') && (
+                  {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
                     <Tab eventKey="DefaultSso" title="Default SSO Integrations">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
