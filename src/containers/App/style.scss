@@ -3997,6 +3997,10 @@ body.collapsed {
     width: 1.8em !important;
     background-color: #12b347 !important;
   }
+  .swal2-success-fix {
+    width: 0;
+    height: 0;
+  }
   .swal2-success-ring {
     border: 0.25em solid #12b347 !important;
   }

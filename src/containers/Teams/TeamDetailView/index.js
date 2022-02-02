@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useMemo, useState, useEffect,
+  useCallback, useMemo, useState, useEffect, useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import EditTeamImage from 'assets/images/svg/editTeam.svg';
@@ -14,7 +14,7 @@ import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
 import {
-  changeUserRole, getTeamPermission, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData,
+  changeUserRole, getTeamPermission, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData, updateTeamAction,
 } from 'store/actions/team';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -34,9 +34,13 @@ const TeamDetail = ({
   changeUserRoleAction,
   loadTeam,
   getTeamPermissionAction,
+  updateTeam,
   removeMember,
 }) => {
   const [show, setShow] = useState(false);
+  const [editTeam, setEditTeam] = useState({ editName: false, editDescription: false });
+  const teamNameRef = useRef();
+  const teamDescriptionRef = useRef();
   const history = useHistory();
   const { roles } = useSelector((state) => state.team);
   const [minimumUserFlag, setMinimumUserFlag] = useState(false);
@@ -45,7 +49,7 @@ const TeamDetail = ({
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
-  console.log(team, show, createProject, newTeam);
+  console.log(show, createProject);
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
@@ -130,7 +134,81 @@ const TeamDetail = ({
         });
       });
   }, [inviteMembers, team?.id]);
-
+  const onBlur = (e) => {
+    if (e.target.name === 'team-name') {
+      teamNameRef.current.blur();
+      setEditTeam({ ...editTeam, editName: false });
+      if (e.target.value.length <= 100) {
+        if (team?.id && team?.name !== e.target.value) {
+          updateTeam(team?.id, {
+            organization_id: organization.activeOrganization?.id,
+            name: e.target.value,
+            description: team?.description,
+            noovo_group_title: null,
+          }).then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Successfully updated.',
+            });
+          })
+            .catch(() => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Update Team failed, kindly try again.',
+              });
+            });
+        } else if (Object.keys(newTeam).length && newTeam?.name !== e.target.value) {
+          newTeamData({ ...newTeam, name: e.target.value });
+        }
+      } else if (e.target.value.length > 100) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 100 character in team title.',
+        });
+      }
+    } else if (e.target.name === 'team-description') {
+      teamDescriptionRef.current.blur();
+      setEditTeam({ ...editTeam, editDescription: false });
+      if (e.target.value.length <= 1000) {
+        if (team?.id && team?.description !== e.target.value) {
+          updateTeam(team?.id, {
+            organization_id: organization.activeOrganization?.id,
+            name: team?.name,
+            description: e.target.value,
+            noovo_group_title: null,
+          }).then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Successfully updated.',
+            });
+          })
+            .catch(() => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Update Team failed, kindly try again.',
+              });
+            });
+        } else if (Object.keys(newTeam).length && newTeam?.description !== e.target.value) {
+          newTeamData({ ...newTeam, description: e.target.value });
+        }
+      } else if (e.target.value.length > 1000) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Exceeding length',
+          text: 'Cannot enter more than 1000 character in team description.',
+        });
+      }
+    }
+  };
+  const onEnterPress = (e) => {
+    if (e.charCode === 13) {
+      teamNameRef?.current?.blur();
+      teamDescriptionRef?.current?.blur();
+    }
+  };
   return (
     <div className="team-detail-page">
       <div className="content">
@@ -140,29 +218,60 @@ const TeamDetail = ({
               <div className="organization-name">{organization?.name}</div>
               <div className="title-image">
                 <div>
-                  <h1 className="title">{team?.name || newTeam?.name}</h1>
+                  {!editTeam.editName && <h1 className="title">{team?.name || newTeam?.name}</h1>}
+                  {editTeam.editName && (
+                    <textarea
+                      className="title"
+                      name="team-name"
+                      ref={teamNameRef}
+                      defaultValue={team?.name || newTeam?.name}
+                      onBlur={onBlur}
+                      onKeyPress={onEnterPress}
+                    />
+                  )}
                 </div>
                 <div>
-                  <img
-                    className="editimage-tag"
-                    src={EditTeamImage}
-                    alt="EditTeamImage"
-                  />
+                  {!editTeam.editName && (
+                    <img
+                      className="editimage-tag"
+                      src={EditTeamImage}
+                      alt="EditTeamImage"
+                      onClick={() => {
+                        setEditTeam({ ...editTeam, editName: true });
+                        teamNameRef?.current?.focus();
+                      }}
+                    />
+                  )}
                 </div>
               </div>
               <div className="add-team-detail">
                 <div className="team-detail">
                   <p>
-                    {team?.description || newTeam?.description}
-                    {' '}
+                    {!editTeam.editDescription && (team?.description || newTeam?.description)}
                   </p>
+                  {editTeam.editDescription && (
+                    <textarea
+                      className="description"
+                      name="team-description"
+                      ref={teamDescriptionRef}
+                      defaultValue={team?.description || newTeam?.description}
+                      onBlur={onBlur}
+                      onKeyPress={onEnterPress}
+                    />
+                  )}
                 </div>
                 <div className="team-edit-detail">
-                  <img
-                    className="editimage-tag"
-                    src={EditDetailImage}
-                    alt="EditDetailImage"
-                  />
+                  {!editTeam.editDescription && (
+                    <img
+                      className="editimage-tag"
+                      src={EditDetailImage}
+                      alt="EditDetailImage"
+                      onClick={() => {
+                        setEditTeam({ ...editTeam, editDescription: true });
+                        teamDescriptionRef?.current?.focus();
+                      }}
+                    />
+                  )}
                 </div>
               </div>
               <div className="flex-button-top">
@@ -311,6 +420,7 @@ TeamDetail.propTypes = {
   removeProject: PropTypes.func.isRequired,
   changeUserRoleAction: PropTypes.func.isRequired,
   getTeamPermissionAction: PropTypes.func.isRequired,
+  updateTeam: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,
   loadTeam: PropTypes.func.isRequired,
 };
@@ -330,5 +440,6 @@ const mapDispatchToProps = (dispatch) => ({
   loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
   getTeamPermissionAction: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
+  updateTeam: (teamId, data) => dispatch(updateTeamAction(teamId, data)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetail);

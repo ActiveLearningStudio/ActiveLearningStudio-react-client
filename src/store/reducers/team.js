@@ -150,6 +150,7 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           isLoading: false,
+          selectedTeam: action.payload.team,
           teams,
         };
       }
