@@ -195,7 +195,7 @@ function Controller(props) {
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or User Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}

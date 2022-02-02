@@ -518,14 +518,19 @@
         }
         .status-project {
           display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+
           border-bottom: 1px solid #dddddd;
           padding-top: 16px;
           padding-bottom: 16px;
           .library-status {
             border-right: 1px solid #dddddd;
-            padding-right: 13px;
+            padding: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            height: auto;
+            background-color: #fff;
+            width: 50%;
+
             span {
               display: flex;
               align-items: center;
@@ -548,6 +553,8 @@
             }
           }
           .shared-status {
+            width: 50%;
+            padding-left: 15px;
             span {
               display: flex;
               align-items: center;
