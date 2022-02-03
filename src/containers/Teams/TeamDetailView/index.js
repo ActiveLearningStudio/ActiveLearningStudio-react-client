@@ -38,6 +38,8 @@ const TeamDetail = ({
   removeMember,
 }) => {
   const [show, setShow] = useState(false);
+  const [allPersonalProjects, setAllPersonalProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [editTeam, setEditTeam] = useState({ editName: false, editDescription: false, editNoovoTitle: false });
   const teamNameRef = useRef();
   const teamDescriptionRef = useRef();
@@ -52,6 +54,12 @@ const TeamDetail = ({
   const [toggleLeft, setToggleLeft] = useState(false);
   console.log(show, createProject);
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
+  useEffect(() => {
+    if (team?.projects) {
+      setAllPersonalProjects(team.projects);
+      setLoading(false);
+    }
+  }, [team?.projects]);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
     if (location.pathname.includes('/teams/team-detail') && !newTeam?.name && organization?.domain) {
@@ -236,6 +244,17 @@ const TeamDetail = ({
       teamNoovoTitleRef?.current?.blur();
     }
   };
+  const searchProjects = ({ target }) => {
+    const { value } = target;
+    if (value.length > 0) {
+      const filteredProjects = allPersonalProjects.filter((project) => project.name.toLowerCase().includes(value.toLowerCase()));
+      setAllPersonalProjects(filteredProjects);
+      setLoading(false);
+    } else if (team?.id) {
+      setAllPersonalProjects(team?.projects);
+      setLoading(false);
+    }
+  };
   return (
     <div className="team-detail-page">
       <div className="content">
@@ -331,16 +350,19 @@ const TeamDetail = ({
               </div>
               <div className="flex-button-top">
                 <div className="team-controller">
-                  <div className="search-and-filters">
-                    <div className="search-bar">
-                      <input
-                        type="text"
-                        className="search-input"
-                        placeholder="Search project"
-                      />
-                      <img src={searchimg} alt="search" />
+                  {team?.id && (
+                    <div className="search-and-filters">
+                      <div className="search-bar">
+                        <input
+                          type="text"
+                          className="search-input"
+                          placeholder="Search project"
+                          onChange={searchProjects}
+                        />
+                        <img src={searchimg} alt="search" />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="team-project-btns">
                     <Buttons
                       text="Open White Board"
@@ -384,7 +406,7 @@ const TeamDetail = ({
                 <div className="row">
                   <div className="col-md-12">
                     <div className="check-home">
-                      {team?.projects?.map((project) => (
+                      {loading ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
                         <div className="playlist-resource" key={project.id}>
                           <ProjectCard
                             project={project}
@@ -395,7 +417,7 @@ const TeamDetail = ({
                             teamPermission={teamPermission || {}}
                           />
                         </div>
-                      ))}
+                      )) : <Alert variant="danger" className="alert"> No project found.</Alert>}
                     </div>
                   </div>
                 </div>
