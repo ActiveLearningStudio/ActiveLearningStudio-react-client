@@ -27,6 +27,7 @@ const H5PEditor = (props) => {
     activityId,
     type,
     accountId,
+    settingId,
   } = props;
 
   const uploadFile = useRef();
@@ -45,7 +46,7 @@ const H5PEditor = (props) => {
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
       let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, settingId);
     } else {
       loadH5pSettings();
     }
@@ -77,7 +78,7 @@ const H5PEditor = (props) => {
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId));
       if (type === 'videoModal') {
         setOpenVideo(false);
       }
@@ -223,7 +224,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
+  loadH5pSettings: (library, accountId, settingId) => dispatch(loadH5pSettingsActivity(library, accountId, settingId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

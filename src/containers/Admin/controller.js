@@ -917,7 +917,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'DefaultSso' && permission?.Organization.includes('organization:create-default-sso') && (
+        {!!btnText && type === 'DefaultSso' && (
           <div className="btn-text">
             <button
               type="button"
