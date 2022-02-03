@@ -60,7 +60,7 @@ function SearchInterface(props) {
     type: false,
   });
   const allState = useSelector((state) => state.search);
-  const activityTypesState = useSelector((state) => state.resource.types);
+  const activityTypesState = useSelector((state) => state.resource.activityTypes);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
   const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
   const allLms = useSelector((state) => state.share);
