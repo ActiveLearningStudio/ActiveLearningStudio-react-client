@@ -309,7 +309,7 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
   // console.log(activeSubject, activeEducation);
