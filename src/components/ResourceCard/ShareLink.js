@@ -12,7 +12,7 @@ import { getProjectId, googleShare } from "store/actions/gapi";
 function ShareLink(props) {
   const dispatch = useDispatch();
 
-  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId } = props;
+  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = props;
 
   const AllLms = useSelector((state) => state.share);
 
@@ -49,6 +49,7 @@ function ShareLink(props) {
               getProjectId(projectId);
               setProjectId(projectId);
               setProjectPlaylistId(playlistId);
+              setProjectPlaylistActivityId(0)
               dispatch(googleShare(false));
             }}
           >
