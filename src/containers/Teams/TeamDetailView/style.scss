@@ -193,6 +193,9 @@
     .check-home {
       display: flex;
       flex-wrap: wrap;
+      .alert {
+        width: 945px;
+      }
     }
     .playlist-resource {
       max-width: 258.67px;

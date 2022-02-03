@@ -78,7 +78,21 @@ const AddTeamProjects = (props) => {
       dispatch(loadMyProjectsAction());
     }
   }, [dispatch, projectReduxState?.projects, team, organization?.id]);
-
+  const searchProjects = ({ target }) => {
+    const { value } = target;
+    if (value.length > 0) {
+      const filteredProjects = allPersonalProjects.filter((project) => project.name.toLowerCase().includes(value.toLowerCase()));
+      setAllPersonalProjects(filteredProjects);
+    } else if (team?.id) {
+      const allProjects = projectReduxState?.projects.filter(
+        (project) => !team?.projects.includes(project.id),
+      );
+      setAllPersonalProjects(allProjects);
+    } else if (!team?.id) {
+      setAllPersonalProjects(projectReduxState?.projects);
+      setLoading(false);
+    }
+  };
   return (
     <div className="team-project-page">
       <div className="content">
@@ -117,16 +131,19 @@ const AddTeamProjects = (props) => {
                 <Tab eventKey="Projects" title="Projects">
                   <div className="flex-button-top">
                     <div className="team-controller">
-                      <div className="search-and-filters">
-                        <div className="search-bar">
-                          <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Search project"
-                          />
-                          <img src={searchimg} alt="search" />
+                      {team?.id && (
+                        <div className="search-and-filters">
+                          <div className="search-bar">
+                            <input
+                              type="text"
+                              className="search-input"
+                              placeholder="Search project"
+                              onChange={searchProjects}
+                            />
+                            <img src={searchimg} alt="search" />
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                       <div className="team-project-btns">
                         <div className="project-selection">
@@ -198,7 +215,7 @@ const AddTeamProjects = (props) => {
                     </div>
                   </div>
                   <div className="list-of-team-projects">
-                    {loading ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects?.map((project) => (
+                    {loading ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
                       <TeamProjectCard
                         backgroundImg={project?.thumb_url}
                         title={project?.name}
@@ -208,7 +225,7 @@ const AddTeamProjects = (props) => {
                         setSelectProject={setSelectProject}
                         project={project}
                       />
-                    ))}
+                    )) : <Alert variant="danger" className="alert">No project found.</Alert>}
                   </div>
                 </Tab>
                 <Tab eventKey="Search" title="Search">
