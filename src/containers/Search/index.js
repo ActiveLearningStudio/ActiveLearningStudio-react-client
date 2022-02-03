@@ -288,7 +288,7 @@ function SearchInterface(props) {
   });
 
   useEffect(() => {
-    if (activityTypesState.length === 0) {
+    if (activityTypesState?.length === 0) {
       dispatch(loadResourceTypesAction());
     }
   }, []);
