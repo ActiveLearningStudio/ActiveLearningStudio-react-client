@@ -122,7 +122,7 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId } = this.props;
+    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
     const { permission } = organization;
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
@@ -156,6 +156,7 @@ class PlaylistCard extends React.Component {
                     handleShow={handleShow}
                     setProjectId={setProjectId}
                     setProjectPlaylistId={setProjectPlaylistId}
+                    setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                   />
                 </h2>
               </div>
