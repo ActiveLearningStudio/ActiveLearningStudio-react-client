@@ -184,7 +184,7 @@ const h5pToken = (dataH5p) =>
 
 const h5pSettings = (library, accountId = null, settingId = null) =>
   httpService
-    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}&brightcove_api_setting_id=${settingId},`)
+    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}&brightcove_api_setting_id=${settingId}`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
