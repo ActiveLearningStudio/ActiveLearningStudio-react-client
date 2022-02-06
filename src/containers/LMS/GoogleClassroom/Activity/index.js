@@ -58,6 +58,13 @@ const Activity = (props) => {
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
+    const divEmbedLibraries = ['H5P.BrightcoveInteractiveVideo 1.0', 'H5P.IFrameEmbed 1.0'];
+    const isDivEmbedLibrary = divEmbedLibraries.includes(h5pContent.library);
+
+    if (isDivEmbedLibrary) {
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+    }
     const newCss = h5pSettings.h5p.settings.core.styles.concat(
       h5pSettings.h5p.settings.loadedCss,
     );
@@ -83,6 +90,18 @@ const Activity = (props) => {
       script.async = false;
       document.body.appendChild(script);
     });
+
+    if (isDivEmbedLibrary) {
+      var h5pLibLoadTime = setInterval(function (e) {
+        var libObjectName = h5pContent.library.split(' ')[0].split('H5P.').filter(Boolean);
+        if (libObjectName in window.H5P) {
+          clearInterval(h5pLibLoadTime);
+          window.H5P.init(document.body); // execute H5P
+          window.H5P.preventInit = undefined;
+        }
+      }, 300);
+    }
+
   }, [h5pSettings]);
 
   useEffect(() => {
