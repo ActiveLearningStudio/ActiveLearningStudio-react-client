@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { React } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
@@ -36,7 +37,7 @@ const TeamMembers = (props) => {
                 || teamPermission?.Team?.includes('team:add-team-user')) || newTeam?.name) && (
                   <Dropdown>
                     <Dropdown.Toggle id="dropdown-basic">
-                      {element?.role?.name || roles?.filter((role) => role.id === element.role_id)[0]?.name}
+                      {element?.role?.name || roles?.filter((role) => role.id == element.role_id)[0]?.name}
                       <FontAwesomeIcon icon="chevron-down" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
