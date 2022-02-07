@@ -64,8 +64,6 @@ import Edit from 'assets/images/menu-edit.svg';
 import Preview from 'assets/images/preview-2.svg';
 import AddBtn from 'assets/images/add-btn.svg';
 import Correct from 'assets/images/svg/Correct.svg';
-import Warning from 'assets/images/svg/warning-icon.svg';
-import ErrorImg from 'assets/images/svg/Error.svg';
 
 import './style.scss';
 
@@ -651,8 +649,10 @@ function PlaylistsPage(props) {
                           </div>
                           {selectedProject?.indexing_text !== "NOT REQUESTED" && (
                             <div className="library-status">
-                              {<img src={selectedProject?.indexing_text === 'REQUESTED' ? Warning : selectedProject?.indexing_text === 'APPROVED' ? Correct : ErrorImg} className="mr-2" />}
-                              {selectedProject?.indexing_text}
+                              <div className={selectedProject?.indexing_text === 'REQUESTED' ? "requested" : selectedProject?.indexing_text === 'APPROVED' ? "approved" : "rejected"}>
+                                {selectedProject?.indexing_text === 'REQUESTED' ? <FontAwesomeIcon icon="exclamation-circle" /> : selectedProject?.indexing_text === 'APPROVED' ? <img src={Correct} alt="approved" /> : <FontAwesomeIcon icon="times-circle" />}
+                                {selectedProject?.indexing_text}
+                              </div>
                             </div>
                           )}
                         </div>
