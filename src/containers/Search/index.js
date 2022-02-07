@@ -1509,6 +1509,9 @@ function SearchInterface(props) {
                               from: e * 20 - 20,
                               size: 20,
                               type: searchType,
+                              subjectArray: activeSubject || undefined,
+                              gradeArray: activeEducation || undefined,
+                              standardArray: activeType || undefined,
                               author: authorName || undefined,
                             };
                             Swal.fire({
@@ -1527,6 +1530,9 @@ function SearchInterface(props) {
                               size: 20,
                               type: searchType,
                               model: activeModel,
+                              subjectArray: activeSubject || undefined,
+                              gradeArray: activeEducation || undefined,
+                              standardArray: activeType || undefined,
                               author: authorName || undefined,
                             };
                             Swal.fire({
