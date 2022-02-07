@@ -406,18 +406,19 @@ const TeamDetail = ({
                 <div className="row">
                   <div className="col-md-12">
                     <div className="check-home">
-                      {loading ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
-                        <div className="playlist-resource" key={project.id}>
-                          <ProjectCard
-                            project={project}
-                            showDeletePopup={showDeletePopup}
-                            handleShow={handleShow}
-                            setProjectId={setProjectId}
-                            setCreateProject={setCreateProject}
-                            teamPermission={teamPermission || {}}
-                          />
-                        </div>
-                      )) : <Alert variant="danger" className="alert"> No project found.</Alert>}
+                      {(loading && team?.id)
+                        ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
+                          <div className="playlist-resource" key={project.id}>
+                            <ProjectCard
+                              project={project}
+                              showDeletePopup={showDeletePopup}
+                              handleShow={handleShow}
+                              setProjectId={setProjectId}
+                              setCreateProject={setCreateProject}
+                              teamPermission={teamPermission || {}}
+                            />
+                          </div>
+                        )) : team?.id && <Alert variant="danger" className="alert"> No project found.</Alert>}
                     </div>
                   </div>
                 </div>
