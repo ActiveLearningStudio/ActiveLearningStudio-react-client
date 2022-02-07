@@ -58,10 +58,10 @@ const Activity = (props) => {
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
-    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
-    let h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
+    const h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    const h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
     const divEmbedLibraries = ['H5P.BrightcoveInteractiveVideo 1.0', 'H5P.IFrameEmbed 1.0'];
-    const isDivEmbedLibrary = divEmbedLibraries.includes(h5pContent.library);
+    const isDivEmbedLibrary = divEmbedLibraries.includes(h5pContent?.library);
 
     if (isDivEmbedLibrary) {
       window.H5P = window.H5P || {};
@@ -94,8 +94,8 @@ const Activity = (props) => {
     });
 
     if (isDivEmbedLibrary) {
-      var h5pLibLoadTime = setInterval(function (e) {
-        var libObjectName = h5pContent.library.split(' ')[0].split('H5P.').filter(Boolean);
+      const h5pLibLoadTime = setInterval(() => {
+        const libObjectName = h5pContent?.library?.split(' ')[0]?.split('H5P.')?.filter(Boolean);
         if (libObjectName in window.H5P) {
           clearInterval(h5pLibLoadTime);
           window.H5P.init(document.body); // execute H5P
@@ -103,7 +103,6 @@ const Activity = (props) => {
         }
       }, 300);
     }
-
   }, [h5pSettings]);
 
   useEffect(() => {
