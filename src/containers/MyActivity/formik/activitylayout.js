@@ -16,8 +16,12 @@ import { useHistory } from 'react-router-dom';
 import { getLayoutActivities } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 import loader from 'assets/images/loader.svg';
+import SearchImage from '../../../assets/images/Search.svg';
+import UpLoadImage from '../../../assets/images/UpLoad.svg';
 import * as Taber from 'react-bootstrap';
 import H5PPreview from '../../H5PPreview';
+import AddVideo from '../../Videos/formik/addvideo';
+import DescribeVideo from '../../Videos/formik/describevideo';
 
 const ImgLoader = () => <img style={{ width: '100px' }} src={loader} />;
 const ActivityLayout = (props) => {
@@ -40,6 +44,7 @@ const ActivityLayout = (props) => {
     dispatch(getLayoutActivities());
   }, []);
   const allActivity = useSelector((state) => state.myactivities.layout);
+
   useMemo(() => {
     setLayout(allActivity?.[0] || null);
     if (allActivity) {
@@ -56,7 +61,7 @@ const ActivityLayout = (props) => {
         <HeadingTwo text="Select layout" color="#084892" />
       </div>
 
-      <form className="radio-group ">
+      {/* <form className="radio-group ">
         <div className="radio-button active-radio2 ">
           <input name="selecttype" checked type="radio" className="input" id="Create new activity" />
           <label for="Create new activity">Create new activity</label>
@@ -78,25 +83,26 @@ const ActivityLayout = (props) => {
           />
           <label for="Upload activity">Upload activity</label>
         </div>
-      </form>
+      </form> */}
       <div className="activity-layout-detail">
         <HeadingText text="Create multiple activities into a layout or create a single activity." color="#515151" />
       </div>
       <div className="layout-cards-process-btn">
-        <div className="activity-layout-cards">
-          {!!allActivity &&
-            allActivity.map((data) => {
-              return (
-                <LayoutCard
-                  image={data.image}
-                  text={data.title}
-                  className={layout?.title == data.title ? 'activity-layoutCard-active mr-3' : 'mr-3'}
-                  onClick={() => setLayout(data)}
-                />
-              );
-            })}
+        <div>
+          <div className="activity-layout-cards">
+            {!!allActivity &&
+              allActivity.map((data) => {
+                return (
+                  <LayoutCard
+                    image={data.image}
+                    text={data.title}
+                    className={layout?.title == data.title ? 'activity-layoutCard-active mr-3' : 'mr-3'}
+                    onClick={() => setLayout(data)}
+                  />
+                );
+              })}
 
-          {!!allActivity && (
+            {/* {!!allActivity && (
             <LayoutCard
               image={ColoumImage1}
               text="Explore All Activities"
@@ -110,8 +116,39 @@ const ActivityLayout = (props) => {
                 });
               }}
             />
-          )}
+          )} */}
+          </div>
+          <div className="explore-upload-buttons">
+            <div
+              className="ex-up-button expiore"
+              onClick={() => {
+                setLayout('SingleActivity');
+                dispatch({
+                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                  payload: 'singleActivity',
+                });
+              }}
+            >
+              <img src={SearchImage} alt="Search" />
+              <p className="">Explore all</p>
+            </div>
+            <div
+              className="ex-up-button"
+              onClick={() => {
+                changeScreenHandler('addactivity', 'upload');
+                setActiveRadio('upload');
+                dispatch({
+                  type: actionTypes.SET_SELECTED_ACTIVITY,
+                  payload: layout,
+                });
+              }}
+            >
+              <img src={UpLoadImage} alt="UpLoad" />
+              <p className="">Upload </p>
+            </div>
+          </div>
         </div>
+
         {!!layout && (
           <div className="layout-process-btn">
             <Taber.Tabs
@@ -164,7 +201,12 @@ const ActivityLayout = (props) => {
                   height="36px"
                   disabled={!layout}
                   onClick={() => {
-                    changeScreenHandler('addactivity');
+                    if (layout.title === 'Interactive Video') {
+                      changeScreenHandler('addvideo');
+                    } else {
+                      changeScreenHandler('addactivity');
+                    }
+
                     dispatch({
                       type: actionTypes.SET_SELECTED_ACTIVITY,
                       payload: layout,
