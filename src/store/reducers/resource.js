@@ -53,7 +53,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        types: action.payload.activityTypes,
+        types: action.payload,
       };
     case actionTypes.LOAD_RESOURCE_TYPES_FAIL:
       return {

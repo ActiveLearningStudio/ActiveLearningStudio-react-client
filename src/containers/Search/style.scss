@@ -3,12 +3,13 @@
   margin-left: 136px !important;
   padding: 16px 22px;
 }
+
 .content-search {
   background: #ffffff;
 }
 .search-result-main {
-  padding: 16px 22px 75px 24px;
   min-height: 600px;
+  padding: 16px 22px 75px 24px;
   .current-org-search {
     display: flex;
     font-family: "Open Sans", sans-serif;
@@ -296,7 +297,11 @@
     }
     .results_search {
       width: 100%;
-
+      .teams-logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.5rem !important;
+      }
       .box {
         display: flex;
         padding: 12px;
@@ -404,7 +409,7 @@
         }
       }
 
-      .content {
+      .contentbox {
         margin-top: 0;
         width: 78%;
         display: flex;
