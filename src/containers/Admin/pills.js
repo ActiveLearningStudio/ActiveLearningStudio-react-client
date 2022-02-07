@@ -177,7 +177,7 @@ export default function Pills(props) {
       } else if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && !activeRole) {
         setUsers(organization?.users);
       } else if (activeRole) {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole));
+        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size));
         setUsers(result);
       }
     }
