@@ -58,6 +58,8 @@ const Activity = (props) => {
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
+    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    let h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
     const divEmbedLibraries = ['H5P.BrightcoveInteractiveVideo 1.0', 'H5P.IFrameEmbed 1.0'];
     const isDivEmbedLibrary = divEmbedLibraries.includes(h5pContent.library);
 
