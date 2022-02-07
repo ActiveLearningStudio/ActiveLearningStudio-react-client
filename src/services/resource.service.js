@@ -1,9 +1,9 @@
 /* eslint-disable */
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
-import config from "config";
-import httpService from "./http.service";
-import { errorCatcher } from "./errors";
+import config from 'config';
+import httpService from './http.service';
+import { errorCatcher } from './errors';
 
 const { apiVersion } = config;
 
@@ -63,7 +63,7 @@ const upload = (formData, conf) =>
       `/${apiVersion}/activities/upload-thumb`,
       formData,
       {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
       conf
     )
@@ -76,7 +76,7 @@ const upload = (formData, conf) =>
 const uploadActivityTypeThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-thumb`, formData, {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -87,7 +87,7 @@ const uploadActivityTypeThumb = (formData) =>
 const uploadActivityTypeFile = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-css`, formData, {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -98,7 +98,7 @@ const uploadActivityTypeFile = (formData) =>
 const uploadActivityItemThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-items/upload-thumb`, formData, {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -186,9 +186,9 @@ const h5pToken = (dataH5p) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pSettings = (library, accountId = null) =>
+const h5pSettings = (library, accountId = null, settingId = null) =>
   httpService
-    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}`)
+    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}&brightcove_api_setting_id=${settingId},`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -200,10 +200,7 @@ const h5pResource = (activityId) =>
 
 const h5pSettingsUpdate = (activityId, dataUpload, playlistId) =>
   httpService
-    .put(
-      `/${apiVersion}/playlists/${playlistId}/activities/${activityId}`,
-      dataUpload
-    )
+    .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -213,11 +210,9 @@ const h5pResourceSettings = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: "Error",
-        icon: "error",
-        html:
-          err.message ||
-          "Something went wrong! We are unable to load activity.",
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
       });
       Promise.reject(err.response.data);
     });
@@ -243,11 +238,9 @@ const h5pResourceSettingsEmbed = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: "Error",
-        icon: "error",
-        html:
-          err.message ||
-          "Something went wrong! We are unable to load activity.",
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
       });
       Promise.reject(err.response.data);
     });
@@ -284,9 +277,7 @@ const loadH5pShared = (activityId) =>
 
 const searchPreviewActivity = (subOrgId, activityId) =>
   httpService
-    .get(
-      `/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`
-    )
+    .get(`/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 

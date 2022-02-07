@@ -23,6 +23,9 @@ const INITIAL_STATE = {
   removeUser: null,
   allbrightCove: null,
   subjects: null,
+  education_level: null,
+  author_tags: null,
+  activity_layouts: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -97,6 +100,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         author_tags: action.payload,
+      };
+    case actionTypes.GET_ACTIVITY_LAYOUTS:
+      return {
+        ...state,
+        activity_layouts: action.payload,
       };
     case actionTypes.GET_USERS_REPORT:
       return {

@@ -407,6 +407,37 @@ const deleteAuthorTag = (id) => httpService
     return Promise.reject();
   });
 
+  const getActivityLayout = (page, column, orderBy, search) => httpService
+  .get(`${apiVersion}/activity-layouts?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search.replace(/#/, '%23')}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createActivityLayout = (values) => httpService
+  .post(`${apiVersion}/activity-layouts`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateActivityLayout = (id, values) => httpService
+  .put(`${apiVersion}/activity-layouts/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteActivityLayout = (id) => httpService
+  .remove(`${apiVersion}/activity-layouts/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -460,4 +491,8 @@ export default {
   createAuthorTag,
   updateAuthorTag,
   deleteAuthorTag,
+  getActivityLayout,
+  createActivityLayout,
+  updateActivityLayout,
+  deleteActivityLayout,
 };

@@ -968,7 +968,7 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
+                    <tr key={'auth-tag-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
                       <td>
                         <div className="admin-panel-dropdown">
@@ -984,6 +984,39 @@ function Table(props) {
                   <tr>
                     <td colSpan="11">
                       <Alert variant="warning">No Author tag found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+            
+            {type === 'Activities' &&
+              subType === 'Activity Layouts' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-lay-' + row.id} className="admin-panel-rows">
+                      <td>{row.title}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          --
+                          <div>
+                            <AdminDropdown type={type} subType="Activity Layouts" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Activity layout found.</Alert>
                     </td>
                   </tr>
                 )

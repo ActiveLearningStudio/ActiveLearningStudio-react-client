@@ -66,4 +66,6 @@ export const columnData = {
   subjects: ['Name', 'Order'],
   educationLevel: ['Name', 'Order'],
   authorTags: ['Name', 'Order'],
+  activityLayouts: ['Name', 'Order', 'Items'],
+  activityLayoutsSortCol: ['Order'],
 };

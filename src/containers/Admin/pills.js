@@ -21,6 +21,7 @@ import {
   getEducationLevel,
   getAuthorTag,
   getActivityTypes,
+  getActivityLayout,
 } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
@@ -79,6 +80,7 @@ export default function Pills(props) {
   const [subjects, setSubjects] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
   const [authorTag, setAuthorTag] = useState(null);
+  const [activityLayout, setActivityLayout] = useState(null);
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -461,6 +463,9 @@ export default function Pills(props) {
     if (subTypeState === 'Author Tags') {
       dispatch(getAuthorTag(activePage || 1));
     }
+    if (type === 'Activities') {
+      dispatch(getActivityLayout(activePage || 1));
+    }
   }, [type, subTypeState, activePage, activeOrganization?.id]);
 
   useEffect(() => {
@@ -480,6 +485,12 @@ export default function Pills(props) {
       setAuthorTag(dataRedux.admin.author_tags);
     }
   }, [dataRedux.admin.author_tags]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.activity_layouts) {
+      setActivityLayout(dataRedux.admin.activity_layouts);
+    }
+  }, [dataRedux.admin.activity_layouts]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
@@ -500,6 +511,12 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
     dispatch(getActivityItems(encodeQuery, activePage || 1));
+  };
+  
+  const searchQueryChangeHandlerActivityLayouts = (search) => {
+    // setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(getActivityLayout(activePage || 1, '', '', encodeQuery));
   };
 
   //Default SSO ***************************************
@@ -626,6 +643,19 @@ export default function Pills(props) {
           col = 'order';
       }
       dispatch(getActivityItems('', activePage || 1, col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Activity Layouts') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getActivityLayout('', activePage || 1, col, orderBy,));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
     }
@@ -1003,6 +1033,31 @@ export default function Pills(props) {
                   setSize={setSize}
                   selectedActivityType={selectedActivityType}
                   setSelectedActivityType={setSelectedActivityType}
+                />
+              )}
+              
+              {type === 'Activities' && subTypeState === 'Activity Layouts' && (
+                <Starter
+                  search={true}
+                  tableHead={columnData.activityLayouts}
+                  sortCol={columnData.activityLayoutsSortCol}
+                  handleSort={handleSort}
+                  subType={'Activity Layouts'}
+                  // searchQueryActivities={searchQueryActivities}
+                  // setSearchQueryActivities={setSearchQueryActivities}
+                  // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add activity layout"
+                  btnAction="add_activity_layout"
+                  data={activityLayout}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={false}
+                  size={size}
+                  setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
+                  // selectedActivityType={selectedActivityType}
+                  // setSelectedActivityType={setSelectedActivityType}
                 />
               )}
               {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}

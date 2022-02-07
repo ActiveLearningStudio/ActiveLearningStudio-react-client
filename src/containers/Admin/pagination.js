@@ -204,6 +204,21 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Last"
           />
         )}
+        {type === 'Activities' && subType === 'Activity Layouts' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
         {type === 'LMS' && (
           <Pagination
             activePage={activePage}

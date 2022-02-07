@@ -640,6 +640,66 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
+          
+          {type === 'Activities' && subType === 'Activity Layouts' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_activity_layout'));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete it',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      Swal.fire({
+                        title: 'Author Tag',
+                        icon: 'info',
+                        text: 'Deleting activity layout...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                        button: false,
+                      });
+                      const response = adminService.deleteActivityLayout(row?.id);
+                      response
+                        .then((res) => {
+                          Swal.fire({
+                            icon: 'success',
+                            text: 'Activity layout deleted successfully',
+                            confirmButtonText: 'Close',
+                            customClass: {
+                              confirmButton: 'confirmation-close-btn',
+                            },
+                          });
+                          dispatch(getActivityLayout(activePage || 1));
+                        })
+                        .catch((err) => console.log(err));
+                    }
+                  });
+                }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
 
           {type === 'Users' && (
             <>

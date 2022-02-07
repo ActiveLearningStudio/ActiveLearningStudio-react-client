@@ -284,6 +284,13 @@ function Controller(props) {
             <img src={searchimg} alt="search" />
           </div>
         )}
+        
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler}/>
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
         {paginationCounter && (
           <div className="pagination-counter drop-counter ">
             Rows per page
@@ -812,6 +819,22 @@ function Controller(props) {
             </button>
           </div>
         )}
+        
+        {!!btnText && subType === 'Activity Layouts' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
 
         {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
@@ -906,7 +929,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'DefaultSso' && permission?.Organization.includes('organization:create-default-sso') && (
+        {!!btnText && type === 'DefaultSso' && (
           <div className="btn-text">
             <button
               type="button"

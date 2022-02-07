@@ -221,3 +221,12 @@ export const getAuthorTag = (page, column = '', orderBy = '') => async (dispatch
   });
   return result;
 };
+
+export const getActivityLayout = (page, column = '', orderBy = '', search = '') => async (dispatch) => {
+  const result = await adminService.getActivityLayout(page, column, orderBy, search);
+  dispatch({
+    type: actionTypes.GET_ACTIVITY_LAYOUTS,
+    payload: result,
+  });
+  return result;
+};

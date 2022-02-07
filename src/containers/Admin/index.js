@@ -29,6 +29,7 @@ import editicon from 'assets/images/edit-icon.png';
 import CreateSubject from './formik/createSubject';
 import CreateEducationLevel from './formik/createEducationLevel';
 import CreateAuthorTag from './formik/createAuthorTag';
+import CreateActivityLayout from './formik/createActivityLayout';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -133,6 +134,7 @@ function AdminPanel({ showSSO }) {
                       <div className="module-content">
                         <Pills
                           modules={[
+                            'Activity Layouts',
                             permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
                             permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
                             'Subjects',
@@ -256,6 +258,18 @@ function AdminPanel({ showSSO }) {
                 }}
               />
               <div className="inner-form-content">{activeForm === 'add_author_tag' ? <CreateAuthorTag /> : <CreateAuthorTag editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_activity_layout' || activeForm === 'edit_activity_layout') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_activity_layout' ? <CreateActivityLayout /> : <CreateActivityLayout editMode />}</div>
             </div>
           )}
           {(activeForm === 'add_org' || activeForm === 'edit_org') && (
