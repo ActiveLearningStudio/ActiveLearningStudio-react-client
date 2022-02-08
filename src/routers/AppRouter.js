@@ -194,7 +194,7 @@ const AppRouter = (props) => {
                     component={TeamAddProjects}
                   />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
-                  <PrivateRoute exact path="/org/:organization/instant-admin" showSSO component={AdminPanel} />
+                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
 
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
