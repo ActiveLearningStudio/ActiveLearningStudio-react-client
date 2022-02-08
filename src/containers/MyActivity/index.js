@@ -93,7 +93,12 @@ const MyActivity = ({ playlistPreview }) => {
               )}
               {screenState === 'addvideo' && (
                 <div className="form-new-popup-myvideo ">
-                  <AddVideo changeScreenHandler={changeScreenHandler} />
+                  <AddVideo showback={true} changeScreenHandler={changeScreenHandler} />
+                </div>
+              )}
+              {screenState === 'describevideo' && (
+                <div className="form-new-popup-myvideo ">
+                  <DescribeVideo reverseType showback={true} changeScreenHandler={changeScreenHandler} setUploadImageStatus={setUploadImageStatus} />
                 </div>
               )}
             </div>

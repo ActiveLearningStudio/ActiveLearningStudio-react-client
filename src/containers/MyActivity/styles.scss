@@ -215,15 +215,15 @@
       }
 
       .form-new-popup-myvideo {
-        // position: fixed;
-        // background: #0848928f;
+        position: inherit !important;
+        background: #ffffff00 !important;
         top: 0;
         left: 0;
         width: 100%;
         z-index: 1060;
         height: 100%;
         overflow-y: auto;
-        // padding-left: 285px;
+        padding-left: 0 !important;
         .cross-all-pop {
           position: absolute;
           top: 50px;
