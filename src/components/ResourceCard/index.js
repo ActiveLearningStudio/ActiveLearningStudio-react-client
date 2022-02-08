@@ -35,14 +35,14 @@ const ResourceCard = (props) => {
           <div className="resource-card-wrapper d-flex align-items-center">
             {!!resource.thumb_url && (
               <div className="activity-thumb-wrapper">
-                <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}>
-                  <div
-                    className="activity-thumb"
-                    style={{
-                      backgroundImage: resource.thumb_url?.includes('pexels.com') ? `url(${resource.thumb_url})` : `url(${global.config.resourceUrl}${resource.thumb_url})`,
-                    }}
-                  />
-                </Link>
+                {/* <Link to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/edit`}> */}
+                <div
+                  className="activity-thumb"
+                  style={{
+                    backgroundImage: resource.thumb_url?.includes('pexels.com') ? `url(${resource.thumb_url})` : `url(${global.config.resourceUrl}${resource.thumb_url})`,
+                  }}
+                />
+                {/* </Link> */}
               </div>
             )}
 

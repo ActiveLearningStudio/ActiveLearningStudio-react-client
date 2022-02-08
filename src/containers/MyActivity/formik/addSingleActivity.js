@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 import arrowdark from 'assets/images/arrowdark.png';
 import searchicon from 'assets/images/nteractiveactionssearch.png';
+import BackButton from '../../../assets/images/left-arrow.svg';
 import Tabs from 'utils/Tabs/tabs';
 import Buttons from 'utils/Buttons/buttons';
 import { useHistory } from 'react-router-dom';
@@ -52,14 +53,20 @@ const ActivityLayout = (props) => {
     setFilterData(setData);
   }, [allActivitytypes]);
   return (
-    <div className="activity-layout-form">
+    <div className="activity-layout-form ">
       <div className="activity-layout-tabs">
         <Tabs text="1. Select layout" tabActive={true} />
         <Tabs text="2. Select activity" tabActive={true} className="ml-10 " />
         <Tabs text="3. Create activity" className="ml-10 " />
       </div>
-      <div className="activity-layout-title">
-        <HeadingOne text="Select activity" color="#084892" />
+      <div className="upload-back-button">
+        <div className="activity-layout-title ">
+          <HeadingOne text="Select activity" color="#084892" />
+        </div>
+        <div className="back-button" onClick={() => changeScreenHandler('layout')}>
+          <img src={BackButton} alt="back button " />
+          <p className="">Back to options</p>
+        </div>
       </div>
       <div className="activity-layout-paragraph">
         <Headings
@@ -90,25 +97,26 @@ const ActivityLayout = (props) => {
           </div>
 
           <div class="dropdown-content-select">
-            {allActivitytypes?.length > 0 && allActivitytypes?.map((data, counter) => {
-              return (
-                <label>
-                  <input
-                    checked={filterData.includes(data.id)}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setFilterData([...filterData, data.id]);
-                      } else {
-                        setFilterData(filterData.filter((ids) => ids !== data.id));
-                      }
-                    }}
-                    type="checkbox"
-                    name={counter}
-                  />
-                  {data.title}
-                </label>
-              );
-            })}
+            {allActivitytypes?.length > 0 &&
+              allActivitytypes?.map((data, counter) => {
+                return (
+                  <label>
+                    <input
+                      checked={filterData.includes(data.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFilterData([...filterData, data.id]);
+                        } else {
+                          setFilterData(filterData.filter((ids) => ids !== data.id));
+                        }
+                      }}
+                      type="checkbox"
+                      name={counter}
+                    />
+                    {data.title}
+                  </label>
+                );
+              })}
           </div>
         </div>
 
@@ -116,24 +124,25 @@ const ActivityLayout = (props) => {
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
-          {allActivitiesSingle?.length > 0 && allActivitiesSingle?.map((data) => {
-            return (
-              filterData.includes(data.activityType?.id) && (
-                <LayoutCard
-                  image={data.image}
-                  text={data.title}
-                  className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
-                  onClick={() => setLayout(data)}
-                  btnTextOne="Demo"
-                  btnTextTwo="Video"
-                  setCurrentActivity={setCurrentActivity}
-                  setActiveType={setActiveType}
-                  setModalShow={setModalShow}
-                  activity={data}
-                />
-              )
-            );
-          })}
+          {allActivitiesSingle?.length > 0 &&
+            allActivitiesSingle?.map((data) => {
+              return (
+                filterData.includes(data.activityType?.id) && (
+                  <LayoutCard
+                    image={data.image}
+                    text={data.title}
+                    className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
+                    onClick={() => setLayout(data)}
+                    btnTextOne="Demo"
+                    btnTextTwo="Video"
+                    setCurrentActivity={setCurrentActivity}
+                    setActiveType={setActiveType}
+                    setModalShow={setModalShow}
+                    activity={data}
+                  />
+                )
+              );
+            })}
         </div>
       </div>
       <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
@@ -143,7 +152,7 @@ const ActivityLayout = (props) => {
 
 const ConfigButtons = ({ changeScreenHandler, layout, dispatch }) => (
   <div className="activity-layout-btns" style={{ display: 'flex' }}>
-    <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} />
+    {/* <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} /> */}
 
     <div className="btns-margin ml-3">
       <Buttons

@@ -163,13 +163,46 @@
   }
 }
 .library-status {
-  padding: 6px 12px;
+  font-family: $rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
   text-align: center;
-  height: 32px;
-  background: #f1f1f1;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
+  .approved {
+    display: flex;
+    align-items: center;
+    background: #f7faff;
+    padding: 6px 12px;
+    color: #084892;
+    border-radius: 4px;
+    img {
+      margin-right: 8px;
+    }
+  }
+  .rejected {
+    display: flex;
+    align-items: center;
+    background: rgba(248, 175, 44, 0.08);
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: #cf900f;
+    svg {
+      color: #cf900f;
+      margin-right: 8px;
+    }
+  }
+  .requested {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 6px 12px;
+    color: #767676;
+    border-radius: 4px;
+    svg {
+      color: #767676;
+      margin-right: 8px;
+    }
+  }
 }
 .status-pref {
   display: flex;

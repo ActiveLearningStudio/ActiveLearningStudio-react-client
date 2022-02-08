@@ -19,6 +19,9 @@ import AddActivity from './formik/addactivity';
 import PreviewLayout from './formik/previewlayout';
 import UploadInteractiveVideo from './formik/uploadinteractivevideo';
 import MyVerticallyCenteredModal from 'components/models/activityOptions';
+import AddVideo from 'containers/Videos/formik/addvideo';
+import DescribeVideo from 'containers/Videos/formik/describevideo';
+import 'containers/Videos/style.scss';
 
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = ({ playlistPreview }) => {
@@ -54,10 +57,10 @@ const MyActivity = ({ playlistPreview }) => {
   return (
     <>
       {screenState && (
-        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity'}>
-          <div className="inner-form-content">
-            <div className="inner-form-content-box">
-              <div className="cross-all-pop-box">
+        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity '}>
+          <div className="inner-form-content ">
+            <div className="inner-form-content-box ">
+              <div className="cross-all-pop-box ">
                 <FontAwesomeIcon icon="times" className="cross-all-pop" onClick={() => changeScreenHandler('')} />
               </div>
 
@@ -66,7 +69,7 @@ const MyActivity = ({ playlistPreview }) => {
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
               />
-            )} */}
+             )} */}
               {screenState === 'layout' && <ActivityLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
               {screenState === 'addactivity' && (
                 <AddActivity
@@ -87,6 +90,16 @@ const MyActivity = ({ playlistPreview }) => {
                   changeScreenHandler={changeScreenHandler}
                   screenState={screenState}
                 />
+              )}
+              {screenState === 'addvideo' && (
+                <div className="form-new-popup-myvideo ">
+                  <AddVideo showback={true} changeScreenHandler={changeScreenHandler} />
+                </div>
+              )}
+              {screenState === 'describevideo' && (
+                <div className="form-new-popup-myvideo ">
+                  <DescribeVideo reverseType showback={true} changeScreenHandler={changeScreenHandler} setUploadImageStatus={setUploadImageStatus} />
+                </div>
               )}
             </div>
           </div>
