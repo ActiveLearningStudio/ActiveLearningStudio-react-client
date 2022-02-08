@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .search-wrapper {
   margin-left: 136px !important;
   padding: 16px 22px;
@@ -12,7 +12,7 @@
   padding: 16px 22px 75px 24px;
   .current-org-search {
     display: flex;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -35,7 +35,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 24px;
-    font-family: "rubik", sans-serif;
+    font-family: 'rubik', sans-serif;
     letter-spacing: 0;
     text-transform: capitalize;
     opacity: 1;
@@ -104,7 +104,7 @@
           margin-bottom: 8px;
         }
 
-        input[type="radio"] {
+        input[type='radio'] {
           display: flex;
           flex-direction: row;
           justify-content: center;
@@ -335,14 +335,14 @@
               letter-spacing: 0;
               opacity: 1;
               list-style-type: disc;
-              font-family: "Open Sans", sans-serif;
+              font-family: 'Open Sans', sans-serif;
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
               line-height: 16px;
               span {
                 text-align: left;
-                font-family: "Open Sans", sans-serif;
+                font-family: 'Open Sans', sans-serif;
                 font-style: normal;
                 font-weight: normal;
                 font-size: 12px;
@@ -388,6 +388,7 @@
         max-height: 135px;
         border: 1px solid #dddddd;
         border-radius: 4px;
+        margin-right: 20px;
 
         div {
           width: 100%;
