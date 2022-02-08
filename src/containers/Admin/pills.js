@@ -1029,6 +1029,14 @@ export default function Pills(props) {
                   searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
                 />
               )}
+              {type === 'Teams' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  search={true}
+                />
+              )}
             </div>
           </Tab>
         ))}

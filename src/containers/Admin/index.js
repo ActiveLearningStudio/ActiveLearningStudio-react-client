@@ -48,7 +48,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -129,21 +129,21 @@ function AdminPanel({ showSSO }) {
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                    <Tab eventKey="Activities" title="Activities">
-                      <div className="module-content">
-                        <Pills
-                          modules={[
-                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
-                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
-                          ]}
-                          type="Activities"
-                        />
-                      </div>
-                    </Tab>
-                  )}
+                      <Tab eventKey="Activities" title="Activities">
+                        <div className="module-content">
+                          <Pills
+                            modules={[
+                              permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                              permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                              'Subjects',
+                              'Education Level',
+                              'Author Tags',
+                            ]}
+                            type="Activities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
@@ -160,7 +160,15 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-
+                  {(
+                    <Tab eventKey="Teams" title="Teams">
+                      <div className="module-content">
+                        <Pills
+                          type="Teams"
+                        />
+                      </div>
+                    </Tab>
+                  )}
                   {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
