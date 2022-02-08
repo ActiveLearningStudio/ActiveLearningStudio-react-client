@@ -243,7 +243,7 @@ const ResourceCardDropdown = (props) => {
           </>
         )}
         {permission?.Activity?.includes('activity:share') && (
-          <Dropdown.Item href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
+          <Dropdown.Item href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
             <img src={Xapi} alt="Preview" className="menue-img" />
             xAPI Download
           </Dropdown.Item>
