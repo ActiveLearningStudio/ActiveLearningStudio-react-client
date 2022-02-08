@@ -649,8 +649,16 @@ function PlaylistsPage(props) {
                           </div>
                           {selectedProject?.indexing_text !== "NOT REQUESTED" && (
                             <div className="library-status">
-                              <div className={selectedProject?.indexing_text === 'REQUESTED' ? "requested" : selectedProject?.indexing_text === 'APPROVED' ? "approved" : "rejected"}>
-                                {selectedProject?.indexing_text === 'REQUESTED' ? <FontAwesomeIcon icon="exclamation-circle" /> : selectedProject?.indexing_text === 'APPROVED' ? <img src={Correct} alt="approved" /> : <FontAwesomeIcon icon="times-circle" />}
+                              <div
+                                className={selectedProject?.indexing_text === 'REQUESTED' ?
+                                  "requested" : selectedProject?.indexing_text === 'APPROVED'
+                                    ? "approved" : "rejected"
+                                }
+                              >
+                                {selectedProject?.indexing_text === 'REQUESTED'
+                                  ? <FontAwesomeIcon icon="exclamation-circle" /> : selectedProject?.indexing_text === 'APPROVED'
+                                    ? <img src={Correct} alt="approved" /> : <FontAwesomeIcon icon="times-circle" />
+                                }
                                 {selectedProject?.indexing_text}
                               </div>
                             </div>
