@@ -293,7 +293,7 @@ export default function Pills(props) {
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Types' && activePage) {
+    if (type === 'Activities' && activePage) {
       //pagination
       dispatch(getActivityTypes(activePage));
       dispatch(updatePageNumber(activePage));

@@ -349,7 +349,7 @@ function SearchForm() {
                     <option value="" disabled selected hidden>
                       Type of Activity
                     </option>
-                    {activityTypes?.data.map((data) => (
+                    {activityTypes?.map((data) => (
                       <option key={data.id} value={data.h5pLib}>
                         {data.title}
                       </option>
