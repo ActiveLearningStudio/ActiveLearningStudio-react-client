@@ -12,7 +12,7 @@ import HeadingText from 'utils/HeadingText/headingtext';
 import DefaultUpload from 'assets/images/defaultUpload.png';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) => {
+const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
   const { videoId, editVideo, activecms } = useSelector((state) => state.videos);
@@ -32,7 +32,8 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
         editVideo={editVideo}
         setOpenVideo={setOpenVideo}
         accountId={activecms?.account_id}
-        settingId={activecms?.id || editVideo?.brightcoveData.apiSettingId}
+        settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
+        reverseType={reverseType}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
@@ -149,7 +150,22 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
                     />
                   </div>
                   <div className="describe-video">
-                    {!editVideo && <Buttons onClick={() => setScreenStatus('AddVideo')} secondary={true} text="Back" width="162px" height="32px" hover={true} />}
+                    {!editVideo && (
+                      <Buttons
+                        onClick={() => {
+                          if (showback) {
+                            changeScreenHandler('addvideo');
+                          } else {
+                            setScreenStatus('AddVideo');
+                          }
+                        }}
+                        secondary={true}
+                        text="Back"
+                        width="162px"
+                        height="32px"
+                        hover={true}
+                      />
+                    )}
                     <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>

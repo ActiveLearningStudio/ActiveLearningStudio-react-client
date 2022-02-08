@@ -7,11 +7,12 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
 import AddVideoTube from 'assets/images/svg/youtube.svg';
+import BackButton from '../../../assets/images/left-arrow.svg';
 import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
-const AddVideo = ({ setScreenStatus }) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
   const [modalShow, setModalShow] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState('');
   return (
@@ -29,7 +30,7 @@ const AddVideo = ({ setScreenStatus }) => {
           <TabsHeading text="2. Describe video" className="ml-10" />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
-        <div className="add-video-title-select">
+        <div className="add-video-title-select upload-back-button">
           <div className="add-video-title">
             <HeadingTwo text="Add a video" color="#084892" />
           </div>
@@ -39,15 +40,31 @@ const AddVideo = ({ setScreenStatus }) => {
               Tour
             </span>
           </div> */}
+          {showback && (
+            <div className="back-button" style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => changeScreenHandler('layout')}>
+              <img style={{ marginRight: '8px' }} src={BackButton} alt="back button " />
+              <p style={{ margin: 0 }} className="">
+                Back to options
+              </p>
+            </div>
+          )}
         </div>
         <div className="add-video-form-tabs">
           <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
             <Tab eventKey="default" title="BrightCove">
-              <FormikVideo selectedVideoId={selectedVideoId} type={AddVideoImage} setScreenStatus={setScreenStatus} showBrowse setModalShow={setModalShow} />
+              <FormikVideo
+                showback={showback}
+                changeScreenHandler={changeScreenHandler}
+                selectedVideoId={selectedVideoId}
+                type={AddVideoImage}
+                setScreenStatus={setScreenStatus}
+                showBrowse
+                setModalShow={setModalShow}
+              />
             </Tab>
             {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
             <Tab eventKey="YouTube" title="YouTube">
-              <FormikVideo type={AddVideoTube} setScreenStatus={setScreenStatus} />
+              <FormikVideo showback={showback} changeScreenHandler={changeScreenHandler} type={AddVideoTube} setScreenStatus={setScreenStatus} />
             </Tab>
             {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
@@ -60,7 +77,7 @@ const AddVideo = ({ setScreenStatus }) => {
 
 export default AddVideo;
 
-const FormikVideo = ({ type, selectedVideoId, showBrowse, setScreenStatus, setModalShow }) => {
+const FormikVideo = ({ type, showback, selectedVideoId, showBrowse, setScreenStatus, setModalShow, changeScreenHandler }) => {
   const dispatch = useDispatch();
   return (
     <div className="add-video-layout-formik">
@@ -77,7 +94,11 @@ const FormikVideo = ({ type, selectedVideoId, showBrowse, setScreenStatus, setMo
           return errors;
         }}
         onSubmit={(values) => {
-          setScreenStatus('DescribeVideo');
+          if (showback) {
+            changeScreenHandler('describevideo');
+          } else {
+            setScreenStatus('DescribeVideo');
+          }
           dispatch({
             type: 'ADD_VIDEO_URL',
             payload: values.videoUrl,
