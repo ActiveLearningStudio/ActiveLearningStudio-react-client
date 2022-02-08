@@ -32,7 +32,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo }) 
         editVideo={editVideo}
         setOpenVideo={setOpenVideo}
         accountId={activecms?.account_id}
-        settingId={activecms?.id}
+        settingId={activecms?.id || editVideo?.brightcoveData.apiSettingId}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">

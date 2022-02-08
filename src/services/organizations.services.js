@@ -96,8 +96,8 @@ const allPermission = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getOrgUsers = (id, page, activeRole) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}${activeRole ? `&role=${activeRole}` : ''}`)
+const getOrgUsers = (id, page, activeRole, size) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}${activeRole ? `&role=${activeRole}` : ''}${size ? `&size=${size}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

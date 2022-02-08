@@ -26,11 +26,12 @@ const H5PPreview = (props) => {
     h5pWrapper.innerHTML = data.h5p.embed_code.trim();
     const newCss = data.h5p.settings.core.styles.concat(data.h5p.settings.loadedCss);
 
-    let h5pContentKeys = Object.keys(window.H5PIntegration.contents);
-    let h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
-    let isBrightcoveLib = h5pContent.library === 'H5P.BrightcoveInteractiveVideo 1.0' ? true : false;
+    const h5pContentKeys = Object.keys(window.H5PIntegration.contents);
+    const h5pContent = h5pContentKeys.length > 0 ? window.H5PIntegration.contents[h5pContentKeys[0]] : undefined;
+    const divEmbedLibraries = ['H5P.BrightcoveInteractiveVideo 1.0', 'H5P.IFrameEmbed 1.0'];
+    const isDivEmbedLibrary = divEmbedLibraries.includes(h5pContent?.library);
 
-    if (isBrightcoveLib) {
+    if (isDivEmbedLibrary) {
       window.H5P = window.H5P || {};
       window.H5P.preventInit = true;
     }
@@ -56,9 +57,10 @@ const H5PPreview = (props) => {
       document.body.appendChild(script);
     });
 
-    if (isBrightcoveLib) {
-      var h5pLibLoadTime = setInterval(function (e) {
-        if ('BrightcoveInteractiveVideo' in window.H5P) {
+    if (isDivEmbedLibrary) {
+      const h5pLibLoadTime = setInterval(function (e) {
+        const libObjectName = h5pContent?.library?.split(' ')[0]?.split('H5P.')?.filter(Boolean);
+        if (libObjectName in window.H5P) {
           clearInterval(h5pLibLoadTime);
           window.H5P.init(document.body); // execute H5P
           window.H5P.preventInit = undefined;

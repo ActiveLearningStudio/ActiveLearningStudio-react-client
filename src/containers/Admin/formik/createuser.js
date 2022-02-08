@@ -2,8 +2,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { addUserInOrganization,editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
+import { Dropdown } from 'react-bootstrap';
+import { addUserInOrganization, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { loadOrganizationTypesAction } from 'store/actions/auth';
 import { getOrgUsers } from 'store/actions/organization';
@@ -12,8 +12,8 @@ import './createuser.scss';
 
 export default function CreateUser(prop) {
   const { editMode, checkedEmail } = prop;
-  const [activityImage, setActivityImage] =  useState('')
-  const imgref  = useRef();
+  const [activityImage, setActivityImage] = useState('')
+  const imgref = useRef();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const organizationTypes = useSelector((state) => state.auth.organizationTypes);
@@ -24,7 +24,7 @@ export default function CreateUser(prop) {
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, [])
-  const validatePassword=(pwd) => {
+  const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
     console.log(regex.test(pwd));
@@ -37,12 +37,12 @@ export default function CreateUser(prop) {
           first_name: editMode ? currentUser?.first_name : '',
           last_name: editMode ? currentUser?.last_name : '',
           user_id: editMode ? currentUser?.id : '',
-          organization_type:editMode ? currentUser?.organization_type : '',
-          organization_name:editMode ? currentUser?.organization_name :'',
-          job_title:editMode ? currentUser?.job_title : '',
-          role_id:editMode ? currentUser?.organization_role_id : '',
-          email:editMode ? currentUser?.email : checkedEmail,
-          password:'',
+          organization_type: editMode ? currentUser?.organization_type : '',
+          organization_name: editMode ? currentUser?.organization_name : '',
+          job_title: editMode ? currentUser?.job_title : '',
+          role_id: editMode ? currentUser?.organization_role_id : '',
+          email: editMode ? currentUser?.email : checkedEmail,
+          password: '',
         }}
         validate={(values) => {
           const errors = {};
@@ -63,7 +63,7 @@ export default function CreateUser(prop) {
             errors.password = 'Required';
           }
           if (values.password) {
-            if(!validatePassword(values.password)) {
+            if (!validatePassword(values.password)) {
               errors.password = 'Password must be more than 8 characters long, should contain at-least 1 Uppercase, 1 Lowercase and 1 Numeric character.';
             }
           }
@@ -103,7 +103,7 @@ export default function CreateUser(prop) {
                 customClass: {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
-                  htmlContainer: 'create-user-confirm-modal-content',                  
+                  htmlContainer: 'create-user-confirm-modal-content',
                 }
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -135,7 +135,7 @@ export default function CreateUser(prop) {
                 customClass: {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
-                  htmlContainer: 'create-user-confirm-modal-content',                  
+                  htmlContainer: 'create-user-confirm-modal-content',
                 }
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -213,38 +213,43 @@ export default function CreateUser(prop) {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}
-                    />
+                  />
                   <div className="error">
                     {errors.password && touched.password && errors.password}
                   </div>
-                  </div>
+                </div>
                 <div className="form-group-create">
                   <h3>Role</h3>
-                  {/* <input
-                    type="text"
-                    name="role"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.role}
-                  /> */}
-                  <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                    <option value="">{'---Select a role---'}</option>
-                    {roles?.length > 0 && roles?.map((role)=>(
-                      <option value={role?.id} key={role?.id}>{role?.display_name}</option>
-                    ))}
-                  </select>
+                  <div className="filter-dropdown-user">
+                    <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic">
+                        {roles?.length > 0 && roles?.find(role => role.id === values.role_id)?.display_name}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {roles?.length > 0 && roles?.map((role) => (
+                          <Dropdown.Item key={role?.id} onClick={() => setFieldValue('role_id', role.id)}>{role?.display_name}</Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
                   <div className="error">
                     {errors.role_id && touched.role_id && errors.role_id}
                   </div>
                 </div>
                 <div className="form-group-create">
                   <h3>Organization Type</h3>
-                  <select name="organization_type" onChange={handleChange} onBlur={handleBlur} value={values.organization_type}>
-                    <option value="">{'---Select an organization type---'}</option>
-                    {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
-                      <option value={type?.label} key={type?.label}>{type?.label}</option>
-                    ))}
-                  </select>
+                  <div className="filter-dropdown-user">
+                    <Dropdown>
+                      <Dropdown.Toggle id="dropdown-basic">
+                        {organizationTypes?.length > 0 && organizationTypes?.find(type => type.label === values.organization_type)?.label}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
+                          <Dropdown.Item key={type?.label} onClick={() => setFieldValue('organization_type', type.label)}>{type?.label}</Dropdown.Item>
+                        ))}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
                   <div className="error">
                     {errors.organization_type && touched.organization_type && errors.organization_type}
                   </div>
