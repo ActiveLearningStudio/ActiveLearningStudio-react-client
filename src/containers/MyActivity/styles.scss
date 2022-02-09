@@ -213,6 +213,35 @@
         display: flex;
         justify-content: flex-end;
       }
+
+      .form-new-popup-myvideo {
+        position: inherit !important;
+        background: #ffffff00 !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1060;
+        height: 100%;
+        overflow-y: auto;
+        padding-left: 0 !important;
+        .cross-all-pop {
+          position: absolute;
+          top: 50px;
+          right: 50px;
+          font-size: 28px;
+          cursor: pointer;
+          z-index: 99999;
+        }
+        .inner-form-content {
+          position: absolute;
+          right: 0;
+          background: #fff;
+          opacity: 1;
+          width: 1120px;
+          height: 100vh;
+          padding: 50px;
+        }
+      }
     }
   }
 }
@@ -362,6 +391,30 @@
     }
   }
 
+  .upload-back-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      & img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+      & p {
+        color: #084892;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 0;
+      }
+    }
+  }
+
   // Update new Task
   .layout-cards-process-btn {
     display: flex;
@@ -375,7 +428,6 @@
       width: 350px;
       margin-top: 40px;
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
 
       cursor: pointer;
@@ -416,6 +468,39 @@
             outline: 0;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0%);
           }
+        }
+      }
+    }
+    .explore-upload-buttons {
+      display: flex;
+      align-items: center;
+      margin-top: 32px;
+
+      .expiore {
+        margin-right: 16px;
+      }
+
+      .ex-up-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 141px;
+        height: 36px;
+        background: #f7faff;
+        border-radius: 4px;
+        cursor: pointer;
+
+        & img {
+          width: 16px;
+          height: 16px;
+          margin-right: 8px;
+        }
+
+        & p {
+          margin: 0;
+          font-size: 14px;
+          line-height: 20px;
+          color: #084892;
         }
       }
     }
@@ -639,6 +724,29 @@
       }
     }
   }
+  .upload-back-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      & img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+      & p {
+        color: #084892;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 0;
+      }
+    }
+  }
 
   .add-activity-selection {
     // border-bottom: 1px solid $curriki-main-blue;
@@ -672,12 +780,13 @@
         width: 280px;
       }
       max-width: 500px;
-      margin-top: 34px;
+      margin-top: 32px;
       .layout-description-title {
         h2 {
           border: none;
         }
       }
+
       .layout-formik-radioBtn {
         margin-top: 38px;
         .radioBtns {
@@ -762,7 +871,14 @@
       .formik-uploadimage {
         margin-top: 33px;
       }
+      .interactive-video-heading-two {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: #084892;
+      }
     }
+
     .add-activity-layout-videoTag {
       @media screen and (max-width: 1024px) {
         margin-left: 30px;

@@ -139,7 +139,7 @@ function App(props) {
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-confirmation-dialog.js`,
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-action-bar.js`,
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/request-queue.js`,
-      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
+      // `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
       // `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,

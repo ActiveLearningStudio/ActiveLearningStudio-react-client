@@ -212,7 +212,7 @@ export const resourceSaved = (saved) => async (dispatch) => {
   });
 };
 
-export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId) => async (dispatch) => {
+export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType) => async (dispatch) => {
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
@@ -245,7 +245,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       education_level_id: metadata?.education_level_id,
       description: metadata?.description || undefined,
     };
-    if (type === 'videoModal') {
+    if (type === 'videoModal' && !reverseType) {
       const centralizedState = store.getState();
       const {
         organization: { activeOrganization },
