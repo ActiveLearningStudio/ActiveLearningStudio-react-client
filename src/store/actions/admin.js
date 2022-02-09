@@ -164,8 +164,8 @@ export const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => async (di
   return result;
 };
 
-export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getDefaultSso(subOrgId, page);
+export const getDefaultSso = (subOrgId, page, size = '10', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getDefaultSso(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_DEFAULT_SSO,
     payload: result,

@@ -118,8 +118,8 @@ export const checkBranding = (data) => async () => {
   return result;
 };
 
-export const getsubOrgList = (id, size = 10, page = 1) => async (dispatch) => {
-  const result = await organization.getSubOrganizationList(id, size, page);
+export const getsubOrgList = (id, size = 10, page = 1, query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await organization.getSubOrganizationList(id, size, page, query, column, orderBy);
   dispatch({
     type: actionTypes.ADD_SUBORG_LIST,
     payload: result,

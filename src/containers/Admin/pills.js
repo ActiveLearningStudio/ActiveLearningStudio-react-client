@@ -658,6 +658,71 @@ export default function Pills(props) {
       dispatch(getActivityLayout('', activePage || 1, col, orderBy,));
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
+    } else if (subType == 'Subjects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getSubjects(activePage || 1, col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Education Level') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getEducationLevel(activePage || 1, col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Author Tags') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getAuthorTag(activePage || 1, col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'Organization') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Name':
+          col = 'name';
+          break;
+        default:
+          col = 'name';
+      }
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy,));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'DefaultSso') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Site Name':
+          col = 'name';
+          break;
+        default:
+          col = 'name';
+      }
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
     }
   };
   const resetProjectFilter = () => {
@@ -725,7 +790,7 @@ export default function Pills(props) {
                   importUser={true}
                   filter={false}
                   tableHead={columnData.userall}
-                  sortCol={[]}
+                  sortCol={columnData.userallSortCol}
                   handleSort={handleSort}
                   data={users}
                   activePage={activePage}
@@ -776,7 +841,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.organization}
-                  sortCol={[]}
+                  sortCol={columnData.organizationSortCol}
                   handleSort={handleSort}
                   paginationCounter={true}
                   size={size}
@@ -801,7 +866,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.lmssettings}
-                  sortCol={[]}
+                  sortCol={columnData.lmssettingsSortCol}
                   handleSort={handleSort}
                   data={lmsProject}
                   type={type}
@@ -841,7 +906,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   tableHead={columnData.projectAll}
-                  sortCol={[]}
+                  sortCol={columnData.projectAllSortCol}
                   handleSort={handleSort}
                   data={allProjectTab}
                   searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
@@ -873,7 +938,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={false}
                   tableHead={columnData.projectUser}
-                  sortCol={[]}
+                  sortCol={columnData.projectUserSortCol}
                   search={true}
                   handleSort={handleSort}
                   data={allProjectUserTab}
@@ -968,7 +1033,7 @@ export default function Pills(props) {
                 <Starter
                   search={false}
                   tableHead={columnData.subjects}
-                  sortCol={[]}
+                  sortCol={columnData.subjectsSortCol}
                   handleSort={handleSort}
                   subType={'Subjects'}
                   searchQueryActivities={searchQueryActivities}
@@ -991,8 +1056,8 @@ export default function Pills(props) {
               {type === 'Activities' && subTypeState === 'Education Level' && (
                 <Starter
                   search={false}
-                  tableHead={columnData.subjects}
-                  sortCol={[]}
+                  tableHead={columnData.educationLevel}
+                  sortCol={columnData.educationLevelSortCol}
                   handleSort={handleSort}
                   subType={'Education Level'}
                   searchQueryActivities={searchQueryActivities}
@@ -1015,8 +1080,8 @@ export default function Pills(props) {
               {type === 'Activities' && subTypeState === 'Author Tags' && (
                 <Starter
                   search={false}
-                  tableHead={columnData.subjects}
-                  sortCol={[]}
+                  tableHead={columnData.authorTags}
+                  sortCol={columnData.authorTagsSortCol}
                   handleSort={handleSort}
                   subType={'Author Tags'}
                   searchQueryActivities={searchQueryActivities}
@@ -1073,7 +1138,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.defaultsso}
-                  sortCol={[]}
+                  sortCol={columnData.defaultssoSortCol}
                   handleSort={handleSort}
                   data={defaultSso}
                   type={type}
@@ -1096,7 +1161,6 @@ export default function Pills(props) {
                   filter={false}
                   tableHead={columnData.ltitool}
                   sortCol={columnData.ltitoolSortCol}
-                  handleSort={handleSort}
                   handleSort={handleSort}
                   data={ltiTool}
                   type={type}

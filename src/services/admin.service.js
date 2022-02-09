@@ -200,8 +200,10 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (orgId, page) => httpService
-  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}`)
+const getDefaultSso = (orgId, page, query, size, column, orderBy) => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
+  ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
+  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
