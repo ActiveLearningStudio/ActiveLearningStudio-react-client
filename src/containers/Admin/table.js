@@ -207,7 +207,7 @@ function Table(props) {
           <thead>
             <tr>
               {tableHead?.map((head, keyid) => {
-                let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
+                let checkSolCol = sortCol !== '' && sortCol?.includes(head) ? true : false;
                 return head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
                   <th key={keyid}> {head} </th>
                 ) : head !== 'Users' ? (

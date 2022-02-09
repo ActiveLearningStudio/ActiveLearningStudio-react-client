@@ -637,7 +637,7 @@ export default function Pills(props) {
         .catch((e) => setAllProjectTab([]));
     }
   };
-
+  const searchQueryChangeHandlerTeams = () => { };
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
@@ -1035,6 +1035,10 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   search={true}
+                  type={type}
+                  tableHead={columnData.teams}
+                  sortCol={columnData.teamsSortCol}
+                  searchQueryChangeHandler={searchQueryChangeHandlerTeams}
                 />
               )}
             </div>

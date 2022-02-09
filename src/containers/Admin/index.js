@@ -165,6 +165,8 @@ function AdminPanel({ showSSO }) {
                       <div className="module-content">
                         <Pills
                           type="Teams"
+                          modules={['All teams']}
+                          subType="All teams"
                         />
                       </div>
                     </Tab>

@@ -65,4 +65,6 @@ export const columnData = {
   subjects: ['Name', 'Order'],
   educationLevel: ['Name', 'Order'],
   authorTags: ['Name', 'Order'],
+  teams: ['Name', 'Created', 'Description', 'Members', 'Projects', 'Updated'],
+  teamsSortCol: ['Created'],
 };
