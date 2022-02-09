@@ -58,7 +58,7 @@ const MyActivity = ({ playlistPreview }) => {
     <>
       {screenState && (
         <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity '}>
-          <div className="inner-form-content ">
+          <div style={{ paddingTop: '100px' }} className="inner-form-content ">
             <div className="inner-form-content-box ">
               <div className="cross-all-pop-box ">
                 <FontAwesomeIcon icon="times" className="cross-all-pop" onClick={() => changeScreenHandler('')} />
