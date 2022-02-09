@@ -5,11 +5,11 @@ import videoServices from 'services/videos.services';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
-export const getAllVideos = (id) => async (dispatch) => {
-  const result = await videoServices.getAll(id);
+export const getAllVideos = (id, page, size) => async (dispatch) => {
+  const result = await videoServices.getAll(id, page, size);
   dispatch({
     type: actionTypes.ALL_VIDEOS,
-    payload: result.data,
+    payload: result,
   });
 };
 
@@ -70,7 +70,7 @@ export const getSearchVideoCard = (orgId, searchQuery) => async (dispatch) => {
   console.log('After Seacrhing:', result.data);
   dispatch({
     type: actionTypes.ALL_VIDEOS,
-    payload: result.data,
+    payload: result,
   });
 };
 
