@@ -16,7 +16,7 @@ import { educationLevels, subjects } from 'components/ResourceCard/AddResource/d
 import ShareLink from 'components/ResourceCard/ShareLink';
 import { lmsPlaylist } from 'store/actions/playlist';
 import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
-
+import teamicon from 'assets/images/sidebar/users-team.svg';
 // import Header from 'components/Header';
 import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
@@ -52,7 +52,7 @@ MyVerticallyCenteredModal.defaultProps = {
 };
 
 function SearchInterface(props) {
-  const { history } = props;
+  const { history, fromTeam, selectProject, setSelectProject } = props;
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
     subject: true,
@@ -83,7 +83,7 @@ function SearchInterface(props) {
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
-  const [activetab, setActiveTab] = useState('total');
+  const [activetab, setActiveTab] = useState(fromTeam ? 'projects' : 'total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
@@ -233,11 +233,10 @@ function SearchInterface(props) {
         setActiveSubject(tempSubject);
       }
       // eslint-disable-next-line max-len
-      history.push(
-        `/org/${
-          currentOrganization?.domain
-        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
-      );
+      if (!fromTeam) {
+        // eslint-disable-next-line max-len
+        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+      }
     }
   }, [currentOrganization]);
   useEffect(() => {
@@ -310,21 +309,21 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
   // console.log(activeSubject, activeEducation);
   return (
     <>
       <div>
-        <div className="search-wrapper">
+        <div className={!fromTeam && "search-wrapper"}>
           <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
 
           <div className="content-search">
             {true ? (
               <div className="search-result-main">
-                <div className="current-org-search">{currentOrganization?.name}</div>
-                <div className="exp-lib-cnt">Explore library content</div>
+                {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
+                {!fromTeam && <div className="exp-lib-cnt">Explore library content</div>}
                 <div className="total-count" style={{ display: totalCount > 1000 || !!searchQueries ? 'block' : 'none' }}>
                   {totalCount > 10000 ? (
                     <div>
@@ -423,11 +422,10 @@ function SearchInterface(props) {
                                           setActiveSubject(tempSubject);
                                         }
                                         // eslint-disable-next-line max-len
-                                        history.push(
-                                          `/org/${
-                                            currentOrganization?.domain
-                                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
-                                        );
+                                        if (!fromTeam) {
+                                          // eslint-disable-next-line max-len
+                                          history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                        }
                                       }
                                     }
                                   }}
@@ -504,7 +502,7 @@ function SearchInterface(props) {
                                   onClick={async () => {
                                     Setfromdate(undefined);
                                     Settodate(undefined);
-                                    setActiveTab('total');
+                                    setActiveTab(fromTeam ? 'projects' : 'total');
                                     if (!searchInput.trim() && searchType !== 'orgSearch') {
                                       Swal.fire('Search field is required.');
                                     } else if (searchInput.length > 255) {
@@ -572,12 +570,10 @@ function SearchInterface(props) {
                                         });
                                         setActiveSubject(tempSubject);
                                       }
-                                      // eslint-disable-next-line max-len
-                                      history.push(
-                                        `/org/${
-                                          currentOrganization?.domain
-                                        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
-                                      );
+                                      if (!fromTeam) {
+                                        // eslint-disable-next-line max-len
+                                        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`);
+                                      }
                                     }
                                     // setModalShow(true);
                                   }}
@@ -588,9 +584,9 @@ function SearchInterface(props) {
                               </div>
                             </Card.Body>
                           </Accordion.Collapse>
-                        </Card>
-                      </Accordion>
-                    </div>
+                        </Card >
+                      </Accordion >
+                    </div >
 
                     <div className="refine-search">
                       <div className="headline">Refine your search</div>
@@ -764,7 +760,7 @@ function SearchInterface(props) {
                         </Card>
                       </Accordion>
                     </div>
-                  </div>
+                  </div >
 
                   <div className="right-search">
                     <Tabs
@@ -863,7 +859,7 @@ function SearchInterface(props) {
                         }
                       }}
                     >
-                      <Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
+                      {!fromTeam && (<Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
                         <div className="results_search">
                           {!!search && search.length > 0 ? (
                             search.map((res) => (
@@ -887,16 +883,16 @@ function SearchInterface(props) {
 
                                   {/* <h5>CALCULUS</h5> */}
                                 </div>
-                                <div className="content">
+                                <div className="contentbox">
                                   <div className="search-content">
                                     <a
                                       href={
                                         res.model === 'Activity'
                                           ? // eslint-disable-next-line max-len
-                                            `/activity/${res.id}/preview`
+                                          `/activity/${res.id}/preview`
                                           : res.model === 'Playlist'
-                                          ? `/playlist/${res.id}/preview/lti`
-                                          : `/project/${res.id}/preview`
+                                            ? `/playlist/${res.id}/preview/lti`
+                                            : `/project/${res.id}/preview`
                                       }
                                       target="_blank"
                                       rel="noreferrer"
@@ -1005,6 +1001,10 @@ function SearchInterface(props) {
                                             </ul>
                                           </li>
                                         )}
+                                        <Dropdown.Item>
+                                          <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                          Add to team
+                                        </Dropdown.Item>
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   )}
@@ -1101,9 +1101,10 @@ function SearchInterface(props) {
                             ))
                           ) : (
                             <div className="box">No result found !</div>
-                          )}
-                        </div>
-                      </Tab>
+                          )
+                          }
+                        </div >
+                      </Tab >)}
 
                       <Tab eventKey="projects" title={!!search && !!meta.projects ? `project (${meta.projects})` : 'project (0)'}>
                         <div className="results_search">
@@ -1131,15 +1132,15 @@ function SearchInterface(props) {
 
                                       {/* <h5>CALCULUS</h5> */}
                                     </div>
-                                    <div className="content">
+                                    <div className="contentbox">
                                       <div className="search-content">
                                         <a
                                           href={
                                             res.model === 'Activity'
                                               ? `/activity/${res.id}/preview`
                                               : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview/lti`
-                                              : `/project/${res.id}/preview`
+                                                ? `/playlist/${res.id}/preview/lti`
+                                                : `/project/${res.id}/preview`
                                           }
                                           target="_blank"
                                           rel="noreferrer"
@@ -1249,6 +1250,22 @@ function SearchInterface(props) {
                                                 </ul>
                                               </li>
                                             )}
+                                            <Dropdown.Item onClick={() => {
+                                              if (selectProject.length === 0 && fromTeam) {
+                                                setSelectProject([res.id]);
+                                              } else if (selectProject[0] === res.id && fromTeam) {
+                                                setSelectProject([]);
+                                              } else {
+                                                Swal.fire({
+                                                  icon: 'warning',
+                                                  title: 'Action Prohibited',
+                                                  text: 'You are only allowed to select 1 project.',
+                                                });
+                                              }
+                                            }}>
+                                              <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                              {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}team
+                                            </Dropdown.Item>
                                           </Dropdown.Menu>
                                         </Dropdown>
                                       )}
@@ -1263,7 +1280,7 @@ function SearchInterface(props) {
                         </div>
                       </Tab>
 
-                      <Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
+                      {!fromTeam && (<Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
                         <div className="results_search">
                           {!!search && search.length > 0 ? (
                             search.map((res) => (
@@ -1290,16 +1307,16 @@ function SearchInterface(props) {
                                       {/* <h5>CALCULUS</h5> */}
                                     </div>
 
-                                    <div className="content">
+                                    <div className="contentbox">
                                       <div className="search-content">
                                         <a
                                           href={
                                             res.model === 'Activity'
                                               ? // eslint-disable-next-line max-len
-                                                `/activity/${res.id}/preview`
+                                              `/activity/${res.id}/preview`
                                               : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview/lti`
-                                              : `/project/${res.id}/preview`
+                                                ? `/playlist/${res.id}/preview/lti`
+                                                : `/project/${res.id}/preview`
                                           }
                                           target="_blank"
                                           rel="noreferrer"
@@ -1359,9 +1376,9 @@ function SearchInterface(props) {
                             <div className="box">No result found !</div>
                           )}
                         </div>
-                      </Tab>
+                      </Tab>)}
 
-                      <Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
+                      {!fromTeam && (<Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
                         <div className="content">
                           <div className="results_search">
                             {!!search && search.length > 0 ? (
@@ -1389,15 +1406,15 @@ function SearchInterface(props) {
                                         {/* <h5>CALCULUS</h5> */}
                                       </div>
 
-                                      <div className="content">
+                                      <div className="contentbox">
                                         <div className="search-content">
                                           <a
                                             href={
                                               res.model === 'Activity'
                                                 ? `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                ? `/playlist/${res.id}/preview/lti`
-                                                : `/project/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
+                                                  : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
                                             rel="noreferrer"
@@ -1493,8 +1510,8 @@ function SearchInterface(props) {
                             )}
                           </div>
                         </div>
-                      </Tab>
-                    </Tabs>
+                      </Tab>)}
+                    </Tabs >
                     {totalCount > 20 && (
                       <Pagination
                         activePage={activePage}
@@ -1551,13 +1568,13 @@ function SearchInterface(props) {
                       />
                     )}
                   </div>
-                </div>
-              </div>
+                </div >
+              </div >
             ) : (
               <Alert variant="danger">You are not authorized to view this page!</Alert>
             )}
-          </div>
-        </div>
+          </div >
+        </div >
         <GoogleModel
           projectId={selectedProjectId}
           playlistId={selectedProjectPlaylistId}
@@ -1567,7 +1584,7 @@ function SearchInterface(props) {
             setShow(false);
           }}
         />
-      </div>
+      </div >
 
       <Footer />
     </>
@@ -1576,6 +1593,11 @@ function SearchInterface(props) {
 
 SearchInterface.propTypes = {
   history: PropTypes.object.isRequired,
+  fromTeam: PropTypes.bool,
+};
+
+SearchInterface.defaultProps = {
+  fromTeam: false,
 };
 
 export default SearchInterface;

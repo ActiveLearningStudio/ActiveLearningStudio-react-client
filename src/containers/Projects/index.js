@@ -25,7 +25,7 @@ import {
   loadLmsAction,
   sampleProjects,
   loadMyFavProjectsAction,
-  allSidebarProjects,
+  // allSidebarProjects,
 } from 'store/actions/project';
 import Footer from 'components/Footer';
 import DeletePopup from 'components/DeletePopup';
@@ -60,7 +60,6 @@ export const ProjectsPage = (props) => {
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
-  const [editMode, seteditMode] = useState(false);
   const [noProjectAlert, setNoProjectAlert] = useState(false);
   const samplerRef = useRef();
   const {
@@ -68,7 +67,7 @@ export const ProjectsPage = (props) => {
     showPreview,
     showDeletePopup,
     loadMyReorderProjectsActionMethod,
-    allSidebarProjectsUpdate,
+    // allSidebarProjectsUpdate,
     sampleProjectsData,
     loadMyFavProjectsActionData,
     location,
@@ -225,7 +224,7 @@ export const ProjectsPage = (props) => {
           setValue((v) => v + 1);
           const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
-          allSidebarProjectsUpdate();
+          // allSidebarProjectsUpdate();
           setAllProjects(reorderData.projects);
         }
       });
@@ -265,7 +264,7 @@ export const ProjectsPage = (props) => {
       divideProjects(updateProjectList);
       const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
 
-      allSidebarProjectsUpdate();
+      // allSidebarProjectsUpdate();
       setAllProjects(reorderData.projects);
     }
   };
@@ -282,12 +281,12 @@ export const ProjectsPage = (props) => {
     // }
   }, [allStateProject]);
 
-  useEffect(() => {
-    const { activeOrganization } = organization;
-    if (activeOrganization) {
-      allSidebarProjectsUpdate();
-    }
-  }, [organization.activeOrganization]);
+  // useEffect(() => {
+  //   const { activeOrganization } = organization;
+  //   if (activeOrganization) {
+  //     allSidebarProjectsUpdate();
+  //   }
+  // }, [organization.activeOrganization]);
 
   useEffect(() => {
     loadLms();
@@ -357,7 +356,7 @@ export const ProjectsPage = (props) => {
       <div className={`content-wrapper ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="">
-            <Headline setCreateProject={setCreateProject} seteditMode={seteditMode} />
+            <Headline setCreateProject={setCreateProject} />
             {permission?.Project?.includes('project:view') ? (
               <Tabs
                 onSelect={(eventKey) => {
@@ -417,7 +416,6 @@ export const ProjectsPage = (props) => {
                                                   setProjectId={setProjectId}
                                                   activeFilter={activeFilter}
                                                   setCreateProject={setCreateProject}
-                                                  seteditMode={seteditMode}
                                                 />
                                               </div>
                                             )}
@@ -628,7 +626,7 @@ export const ProjectsPage = (props) => {
           </div>
         </div>
       </div>
-      {createProject && <NewProjectPage editMode={editMode} {...props} handleCloseProjectModal={setCreateProject} />}
+      {createProject && <NewProjectPage {...props} handleCloseProjectModal={setCreateProject} />}
 
       {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 
@@ -657,7 +655,7 @@ ProjectsPage.propTypes = {
   shareProject: PropTypes.func.isRequired,
   loadLms: PropTypes.func.isRequired,
   loadMyReorderProjectsActionMethod: PropTypes.func.isRequired,
-  allSidebarProjectsUpdate: PropTypes.func.isRequired,
+  // allSidebarProjectsUpdate: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   sampleProjectsData: PropTypes.func.isRequired,
   loadMyFavProjectsActionData: PropTypes.func.isRequired,
@@ -686,7 +684,7 @@ const mapDispatchToProps = (dispatch) => ({
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
   loadMyReorderProjectsActionMethod: (projectDivider) => dispatch(loadMyReorderProjectsAction(projectDivider)),
-  allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
+  // allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),

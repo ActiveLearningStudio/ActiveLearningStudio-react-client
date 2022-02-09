@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import './style.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
+import { deleteTeamAction, getTeamPermission, updateSelectedTeamAction } from 'store/actions/team';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
+import Delete from 'assets/images/menu-dele.svg';
+import Edit from 'assets/images/menu-edit.svg';
+import teamicon from 'assets/images/sidebar/users-team.svg';
+import foldericon from 'assets/images/svg/projectFolder.svg';
 
 function TeamCard(props) {
   const {
@@ -15,6 +20,8 @@ function TeamCard(props) {
       description,
       users,
       projects,
+      // eslint-disable-next-line camelcase
+      noovo_group_title,
     },
   } = props;
   const dispatch = useDispatch();
@@ -22,7 +29,7 @@ function TeamCard(props) {
     Swal.fire({
       title: 'Are you sure you want to delete this team?',
       // eslint-disable-next-line max-len
-      html: '<strong>The projects associated with this team will no longer available in Team projects. If you want make a copy for that project then visit Team project page first to make a clone</strong>',
+      html: '<strong>The projects associated with this team will no be longer available in Team projects. If you want to make a copy for that project then visit Team project page first to make a clone</strong>',
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'Yes',
@@ -45,14 +52,44 @@ function TeamCard(props) {
       <div className="team-title">
         <Link
           onClick={() => {
+            dispatch(updateSelectedTeamAction({
+              id, name, description, users, projects, noovo_group_title,
+            }));
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
-          to={`/org/${organization.currentOrganization?.domain}/teams/${id}/projects`}
-          className="title m-0"
+          to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+        // className="title m-0"
         >
           {name}
         </Link>
-        {permission?.Team?.includes('team:edit') && (
+        <Dropdown>
+          <Dropdown.Toggle id="dropdown-basic">
+            <FontAwesomeIcon icon="ellipsis-v" className="icon" />
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            {permission?.Team?.includes('team:edit') && (
+              <Dropdown.Item
+                as={Link}
+                to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+                onClick={() => {
+                  dispatch(getTeamPermission(organization.currentOrganization.id, id));
+                }}
+              >
+                <img src={Edit} alt="Edit" />
+                Edit
+              </Dropdown.Item>
+            )}
+            {permission?.Team?.includes('team:delete') && (
+              <Dropdown.Item
+                onClick={() => deleteTeam()}
+              >
+                <img src={Delete} alt="Preview" />
+                Delete
+              </Dropdown.Item>
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
+        {/* {permission?.Team?.includes('team:edit') && (
           <Link
             onClick={() => {
               dispatch(getTeamPermission(organization.currentOrganization.id, id));
@@ -63,14 +100,18 @@ function TeamCard(props) {
             <FontAwesomeIcon icon="pen" className="mr-2" />
             Edit
           </Link>
-        )}
-        <h2 className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</h2>
+        )} */}
       </div>
-
+      <div className="describe">{description.length > 50 ? `${description?.slice(0, 50)}...` : description}</div>
       <div className="team-member-content mid-border">
         <div className="sub-title">
-          <span>Team Members</span>
-          <span>{`(${users?.length})`}</span>
+          <img src={teamicon} alt="Team" />
+          <span>
+            {`${users?.length}`}
+            {' '}
+            Team Members
+          </span>
+          {/* <span>{`(${users?.length})`}</span> */}
         </div>
 
         <div className="member-mark-container">
@@ -83,16 +124,21 @@ function TeamCard(props) {
       </div>
 
       <div className="sub-title">
-        <span>Projects for the Team</span>
-        <span>{`(${projects?.length})`}</span>
+        <img src={foldericon} alt="Project" />
+        <span>
+          {`${projects?.length}`}
+          {' '}
+          Projects
+        </span>
+        {/* <span>{`(${projects?.length})`}</span> */}
       </div>
-      {permission?.Team?.includes('team:delete') && (
+      {/* {permission?.Team?.includes('team:delete') && (
         <div>
           <button type="button" onClick={() => deleteTeam()} className="back-button" style={{ textAlign: 'center' }}>
             Delete Team
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

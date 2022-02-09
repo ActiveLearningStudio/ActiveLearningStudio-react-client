@@ -3,6 +3,12 @@ import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
+export const setNewTeamData = (team) => (dispatch) => {
+  dispatch({
+    type: actionTypes.NEW_TEAM,
+    payload: team,
+  });
+};
 export const resetSelectedTeamAction = () => async (dispatch) => {
   dispatch({
     type: actionTypes.RESET_SELECTED_TEAM,
@@ -34,7 +40,7 @@ export const showAssigningAction = () => async (dispatch) => {
   });
 };
 
-export const loadTeamsAction = () => async (dispatch) => {
+export const loadTeamsAction = (query = '') => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
@@ -42,7 +48,7 @@ export const loadTeamsAction = () => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAll(activeOrganization?.id);
+    const { teams } = await teamService.getAll(activeOrganization?.id, query);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,
@@ -133,6 +139,13 @@ export const createTeamAction = (data) => async (dispatch) => {
     throw e;
   }
 };
+export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
+  const result = await teamService.teamPermisison(orgId, TeamId);
+  dispatch({
+    type: actionTypes.ADD_TEAM_PERMISSION,
+    payload: result?.teamPermissions,
+  });
+};
 
 export const loadTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -143,7 +156,7 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
     });
 
     const { team } = await teamService.get(teamId, activeOrganization?.id);
-
+    dispatch(getTeamPermission(activeOrganization?.id, teamId));
     dispatch({
       type: actionTypes.LOAD_TEAM_SUCCESS,
       payload: { team },
@@ -368,14 +381,6 @@ export const AddTeamRoles = (orgId) => async (dispatch) => {
   dispatch({
     type: actionTypes.ADD_TEAM_ROLES,
     payload: result?.teamRoleTypes,
-  });
-};
-
-export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
-  const result = await teamService.teamPermisison(orgId, TeamId);
-  dispatch({
-    type: actionTypes.ADD_TEAM_PERMISSION,
-    payload: result?.teamPermissions,
   });
 };
 

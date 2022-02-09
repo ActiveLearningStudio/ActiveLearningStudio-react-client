@@ -28,46 +28,31 @@ const onSubmit = async (values, dispatch, props) => {
   const {
     history,
     project: { thumbUrl, selectedProject },
-    editMode,
   } = props;
   const { name, description, vType } = values;
-  if (editMode) {
-    const result = await dispatch(
-      updateProjectAction(selectedProject?.id, {
+  const result = await dispatch(
+    props.project.thumbUrl
+      ? createProjectAction({
         name,
         description,
         thumb_url: thumbUrl,
-        organization_visibility_type_id: vType || 1,
+        is_public: projectShare,
+        organization_visibility_type_id: 1,
       })
-    );
-    if (result) {
-      history.goBack();
-    }
-  } else {
-    const result = await dispatch(
-      props.project.thumbUrl
-        ? createProjectAction({
-          name,
-          description,
-          thumb_url: thumbUrl,
-          is_public: projectShare,
-          organization_visibility_type_id: 1,
-        })
-        : createProjectAction({
-          name,
-          description,
-          is_public: projectShare,
-          organization_visibility_type_id: 1,
-          // eslint-disable-next-line max-len
-          thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-        })
-    );
-    if (result) {
-      history.push('/projects');
-    }
+      : createProjectAction({
+        name,
+        description,
+        is_public: projectShare,
+        organization_visibility_type_id: 1,
+        // eslint-disable-next-line max-len
+        thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+      })
+  );
+  if (result) {
+    history.push('/projects');
   }
 };
-export const uploadThumb = async (e, permission, teamPermission, id, dispatch, editMode) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
   const formData = new FormData();
   try {
     formData.append('thumb', e.target.files[0]);
@@ -91,7 +76,7 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch, e
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, editMode, handleSubmit, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, project, handleSubmit, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
@@ -110,11 +95,6 @@ let CreateProjectPopup = (props) => {
     [handleCloseProjectModal]
   );
 
-  useEffect(() => {
-    if (!editMode) {
-      showCreateProjectModal();
-    }
-  }, [editMode, showCreateProjectModal, vType]); // Runs only once
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -130,9 +110,7 @@ let CreateProjectPopup = (props) => {
   }, [getProjectVisibilityTypes]);
 
   return (
-    // eslint-disable-next-line max-len
-    (editMode && (teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : permission?.Project?.includes('project:edit'))) ||
-      (!editMode && permission?.Project?.includes('project:create')) ? (
+    (permission?.Project?.includes('project:create')) ? (
       <div className="create-program-wrapper">
         <PexelsAPI
           show={modalShow}
@@ -191,7 +169,7 @@ let CreateProjectPopup = (props) => {
                         text: 'Selected file size should be less then 100MB.',
                       });
                     } else {
-                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, editMode);
+                      uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch);
                     }
                   }}
                 />
@@ -250,7 +228,7 @@ let CreateProjectPopup = (props) => {
           </div>
           <div className="create-project-template-wrapper">
             <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
-              {isLoading ? <img src={loader} alt="" /> : editMode ? 'Update Project' : 'Create Project'}
+              {isLoading ? <img src={loader} alt="" /> : 'Create Project'}
             </button>
           </div>
         </form>
@@ -265,7 +243,6 @@ let CreateProjectPopup = (props) => {
 
 CreateProjectPopup.propTypes = {
   project: PropTypes.object.isRequired,
-  editMode: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
