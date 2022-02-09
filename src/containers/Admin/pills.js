@@ -715,6 +715,19 @@ export default function Pills(props) {
       let col = '';
       switch (column) {
         case 'Site Name':
+          col = 'site_name';
+          break;
+        default:
+          col = 'site_name';
+      }
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy,));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+    } else if (subType == 'All settings') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Type':
           col = 'name';
           break;
         default:
