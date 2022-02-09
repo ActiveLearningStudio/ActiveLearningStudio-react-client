@@ -1,3 +1,4 @@
+/* global H5P */
 /* eslint-disable react/no-this-in-sfc */
 import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
@@ -36,8 +37,8 @@ const Activity = (props) => {
     sendScreenshot,
   } = props;
   const [intervalPointer, dispatch] = useReducer(reducer, 0);
-  const [xAPILoaded, setXAPILoaded] = useState(false);
   const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
+  const [h5pObject, setH5pObject] = useState(null);
 
   // Init
   useEffect(() => {
@@ -88,32 +89,33 @@ const Activity = (props) => {
   useEffect(() => {
     // Loops until it finds H5P object
     const intervalId = setInterval(() => {
-      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
-      if (!x?.H5P?.externalDispatcher) return;
-
-      console.log('H5P dispatcher found');
-      setXAPILoaded(true);
-      console.log(`Clearing interval ${intervalPointer}`);
-      dispatch({ type: 'clear' });
+      if (typeof H5P !== 'undefined' && H5P.externalDispatcher) {
+        console.log('H5P dispatcher found on non-iframe h5p');
+        setH5pObject(H5P);
+        dispatch({ type: 'clear' });
+      } else if (document.getElementsByClassName('h5p-iframe')[0]?.contentWindow?.H5P?.externalDispatcher) {
+        console.log('H5P dispatcher found on iframe h5p');
+        setH5pObject(document.getElementsByClassName('h5p-iframe')[0].contentWindow.H5P);
+        dispatch({ type: 'clear' });
+      }
     }, 500);
     dispatch({ type: 'set', intervalId });
   }, []);
 
   // Patch into xAPI events
   useEffect(() => {
-    console.log('AE entered hook');
-    if (!xAPILoaded || !submission || xAPIEventHooked) {
+    console.log('Entered hook');
+    if (!h5pObject || !submission || xAPIEventHooked) {
       console.log('Abort patching into xAPI event dispatcher');
       return;
     }
 
-    const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
-      console.log('missing dispatcher');
+    if (xAPIHelper.isxAPINeeded(match.path) === false) {
+      console.log('xAPI not needed for path');
       return;
     }
 
-    x.H5P.externalDispatcher.on('xAPI', function (event) {
+    h5pObject.externalDispatcher.on('xAPI', function (event) {
       console.log('Running xAPI listener callback');
       const params = {
         path: match.path,
@@ -152,7 +154,7 @@ const Activity = (props) => {
       }
     });
     setXAPIEventHooked(true);
-  }, [xAPILoaded]);
+  }, [h5pObject]);
 
   // If the activity has already been submitted to google classroom, redirect to summary page
   useEffect(() => {
