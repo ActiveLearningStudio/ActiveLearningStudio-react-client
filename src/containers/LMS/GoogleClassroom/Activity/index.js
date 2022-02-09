@@ -87,6 +87,8 @@ const Activity = (props) => {
   }, [h5pSettings]);
 
   useEffect(() => {
+    if (h5pSettings === null) return;
+
     // Loops until it finds H5P object
     const intervalId = setInterval(() => {
       if (typeof H5P !== 'undefined' && H5P.externalDispatcher) {
@@ -100,7 +102,7 @@ const Activity = (props) => {
       }
     }, 500);
     dispatch({ type: 'set', intervalId });
-  }, []);
+  }, [h5pSettings]);
 
   // Patch into xAPI events
   useEffect(() => {
