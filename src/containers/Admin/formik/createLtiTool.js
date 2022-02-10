@@ -11,12 +11,8 @@ import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
 import './createuser.scss';
+import { toolTypeArray } from 'utils';
 
-const toolTypeArray = [
-  { key: 'kaltura', value: 'Kaltura' },
-  { key: 'safari_montage', value: 'Safari Montage' },
-  { key: 'other', value: 'Other' },
-];
 export default function CreateLtiTool(prop) {
   const { editMode, method, clone } = prop;
   const dispatch = useDispatch();
