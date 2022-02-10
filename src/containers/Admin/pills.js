@@ -516,7 +516,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityLayout(activePage || 1, '', '', encodeQuery));
+    dispatch(getActivityLayout(activePage || 1, 10, encodeQuery));
   };
 
   //Default SSO ***************************************
@@ -655,7 +655,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityLayout('', activePage || 1, col, orderBy,));
+      dispatch(getActivityLayout(activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Subjects') {
@@ -668,7 +668,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activePage || 1, col, orderBy,));
+      dispatch(getSubjects(activePage || 1, '', '', col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Education Level') {
@@ -681,7 +681,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activePage || 1, col, orderBy));
+      dispatch(getEducationLevel(activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Author Tags') {
@@ -694,7 +694,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activePage || 1, col, orderBy));
+      dispatch(getAuthorTag(activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Organization') {

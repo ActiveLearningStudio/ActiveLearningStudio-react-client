@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import * as actionTypes from 'store/actionTypes';
 import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
 import Swal from 'sweetalert2';
@@ -67,7 +68,6 @@ export default function CreateActivityLayout(props) {
           return errors;
         }}
         onSubmit={async (values) => {
-          console.log(values);
           if (editMode) {
             Swal.fire({
               title: 'Activity',
@@ -79,7 +79,7 @@ export default function CreateActivityLayout(props) {
               },
               button: false,
             });
-            const result = await adminapi.updateActivityLayout(activeEdit?.id, values);
+            const result = adminapi.updateActivityLayout(activeEdit?.id, values);
             result.then((res) => {
               Swal.fire({
                 icon: 'success',

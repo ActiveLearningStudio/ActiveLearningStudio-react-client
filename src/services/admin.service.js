@@ -320,8 +320,9 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubjects = (page, column, orderBy) => httpService
-  .get(`${apiVersion}/subjects?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+const getSubjects = (page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/subjects?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -351,8 +352,9 @@ const deleteSubject = (id) => httpService
     return Promise.reject();
   });
 
-const getEducationLevel = (page, column, orderBy) => httpService
-  .get(`${apiVersion}/education-levels?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+const getEducationLevel = (page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/education-levels?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -382,8 +384,9 @@ const deleteEducationLevel = (id) => httpService
     return Promise.reject();
   });
 
-const getAuthorTag = (page, column, orderBy) => httpService
-  .get(`${apiVersion}/author-tags?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+const getAuthorTag = (page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/author-tags?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -413,8 +416,9 @@ const deleteAuthorTag = (id) => httpService
     return Promise.reject();
   });
 
-  const getActivityLayout = (page, column, orderBy, search) => httpService
-  .get(`${apiVersion}/activity-layouts?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search.replace(/#/, '%23')}`)
+  const getActivityLayout = (page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/activity-layouts?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

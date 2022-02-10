@@ -16,7 +16,8 @@ import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import { getAuthorTag, getDefaultSso, getEducationLevel, getLmsProject, getLtiTools, getSubjects, setActiveAdminForm, setCurrentUser, showRemoveUser } from 'store/actions/admin';
+import { getAuthorTag, getDefaultSso, getEducationLevel, getLmsProject, getLtiTools,
+   getSubjects, setActiveAdminForm, setCurrentUser, showRemoveUser, getActivityLayout } from 'store/actions/admin';
 import { deleteBrightCove } from 'store/actions/videos';
 
 import { deleteOrganization, getOrganization, clearOrganizationState, getRoles } from 'store/actions/organization';
