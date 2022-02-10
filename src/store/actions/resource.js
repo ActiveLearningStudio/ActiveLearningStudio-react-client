@@ -348,6 +348,15 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   return image;
 };
 
+export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityLayoutThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_LAYOUT_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
 export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
   try {
     dispatch({

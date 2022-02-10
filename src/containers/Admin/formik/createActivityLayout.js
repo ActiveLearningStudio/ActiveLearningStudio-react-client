@@ -8,7 +8,7 @@ import * as actionTypes from 'store/actionTypes';
 import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
 import Swal from 'sweetalert2';
-import { uploadActivityItemThumbAction } from 'store/actions/resource';
+import { uploadActivityLayoutThumbAction } from 'store/actions/resource';
 import { getActivityLayout, removeActiveAdminForm } from 'store/actions/admin';
 import adminapi from '../../../services/admin.service';
 
@@ -25,7 +25,7 @@ export default function CreateActivityLayout(props) {
     } else {
       setImgActive(null);
     }
-  }, [editMode, selectedItem]);
+  }, [editMode, activeEdit]);
   return (
     <div className="create-form">
       <Formik
@@ -231,7 +231,7 @@ export default function CreateActivityLayout(props) {
                             const formData = new FormData();
                             try {
                               formData.append('image', e.target.files[0]);
-                              const imgurl = dispatch(uploadActivityItemThumbAction(formData));
+                              const imgurl = dispatch(uploadActivityLayoutThumbAction(formData));
                               imgurl.then((img) => {
                                 setImgActive(img);
                                 setFieldValue('image', img);

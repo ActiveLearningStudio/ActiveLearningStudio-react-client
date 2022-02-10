@@ -106,6 +106,17 @@ const uploadActivityItemThumb = (formData) =>
       Promise.reject(err.response.data);
     });
 
+const uploadActivityLayoutThumb = (formData) =>
+  httpService
+    .post(`/${apiVersion}/activity-layouts/upload-thumb`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const getTypes = () =>
   httpService
     .get(`/${apiVersion}/activity-types`)
@@ -300,6 +311,7 @@ export default {
   deleteActivityItem,
   uploadActivityTypeThumb,
   uploadActivityItemThumb,
+  uploadActivityLayoutThumb,
   getActivityCss,
   h5pToken,
   h5pSettings,
