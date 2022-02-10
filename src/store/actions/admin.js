@@ -164,7 +164,7 @@ export const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => async (di
   return result;
 };
 
-export const getDefaultSso = (subOrgId, page, size = '10', query = '', column = '', orderBy = '') => async (dispatch) => {
+export const getDefaultSso = (subOrgId, page, size = 10, query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getDefaultSso(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_DEFAULT_SSO,
@@ -173,8 +173,8 @@ export const getDefaultSso = (subOrgId, page, size = '10', query = '', column = 
   return result;
 };
 
-export const getLmsProject = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getLmsProject(subOrgId, page);
+export const getLmsProject = (subOrgId, page, size = 10, query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getLmsProject(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_LMS_INTEGRATION,
     payload: result,

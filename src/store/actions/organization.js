@@ -289,14 +289,14 @@ export const clearHistory = () => async (dispatch) => {
   });
 };
 
-export const getOrgUsers = (id, page, activeRole, size) => async (dispatch) => {
+export const getOrgUsers = (id, page, activeRole, size, query = '', column = '', orderBy = '') => async (dispatch) => {
   let result = '';
   // const centralizedState = store.getState();
   // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   // if (activeOrganization?.id !== currentOrganization?.id) {
   //   result = await organization.getOrgUsers(id, page, size);
   // }
-  result = await organization.getOrgUsers(id, page, activeRole, size);
+  result = await organization.getOrgUsers(id, page, activeRole, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
     payload: {

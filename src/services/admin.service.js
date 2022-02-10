@@ -31,8 +31,9 @@ const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, u
     Promise.reject(err.response.data);
   });
 
-const getAllExportedProject = (page, size, query = '') => httpService
-  .get(`/${apiVersion}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}`)
+const getAllExportedProject = (page, size, query = '', column = '', orderBy = '') => httpService
+  .get(`/${apiVersion}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);
@@ -55,8 +56,9 @@ const importProject = (subOrgId, projectData) => httpService
     return Promise.reject(err.response.data);
   });
 
-const getAllProjectSearch = (subOrgId, page, search, size) => httpService
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}&query=${search.replace(/#/, '%23') || ''}`)
+const getAllProjectSearch = (subOrgId, page, search, size, column, orderBy) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${search ? `&query=${search.replace(/#/, '%23')}` : ''}
+  ${size ? `&size=${size}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -98,8 +100,10 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (subOrgId, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}`)
+const getLmsProject = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}
+  ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
+  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

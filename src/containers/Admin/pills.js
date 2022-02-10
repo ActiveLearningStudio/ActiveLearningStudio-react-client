@@ -75,7 +75,7 @@ export default function Pills(props) {
   const [logs, setLogs] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
   const [changeIndexValue, setChangeIndexValue] = useState('0');
-  const [orderBy, setOrderBy] = useState('ASC');
+  const [orderBy, setOrderBy] = useState('asc');
   const dataRedux = useSelector((state) => state);
   const [subjects, setSubjects] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
@@ -605,7 +605,7 @@ export default function Pills(props) {
     }
   }, [projectFilterObj]);
 
-  const handleSort = (column, subType) => {
+  const handleSort = async (column, subType) => {
     if (subType == 'LTI Tools') {
       //mapping column with db column for making it dynamic
       let col = '';
@@ -617,7 +617,7 @@ export default function Pills(props) {
           col = 'tool_name';
       }
       dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Types') {
       //mapping column with db column for making it dynamic
@@ -630,7 +630,7 @@ export default function Pills(props) {
           col = 'order';
       }
       dispatch(getActivityTypes(activePage || 1, col, orderBy));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Items') {
       //mapping column with db column for making it dynamic
@@ -643,7 +643,7 @@ export default function Pills(props) {
           col = 'order';
       }
       dispatch(getActivityItems('', activePage || 1, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Layouts') {
       //mapping column with db column for making it dynamic
@@ -656,7 +656,7 @@ export default function Pills(props) {
           col = 'order';
       }
       dispatch(getActivityLayout('', activePage || 1, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Subjects') {
       //mapping column with db column for making it dynamic
@@ -669,7 +669,7 @@ export default function Pills(props) {
           col = 'order';
       }
       dispatch(getSubjects(activePage || 1, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Education Level') {
       //mapping column with db column for making it dynamic
@@ -681,8 +681,8 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activePage || 1, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      dispatch(getEducationLevel(activePage || 1, col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Author Tags') {
       //mapping column with db column for making it dynamic
@@ -694,8 +694,8 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activePage || 1, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      dispatch(getAuthorTag(activePage || 1, col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Organization') {
       //mapping column with db column for making it dynamic
@@ -707,7 +707,7 @@ export default function Pills(props) {
         default:
           col = 'name';
       }
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy,));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'DefaultSso') {
@@ -720,21 +720,63 @@ export default function Pills(props) {
         default:
           col = 'site_name';
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'All settings') {
       //mapping column with db column for making it dynamic
       let col = '';
       switch (column) {
         case 'Type':
-          col = 'name';
+          col = 'lms_name';
           break;
         default:
-          col = 'name';
+          col = 'lms_name';
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, col, orderBy,));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'All Users') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'First Name':
+          col = 'first_name';
+          break;
+        default:
+          col = 'first_name';
+      }
+      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, 10, '', col, orderBy));
+      setUsers(result)
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'All Projects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Created':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, '', 10, col, orderBy);
+      setAllProjectTab(result);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Exported Projects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Created Date':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      const result = await adminService.getAllExportedProject(activePage || 1, 10, '', col, orderBy);
+      setAllProjectUserTab(result);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     }
   };
