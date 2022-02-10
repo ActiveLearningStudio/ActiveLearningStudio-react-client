@@ -74,6 +74,7 @@ const H5PEditor = (props) => {
         };
         handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide, reverseType);
       }
+      delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {

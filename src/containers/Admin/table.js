@@ -1070,6 +1070,7 @@ function Table(props) {
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>{row.tool_description}</td>
+                      <td>{row.tool_type}</td>
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.lti_version}

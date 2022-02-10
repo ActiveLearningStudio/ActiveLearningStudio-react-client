@@ -45,7 +45,7 @@ export const columnData = {
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   defaultssoSortCol: ['Site Name'],
   
-  ltitool: ['Name', 'URL', 'Description', 'Version'],
+  ltitool: ['Name', 'URL', 'Description', 'Tool type', 'Version'],
   ltitoolSortCol: ['Name'],
 
   subjects: ['Name', 'Order'],
