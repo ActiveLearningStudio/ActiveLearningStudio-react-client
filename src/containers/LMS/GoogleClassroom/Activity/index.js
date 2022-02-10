@@ -36,9 +36,26 @@ const Activity = (props) => {
     turnIn,
     sendScreenshot,
   } = props;
+  /* eslint-disable no-unused-vars */
+  // We do use it with the reducer
   const [intervalPointer, dispatch] = useReducer(reducer, 0);
-  const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
+  /* eslint-enable no-unused-vars */
   const [h5pObject, setH5pObject] = useState(null);
+  const loadAssets = (styles, scripts) => {
+    styles.forEach((style) => {
+      const link = document.createElement('link');
+      link.href = style;
+      link.type = 'text/css';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    });
+    scripts.forEach((script) => {
+      const element = document.createElement('script');
+      element.src = script;
+      element.async = false;
+      document.body.appendChild(element);
+    });
+  };
 
   // Init
   useEffect(() => {
@@ -49,122 +66,89 @@ const Activity = (props) => {
   useEffect(() => {
     if (submission === null) return;
 
+    // If the activity has already been submitted to google classroom, redirect to summary page
+    if (submission && submission.state === 'TURNED_IN') {
+      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
+      return;
+    }
+
     loadH5pSettings(activityId, student.auth.googleId, submission.id);
   }, [submission]);
 
-  // Load H5P
+  // Load H5P core
   useEffect(() => {
     if (h5pSettings === null) return;
 
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
-    const newCss = h5pSettings.h5p.settings.core.styles.concat(
-      h5pSettings.h5p.settings.loadedCss,
-    );
 
-    Promise.all(
-      newCss.map((value) => {
-        const link = document.createElement('link');
-        link.href = value;
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-        return true;
-      }),
-    );
+    // Load H5P core
+    loadAssets(h5pSettings.h5p.settings.core.styles, h5pSettings.h5p.settings.core.scripts);
 
-    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(
-      h5pSettings.h5p.settings.loadedJs,
-    );
-
-    newScripts.forEach((value) => {
-      const script = document.createElement('script');
-      script.src = value;
-      script.async = false;
-      document.body.appendChild(script);
-    });
-  }, [h5pSettings]);
-
-  useEffect(() => {
-    if (h5pSettings === null) return;
-
-    // Loops until it finds H5P object
+    // Loops until H5P object and dispatcher are ready
     const intervalId = setInterval(() => {
-      if (typeof H5P !== 'undefined' && H5P.externalDispatcher) {
-        console.log('H5P dispatcher found on non-iframe h5p');
-        setH5pObject(H5P);
-        dispatch({ type: 'clear' });
-      } else if (document.getElementsByClassName('h5p-iframe')[0]?.contentWindow?.H5P?.externalDispatcher) {
-        console.log('H5P dispatcher found on iframe h5p');
-        setH5pObject(document.getElementsByClassName('h5p-iframe')[0].contentWindow.H5P);
-        dispatch({ type: 'clear' });
-      }
+      if (typeof H5P === 'undefined' || !H5P.externalDispatcher) return;
+
+      console.log('H5P dispatcher found');
+      setH5pObject(H5P);
+      dispatch({ type: 'clear' });
     }, 500);
     dispatch({ type: 'set', intervalId });
   }, [h5pSettings]);
 
-  // Patch into xAPI events
+  // Patch into xAPI events and finish loading activity
   useEffect(() => {
-    console.log('Entered hook');
-    if (!h5pObject || !submission || xAPIEventHooked) {
-      console.log('Abort patching into xAPI event dispatcher');
+    if (!h5pObject) {
+      console.log('H5P object not ready');
       return;
     }
 
-    if (xAPIHelper.isxAPINeeded(match.path) === false) {
-      console.log('xAPI not needed for path');
-      return;
+    // Hook into H5P dispatcher only if xAPI is needed for this route
+    if (xAPIHelper.isxAPINeeded(match.path) === true) {
+      h5pObject.externalDispatcher.on('xAPI', function (event) {
+        console.log('Running xAPI listener callback');
+        const params = {
+          path: match.path,
+          activityId,
+          activeCourse,
+          submissionId: submission.id,
+          attemptId: submission.attemptId,
+          studentId: student.profile.data.id,
+          classworkId: match.params.classworkId,
+          courseId: match.params.courseId,
+          auth: student.auth,
+        };
+
+        // Extending the xAPI statement with our custom values and sending it off to LRS
+        const xapiData = JSON.stringify(
+          xAPIHelper.extendStatement(this, event.data.statement, params),
+        );
+        sendStatement(xapiData);
+
+        if (h5pSettings?.organization?.api_key) {
+          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
+        }
+
+        // Ask the user if he wants to turn-in the work to google classroom
+        if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
+          Swal.fire({
+            title: 'Do you want to turn in your work to Google Classroom?',
+            showCancelButton: true,
+            confirmButtonText: 'Turn In',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              turnIn(params.classworkId, params.courseId, params.auth);
+              Swal.fire('Saved!', '', 'success');
+            }
+          });
+        }
+      });
     }
 
-    h5pObject.externalDispatcher.on('xAPI', function (event) {
-      console.log('Running xAPI listener callback');
-      const params = {
-        path: match.path,
-        activityId,
-        activeCourse,
-        submissionId: submission.id,
-        attemptId: submission.attemptId,
-        studentId: student.profile.data.id,
-        classworkId: match.params.classworkId,
-        courseId: match.params.courseId,
-        auth: student.auth,
-      };
-
-      // Extending the xAPI statement with our custom values and sending it off to LRS
-      const xapiData = JSON.stringify(
-        xAPIHelper.extendStatement(this, event.data.statement, params),
-      );
-      sendStatement(xapiData);
-
-      if (h5pSettings?.organization?.api_key) {
-        sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
-      }
-
-      // Ask the user if he wants to turn-in the work to google classroom
-      if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
-        Swal.fire({
-          title: 'Do you want to turn in your work to Google Classroom?',
-          showCancelButton: true,
-          confirmButtonText: 'Turn In',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            turnIn(params.classworkId, params.courseId, params.auth);
-            Swal.fire('Saved!', '', 'success');
-          }
-        });
-      }
-    });
-    setXAPIEventHooked(true);
+    // Load the rest of the activity assets
+    loadAssets(h5pSettings.h5p.settings.loadedCss, h5pSettings.h5p.settings.loadedJs);
   }, [h5pObject]);
-
-  // If the activity has already been submitted to google classroom, redirect to summary page
-  useEffect(() => {
-    if (submission && submission.state === 'TURNED_IN') {
-      clearInterval(intervalPointer);
-      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
-    }
-  }, [submission]);
 
   return (
     <div id="curriki-h5p-wrapper">
@@ -175,14 +159,19 @@ const Activity = (props) => {
   );
 };
 
+Activity.defaultProps = {
+  submission: null,
+  h5pSettings: null,
+};
+
 Activity.propTypes = {
   activityId: PropTypes.string.isRequired,
   activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,
-  submission: PropTypes.object.isRequired,
-  h5pSettings: PropTypes.object.isRequired,
+  submission: PropTypes.object,
+  h5pSettings: PropTypes.object,
   loadH5pSettings: PropTypes.func.isRequired,
   getSubmission: PropTypes.func.isRequired,
   sendStatement: PropTypes.func.isRequired,
