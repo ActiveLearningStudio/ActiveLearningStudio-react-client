@@ -1001,10 +1001,6 @@ function SearchInterface(props) {
                                             </ul>
                                           </li>
                                         )}
-                                        <Dropdown.Item>
-                                          <img src={teamicon} alt="teams_logo" className="teams-logo" />
-                                          Add to team
-                                        </Dropdown.Item>
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   )}
@@ -1054,13 +1050,13 @@ function SearchInterface(props) {
                                           Duplicate
                                         </Dropdown.Item>
                                         {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
-                                          <li className="dropdown-submenu send" style={{ display: activityVisibilityLMS[0] || safariMontageActivity[0] ? 'block' : 'none' }}>
+                                          <li className="dropdown-submenu send" style={{ display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none' }}>
                                             <a tabIndex="-1" className="dropdown-item">
                                               <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                               Publish
                                             </a>
                                             <ul className="dropdown-menu check">
-                                              {allLms.shareVendors.map((data) =>
+                                              {allLms?.shareVendors.map((data) =>
                                                 data.lms_name !== 'safarimontage' ? null : (
                                                   <>
                                                     {data?.activity_visibility && (
@@ -1250,22 +1246,24 @@ function SearchInterface(props) {
                                                 </ul>
                                               </li>
                                             )}
-                                            <Dropdown.Item onClick={() => {
-                                              if (selectProject.length === 0 && fromTeam) {
-                                                setSelectProject([res.id]);
-                                              } else if (selectProject[0] === res.id && fromTeam) {
-                                                setSelectProject([]);
-                                              } else {
-                                                Swal.fire({
-                                                  icon: 'warning',
-                                                  title: 'Action Prohibited',
-                                                  text: 'You are only allowed to select 1 project.',
-                                                });
-                                              }
-                                            }}>
-                                              <img src={teamicon} alt="teams_logo" className="teams-logo" />
-                                              {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}team
-                                            </Dropdown.Item>
+                                            {fromTeam && (
+                                              <Dropdown.Item onClick={() => {
+                                                if (selectProject.length === 0 && fromTeam) {
+                                                  setSelectProject([res.id]);
+                                                } else if (selectProject[0] === res.id && fromTeam) {
+                                                  setSelectProject([]);
+                                                } else {
+                                                  Swal.fire({
+                                                    icon: 'warning',
+                                                    title: 'Action Prohibited',
+                                                    text: 'You are only allowed to select 1 project.',
+                                                  });
+                                                }
+                                              }}>
+                                                <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                                {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}team
+                                              </Dropdown.Item>
+                                            )}
                                           </Dropdown.Menu>
                                         </Dropdown>
                                       )}
@@ -1456,16 +1454,15 @@ function SearchInterface(props) {
                                                 {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
                                                   <li
                                                     className="dropdown-submenu send"
-                                                    style={{ display: activityVisibilityLMS[0] || safariMontageActivity[0] ? 'block' : 'none' }}
+                                                    style={{ display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none' }}
                                                   >
                                                     <a tabIndex="-1" className="dropdown-item">
                                                       <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                       Publish
                                                     </a>
                                                     <ul className="dropdown-menu check">
-                                                      {allLms.shareVendors.map((data) => {
+                                                      {allLms?.shareVendors.map((data) => {
                                                         if (data.lms_name !== 'safarimontage') return false;
-
                                                         return (
                                                           data?.activity_visibility && (
                                                             <li>
