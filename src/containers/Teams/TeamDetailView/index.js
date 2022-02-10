@@ -14,10 +14,11 @@ import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
 import {
-  changeUserRole, getTeamPermission, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData, updateTeamAction,
+  changeUserRole, getTeamPermission, getWhiteBoardUrl, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData, updateTeamAction,
 } from 'store/actions/team';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import WhiteBoardModal from 'components/models/WhiteBoardModal';
 import { Alert } from 'react-bootstrap';
 import TeamMembers from './TeamMembers';
 
@@ -36,6 +37,7 @@ const TeamDetail = ({
   getTeamPermissionAction,
   updateTeam,
   removeMember,
+  whiteBoard,
 }) => {
   const [show, setShow] = useState(false);
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
@@ -46,6 +48,11 @@ const TeamDetail = ({
   const teamNoovoTitleRef = useRef();
   const history = useHistory();
   const { roles } = useSelector((state) => state.team);
+  const auth = useSelector((state) => state.auth);
+  const [loadingWhiteBoard, setLoadingWhiteBoard] = useState(true);
+  const [showWhiteBoard, setShowWhiteBoard] = useState(false);
+  const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
+  const dataRedux = useSelector((state) => state);
   const [minimumUserFlag, setMinimumUserFlag] = useState(false);
   const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState(newTeam?.users?.length > 0 ? newTeam.users : []);
   const currentTeamUser = useMemo(() => (team?.users?.length > 0 ? team.users : []), [team?.users]);
@@ -60,6 +67,13 @@ const TeamDetail = ({
       setLoading(false);
     }
   }, [team?.projects]);
+  // Whiteboard
+  useEffect(() => {
+    if (dataRedux.team.whiteBoardUrl) {
+      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
+      setLoadingWhiteBoard(false);
+    }
+  }, [dataRedux.team.whiteBoardUrl]);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
     if (location.pathname.includes('/teams/team-detail') && !newTeam?.name && organization?.domain) {
@@ -255,6 +269,16 @@ const TeamDetail = ({
       setLoading(false);
     }
   };
+  const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
+    whiteBoard(orgId, objId, userId, objType);
+  };
+
+  const handleShowWhiteBoard = () => {
+    setShowWhiteBoard(true); //! state.show
+  };
+  const handleClose = () => {
+    setShowWhiteBoard(false);
+  };
   return (
     <div className="team-detail-page">
       <div className="content">
@@ -371,6 +395,15 @@ const TeamDetail = ({
                       height="32px"
                       className="mr-16"
                       hover
+                      onClick={() => {
+                        assignWhiteBoardUrl(
+                          organization?.id,
+                          1,
+                          auth.user?.id,
+                          'team',
+                        );
+                        handleShowWhiteBoard();
+                      }}
                     />
                     {(teamPermission?.Team?.includes('team:add-project') || newTeam?.name) && (
                       <Buttons
@@ -482,6 +515,12 @@ const TeamDetail = ({
           </div>
         </div>
       </div>
+      <WhiteBoardModal
+        url={whiteBoardUrl}
+        show={showWhiteBoard} // {props.show}
+        onHide={handleClose}
+        loading={loadingWhiteBoard}
+      />
     </div>
   );
 };
@@ -501,6 +540,7 @@ TeamDetail.propTypes = {
   updateTeam: PropTypes.func.isRequired,
   removeMember: PropTypes.func.isRequired,
   loadTeam: PropTypes.func.isRequired,
+  whiteBoard: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -519,5 +559,6 @@ const mapDispatchToProps = (dispatch) => ({
   getTeamPermissionAction: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
   removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
   updateTeam: (teamId, data) => dispatch(updateTeamAction(teamId, data)),
+  whiteBoard: (orgId, objId, userId, objType) => dispatch(getWhiteBoardUrl(orgId, objId, userId, objType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetail);
