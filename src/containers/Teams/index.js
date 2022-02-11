@@ -7,7 +7,6 @@ import {
   getTeamPermission,
   loadSubOrganizationTeamsAction,
   loadTeamsAction,
-  getWhiteBoardUrl,
 } from 'store/actions/team';
 // import Header from 'components/Header';
 // import Sidebar from 'components/Sidebar';
@@ -15,8 +14,6 @@ import {
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import { Link } from 'react-router-dom';
 // import Swal from 'sweetalert2';
-import Buttons from 'utils/Buttons/buttons';
-import WhiteBoardModal from 'components/models/WhiteBoardModal';
 import {
   clearOrganizationState,
   getOrganization,
@@ -37,12 +34,8 @@ function TeamsPage(props) {
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   // const [breadCrumb, setBreadCrumb] = useState([]);
-  const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const dataRedux = useSelector((state) => state);
   // const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -76,7 +69,6 @@ function TeamsPage(props) {
   const teamId = parseInt(location.pathname.split('teams/')[1], 10);
   const selectedTeam = teams.find((team) => team.id === teamId);
   const { notification } = useSelector((state) => state.notification);
-  const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (
@@ -96,29 +88,11 @@ function TeamsPage(props) {
       dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
     }
   }, [dispatch, organization?.currentOrganization?.id, selectedTeam, teamPermission]);
-  useEffect(() => {
-    if (dataRedux.team.whiteBoardUrl) {
-      setWhiteBoardUrl(dataRedux.team.whiteBoardUrl);
-      setLoading(false);
-    }
-  }, [dataRedux.team.whiteBoardUrl]);
   const searchQueryHandler = useCallback(() => {
     if (searchQuery) {
       loadTeams(searchQuery);
     }
   }, [loadTeams, searchQuery]);
-
-  const assignWhiteBoardUrl = (orgId, objId, userId, objType) => {
-    dispatch(getWhiteBoardUrl(orgId, objId, userId, objType));
-  };
-
-  const handleShow = () => {
-    setShow(true); //! state.show
-  };
-
-  const handleClose = () => {
-    setShow(false);
-  };
 
   return (
     <>
@@ -201,24 +175,6 @@ function TeamsPage(props) {
                         Filter
                       </div> */}
                     </div>
-                    <Buttons
-                      type="button"
-                      secondary
-                      text="Create White Board"
-                      width="163px"
-                      height="35px"
-                      // margin="15px 0 0 10px"
-                      hover
-                      onClick={() => {
-                        assignWhiteBoardUrl(
-                          organization.currentOrganization?.id,
-                          1,
-                          auth.user?.id,
-                          'team',
-                        );
-                        handleShow();
-                      }}
-                    />
                     {/* <Link
                       to={`/org/${organization?.currentOrganization?.domain}/teams/create-team-design`}
                     >
@@ -234,7 +190,7 @@ function TeamsPage(props) {
                     >
                       <div className="btn-top-page">
                         <FontAwesomeIcon icon="plus" className="mr-2" />
-                        Create a Team
+                        Add Team
                       </div>
                     </div>
                   </div>
@@ -294,12 +250,6 @@ function TeamsPage(props) {
       {showCreateTeamModal && (
         <CreateTeamPopup setShowCreateTeamModal={setShowCreateTeamModal} />
       )}
-      <WhiteBoardModal
-        url={whiteBoardUrl}
-        show={show} // {props.show}
-        onHide={handleClose}
-        loading={loading}
-      />
     </>
   );
 }

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Dropdown } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 // import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
-
+import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
@@ -1025,6 +1025,7 @@ function Table(props) {
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>{row.tool_description}</td>
+                      <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.lti_version}
