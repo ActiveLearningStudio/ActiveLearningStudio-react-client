@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   allVideos: [],
   videoId: '',
   editVideo: '',
-  activecms: null
+  activecms: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -50,10 +50,10 @@ export default (state = INITIAL_STATE, action) => {
         allVideos: updatedData,
       };
     case actionTypes.REMOVE_VIDEOS:
-      const refreshVideo = state.allVideos.filter((data) => data.id !== action.payload);
+      const refreshVideo = state.allVideos.data.filter((data) => data.id !== action.payload);
       return {
         ...state,
-        allVideos: refreshVideo,
+        allVideos: { ...state.allVideos, data: refreshVideo },
       };
     default:
       return state;
