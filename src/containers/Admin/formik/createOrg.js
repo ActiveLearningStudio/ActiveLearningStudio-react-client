@@ -15,6 +15,7 @@ import { alphabetsOnly } from 'utils';
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import editIcon from 'assets/images/project-edit.svg';
+import TermsModal from 'components/models/TermsModal';
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -37,12 +38,17 @@ export default function CreateOrg(prop) {
   const [checkedPpParent, setCheckedPpParent] = useState(true);
   const [checkedPpUrl, setCheckedPpUrl] = useState(false);
   const [checkedPpContent, setCheckedPpContent] = useState(false);
+  const [show, setShow] = useState(false);
+  const [tosContentValue, setTosContentValue] = useState('');
+  const [tosContentValue, setTosContentValue] = useState('');
+
   useEffect(() => {
     if (editMode) {
       setImgActive(activeEdit?.image);
       setCheckedActivty(activeEdit?.gcr_activity_visibility);
       setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
       setCheckedProject(activeEdit?.gcr_project_visibility);
+      setTosContentValue(activeEdit?.tos_content)
       if (activeEdit.tos_type == 'Parent') {
         setCheckedTosParent(true);
       } else if (activeEdit.tos_type == 'URL') {
@@ -62,6 +68,26 @@ export default function CreateOrg(prop) {
       setImgActive(null);
     }
   }, [editMode, activeEdit]);
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleTermsEditorChange = (content) => {
+    setTosContentValue(content);
+    // console.log('new content', content);
+    console.log('new content', tosContentValue);
+  }
+  const handlePolicyEditorChange = (content) => {
+    setTosContentValue(content);
+    // console.log('new content', content);
+    console.log('new content', tosContentValue);
+  }
+
+
   return (
     <div className="create-form">
       <Formik
@@ -498,6 +524,7 @@ export default function CreateOrg(prop) {
                           setCheckedTosUrl(false);
                           setCheckedTosParent(false);
                           setFieldValue('tos_type', 'Content')
+                          handleShow()
                         }}>
                           <img src={editIcon} alt="" className="mr-3" />
                           Build my Terms of service
@@ -505,7 +532,7 @@ export default function CreateOrg(prop) {
                         {checkedTosContent && (
                           <div className="form-group-create tos-pp-url">
                             <h3>Own Terms</h3>
-                            <input type="text" name="tos_content" onChange={handleChange} value={values.tos_content} />
+                            <input type="hidden" name="tos_content" onChange={handleChange} value={values.tos_content} />
                             {/* <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div> */}
                           </div>
                         )}
@@ -588,6 +615,11 @@ export default function CreateOrg(prop) {
           </form>
         )}
       </Formik>
+      <TermsModal
+        show={show} // {props.show}
+        onHide={handleClose}
+        handleTermsEditorChange={handleTermsEditorChange}
+      />
     </div>
   );
 }
