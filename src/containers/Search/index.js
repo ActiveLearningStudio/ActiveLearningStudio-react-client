@@ -507,6 +507,8 @@ function SearchInterface(props) {
                                       Swal.fire('Search field is required.');
                                     } else if (searchInput.length > 255) {
                                       Swal.fire('Character limit should be less than 255.');
+                                    } else if (!searchType) {
+                                      Swal.fire('Search type is required. Click one of the radio buttons.');
                                     } else {
                                       Swal.fire({
                                         title: 'Searching...', // add html attribute if you want or remove
