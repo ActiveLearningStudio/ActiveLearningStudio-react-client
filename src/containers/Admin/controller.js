@@ -1,5 +1,6 @@
-/* eslint-disable */
-import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState, useMemo, useEffect, useRef, useCallback,
+} from 'react';
 import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
@@ -21,7 +22,9 @@ import loader from 'assets/images/dotsloader.gif';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
+import {
+  getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization,
+} from 'store/actions/organization';
 // import { alphaNumeric } from 'utils';
 
 function Controller(props) {
@@ -53,6 +56,7 @@ function Controller(props) {
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
+    setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
     setSize,
@@ -214,7 +218,7 @@ function Controller(props) {
         )}
         {!!search && type === 'Teams' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -782,7 +786,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Subjects' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -798,7 +802,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Education Level' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -814,7 +818,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Author Tags' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -1006,7 +1010,7 @@ Controller.propTypes = {
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
-  // searchQueryStats: PropTypes.string,
+  setSearchQueryTeam: PropTypes.func,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
@@ -1050,6 +1054,7 @@ Controller.defaultProps = {
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
+  setSearchQueryTeam: {},
   // searchQueryStats: PropTypes.string,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: {},

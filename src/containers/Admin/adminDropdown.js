@@ -38,6 +38,7 @@ const AdminDropdown = (props) => {
     setAllProjectTab,
     setrowData,
     setModalShow,
+    setModalShowTeam,
     setActivePageNumber,
     // text,
     // iconColor,
@@ -945,7 +946,28 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-
+          {type === 'Teams' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  setModalShowTeam(true);
+                  dispatch({
+                    type: actionTypes.UPDATE_SELECTED_TEAM,
+                    payload: row,
+                  })
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => { }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
           {/* <Dropdown.Item>
           <img src={Edit} alt="Preview" className="menue-img" />
           Edit

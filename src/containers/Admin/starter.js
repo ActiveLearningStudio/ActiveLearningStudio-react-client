@@ -48,6 +48,7 @@ function Starter(props) {
     searchAlertToggler,
     searchAlertTogglerStats,
     setActivePage,
+    setSearchQueryTeam,
     subType,
     inviteUser,
     setCurrentTab,
@@ -65,6 +66,7 @@ function Starter(props) {
     setAllProjectTab,
     resetProjectFilter,
     setModalShow,
+    setModalShowTeam,
     setrowData,
     setActivePageNumber,
   } = props;
@@ -116,6 +118,7 @@ function Starter(props) {
         setProjectFilterObj={setProjectFilterObj}
         filterSearch={filterSearch}
         resetProjectFilter={resetProjectFilter}
+        setSearchQueryTeam={setSearchQueryTeam}
       />
       {subTypeState === 'All settings' && <Settings />}
       {subTypeState === 'Manage Roles' ? (
@@ -139,6 +142,7 @@ function Starter(props) {
           setCurrentTab={setCurrentTab}
           setAllProjectTab={setAllProjectTab}
           setModalShow={setModalShow}
+          setModalShowTeam={setModalShowTeam}
           setrowData={setrowData}
           setActivePageNumber={setActivePageNumber}
         />

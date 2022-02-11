@@ -29,6 +29,7 @@ import editicon from 'assets/images/edit-icon.png';
 import CreateSubject from './formik/createSubject';
 import CreateEducationLevel from './formik/createEducationLevel';
 import CreateAuthorTag from './formik/createAuthorTag';
+import EditTeamModel from './model/EditTeamModel';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -41,6 +42,7 @@ function AdminPanel({ showSSO }) {
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
   useEffect(() => {
@@ -167,6 +169,7 @@ function AdminPanel({ showSSO }) {
                           type="Teams"
                           modules={['All teams']}
                           subType="All teams"
+                          setModalShowTeam={setModalShowTeam}
                         />
                       </div>
                     </Tab>
@@ -417,6 +420,13 @@ function AdminPanel({ showSSO }) {
             activePage={activePageNumber}
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}
+          />
+          <EditTeamModel
+            show={modalShowTeam}
+            onHide={() => setModalShowTeam(false)}
+            activePage={activePageNumber}
+            activeOrganization={activeOrganization}
+            showFooter={true}
           />
         </>
       ) : (
