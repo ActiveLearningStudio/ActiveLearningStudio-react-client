@@ -36,10 +36,10 @@ const Activity = (props) => {
     turnIn,
     sendScreenshot,
   } = props;
-  /* eslint-disable no-unused-vars */
+
   // We do use it with the reducer
+  /* eslint-disable-next-line no-unused-vars */
   const [intervalPointer, dispatch] = useReducer(reducer, 0);
-  /* eslint-enable no-unused-vars */
   const [h5pObject, setH5pObject] = useState(null);
   const loadAssets = (styles, scripts) => {
     styles.forEach((style) => {
@@ -79,20 +79,24 @@ const Activity = (props) => {
   useEffect(() => {
     if (h5pSettings === null) return;
 
+    window.H5P = window.H5P || {};
+    window.H5P.preventInit = true;
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
 
-    // Load H5P core
-    loadAssets(h5pSettings.h5p.settings.core.styles, h5pSettings.h5p.settings.core.scripts);
+    // Load H5P assets
+    const styles = h5pSettings.h5p.settings.core.styles.concat(h5pSettings.h5p.settings.loadedCss);
+    const scripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
+    loadAssets(styles, scripts);
 
     // Loops until H5P object and dispatcher are ready
     const intervalId = setInterval(() => {
-      if (typeof H5P === 'undefined' || !H5P.externalDispatcher) return;
+      if (typeof window.H5P === 'undefined' || !window.H5P.externalDispatcher) return;
 
       console.log('H5P dispatcher found');
-      setH5pObject(H5P);
       dispatch({ type: 'clear' });
+      setH5pObject(H5P);
     }, 500);
     dispatch({ type: 'set', intervalId });
   }, [h5pSettings]);
@@ -146,8 +150,7 @@ const Activity = (props) => {
       });
     }
 
-    // Load the rest of the activity assets
-    loadAssets(h5pSettings.h5p.settings.loadedCss, h5pSettings.h5p.settings.loadedJs);
+    h5pObject.init();
   }, [h5pObject]);
 
   return (
