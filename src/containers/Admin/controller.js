@@ -195,7 +195,7 @@ function Controller(props) {
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or User Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -917,7 +917,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'DefaultSso' && permission?.Organization.includes('organization:create-default-sso') && (
+        {!!btnText && type === 'DefaultSso' && (
           <div className="btn-text">
             <button
               type="button"

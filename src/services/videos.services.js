@@ -6,9 +6,9 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const getAll = (orgId) =>
+const getAll = (orgId, page = 1, size = 16) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity`)
+    .get(`/${apiVersion}/suborganizations/${orgId}/stand-alone-activity?page=${page}${size ? `&size=${size}` : ''}`)
     .then(({ data }) => data)
     .catch((err) => {
       //errorCatcher(err.response.data);

@@ -39,6 +39,7 @@ class PlaylistCardDropdown extends React.Component {
       handleShow,
       setProjectId,
       setProjectPlaylistId,
+      setProjectPlaylistActivityId,
       enablePlaylistShared,
       selectedProject,
     } = this.props;
@@ -126,6 +127,7 @@ class PlaylistCardDropdown extends React.Component {
                 handleShow={handleShow}
                 setProjectId={setProjectId}
                 setProjectPlaylistId={setProjectPlaylistId}
+                setProjectPlaylistActivityId={setProjectPlaylistActivityId}
               />
               <Dropdown.Item onClick={this.handleDelete}>
                 <img src={Delete} alt="Preview" className="menue-img" />

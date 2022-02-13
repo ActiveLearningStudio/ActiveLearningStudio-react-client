@@ -11,6 +11,7 @@ import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import UploadImageV2 from 'utils/uploadimagev2/uploadimagev2';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import BackButton from '../../../assets/images/left-arrow.svg';
 import UploadFile from 'utils/uploadselectfile/uploadfile';
 import { useSelector, useDispatch } from 'react-redux';
 import { editResourceMetaDataAction } from 'store/actions/resource';
@@ -88,9 +89,20 @@ const AddActivity = (props) => {
         )}
 
         {!activity && (
-          <div className="add-activity-title-select">
-            <div className="add-activity-title">
-              <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" />
+          <div className="add-activity-title-select upload-back-button">
+            <div className="add-activity-title ">
+              <div>
+                <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" />
+              </div>
+            </div>
+            <div
+              className="back-button"
+              onClick={() => {
+                changeScreenHandler('layout', 'create');
+              }}
+            >
+              <img src={BackButton} alt="back button " />
+              <p className="">Back to options</p>
             </div>
             {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">
@@ -115,7 +127,7 @@ const AddActivity = (props) => {
             )}
           </div>
         )}
-        {!activity && (
+        {/* {!activity && (
           <form className="radio-group">
             <div className={activtyMethod !== 'upload' ? 'radio-button active-radio' : 'radio-button'}>
               <input
@@ -144,7 +156,7 @@ const AddActivity = (props) => {
               <label for="Upload activity">Upload activity</label>
             </div>
           </form>
-        )}
+        )} */}
         <div className="add-activity-layout-formik-videoTag">
           <div className="add-activity-layout-formik">
             <Formik
@@ -186,7 +198,7 @@ const AddActivity = (props) => {
                     handleSubmit();
                   }}
                 >
-                  <HeadingThree text="Describe layout" color="#084892" />
+                  <h4 className="interactive-video-heading-two">Describe layout</h4>
 
                   <div className="layout-title-formik-textField">
                     <HeadingThree text="Title" color="#515151" className="textField-title" />
@@ -227,7 +239,7 @@ const AddActivity = (props) => {
           </div>
           <div className="add-activity-layout-videoTag">
             <HeadingThree
-              text={activtyMethod === 'upload' ? 'Upload activity' : activity ? 'Edit layout' : 'Create layout'}
+              text={activtyMethod === 'upload' ? 'Upload existing activity' : activity ? 'Edit layout' : 'Create layout'}
               color="#084892"
               className="layout-add-activity-title"
             />
@@ -235,7 +247,7 @@ const AddActivity = (props) => {
             <HeadingText
               text={
                 activtyMethod === 'upload'
-                  ? ''
+                  ? 'Upload an activity from an existing H5P file. '
                   : activity
                   ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
                   : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'

@@ -27,6 +27,8 @@ const H5PEditor = (props) => {
     activityId,
     type,
     accountId,
+    settingId,
+    reverseType,
   } = props;
 
   const uploadFile = useRef();
@@ -45,7 +47,7 @@ const H5PEditor = (props) => {
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
       let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, settingId);
     } else {
       loadH5pSettings();
     }
@@ -70,16 +72,19 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide);
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide, reverseType);
       }
+      delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
-  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
       if (type === 'videoModal') {
-        setOpenVideo(false);
+        if (setOpenVideo) {
+          setOpenVideo(false);
+        }
       }
     }
   };
@@ -223,7 +228,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
+  loadH5pSettings: (library, accountId, settingId) => dispatch(loadH5pSettingsActivity(library, accountId, settingId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

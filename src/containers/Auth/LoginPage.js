@@ -261,7 +261,7 @@ class LoginPage extends React.Component {
                           {isLoading ? <img src={loader} alt="" /> : 'Log in'}
                         </button>
                       </div>
-                      {domain?.self_registration === true ? (
+                      {true ? (
                         <>
                           {/* <div className="vertical-line">
                             <div className="line" />

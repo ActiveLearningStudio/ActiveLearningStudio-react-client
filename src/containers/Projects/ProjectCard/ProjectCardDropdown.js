@@ -77,7 +77,7 @@ const ProjectCardDropdown = (props) => {
           </Dropdown.Item>
         )} */}
 
-        {permission?.Project?.includes('project:clone') && (
+        {(!teamPermission || Object.keys(teamPermission).length === 0) && permission?.Project?.includes('project:clone') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -205,13 +205,13 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
-  teamPermission: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
   // text: propTypes.string,
 };
 
-// ProjectCardDropdown.defaultProps = {
-//   text: propTypes.string,
-// };
+ProjectCardDropdown.defaultProps = {
+  teamPermission: {},
+};
 
 export default ProjectCardDropdown;
