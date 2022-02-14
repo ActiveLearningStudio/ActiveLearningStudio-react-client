@@ -96,7 +96,7 @@ const Activity = (props) => {
 
       console.log('H5P dispatcher found');
       dispatch({ type: 'clear' });
-      setH5pObject(H5P);
+      setH5pObject(window.H5P);
     }, 500);
     dispatch({ type: 'set', intervalId });
   }, [h5pSettings]);
