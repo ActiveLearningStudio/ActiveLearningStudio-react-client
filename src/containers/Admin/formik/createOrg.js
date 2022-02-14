@@ -16,6 +16,7 @@ import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import editIcon from 'assets/images/project-edit.svg';
 import TermsModal from 'components/models/TermsModal';
+import PolicyModal from 'components/models/PolicyModal';
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -39,8 +40,9 @@ export default function CreateOrg(prop) {
   const [checkedPpUrl, setCheckedPpUrl] = useState(false);
   const [checkedPpContent, setCheckedPpContent] = useState(false);
   const [show, setShow] = useState(false);
-  const [tosContentValue, setTosContentValue] = useState('');
-  const [tosContentValue, setTosContentValue] = useState('');
+  const [ppShow, setPpShow] = useState(false);
+  const [tosContentValue, setTosContentValue] = useState(null);
+  const [ppContentValue, setPpContentValue] = useState(null);
 
   useEffect(() => {
     if (editMode) {
@@ -49,6 +51,7 @@ export default function CreateOrg(prop) {
       setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
       setCheckedProject(activeEdit?.gcr_project_visibility);
       setTosContentValue(activeEdit?.tos_content)
+      setPpContentValue(activeEdit?.privacy_policy_content)
       if (activeEdit.tos_type == 'Parent') {
         setCheckedTosParent(true);
       } else if (activeEdit.tos_type == 'URL') {
@@ -76,15 +79,19 @@ export default function CreateOrg(prop) {
   const handleClose = () => {
     setShow(false);
   };
+  
+  const ppHandleShow = () => {
+    setPpShow(true);
+  };
+  
+  const ppHandleClose = () => {
+    setPpShow(false);
+  };
   const handleTermsEditorChange = (content) => {
     setTosContentValue(content);
-    // console.log('new content', content);
-    console.log('new content', tosContentValue);
   }
   const handlePolicyEditorChange = (content) => {
-    setTosContentValue(content);
-    // console.log('new content', content);
-    console.log('new content', tosContentValue);
+    setPpContentValue(content);
   }
 
 
@@ -529,13 +536,6 @@ export default function CreateOrg(prop) {
                           <img src={editIcon} alt="" className="mr-3" />
                           Build my Terms of service
                         </button>
-                        {checkedTosContent && (
-                          <div className="form-group-create tos-pp-url">
-                            <h3>Own Terms</h3>
-                            <input type="hidden" name="tos_content" onChange={handleChange} value={values.tos_content} />
-                            {/* <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div> */}
-                          </div>
-                        )}
                       </div>
                     </Tab>
                     <Tab eventKey="privacy-policy" title="Privacy policy">
@@ -577,18 +577,12 @@ export default function CreateOrg(prop) {
                           setCheckedPpContent(true);
                           setCheckedPpUrl(false);
                           setCheckedPpParent(false);
-                          setFieldValue('privacy_policy_type', 'Content')
+                          setFieldValue('privacy_policy_type', 'Content');
+                          ppHandleShow();
                         }}>
                           <img src={editIcon} alt="" className="mr-3" />
                           Build my Privacy Policy
                         </button>
-                        {checkedPpContent && (
-                          <div className="form-group-create tos-pp-url">
-                            <h3>Own Terms</h3>
-                            <input type="text" name="privacy_policy_content" onChange={handleChange} value={values.privacy_policy_content} />
-                            {/* <div className="error">{errors.tos_url && touched.tos_url && errors.tos_url}</div> */}
-                          </div>
-                        )}
                       </div>
                     </Tab>
                   </Tabs>
@@ -600,7 +594,7 @@ export default function CreateOrg(prop) {
             <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
 
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit ' : 'Add '} organization</button>
+              <button type="submit" onClick={()=>{setFieldValue('tos_content', tosContentValue); setFieldValue('privacy_policy_content',ppContentValue)}}>{editMode ? 'Edit ' : 'Add '} organization</button>
               <button
                 type="button"
                 className="cancel"
@@ -616,9 +610,16 @@ export default function CreateOrg(prop) {
         )}
       </Formik>
       <TermsModal
+        initialVal={tosContentValue}
         show={show} // {props.show}
         onHide={handleClose}
         handleTermsEditorChange={handleTermsEditorChange}
+      />
+      <PolicyModal
+        initialVal={ppContentValue}
+        show={ppShow} // {props.show}
+        onHide={ppHandleClose}
+        handlePolicyEditorChange={handlePolicyEditorChange}
       />
     </div>
   );
