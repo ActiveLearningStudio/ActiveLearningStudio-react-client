@@ -2118,3 +2118,7 @@
   float: right;
   cursor: pointer;
 }
+
+.react-responsive-modal-root {
+  z-index: 9999 !important;
+}
