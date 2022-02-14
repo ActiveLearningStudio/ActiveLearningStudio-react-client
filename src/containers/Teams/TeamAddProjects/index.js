@@ -196,7 +196,7 @@ const AddTeamProjects = (props) => {
                                 createTeam({ ...newTeam, organization_id: organization?.id }).then(() => {
                                   Swal.fire({
                                     icon: 'success',
-                                    title: 'Successfully created.',
+                                    title: 'Team added successfully.',
                                   });
                                   history.push(`/org/${organization?.domain}/teams`);
                                 })
@@ -231,17 +231,6 @@ const AddTeamProjects = (props) => {
                 <Tab eventKey="Search" title="Search">
                   <div className="flex-button-top">
                     <div className="team-controller">
-                      <div className="search-and-filters">
-                        <div className="search-bar">
-                          <input
-                            type="text"
-                            className="search-input"
-                            placeholder="Search project"
-                          />
-                          <img src={searchimg} alt="search" />
-                        </div>
-                      </div>
-
                       <div className="team-project-btns">
                         <div className="project-selection">
                           <p>
