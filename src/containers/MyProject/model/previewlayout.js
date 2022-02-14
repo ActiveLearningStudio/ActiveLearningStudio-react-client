@@ -92,6 +92,19 @@ const PreviewLayoutModel = (props) => {
                   playlistId={playlist?.id || undefined}
                 />
               )}
+              {editVideo && (
+                <H5PEditor
+                  h5pParams={editVideo?.h5p}
+                  h5pLib={editVideo.h5p_content.library.name + ' ' + editVideo.h5p_content.library.major_version + '.' + editVideo.h5p_content.library.minor_version}
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                  reverseType={reverseType}
+                  playlistId={playlist?.id || undefined}
+                />
+              )}
             </>
           ) : (
             <>
