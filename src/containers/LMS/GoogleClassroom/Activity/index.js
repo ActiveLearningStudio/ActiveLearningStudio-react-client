@@ -1,4 +1,3 @@
-/* global H5P */
 /* eslint-disable react/no-this-in-sfc */
 import React, { useEffect, useState, useReducer } from 'react';
 import { connect } from 'react-redux';
