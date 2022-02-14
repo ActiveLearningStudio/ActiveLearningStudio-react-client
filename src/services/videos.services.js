@@ -114,6 +114,13 @@ const addBrightCove = (orgId, data) =>
     .catch((err) => {
       errorCatcher(err.response.data);
     });
+const getKalturaVideos = (data) =>
+  httpService
+    .post(`/${apiVersion}/kaltura/get-media-entry-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
 
 const deleteBrightCove = (orgId, settingId) =>
   httpService
@@ -161,4 +168,5 @@ export default {
   editBrightCove,
   uploadCSSFile,
   allBrightCoveSearch,
+  getKalturaVideos,
 };
