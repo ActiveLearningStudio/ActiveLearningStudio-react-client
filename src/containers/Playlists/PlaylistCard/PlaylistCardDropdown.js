@@ -76,7 +76,7 @@ class PlaylistCardDropdown extends React.Component {
               Edit
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:duplicate') && (
+          {permission?.Playlist?.includes('playlist:edit') && (
             <Dropdown.Item
               to="#"
               onClick={() => {
