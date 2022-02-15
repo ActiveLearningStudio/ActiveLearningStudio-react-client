@@ -207,7 +207,7 @@ function InviteDialog(props) {
                       user_id: activeSelectedMember.id,
                     };
                     setbtnText('Adding ...');
-                    const result = teamService.checkUserBeforeAdd(stateOrg.currentOrganization.id, combine);
+                    const result = teamService.checkUserBeforeAdd(stateOrg?.activeOrganization?.id, combine);
                     result
                       .then((data) => {
                         setbtnText('Add Member');

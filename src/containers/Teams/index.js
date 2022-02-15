@@ -107,7 +107,7 @@ function TeamsPage(props) {
       <div className="teams-page">
         <div className="content">
           <div className="inner-content">
-            {overview && <div className="organization-name">{currentOrganization?.name}</div>}
+            {overview && <div className="organization-name">{activeOrganization?.name}</div>}
             <div>
               {overview
                 && (
