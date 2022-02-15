@@ -34,7 +34,12 @@ const BrightcoveModel = (props) => {
       } else if (platform == 'Kaltura') {
         setActiveCms(null);
         const result = await dispatch(getKalturaVideos());
-        setkaltura(result);
+        if (result?.errors) {
+          setkaltura([]);
+          setError('No record Found');
+        } else {
+          setkaltura(result);
+        }
       }
     })();
   }, [platform]);

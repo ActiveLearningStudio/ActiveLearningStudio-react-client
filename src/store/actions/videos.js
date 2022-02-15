@@ -58,12 +58,18 @@ export const getKalturaVideos = (searchText = '', page = 0, size = 6) => async (
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await videoServices.getKalturaVideos({
-    organization_id: activeOrganization.id,
-    searchText: searchText,
-    pageIndex: page,
-    pageSize: size,
-  });
+  var result;
+  try {
+    result = await videoServices.getKalturaVideos({
+      organization_id: activeOrganization.id,
+      searchText: searchText,
+      pageIndex: page,
+      pageSize: size,
+    });
+  } catch (e) {
+    result = e;
+  }
+
   return result;
 };
 
