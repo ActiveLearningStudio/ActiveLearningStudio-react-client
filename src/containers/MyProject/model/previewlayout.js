@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const PreviewLayoutModel = (props) => {
   const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
+  const { platform } = useSelector((state) => state.videos);
   const dispatch = useDispatch();
   const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType } = props;
   var counter = 0;
@@ -37,7 +38,7 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
                 </div>
               </div>
-              {video.includes('youtube.com') ? (
+              {platform === 'Youtube' && (
                 <H5PEditor
                   h5pParams={
                     props.editVideo.h5p
@@ -53,7 +54,8 @@ const PreviewLayoutModel = (props) => {
                   reverseType={reverseType}
                   playlistId={playlist?.id || undefined}
                 />
-              ) : (
+              )}
+              {platform === 'Brightcove' && (
                 <div>
                   <div id="activity-loader-alert" class="alert alert-primary" role="alert" style={{ display: 'none' }}></div>
                   <H5PEditor
@@ -72,6 +74,36 @@ const PreviewLayoutModel = (props) => {
                     playlistId={playlist?.id || undefined}
                   />
                 </div>
+              )}
+              {platform === 'Kaltura' && (
+                <H5PEditor
+                  h5pParams={
+                    props.editVideo.h5p
+                      ? props.editVideo.h5p
+                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                  }
+                  h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                  reverseType={reverseType}
+                  playlistId={playlist?.id || undefined}
+                />
+              )}
+              {editVideo && (
+                <H5PEditor
+                  h5pParams={editVideo?.h5p}
+                  h5pLib={editVideo.h5p_content.library.name + ' ' + editVideo.h5p_content.library.major_version + '.' + editVideo.h5p_content.library.minor_version}
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                  reverseType={reverseType}
+                  playlistId={playlist?.id || undefined}
+                />
               )}
             </>
           ) : (

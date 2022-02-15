@@ -53,18 +53,26 @@ export default function CreateOrg(prop) {
       setTosContentValue(activeEdit?.tos_content)
       setPpContentValue(activeEdit?.privacy_policy_content)
       if (activeEdit.tos_type == 'Parent') {
+        setCheckedTosUrl(false)
         setCheckedTosParent(true);
       } else if (activeEdit.tos_type == 'URL') {
+        setCheckedTosParent(false);
         setCheckedTosUrl(true)
       } else if (activeEdit.tos_type == 'Content') {
+        setCheckedTosParent(false);
+        setCheckedTosUrl(false)
         setCheckedTosContent(true);
       }
 
       if (activeEdit.privacy_policy_type == 'Parent') {
+        setCheckedPpUrl(false)
         setCheckedPpParent(true);
       } else if (activeEdit.privacy_policy_type == 'URL') {
+        setCheckedPpParent(false);
         setCheckedPpUrl(true)
       } else if (activeEdit.privacy_policy_type == 'Content') {
+        setCheckedPpParent(false);
+        setCheckedPpUrl(false)
         setCheckedPpContent(true);
       }
     } else {

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import adminService from 'services/admin.service';
 import Starter from './starter';
 import { columnData } from './column';
-
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import {
@@ -22,13 +21,14 @@ import {
   getAuthorTag,
   getActivityTypes,
   getActivityLayout,
+  teamsActionAdminPanel,
 } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 
 export default function Pills(props) {
-  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setrowData, setActivePageNumber, users, setUsers } = props;
+  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setModalShowTeam, setrowData, setActivePageNumber, users, setUsers } = props;
 
   const [key, setKey] = useState(modules?.filter((data) => !!data)[0]);
 
@@ -36,7 +36,7 @@ export default function Pills(props) {
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport, allbrightCove } = useSelector((state) => state.admin);
+  const { activityTypes, activityItems, usersReport, allbrightCove, teams } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -63,6 +63,7 @@ export default function Pills(props) {
   const [searchQueryProject, setSearchQueryProject] = useState('');
   const [searchQueryStats, setSearchQueryStats] = useState('');
   const [searchQueryActivities, setSearchQueryActivities] = useState('');
+  const [searchQueryTeam, setSearchQueryTeam] = useState('');
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [libraryReqSelected, setLibraryReqSelected] = useState(false);
@@ -543,6 +544,14 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+  
+  const filterLtiTool = (item) => {
+    setLtiTool(null);
+    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
+    });
+  };
   useEffect(() => {
     // if (subTypeState === 'Library requests') {
     //   setActivePage(1);
@@ -564,6 +573,13 @@ export default function Pills(props) {
       setSubTypeState(key);
     }
   }, [activeTab, key]);
+
+  useEffect(() => {
+    if (activeOrganization && type === 'Teams') {
+      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, undefined, undefined))
+    }
+  }, [size, activePage, activeOrganization, searchQueryTeam]);
+
   const filterSearch = useCallback(() => {
     setAllProjectTab(null);
     if (libraryReqSelected) {
@@ -778,6 +794,10 @@ export default function Pills(props) {
       setAllProjectUserTab(result);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
+    } else if (subType == 'All teams') {
+      dispatch(teamsActionAdminPanel(activeOrganization?.id, '', activePage, size, 'created_at', orderBy));
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
     }
   };
   const resetProjectFilter = () => {
@@ -807,7 +827,6 @@ export default function Pills(props) {
         .catch((e) => setAllProjectTab([]));
     }
   };
-
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
@@ -1222,6 +1241,25 @@ export default function Pills(props) {
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
+                  filteredItems={filterLtiTool}
+                />
+              )}
+              {type === 'Teams' && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  subType={'All teams'}
+                  setSize={setSize}
+                  search={true}
+                  type={type}
+                  tableHead={columnData.teams}
+                  sortCol={columnData.teamsSortCol}
+                  data={teams}
+                  activePage={activePage}
+                  setActivePage={setActivePage}
+                  handleSort={handleSort}
+                  setSearchQueryTeam={setSearchQueryTeam}
+                  setModalShowTeam={setModalShowTeam}
                 />
               )}
             </div>

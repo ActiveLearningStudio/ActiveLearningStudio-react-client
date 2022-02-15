@@ -45,7 +45,7 @@ export const columnData = {
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   defaultssoSortCol: ['Site Name'],
   
-  ltitool: ['Name', 'URL', 'Description', 'Tool type', 'Version'],
+  ltitool: ['Name', 'URL', 'Tool type', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],
 
   subjects: ['Name', 'Order'],
@@ -59,4 +59,6 @@ export const columnData = {
   
   activityLayouts: ['Name', 'Order', 'Items'],
   activityLayoutsSortCol: ['Order'],
+  teams: ['Name', 'Created', 'Description', 'Members', 'Projects', 'Updated'],
+  teamsSortCol: ['Created'],
 };

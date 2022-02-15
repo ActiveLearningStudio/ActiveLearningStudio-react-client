@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   defaultSso: [],
   lmsIntegration: [],
   removeUser: null,
+  teams: {},
   allbrightCove: null,
   subjects: null,
   education_level: null,
@@ -198,7 +199,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
       };
-
+    case actionTypes.GET_TEAMS_ADMIN:
+      return {
+        ...state,
+        teams: action.payload,
+      };
     default:
       return state;
   }
