@@ -276,8 +276,8 @@ const deleteLtiTool = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const searchLtiTool = (subOrgId, search, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+const searchLtiTool = (subOrgId, query, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}${query ? `&query=${query.replace(/#/, '%23')}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

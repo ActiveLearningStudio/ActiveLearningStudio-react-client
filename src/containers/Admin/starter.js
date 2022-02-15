@@ -67,6 +67,7 @@ function Starter(props) {
     setModalShow,
     setrowData,
     setActivePageNumber,
+    filteredItems,
   } = props;
   return (
     <>
@@ -116,6 +117,7 @@ function Starter(props) {
         setProjectFilterObj={setProjectFilterObj}
         filterSearch={filterSearch}
         resetProjectFilter={resetProjectFilter}
+        filteredItems={filteredItems}
       />
       {subTypeState === 'All settings' && <Settings />}
       {subTypeState === 'Manage Roles' ? (
