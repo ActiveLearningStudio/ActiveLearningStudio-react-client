@@ -301,7 +301,7 @@ function Table(props) {
             {type === 'Users' &&
               (data?.data?.length > 0 ? (
                 data?.data.map((user) => (
-                  <tr className="admin-panel-rows">
+                  <tr key={user} className="admin-panel-rows">
                     <td>{user.organization_joined_at ? user.organization_joined_at : 'NA'}</td>
                     <td>{user.first_name ? user.first_name : 'NA'}</td>
                     <td>{user.last_name ? user.last_name : 'NA'}</td>
@@ -526,7 +526,7 @@ function Table(props) {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr className="admin-panel-rows">
+                      <tr key={row} className="admin-panel-rows">
                         <td>
                           <div className="admin-name-img">
                             <div
@@ -713,7 +713,7 @@ function Table(props) {
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => {
                     return (
-                      <tr className="org-rows">
+                      <tr key={row} className="org-rows">
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
@@ -1025,8 +1025,8 @@ function Table(props) {
                     <tr key={row} className="admin-panel-rows">
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
-                      <td>{row.tool_description}</td>
                       <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
+                      <td>{row.tool_description}</td>
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.lti_version}

@@ -48,7 +48,7 @@ const ProjectCard = (props) => {
                 )}
               </div>
               {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : organization?.permission?.Project?.includes('project:view')) && (
-                <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
+                <Link to={adminPanel ? '#' : `/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
                   <div className="myproject-card-title">
                     <h2>{project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}</h2>
                   </div>
@@ -72,7 +72,7 @@ const ProjectCard = (props) => {
             type="button"
           // title="view project"
           >
-            <Link to={adminPanel ? '#' : `/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
+            <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}/preview`} style={{ textDecoration: 'none', color: '#084892' }}>
               <img src={viewIcon} alt="" className="mr-3" />
               <span className="textinButton">Preview</span>
             </Link>

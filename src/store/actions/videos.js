@@ -52,6 +52,27 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
   console.log('result', result);
   return result;
 };
+
+export const getKalturaVideos = (searchText = '', page = 0, size = 6) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  var result;
+  try {
+    result = await videoServices.getKalturaVideos({
+      organization_id: activeOrganization.id,
+      searchText: searchText,
+      pageIndex: page,
+      pageSize: size,
+    });
+  } catch (e) {
+    result = e;
+  }
+
+  return result;
+};
+
 export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
