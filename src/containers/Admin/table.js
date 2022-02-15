@@ -41,6 +41,7 @@ function Table(props) {
     changeProjectFromorg,
     setAllProjectTab,
     setModalShow,
+    setModalShowTeam,
     setrowData,
     setActivePageNumber,
   } = props;
@@ -207,7 +208,7 @@ function Table(props) {
           <thead>
             <tr>
               {tableHead?.map((head, keyid) => {
-                let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
+                let checkSolCol = sortCol !== '' && sortCol?.includes(head) ? true : false;
                 return head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
                   <th key={keyid}> {head} </th>
                 ) : head !== 'Users' ? (
@@ -1040,6 +1041,40 @@ function Table(props) {
                   <tr>
                     <td colSpan="11">
                       <Alert variant="warning">No LTI Tool found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'Teams' && (
+              Object.keys(data).length > 0 ? (
+                data?.data?.length > 0 ? (
+                  data?.data.map((row) => (
+                    <tr key={row} className="admin-panel-rows">
+                      <td>{row.name.length > 30 ? row.name.substring(0, 30).concat('...') : row.name}</td>
+                      <td>{row.created_at?.split('T')[0]}</td>
+                      <td>{row.description.length > 30 ? row.description.substring(0, 30).concat('...') : row.description}</td>
+                      <td>{row?.users?.length}</td>
+                      <td>{row?.projects?.length}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row?.updated_at?.split('T')[0]}
+                          <div>
+                            <AdminDropdown type={type} row={row} setModalShowTeam={setModalShowTeam} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No team found.</Alert>
                     </td>
                   </tr>
                 )

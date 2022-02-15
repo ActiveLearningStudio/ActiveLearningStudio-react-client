@@ -1,5 +1,6 @@
-/* eslint-disable */
-import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState, useMemo, useEffect, useRef, useCallback,
+} from 'react';
 import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
@@ -21,7 +22,9 @@ import loader from 'assets/images/dotsloader.gif';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
+import {
+  getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization,
+} from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
 
 function Controller(props) {
@@ -53,6 +56,7 @@ function Controller(props) {
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
+    setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
     setSize,
@@ -214,6 +218,12 @@ function Controller(props) {
             <img src={searchimg} alt="search" />
           </div>
         )}
+        {!!search && type === 'Teams' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
         {/* {!!search && type === 'Stats' && (
           <div className="search-bar">
             <input
@@ -355,21 +365,21 @@ function Controller(props) {
                     <div className="author-list">
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                            <div
-                              className="single-author"
-                              onClick={() => {
-                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
-                                setAuthorName(`${author.first_name} ${author.last_name}`);
-                                setAuthorsArray([]);
-                              }}
-                            >
-                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
-                              <div>
-                                <div className="username-filter-project">{author.first_name}</div>
-                                <div className="email-filter-project">{author.email}</div>
-                              </div>
+                          <div
+                            className="single-author"
+                            onClick={() => {
+                              setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className="username-filter-project">{author.first_name}</div>
+                              <div className="email-filter-project">{author.email}</div>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : 'No user found.'}
                     </div>
                   )}
@@ -638,9 +648,9 @@ function Controller(props) {
                 <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {<Dropdown.Item onClick={() => {filteredItems(null); setSelectedFilterItem(null)}}>Select</Dropdown.Item>}
-                  {toolTypeArray?.map((type) => (
-                    <Dropdown.Item onClick={() => {filteredItems(type.key); setSelectedFilterItem(type)}}>{type.value}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => { filteredItems(null); setSelectedFilterItem(null); }}>Select</Dropdown.Item>
+                  {toolTypeArray?.map((t) => (
+                    <Dropdown.Item onClick={() => { filteredItems(t.key); setSelectedFilterItem(t); }}>{t.value}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -796,7 +806,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Subjects' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -812,7 +822,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Education Level' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -828,7 +838,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Author Tags' /*&& permission?.Organization.includes('organization:create-activity-subject')*/ && (
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
           <div className="btn-text">
             <button
               type="button"
@@ -1005,6 +1015,7 @@ Controller.propTypes = {
   btnText: PropTypes.string,
   btnAction: PropTypes.string,
   importUser: PropTypes.bool,
+  filteredItems: PropTypes.object,
   // jobType: PropTypes.object,
   // SetJobType: PropTypes.func,
   // logType: PropTypes.object,
@@ -1020,7 +1031,7 @@ Controller.propTypes = {
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
-  // searchQueryStats: PropTypes.string,
+  setSearchQueryTeam: PropTypes.func,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
@@ -1058,12 +1069,14 @@ Controller.defaultProps = {
   activeRole: '',
   setActiveRole: {},
   setActivePage: {},
+  filteredItems: {},
   type: '',
   searchQueryActivities: '',
   setSearchQueryActivities: {},
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
+  setSearchQueryTeam: {},
   // searchQueryStats: PropTypes.string,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: {},
