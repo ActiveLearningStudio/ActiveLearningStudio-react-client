@@ -22,7 +22,7 @@ import loader from 'assets/images/dotsloader.gif';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
 import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
-// import { alphaNumeric } from 'utils';
+import { toolTypeArray } from 'utils';
 
 function Controller(props) {
   const {
@@ -70,6 +70,7 @@ function Controller(props) {
     setProjectFilterObj,
     filterSearch,
     resetProjectFilter,
+    filteredItems,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ function Controller(props) {
   const [authorName, setAuthorName] = useState('');
   const [authorsArray, setAuthorsArray] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
+  const [selectedFilterItem, setSelectedFilterItem] = useState('');
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -627,6 +629,24 @@ function Controller(props) {
             </span>
           </div>
         ) : null}
+        {/* FILTER FOR ACTIVITY ITEMS */}
+        {subType === 'LTI Tools' && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'Select'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {<Dropdown.Item onClick={() => {filteredItems(null); setSelectedFilterItem(null)}}>Select</Dropdown.Item>}
+                  {toolTypeArray?.map((type) => (
+                    <Dropdown.Item onClick={() => {filteredItems(type.key); setSelectedFilterItem(type)}}>{type.value}</Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
         {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
           <Dropdown name="jobType" id="jobType">
             <Dropdown.Toggle id="dropdown-basic">{jobType.display_name}</Dropdown.Toggle>
@@ -980,7 +1000,7 @@ function Controller(props) {
   );
 }
 Controller.propTypes = {
-  paginationCounter: PropTypes.number,
+  paginationCounter: PropTypes.bool,
   search: PropTypes.bool,
   btnText: PropTypes.string,
   btnAction: PropTypes.string,

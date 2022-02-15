@@ -519,6 +519,14 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+  
+  const filterLtiTool = (item) => {
+    setLtiTool(null);
+    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
+    });
+  };
   useEffect(() => {
     // if (subTypeState === 'Library requests') {
     //   setActivePage(1);
@@ -1027,6 +1035,7 @@ export default function Pills(props) {
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
+                  filteredItems={filterLtiTool}
                 />
               )}
             </div>
