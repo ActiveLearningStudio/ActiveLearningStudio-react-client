@@ -4,7 +4,6 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Alert } from 'react-bootstrap';
 import {
-  getTeamPermission,
   loadSubOrganizationTeamsAction,
   loadTeamsAction,
 } from 'store/actions/team';
@@ -30,7 +29,7 @@ function TeamsPage(props) {
     location, teams, overview, channelShow, loadTeams, loadSubOrgTeams,
   } = props;
   const organization = useSelector((state) => state.organization);
-  const { teamPermission, selectedForClone } = useSelector((state) => state.team);
+  const { selectedForClone } = useSelector((state) => state.team);
   const { activeOrganization, currentOrganization, permission } = organization;
   const [alertCheck, setAlertCheck] = useState(false);
   // const [breadCrumb, setBreadCrumb] = useState([]);
@@ -79,15 +78,6 @@ function TeamsPage(props) {
     }
   }, [notification?.today]);
 
-  useEffect(() => {
-    if (
-      Object.keys(teamPermission).length === 0
-      && organization?.currentOrganization?.id
-      && selectedTeam?.id
-    ) {
-      dispatch(getTeamPermission(organization?.currentOrganization?.id, selectedTeam?.id));
-    }
-  }, [dispatch, organization?.currentOrganization?.id, selectedTeam, teamPermission]);
   const searchQueryHandler = useCallback(() => {
     if (searchQuery) {
       loadTeams(searchQuery);
