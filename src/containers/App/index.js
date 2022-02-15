@@ -1,21 +1,25 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { ToastContainer } from 'react-toastify';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import logo from 'assets/images/studio_new_logo.png';
-import loader from 'assets/images/dotsloader.gif';
-import { getUserAction } from 'store/actions/auth';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { ToastContainer } from "react-toastify";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+import logo from "assets/images/studio_new_logo.png";
+import loader from "assets/images/dotsloader.gif";
+import { getUserAction } from "store/actions/auth";
 // import { cloneDuplicationRequest } from 'store/actions/notification';
-import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/actions/organization';
+import {
+  getBranding,
+  getOrganizationFirstTime,
+  getAllPermission,
+} from "store/actions/organization";
 //import { updatedActivity } from 'store/actions/resource';
 //import { updatedProject } from 'store/actions/project';
 //import { updatedPlaylist } from 'store/actions/playlist';
-import AppRouter from 'routers/AppRouter';
-import Help from './help';
+import AppRouter from "routers/AppRouter";
+import Help from "./help";
 
-import './style.scss';
+import "./style.scss";
 
 let runOnce = true;
 function App(props) {
@@ -25,7 +29,9 @@ function App(props) {
     getUser();
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
-  const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { activeOrganization, permission } = useSelector(
+    (state) => state.organization
+  );
   const { help } = useSelector((state) => state.ui);
   useEffect(() => {
     if (userDetails) {
@@ -37,40 +43,56 @@ function App(props) {
       }
       if (runOnce) {
         runOnce = false;
-        if (window.location.href.includes('/org/')) {
-          if (window.location.pathname.split('/org/')[1].split('/').length === 1) {
-            const subDomain = window.location.pathname.split('/org/')[1]?.replace(/\//g, '');
+        if (window.location.href.includes("/org/")) {
+          if (
+            window.location.pathname.split("/org/")[1].split("/").length === 1
+          ) {
+            const subDomain = window.location.pathname
+              .split("/org/")[1]
+              ?.replace(/\//g, "");
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result
                 .then((data) => {
-                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  if (permission?.Organization?.includes("organization:view"))
+                    dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
                 })
-                .catch((err) => err && window.location.replace('/org/currikistudio'));
+                .catch(
+                  (err) => err && window.location.replace("/org/currikistudio")
+                );
             })();
           } else {
-            const subDomain = window.location.pathname.split('/org/')[1].split('/')[0]?.replace(/\//g, '');
+            const subDomain = window.location.pathname
+              .split("/org/")[1]
+              .split("/")[0]
+              ?.replace(/\//g, "");
             (async () => {
               const result = dispatch(getBranding(subDomain));
               result
                 .then((data) => {
-                  if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                  if (permission?.Organization?.includes("organization:view"))
+                    dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
                 })
-                .catch((err) => err && window.location.replace('/org/currikistudio'));
+                .catch(
+                  (err) => err && window.location.replace("/org/currikistudio")
+                );
             })();
           }
-        } else if (window.location.pathname.includes('/preview')) {
-          const subDomain = localStorage.getItem('current_org');
+        } else if (window.location.pathname.includes("/preview")) {
+          const subDomain = localStorage.getItem("current_org");
           (async () => {
             const result = dispatch(getBranding(subDomain));
             result
               .then((data) => {
-                if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
+                if (permission?.Organization?.includes("organization:view"))
+                  dispatch(getOrganizationFirstTime(data?.organization?.id));
                 dispatch(getAllPermission(data?.organization?.id));
               })
-              .catch((err) => err && window.location.replace('/org/currikistudio'));
+              .catch(
+                (err) => err && window.location.replace("/org/currikistudio")
+              );
           })();
         }
       }
@@ -78,9 +100,9 @@ function App(props) {
   }, [dispatch, userDetails, activeOrganization]);
 
   useEffect(() => {
-    if (!localStorage.getItem('auth_token')) {
+    if (!localStorage.getItem("auth_token")) {
       dispatch({
-        type: 'SET_ALL_PERSMISSION',
+        type: "SET_ALL_PERSMISSION",
         payload: { loading: false },
       });
     }
@@ -101,19 +123,26 @@ function App(props) {
 
   useEffect(() => {
     if (
-      window.location.href.includes('/login') ||
-      window.location.pathname.includes('/register') ||
-      window.location.pathname.includes('/forgot-password') ||
-      window.location.pathname.includes('/reset-password')
+      window.location.href.includes("/login") ||
+      window.location.pathname.includes("/register") ||
+      window.location.pathname.includes("/forgot-password") ||
+      window.location.pathname.includes("/reset-password")
     ) {
-      const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
-      if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
-        dispatch(getBranding('currikistudio'));
+      const subDomain = window.location.pathname.split("/")[
+        window.location.pathname.split("/").length - 1
+      ];
+      if (
+        subDomain?.includes("login") ||
+        subDomain?.includes("register") ||
+        subDomain?.includes("forgot-password") ||
+        window.location.pathname.includes("/reset-password")
+      ) {
+        dispatch(getBranding("currikistudio"));
       } else if (subDomain) {
-        const result = dispatch(getBranding(subDomain || 'currikistudio'));
-        result.then().catch((err) => err && window.location.replace('/login'));
+        const result = dispatch(getBranding(subDomain || "currikistudio"));
+        result.then().catch((err) => err && window.location.replace("/login"));
       } else {
-        dispatch(getBranding('currikistudio'));
+        dispatch(getBranding("currikistudio"));
       }
     }
     if (window.HubSpotConversations) {
@@ -139,7 +168,7 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-confirmation-dialog.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-action-bar.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/request-queue.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
+      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
       // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,
@@ -188,11 +217,11 @@ function App(props) {
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/card.js?ver=1.3.5`,
       `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.PhetInteractiveSimulation-1.0/phet-simulation.js`,
 
-      'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
+      "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML",
     ];
 
     newScripts.forEach((value) => {
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = value;
       script.async = false;
       document.body.appendChild(script);
@@ -221,7 +250,13 @@ function App(props) {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
-        <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`} />
+        <script
+          type="text/javascript"
+          id="hs-script-loader"
+          async
+          defer
+          src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`}
+        />
       </Helmet>
       <AppRouter />
       <ToastContainer limit={1} />
@@ -237,10 +272,16 @@ function App(props) {
         <div className="text-description">
           <h2>Please use desktop browser</h2>
 
-          <p>CurrikiStudio doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a desktop or laptop computer.</p>
           <p>
-            Why no mobile access for authors? All learning courses built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
-            interactive, immersive learning experience, a full browser is required.
+            CurrikiStudio doesn’t yet support mobile for authors. To continue,
+            we recommend that you use either a browser on a desktop or laptop
+            computer.
+          </p>
+          <p>
+            Why no mobile access for authors? All learning courses built with
+            CurrikiStudio are accessible on mobile for learners. However, in
+            order for an author to build a truly interactive, immersive learning
+            experience, a full browser is required.
           </p>
 
           <p>
