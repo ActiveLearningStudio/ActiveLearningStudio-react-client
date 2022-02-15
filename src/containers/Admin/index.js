@@ -29,6 +29,7 @@ import editicon from 'assets/images/edit-icon.png';
 import CreateSubject from './formik/createSubject';
 import CreateEducationLevel from './formik/createEducationLevel';
 import CreateAuthorTag from './formik/createAuthorTag';
+import EditTeamModel from './model/EditTeamModel';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -41,6 +42,7 @@ function AdminPanel({ showSSO }) {
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
   useEffect(() => {
@@ -48,7 +50,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => {}, [activeTab]);
+  useEffect(() => { }, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -129,21 +131,21 @@ function AdminPanel({ showSSO }) {
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                    <Tab eventKey="Activities" title="Activities">
-                      <div className="module-content">
-                        <Pills
-                          modules={[
-                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
-                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
-                          ]}
-                          type="Activities"
-                        />
-                      </div>
-                    </Tab>
-                  )}
+                      <Tab eventKey="Activities" title="Activities">
+                        <div className="module-content">
+                          <Pills
+                            modules={[
+                              permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                              permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                              'Subjects',
+                              'Education Level',
+                              'Author Tags',
+                            ]}
+                            type="Activities"
+                          />
+                        </div>
+                      </Tab>
+                    )}
                   {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
                     <Tab eventKey="Users" title="Users">
                       <div className="module-content">
@@ -160,7 +162,18 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-
+                  {(
+                    <Tab eventKey="Teams" title="Teams">
+                      <div className="module-content">
+                        <Pills
+                          type="Teams"
+                          modules={['All teams']}
+                          subType="All teams"
+                          setModalShowTeam={setModalShowTeam}
+                        />
+                      </div>
+                    </Tab>
+                  )}
                   {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
@@ -407,6 +420,13 @@ function AdminPanel({ showSSO }) {
             activePage={activePageNumber}
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}
+          />
+          <EditTeamModel
+            show={modalShowTeam}
+            onHide={() => setModalShowTeam(false)}
+            activePage={activePageNumber}
+            activeOrganization={activeOrganization}
+            showFooter={true}
           />
         </>
       ) : (

@@ -38,6 +38,7 @@ const TeamDetail = ({
   updateTeam,
   removeMember,
   whiteBoard,
+  adminPanel,
 }) => {
   const [show, setShow] = useState(false);
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
@@ -76,10 +77,10 @@ const TeamDetail = ({
   }, [dataRedux.team.whiteBoardUrl]);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
-    if (location.pathname.includes('/teams/team-detail') && !newTeam?.name && organization?.domain) {
+    if (location?.pathname?.includes('/teams/team-detail') && !newTeam?.name && organization?.domain) {
       history.push(`/org/${organization?.domain}/teams`);
     } else if (!team?.id && !newTeam?.name && organization?.domain) {
-      loadTeam(location.pathname.split('teams/')[1]);
+      loadTeam(location?.pathname?.split('teams/')[1]);
     }
   }, [organization]);
   const handleShow = () => {
@@ -387,52 +388,54 @@ const TeamDetail = ({
                       </div>
                     </div>
                   )}
-                  <div className="team-project-btns">
-                    <Buttons
-                      text="Open White Board"
-                      secondary
-                      width="168px"
-                      height="32px"
-                      className="mr-16"
-                      hover
-                      onClick={() => {
-                        assignWhiteBoardUrl(
-                          organization?.id,
-                          1,
-                          auth.user?.id,
-                          'team',
-                        );
-                        handleShowWhiteBoard();
-                      }}
-                    />
-                    {(teamPermission?.Team?.includes('team:add-project') || newTeam?.name) && (
+                  {!adminPanel && (
+                    <div className="team-project-btns">
                       <Buttons
-                        icon={faPlus}
-                        text="Add project"
-                        primary
-                        width="128px"
+                        text="Open White Board"
+                        secondary
+                        width="168px"
                         height="32px"
+                        className="mr-16"
                         hover
                         onClick={() => {
-                          if (team?.id) {
-                            history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
-                          } else if (newTeam?.name) {
-                            if (newTeam?.users) {
-                              newTeamData({ ...newTeam, users: [...newTeam?.users, ...selectedUsersNewTeam] });
-                            } else {
-                              newTeamData({ ...newTeam, users: [...selectedUsersNewTeam] });
-                            }
-                            if (selectedUsersNewTeam.length > 0) {
-                              setMinimumUserFlag(false);
-                              history.push(`/org/${organization?.domain}/teams/add-projects`);
-                            } else {
-                              setMinimumUserFlag(true);
-                            }
-                          }
+                          assignWhiteBoardUrl(
+                            organization?.id,
+                            1,
+                            auth.user?.id,
+                            'team',
+                          );
+                          handleShowWhiteBoard();
                         }}
                       />
-                    )}
-                  </div>
+                      {(teamPermission?.Team?.includes('team:add-project') || newTeam?.name) && (
+                        <Buttons
+                          icon={faPlus}
+                          text="Add project"
+                          primary
+                          width="128px"
+                          height="32px"
+                          hover
+                          onClick={() => {
+                            if (team?.id) {
+                              history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
+                            } else if (newTeam?.name) {
+                              if (newTeam?.users) {
+                                newTeamData({ ...newTeam, users: [...newTeam?.users, ...selectedUsersNewTeam] });
+                              } else {
+                                newTeamData({ ...newTeam, users: [...selectedUsersNewTeam] });
+                              }
+                              if (selectedUsersNewTeam.length > 0) {
+                                setMinimumUserFlag(false);
+                                history.push(`/org/${organization?.domain}/teams/add-projects`);
+                              } else {
+                                setMinimumUserFlag(true);
+                              }
+                            }
+                          }}
+                        />
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="team-cards">
@@ -449,6 +452,7 @@ const TeamDetail = ({
                               setProjectId={setProjectId}
                               setCreateProject={setCreateProject}
                               teamPermission={teamPermission || {}}
+                              adminPanel={adminPanel}
                             />
                           </div>
                         )) : team?.id && <Alert variant="danger" className="alert"> No project found.</Alert>}
@@ -528,6 +532,7 @@ const TeamDetail = ({
 TeamDetail.propTypes = {
   location: PropTypes.object.isRequired,
   team: PropTypes.object.isRequired,
+  adminPanel: PropTypes.bool,
   organization: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   newTeam: PropTypes.object.isRequired,
@@ -542,7 +547,9 @@ TeamDetail.propTypes = {
   loadTeam: PropTypes.func.isRequired,
   whiteBoard: PropTypes.func.isRequired,
 };
-
+TeamDetail.defaultProps = {
+  adminPanel: false,
+};
 const mapStateToProps = (state) => ({
   user: state.auth.user,
   newTeam: state.team.newTeam,

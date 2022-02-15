@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TEAM_PERMISSION:
       return {
         ...state,
-        teamPermission: action.payload,
+        teamPermission: action.payload ? action.payload : {},
       };
 
     case actionTypes.CLEAR_TEAM_PERMISSIONS:

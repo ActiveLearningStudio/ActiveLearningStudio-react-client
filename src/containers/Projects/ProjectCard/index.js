@@ -18,7 +18,7 @@ import './style.scss';
 import './projectcardstyle.scss';
 
 const ProjectCard = (props) => {
-  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission } = props;
+  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission, adminPanel } = props;
   const ImgLoader = () => <img src={loader} alt="" />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -35,18 +35,20 @@ const ProjectCard = (props) => {
               }}
             >
               <div className="myproject-card-dropdown">
-                <ProjectCardDropdown
-                  project={project}
-                  showDeletePopup={showDeletePopup}
-                  handleShow={handleShow}
-                  setProjectId={setProjectId}
-                  iconColor="#ffffff"
-                  setCreateProject={setCreateProject}
-                  teamPermission={teamPermission || {}}
-                />
+                {!adminPanel && (
+                  <ProjectCardDropdown
+                    project={project}
+                    showDeletePopup={showDeletePopup}
+                    handleShow={handleShow}
+                    setProjectId={setProjectId}
+                    iconColor="#ffffff"
+                    setCreateProject={setCreateProject}
+                    teamPermission={teamPermission || {}}
+                  />
+                )}
               </div>
               {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-project') : organization?.permission?.Project?.includes('project:view')) && (
-                <Link to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
+                <Link to={adminPanel ? '#' : `/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
                   <div className="myproject-card-title">
                     <h2>{project.name && project.name.length > 50 ? `${project.name.substring(0, 50)}...` : project.name}</h2>
                   </div>
@@ -56,7 +58,7 @@ const ProjectCard = (props) => {
           </>
         )}
       </div>
-      <Link className="project-description" to={`/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
+      <Link className="project-description" to={adminPanel ? '#' : `/org/${organization?.currentOrganization?.domain}/project/${project.id}`}>
         <div className="myproject-card-detail">
           <p>{project.description && project.description.length > 130 ? `${project.description.substring(0, 130)} ...` : project.description}</p>
         </div>
@@ -76,7 +78,7 @@ const ProjectCard = (props) => {
             </Link>
           </button>
         )}
-        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : organization?.permission?.Project?.includes('project:edit')) && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-project') : organization?.permission?.Project?.includes('project:edit')) && !adminPanel && (
           <button
             type="button"
             onClick={() => {
@@ -88,7 +90,7 @@ const ProjectCard = (props) => {
             <span className="textinButton">Edit</span>
           </button>
         )}
-        {project.shared && organization?.permission?.Project?.includes('project:share') && (
+        {project.shared && !adminPanel && organization?.permission?.Project?.includes('project:share') && (
           <button
             type="button"
             onClick={() => {
