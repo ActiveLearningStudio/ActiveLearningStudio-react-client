@@ -24,6 +24,7 @@ import { deleteActivityItem, deleteActivityType, loadResourceTypesAction, select
 import * as actionTypes from 'store/actionTypes';
 
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 
 const AdminDropdown = (props) => {
   const {
@@ -955,13 +956,28 @@ const AdminDropdown = (props) => {
                     type: actionTypes.UPDATE_SELECTED_TEAM,
                     payload: row,
                   })
+                  dispatch(getTeamPermission(activeOrganization?.id, row?.id));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
-                onClick={() => { }}
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    html: '<p>All Projects and associated data will be deleted. You won&apos;t be able to undo this.</p>',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete it',
+                    denyButtonText: 'No',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteTeamAction(row?.id));
+                    }
+                  });
+                }}
               >
                 <img src={Delete} alt="Preview" className="menue-img" />
                 Delete

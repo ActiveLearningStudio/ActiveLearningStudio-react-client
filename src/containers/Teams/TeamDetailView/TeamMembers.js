@@ -22,9 +22,21 @@ const TeamMembers = (props) => {
         <div className="right_card">
           <div className="right_info">
             <div>
-              <div className="member-name-mark">
-                <span>{`${element?.first_name ? element?.first_name[0] : ''}${element?.last_name ? element?.last_name[0] : ''}`}</span>
-              </div>
+              {!toggleLeft ? (
+                <div className="member-name-mark">
+                  <span>{`${element?.first_name ? element?.first_name[0] : ''}${element?.last_name ? element?.last_name[0] : ''}`}</span>
+                </div>
+              ) : (
+                <div className="hover-memeber">
+                  <div className="member-information">
+                    <h6>{`${element?.first_name} ${element?.last_name}`}</h6>
+                    <p>{element?.email}</p>
+                  </div>
+                  <div className="member-name-mark-hover">
+                    <span>{`${element?.first_name ? element?.first_name[0] : ''}${element?.last_name ? element?.last_name[0] : ''}`}</span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`${toggleLeft ? 'none' : ''}`}>
               <h6>{`${element?.first_name} ${element?.last_name}`}</h6>
