@@ -127,7 +127,7 @@ function App(props) {
       ];
     }
   }, [window.location.href]);
-
+/*
   useEffect(() => {
     const newScripts = [
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/jquery.js`,
@@ -198,6 +198,7 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
+*/  
 
   // useEffect(() => {
   //   function myStopFunction() {
