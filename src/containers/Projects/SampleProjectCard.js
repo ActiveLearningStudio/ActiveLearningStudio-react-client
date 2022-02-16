@@ -311,6 +311,7 @@ const SampleProjectCard = (props) => {
               sampleId={selectFavId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
+              mainPageProjectView
             />
           )}
           {type === 'sample' && activeTab === 'Sample Projects' && (
@@ -318,6 +319,7 @@ const SampleProjectCard = (props) => {
               sampleId={selectSampleId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
+              mainPageProjectView
             />
           )}
           {type === 'team' && activeTab === 'Team Projects' && (
@@ -325,6 +327,7 @@ const SampleProjectCard = (props) => {
               sampleId={selectTeamProjectId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
+              mainPageProjectView
             />
           )}
         </div>
