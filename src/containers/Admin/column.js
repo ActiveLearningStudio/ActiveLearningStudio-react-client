@@ -48,13 +48,13 @@ export const columnData = {
   ltitool: ['Name', 'URL', 'Tool type', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],
 
-  subjects: ['Name', 'Order'],
+  subjects: ['Name', 'Order', ''],
   subjectsSortCol: ['Order'],
 
-  educationLevel: ['Name', 'Order'],
+  educationLevel: ['Name', 'Order', ''],
   educationLevelSortCol: ['Order'],
 
-  authorTags: ['Name', 'Order'],
+  authorTags: ['Name', 'Order', ''],
   authorTagsSortCol: ['Order'],
   
   activityLayouts: ['Name', 'Order', 'Items'],

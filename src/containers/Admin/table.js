@@ -907,9 +907,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'subject-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Subjects" row={row} activePage={activePage} />
                           </div>
@@ -939,9 +939,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Education Level" row={row} activePage={activePage} />
                           </div>
@@ -971,9 +971,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'auth-tag-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Author Tags" row={row} activePage={activePage} />
                           </div>
