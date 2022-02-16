@@ -62,7 +62,7 @@ export default function CreateLtiTool(prop) {
         onSubmit={async (values) => {
           if (editMode && !clone) {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Updating LTI Tool ...',
               allowOutsideClick: false,
@@ -76,7 +76,7 @@ export default function CreateLtiTool(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LTI tool edited successfully',
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',
@@ -86,12 +86,12 @@ export default function CreateLtiTool(prop) {
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: 'LTI tool edited successfully',
+                payload: res?.data,
               });
             });
           } else {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Creating new LTI Tool...',
 
