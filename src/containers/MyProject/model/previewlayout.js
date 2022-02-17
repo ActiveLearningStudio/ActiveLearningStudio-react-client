@@ -183,16 +183,16 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="1. Select  layout" tabActive={true} />
                   {
                     ((counter = 0),
-                    layout?.map((data) => {
-                      if (data.id === selectedLayout?.id && counter == 0) {
-                        counter++;
-                        return (
-                          <>
-                            <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                          </>
-                        );
-                      }
-                    }))
+                      layout?.map((data) => {
+                        if (data.id === selectedLayout?.id && counter == 0) {
+                          counter++;
+                          return (
+                            <>
+                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                            </>
+                          );
+                        }
+                      }))
                   }
                   {counter === 0 && (
                     <>
