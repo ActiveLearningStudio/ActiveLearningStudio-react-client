@@ -13,11 +13,14 @@ import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
+import { useSelector } from 'react-redux';
 const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
   const [modalShow, setModalShow] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('');
+  const { editVideo } = useSelector((state) => state.videos);
+
   return (
     <>
       <BrightcoveModel
@@ -73,6 +76,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                 showBrowse
                 setModalShow={setModalShow}
                 platform={platform}
+                editVideo={editVideo?.brightcoveData?.videoId || ''}
               />
             </Tab>
             {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
@@ -83,7 +87,14 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                 setplatform('Youtube');
               }}
             >
-              <FormikVideo platform={platform} showback={showback} changeScreenHandler={changeScreenHandler} type={AddVideoTube} setScreenStatus={setScreenStatus} />
+              <FormikVideo
+                editVideo={editVideo?.brightcoveData?.videoId || ''}
+                platform={platform}
+                showback={showback}
+                changeScreenHandler={changeScreenHandler}
+                type={AddVideoTube}
+                setScreenStatus={setScreenStatus}
+              />
             </Tab>
             <Tab
               eventKey="Kaltura"
@@ -102,6 +113,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                 setScreenStatus={setScreenStatus}
                 selectedVideoId={selectedVideoId}
                 platform={platform}
+                editVideo={editVideo?.brightcoveData?.videoId || ''}
               />
             </Tab>
             {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
@@ -115,13 +127,13 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
 
 export default AddVideo;
 
-const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, setScreenStatus, setModalShow, changeScreenHandler }) => {
+const FormikVideo = ({ platform, type, editVideo, showback, selectedVideoId, showBrowse, setScreenStatus, setModalShow, changeScreenHandler }) => {
   const dispatch = useDispatch();
   return (
     <div className="add-video-layout-formik">
       <Formik
         initialValues={{
-          videoUrl: selectedVideoId,
+          videoUrl: selectedVideoId || editVideo,
         }}
         enableReinitialize
         validate={(values) => {

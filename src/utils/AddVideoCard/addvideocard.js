@@ -84,7 +84,7 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                 });
 
                 setOpenVideo(true);
-                setScreenStatus('DescribeVideo');
+                setScreenStatus('AddVideo');
               }}
             >
               <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} color="#084892" />
