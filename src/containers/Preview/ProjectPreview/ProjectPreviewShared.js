@@ -20,6 +20,7 @@ function ProjectPreviewShared(props) {
     setModalShow,
     setCurrentActivity,
     searchPreviewProject,
+    mainPageProjectView,
   } = props;
 
   const project = useSelector((state) => state.project);
@@ -31,6 +32,8 @@ function ProjectPreviewShared(props) {
     if (window.location.pathname.includes('/shared')) {
       loadMyProjectsPreviewShared(sampleId || match.params.projectId);
     } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+      searchPreviewProject(sampleId || match.params.projectId);
+    } else if (mainPageProjectView) {
       searchPreviewProject(sampleId || match.params.projectId);
     }
   }, [activeOrganization?.id, loadMyProjectsPreviewShared, match.params.projectId, sampleId, searchPreviewProject]);
@@ -185,10 +188,12 @@ ProjectPreviewShared.propTypes = {
   setModalShow: PropTypes.func.isRequired,
   loadMyProjectsPreviewShared: PropTypes.func.isRequired,
   searchPreviewProject: PropTypes.func.isRequired,
+  mainPageProjectView: PropTypes.bool,
 };
 
 ProjectPreviewShared.defaultProps = {
   sampleId: null,
+  mainPageProjectView: false,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -62,7 +62,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projectSelect: null,
-        isSharedProject: false,
+        selectedProject: null,
+        isSharedProject: null,
       };
     case actionTypes.LOAD_PROJECT_SUCCESS:
       return {
