@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import TabsHeading from 'utils/Tabs/tabs';
 import { Tabs, Tab } from 'react-bootstrap';
@@ -13,11 +13,14 @@ import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
+import UploadFile from '../../../utils/uploadselectfile/uploadfile';
+
 const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
   const [modalShow, setModalShow] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('');
+
   return (
     <>
       <BrightcoveModel
@@ -55,7 +58,17 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
           )}
         </div>
         <div className="add-video-form-tabs">
-          <Tabs className="main-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
+          <Tabs className="main-tabs" defaultActiveKey="Mydevice" id="uncontrolled-tab-example">
+            <Tab
+              eventKey="Mydevice"
+              title="My device"
+              onClick={() => {
+                setplatform('Mydevice');
+              }}
+            >
+              {/* <UploadFile metadata={formData} formRef={formRef} /> */}
+              <FormikVideo showback={showback} changeScreenHandler={changeScreenHandler} uploadFile platform={platform} />
+            </Tab>
             <Tab
               eventKey="default"
               title="BrightCove"
@@ -65,6 +78,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
               }}
             >
               <FormikVideo
+                Input
                 showback={showback}
                 changeScreenHandler={changeScreenHandler}
                 selectedVideoId={selectedVideoId}
@@ -75,7 +89,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                 platform={platform}
               />
             </Tab>
-            {/* <Tab eventKey="Mydevice" title="My device"></Tab> */}
+
             <Tab
               eventKey="YouTube"
               title="YouTube"
@@ -83,7 +97,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                 setplatform('Youtube');
               }}
             >
-              <FormikVideo platform={platform} showback={showback} changeScreenHandler={changeScreenHandler} type={AddVideoTube} setScreenStatus={setScreenStatus} />
+              <FormikVideo Input platform={platform} showback={showback} changeScreenHandler={changeScreenHandler} type={AddVideoTube} setScreenStatus={setScreenStatus} />
             </Tab>
             <Tab
               eventKey="Kaltura"
@@ -94,6 +108,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
               }}
             >
               <FormikVideo
+                Input
                 showBrowse
                 setModalShow={setModalShow}
                 showback={showback}
@@ -115,8 +130,11 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
 
 export default AddVideo;
 
-const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, setScreenStatus, setModalShow, changeScreenHandler }) => {
+const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, setScreenStatus, setModalShow, changeScreenHandler, uploadFile, Input }) => {
   const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState('');
+  const formRef = useRef();
   return (
     <div className="add-video-layout-formik">
       <Formik
@@ -124,6 +142,7 @@ const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, se
           videoUrl: selectedVideoId,
         }}
         enableReinitialize
+        innerRef={formRef}
         validate={(values) => {
           const errors = {};
           if (!values.videoUrl) {
@@ -143,6 +162,9 @@ const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, se
             platform: platform,
           });
         }}
+        onSubmit={(values) => {
+          setFormData(values);
+        }}
       >
         {({
           values,
@@ -161,9 +183,12 @@ const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, se
             }}
           >
             <div className="layout-title-formik-textField">
-              <img src={type} />
-              <input type="text" name="videoUrl" placeholder="Enter video ID" onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
-
+              {Input && (
+                <>
+                  <img src={type} />
+                  <input type="text" name="videoUrl" placeholder="Enter video ID" onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
+                </>
+              )}
               {showBrowse && (
                 <Buttons
                   type="button"
@@ -182,12 +207,14 @@ const FormikVideo = ({ platform, type, showback, selectedVideoId, showBrowse, se
             <div className="error" style={{ color: 'red' }}>
               {errors.videoUrl && touched.videoUrl && errors.videoUrl}
             </div>
+
             <div className="describe-video">
               <Buttons type="submit" primary={true} text="Describe Video" width="149px" height="35px" hover={true} />
             </div>
           </form>
         )}
       </Formik>
+      {uploadFile && <UploadFile metadata={formData} formRef={formRef} className />}
     </div>
   );
 };
