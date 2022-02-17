@@ -207,7 +207,7 @@ const AddActivity = (props) => {
                     <div style={{ color: 'red' }}>{errors.title && touched.title && errors.title}</div>
                   </div>
                   <div className="layout-formik-select">
-                    <div className="formik-select mr-32">
+                    <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
                       <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id}>
                         <option hidden>Select</option>
@@ -218,8 +218,21 @@ const AddActivity = (props) => {
                         ))}
                       </select>
                     </div>
-                    <div className="formik-select ">
+
+                    <div className="formik-select mr-16">
                       <HeadingText text="Education level" className="formik-select-title" />
+                      <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
+                        <option hidden>Select</option>
+                        {educationLevels.map((data) => (
+                          <option key={data.value} value={data.name}>
+                            {data.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="formik-select ">
+                      <HeadingText text="Author Tags" className="formik-select-title" />
                       <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
                         <option hidden>Select</option>
                         {educationLevels.map((data) => (

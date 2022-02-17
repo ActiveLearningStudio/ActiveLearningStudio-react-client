@@ -43,14 +43,14 @@ const ActivityLayout = (props) => {
     });
     dispatch(getLayoutActivities());
   }, []);
-  const allActivity = useSelector((state) => state.myactivities.layout);
+  const activityLayouts = useSelector((state) => state.myactivities.layout);
 
   useMemo(() => {
-    setLayout(allActivity?.[0] || null);
-    if (allActivity) {
+    setLayout(activityLayouts?.[0] || null);
+    if (activityLayouts) {
       toast.dismiss();
     }
-  }, [allActivity]);
+  }, [activityLayouts]);
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
@@ -90,8 +90,8 @@ const ActivityLayout = (props) => {
       <div className="layout-cards-process-btn">
         <div>
           <div className="activity-layout-cards">
-            {!!allActivity &&
-              allActivity.map((data) => {
+            {!!activityLayouts &&
+              activityLayouts.map((data) => {
                 return (
                   <LayoutCard
                     image={data.image}
