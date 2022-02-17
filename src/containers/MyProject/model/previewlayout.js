@@ -134,7 +134,7 @@ const PreviewLayoutModel = (props) => {
                   h5pParams={
                     props.editVideo.h5p
                       ? props.editVideo.h5p
-                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
+                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                   }
                   h5pLib="H5P.CurrikiInteractiveVideo 1.0"
                   hide={props.onHide}
@@ -169,16 +169,16 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="1. Select  layout" tabActive={true} />
                   {
                     ((counter = 0),
-                    layout?.map((data) => {
-                      if (data.id === selectedLayout?.id && counter == 0) {
-                        counter++;
-                        return (
-                          <>
-                            <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                          </>
-                        );
-                      }
-                    }))
+                      layout?.map((data) => {
+                        if (data.id === selectedLayout?.id && counter == 0) {
+                          counter++;
+                          return (
+                            <>
+                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                            </>
+                          );
+                        }
+                      }))
                   }
                   {counter === 0 && (
                     <>
