@@ -153,7 +153,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     />
                   </div>
                   <div className="describe-video">
-                    {!editVideo && (
+                    {true && (
                       <Buttons
                         onClick={() => {
                           if (showback) {

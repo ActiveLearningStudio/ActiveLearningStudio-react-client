@@ -26,7 +26,6 @@ const PreviewLayoutModel = (props) => {
   const submitForm = useRef(null);
   useEffect(() => {
     if (editVideo) {
-      console.log(JSON.parse(editVideo?.h5p));
       const replaceH5p = JSON.parse(editVideo?.h5p);
       if (platform === 'Brightcove') {
         replaceH5p.params.interactiveVideo.video.brightcoveVideoID = videoId;
@@ -62,13 +61,17 @@ const PreviewLayoutModel = (props) => {
                 showCancelButton: true,
                 confirmButtonColor: '#084892',
                 cancelButtonColor: '#d33',
-                cancelButtonText: 'Close',
+                cancelButtonText: 'Cancel',
                 confirmButtonText: 'Save & Close',
+                denyButtonText: 'Close',
+                showDenyButton: true,
+                allowOutsideClick: true,
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   submitForm.current();
-                } else {
+                } else if (result.isDenied) {
                   onHide();
+                } else {
                 }
               });
             }}
