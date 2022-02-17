@@ -27,7 +27,7 @@ const PreviewLayoutModel = (props) => {
   useEffect(() => {
     if (editVideo) {
       var replaceH5p;
-      if (type === 'videoModal') {
+      if (type === 'videoModal' || editVideo?.h5p) {
         replaceH5p = JSON.parse(editVideo?.h5p);
         if (platform === 'Brightcove') {
           replaceH5p.params.interactiveVideo.video.brightcoveVideoID = videoId;
@@ -61,6 +61,7 @@ const PreviewLayoutModel = (props) => {
             justifyContent: 'flex-end',
             alignItems: 'center',
             cursor: 'pointer',
+            width: '100%',
           }}
         >
           <img
@@ -69,17 +70,23 @@ const PreviewLayoutModel = (props) => {
             alt="cross"
             onClick={() => {
               Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your Changes will be lost.',
+                title: 'Do you want to save your changes?',
+                text: 'All changes will be lost if you don’t save them',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#084892',
                 cancelButtonColor: '#d33',
                 cancelButtonText: 'Cancel',
-                confirmButtonText: 'Save & Close',
-                denyButtonText: 'Close',
+                confirmButtonText: 'Save',
+                denyButtonText: "Don't Save",
                 showDenyButton: true,
                 allowOutsideClick: true,
+                customClass: {
+                  actions: 'my-actions',
+                  cancelButton: 'order-1 right-gap',
+                  confirmButton: 'order-2',
+                  denyButton: 'order-3',
+                },
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   submitForm.current();
@@ -183,16 +190,16 @@ const PreviewLayoutModel = (props) => {
                   <Tabs text="1. Select  layout" tabActive={true} />
                   {
                     ((counter = 0),
-                      layout?.map((data) => {
-                        if (data.id === selectedLayout?.id && counter == 0) {
-                          counter++;
-                          return (
-                            <>
-                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                            </>
-                          );
-                        }
-                      }))
+                    layout?.map((data) => {
+                      if (data.id === selectedLayout?.id && counter == 0) {
+                        counter++;
+                        return (
+                          <>
+                            <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                          </>
+                        );
+                      }
+                    }))
                   }
                   {counter === 0 && (
                     <>

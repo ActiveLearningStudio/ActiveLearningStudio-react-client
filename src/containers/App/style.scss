@@ -2781,9 +2781,11 @@ a:hover {
   button.swal2-confirm {
     order: 1;
     background-color: #084870;
+    border: 2px solid #08487d !important;
   }
   button {
     border-radius: 24px !important;
+    min-width: 165px;
   }
   button.swal2-cancel {
     border: 2px solid #08487d !important;
@@ -2791,7 +2793,18 @@ a:hover {
     color: #08487d !important;
   }
   button.swal2-deny {
-    border: 2px solid #dc3741 !important;
+    border: 2px solid #08487d !important;
+    background-color: #ffffff !important;
+    color: #08487d !important;
+  }
+  .order-1 {
+    order: 3;
+  }
+  .order-2 {
+    order: 2 !important;
+  }
+  .order-3 {
+    order: 1;
   }
 }
 
