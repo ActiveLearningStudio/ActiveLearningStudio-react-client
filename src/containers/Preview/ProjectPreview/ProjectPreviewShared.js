@@ -34,7 +34,7 @@ function ProjectPreviewShared(props) {
     } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
       searchPreviewProject(sampleId || match.params.projectId);
     } else if (mainPageProjectView) {
-      loadMyProjectsPreviewShared(sampleId || match.params.projectId);
+      searchPreviewProject(sampleId || match.params.projectId);
     }
   }, [activeOrganization?.id, loadMyProjectsPreviewShared, match.params.projectId, sampleId, searchPreviewProject]);
   useEffect(() => {
