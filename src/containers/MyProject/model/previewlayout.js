@@ -26,13 +26,27 @@ const PreviewLayoutModel = (props) => {
   const submitForm = useRef(null);
   useEffect(() => {
     if (editVideo) {
-      const replaceH5p = JSON.parse(editVideo?.h5p);
-      if (platform === 'Brightcove') {
-        replaceH5p.params.interactiveVideo.video.brightcoveVideoID = videoId;
-      } else if (platform === 'Youtube') {
-        replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
-      } else if (platform === 'Kaltura') {
-        replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
+      var replaceH5p;
+      if (type === 'videoModal') {
+        replaceH5p = JSON.parse(editVideo?.h5p);
+        if (platform === 'Brightcove') {
+          replaceH5p.params.interactiveVideo.video.brightcoveVideoID = videoId;
+        } else if (platform === 'Youtube') {
+          replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
+        } else if (platform === 'Kaltura') {
+          replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/unknown', path: videoId }];
+        }
+      } else {
+        replaceH5p = JSON.parse(editVideo?.h5p_content?.parameters);
+
+        if (platform === 'Brightcove') {
+          replaceH5p.interactiveVideo.video.brightcoveVideoID = videoId;
+        } else if (platform === 'Youtube') {
+          replaceH5p.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
+        } else if (platform === 'Kaltura') {
+          replaceH5p.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/unknown', path: videoId }];
+        }
+        console.log(platform, replaceH5p);
       }
 
       setEditH5p(JSON.stringify(replaceH5p));
@@ -199,7 +213,7 @@ const PreviewLayoutModel = (props) => {
                 payload={''}
                 formData={props?.formData}
                 projectId={project}
-                h5pParams={activity?.h5p}
+                h5pParams={editVideo ? edith5p : activity?.h5p}
                 hide={props.onHide}
                 editActivity={activity ? true : false}
                 activityId={activity?.id}

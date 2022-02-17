@@ -571,6 +571,8 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     content: 'place_holder',
     subject_id: metadata.subject_id,
     education_level_id: metadata.education_level_id,
+    source_type: metadata?.source_type || undefined,
+    source_url: metadata?.source_url || undefined,
   };
   const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
   await dispatch(loadProjectPlaylistsAction(projectid));

@@ -24,6 +24,8 @@ import {
 } from 'store/actions/playlist';
 import MyActivity from 'containers/MyActivity';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import AddVideo from 'containers/Videos/formik/addvideo';
+import DescribeVideo from 'containers/Videos/formik/describevideo';
 import {
   deleteResourceAction,
   createResourceAction,
@@ -92,7 +94,8 @@ function PlaylistsPage(props) {
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
-
+  const [uploadImageStatus, setUploadImageStatus] = useState(false);
+  const { screenState } = useSelector((state) => state.myactivities);
   const {
     match,
     history,
@@ -121,7 +124,12 @@ function PlaylistsPage(props) {
     showFooter,
     getLmsSettings,
   } = props;
-
+  const changeScreenHandler = (payload) => {
+    dispatch({
+      type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+      payload: payload,
+    });
+  };
   const projectIdFilter = match?.params?.projectId || row?.id;
   const [thumbUrl, setThumbUrl] = useState(selectedProject.thumbUrl);
   useEffect(() => {
@@ -538,43 +546,44 @@ function PlaylistsPage(props) {
 
                                 <div
                                   style={{
-                                    backgroundImage: `url(${selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                      ? selectedProject.thumb_url
-                                      : global.config.resourceUrl + selectedProject.thumb_url
-                                      })`,
+                                    backgroundImage: `url(${
+                                      selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                        ? selectedProject.thumb_url
+                                        : global.config.resourceUrl + selectedProject.thumb_url
+                                    })`,
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat',
                                     backgroundSize: 'cover',
                                   }}
                                   // alt="project-img"
                                   className="container-image"
-                                // src={
-                                //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
-                                //     ? selectedProject.thumb_url
-                                //     : global.config.resourceUrl + selectedProject.thumb_url
-                                // }
+                                  // src={
+                                  //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                  //     ? selectedProject.thumb_url
+                                  //     : global.config.resourceUrl + selectedProject.thumb_url
+                                  // }
                                 />
                               </div>
                               {(Object.keys(teamPermission).length
                                 ? teamPermission?.Team?.includes('team:edit-project')
                                 : permission?.Project?.includes('project:upload-thumb')) && (
-                                  <div className="button-flex-project-images">
-                                    <div
-                                      className="gallery"
-                                      onClick={() => {
-                                        openFile.current.click();
-                                      }}
-                                    >
-                                      <img src={computer} alt="" />
-                                      <p>My device</p>
-                                    </div>
-
-                                    <div className="pexel" onClick={() => setModalShow(true)}>
-                                      <img src={pexel} alt="pexel" />
-                                      <p>Pexels</p>
-                                    </div>
+                                <div className="button-flex-project-images">
+                                  <div
+                                    className="gallery"
+                                    onClick={() => {
+                                      openFile.current.click();
+                                    }}
+                                  >
+                                    <img src={computer} alt="" />
+                                    <p>My device</p>
                                   </div>
-                                )}
+
+                                  <div className="pexel" onClick={() => setModalShow(true)}>
+                                    <img src={pexel} alt="pexel" />
+                                    <p>Pexels</p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                           {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
@@ -647,18 +656,18 @@ function PlaylistsPage(props) {
                               </Dropdown.Menu>
                             </Dropdown>
                           </div>
-                          {selectedProject?.indexing_text !== "NOT REQUESTED" && (
+                          {selectedProject?.indexing_text !== 'NOT REQUESTED' && (
                             <div className="library-status">
                               <div
-                                className={selectedProject?.indexing_text === 'REQUESTED' ?
-                                  "requested" : selectedProject?.indexing_text === 'APPROVED'
-                                    ? "approved" : "rejected"
-                                }
+                                className={selectedProject?.indexing_text === 'REQUESTED' ? 'requested' : selectedProject?.indexing_text === 'APPROVED' ? 'approved' : 'rejected'}
                               >
-                                {selectedProject?.indexing_text === 'REQUESTED'
-                                  ? <FontAwesomeIcon icon="exclamation-circle" /> : selectedProject?.indexing_text === 'APPROVED'
-                                    ? <img src={Correct} alt="approved" /> : <FontAwesomeIcon icon="times-circle" />
-                                }
+                                {selectedProject?.indexing_text === 'REQUESTED' ? (
+                                  <FontAwesomeIcon icon="exclamation-circle" />
+                                ) : selectedProject?.indexing_text === 'APPROVED' ? (
+                                  <img src={Correct} alt="approved" />
+                                ) : (
+                                  <FontAwesomeIcon icon="times-circle" />
+                                )}
                                 {selectedProject?.indexing_text}
                               </div>
                             </div>
@@ -721,6 +730,16 @@ function PlaylistsPage(props) {
             </div>
           </div>
         </div>
+        {/* {screenState === 'addvideo' && (
+          <div className="form-new-popup-myvideo ">
+            <AddVideo showback={true} changeScreenHandler={changeScreenHandler} />
+          </div>
+        )}
+        {screenState === 'describevideo' && (
+          <div className="form-new-popup-myvideo ">
+            <DescribeVideo reverseType showback={true} changeScreenHandler={changeScreenHandler} setUploadImageStatus={setUploadImageStatus} />
+          </div>
+        )} */}
       </div>
 
       {showPlaylistModal && (

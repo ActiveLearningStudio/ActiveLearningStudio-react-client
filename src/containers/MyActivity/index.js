@@ -41,7 +41,7 @@ const MyActivity = ({ playlistPreview }) => {
   const [activeType, setActiveType] = useState('');
   const [currentActivity, setCurrentActivity] = useState(null);
   const [modalShow, setModalShow] = useState(false);
-  const { screenState } = useSelector((state) => state.myactivities);
+  const { screenState, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
   const changeScreenHandler = (payload, method) => {
     dispatch({
@@ -98,7 +98,13 @@ const MyActivity = ({ playlistPreview }) => {
               )}
               {screenState === 'describevideo' && (
                 <div className="form-new-popup-myvideo ">
-                  <DescribeVideo reverseType showback={true} changeScreenHandler={changeScreenHandler} setUploadImageStatus={setUploadImageStatus} />
+                  <DescribeVideo
+                    playlistPreview={activity ? true : false}
+                    reverseType
+                    showback={true}
+                    changeScreenHandler={changeScreenHandler}
+                    setUploadImageStatus={setUploadImageStatus}
+                  />
                 </div>
               )}
             </div>
@@ -129,9 +135,9 @@ const MyActivity = ({ playlistPreview }) => {
                   <div className="blockBody-detail">
                     <HeadingThree text="How to create Activities" color="#515151" className="mb-20" />
                     <HeadingText
-                      text="Learn how to create awesome 
+                      text="Learn how to create awesome
                     activities using +50 Activty Types
-                    like Dialog Cards, Interactive Videos 
+                    like Dialog Cards, Interactive Videos
                     and more..."
                       color="#515151"
                       className="mb-13"
