@@ -174,8 +174,7 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your Changes will be lost.',
+                    text: 'All changes will be lost if you don’t save them',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
