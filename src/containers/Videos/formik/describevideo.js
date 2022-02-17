@@ -12,7 +12,7 @@ import HeadingText from 'utils/HeadingText/headingtext';
 import DefaultUpload from 'assets/images/defaultUpload.png';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType }) => {
+const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
   const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
@@ -25,7 +25,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
         onHide={() => {
           setModalShow(false);
         }}
-        type="videoModal"
+        type={playlistPreview ? '' : 'videoModal'}
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}

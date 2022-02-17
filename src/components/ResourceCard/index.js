@@ -61,13 +61,20 @@ const ResourceCard = (props) => {
                   });
                   const result = await resourceService.activityH5p(resource.id);
                   toast.dismiss();
+
                   dispatch({
                     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                    payload: 'addactivity',
+                    payload: result.activity?.source_type ? 'addvideo' : 'addactivity',
                     playlist: playlist,
                     project: match.params.projectId,
                     activity: result.activity,
                   });
+                  if (result.activity?.source_type) {
+                    dispatch({
+                      type: 'SET_ACTIVE_VIDEO_SCREEN',
+                      payload: result.activity,
+                    });
+                  }
                 }}
                 title={resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title}
               >
