@@ -244,6 +244,8 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
       description: metadata?.description || undefined,
+      source_type: metadata?.source_type || undefined,
+      source_url: metadata?.source_url || undefined,
     };
     if (type === 'videoModal' && !reverseType) {
       const centralizedState = store.getState();
@@ -518,6 +520,7 @@ export const createResourceByH5PUploadAction = (
         content: 'place_holder',
         subject_id: metadata.subject_id,
         education_level_id: metadata.education_level_id,
+        description: metadata?.description || undefined,
       };
 
       const responseActivity = await resourceService.create(createActivityUpload, playlistId);
@@ -577,7 +580,10 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     type: 'h5p',
     content: 'place_holder',
     subject_id: metadata.subject_id,
+    description: metadata?.description || undefined,
     education_level_id: metadata.education_level_id,
+    source_type: metadata?.source_type || undefined,
+    source_url: metadata?.source_url || undefined,
   };
   const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
   await dispatch(loadProjectPlaylistsAction(projectid));

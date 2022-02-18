@@ -29,6 +29,7 @@ const H5PEditor = (props) => {
     accountId,
     settingId,
     reverseType,
+    submitForm,
   } = props;
 
   const uploadFile = useRef();
@@ -43,6 +44,9 @@ const H5PEditor = (props) => {
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
   };
+  useEffect(() => {
+    submitForm.current = submitResource;
+  }, [formData]);
 
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
@@ -59,8 +63,9 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
+    console.log('formData', formData);
     const { metadata } = parameters;
-    if (metadata.title !== undefined) {
+    if (metadata?.title !== undefined) {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
       } else if (editVideo) {
@@ -169,13 +174,13 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your Changes will be lost.',
+                    text: 'All changes will be lost if you don’t save them',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, Close it!',
+                    allowOutsideClick: false,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       hide();

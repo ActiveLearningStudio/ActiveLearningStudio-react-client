@@ -12,10 +12,10 @@ import HeadingText from 'utils/HeadingText/headingtext';
 import DefaultUpload from 'assets/images/defaultUpload.png';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType }) => {
+const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
-  const { videoId, editVideo, activecms } = useSelector((state) => state.videos);
+  const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
 
   const formRef = useRef();
   return (
@@ -25,7 +25,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
         onHide={() => {
           setModalShow(false);
         }}
-        type="videoModal"
+        type={playlistPreview ? '' : 'videoModal'}
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}
@@ -56,11 +56,14 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
           <div className="add-describevideo-layout-formik">
             <Formik
               innerRef={formRef}
+              enableReinitialize
               initialValues={{
                 title: editVideo ? editVideo.title : '',
                 description: editVideo ? editVideo.description || undefined : undefined,
                 subject_id: editVideo ? editVideo.subject_id : '',
                 education_level_id: editVideo ? editVideo.education_level_id : '',
+                source_type: platform,
+                source_url: videoId,
                 thumb_url: editVideo?.thumb_url
                   ? editVideo.thumb_url
                   : 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
@@ -150,7 +153,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     />
                   </div>
                   <div className="describe-video">
-                    {!editVideo && (
+                    {true && (
                       <Buttons
                         onClick={() => {
                           if (showback) {
@@ -166,6 +169,22 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                         hover={true}
                       />
                     )}
+                    {/* {editVideo && (
+                      <Buttons
+                        onClick={() => {
+                          if (showback) {
+                            changeScreenHandler('addvideo');
+                          } else {
+                            setScreenStatus('AddVideo');
+                          }
+                        }}
+                        primary={true}
+                        text="Save"
+                        width="162px"
+                        height="32px"
+                        hover={true}
+                      />
+                    )} */}
                     <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>
