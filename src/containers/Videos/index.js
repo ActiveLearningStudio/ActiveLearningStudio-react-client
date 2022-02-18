@@ -6,7 +6,7 @@ import { faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import Pagination from 'react-js-pagination';
-
+import Swal from 'sweetalert2';
 import './style.scss';
 import '../Admin/style.scss';
 
@@ -51,8 +51,20 @@ const Index = () => {
             icon="times"
             className="cross-all-pop"
             onClick={() => {
-              setOpenVideo(!openMyVideo);
-              setScreenStatus('');
+              Swal.fire({
+                text: 'All changes will be lost if you don’t save them',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#084892',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Close it!',
+                allowOutsideClick: false,
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  setOpenVideo(!openMyVideo);
+                  setScreenStatus('');
+                }
+              });
             }}
           />
           <div className="inner-form-content">

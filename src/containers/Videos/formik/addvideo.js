@@ -58,7 +58,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
               Tour
             </span>
           </div> */}
-          {showback && (
+          {showback && !editVideo && (
             <div className="back-button" style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => changeScreenHandler('layout')}>
               <img style={{ marginRight: '8px' }} src={BackButton} alt="back button " />
               <p style={{ margin: 0 }} className="">
