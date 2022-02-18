@@ -180,6 +180,7 @@ const H5PEditor = (props) => {
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, Close it!',
+                    allowOutsideClick: false,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       hide();
