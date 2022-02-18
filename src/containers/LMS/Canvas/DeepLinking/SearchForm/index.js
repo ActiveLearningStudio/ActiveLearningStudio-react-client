@@ -14,7 +14,7 @@ const SearchForm = (props) => {
     params,
     orgs,
     updateParams,
-    getOrgs,
+    // getOrgs,
   } = props;
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
@@ -22,7 +22,7 @@ const SearchForm = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    getOrgs();
+    // getOrgs();
     updateParams({
       ...params,
       ltiClientId: match.params.ltiClientId,
@@ -86,7 +86,7 @@ const SearchForm = (props) => {
               </div>
             </div>
           </div>
-          { params.private !== '1' && (
+          {params.private !== '1' && (
             <div className="row">
               <div className="col">
                 <div className="form-group">
@@ -121,7 +121,7 @@ SearchForm.propTypes = {
   orgs: PropTypes.array.isRequired,
   showResults: PropTypes.func.isRequired,
   updateParams: PropTypes.func.isRequired,
-  getOrgs: PropTypes.func.isRequired,
+  // getOrgs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

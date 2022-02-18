@@ -22,7 +22,7 @@ import loader from 'assets/images/dotsloader.gif';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
 import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
-// import { alphaNumeric } from 'utils';
+import { toolTypeArray } from 'utils';
 
 function Controller(props) {
   const {
@@ -53,6 +53,7 @@ function Controller(props) {
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
     searchActivitiesQueryHandler,
+    setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
     setSize,
@@ -70,6 +71,7 @@ function Controller(props) {
     setProjectFilterObj,
     filterSearch,
     resetProjectFilter,
+    filteredItems,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -84,6 +86,7 @@ function Controller(props) {
   const [authorName, setAuthorName] = useState('');
   const [authorsArray, setAuthorsArray] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
+  const [selectedFilterItem, setSelectedFilterItem] = useState('');
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -195,7 +198,7 @@ function Controller(props) {
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by URL or User Email" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -209,6 +212,12 @@ function Controller(props) {
         {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by URL or Client Id" value={searchQuery} onChange={searchQueryChangeHandler} />
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
+        {!!search && type === 'Teams' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
             <img src={searchimg} alt="search" />
           </div>
         )}
@@ -520,7 +529,7 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && subType === 'All Projects' && (
+        {type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <button
             className="switch-libreq"
             type="button"
@@ -627,6 +636,38 @@ function Controller(props) {
             </span>
           </div>
         ) : null}
+        {/* FILTER FOR ACTIVITY ITEMS */}
+        {subType === 'LTI Tools' && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'Select'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    Select
+                  </Dropdown.Item>
+                  {toolTypeArray?.map((t) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(t.key);
+                        setSelectedFilterItem(t);
+                      }}
+                    >
+                      {t.value}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
         {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
           <Dropdown name="jobType" id="jobType">
             <Dropdown.Toggle id="dropdown-basic">{jobType.display_name}</Dropdown.Toggle>
@@ -686,7 +727,7 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -745,7 +786,7 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText && subType === 'Activity Types' && (
+        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
           <div className="btn-text">
             <button
               type="button"
@@ -760,7 +801,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subType === 'Activity Items' && (
+        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
           <div className="btn-text">
             <button
               type="button"
@@ -775,7 +816,56 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
+
+        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_subject') {
+                  dispatch(setActiveAdminForm('add_subject'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_education_level') {
+                  dispatch(setActiveAdminForm('add_education_level'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_author_tag') {
+                  dispatch(setActiveAdminForm('add_author_tag'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
             <button
               type="button"
@@ -790,7 +880,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user') && (
+        {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
           <div className="btn-text">
             <button
               type="button"
@@ -820,7 +910,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && (
+        {!!btnText && type === 'LMS' && subType === 'All settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -836,7 +926,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && (
+        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -852,7 +942,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'BrightCove' && (
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -931,11 +1021,12 @@ function Controller(props) {
   );
 }
 Controller.propTypes = {
-  paginationCounter: PropTypes.number,
+  paginationCounter: PropTypes.bool,
   search: PropTypes.bool,
   btnText: PropTypes.string,
   btnAction: PropTypes.string,
   importUser: PropTypes.bool,
+  filteredItems: PropTypes.object,
   // jobType: PropTypes.object,
   // SetJobType: PropTypes.func,
   // logType: PropTypes.object,
@@ -951,7 +1042,7 @@ Controller.propTypes = {
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
-  // searchQueryStats: PropTypes.string,
+  setSearchQueryTeam: PropTypes.func,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
@@ -989,12 +1080,14 @@ Controller.defaultProps = {
   activeRole: '',
   setActiveRole: {},
   setActivePage: {},
+  filteredItems: {},
   type: '',
   searchQueryActivities: '',
   setSearchQueryActivities: {},
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
+  setSearchQueryTeam: {},
   // searchQueryStats: PropTypes.string,
   // setSearchQueryStats: PropTypes.func,
   setSearchQuery: {},

@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -115,15 +115,14 @@
       font-weight: 500;
       text-align: center;
       min-width: 160px;
-
+      border: 1px solid $fun-blue-1 !important;
       color: #fff;
-      border-color: $fun-blue-1 !important;
     }
 
     .nav-link.active {
       background: $white;
       color: $fun-blue-1;
-      border-bottom: none;
+      border-bottom: none !important;
     }
   }
 
@@ -445,7 +444,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -473,7 +472,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -518,18 +517,23 @@
         }
         .status-project {
           display: flex;
-          flex-direction: row;
-          justify-content: space-between;
+
           border-bottom: 1px solid #dddddd;
           padding-top: 16px;
           padding-bottom: 16px;
           .library-status {
             border-right: 1px solid #dddddd;
-            padding-right: 13px;
+            padding: 0;
+            flex-direction: column;
+            align-items: flex-start;
+            height: auto;
+            background-color: #fff;
+            width: 50%;
+
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -548,10 +552,12 @@
             }
           }
           .shared-status {
+            width: 50%;
+            padding-left: 15px;
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -877,7 +883,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -919,7 +925,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -941,7 +947,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1009,7 +1015,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: '';
+            content: "";
             border: none;
           }
         }
@@ -1490,6 +1496,7 @@
       background: #f7faff;
       padding: 16px;
       margin-bottom: 8px;
+
       h6 {
         font-weight: 500;
         font-size: 16px;
@@ -1501,6 +1508,9 @@
       .permission-about {
         display: flex;
         flex-wrap: wrap;
+        .mb-16 {
+          margin-bottom: 16px !important;
+        }
       }
     }
     .form-grouper {
@@ -1607,7 +1617,7 @@
     position: relative;
 
     &::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1633,7 +1643,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1645,7 +1655,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1660,7 +1670,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1673,7 +1683,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1683,9 +1693,10 @@
 
 // Role Css Update
 .dynamic-roles-title-btn {
-  padding-bottom: 23px;
-  padding-left: 20px;
-  padding-right: 20px;
+  // padding-bottom: 23px;
+  // padding-left: 20px;
+  // padding-right: 20px;
+  padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1699,6 +1710,7 @@
     font-size: 18px;
     line-height: 24px;
     color: #515151;
+    margin: 0 !important;
   }
 
   .update-permission {
@@ -1709,7 +1721,7 @@
     background: rgba(18, 179, 71, 0.08);
     border-radius: 4px;
     padding: 6px 8px;
-    margin-top: 16px;
+    // margin-top: 16px;
     cursor: pointer;
     border: none;
     outline: none;
@@ -1734,12 +1746,24 @@
 }
 .roles-permission-tab {
   border: 1px solid #ccc;
+  padding: 16px;
 }
 .detail-permission-tab {
   // background: #f7faff;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  .all-permission-heading {
+    margin-top: 16px;
+    h6 {
+      margin-left: 32px;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #084892;
+    }
+  }
 }
 
 .checkbox_section {
@@ -1780,12 +1804,16 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url('../../assets/images/svg/VectorAngleRight.svg');
+      content: url("../../assets/images/svg/VectorAngleRight.svg");
     }
   }
 }
 
 .role-permission-tab-name {
+  .nav-item {
+    margin-bottom: 8px;
+    // width: 170px;
+  }
   .nav-link {
     font-family: $rubik !important;
     font-style: normal !important;
@@ -1803,7 +1831,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url('../../assets/images/svg/angledown.svg');
+    content: url("../../assets/images/svg/angledown.svg");
   }
 }
 .checkbox_section_custom {
@@ -1874,6 +1902,9 @@
     padding-bottom: 0 !important;
   }
 }
+.selection-tab-custom {
+  margin-bottom: 24px;
+}
 
 .custom-select-style-for-sub {
   width: 260px;
@@ -1905,6 +1936,17 @@
     color: #084892;
     margin-bottom: 0 !important;
     padding-bottom: 0 !important;
+  }
+  h6 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.02em;
+    color: #084892;
+    margin-bottom: 24px;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    margin-left: 10px;
   }
 }
 .for-authoring {
@@ -2004,7 +2046,7 @@
     border-bottom: 4px solid #084892 !important;
   }
   input:radio {
-    content: '\f00c';
+    content: "\f00c";
     position: absolute;
     display: none;
   }
@@ -2032,7 +2074,7 @@
 
   .checkbox-custom + .checkbox-custom-label:before,
   .radio-custom + .radio-custom-label:before {
-    content: '';
+    content: "";
     background: #fff;
     border: 2px solid #084892;
     display: inline-block;
@@ -2047,7 +2089,7 @@
   }
 
   .checkbox-custom:checked + .checkbox-custom-label:before {
-    content: '\f00c';
+    content: "\f00c";
     font-family: $fontawesome;
     background: #084892;
     color: #fff;
@@ -2059,7 +2101,7 @@
   }
 
   .radio-custom:checked + .radio-custom-label:before {
-    content: '\f00c';
+    content: "\f00c";
     font-family: $fontawesome;
     color: #fff;
     background: #084892;
@@ -2068,10 +2110,14 @@
 }
 
 .sorting-icon:after {
-  content: '\f0dc';
+  content: "\f0dc";
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
   float: right;
   cursor: pointer;
+}
+
+.react-responsive-modal-root {
+  z-index: 1060 !important;
 }

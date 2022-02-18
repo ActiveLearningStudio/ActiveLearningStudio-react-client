@@ -27,6 +27,9 @@ const H5PEditor = (props) => {
     activityId,
     type,
     accountId,
+    settingId,
+    reverseType,
+    submitForm,
   } = props;
 
   const uploadFile = useRef();
@@ -41,11 +44,14 @@ const H5PEditor = (props) => {
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
   };
+  useEffect(() => {
+    submitForm.current = submitResource;
+  }, [formData]);
 
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
-      let bcAccountId = accountId ? accountId : (typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null);
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
+      let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, settingId);
     } else {
       loadH5pSettings();
     }
@@ -57,8 +63,9 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
+    console.log('formData', formData);
     const { metadata } = parameters;
-    if (metadata.title !== undefined) {
+    if (metadata?.title !== undefined) {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
       } else if (editVideo) {
@@ -70,16 +77,19 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide);
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide, reverseType);
       }
+      delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
-  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
     // try {
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
       if (type === 'videoModal') {
-        setOpenVideo(false);
+        if (setOpenVideo) {
+          setOpenVideo(false);
+        }
       }
     }
   };
@@ -94,7 +104,7 @@ const H5PEditor = (props) => {
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}></div>
         </div>
 
-        <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
+        <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
 
@@ -121,7 +131,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                  // style={{ display: 'none' }}
+                    // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -164,13 +174,13 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your Changes will be lost.',
+                    text: 'All changes will be lost if you don’t save them',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, Close it!',
+                    allowOutsideClick: false,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       hide();
@@ -223,7 +233,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
+  loadH5pSettings: (library, accountId, settingId) => dispatch(loadH5pSettingsActivity(library, accountId, settingId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

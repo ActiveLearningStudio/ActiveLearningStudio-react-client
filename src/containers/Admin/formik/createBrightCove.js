@@ -93,6 +93,10 @@ export default function CreateBrightCove(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'BrightCove settings updated successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
             }
           } else {
@@ -113,6 +117,10 @@ export default function CreateBrightCove(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'BrightCove settings created successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',               
+                }
               });
             }
           }

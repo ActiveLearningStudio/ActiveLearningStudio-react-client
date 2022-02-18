@@ -16,7 +16,7 @@ import Edit from '../../assets/images/menu-edit.svg';
 import Export from '../../assets/images/export-img.svg';
 import MenuLogo from '../../assets/images/menu-logo.svg';
 import Remove from '../../assets/images/close.svg';
-import { getDefaultSso, getLmsProject, getLtiTools, setActiveAdminForm, setCurrentUser, showRemoveUser } from 'store/actions/admin';
+import { getAuthorTag, getDefaultSso, getEducationLevel, getLmsProject, getLtiTools, getSubjects, setActiveAdminForm, setCurrentUser, showRemoveUser } from 'store/actions/admin';
 import { deleteBrightCove } from 'store/actions/videos';
 
 import { deleteOrganization, getOrganization, clearOrganizationState, getRoles } from 'store/actions/organization';
@@ -24,6 +24,7 @@ import { deleteActivityItem, deleteActivityType, loadResourceTypesAction, select
 import * as actionTypes from 'store/actionTypes';
 
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 
 const AdminDropdown = (props) => {
   const {
@@ -38,6 +39,7 @@ const AdminDropdown = (props) => {
     setAllProjectTab,
     setrowData,
     setModalShow,
+    setModalShowTeam,
     setActivePageNumber,
     // text,
     // iconColor,
@@ -91,7 +93,7 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:edit') && (
+              {permission?.Organization.includes('organization:view') && (
                 <>
                   <Dropdown.Item
                     onClick={async () => {
@@ -128,12 +130,12 @@ const AdminDropdown = (props) => {
                     onClick={() => {
                       Swal.fire({
                         title: 'Are you sure?',
-                        text: "You won't be able to image this!",
+                        text: "You won't be able to revert this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#084892',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Delete it',
                       }).then(async (result) => {
                         if (result.isConfirmed) {
                           Swal.showLoading();
@@ -143,9 +145,10 @@ const AdminDropdown = (props) => {
                               text: 'You have successfully deleted the organization',
                               icon: 'success',
                               showCancelButton: false,
-                              confirmButtonColor: '#084892',
-                              cancelButtonColor: '#d33',
-                              confirmButtonText: 'OK',
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
                             });
                           }
                         }
@@ -174,30 +177,31 @@ const AdminDropdown = (props) => {
           )}
           {type === 'Projects' && (
             <>
-              {' '}
-              <Dropdown.Item
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Please Wait !',
-                    html: 'Exporting  Project ...',
-                    allowOutsideClick: false,
-                    onBeforeOpen: () => {
-                      Swal.showLoading();
-                    },
-                  });
-                  const result = adminService.exportProject(activeOrganization.id, row.id);
-                  result.then((data) => {
-                    // console.log(data)
+              {permission?.Organization.includes('organization:export-project') && (
+                <Dropdown.Item
+                  onClick={() => {
                     Swal.fire({
-                      icon: 'success',
-                      html: data?.message,
+                      title: 'Please Wait !',
+                      html: 'Exporting  Project ...',
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
                     });
-                  });
-                }}
-              >
-                <img src={Export} alt="Preview" className="menue-img" />
-                Export
-              </Dropdown.Item>
+                    const result = adminService.exportProject(activeOrganization.id, row.id);
+                    result.then((data) => {
+                      // console.log(data)
+                      Swal.fire({
+                        icon: 'success',
+                        html: data?.message,
+                      });
+                    });
+                  }}
+                >
+                  <img src={Export} alt="Preview" className="menue-img" />
+                  Export
+                </Dropdown.Item>
+              )}
               {row.shared ? (
                 <Dropdown.Item
                   onClick={() => {
@@ -259,52 +263,254 @@ const AdminDropdown = (props) => {
                   Get shared link
                 </Dropdown.Item>
               ) : null}
+              {permission?.Organization.includes('organization:edit-project') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    // dispatch(setActiveAdminForm("edit_project"));
+                    // dispatch(setCurrentProject(row));
+                    setModalShow(true);
+                    setProjectID(row.id);
+                    setrowData(row);
+                    setActivePageNumber(activePage);
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-project') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Delete it',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          icon: 'info',
+                          text: 'Deleting Project...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = projectService.remove(row.id, activeOrganization.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
+                            });
+
+                            const filterProject = localStateData.filter((each) => each.id != row.id);
+                            console.log(filterProject);
+                            setLocalStateData(filterProject);
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
+            </>
+          )}
+          {type === 'Activities' && subType === 'Activity Items' && (
+            <>
+              {permission?.Organization.includes('organization:delete-activity-item') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    if (subType === 'Activity Items') {
+                      selectActivityItem();
+                      dispatch(selectActivityItem(type1));
+                      dispatch(setActiveAdminForm('edit_activity_item'));
+                    } else {
+                      dispatch(selectActivityType(type1));
+                      dispatch(setActiveAdminForm('edit_activity_type'));
+                    }
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:edit-activity-item') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Delete it',
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        Swal.showLoading();
+                        var resultDel;
+                        if (subType === 'Activity Items') {
+                          resultDel = await dispatch(deleteActivityItem(type1.id));
+                          dispatch(loadResourceItemAction(type1.id));
+                        } else {
+                          resultDel = await dispatch(deleteActivityType(type1.id));
+
+                          if (resultDel) {
+                            Swal.fire({
+                              text: 'You have successfully deleted the activity type',
+                              icon: 'success',
+                              showCancelButton: false,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                dispatch(loadResourceTypesAction('', 1));
+                              }
+                            });
+                          }
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
+            </>
+          )}
+          {type === 'Activities' && subType === 'Activity Types' && (
+            <>
+              {permission?.Organization.includes('organization:edit-activity-type') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    if (subType === 'Activity Items') {
+                      selectActivityItem();
+                      dispatch(selectActivityItem(type1));
+                      dispatch(setActiveAdminForm('edit_activity_item'));
+                    } else {
+                      dispatch(selectActivityType(type1));
+                      dispatch(setActiveAdminForm('edit_activity_type'));
+                    }
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-activity-type') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Delete it',
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        Swal.showLoading();
+                        var resultDel;
+                        if (subType === 'Activity Items') {
+                          resultDel = await dispatch(deleteActivityItem(type1.id));
+                          dispatch(loadResourceItemAction(type1.id));
+                        } else {
+                          resultDel = await dispatch(deleteActivityType(type1.id));
+
+                          if (resultDel) {
+                            Swal.fire({
+                              text: 'You have successfully deleted the activity type',
+                              icon: 'success',
+                              showCancelButton: false,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                dispatch(loadResourceTypesAction('', 1));
+                              }
+                            });
+                          }
+                        }
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
+            </>
+          )}
+
+          {type === 'Activities' && subType === 'Subjects' && (
+            <>
               <Dropdown.Item
                 onClick={() => {
-                  // dispatch(setActiveAdminForm("edit_project"));
-                  // dispatch(setCurrentProject(row));
-                  setModalShow(true);
-                  setProjectID(row.id);
-                  setrowData(row);
-                  setActivePageNumber(activePage);
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_subject'));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
-                to="#"
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure you want to delete this Project?',
-                    text: 'This action is Irreversible',
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonText: 'Delete it',
                   }).then((result) => {
                     if (result.isConfirmed) {
                       Swal.fire({
+                        title: 'Subject',
                         icon: 'info',
-                        text: 'Deleting Project...',
+                        text: 'Deleting Subject...',
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
                         button: false,
                       });
-                      const response = projectService.remove(row.id, activeOrganization.id);
+                      const response = adminService.deleteSubject(row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
                             icon: 'success',
-                            text: res?.message,
+                            text: 'Subject deleted successfully',
+                            confirmButtonText: 'Close',
+                            customClass: {
+                              confirmButton: 'confirmation-close-btn',
+                            },
                           });
-
-                          const filterProject = localStateData.filter((each) => each.id != row.id);
-                          console.log(filterProject);
-                          setLocalStateData(filterProject);
+                          dispatch(getSubjects(activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -316,26 +522,22 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-          {type === 'Activities' && (
+
+          {type === 'Activities' && subType === 'Education Level' && (
             <>
-              {' '}
               <Dropdown.Item
                 onClick={() => {
-                  if (subType === 'Activity Items') {
-                    selectActivityItem();
-                    dispatch(selectActivityItem(type1));
-                    dispatch(setActiveAdminForm('edit_activity_item'));
-                  } else {
-                    dispatch(selectActivityType(type1));
-                    dispatch(setActiveAdminForm('edit_activity_type'));
-                  }
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_education_level'));
                 }}
               >
                 <img src={Edit} alt="Preview" className="menue-img" />
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
-                to="#"
                 onClick={() => {
                   Swal.fire({
                     title: 'Are you sure?',
@@ -344,32 +546,33 @@ const AdminDropdown = (props) => {
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then(async (result) => {
+                    confirmButtonText: 'Delete it',
+                  }).then((result) => {
                     if (result.isConfirmed) {
-                      Swal.showLoading();
-                      var resultDel;
-                      if (subType === 'Activity Items') {
-                        resultDel = await dispatch(deleteActivityItem(type1.id));
-                        dispatch(loadResourceItemAction(type1.id));
-                      } else {
-                        resultDel = await dispatch(deleteActivityType(type1.id));
-
-                        if (resultDel) {
+                      Swal.fire({
+                        title: 'Education Level',
+                        icon: 'info',
+                        text: 'Deleting Education level...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                        button: false,
+                      });
+                      const response = adminService.deleteEducationLevel(row?.id);
+                      response
+                        .then((res) => {
                           Swal.fire({
-                            text: 'You have successfully deleted the activity type',
                             icon: 'success',
-                            showCancelButton: false,
-                            confirmButtonColor: '#084892',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'OK',
-                          }).then((result) => {
-                            if (result.isConfirmed) {
-                              dispatch(loadResourceTypesAction('', 1));
-                            }
+                            text: 'Education level deleted successfully',
+                            confirmButtonText: 'Close',
+                            customClass: {
+                              confirmButton: 'confirmation-close-btn',
+                            },
                           });
-                        }
-                      }
+                          dispatch(getEducationLevel(activePage || 1));
+                        })
+                        .catch((err) => console.log(err));
                     }
                   });
                 }}
@@ -379,6 +582,67 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
+
+          {type === 'Activities' && subType === 'Author Tags' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_author_tag'));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete it',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      Swal.fire({
+                        title: 'Author Tag',
+                        icon: 'info',
+                        text: 'Deleting Author tag...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                        button: false,
+                      });
+                      const response = adminService.deleteAuthorTag(row?.id);
+                      response
+                        .then((res) => {
+                          Swal.fire({
+                            icon: 'success',
+                            text: 'Author tag deleted successfully',
+                            confirmButtonText: 'Close',
+                            customClass: {
+                              confirmButton: 'confirmation-close-btn',
+                            },
+                          });
+                          dispatch(getAuthorTag(activePage || 1));
+                        })
+                        .catch((err) => console.log(err));
+                    }
+                  });
+                }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
+
           {type === 'Users' && (
             <>
               {' '}
@@ -403,75 +667,85 @@ const AdminDropdown = (props) => {
           )}
           {type === 'LMS' && subType === 'All settings' && (
             <>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lms'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Edit&nbsp;&nbsp;
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('clone_lms'));
-                }}
-              >
-                <img src={Clone} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Clone&nbsp;&nbsp;
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure you want to delete this User LMS settings?',
-                    text: 'This action is Irreversible',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      Swal.fire({
-                        title: 'LMS Srttings',
-                        icon: 'info',
-                        text: 'Deleting User LMS Settings...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                        button: false,
-                      });
-                      const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
-                      response
-                        .then((res) => {
-                          Swal.fire({
-                            icon: 'success',
-                            text: res?.message,
-                          });
-                          dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
-                          const filterLMS = localStateData.filter((each) => each.id != row.id);
-                          console.log(filterLMS);
-                          setLocalStateData(filterLMS);
-                        })
-                        .catch((err) => console.log(err));
-                    }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                &nbsp;&nbsp;Delete&nbsp;&nbsp;
-              </Dropdown.Item>
+              {permission?.Organization.includes('organization:edit-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('edit_lms'));
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:edit-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lms'));
+                  }}
+                >
+                  <img src={Clone} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Clone&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-lms-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Delete it',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: 'LMS Srttings',
+                          icon: 'info',
+                          text: 'Deleting User LMS Settings...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteLmsProject(activeOrganization?.id, row?.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
+                            });
+                            dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+                            const filterLMS = localStateData.filter((each) => each.id != row.id);
+                            console.log(filterLMS);
+                            setLocalStateData(filterLMS);
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  &nbsp;&nbsp;Delete&nbsp;&nbsp;
+                </Dropdown.Item>
+              )}
             </>
           )}
 
@@ -496,13 +770,13 @@ const AdminDropdown = (props) => {
                   <Dropdown.Item
                     onClick={() => {
                       Swal.fire({
-                        title: 'Are you sure you want to delete this SSO Integration?',
-                        text: 'This action is Irreversible',
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#084892',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Delete it',
                       }).then((result) => {
                         if (result.isConfirmed) {
                           Swal.fire({
@@ -520,7 +794,11 @@ const AdminDropdown = (props) => {
                             .then((res) => {
                               Swal.fire({
                                 icon: 'success',
-                                text: res?.message,
+                                text: res?.message.message,
+                                confirmButtonText: 'Close',
+                                customClass: {
+                                  confirmButton: 'confirmation-close-btn',
+                                },
                               });
                               dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
                             })
@@ -539,70 +817,80 @@ const AdminDropdown = (props) => {
 
           {type === 'LMS' && subType === 'LTI Tools' && (
             <>
-              <Dropdown.Item
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTIVE_EDIT',
-                    payload: row,
-                  });
-                  dispatch(setActiveAdminForm('edit_lti_tool'));
-                }}
-              >
-                <img src={Edit} alt="Preview" className="menue-img" />
-                Edit
-              </Dropdown.Item>
-              <Dropdown.Item
-                to="#"
-                onClick={() => {
-                  Swal.showLoading();
-                  adminService.cloneLtiTool(activeOrganization?.id, row?.id);
-                }}
-              >
-                <img src={Clone} alt="Preview" className="menue-img" />
-                Clone
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  Swal.fire({
-                    title: 'Are you sure you want to delete this LTI Tool?',
-                    text: 'This action is Irreversible',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#084892',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      Swal.fire({
-                        title: 'LTI Tool',
-                        icon: 'info',
-                        text: 'Deleting LTI Tool...',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                        button: false,
-                      });
-                      const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
-                      response
-                        .then((res) => {
-                          Swal.fire({
-                            icon: 'success',
-                            text: res?.message.message,
-                          });
-                          dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
-                        })
-                        .catch((err) => console.log(err));
-                    }
-                  });
-                }}
-              >
-                <img src={Delete} alt="Preview" className="menue-img" />
-                Delete
-              </Dropdown.Item>
+              {permission?.Organization.includes('organization:edit-all-setting') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('edit_lti_tool'));
+                  }}
+                >
+                  <img src={Edit} alt="Preview" className="menue-img" />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:edit-all-setting') && (
+                <Dropdown.Item
+                  to="#"
+                  onClick={() => {
+                    Swal.showLoading();
+                    adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                  }}
+                >
+                  <img src={Clone} alt="Preview" className="menue-img" />
+                  Clone
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes('organization:delete-all-setting') && (
+                <Dropdown.Item
+                  onClick={() => {
+                    Swal.fire({
+                      title: 'Are you sure?',
+                      text: "You won't be able to revert this!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Delete it',
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: 'LTI Tool',
+                          icon: 'info',
+                          text: 'Deleting LTI Tool...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteLtiTool(activeOrganization?.id, row?.id);
+                        response
+                          .then((res) => {
+                            Swal.fire({
+                              icon: 'success',
+                              text: res?.message.message,
+                              confirmButtonText: 'Close',
+                              customClass: {
+                                confirmButton: 'confirmation-close-btn',
+                              },
+                            });
+                            dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <img src={Delete} alt="Preview" className="menue-img" />
+                  Delete
+                </Dropdown.Item>
+              )}
             </>
           )}
-          {type === 'LMS' && subType === 'BrightCove' && (
+          {type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:edit-brightcove-setting') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -620,13 +908,13 @@ const AdminDropdown = (props) => {
               <Dropdown.Item
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure you want to delete this BrightCove Setting?',
-                    text: 'This action is Irreversible',
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
+                    confirmButtonText: 'Delete it',
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       Swal.fire({
@@ -644,6 +932,10 @@ const AdminDropdown = (props) => {
                         Swal.fire({
                           icon: 'success',
                           text: result.message?.message,
+                          confirmButtonText: 'Close',
+                          customClass: {
+                            confirmButton: 'confirmation-close-btn',
+                          },
                         });
                       }
                     }
@@ -655,7 +947,43 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-
+          {type === 'Teams' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  setModalShowTeam(true);
+                  dispatch({
+                    type: actionTypes.UPDATE_SELECTED_TEAM,
+                    payload: row,
+                  })
+                  dispatch(getTeamPermission(activeOrganization?.id, row?.id));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    html: '<p>All Projects and associated data will be deleted. You won&apos;t be able to undo this.</p>',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete it',
+                    denyButtonText: 'No',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteTeamAction(row?.id));
+                    }
+                  });
+                }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
           {/* <Dropdown.Item>
           <img src={Edit} alt="Preview" className="menue-img" />
           Edit

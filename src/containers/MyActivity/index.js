@@ -19,7 +19,10 @@ import AddActivity from './formik/addactivity';
 import PreviewLayout from './formik/previewlayout';
 import UploadInteractiveVideo from './formik/uploadinteractivevideo';
 import MyVerticallyCenteredModal from 'components/models/activityOptions';
-
+import AddVideo from 'containers/Videos/formik/addvideo';
+import DescribeVideo from 'containers/Videos/formik/describevideo';
+import 'containers/Videos/style.scss';
+import Swal from 'sweetalert2';
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 const MyActivity = ({ playlistPreview }) => {
   const [edit, setEdit] = useState(false);
@@ -38,7 +41,7 @@ const MyActivity = ({ playlistPreview }) => {
   const [activeType, setActiveType] = useState('');
   const [currentActivity, setCurrentActivity] = useState(null);
   const [modalShow, setModalShow] = useState(false);
-  const { screenState } = useSelector((state) => state.myactivities);
+  const { screenState, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
   const changeScreenHandler = (payload, method) => {
     dispatch({
@@ -54,11 +57,29 @@ const MyActivity = ({ playlistPreview }) => {
   return (
     <>
       {screenState && (
-        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity'}>
-          <div className="inner-form-content">
-            <div className="inner-form-content-box">
-              <div className="cross-all-pop-box">
-                <FontAwesomeIcon icon="times" className="cross-all-pop" onClick={() => changeScreenHandler('')} />
+        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity '}>
+          <div style={{ paddingTop: '100px' }} className="inner-form-content ">
+            <div className="inner-form-content-box ">
+              <div className="cross-all-pop-box ">
+                <FontAwesomeIcon
+                  icon="times"
+                  className="cross-all-pop"
+                  onClick={() => {
+                    Swal.fire({
+                      text: 'All changes will be lost if you don’t save them',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#084892',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, Close it!',
+                      allowOutsideClick: false,
+                    }).then(async (result) => {
+                      if (result.isConfirmed) {
+                        changeScreenHandler('');
+                      }
+                    });
+                  }}
+                />
               </div>
 
               {/* {screenState === "newactivity" && (
@@ -66,7 +87,7 @@ const MyActivity = ({ playlistPreview }) => {
                 changeScreenHandler={changeScreenHandler}
                 screenState={screenState}
               />
-            )} */}
+             )} */}
               {screenState === 'layout' && <ActivityLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
               {screenState === 'addactivity' && (
                 <AddActivity
@@ -87,6 +108,22 @@ const MyActivity = ({ playlistPreview }) => {
                   changeScreenHandler={changeScreenHandler}
                   screenState={screenState}
                 />
+              )}
+              {screenState === 'addvideo' && (
+                <div className="form-new-popup-myvideo ">
+                  <AddVideo showback={true} changeScreenHandler={changeScreenHandler} />
+                </div>
+              )}
+              {screenState === 'describevideo' && (
+                <div className="form-new-popup-myvideo ">
+                  <DescribeVideo
+                    playlistPreview={activity ? true : false}
+                    reverseType
+                    showback={true}
+                    changeScreenHandler={changeScreenHandler}
+                    setUploadImageStatus={setUploadImageStatus}
+                  />
+                </div>
               )}
             </div>
           </div>
@@ -116,9 +153,9 @@ const MyActivity = ({ playlistPreview }) => {
                   <div className="blockBody-detail">
                     <HeadingThree text="How to create Activities" color="#515151" className="mb-20" />
                     <HeadingText
-                      text="Learn how to create awesome 
+                      text="Learn how to create awesome
                     activities using +50 Activty Types
-                    like Dialog Cards, Interactive Videos 
+                    like Dialog Cards, Interactive Videos
                     and more..."
                       color="#515151"
                       className="mb-13"

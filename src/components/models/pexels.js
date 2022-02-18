@@ -1,30 +1,25 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import PexelsAPI from "pexels-api-wrapper";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { uploadProjectThumbnail } from "store/actions/project";
-import dotsloader from "assets/images/dotsloader.gif";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import PexelsAPI from 'pexels-api-wrapper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
+import { uploadProjectThumbnail } from 'store/actions/project';
+import dotsloader from 'assets/images/dotsloader.gif';
 
-import "./styles.scss";
+import './styles.scss';
 
-const pexelsClient = new PexelsAPI(process.env.REACT_APP_PEXEL_API);
+const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API);
 
 function Pexels(props) {
   const [pexelData, setPexels] = useState([]);
   const [loader, setLoader] = useState(true);
   const [searchValue, setSearchValue] = useState();
-  const [nextApi, setNextApi] = useState("");
+  const [nextApi, setNextApi] = useState('');
   const dispatch = useDispatch();
-  const {
-    formRef,
-    setUploadImage,
-    resourceName = "abstract",
-    searchName,
-  } = props;
+  const { formRef, setUploadImage, resourceName = 'abstract', searchName } = props;
 
   useEffect(() => {
     pexelsClient
@@ -40,17 +35,11 @@ function Pexels(props) {
       });
   }, [searchName]);
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
+    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           <p className="modelbox-container-text">
-            You are currently viewing Thumbnails form <b>{resourceName}</b>{" "}
-            Category. You can search other thumbnails below as well.
+            You are currently viewing Thumbnails form <b>{resourceName}</b> Category. You can search other thumbnails below as well.
           </p>
 
           <div className="search-pixels">
@@ -62,15 +51,14 @@ function Pexels(props) {
                 setSearchValue(e.target.value);
               }}
               onKeyPress={(event) => {
-                if (event.key === "Enter") {
+                if (event.key === 'Enter') {
                   setLoader(true);
 
                   pexelsClient
                     .search(searchValue, 10, 1)
                     .then((result) => {
                       setLoader(false);
-                      const allPhotos =
-                        !!result.photos && result.photos.map((data) => data);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
                       setPexels(allPhotos);
                       setNextApi(result.next_page);
                     })
@@ -91,7 +79,7 @@ function Pexels(props) {
           {loader ? (
             <img src={dotsloader} className="loader" alt="loader" />
           ) : pexelData.length === 0 ? (
-            "No result found. You can still search other thumbnails."
+            'No result found. You can still search other thumbnails.'
           ) : (
             <>
               {!!pexelData && (
@@ -103,10 +91,7 @@ function Pexels(props) {
                         onClick={() => {
                           if (!!setUploadImage) {
                             setUploadImage(images.src.tiny);
-                            formRef?.current.setFieldValue(
-                              "thumb_url",
-                              images.src.tiny
-                            );
+                            formRef?.current.setFieldValue('thumb_url', images.src.tiny);
                           } else {
                             dispatch(uploadProjectThumbnail(images.src.tiny));
                           }
@@ -114,12 +99,8 @@ function Pexels(props) {
                         }}
                         alt="pexel"
                       />
-                      <a
-                        href={images.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {" "}
+                      <a href={images.url} target="_blank" rel="noopener noreferrer">
+                        {' '}
                         {images.photographer}
                         /Pexels
                       </a>
@@ -135,7 +116,7 @@ function Pexels(props) {
                     axios
                       .get(nextApi, {
                         headers: {
-                          Authorization: process.env.REACT_APP_PEXEL_API,
+                          Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
                         },
                       })
                       .then((res) => {

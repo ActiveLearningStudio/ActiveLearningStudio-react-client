@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import config from 'config';
 import Swal from 'sweetalert2';
 import httpService from './http.service';
@@ -276,8 +277,8 @@ const deleteLtiTool = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const searchLtiTool = (subOrgId, search, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+const searchLtiTool = (subOrgId, query, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}${query ? `&query=${query.replace(/#/, '%23')}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -313,6 +314,109 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .remove(`${apiVersion}/suborganizations/${subOrgId}/remove-user`, { user_id: userId, preserve_data: preserve })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
+
+const getSubjects = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/subjects?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createSubject = (values) => httpService
+  .post(`${apiVersion}/subjects`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateSubject = (id, values) => httpService
+  .put(`${apiVersion}/subjects/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteSubject = (id) => httpService
+  .remove(`${apiVersion}/subjects/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const getEducationLevel = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/education-levels?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createEducationLevel = (values) => httpService
+  .post(`${apiVersion}/education-levels`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateEducationLevel = (id, values) => httpService
+  .put(`${apiVersion}/education-levels/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteEducationLevel = (id) => httpService
+  .remove(`${apiVersion}/education-levels/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const getAuthorTag = (page, column, orderBy) => httpService
+  .get(`${apiVersion}/author-tags?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
+const createAuthorTag = (values) => httpService
+  .post(`${apiVersion}/author-tags`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const updateAuthorTag = (id, values) => httpService
+  .put(`${apiVersion}/author-tags/${id}`, values)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+const deleteAuthorTag = (id) => httpService
+  .remove(`${apiVersion}/author-tags/${id}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
+// eslint-disable-next-line camelcase
+const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, order_by_type) => httpService
+  // eslint-disable-next-line camelcase
+  .get(`${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${order_by_column ? `&order_by_column=${order_by_column}` : ''}${order_by_type ? `&order_by_type=${order_by_type}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
 
 export default {
   addUserInOrganization,
@@ -355,4 +459,17 @@ export default {
   checkUserEmail,
   addUserToOrg,
   removeUser,
+  getSubjects,
+  createSubject,
+  updateSubject,
+  deleteSubject,
+  getEducationLevel,
+  createEducationLevel,
+  updateEducationLevel,
+  deleteEducationLevel,
+  getAuthorTag,
+  createAuthorTag,
+  updateAuthorTag,
+  deleteAuthorTag,
+  teamsActionAdminPanel,
 };

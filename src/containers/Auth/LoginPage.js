@@ -147,13 +147,13 @@ class LoginPage extends React.Component {
                   cookiePolicy="single_host_origin"
                 />
               </div>
-              {process.env.REACT_APP_STEMULI === 'true' && (
+              {window.__RUNTIME_CONFIG__.REACT_APP_STEMULI === 'true' && (
                 <div className="form-group text-center mb-4">
                   <button
                     type="button"
                     className="email-button"
                     onClick={() => {
-                      window.location.href = `${process.env.REACT_APP_API_URL}/oauth/stemuli/redirect`;
+                      window.location.href = `${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/oauth/stemuli/redirect`;
                     }}
                   >
                     <img src={stemuliIcon} alt="stemuli icon" style={{ float: 'left', paddingRight: '19.23px' }} />
@@ -261,7 +261,7 @@ class LoginPage extends React.Component {
                           {isLoading ? <img src={loader} alt="" /> : 'Log in'}
                         </button>
                       </div>
-                      {domain?.self_registration === true ? (
+                      {true ? (
                         <>
                           {/* <div className="vertical-line">
                             <div className="line" />
@@ -294,8 +294,17 @@ class LoginPage extends React.Component {
                         </>
                       ) : null}
                       <div className="termsandcondition">
-                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>Terms of Use</a> and{' '}
-                        <a target="_blank" href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}>Privacy Policy.</a>
+                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s{' '}
+                        <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                          Terms of Use
+                        </a>{' '}
+                        and{' '}
+                        <a
+                          target="_blank"
+                          href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
+                        >
+                          Privacy Policy.
+                        </a>
                       </div>
                     </form>
                   </div>

@@ -21,7 +21,9 @@ const INITIAL_STATE = {
   defaultSso: [],
   lmsIntegration: [],
   removeUser: null,
+  teams: {},
   allbrightCove: null,
+  subjects: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -81,6 +83,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activityItems: action.payload,
+      };
+    case actionTypes.GET_SUBECTS:
+      return {
+        ...state,
+        subjects: action.payload,
+      };
+    case actionTypes.GET_EDUCATION_LEVEL:
+      return {
+        ...state,
+        education_level: action.payload,
+      };
+    case actionTypes.GET_AUTHOR_TAGS:
+      return {
+        ...state,
+        author_tags: action.payload,
       };
     case actionTypes.GET_USERS_REPORT:
       return {
@@ -174,7 +191,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
       };
-
+    case actionTypes.GET_TEAMS_ADMIN:
+      return {
+        ...state,
+        teams: action.payload,
+      };
     default:
       return state;
   }
