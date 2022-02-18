@@ -368,10 +368,10 @@ function Controller(props) {
                           <div
                             className="single-author"
                             onClick={() => {
-                              setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
-                              setAuthorName(`${author.first_name} ${author.last_name}`);
-                              setAuthorsArray([]);
-                            }}
+                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                                setAuthorName(`${author.first_name} ${author.last_name}`);
+                                setAuthorsArray([]);
+                              }}
                           >
                             <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
                             <div>
@@ -379,7 +379,7 @@ function Controller(props) {
                               <div className="email-filter-project">{author.email}</div>
                             </div>
                           </div>
-                        ))
+                          ))
                         : 'No user found.'}
                     </div>
                   )}

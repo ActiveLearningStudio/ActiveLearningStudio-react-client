@@ -98,7 +98,7 @@ function Sidebar(props) {
         </>
       )}
 
-      {!currentOrganization?.parent && (
+      {!currentOrganization?.parent && permission.activeRole?.includes('admin') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/instance-admin`} onClick={() => dispatch(clearTeamPermissions())}>
             <div className="row-sidebar">
