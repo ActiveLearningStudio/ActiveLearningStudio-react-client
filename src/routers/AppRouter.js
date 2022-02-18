@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import {
   // Route,
@@ -77,12 +78,12 @@ const AppRouter = (props) => {
   });
 
   if (
-    window.location.href.includes('/shared')
-    || window.location.href.includes('/lti')
-    || window.location.href.includes('/embed')
-    || window.location.href.includes('/register')
-    || window.location.href.includes('/forgot-password')
-    || window.location.href.includes('gclass/launch')
+    window.location.href.includes('/shared') ||
+    window.location.href.includes('/lti') ||
+    window.location.href.includes('/embed') ||
+    window.location.href.includes('/register') ||
+    window.location.href.includes('/forgot-password') ||
+    window.location.href.includes('gclass/launch')
   ) {
     document.body.classList.add('mobile-responsive');
   }
@@ -157,42 +158,13 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                   {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/notification"
-                    component={NotificationPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/admin"
-                    component={AdminPanel}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams"
-                    component={TeamsPage}
-                    overview
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/team-detail"
-                    component={TeamDetailPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/add-projects"
-                    component={TeamAddProjects}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/:teamId"
-                    component={TeamDetailPage}
-                  />
-                  <PrivateRoute
-                    exact
-                    path="/org/:organization/teams/:teamId/add-projects"
-                    component={TeamAddProjects}
-                  />
+                  <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
+                  <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
+                  <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
+                  <PrivateRoute exact path="/org/:organization/teams/team-detail" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/add-projects" component={TeamAddProjects} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={TeamAddProjects} />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
 
@@ -220,7 +192,7 @@ const AppRouter = (props) => {
                     exact
                     path="/org/:organization/project/:projectId/playlist/:playlistId/activity/create"
                     component={ActivityCreate}
-                  // openCreateResourcePopup
+                    // openCreateResourcePopup
                   />
                   <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/edit" component={EditActivity} openEditResourcePopup />
 
