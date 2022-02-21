@@ -46,6 +46,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
+                  document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary-color']);
+                  document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary-color']);
+                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary-color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
