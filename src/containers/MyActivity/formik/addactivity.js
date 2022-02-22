@@ -193,7 +193,7 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                education_level_id: activity?.education_level_id || '',
+                author_tag_id: activity?.author_tag_id || '',
                 education_level_id: activity?.education_level_id || '',
                 subject_id: activity?.subject_id || '',
                 thumb_url: activity?.thumb_url || 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
@@ -242,7 +242,7 @@ const AddActivity = (props) => {
                   <div className="layout-formik-select">
                     <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
-                      <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id}>
+                      <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id} multiple>
                         <option hidden>Select</option>
                         {subjects?.data.map((data) => (
                           <option key={data.id} value={data.id}>
@@ -254,7 +254,7 @@ const AddActivity = (props) => {
 
                     <div className="formik-select mr-16">
                       <HeadingText text="Education level" className="formik-select-title" />
-                      <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
+                      <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id} multiple>
                         <option hidden>Select</option>
                         {educationLevels?.data.map((data) => (
                           <option key={data.id} value={data.id}>
@@ -266,7 +266,7 @@ const AddActivity = (props) => {
 
                     <div className="formik-select ">
                       <HeadingText text="Author Tags" className="formik-select-title" />
-                      <select name="author_tags" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
+                      <select name="author_tag_id" onChange={handleChange} onBlur={handleBlur} value={values.author_tag_id} multiple>
                         <option hidden>Select</option>
                         {authorTags?.data.map((data) => (
                           <option key={data.id} value={data.id}>
