@@ -16,8 +16,9 @@ import UploadFile from 'utils/uploadselectfile/uploadfile';
 import { useSelector, useDispatch } from 'react-redux';
 import { editResourceMetaDataAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
-import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
-// import { subjects, educationLevels } from 'components/ac /dropdownData';
+// import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
+import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
+
 
 const AddActivity = (props) => {
   const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod } = props;
@@ -31,8 +32,39 @@ const AddActivity = (props) => {
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
   const [formData, setFormData] = useState('');
+  const [subjects, setSubjects] = useState(null);
+  const [authorTags, setAuthorTags] = useState(null);
+  const [educationLevels, setEducationLevels] = useState(null);
   const formRef = useRef();
   var counter;
+
+  useEffect(()=> {
+    if(!subjects) {
+      const result_sub = dispatch(getSubjects());
+      result_sub.then((data) => {
+        setSubjects(data)
+      });
+    }
+  }, [subjects]);
+  
+  useEffect(()=> {
+    if(!educationLevels) {
+      const result_edu = dispatch(getEducationLevel());
+      result_edu.then((data) => {
+        setEducationLevels(data)
+      });
+    }
+  }, [educationLevels]);
+
+  useEffect(()=> {    
+    if(!authorTags) {
+      const result_tag = dispatch(getAuthorTag());
+      result_tag.then((data) => {
+        setAuthorTags(data)
+      });
+    }
+  }, [authorTags]);
+
   useEffect(() => {
     if (selectedLayout) {
       setTitle(selectedLayout.title);
@@ -162,6 +194,7 @@ const AddActivity = (props) => {
             <Formik
               initialValues={{
                 education_level_id: activity?.education_level_id || '',
+                education_level_id: activity?.education_level_id || '',
                 subject_id: activity?.subject_id || '',
                 thumb_url: activity?.thumb_url || 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || '',
@@ -211,9 +244,9 @@ const AddActivity = (props) => {
                       <HeadingText text="Subject" className="formik-select-title" />
                       <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id}>
                         <option hidden>Select</option>
-                        {subjects.map((data) => (
-                          <option key={data.value} value={data.subject}>
-                            {data.subject}
+                        {subjects?.data.map((data) => (
+                          <option key={data.id} value={data.id}>
+                            {data.name}
                           </option>
                         ))}
                       </select>
@@ -223,8 +256,8 @@ const AddActivity = (props) => {
                       <HeadingText text="Education level" className="formik-select-title" />
                       <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
                         <option hidden>Select</option>
-                        {educationLevels.map((data) => (
-                          <option key={data.value} value={data.name}>
+                        {educationLevels?.data.map((data) => (
+                          <option key={data.id} value={data.id}>
                             {data.name}
                           </option>
                         ))}
@@ -233,10 +266,10 @@ const AddActivity = (props) => {
 
                     <div className="formik-select ">
                       <HeadingText text="Author Tags" className="formik-select-title" />
-                      <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
+                      <select name="author_tags" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id}>
                         <option hidden>Select</option>
-                        {educationLevels.map((data) => (
-                          <option key={data.value} value={data.name}>
+                        {authorTags?.data.map((data) => (
+                          <option key={data.id} value={data.id}>
                             {data.name}
                           </option>
                         ))}

@@ -195,7 +195,7 @@ export const cancelRemoveUser = () => (dispatch) => {
   });
 };
 
-export const getSubjects = (page, size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+export const getSubjects = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getSubjects(page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_SUBECTS,
@@ -204,7 +204,7 @@ export const getSubjects = (page, size = '', query = '', column = '', orderBy = 
   return result;
 };
 
-export const getEducationLevel = (page, size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+export const getEducationLevel = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getEducationLevel(page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_EDUCATION_LEVEL,
@@ -213,7 +213,7 @@ export const getEducationLevel = (page, size = '', query = '', column = '', orde
   return result;
 };
 
-export const getAuthorTag = (page, size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+export const getAuthorTag = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getAuthorTag(page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_AUTHOR_TAGS,
@@ -222,7 +222,7 @@ export const getAuthorTag = (page, size = '', query = '', column = '', orderBy =
   return result;
 };
 
-export const getActivityLayout = (page, size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+export const getActivityLayout = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getActivityLayout(page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_LAYOUTS,
