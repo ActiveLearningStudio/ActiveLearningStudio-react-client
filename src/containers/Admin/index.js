@@ -51,7 +51,7 @@ function AdminPanel({ showSSO }) {
       dispatch(getRoles());
     }
   }, [activeOrganization]);
-  useEffect(() => { }, [activeTab]);
+  useEffect(() => {}, [activeTab]);
   useEffect(() => {
     const tab = localStorage.getItem('activeTab');
     if (tab) {
@@ -164,18 +164,13 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(
+                  {
                     <Tab eventKey="Teams" title="Teams">
                       <div className="module-content">
-                        <Pills
-                          type="Teams"
-                          modules={['All teams']}
-                          subType="All teams"
-                          setModalShowTeam={setModalShowTeam}
-                        />
+                        <Pills type="Teams" modules={['All teams']} subType="All teams" setModalShowTeam={setModalShowTeam} />
                       </div>
                     </Tab>
-                  )}
+                  }
                   {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
@@ -209,7 +204,7 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  {!currentOrganization?.parent && (
+                  {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
                     <Tab eventKey="DefaultSso" title="Default SSO Integrations">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
@@ -435,13 +430,7 @@ function AdminPanel({ showSSO }) {
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}
           />
-          <EditTeamModel
-            show={modalShowTeam}
-            onHide={() => setModalShowTeam(false)}
-            activePage={activePageNumber}
-            activeOrganization={activeOrganization}
-            showFooter={true}
-          />
+          <EditTeamModel show={modalShowTeam} onHide={() => setModalShowTeam(false)} activePage={activePageNumber} activeOrganization={activeOrganization} showFooter={true} />
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>
