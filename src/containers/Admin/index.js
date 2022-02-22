@@ -393,6 +393,21 @@ function AdminPanel({ showSSO }) {
             </div>
           )}
 
+          {activeForm === 'clone_lti_tool' && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLtiTool editMode clone />
+              </div>
+            </div>
+          )}
+
           {(activeForm === 'add_lti_tool' || activeForm === 'edit_lti_tool') && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
