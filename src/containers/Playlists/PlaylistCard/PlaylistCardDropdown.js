@@ -54,15 +54,15 @@ class PlaylistCardDropdown extends React.Component {
           {(Object.keys(teamPermission).length
             ? teamPermission?.Team?.includes('team:view-playlist')
             : permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view')) && (
-            <Dropdown.Item
-              as={Link}
-              className="hidden"
-              to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
-            >
-              <img src={Preview} alt="Preview" className="menue-img" />
-              Preview
-            </Dropdown.Item>
-          )}
+              <Dropdown.Item
+                as={Link}
+                className="hidden"
+                to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
+              >
+                <img src={Preview} alt="Preview" className="menue-img" />
+                Preview
+              </Dropdown.Item>
+            )}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item
               onClick={() => {
@@ -118,8 +118,8 @@ class PlaylistCardDropdown extends React.Component {
                 )}
               </Dropdown.Item>
             )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
-            <>
+          <>
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
               <ShareLink
                 playlistId={playlist.id}
                 gcr_playlist_visibility={playlist.gcr_playlist_visibility}
@@ -129,12 +129,14 @@ class PlaylistCardDropdown extends React.Component {
                 setProjectPlaylistId={setProjectPlaylistId}
                 setProjectPlaylistActivityId={setProjectPlaylistActivityId}
               />
+            )}
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
               <Dropdown.Item onClick={this.handleDelete}>
                 <img src={Delete} alt="Preview" className="menue-img" />
                 Delete
               </Dropdown.Item>
-            </>
-          )}
+            )}
+          </>
         </Dropdown.Menu>
       </Dropdown>
     );
