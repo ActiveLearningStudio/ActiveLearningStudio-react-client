@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Tabview } from "../../tabview/Tabview";
+import Tabview from "../../tabview/Tabview";
 export const ProjPreview = (props) => {
   return (
     <>

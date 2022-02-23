@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import Tabview from "!!raw-loader!../../tabview/Tabview";
+import Tabview from "../../tabview/Tabview";
 import CodeSnippet from "!!raw-loader!../../../services/errors";
 export const Error = () => {
   return (

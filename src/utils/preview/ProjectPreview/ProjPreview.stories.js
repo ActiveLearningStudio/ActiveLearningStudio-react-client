@@ -2,8 +2,8 @@
 import React from "react";
 import PreviewStore from "!!raw-loader!../../../store/actions/ui";
 import ProjPreviewimg from "./projPreview.png";
+import { ProjPreview } from "./ProjPreview";
 import previewShared from "./previewShared.png";
-import ProjPreview from "!!raw-loader!../../../containers/Preview/ProjectPreview/index";
 import PreviewSnippet from "!!raw-loader!../../../containers/Preview/ProjectPreview/index";
 import SharedSnippet from "!!raw-loader!../../../containers/Preview/ProjectPreview/SecureProjectPreviewShared";
 import SharedStore from "!!raw-loader!../../../store/actions/resource";
