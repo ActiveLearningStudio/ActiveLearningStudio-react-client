@@ -135,7 +135,12 @@ const BrightcoveModel = (props) => {
                             } else if (platform == 'Kaltura') {
                               setkaltura(null);
                               const result = await dispatch(getKalturaVideos(searchId));
-                              setkaltura(result);
+                              if (result.totalCount) {
+                                setkaltura(result);
+                              } else {
+                                setkaltura([]);
+                                setError('No record Found');
+                              }
                             }
                           }}
                         >
@@ -264,24 +269,28 @@ const BrightcoveModel = (props) => {
                               <tbody>
                                 {kaltura ? (
                                   kaltura.objects?.length > 0 ? (
-                                    kaltura?.objects?.map((data) => (
-                                      <tr>
-                                        <td className="firstname">
-                                          <input
-                                            name="video"
-                                            onChange={() => {
-                                              props.setSelectedVideoId(data.dataUrl);
-                                            }}
-                                            type="radio"
-                                          />
-                                          <img src={data?.thumbnailUrl} className="image-size" />
-                                          <span>{data.name}</span>
-                                        </td>
-                                        <td>{data.createdAt}</td>
-                                        <td>{data.id}</td>
-                                        <td>{data.updatedAt}</td>
-                                      </tr>
-                                    ))
+                                    kaltura?.objects?.map((data) => {
+                                      var created = new Date(data.createdAt);
+                                      var update = new Date(data.updatedAt);
+                                      return (
+                                        <tr>
+                                          <td className="firstname">
+                                            <input
+                                              name="video"
+                                              onChange={() => {
+                                                props.setSelectedVideoId(data.dataUrl);
+                                              }}
+                                              type="radio"
+                                            />
+                                            <img src={data?.thumbnailUrl} className="image-size" />
+                                            <span>{data.name}</span>
+                                          </td>
+                                          <td>{created?.toLocaleDateString()}</td>
+                                          <td>{data.id}</td>
+                                          <td>{update?.toLocaleDateString()}</td>
+                                        </tr>
+                                      );
+                                    })
                                   ) : (
                                     <tr>
                                       <td colSpan="4">
@@ -311,7 +320,7 @@ const BrightcoveModel = (props) => {
                                 totalItemsCount={kaltura?.totalCount}
                                 onChange={async (e) => {
                                   setPaginationCounter(e);
-                                  const result = await dispatch(getKalturaVideos('', e, 2));
+                                  const result = await dispatch(getKalturaVideos('', e, 6));
                                   setkaltura(result);
                                 }}
                               />
