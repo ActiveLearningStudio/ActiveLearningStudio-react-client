@@ -26,6 +26,14 @@ export const getAllOrganization = () => async (dispatch) => {
   });
 };
 
+export const getOrgsForDeepLinkingAction = () => async (dispatch) => {
+  const result = await organization.getOrgsForDeepLinking();
+  dispatch({
+    type: actionTypes.ADD_ALL_ORG,
+    payload: result.data,
+  });
+};
+
 export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
   const result = await organization.getOrganizationSearch(id, search);
   dispatch({
