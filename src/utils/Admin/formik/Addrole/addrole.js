@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import Tabview from "../../../tabview/Tabview";
+import Addroleimg from "./addrole.PNG";
 import AddRoleStoreCode from "!!raw-loader!../../../../store/actions/organization";
 import AddRoleSnippet from "!!raw-loader!../../../../containers/Admin/formik/createOrg";
 import Stylesheetused from "!!raw-loader!../../../../containers/Admin/style.scss";
@@ -22,9 +23,9 @@ export const Addrole = () => {
         ]}
         apiUsed={[]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        images="Addroleimg"
+        images={Addroleimg}
         stylesheetUsed={Stylesheetused}
-        examples="https://dev.currikistudio.org/org/currikistudio/admin"
+        example="https://dev.currikistudio.org/org/currikistudio/admin"
       />
     </>
   );
