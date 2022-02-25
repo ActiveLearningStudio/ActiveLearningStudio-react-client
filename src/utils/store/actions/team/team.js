@@ -23,7 +23,9 @@ export const Team = () => {
             url: "?path=/story/store-actiontypes--component",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/team", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/team.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

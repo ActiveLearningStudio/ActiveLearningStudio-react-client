@@ -23,7 +23,9 @@ export const Admin = () => {
             url: "?path=/story/store-actiontypes--component",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/admin", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/admin.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

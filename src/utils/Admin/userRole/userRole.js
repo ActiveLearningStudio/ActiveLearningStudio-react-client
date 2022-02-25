@@ -17,9 +17,7 @@ You have to select checkboxes in each accordion for providing roles to the respe
         libraryUsed={["react-bootstrap", "react-redux", "formik"]}
         customHooks={[]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[
-          { path: "store/actions/organization", pathCode: UserRoleStore },
-        ]}
+        reduxStore={[{ path: "store/actions/admin", pathCode: UserRoleStore }]}
         apiUsed={[]}
         images={userRole}
         stylesheetUsed={Stylesheetused}

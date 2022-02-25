@@ -1,9 +1,9 @@
 /* eslint-disable */
 import React from "react";
 import Tabview from "../../../tabview/Tabview";
-import IndexSnippet from "!!raw-loader!../../../../containers/Groups/CreateGroup/components/AssignProject/index";
+import IndexSnippet from "!!raw-loader!../../../../containers/Teams/CreateTeam/components/AssignProject/index";
 import AssignProject from "./assignProject.png";
-import IndexStyle from "!!raw-loader!../../../../containers/Groups/CreateGroup/components/AssignProject/style.scss";
+import IndexStyle from "!!raw-loader!../../../../containers/Teams/CreateTeam/components/AssignProject/style.scss";
 export const Index = () => {
   return (
     <>

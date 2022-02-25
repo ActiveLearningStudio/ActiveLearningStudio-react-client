@@ -27,7 +27,7 @@ export const Index = () => {
         ]}
         customHooks={[]}
         reduxStore={[
-          { path: "/src/store/actions/group", pathCode: StoreSnippet },
+          { path: "/src/store/actions/resource", pathCode: StoreSnippet },
         ]}
         apiUsed={[]}
         images={Screenshot}

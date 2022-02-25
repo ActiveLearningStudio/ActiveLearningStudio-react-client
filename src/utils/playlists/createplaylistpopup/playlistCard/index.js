@@ -29,7 +29,9 @@ export const Index = () => {
         ]}
         customHooks={[{ name: "/src/components/ResourceCard/index", url: "" }]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "/src/store/actions/ui", pathCode: CardStore }]}
+        reduxStore={[
+          { path: "/src/store/actions/resource", pathCode: CardStore },
+        ]}
         apiUsed={[]}
         images={PlaylistCard}
         stylesheetUsed={Stylesheetused}

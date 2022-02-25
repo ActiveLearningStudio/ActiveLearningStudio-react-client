@@ -20,7 +20,9 @@ export const Index = () => {
           { name: "/src/containers/Teams/AddMembers/TeamMember", url: "" },
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "/src/store/actions/team", pathCode: IndexStore }]}
+        reduxStore={[
+          { path: "/src/store/actions/group", pathCode: IndexStore },
+        ]}
         apiUsed={[]}
         images={AddMember}
         stylesheetUsed={IndexStyle}

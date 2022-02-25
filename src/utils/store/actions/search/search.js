@@ -23,7 +23,9 @@ export const Search = () => {
             url: "?path=/story/store-actiontypes--component",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/search", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/search.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

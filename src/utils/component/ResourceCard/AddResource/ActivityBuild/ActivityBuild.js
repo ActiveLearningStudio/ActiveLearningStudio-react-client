@@ -3,7 +3,7 @@ import React from "react";
 import Tabview from "../../../../tabview/Tabview";
 import CodeSnippet from "!!raw-loader!../../../../../components/ResourceCard/AddResource/ResourceActivityBuild";
 import ResourceStore from "!!raw-loader!../../../../../store/actions/resource";
-import Stylesheetused from "../../../../../components/ResourceCard/AddResource/style.scss";
+import Stylesheetused from "!!raw-loader!../../../../../components/ResourceCard/AddResource/style.scss";
 export const Activitybuild = () => {
   return (
     <>

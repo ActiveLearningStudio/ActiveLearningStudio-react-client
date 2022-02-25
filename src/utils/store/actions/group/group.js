@@ -22,7 +22,9 @@ export const Group = () => {
             url: "?path=/story/store-actiontypes--component",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/group", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/group.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

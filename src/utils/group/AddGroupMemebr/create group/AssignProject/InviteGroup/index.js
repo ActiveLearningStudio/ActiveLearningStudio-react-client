@@ -33,7 +33,9 @@ export const Index = () => {
             url: "",
           },
         ]}
-        reduxStore={[{ path: "/src/store/actions/team", pathCode: GroupStore }]}
+        reduxStore={[
+          { path: "/src/store/actions/group", pathCode: GroupStore },
+        ]}
         apiUsed={[]}
         images={InviteGroup}
         stylesheetUsed={IndexStyle}

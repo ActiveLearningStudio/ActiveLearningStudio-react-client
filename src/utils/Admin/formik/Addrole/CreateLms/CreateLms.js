@@ -25,7 +25,7 @@ export const CreateLms = () => {
         customHooks={[{ name: "organization", url: "" }]}
         reduxStore={[
           {
-            path: "/src/store/actions",
+            path: "/src/store/actions/admin",
             pathCode: CreateLmsStore,
           },
         ]}

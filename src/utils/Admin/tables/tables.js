@@ -27,7 +27,7 @@ In the header of the table, you will find the name, domain, admin, project, sub 
         ]}
         customHooks={[]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "store/actions/resource", pathCode: TableStore }]}
+        reduxStore={[{ path: "store/actions/admin", pathCode: TableStore }]}
         apiUsed={[{ path: "services/admin.service", apicode: ApiCode }]}
         images={TablePageimg}
         stylesheetUsed={Stylesheetused}

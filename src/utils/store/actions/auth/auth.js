@@ -25,7 +25,9 @@ export const Auth = () => {
             url: "?path=/story/store-actiontypes--component",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/auth", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/auth.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

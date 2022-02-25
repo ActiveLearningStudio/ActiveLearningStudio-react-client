@@ -26,7 +26,9 @@ export const Project = () => {
             url: "",
           },
         ]}
-        reduxStore={[{ path: "/src/store/index", pathCode: StoreSnippet }]}
+        reduxStore={[
+          { path: "/src/store/action/project", pathCode: StoreSnippet },
+        ]}
         apiUsed={[{ path: "/src/services/project.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed=""

@@ -10,7 +10,7 @@ export const Index = () => {
     <>
       <Tabview
         componentName="Index"
-        path="\src\containers\Teams\components\InviteTeam\index.js"
+        path="\src\containers\Teams\CreateTeam\components\InviteTeam\index.js"
         description="In invite team members, you can invite your team members to join your team. 
     You will see a list of team members, select from them and click on the invite button.
      After inviting members, you can click on the continue button to process your team creation step."

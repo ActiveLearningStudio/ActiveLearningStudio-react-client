@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from "react";
 import Tabview from "../../tabview/Tabview";
-import CodeSnippet from "!!raw-loader!../../../components/ActivityCard/index";
-import Stylesheetused from "!!raw-loader!../../../components/ActivityCard/style.scss";
+import CodeSnippet from "!!raw-loader!../../../components/ActivityPreviewCard/index";
+import Stylesheetused from "!!raw-loader!../../../components/ActivityPreviewCard/style.scss";
 import Screenshot from "./ActivityPreviewCard.png";
 export const Index = () => {
   return (

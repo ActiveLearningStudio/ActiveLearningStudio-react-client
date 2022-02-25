@@ -34,7 +34,7 @@ export const Dropdown = () => {
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
         reduxStore={[
-          { path: "/src/store/actions/playlist", pathCode: DropdownStore },
+          { path: "/src/store/actions/resource", pathCode: DropdownStore },
         ]}
         apiUsed={[]}
         images={Dropdownimg}

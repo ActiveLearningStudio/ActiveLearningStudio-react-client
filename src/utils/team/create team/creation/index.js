@@ -9,7 +9,7 @@ export const Index = () => {
     <>
       <Tabview
         componentName="Index"
-        path="\src\containers\Teams\components\Creation\index.js"
+        path="\src\containers\Teams\CreateTeam\components\Creation\index.js"
         description="In this component, you will see a form to create your team. 
     In this form, you will enter the team name and team description. You will write
      a small description for the team and then click on the continue button. In this way,

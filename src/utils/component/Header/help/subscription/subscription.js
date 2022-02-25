@@ -19,7 +19,9 @@ export const Subscription = () => {
         libraryUsed={["react-bootstrap", "react-redux", "react-router-dom"]}
         customHooks={[]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "/store/actions/search", pathCode: SubStore }]}
+        reduxStore={[
+          { path: "/store/actions/organization", pathCode: SubStore },
+        ]}
         apiUsed={[
           { path: "/src/services/storage.service", apicode: ApiSnippet },
         ]}

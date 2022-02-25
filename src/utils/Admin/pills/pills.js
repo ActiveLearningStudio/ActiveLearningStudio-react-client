@@ -21,7 +21,7 @@ You can go to all users, manage roles, and perform other functionalities which a
           { name: "./column", url: "" },
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "store/actions/resource", pathCode: PillStore }]}
+        reduxStore={[{ path: "store/actions/admin", pathCode: PillStore }]}
         apiUsed={[{ path: "services/admin.service", apicode: ApiCode }]}
         images=""
         stylesheetUsed={Stylesheetused}
