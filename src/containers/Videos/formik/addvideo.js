@@ -352,10 +352,10 @@ const FormikVideo = ({
                   <div className="drop-area">
                     <button
                       onClick={() => {
-                        formRef.current.handleSubmit();
                         imgUpload.current.click();
                         setUploadedFile();
                       }}
+                      type="reset"
                     >
                       <FontAwesomeIcon icon={faUpload} className="curriki_btn-mr-2" />
                       Select File
@@ -379,9 +379,10 @@ const FormikVideo = ({
                             title: 'Please Wait !',
                             html: 'Uploading Video, This may took some time ...',
                             allowOutsideClick: false,
-                            onBeforeOpen: () => {
+                            didOpen: () => {
                               Swal.showLoading();
                             },
+                            showConfirmButton: false,
                           });
                           const formData = new FormData();
                           formData.append('file', h5pFile);
@@ -414,9 +415,16 @@ const FormikVideo = ({
                         e.target.value = '';
                       }}
                     />
-                    <div className="upload-holder">
-                      <img src={UploadImg} alt="upload" className="mr-2" />
-                      <p>Drag & Drop File or click to upload</p>
+                    <div
+                      onClick={() => {
+                        imgUpload.current.click();
+                        setUploadedFile();
+                      }}
+                      className="upload-holder"
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img style={{ cursor: 'pointer' }} src={UploadImg} alt="upload" className="mr-2" />
+                      <p> click to upload</p>
                     </div>
                   </div>
                   {uploadedFile && (
@@ -428,7 +436,7 @@ const FormikVideo = ({
                         fontWeight: 'bold',
                       }}
                     >
-                      {uploadedFile} is successfully updated
+                      {uploadedFile} is successfully uploaded.
                     </div>
                   )}
                 </div>
