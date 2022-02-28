@@ -30,7 +30,7 @@ export const getOrgsForDeepLinkingAction = (userEmail, ltiClientId) => async (di
   const result = await organization.getOrgsForDeepLinking(userEmail, ltiClientId);
   dispatch({
     type: actionTypes.ADD_ALL_ORG,
-    payload: result.data,
+    payload: result.organizations,
   });
 };
 
