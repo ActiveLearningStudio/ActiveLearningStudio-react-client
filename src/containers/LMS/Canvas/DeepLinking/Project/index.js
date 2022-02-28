@@ -11,41 +11,41 @@ import './style.scss';
 
 const Project = (props) => {
   const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
-  console.log(props);
-  const showActivityPreview = (id) => {
-    const activityId = parseInt(id, 10);
-    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
 
-    if (activity) {
-      setPreviewActivity(activity);
-    }
-  };
+  // const showActivityPreview = (id) => {
+  //   const activityId = parseInt(id, 10);
+  //   const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
 
-  const addToLMS = (id) => {
-    const activityId = parseInt(id, 10);
-    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+  //   if (activity) {
+  //     setPreviewActivity(activity);
+  //   }
+  // };
 
-    if (!activity) return;
+  // const addToLMS = (id) => {
+  //   const activityId = parseInt(id, 10);
+  //   const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
 
-    const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
-    Swal.fire({
-      html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ok',
-    }).then((result) => {
-      if (result.value) {
-        window.location.href = finalUrl;
-      }
-    });
-  };
+  //   if (!activity) return;
+
+  //   const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
+  //   Swal.fire({
+  //     html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Ok',
+  //   }).then((result) => {
+  //     if (result.value) {
+  //       window.location.href = finalUrl;
+  //     }
+  //   });
+  // };
 
   return (
     <>
       <div className="row mt-2 mb-2 lti-deeplink-project-container">
-        <div className="col">
-          <div key={project.id} className="row result mb-4">
+        <div className="col result">
+          <div key={project.id} className="row  mb-4">
             <div className="col-2">
               <Image src={project.thumb_url.includes('pexels.com') ? project.thumb_url : `${global.config.resourceUrl}${project.thumb_url}`} thumbnail />
             </div>
@@ -72,79 +72,83 @@ const Project = (props) => {
                   )}
                 </div>
               </div>
-              <div className="row playlists-row">
-                <div className="col">
-                  {selectedProject?.id === project.id && (
-                    <div className="row">
-                      <div className="col">
-                        {selectedProject.playlists.length === 0 && <Alert variant="warning">This project has no playlists</Alert>}
-                        {selectedProject.playlists.length > 0 && (
-                          <Card className="mt-2">
-                            <ListGroup variant="flush">
-                              {selectedProject.playlists.map((playlist) => (
-                                <ListGroup.Item key={playlist.id} className="plist" onClick={() => showPlaylist(playlist)}>
-                                  <div className="row">
-                                    <div className="col">
-                                      <h5>{playlist.title}</h5>
-                                    </div>
-                                    <div className="col text-right">
-                                      <FontAwesomeIcon className="pull-right" icon="chevron-right" />
-                                    </div>
-                                  </div>
-                                  {selectedPlaylist?.id === playlist.id && playlist.activities.length === 0 && <Alert variant="warning">This playlist has no activities.</Alert>}
 
-                                  {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
-                                    <div className="playlist-activities">
-                                      {playlist.activities.map((activity) => (
-                                        <div className="row mt-2" key={activity.id}>
-                                          <div className="col-2.5">
-                                            <Image
-                                              src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`}
-                                              thumbnail
-                                            />
-                                          </div>
-                                          <div className="col pt-1">
-                                            <h6>{activity.title}</h6>
-                                          </div>
-                                          <div className="col text-right">
-                                            <Dropdown>
-                                              <Dropdown.Toggle className="actions-button" style={{ backgroundColor: '#fff ' }}>
-                                                <FontAwesomeIcon icon="ellipsis-v" style={{ color: 'rgb(8, 72, 146)' }} />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <Dropdown.Item to="#" eventKey={activity.id} onSelect={showActivityPreview}>
-                                                  <FontAwesomeIcon icon="eye" className="action-icon" />
-                                                  Preview
-                                                </Dropdown.Item>
-                                                <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
-                                                  <FontAwesomeIcon icon="plus" className="action-icon" />
-                                                  Add to Course
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  )}
-                                </ListGroup.Item>
-                              ))}
-                            </ListGroup>
-                          </Card>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {/* 
+            //  <div className="row playlists-row">
+            //     <div className="col">
+            //       {selectedProject?.id === project.id && (
+            //         <div className="row">
+            //           <div className="col">
+            //             {selectedProject.playlists.length === 0 && <Alert variant="warning">This project has no playlists</Alert>}
+            //             {selectedProject.playlists.length > 0 && (
+            //               <Card className="mt-2">
+            //                 <ListGroup variant="flush">
+            //                   {selectedProject.playlists.map((playlist) => (
+            //                     <ListGroup.Item key={playlist.id} className="plist" onClick={() => showPlaylist(playlist)}>
+            //                       <div className="row">
+            //                         <div className="col">
+            //                           <h5>{playlist.title}</h5>
+            //                         </div>
+            //                         <div className="col text-right">
+            //                           <FontAwesomeIcon className="pull-right" icon="chevron-right" />
+            //                         </div>
+            //                       </div>
+            //                       {selectedPlaylist?.id === playlist.id && playlist.activities.length === 0 && <Alert variant="warning">This playlist has no activities.</Alert>}
+
+            //                       {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
+            //                         <div className="playlist-activities">
+            //                           {playlist.activities.map((activity) => (
+            //                             <div className="row mt-2" key={activity.id}>
+            //                               <div className="col-2.5">
+            //                                 <Image
+            //                                   src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`}
+            //                                   thumbnail
+            //                                 />
+            //                               </div>
+            //                               <div className="col pt-1">
+            //                                 <h6>{activity.title}</h6>
+            //                               </div>
+            //                               <div className="col text-right">
+            //                                 <Dropdown>
+            //                                   <Dropdown.Toggle className="actions-button" style={{ backgroundColor: '#fff ' }}>
+            //                                     <FontAwesomeIcon icon="ellipsis-v" style={{ color: 'rgb(8, 72, 146)' }} />
+            //                                   </Dropdown.Toggle>
+            //                                   <Dropdown.Menu>
+            //                                     <Dropdown.Item to="#" eventKey={activity.id} onSelect={showActivityPreview}>
+            //                                       <FontAwesomeIcon icon="eye" className="action-icon" />
+            //                                       Preview
+            //                                     </Dropdown.Item>
+            //                                     <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+            //                                       <FontAwesomeIcon icon="plus" className="action-icon" />
+            //                                       Add to Course
+            //                                     </Dropdown.Item>
+            //                                   </Dropdown.Menu>
+            //                                 </Dropdown>
+            //                               </div>
+            //                             </div>
+            //                           ))}
+            //                         </div>
+            //                       )}
+            //                     </ListGroup.Item>
+            //                   ))}
+            //                 </ListGroup>
+            //               </Card>
+            //             )}
+            //           </div>
+            //         </div>
+            //       )}
+            //     </div>
+                                      // </div>*/}
             </div>
-            {selectedProject?.id !== project.id && (
-              <div className="col-2 text-right actions">
-                <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
-                  View Playlists
-                </button>
-              </div>
-            )}
+
+            {/* 
+            //  {selectedProject?.id !== project.id && (
+            //   <div className="col-2 text-right actions">
+            //     <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
+            //       View Playlists
+            //     </button>
+            //   </div>
+          // )}*/}
           </div>
         </div>
       </div>

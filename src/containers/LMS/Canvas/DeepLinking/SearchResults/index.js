@@ -1,10 +1,13 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert, Tabs, Tab } from 'react-bootstrap';
+import { Alert, Tabs, Tab, Dropdown } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { showSearchProjectActionPlaylist, setPreviewActivityAction } from 'store/actions/canvas';
 // import Swal from 'sweetalert2';
 import {
   backToSearchAction,
@@ -20,12 +23,23 @@ import './style.scss';
 
 const SearchResults = (props) => {
   const { match, searchParams, hasMoreResults, projects, backToSearch, previousPage, nextPage, search } = props;
+  const [dataActivity, setDataActivity] = useState(null);
+  const dispatch = useDispatch();
+  const Playlist = async () => {
+    var storeData = [];
+    for (var i = 0; i < projects?.length; i++) {
+      const result = await dispatch(showSearchProjectActionPlaylist(projects[i]));
+      storeData.push(result.project.playlists?.map((data) => data?.activities));
+    }
+    setDataActivity(storeData);
+  };
 
   // Init
   useEffect(() => {
+    Playlist();
     window.scrollTo(0, 0);
     search(searchParams);
-  }, [match, searchParams]);
+  }, [match, searchParams, projects]);
 
   return (
     <div className="results">
@@ -67,7 +81,66 @@ const SearchResults = (props) => {
             </div>
           </div>
         </Tab>
-        <Tab eventKey="Playlists" title="Playlists"></Tab>
+        <Tab eventKey="activitys" title="Activitys">
+          {dataActivity ? (
+            dataActivity?.length ? (
+              dataActivity.map((data) =>
+                data.map((data1) =>
+                  data1.map((data2) => (
+                    <div className="Playlists-container">
+                      <div className="main-flex">
+                        <div className="img-cont">
+                          <div className="Playlists-img">
+                            <img src={data2.thumb_url} />
+                          </div>
+                          <h6 className="Playlists-title">{data2.title}</h6>
+                        </div>
+                        <div className="ext-right">
+                          <Dropdown>
+                            <Dropdown.Toggle className="actions-button">
+                              <FontAwesomeIcon icon="ellipsis-v" style={{ color: 'rgb(8, 72, 146)' }} />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item to="#" eventKey={data2.id} onSelect={() => dispatch(setPreviewActivityAction(data2))}>
+                                <FontAwesomeIcon icon="eye" className="action-icon" />
+                                Preview
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                                to="#"
+                                eventKey={data2.id}
+                                onSelect={() => {
+                                  const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(data2.title)}&entity=activity&id=${data2.id}`;
+                                  Swal.fire({
+                                    html: `You have selected <strong>Activity: ${data.title}</strong><br>Do you want to continue ?`,
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Ok',
+                                  }).then((result) => {
+                                    if (result.value) {
+                                      window.location.href = finalUrl;
+                                    }
+                                  });
+                                }}
+                              >
+                                <FontAwesomeIcon icon="plus" className="action-icon" />
+                                Add to Course
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )
+              )
+            ) : (
+              <Alert variant="warning">No results found.</Alert>
+            )
+          ) : (
+            <Alert variant="warning">loading ...</Alert>
+          )}
+        </Tab>
       </Tabs>
     </div>
   );
