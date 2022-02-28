@@ -1,9 +1,48 @@
 .lti-deeplink-project-container h3 {
-    color: darkslateblue;
+  color: rgb(8, 72, 146);
 }
 
 .lti-deeplink-project-container h5 {
-    color: darkslateblue;
+  color: rgb(8, 72, 146);
+}
+.lti-deeplink-project-container {
+  .result {
+    padding: 0 !important;
+    margin: 0 15px 30px;
+    border-bottom: 1px solid #b5b5b5;
+  }
+}
+.playlist-activities {
+  height: 320px;
+  overflow-y: auto;
+  padding-right: 20px;
+
+  .dropdown-toggle::after {
+    margin-left: 0;
+    vertical-align: 0;
+    content: '';
+    border-top: none;
+    border-right: none;
+    border-bottom: 0;
+    border-left: none;
+  }
+
+  .dropdown-menu.show .dropdown-item {
+    color: rgb(8, 72, 146);
+
+    & svg {
+      margin-right: 8px;
+    }
+  }
+
+  .img-thumbnail {
+    width: 80px;
+    height: 60px;
+  }
+}
+
+.pull-right {
+  color: rgb(8, 72, 146);
 }
 
 .lti-deeplink-project-container .project-details-row {
