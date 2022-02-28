@@ -22,6 +22,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
   const [modalShow, setModalShow] = useState(false);
   const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
+  const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('Mydevice');
 
@@ -41,6 +43,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
           setModalShow(false);
         }}
         setSelectedVideoId={setSelectedVideoId}
+        setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
         showSidebar={showSidebar}
         platform={platform}
       />
@@ -70,7 +73,14 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
           )}
         </div>
         <div className="add-video-form-tabs">
-          <Tabs className="main-tabs" activeKey={activeKey} onSelect={(k) => setActiveKey(k)} id="controlled-tab-example">
+          <Tabs
+            className="main-tabs"
+            activeKey={activeKey}
+            onSelect={(k) => {
+              setActiveKey(k);
+            }}
+            id="controlled-tab-example"
+          >
             {!editVideo ? (
               <Tab
                 eventKey="Mydevice"
@@ -81,7 +91,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
               >
                 {/* <UploadFile metadata={formData} formRef={formRef} /> */}
                 <FormikVideo
-                  setSelectedVideoId={setSelectedVideoId}
+                  setSelectedVideoId={setSelectedVideoIdUpload}
                   showback={showback}
                   setScreenStatus={setScreenStatus}
                   changeScreenHandler={changeScreenHandler}
@@ -106,9 +116,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     changeScreenHandler={changeScreenHandler}
                     uploadFile
                     platform={platform}
-                    editVideo={editVideo?.brightcoveData?.videoId || ''}
                     editVideo={editVideo?.source_url}
-                    setSelectedVideoId={setSelectedVideoId}
+                    setSelectedVideoId={setSelectedVideoIdUpload}
                   />
                 </Tab>
               )
@@ -132,6 +141,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                   showBrowse
                   setModalShow={setModalShow}
                   platform={platform}
+                  placeholder={'Enter a video Id'}
                 />
               </Tab>
             ) : (
@@ -155,6 +165,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     setModalShow={setModalShow}
                     platform={platform}
                     editVideo={editVideo?.source_url}
+                    placeholder={'Enter a video Id'}
                   />
                 </Tab>
               )
@@ -175,6 +186,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                   changeScreenHandler={changeScreenHandler}
                   type={AddVideoTube}
                   setScreenStatus={setScreenStatus}
+                  placeholder={'Enter a video url'}
                 />
               </Tab>
             ) : (
@@ -195,6 +207,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     type={AddVideoTube}
                     setScreenStatus={setScreenStatus}
                     editVideo={editVideo?.source_url}
+                    placeholder={'Enter a video url'}
                   />
                 </Tab>
               )
@@ -216,8 +229,9 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                   changeScreenHandler={changeScreenHandler}
                   type={AddKaltura}
                   setScreenStatus={setScreenStatus}
-                  selectedVideoId={selectedVideoId}
+                  selectedVideoId={selectedVideoIdKaltura}
                   platform={platform}
+                  placeholder={'Enter a video url'}
                 />
               </Tab>
             ) : (
@@ -238,9 +252,10 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     changeScreenHandler={changeScreenHandler}
                     type={AddKaltura}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={selectedVideoId}
+                    selectedVideoId={selectedVideoIdKaltura}
                     platform={platform}
                     editVideo={editVideo?.source_url}
+                    placeholder={'Enter a video url'}
                   />
                 </Tab>
               )
@@ -270,16 +285,19 @@ const FormikVideo = ({
   uploadFile,
   setModalShow,
   changeScreenHandler,
+  placeholder,
 }) => {
   const dispatch = useDispatch();
   const imgUpload = useRef();
   const [uploadedFile, setUploadedFile] = useState('');
+
   const formRef = useRef();
   useEffect(() => {
     if (editVideo && platform == 'Mydevice') {
       setUploadedFile(editVideo);
     }
   }, [editVideo, platform]);
+
   return (
     <div className="add-video-layout-formik">
       <Formik
@@ -328,7 +346,7 @@ const FormikVideo = ({
               {Input && (
                 <>
                   <img src={type} />
-                  <input type="text" name="videoUrl" placeholder="Enter video ID" onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
+                  <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
                 </>
               )}
               {showBrowse && (

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos } from 'store/actions/videos';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platform, showSidebar } = props;
+  const { platform, showSidebar, setSelectedVideoIdKaltura } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [cmsVideo, setcmsVideo] = useState(null);
@@ -134,6 +134,7 @@ const BrightcoveModel = (props) => {
                                 });
                             } else if (platform == 'Kaltura') {
                               setkaltura(null);
+                              setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos(searchId));
                               if (result.totalCount) {
                                 setkaltura(result);
@@ -155,7 +156,7 @@ const BrightcoveModel = (props) => {
                               setcmsVideo(null);
                               try {
                                 const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
-                                console.log(videosResult);
+
                                 setTotalCount(videosResult.meta?.count);
                                 setcmsVideo(videosResult.data);
                               } catch (err) {
@@ -166,6 +167,7 @@ const BrightcoveModel = (props) => {
                               }
                             } else if (platform == 'Kaltura') {
                               setkaltura(null);
+                              setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos());
                               setkaltura(result);
                             }
@@ -204,6 +206,7 @@ const BrightcoveModel = (props) => {
                                               name="video"
                                               onChange={() => {
                                                 props.setSelectedVideoId(data.id);
+                                                selectedVideoIdKaltura;
                                               }}
                                               type="radio"
                                             />
@@ -278,7 +281,7 @@ const BrightcoveModel = (props) => {
                                             <input
                                               name="video"
                                               onChange={() => {
-                                                props.setSelectedVideoId(data.dataUrl);
+                                                setSelectedVideoIdKaltura(data.dataUrl);
                                               }}
                                               type="radio"
                                             />
