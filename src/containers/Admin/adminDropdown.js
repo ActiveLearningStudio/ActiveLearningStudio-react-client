@@ -835,8 +835,11 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
-                    Swal.showLoading();
-                    adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lti_tool'));
                   }}
                 >
                   <img src={Clone} alt="Preview" className="menue-img" />

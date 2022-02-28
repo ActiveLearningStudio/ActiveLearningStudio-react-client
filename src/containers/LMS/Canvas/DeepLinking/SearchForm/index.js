@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
-import { getAllOrganization } from 'store/actions/organization';
+import { getOrgsForDeepLinkingAction } from 'store/actions/organization';
 import './style.scss';
 
 const SearchForm = (props) => {
@@ -14,7 +14,7 @@ const SearchForm = (props) => {
     params,
     orgs,
     updateParams,
-    // getOrgs,
+    getOrgs,
   } = props;
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
@@ -22,7 +22,7 @@ const SearchForm = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    // getOrgs();
+    getOrgs();
     updateParams({
       ...params,
       ltiClientId: match.params.ltiClientId,
@@ -121,7 +121,7 @@ SearchForm.propTypes = {
   orgs: PropTypes.array.isRequired,
   showResults: PropTypes.func.isRequired,
   updateParams: PropTypes.func.isRequired,
-  // getOrgs: PropTypes.func.isRequired,
+  getOrgs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -132,7 +132,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   showResults: () => dispatch(showResultsAction()),
   updateParams: (params) => dispatch(updateParamsAction(params)),
-  getOrgs: () => dispatch(getAllOrganization()),
+  getOrgs: () => dispatch(getOrgsForDeepLinkingAction()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchForm));
