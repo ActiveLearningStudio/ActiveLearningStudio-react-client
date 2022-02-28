@@ -20,6 +20,7 @@ export default function CreateSubject(props) {
       initialValues={{
         name: editMode ? activeEdit?.name : '',
         order: editMode ? activeEdit?.order : '',
+        organization_id: organization?.activeOrganization?.id,
       }}
       validate={(values) => {
         const errors = {};
@@ -44,7 +45,7 @@ export default function CreateSubject(props) {
             button: false,
           });
 
-          const result = adminapi.updateSubject(activeEdit?.id, values);
+          const result = adminapi.updateSubject(organization?.activeOrganization?.id, activeEdit?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -54,7 +55,7 @@ export default function CreateSubject(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getSubjects(1));
+            dispatch(getSubjects(organization?.activeOrganization?.id, 1));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -73,7 +74,7 @@ export default function CreateSubject(props) {
             },
             button: false,
           });
-          const result = adminapi.createSubject(values);
+          const result = adminapi.createSubject(organization?.activeOrganization?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -83,7 +84,7 @@ export default function CreateSubject(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getSubjects(1));
+            dispatch(getSubjects(organization?.activeOrganization?.id, 1));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_CREATED_RESOURCE,

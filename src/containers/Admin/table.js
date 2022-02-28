@@ -1071,6 +1071,7 @@ function Table(props) {
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
+                      <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
                       <td>{row.tool_description}</td>
                       <td>
                         <div className="admin-panel-dropdown">

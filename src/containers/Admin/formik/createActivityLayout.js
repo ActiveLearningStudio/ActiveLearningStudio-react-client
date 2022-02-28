@@ -17,8 +17,9 @@ export default function CreateActivityLayout(props) {
   const [imageActive, setImgActive] = useState(null);
   const imgUpload = useRef();
   const dispatch = useDispatch();
+  const organization = useSelector((state) => state.organization);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activeEdit } = useSelector((state) => state.organization);
+  const { activeEdit } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(activeEdit?.image);
@@ -38,6 +39,7 @@ export default function CreateActivityLayout(props) {
           demo_video_id: editMode ? activeEdit?.demo_video_id : '',
           image: editMode ? activeEdit?.image : '',
           order: editMode ? activeEdit?.order : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -79,7 +81,7 @@ export default function CreateActivityLayout(props) {
               },
               button: false,
             });
-            const result = adminapi.updateActivityLayout(activeEdit?.id, values);
+            const result = adminapi.updateActivityLayout(organization?.activeOrganization?.id, activeEdit?.id, values);
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
@@ -89,7 +91,7 @@ export default function CreateActivityLayout(props) {
                   confirmButton: 'confirmation-close-btn',               
                 }
               });
-              dispatch(getActivityLayout(1));
+              dispatch(getActivityLayout(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -107,7 +109,7 @@ export default function CreateActivityLayout(props) {
               },
               button: false,
             });
-            const result = adminapi.createActivityLayout(values);
+            const result = adminapi.createActivityLayout(organization?.activeOrganization?.id, values);
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
@@ -117,7 +119,7 @@ export default function CreateActivityLayout(props) {
                   confirmButton: 'confirmation-close-btn',               
                 }
               });
-              dispatch(getActivityLayout(1));
+              dispatch(getActivityLayout(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,

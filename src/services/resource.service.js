@@ -13,9 +13,9 @@ const getAll = () =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getAllLayout = () =>
+const getAllLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/activity-layouts`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-layouts`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 

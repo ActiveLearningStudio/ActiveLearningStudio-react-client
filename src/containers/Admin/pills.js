@@ -456,16 +456,16 @@ export default function Pills(props) {
 
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activePage || 1));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activePage || 1));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1));
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activePage || 1));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1));
     }
     if (type === 'Activities') {
-      dispatch(getActivityLayout(activePage || 1));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1));
     }
   }, [type, subTypeState, activePage, activeOrganization?.id]);
 
@@ -671,7 +671,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityLayout(activePage || 1, '', '', col, orderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Subjects') {
@@ -684,7 +684,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activePage || 1, '', '', col, orderBy,));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, '', '', col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Education Level') {
@@ -697,7 +697,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activePage || 1, '', '', col, orderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Author Tags') {
@@ -710,7 +710,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activePage || 1, '', '', col, orderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Organization') {

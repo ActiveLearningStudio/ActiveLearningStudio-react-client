@@ -195,8 +195,8 @@ export const cancelRemoveUser = () => (dispatch) => {
   });
 };
 
-export const getSubjects = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
-  const result = await adminService.getSubjects(page, size, query, column, orderBy);
+export const getSubjects = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getSubjects(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_SUBECTS,
     payload: result,
@@ -204,8 +204,8 @@ export const getSubjects = (page = '', size = '', query = '', column = '', order
   return result;
 };
 
-export const getEducationLevel = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
-  const result = await adminService.getEducationLevel(page, size, query, column, orderBy);
+export const getEducationLevel = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getEducationLevel(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_EDUCATION_LEVEL,
     payload: result,
@@ -213,8 +213,8 @@ export const getEducationLevel = (page = '', size = '', query = '', column = '',
   return result;
 };
 
-export const getAuthorTag = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
-  const result = await adminService.getAuthorTag(page, size, query, column, orderBy);
+export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getAuthorTag(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_AUTHOR_TAGS,
     payload: result,
@@ -222,8 +222,8 @@ export const getAuthorTag = (page = '', size = '', query = '', column = '', orde
   return result;
 };
 
-export const getActivityLayout = (page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
-  const result = await adminService.getActivityLayout(page, size, query, column, orderBy);
+export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_LAYOUTS,
     payload: result,

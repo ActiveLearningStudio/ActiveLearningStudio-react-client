@@ -500,7 +500,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteSubject(row?.id);
+                      const response = adminService.deleteSubject(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -511,7 +511,7 @@ const AdminDropdown = (props) => {
                               confirmButton: 'confirmation-close-btn',
                             },
                           });
-                          dispatch(getSubjects(activePage || 1));
+                          dispatch(getSubjects(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -560,7 +560,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteEducationLevel(row?.id);
+                      const response = adminService.deleteEducationLevel(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -571,7 +571,7 @@ const AdminDropdown = (props) => {
                               confirmButton: 'confirmation-close-btn',
                             },
                           });
-                          dispatch(getEducationLevel(activePage || 1));
+                          dispatch(getEducationLevel(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -620,7 +620,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteAuthorTag(row?.id);
+                      const response = adminService.deleteAuthorTag(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -631,7 +631,7 @@ const AdminDropdown = (props) => {
                               confirmButton: 'confirmation-close-btn',
                             },
                           });
-                          dispatch(getAuthorTag(activePage || 1));
+                          dispatch(getAuthorTag(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -680,7 +680,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteActivityLayout(row?.id);
+                      const response = adminService.deleteActivityLayout(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -691,7 +691,7 @@ const AdminDropdown = (props) => {
                               confirmButton: 'confirmation-close-btn',
                             },
                           });
-                          dispatch(getActivityLayout(activePage || 1));
+                          dispatch(getActivityLayout(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -896,8 +896,11 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
-                    Swal.showLoading();
-                    adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lti_tool'));
                   }}
                 >
                   <img src={Clone} alt="Preview" className="menue-img" />

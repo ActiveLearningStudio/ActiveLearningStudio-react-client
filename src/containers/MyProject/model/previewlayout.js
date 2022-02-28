@@ -35,6 +35,8 @@ const PreviewLayoutModel = (props) => {
           replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
         } else if (platform === 'Kaltura') {
           replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/unknown', path: videoId }];
+        } else if (platform === 'Mydevice') {
+          replaceH5p.params.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/mp4', path: videoId }];
         }
       } else {
         replaceH5p = JSON.parse(editVideo?.h5p_content?.parameters);
@@ -45,8 +47,9 @@ const PreviewLayoutModel = (props) => {
           replaceH5p.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/YouTube', path: videoId }];
         } else if (platform === 'Kaltura') {
           replaceH5p.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/unknown', path: videoId }];
+        } else if (platform === 'Mydevice') {
+          replaceH5p.interactiveVideo.video.files = [{ copyright: { license: 'U' }, mime: 'video/mp4', path: videoId }];
         }
-        console.log(platform, replaceH5p);
       }
 
       setEditH5p(JSON.stringify(replaceH5p));
@@ -158,6 +161,24 @@ const PreviewLayoutModel = (props) => {
                       : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                   }
                   h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                  hide={props.onHide}
+                  type={type}
+                  formData={props?.formData}
+                  editVideo={editVideo}
+                  setOpenVideo={setOpenVideo}
+                  reverseType={reverseType}
+                  playlistId={playlist?.id || undefined}
+                  submitForm={submitForm}
+                />
+              )}
+              {platform === 'Mydevice' && !editVideo && (
+                <H5PEditor
+                  h5pParams={
+                    props.editVideo.h5p
+                      ? props.editVideo.h5p
+                      : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/mp4"}]}}},"metadata":{"title":"${title}"}}`
+                  }
+                  h5pLib="H5P.InteractiveVideo 1.22"
                   hide={props.onHide}
                   type={type}
                   formData={props?.formData}

@@ -26,6 +26,7 @@ const AddActivity = (props) => {
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
   const [activeRadio, setActiveRadio] = useState('');
+  const organization = useSelector((state) => state.organization);
 
   const [title, setTitle] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
@@ -40,7 +41,7 @@ const AddActivity = (props) => {
 
   useEffect(()=> {
     if(!subjects) {
-      const result_sub = dispatch(getSubjects());
+      const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
       result_sub.then((data) => {
         setSubjects(data)
       });
@@ -49,7 +50,7 @@ const AddActivity = (props) => {
   
   useEffect(()=> {
     if(!educationLevels) {
-      const result_edu = dispatch(getEducationLevel());
+      const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
       result_edu.then((data) => {
         setEducationLevels(data)
       });
@@ -58,7 +59,7 @@ const AddActivity = (props) => {
 
   useEffect(()=> {    
     if(!authorTags) {
-      const result_tag = dispatch(getAuthorTag());
+      const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
       result_tag.then((data) => {
         setAuthorTags(data)
       });

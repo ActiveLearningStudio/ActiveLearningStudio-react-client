@@ -771,7 +771,11 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 // };
 
 export const getLayoutActivities = () => async (dispatch) => {
-  const { data } = await resourceService.getAllLayout();
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const { data } = await resourceService.getAllLayout(activeOrganization?.id);
   if (data) {
     dispatch({
       type: actionTypes.SET_LAYOUT_ACTIVITY,

@@ -20,6 +20,7 @@ export default function CreateEducationLevel(props) {
       initialValues={{
         name: editMode ? activeEdit?.name : '',
         order: editMode ? activeEdit?.order : '',
+        organization_id: organization?.activeOrganization?.id,
       }}
       validate={(values) => {
         const errors = {};
@@ -44,7 +45,7 @@ export default function CreateEducationLevel(props) {
             button: false,
           });
 
-          const result = adminapi.updateEducationLevel(activeEdit?.id, values);
+          const result = adminapi.updateEducationLevel(organization?.activeOrganization?.id, activeEdit?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -54,7 +55,7 @@ export default function CreateEducationLevel(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getEducationLevel(1));
+            dispatch(getEducationLevel(organization?.activeOrganization?.id, 1));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -73,7 +74,7 @@ export default function CreateEducationLevel(props) {
             },
             button: false,
           });
-          const result = adminapi.createEducationLevel(values);
+          const result = adminapi.createEducationLevel(organization?.activeOrganization?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -83,7 +84,7 @@ export default function CreateEducationLevel(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getEducationLevel(1));
+            dispatch(getEducationLevel(organization?.activeOrganization?.id, 1));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_CREATED_RESOURCE,

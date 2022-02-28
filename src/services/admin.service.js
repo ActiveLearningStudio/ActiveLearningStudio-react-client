@@ -321,128 +321,128 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubjects = (page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+const getSubjects = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const createSubject = (values) => httpService
-  .post(`${apiVersion}/subjects`, values)
+const createSubject = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/subjects`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateSubject = (id, values) => httpService
-  .put(`${apiVersion}/subjects/${id}`, values)
+const updateSubject = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/subjects/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const deleteSubject = (id) => httpService
-  .remove(`${apiVersion}/subjects/${id}`)
+const deleteSubject = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/subjects/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const getEducationLevel = (page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+const getEducationLevel = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const createEducationLevel = (values) => httpService
-  .post(`${apiVersion}/education-levels`, values)
+const createEducationLevel = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/education-levels`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateEducationLevel = (id, values) => httpService
-  .put(`${apiVersion}/education-levels/${id}`, values)
+const updateEducationLevel = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/education-levels/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const deleteEducationLevel = (id) => httpService
-  .remove(`${apiVersion}/education-levels/${id}`)
+const deleteEducationLevel = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/education-levels/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const getAuthorTag = (page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+const getAuthorTag = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const createAuthorTag = (values) => httpService
-  .post(`${apiVersion}/author-tags`, values)
+const createAuthorTag = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/author-tags`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateAuthorTag = (id, values) => httpService
-  .put(`${apiVersion}/author-tags/${id}`, values)
+const updateAuthorTag = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/author-tags/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const deleteAuthorTag = (id) => httpService
-  .remove(`${apiVersion}/author-tags/${id}`)
+const deleteAuthorTag = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/author-tags/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-  const getActivityLayout = (page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/activity-layouts${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  const getActivityLayout = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/activity-layouts${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
   });
 
-const createActivityLayout = (values) => httpService
-  .post(`${apiVersion}/activity-layouts`, values)
+const createActivityLayout = (subOrgId, values) => httpService
+  .post(`${apiVersion}/suborganizations/${subOrgId}/activity-layouts`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const updateActivityLayout = (id, values) => httpService
-  .put(`${apiVersion}/activity-layouts/${id}`, values)
+const updateActivityLayout = (subOrgId, id, values) => httpService
+  .put(`${apiVersion}/suborganizations/${subOrgId}/activity-layouts/${id}`, values)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
   });
 
-const deleteActivityLayout = (id) => httpService
-  .remove(`${apiVersion}/activity-layouts/${id}`)
+const deleteActivityLayout = (subOrgId, id) => httpService
+  .remove(`${apiVersion}/suborganizations/${subOrgId}/activity-layouts/${id}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
