@@ -243,6 +243,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       content: 'place_holder',
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
+      author_tag_id: metadata?.author_tag_id,
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
@@ -472,6 +473,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
           title: response.activity.title,
           subjectId: response.activity.subject_id,
           educationLevelId: response.activity.education_level_id,
+          authorTagId: response.activity.author_tag_id,
           thumb_url: response.activity.thumb_url,
           type: response.activity.type,
         };
@@ -520,6 +522,7 @@ export const createResourceByH5PUploadAction = (
         content: 'place_holder',
         subject_id: metadata.subject_id,
         education_level_id: metadata.education_level_id,
+        author_tag_id: metadata.author_tag_id,
         description: metadata?.description || undefined,
       };
 
@@ -582,6 +585,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     subject_id: metadata.subject_id,
     description: metadata?.description || undefined,
     education_level_id: metadata.education_level_id,
+    author_tag_id: metadata.author_tag_id,
     source_type: metadata?.source_type || undefined,
     source_url: metadata?.source_url || undefined,
   };
@@ -653,6 +657,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     content: 'place_holder',
     subject_id: metadata.subject_id,
     education_level_id: metadata.education_level_id,
+    author_tag_id: metadata.author_tag_id,
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
