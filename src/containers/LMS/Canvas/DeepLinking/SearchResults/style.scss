@@ -10,35 +10,12 @@
 }
 
 .results {
-  .nav-tabs {
-    border-bottom: 1px solid #084892;
-
-    .nav-link {
-      border: 1px solid transparent;
-      border-top-left-radius: 0.25rem;
-      border-top-right-radius: 0.25rem;
-    }
-    a {
-      margin-right: 10px;
-      color: #fff;
-      text-decoration: none;
-      background-color: #084892;
-    }
-    .nav-link.active {
-      color: #084892;
-      background-color: #fff;
-      border-color: #084892 #084892 transparent;
-    }
-  }
-}
-.search-heading {
-  width: 180px;
-  color: rgb(8, 72, 146);
-  border-bottom: 2.5px solid $curriki-main-yellow;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 
 .back-action {
-  color: $fun-blue-1;
+  color: $curriki-main-blue;
 }
 
 .pagination-buttons {
