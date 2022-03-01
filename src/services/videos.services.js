@@ -36,11 +36,22 @@ const addVideo = (orgId, values) =>
       Promise.reject(err.response.data);
     });
 
+const uploadvideoDirect = (files) =>
+  httpService
+    .post(`/${apiVersion}/h5p/ajax/files`, files, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
 const brightCMS = (orgId) =>
   httpService
     .get(`/${apiVersion}/brightcove/suborganization/${orgId}/get-bc-account-list`)
     .then(({ data }) => data)
     .catch((err) => {
+      errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
 
@@ -119,6 +130,7 @@ const getKalturaVideos = (data) =>
     .post(`/${apiVersion}/kaltura/get-media-entry-list`, data)
     .then(({ data }) => data)
     .catch((err) => {
+      errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
 
@@ -169,4 +181,5 @@ export default {
   uploadCSSFile,
   allBrightCoveSearch,
   getKalturaVideos,
+  uploadvideoDirect,
 };

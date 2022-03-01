@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import config from 'config';
 import Swal from 'sweetalert2';
 import httpService from './http.service';
@@ -276,8 +277,8 @@ const deleteLtiTool = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const searchLtiTool = (subOrgId, search, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+const searchLtiTool = (subOrgId, query, page) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}${query ? `&query=${query.replace(/#/, '%23')}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -407,6 +408,16 @@ const deleteAuthorTag = (id) => httpService
     return Promise.reject();
   });
 
+// eslint-disable-next-line camelcase
+const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, order_by_type) => httpService
+  // eslint-disable-next-line camelcase
+  .get(`${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${order_by_column ? `&order_by_column=${order_by_column}` : ''}${order_by_type ? `&order_by_type=${order_by_type}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    errorCatcher(err.response.data);
+    return Promise.reject();
+  });
+
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -460,4 +471,5 @@ export default {
   createAuthorTag,
   updateAuthorTag,
   deleteAuthorTag,
+  teamsActionAdminPanel,
 };

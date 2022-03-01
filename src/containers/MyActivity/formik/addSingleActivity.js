@@ -132,7 +132,15 @@ const ActivityLayout = (props) => {
                     image={data.image}
                     text={data.title}
                     className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
-                    onClick={() => setLayout(data)}
+                    onClick={() => {
+                      if (data?.title === 'Interactive Video') {
+                        setLayout(data)
+                        changeScreenHandler('addvideo')
+                      } else {
+                        setLayout(data)
+                      }
+
+                    }}
                     btnTextOne="Demo"
                     btnTextTwo="Video"
                     setCurrentActivity={setCurrentActivity}

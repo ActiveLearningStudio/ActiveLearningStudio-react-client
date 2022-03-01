@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
-import { getAllOrganization } from 'store/actions/organization';
+import { getOrgsForDeepLinkingAction } from 'store/actions/organization';
 import './style.scss';
 
 const SearchForm = (props) => {
@@ -22,7 +22,7 @@ const SearchForm = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    getOrgs();
+    getOrgs(userEmail, match?.params?.ltiClientId);
     updateParams({
       ...params,
       ltiClientId: match.params.ltiClientId,
@@ -86,7 +86,7 @@ const SearchForm = (props) => {
               </div>
             </div>
           </div>
-          { params.private !== '1' && (
+          {params.private !== '1' && (
             <div className="row">
               <div className="col">
                 <div className="form-group">
@@ -132,7 +132,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   showResults: () => dispatch(showResultsAction()),
   updateParams: (params) => dispatch(updateParamsAction(params)),
-  getOrgs: () => dispatch(getAllOrganization()),
+  getOrgs: (userEmail, ltiClientId) => dispatch(getOrgsForDeepLinkingAction(userEmail, ltiClientId)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SearchForm));

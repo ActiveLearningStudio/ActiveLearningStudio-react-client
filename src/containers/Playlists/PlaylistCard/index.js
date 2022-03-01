@@ -184,6 +184,8 @@ class PlaylistCard extends React.Component {
                       this.props.clear();
                       this.props.openActivity(playlist, projectId);
                       clearSearchform();
+
+                      this.props.clearEditState();
                     }}
                   >
                     <img src={UploadLogo} alt="logo" className="mr-2" />
@@ -224,6 +226,11 @@ const mapDispatchToProps = (dispatch) => ({
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
+  clearEditState: () =>
+    dispatch({
+      type: 'SET_ACTIVE_VIDEO_SCREEN',
+      payload: '',
+    }),
   openActivity: (playlist, project) =>
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,

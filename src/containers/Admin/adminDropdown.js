@@ -24,6 +24,7 @@ import { deleteActivityItem, deleteActivityType, loadResourceTypesAction, select
 import * as actionTypes from 'store/actionTypes';
 
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 
 const AdminDropdown = (props) => {
   const {
@@ -38,6 +39,7 @@ const AdminDropdown = (props) => {
     setAllProjectTab,
     setrowData,
     setModalShow,
+    setModalShowTeam,
     setActivePageNumber,
     // text,
     // iconColor,
@@ -833,8 +835,11 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
-                    Swal.showLoading();
-                    adminService.cloneLtiTool(activeOrganization?.id, row?.id);
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lti_tool'));
                   }}
                 >
                   <img src={Clone} alt="Preview" className="menue-img" />
@@ -945,7 +950,43 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
             </>
           )}
-
+          {type === 'Teams' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  setModalShowTeam(true);
+                  dispatch({
+                    type: actionTypes.UPDATE_SELECTED_TEAM,
+                    payload: row,
+                  })
+                  dispatch(getTeamPermission(activeOrganization?.id, row?.id));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    html: '<p>All Projects and associated data will be deleted. You won&apos;t be able to undo this.</p>',
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete it',
+                    denyButtonText: 'No',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteTeamAction(row?.id));
+                    }
+                  });
+                }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
           {/* <Dropdown.Item>
           <img src={Edit} alt="Preview" className="menue-img" />
           Edit

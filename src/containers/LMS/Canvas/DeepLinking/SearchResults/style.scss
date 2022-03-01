@@ -10,12 +10,85 @@
 }
 
 .results {
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-bottom: 18px;
+  .nav-tabs {
+    border-bottom: 1px solid #084892;
+    margin: 0 0 45px 0;
+    .nav-link {
+      border: 1px solid transparent;
+      border-top-left-radius: 0.25rem;
+      border-top-right-radius: 0.25rem;
+    }
+    a {
+      margin-right: 10px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #084892;
+    }
+    .nav-link.active {
+      color: #084892;
+      background-color: #fff;
+      border-color: #084892 #084892 transparent;
+    }
+  }
+  .Playlists-container {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #b5b5b5;
+    .main-flex {
+      display: flex;
+      justify-content: space-between;
+      .img-cont {
+        display: flex;
+        .Playlists-img {
+          width: 80px;
+          height: 70px;
+
+          & img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .Playlists-title {
+          color: #084892;
+          margin-left: 18px;
+        }
+      }
+      .ext-right {
+        .dropdown {
+          .dropdown-toggle::after {
+            margin-left: 0;
+            vertical-align: 0;
+            content: '';
+            border-top: none;
+            border-right: none;
+            border-bottom: 0;
+            border-left: none;
+          }
+
+          .actions-button {
+            background: #fff !important;
+          }
+          .dropdown-menu.show .dropdown-item {
+            color: rgb(8, 72, 146);
+
+            & svg {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.search-heading {
+  width: 180px;
+  color: rgb(8, 72, 146);
+  border-bottom: 2.5px solid $curriki-main-yellow;
 }
 
 .back-action {
-  color: $curriki-main-blue;
+  color: $fun-blue-1;
 }
 
 .pagination-buttons {

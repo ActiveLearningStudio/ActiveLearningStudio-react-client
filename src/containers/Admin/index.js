@@ -29,6 +29,7 @@ import editicon from 'assets/images/edit-icon.png';
 import CreateSubject from './formik/createSubject';
 import CreateEducationLevel from './formik/createEducationLevel';
 import CreateAuthorTag from './formik/createAuthorTag';
+import EditTeamModel from './model/EditTeamModel';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -41,6 +42,7 @@ function AdminPanel({ showSSO }) {
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
   useEffect(() => {
@@ -160,7 +162,13 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-
+                  {
+                    <Tab eventKey="Teams" title="Teams">
+                      <div className="module-content">
+                        <Pills type="Teams" modules={['All teams']} subType="All teams" setModalShowTeam={setModalShowTeam} />
+                      </div>
+                    </Tab>
+                  }
                   {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
@@ -194,7 +202,7 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  {!currentOrganization?.parent && (
+                  {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
                     <Tab eventKey="DefaultSso" title="Default SSO Integrations">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
@@ -385,6 +393,21 @@ function AdminPanel({ showSSO }) {
             </div>
           )}
 
+          {activeForm === 'clone_lti_tool' && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLtiTool editMode clone />
+              </div>
+            </div>
+          )}
+
           {(activeForm === 'add_lti_tool' || activeForm === 'edit_lti_tool') && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
@@ -408,6 +431,7 @@ function AdminPanel({ showSSO }) {
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}
           />
+          <EditTeamModel show={modalShowTeam} onHide={() => setModalShowTeam(false)} activePage={activePageNumber} activeOrganization={activeOrganization} showFooter={true} />
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>

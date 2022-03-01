@@ -62,7 +62,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^2.3.1",
     "styled-components": "^5.1.0",
-    "sweetalert2": "^9.17.1",
+    "sweetalert2": "^11.4.0",
     "tincanjs": "^0.50.0",
     "typescript": "^4.0.2",
     "validator": "^12.2.0",

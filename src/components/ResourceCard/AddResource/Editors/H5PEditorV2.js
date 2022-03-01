@@ -29,6 +29,7 @@ const H5PEditor = (props) => {
     accountId,
     settingId,
     reverseType,
+    submitForm,
   } = props;
 
   const uploadFile = useRef();
@@ -43,6 +44,9 @@ const H5PEditor = (props) => {
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
   };
+  useEffect(() => {
+    submitForm.current = submitResource;
+  }, [formData]);
 
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
@@ -59,12 +63,13 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
+    console.log('formData', formData);
     const { metadata } = parameters;
-    if (metadata.title !== undefined) {
+    if (metadata?.title !== undefined) {
       if (editActivity) {
-        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
+        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
       } else if (editVideo) {
-        await dispatch(edith5pVideoActivity(editVideo.id, formData));
+        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
         setOpenVideo(false);
       } else {
         const payload = {
@@ -72,13 +77,14 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide, reverseType);
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
     // try {
+
     if (payload.submitAction === 'create') {
       await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
       if (type === 'videoModal') {
@@ -169,13 +175,13 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your Changes will be lost.',
+                    text: 'All changes will be lost if you don’t save them',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, Close it!',
+                    allowOutsideClick: false,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       hide();

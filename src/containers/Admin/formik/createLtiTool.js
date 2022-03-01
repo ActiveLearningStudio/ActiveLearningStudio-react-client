@@ -62,7 +62,7 @@ export default function CreateLtiTool(prop) {
         onSubmit={async (values) => {
           if (editMode && !clone) {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Updating LTI Tool ...',
               allowOutsideClick: false,
@@ -76,7 +76,7 @@ export default function CreateLtiTool(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LTI tool edited successfully',
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',
@@ -86,12 +86,12 @@ export default function CreateLtiTool(prop) {
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: 'LTI tool edited successfully',
+                payload: res?.data,
               });
             });
           } else {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Creating new LTI Tool...',
 
@@ -157,14 +157,6 @@ export default function CreateLtiTool(prop) {
                   </div>
 
                   <div className="form-group-create">
-                    <h3>LTI version</h3>
-                    <select name="lti_version" onChange={handleChange} onBlur={handleBlur} value={values.lti_version}>
-                      <option defaultValue="LTI-1p0" value="LTI-1p0">LTI-1p0</option>
-                      <option value="LTI-1p3">LTI-1p3</option>
-                    </select>
-                    <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
-                  </div>
-                  <div className="form-group-create">
                     <h3>Tool type</h3>
                     <div className="filter-dropdown-tooltype">
                       <Dropdown>
@@ -187,6 +179,16 @@ export default function CreateLtiTool(prop) {
                     </div>
 
                   </div>
+
+                  <div className="form-group-create">
+                    <h3>LTI version</h3>
+                    <select name="lti_version" onChange={handleChange} onBlur={handleBlur} value={values.lti_version}>
+                      <option defaultValue="LTI-1p0" value="LTI-1p0">LTI-1p0</option>
+                      <option value="LTI-1p3">LTI-1p3</option>
+                    </select>
+                    <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
+                  </div>
+                  
                   <div className="form-group-create">
                     <h3>Consumer Key</h3>
                     <input type="text" name="tool_consumer_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_consumer_key} />

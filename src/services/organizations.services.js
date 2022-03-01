@@ -171,6 +171,11 @@ const searchOrganization = (searchKeyword) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getOrgsForDeepLinking = (userEmail, ltiClientId) => httpService
+  .get(`/${apiVersion}/go/lms/organizations?userEmail=${userEmail}&ltiClientId=${ltiClientId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   getOrganization,
@@ -197,4 +202,5 @@ export default {
   updateRole,
   searchUserInView,
   searchOrganization,
+  getOrgsForDeepLinking,
 };

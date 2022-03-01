@@ -12,7 +12,6 @@ import UploadImg from '../../assets/images/upload1.png';
 
 const UploadFile = ({ className, formRef }) => {
   const { selectedLayout, playlist, project } = useSelector((state) => state.myactivities);
-  console.log('formRef', formRef);
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const currikiUtility = classNames('curriki-utility-uploadfile', className);

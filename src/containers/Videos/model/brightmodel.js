@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos } from 'store/actions/videos';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platform, showSidebar } = props;
+  const { platform, showSidebar, setSelectedVideoIdKaltura } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [cmsVideo, setcmsVideo] = useState(null);
@@ -34,7 +34,12 @@ const BrightcoveModel = (props) => {
       } else if (platform == 'Kaltura') {
         setActiveCms(null);
         const result = await dispatch(getKalturaVideos());
-        setkaltura(result);
+        if (result?.errors) {
+          setkaltura([]);
+          setError('No record Found');
+        } else {
+          setkaltura(result);
+        }
       }
     })();
   }, [platform]);
@@ -129,8 +134,14 @@ const BrightcoveModel = (props) => {
                                 });
                             } else if (platform == 'Kaltura') {
                               setkaltura(null);
+                              setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos(searchId));
-                              setkaltura(result);
+                              if (result.totalCount) {
+                                setkaltura(result);
+                              } else {
+                                setkaltura([]);
+                                setError('No record Found');
+                              }
                             }
                           }}
                         >
@@ -145,7 +156,7 @@ const BrightcoveModel = (props) => {
                               setcmsVideo(null);
                               try {
                                 const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
-                                console.log(videosResult);
+
                                 setTotalCount(videosResult.meta?.count);
                                 setcmsVideo(videosResult.data);
                               } catch (err) {
@@ -156,6 +167,7 @@ const BrightcoveModel = (props) => {
                               }
                             } else if (platform == 'Kaltura') {
                               setkaltura(null);
+                              setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos());
                               setkaltura(result);
                             }
@@ -194,6 +206,7 @@ const BrightcoveModel = (props) => {
                                               name="video"
                                               onChange={() => {
                                                 props.setSelectedVideoId(data.id);
+                                                selectedVideoIdKaltura;
                                               }}
                                               type="radio"
                                             />
@@ -259,24 +272,28 @@ const BrightcoveModel = (props) => {
                               <tbody>
                                 {kaltura ? (
                                   kaltura.objects?.length > 0 ? (
-                                    kaltura?.objects?.map((data) => (
-                                      <tr>
-                                        <td className="firstname">
-                                          <input
-                                            name="video"
-                                            onChange={() => {
-                                              props.setSelectedVideoId(data.dataUrl);
-                                            }}
-                                            type="radio"
-                                          />
-                                          <img src={data?.thumbnailUrl} className="image-size" />
-                                          <span>{data.name}</span>
-                                        </td>
-                                        <td>{data.createdAt}</td>
-                                        <td>{data.id}</td>
-                                        <td>{data.updatedAt}</td>
-                                      </tr>
-                                    ))
+                                    kaltura?.objects?.map((data) => {
+                                      var created = new Date(data.createdAt);
+                                      var update = new Date(data.updatedAt);
+                                      return (
+                                        <tr>
+                                          <td className="firstname">
+                                            <input
+                                              name="video"
+                                              onChange={() => {
+                                                setSelectedVideoIdKaltura(data.dataUrl);
+                                              }}
+                                              type="radio"
+                                            />
+                                            <img src={data?.thumbnailUrl} className="image-size" />
+                                            <span>{data.name}</span>
+                                          </td>
+                                          <td>{created?.toLocaleDateString()}</td>
+                                          <td>{data.id}</td>
+                                          <td>{update?.toLocaleDateString()}</td>
+                                        </tr>
+                                      );
+                                    })
                                   ) : (
                                     <tr>
                                       <td colSpan="4">
@@ -306,7 +323,7 @@ const BrightcoveModel = (props) => {
                                 totalItemsCount={kaltura?.totalCount}
                                 onChange={async (e) => {
                                   setPaginationCounter(e);
-                                  const result = await dispatch(getKalturaVideos('', e, 2));
+                                  const result = await dispatch(getKalturaVideos('', e, 6));
                                   setkaltura(result);
                                 }}
                               />

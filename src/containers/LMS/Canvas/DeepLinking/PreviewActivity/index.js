@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -8,13 +9,7 @@ import gifloader from 'assets/images/dotsloader.gif';
 import './style.scss';
 
 const PreviewActivity = (props) => {
-  const {
-    activity,
-    closePreview,
-    h5pSettings,
-    getH5pSettings,
-    match,
-  } = props;
+  const { activity, closePreview, h5pSettings, getH5pSettings, match } = props;
 
   // Init
   useEffect(() => {
@@ -28,9 +23,7 @@ const PreviewActivity = (props) => {
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
-    const newCss = h5pSettings.h5p.settings.core.styles.concat(
-      h5pSettings.h5p.settings.loadedCss,
-    );
+    const newCss = h5pSettings.h5p.settings.core.styles.concat(h5pSettings.h5p.settings.loadedCss);
 
     Promise.all(
       newCss.map((value) => {
@@ -40,12 +33,10 @@ const PreviewActivity = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      }),
+      })
     );
 
-    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(
-      h5pSettings.h5p.settings.loadedJs,
-    );
+    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
 
     newScripts.forEach((value) => {
       const script = document.createElement('script');
@@ -56,11 +47,7 @@ const PreviewActivity = (props) => {
   }, [h5pSettings]);
 
   const addToLMS = () => {
-    const finalUrl = `${decodeURIComponent(
-      match.params.redirectUrl,
-    )}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${
-      activity.id
-    }`;
+    const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
     Swal.fire({
       html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
       showCancelButton: true,
@@ -77,14 +64,18 @@ const PreviewActivity = (props) => {
   return (
     <div className="activity-wrapper mt-2">
       <div className="row mb-2">
-        <div className="col">
-          <h2>
-            {`Previewing: ${activity.title}`}
-          </h2>
+        <div className="col ">
+          <h5 style={{ color: 'rgb(70,70,70)' }}>
+            Previewing:<span style={{ color: ' rgb(8, 72, 146)' }}> {activity.title}</span>
+          </h5>
         </div>
         <div className="col text-right">
-          <button type="button" className="btn close-preview-button m-1" onClick={addToLMS}>Add to Course</button>
-          <button type="button" className="btn close-preview-button m-1" onClick={closePreview}>Close Preview</button>
+          <button type="button" className="btn close-preview-button m-1" onClick={addToLMS}>
+            Add to Course
+          </button>
+          <button type="button" className="btn close-preview-button m-1" onClick={closePreview}>
+            Close Preview
+          </button>
         </div>
       </div>
       <div className="row">
@@ -94,9 +85,7 @@ const PreviewActivity = (props) => {
               <img style={{ width: '50px' }} src={gifloader} alt="" />
             </div>
           )}
-          {h5pSettings !== null && (
-            <div id="curriki-h5p-wrapper" />
-          )}
+          {h5pSettings !== null && <div id="curriki-h5p-wrapper" />}
         </div>
       </div>
     </div>

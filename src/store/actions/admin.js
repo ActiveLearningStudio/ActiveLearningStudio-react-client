@@ -221,3 +221,12 @@ export const getAuthorTag = (page, column = '', orderBy = '') => async (dispatch
   });
   return result;
 };
+
+export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') => async (dispatch) => {
+  const result = await adminService.teamsActionAdminPanel(subOrgId, query, page, size, order_by_column, order_by_type.toLowerCase());
+  dispatch({
+    type: actionTypes.GET_TEAMS_ADMIN,
+    payload: result,
+  });
+  return result;
+};
