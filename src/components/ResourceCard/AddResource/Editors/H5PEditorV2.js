@@ -67,9 +67,9 @@ const H5PEditor = (props) => {
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
-        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
+        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
       } else if (editVideo) {
-        await dispatch(edith5pVideoActivity(editVideo.id, formData));
+        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
         setOpenVideo(false);
       } else {
         const payload = {
@@ -77,13 +77,14 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide, reverseType);
+        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
   const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
     // try {
+
     if (payload.submitAction === 'create') {
       await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
       if (type === 'videoModal') {
