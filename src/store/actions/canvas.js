@@ -91,11 +91,6 @@ export const showSearchProjectAction = (project) => async (dispatch) => {
   });
 };
 
-export const showSearchProjectActionPlaylist = (project) => async () => {
-  const fullProject = await canvasService.getProject(project.id);
-  return fullProject;
-};
-
 export const showSearchPlaylistAction = (playlist) => async (dispatch) => {
   dispatch({
     type: SHOW_SEARCH_PLAYLIST,
