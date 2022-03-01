@@ -44,7 +44,7 @@ const SearchResults = (props) => {
           <h2>Search Results</h2>
         </div>
         <div className="col text-right">
-          <button type="button" className="btn back-action" onClick={backToSearch}>
+          <button type="button" className="btn back-action" onClick={() => backToSearch()}>
             <FontAwesomeIcon icon="chevron-left" className="action-icon" />
             Back to Search
           </button>
