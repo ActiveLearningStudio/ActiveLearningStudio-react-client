@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .actions .dropdown-toggle:after {
   content: none;
@@ -12,6 +12,7 @@
 .results {
   padding-top: 2em;
   padding-bottom: 2em;
+  overflow-y: auto;
 }
 
 .back-action {
