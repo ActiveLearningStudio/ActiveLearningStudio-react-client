@@ -56,7 +56,7 @@ const PreviewLayoutModel = (props) => {
 
       setEditH5p(JSON.stringify(replaceH5p));
     } else {
-      if (activity?.h5) {
+      if (activity?.h5p) {
         replaceH5p = JSON.parse(activity?.h5p);
         replaceH5p.metadata.title = formData?.title;
         setEditH5p(JSON.stringify(replaceH5p));
@@ -249,7 +249,7 @@ const PreviewLayoutModel = (props) => {
                 payload={''}
                 formData={props?.formData}
                 projectId={project}
-                h5pParams={editVideo ? edith5p : `{\"params\":{},\"metadata\":{"title":"${props?.formData?.title}"}}`}
+                h5pParams={edith5p ? edith5p : `{\"params\":{},\"metadata\":{"title":"${props?.formData?.title}"}}`}
                 hide={props.onHide}
                 editActivity={activity ? true : false}
                 activityId={activity?.id}
