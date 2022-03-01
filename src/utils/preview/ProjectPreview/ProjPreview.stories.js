@@ -5,7 +5,7 @@ import ProjPreviewimg from "./projPreview.png";
 import { ProjPreview } from "./ProjPreview";
 import previewShared from "./previewShared.png";
 import PreviewSnippet from "!!raw-loader!../../../containers/Preview/ProjectPreview/index";
-import SharedSnippet from "!!raw-loader!../../../containers/Preview/ProjectPreview/SecureProjectPreviewShared";
+import SharedSnippet from "!!raw-loader!../../../containers/Preview/ProjectPreview/ProjectPreviewShared";
 import SharedStore from "!!raw-loader!../../../store/actions/resource";
 import PreviewStyle from "!!raw-loader!../../../containers/Preview/ProjectPreview/style.scss";
 export default {
