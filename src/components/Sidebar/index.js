@@ -11,8 +11,10 @@ import foldericon from 'assets/images/svg/projectFolder.svg';
 import interactiveVideo from 'assets/images/svg/Interactivevideos.svg';
 import { allSidebarProjects } from 'store/actions/project';
 import instanceadmin from 'assets/images/Instanceadmin.svg';
-
+import { clearSearch } from 'store/actions/search';
 import './style.scss';
+import { clearFormData } from 'store/actions/playlist';
+
 import { clearTeamPermissions } from 'store/actions/team';
 
 const PROJECTS = 'projects';
@@ -53,12 +55,26 @@ function Sidebar(props) {
   //     dispatch(allSidebarProjects());
   //   }
   // }, [allState.sidebar.isLoaded, organization.activeOrganization, dispatch]);
-
+  const clearStatesOnSidebarClick = () => {
+    dispatch(clearFormData());
+    dispatch(clearSearch());
+    dispatch({
+      type: 'SET_ACTIVE_VIDEO_SCREEN',
+      payload: '',
+    });
+    dispatch({
+      type: "SET_ACTIVE_ACTIVITY_SCREEN",
+      payload: "",
+    });
+  };
   return (
     <aside className="sidebar-all">
       {permission?.Project?.includes('project:view') && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => dispatch(clearTeamPermissions())}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}`} onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions())
+          }}>
             <div className="row-sidebar">
               <img src={foldericon} alt="" />
               <div className="sidebar-headings">My Projects</div>
@@ -69,7 +85,10 @@ function Sidebar(props) {
       {/* Interactive videos */}
       {permission?.Video?.includes('video:view') && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/video`} onClick={() => dispatch(clearTeamPermissions())}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/video`} onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions());
+          }}>
             <div className="row-sidebar">
               <img src={interactiveVideo} alt="" />
               <div className="sidebar-headings">My Interactive videos</div>
@@ -79,7 +98,7 @@ function Sidebar(props) {
       )}
       {permission?.Team?.includes('team:view') && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/teams`} onClick={() => clearStatesOnSidebarClick()}>
             <div className="row-sidebar">
               <img src={teamicon} alt="" />
               <div className="sidebar-headings">Teams</div>
@@ -89,7 +108,10 @@ function Sidebar(props) {
       )}
       {permission?.Organization?.length && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => dispatch(clearTeamPermissions())}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/admin`} onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions())
+          }}>
             <div className="row-sidebar">
               <img src={administrate} alt="" />
               <div className="sidebar-headings">Admin Panel</div>
@@ -100,7 +122,10 @@ function Sidebar(props) {
 
       {!currentOrganization?.parent && permission.activeRole?.includes('admin') && (
         <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instance-admin`} onClick={() => dispatch(clearTeamPermissions())}>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/instance-admin`} onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions())
+          }}>
             <div className="row-sidebar">
               <img src={instanceadmin} alt="" />
               <div className="sidebar-headings">Instance Admin</div>
