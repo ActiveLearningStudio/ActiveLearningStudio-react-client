@@ -252,7 +252,7 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
 };
 
 /* eslint-disable */
-export const loadMyReorderProjectsAction = (projectDivider) => async () => {
+export const loadMyReorderProjectsAction = (projectId, projectDivider) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   const reorderProject = [];
@@ -267,8 +267,13 @@ export const loadMyReorderProjectsAction = (projectDivider) => async () => {
       reorderIndex = reorderIndex + 1;
     });
   });
-
-  return await projectService.getReorderAll(reorderProject, activeOrganization?.id);
+  const choosenProject = reorderProject.filter(data => {
+    if (data?.id == projectId) {
+      return data;
+    }
+  });
+  await projectService.getReorderAll(projectId, activeOrganization?.id, choosenProject[0]?.order);
+  dispatch(loadMyProjectsAction());
 };
 /* eslint-enable */
 
