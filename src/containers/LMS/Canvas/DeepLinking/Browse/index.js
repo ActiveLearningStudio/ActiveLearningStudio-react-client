@@ -9,11 +9,7 @@ import gifloader from 'assets/images/dotsloader.gif';
 // import './style.scss';
 
 const Browse = (props) => {
-  const {
-    match,
-    browse,
-    browseResults,
-  } = props;
+  const { match, browse, browseResults } = props;
 
   // Init
   useEffect(() => {
@@ -38,14 +34,8 @@ const Browse = (props) => {
             </div>
           </div>
         )}
-        {browseResults !== null && browseResults.length === 0 && (
-          <Alert variant="warning">
-            No projects found.
-          </Alert>
-        )}
-        {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => (
-          <Project project={project} key={project.id} />
-        ))}
+        {browseResults !== null && browseResults.length === 0 && <Alert variant="warning">No projects found.</Alert>}
+        {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
       </div>
     </div>
   );

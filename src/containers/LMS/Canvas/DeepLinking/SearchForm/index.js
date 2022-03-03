@@ -1,21 +1,18 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
+import SearchImg from '../../../../../assets/images/Search.svg';
+import Arrow from '../../../../../assets/images/arrow-right.svg';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
 import { getOrgsForDeepLinkingAction } from 'store/actions/organization';
+import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
 import './style.scss';
 
 const SearchForm = (props) => {
-  const {
-    match,
-    showResults,
-    params,
-    orgs,
-    updateParams,
-    getOrgs,
-  } = props;
+  const { match, showResults, params, orgs, updateParams, getOrgs } = props;
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
@@ -42,72 +39,137 @@ const SearchForm = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  console.log(params);
   return (
     <form onSubmit={onSubmit} className="search-form">
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">
-            <input type="text" className="form-control" placeholder="Search Phrase" name="query" onChange={fieldChanged} />
+            <label>Search *</label>
+            <input type="text" className="form-control" name="query" onChange={fieldChanged} />
           </div>
         </div>
       </div>
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <select className="form-control" name="private" onChange={fieldChanged} defaultValue="0">
-              <option value="0">Public Activities</option>
-              <option value="1">Private Activities</option>
+            <label>Shared / Private activities</label>
+            <select className="form-control" name="private" onChange={fieldChanged}>
+              <option className="option-1">Select all</option>
+              <option value="0">Shared</option>
+              <option value="1">Private</option>
             </select>
           </div>
         </div>
       </div>
-      {advanced && (
-        <div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <select className="form-control" name="org" onChange={fieldChanged} defaultValue="">
-                  <option value="" disabled>Organization</option>
-                  {orgs.map((org) => <option value={org.id} key={org.id}>{org.name}</option>)}
-                </select>
+      <div className="row">
+        <div className="col">
+          <div className="form-group">
+            <label>Subject area</label>
+            <select className="form-control" name="Subject" onChange={fieldChanged}>
+              <option value="" disabled selected hidden>
+                Subject Area
+              </option>
+              {subjects.map((data) => (
+                <option key={data.value} value={data.subject}>
+                  {data.subject}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col">
+          <div className="form-group">
+            <label>Education level</label>
+            <select className="form-control" name="Education" onChange={fieldChanged}>
+              <option value="" disabled selected hidden>
+                Education Level
+              </option>
+              {educationLevels.map((data) => (
+                <option key={data.value} value={data.name}>
+                  {data.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      {/* {params.gradeArray?.length > 0 && (
+        <div className="form-group wrap-keyword">
+          {values.gradeArray.map((data) => (
+            <div className="keywords-de" data-name={value}>
+              {data}
+              <div
+                className="iocns"
+                onClick={() => {
+                  // eslint-disable-next-line no-param-reassign
+                  values.gradeArray = values.gradeArray.filter((index) => index !== data);
+                  setValue(value + 1);
+                }}
+              >
+                <FontAwesomeIcon icon="times" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )} */}
+
+      <div className="row">
+        <div className="col">
+          <div className="form-group">
+            <select className="form-control" name="org" onChange={fieldChanged} defaultValue="">
+              <option value="" disabled>
+                Organization
+              </option>
+              {orgs.map((org) => (
+                <option value={org.id} key={org.id}>
+                  {org.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+      <p>Updated</p>
+      <div className="row">
+        <div className="col">
+          <div className="form-group">
+            <label>From</label>
+            <input type="date" className="form-control" placeholder="From Date" name="start" onChange={fieldChanged} />
+          </div>
+        </div>
+        <div className="col">
+          <div className="form-group">
+            <label>To</label>
+            <input type="date" className="form-control" placeholder="To Date" name="end" onChange={fieldChanged} />
+          </div>
+        </div>
+      </div>
+      {params.private !== '1' && (
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label>Author</label>
+              <div className="Author-input">
+                <input type="text" className="form-control" placeholder="" name="author" onChange={fieldChanged} />
+                <img src={Arrow} alt="logo" />
               </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <input type="date" className="form-control" placeholder="From Date" name="start" onChange={fieldChanged} />
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-group">
-                <input type="date" className="form-control" placeholder="To Date" name="end" onChange={fieldChanged} />
-              </div>
-            </div>
-          </div>
-          {params.private !== '1' && (
-            <div className="row">
-              <div className="col">
-                <div className="form-group">
-                  <input type="text" className="form-control" placeholder="Author" name="author" onChange={fieldChanged} />
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
-      <Form.Check
-        type="switch"
-        id="advancedSwitch"
-        label="Advanced Search"
-        checked={advanced}
-        onChange={() => setAdvanced(!advanced)}
-      />
+
+      {/*<Form.Check type="switch" id="advancedSwitch" label="Advanced Search" checked={advanced} onChange={() => setAdvanced(!advanced)} />*/}
       <div className="row">
         <div className="col text-right">
-          <div className="form-group">
-            <button className="btn btn-primary search-submit-button" type="submit">Search</button>
+          <div className="form-group search-btn">
+            <img src={SearchImg} alt="logo" />
+            <button className="btn btn-primary search-submit-button" type="submit">
+              Search
+            </button>
           </div>
         </div>
       </div>
