@@ -110,6 +110,7 @@ class LoginPage extends React.Component {
   render() {
     const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
+    console.log('domain', domain);
 
     return (
       <div className="auth-page">
@@ -117,7 +118,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title ">Welcome to Curriki</h1>
+              <h1 className="auth-title ">Welcome to {process.env.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -194,7 +195,7 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title">Welcome to Curriki</h1>
+              <h1 className="auth-title">Welcome to {process.env.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
             </div>
             <p className="auth-Pdescrip">Start making a difference in the way learning experiences are created.</p>
             <div className="content-section">
@@ -294,8 +295,17 @@ class LoginPage extends React.Component {
                         </>
                       ) : null}
                       <div className="termsandcondition">
-                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>Terms of Use</a> and{' '}
-                        <a target="_blank" href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}>Privacy Policy.</a>
+                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s{' '}
+                        <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                          Terms of Use
+                        </a>{' '}
+                        and{' '}
+                        <a
+                          target="_blank"
+                          href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
+                        >
+                          Privacy Policy.
+                        </a>
                       </div>
                     </form>
                   </div>
