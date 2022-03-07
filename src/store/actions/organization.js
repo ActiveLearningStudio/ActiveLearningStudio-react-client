@@ -26,11 +26,11 @@ export const getAllOrganization = () => async (dispatch) => {
   });
 };
 
-export const getOrgsForDeepLinkingAction = () => async (dispatch) => {
-  const result = await organization.getOrgsForDeepLinking();
+export const getOrgsForDeepLinkingAction = (userEmail, ltiClientId) => async (dispatch) => {
+  const result = await organization.getOrgsForDeepLinking(userEmail, ltiClientId);
   dispatch({
     type: actionTypes.ADD_ALL_ORG,
-    payload: result.data,
+    payload: result.organizations,
   });
 };
 

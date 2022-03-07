@@ -91,10 +91,9 @@ const fetchLmsDetails = (lms, projectId, settingId) => httpService
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getReorderAll = (projectData, subOrgId) => httpService
-  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/reorder`, {
-    projects: projectData,
-  }).then(({ data }) => data)
+const getReorderAll = (projectId, subOrgId, order) => httpService
+  // eslint-disable-next-line object-shorthand
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/order`, { order: order }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
 const lmsPublish = (lms, projectId, settingId, counter, playlistId) => httpService

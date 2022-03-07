@@ -14,7 +14,7 @@ const PreviewLayoutModel = (props) => {
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const { platform, videoId } = useSelector((state) => state.videos);
   const dispatch = useDispatch();
-  const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide } = props;
+  const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
 
@@ -25,10 +25,12 @@ const PreviewLayoutModel = (props) => {
   // }, []);
   const submitForm = useRef(null);
   useEffect(() => {
+    var replaceH5p;
     if (editVideo) {
-      var replaceH5p;
       if (type === 'videoModal' || editVideo?.h5p) {
         replaceH5p = JSON.parse(editVideo?.h5p);
+
+        replaceH5p.metadata.title = formData?.title;
         if (platform === 'Brightcove') {
           replaceH5p.params.interactiveVideo.video.brightcoveVideoID = videoId;
         } else if (platform === 'Youtube') {
@@ -40,7 +42,7 @@ const PreviewLayoutModel = (props) => {
         }
       } else {
         replaceH5p = JSON.parse(editVideo?.h5p_content?.parameters);
-
+        replaceH5p.metadata.title = formData.title;
         if (platform === 'Brightcove') {
           replaceH5p.interactiveVideo.video.brightcoveVideoID = videoId;
         } else if (platform === 'Youtube') {
@@ -53,8 +55,14 @@ const PreviewLayoutModel = (props) => {
       }
 
       setEditH5p(JSON.stringify(replaceH5p));
+    } else {
+      if (activity?.h5p) {
+        replaceH5p = JSON.parse(activity?.h5p);
+        replaceH5p.metadata.title = formData?.title;
+        setEditH5p(JSON.stringify(replaceH5p));
+      }
     }
-  }, [platform]);
+  }, [platform, formData, editVideo]);
   return (
     <Modal {...props} backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }}>
@@ -241,7 +249,7 @@ const PreviewLayoutModel = (props) => {
                 payload={''}
                 formData={props?.formData}
                 projectId={project}
-                h5pParams={editVideo ? edith5p : activity?.h5p}
+                h5pParams={edith5p ? edith5p : `{\"params\":{},\"metadata\":{"title":"${props?.formData?.title}"}}`}
                 hide={props.onHide}
                 editActivity={activity ? true : false}
                 activityId={activity?.id}

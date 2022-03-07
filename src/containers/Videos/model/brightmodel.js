@@ -206,7 +206,6 @@ const BrightcoveModel = (props) => {
                                               name="video"
                                               onChange={() => {
                                                 props.setSelectedVideoId(data.id);
-                                                selectedVideoIdKaltura;
                                               }}
                                               type="radio"
                                             />

@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import UploadImg from 'assets/images/upload1.png';
 import Swal from 'sweetalert2';
 import 'utils/uploadselectfile/uploadfile.scss';
-const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
   const [modalShow, setModalShow] = useState(false);
   const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
@@ -72,80 +72,10 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
             </div>
           )}
         </div>
-        <div className="add-video-form-tabs">
-          <Tabs
-            className="main-tabs"
-            activeKey={activeKey}
-            onSelect={(k) => {
-              setActiveKey(k);
-            }}
-            id="controlled-tab-example"
-          >
-            {!editVideo ? (
-              <Tab
-                eventKey="Mydevice"
-                title="My device"
-                onClick={() => {
-                  setplatform('Mydevice');
-                }}
-              >
-                {/* <UploadFile metadata={formData} formRef={formRef} /> */}
-                <FormikVideo
-                  setSelectedVideoId={setSelectedVideoIdUpload}
-                  showback={showback}
-                  setScreenStatus={setScreenStatus}
-                  changeScreenHandler={changeScreenHandler}
-                  uploadFile
-                  platform={platform}
-                />
-              </Tab>
-            ) : (
-              editVideo.source_type === 'Mydevice' && (
-                <Tab
-                  eventKey="Mydevice"
-                  title="My device"
-                  onClick={() => {
-                    setplatform('Mydevice');
-                  }}
-                  className={editVideo ? (editVideo.source_type !== 'Brightcove' ? 'hidevideotab' : 'showvideotab') : 'showvideotab'}
-                >
-                  {/* <UploadFile metadata={formData} formRef={formRef} /> */}
-                  <FormikVideo
-                    showback={showback}
-                    setScreenStatus={setScreenStatus}
-                    changeScreenHandler={changeScreenHandler}
-                    uploadFile
-                    platform={platform}
-                    editVideo={editVideo?.source_url}
-                    setSelectedVideoId={setSelectedVideoIdUpload}
-                  />
-                </Tab>
-              )
-            )}
-            {!editVideo ? (
-              <Tab
-                eventKey="Brightcove"
-                title="BrightCove"
-                onClick={() => {
-                  setplatform('Brightcove');
-                  setShowSidebar(true);
-                }}
-              >
-                <FormikVideo
-                  Input
-                  showback={showback}
-                  changeScreenHandler={changeScreenHandler}
-                  selectedVideoId={selectedVideoId}
-                  type={AddVideoImage}
-                  setScreenStatus={setScreenStatus}
-                  showBrowse
-                  setModalShow={setModalShow}
-                  platform={platform}
-                  placeholder={'Enter a video Id'}
-                />
-              </Tab>
-            ) : (
-              editVideo.source_type === 'Brightcove' && (
+        {hideallothers && (
+          <div className="add-video-form-tabs">
+            <Tabs className="main-tabs" defaultActiveKey="Brightcove" id="uncontrolled-tab-example">
+              {!editVideo ? (
                 <Tab
                   eventKey="Brightcove"
                   title="BrightCove"
@@ -164,33 +94,142 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     showBrowse
                     setModalShow={setModalShow}
                     platform={platform}
-                    editVideo={editVideo?.source_url}
                     placeholder={'Enter a video Id'}
                   />
                 </Tab>
-              )
-            )}
-            {!editVideo ? (
-              <Tab
-                eventKey="Youtube"
-                title="YouTube"
-                onClick={() => {
-                  setplatform('Youtube');
-                }}
-              >
-                <FormikVideo
-                  Input
-                  editVideo={editVideo?.brightcoveData?.videoId || ''}
-                  platform={platform}
-                  showback={showback}
-                  changeScreenHandler={changeScreenHandler}
-                  type={AddVideoTube}
-                  setScreenStatus={setScreenStatus}
-                  placeholder={'Enter a video url'}
-                />
-              </Tab>
-            ) : (
-              editVideo.source_type === 'Youtube' && (
+              ) : (
+                editVideo.source_type === 'Brightcove' && (
+                  <Tab
+                    eventKey="Brightcove"
+                    title="BrightCove"
+                    onClick={() => {
+                      setplatform('Brightcove');
+                      setShowSidebar(true);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      selectedVideoId={selectedVideoId}
+                      type={AddVideoImage}
+                      setScreenStatus={setScreenStatus}
+                      showBrowse
+                      setModalShow={setModalShow}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video Id'}
+                    />
+                  </Tab>
+                )
+              )}
+
+              {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
+    <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
+            </Tabs>
+            {editVideo && editVideo.source_type !== 'Brightcove' && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
+          </div>
+        )}
+        {!hideallothers && (
+          <div className="add-video-form-tabs">
+            <Tabs
+              className="main-tabs"
+              activeKey={activeKey}
+              onSelect={(k) => {
+                setActiveKey(k);
+              }}
+              id="controlled-tab-example"
+            >
+              {!editVideo ? (
+                <Tab
+                  eventKey="Mydevice"
+                  title="My device"
+                  onClick={() => {
+                    setplatform('Mydevice');
+                  }}
+                >
+                  {/* <UploadFile metadata={formData} formRef={formRef} /> */}
+                  <FormikVideo
+                    setSelectedVideoId={setSelectedVideoIdUpload}
+                    showback={showback}
+                    setScreenStatus={setScreenStatus}
+                    changeScreenHandler={changeScreenHandler}
+                    uploadFile
+                    platform={platform}
+                  />
+                </Tab>
+              ) : (
+                editVideo.source_type === 'Mydevice' && (
+                  <Tab
+                    eventKey="Mydevice"
+                    title="My device"
+                    onClick={() => {
+                      setplatform('Mydevice');
+                    }}
+                    className={editVideo ? (editVideo.source_type !== 'Brightcove' ? 'hidevideotab' : 'showvideotab') : 'showvideotab'}
+                  >
+                    {/* <UploadFile metadata={formData} formRef={formRef} /> */}
+                    <FormikVideo
+                      showback={showback}
+                      setScreenStatus={setScreenStatus}
+                      changeScreenHandler={changeScreenHandler}
+                      uploadFile
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      setSelectedVideoId={setSelectedVideoIdUpload}
+                    />
+                  </Tab>
+                )
+              )}
+              {!editVideo ? (
+                <Tab
+                  eventKey="Brightcove"
+                  title="BrightCove"
+                  onClick={() => {
+                    setplatform('Brightcove');
+                    setShowSidebar(true);
+                  }}
+                >
+                  <FormikVideo
+                    Input
+                    showback={showback}
+                    changeScreenHandler={changeScreenHandler}
+                    selectedVideoId={selectedVideoId}
+                    type={AddVideoImage}
+                    setScreenStatus={setScreenStatus}
+                    showBrowse
+                    setModalShow={setModalShow}
+                    platform={platform}
+                    placeholder={'Enter a video Id'}
+                  />
+                </Tab>
+              ) : (
+                editVideo.source_type === 'Brightcove' && (
+                  <Tab
+                    eventKey="Brightcove"
+                    title="BrightCove"
+                    onClick={() => {
+                      setplatform('Brightcove');
+                      setShowSidebar(true);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      selectedVideoId={selectedVideoId}
+                      type={AddVideoImage}
+                      setScreenStatus={setScreenStatus}
+                      showBrowse
+                      setModalShow={setModalShow}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video Id'}
+                    />
+                  </Tab>
+                )
+              )}
+              {!editVideo ? (
                 <Tab
                   eventKey="Youtube"
                   title="YouTube"
@@ -206,36 +245,33 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     changeScreenHandler={changeScreenHandler}
                     type={AddVideoTube}
                     setScreenStatus={setScreenStatus}
-                    editVideo={editVideo?.source_url}
                     placeholder={'Enter a video url'}
                   />
                 </Tab>
-              )
-            )}
-            {!editVideo ? (
-              <Tab
-                eventKey="Kaltura"
-                title="Kaltura"
-                onClick={() => {
-                  setplatform('Kaltura');
-                  setShowSidebar(false);
-                }}
-              >
-                <FormikVideo
-                  Input
-                  showBrowse
-                  setModalShow={setModalShow}
-                  showback={showback}
-                  changeScreenHandler={changeScreenHandler}
-                  type={AddKaltura}
-                  setScreenStatus={setScreenStatus}
-                  selectedVideoId={selectedVideoIdKaltura}
-                  platform={platform}
-                  placeholder={'Enter a video url'}
-                />
-              </Tab>
-            ) : (
-              editVideo.source_type === 'Kaltura' && (
+              ) : (
+                editVideo.source_type === 'Youtube' && (
+                  <Tab
+                    eventKey="Youtube"
+                    title="YouTube"
+                    onClick={() => {
+                      setplatform('Youtube');
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      editVideo={editVideo?.brightcoveData?.videoId || ''}
+                      platform={platform}
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      type={AddVideoTube}
+                      setScreenStatus={setScreenStatus}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video url'}
+                    />
+                  </Tab>
+                )
+              )}
+              {!editVideo ? (
                 <Tab
                   eventKey="Kaltura"
                   title="Kaltura"
@@ -254,17 +290,41 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler }) => {
                     setScreenStatus={setScreenStatus}
                     selectedVideoId={selectedVideoIdKaltura}
                     platform={platform}
-                    editVideo={editVideo?.source_url}
                     placeholder={'Enter a video url'}
                   />
                 </Tab>
-              )
-            )}
-            {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
+              ) : (
+                editVideo.source_type === 'Kaltura' && (
+                  <Tab
+                    eventKey="Kaltura"
+                    title="Kaltura"
+                    onClick={() => {
+                      setplatform('Kaltura');
+                      setShowSidebar(false);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showBrowse
+                      setModalShow={setModalShow}
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      type={AddKaltura}
+                      setScreenStatus={setScreenStatus}
+                      selectedVideoId={selectedVideoIdKaltura}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video url'}
+                    />
+                  </Tab>
+                )
+              )}
+              {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
-          </Tabs>
-          {editVideo && !editVideo.source_type && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
-        </div>
+            </Tabs>
+            {editVideo && !editVideo.source_type && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
+          </div>
+        )}
       </div>
     </>
   );

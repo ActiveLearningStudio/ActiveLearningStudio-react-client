@@ -1577,7 +1577,7 @@ function SearchInterface(props) {
         <GoogleModel
           projectId={selectedProjectId}
           playlistId={selectedProjectPlaylistId}
-          activityId="0"
+          activityId={0}
           show={show} // {props.show}
           onHide={() => {
             setShow(false);
