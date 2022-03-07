@@ -76,7 +76,8 @@ const GoogleLoginModal = ({
   };
 
   const callPublishingMethod = (params) => {
-    if ((typeof params.playlistId == 'undefined') && (typeof params.activityId == 'undefined')){
+    if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || 
+      (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {
         copyProject(params.projectId, null, params.tokenTemp);
       } else {
@@ -163,9 +164,9 @@ const GoogleLoginModal = ({
                       room: 'test',
                     }}
                     onSubmit={(values) => {
-                      onHide();
                       callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId })
                       setLoading(false);
+                      onHide();
                     }}
                   >
                     {({
