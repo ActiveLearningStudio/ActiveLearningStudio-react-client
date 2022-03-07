@@ -1,31 +1,23 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 import { Dropdown } from 'react-bootstrap';
 import { getLtiTools, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
+import loader from 'assets/images/dotsloader.gif';
+import { toolTypeArray } from 'utils';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
-import loader from 'assets/images/dotsloader.gif';
-import Switch from 'react-switch';
 import './createuser.scss';
-import { toolTypeArray } from 'utils';
 
 export default function CreateLtiTool(prop) {
-  const { editMode, method, clone } = prop;
+  const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    if (editMode && !clone) {
-      setChecked(activeEdit?.published);
-    }
-  }, [activeEdit, editMode]);
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -80,7 +72,7 @@ export default function CreateLtiTool(prop) {
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',
-                }
+                },
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -109,7 +101,7 @@ export default function CreateLtiTool(prop) {
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',
-                }
+                },
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -133,7 +125,10 @@ export default function CreateLtiTool(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</h2>
+              <h2>
+                {editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}
+                LTI tool
+              </h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -188,7 +183,7 @@ export default function CreateLtiTool(prop) {
                     </select>
                     <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
                   </div>
-                  
+
                   <div className="form-group-create">
                     <h3>Consumer Key</h3>
                     <input type="text" name="tool_consumer_key" onChange={handleChange} onBlur={handleBlur} value={values.tool_consumer_key} />
@@ -221,6 +216,7 @@ export default function CreateLtiTool(prop) {
                       autoComplete="off"
                       onChange={async (e) => {
                         setFieldValue('name', e.target.value);
+                        // eslint-disable-next-line eqeqeq
                         if (e.target.value == '') {
                           setStateOrgUsers([]);
                           return;
@@ -264,7 +260,9 @@ export default function CreateLtiTool(prop) {
               </div>
 
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</button>
+                <button type="submit">
+                  Save
+                </button>
                 <button
                   type="button"
                   className="cancel"
