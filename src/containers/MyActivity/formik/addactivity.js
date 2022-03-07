@@ -18,6 +18,7 @@ import { editResourceMetaDataAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 // import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
+import Select from 'react-select-2'
 
 
 const AddActivity = (props) => {
@@ -243,6 +244,7 @@ const AddActivity = (props) => {
                   <div className="layout-formik-select">
                     <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
+                      <Select name="subject_id" onChange={handleChange} onBlur={handleBlur} isMulti option={subjects?.data}/>
                       <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id} multiple>
                         <option hidden>Select</option>
                         {subjects?.data.map((data) => (
