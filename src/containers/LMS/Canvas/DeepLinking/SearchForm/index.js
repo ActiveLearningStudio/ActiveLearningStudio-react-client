@@ -16,6 +16,7 @@ const SearchForm = (props) => {
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
+  const [formValues, setformValues] = useState({});
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,25 +31,37 @@ const SearchForm = (props) => {
     });
   }, [match]);
 
+  useEffect(() => {
+    setformValues(params);
+  }, [params]);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    updateParams(formValues);
     showResults();
   };
 
-  const fieldChanged = (e) => {
-    updateParams({
-      ...params,
-      [e.target.name]: e.target.value,
-    });
-  };
-  console.log(params);
+  // const fieldChanged = (e) => {
+  //   updateParams({
+  //     ...params,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
   return (
     <form onSubmit={onSubmit} className="search-form">
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">
             <label>Search *</label>
-            <input type="text" className="form-control" name="query" onChange={fieldChanged} />
+            <input
+              type="text"
+              className="form-control"
+              name="query"
+              onChange={(e) => {
+                setformValues({ ...formValues, query: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -56,7 +69,13 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>Shared / Private activities</label>
-            <select className="form-control" name="private" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="private"
+              onChange={(e) => {
+                setformValues({ ...formValues, private: e.target.value });
+              }}
+            >
               <option className="option-1">Select all</option>
               <option value="0">Shared</option>
               <option value="1">Private</option>
@@ -72,9 +91,9 @@ const SearchForm = (props) => {
               className="form-control"
               name="subjectIds"
               onChange={(e) => {
-                updateParams({
-                  ...params,
-                  [e.target.name]: [...params.subjectIds, e.target.value],
+                setformValues({
+                  ...formValues,
+                  subjectIds: [...formValues.subjectIds, e.target.value],
                 });
               }}
             >
@@ -90,17 +109,17 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
-      {params.subjectIds?.length > 0 && (
+      {formValues.subjectIds?.length > 0 && (
         <div className="form-group wrap-keyword">
-          {params.subjectIds.map((data) => (
+          {formValues.subjectIds.map((data) => (
             <div className="keywords-de">
               {data}
               <div
                 className="iocns"
                 onClick={() => {
-                  updateParams({
-                    ...params,
-                    subjectIds: params.subjectIds.filter((index) => index !== data),
+                  setformValues({
+                    ...formValues,
+                    subjectIds: formValues.subjectIds.filter((index) => index !== data),
                   });
                 }}
               >
@@ -119,9 +138,9 @@ const SearchForm = (props) => {
               className="form-control"
               name="educationLevelIds"
               onChange={(e) => {
-                updateParams({
-                  ...params,
-                  [e.target.name]: [...params.educationLevelIds, e.target.value],
+                setformValues({
+                  ...formValues,
+                  educationLevelIds: [...formValues.educationLevelIds, e.target.value],
                 });
               }}
             >
@@ -137,17 +156,17 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
-      {params.educationLevelIds?.length > 0 && (
+      {formValues.educationLevelIds?.length > 0 && (
         <div className="form-group wrap-keyword">
-          {params.educationLevelIds.map((data) => (
+          {formValues.educationLevelIds.map((data) => (
             <div className="keywords-de">
               {data}
               <div
                 className="iocns"
                 onClick={() => {
-                  updateParams({
-                    ...params,
-                    educationLevelIds: params.educationLevelIds.filter((index) => index !== data),
+                  setformValues({
+                    ...formValues,
+                    educationLevelIds: formValues.educationLevelIds.filter((index) => index !== data),
                   });
                 }}
               >
@@ -161,7 +180,14 @@ const SearchForm = (props) => {
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <select className="form-control" name="org" onChange={fieldChanged} defaultValue="">
+            <select
+              className="form-control"
+              name="org"
+              onChange={(e) => {
+                setformValues({ ...formValues, org: e.target.value });
+              }}
+              defaultValue=""
+            >
               <option value="" disabled>
                 Organization
               </option>
@@ -179,13 +205,29 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>From</label>
-            <input type="date" className="form-control" placeholder="From Date" name="start" onChange={fieldChanged} />
+            <input
+              type="date"
+              className="form-control"
+              placeholder="From Date"
+              name="start"
+              onChange={(e) => {
+                setformValues({ ...formValues, start: e.target.value });
+              }}
+            />
           </div>
         </div>
         <div className="col">
           <div className="form-group">
             <label>To</label>
-            <input type="date" className="form-control" placeholder="To Date" name="end" onChange={fieldChanged} />
+            <input
+              type="date"
+              className="form-control"
+              placeholder="To Date"
+              name="end"
+              onChange={(e) => {
+                setformValues({ ...formValues, end: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -195,8 +237,15 @@ const SearchForm = (props) => {
             <div className="form-group">
               <label>Author</label>
               <div className="Author-input">
-                <input type="text" className="form-control" placeholder="" name="author" onChange={fieldChanged} />
-                <img src={Arrow} alt="logo" />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder=""
+                  name="author"
+                  onChange={(e) => {
+                    setformValues({ ...formValues, author: e.target.value });
+                  }}
+                />
               </div>
             </div>
           </div>
