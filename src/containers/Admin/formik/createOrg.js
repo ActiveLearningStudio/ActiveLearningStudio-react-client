@@ -57,6 +57,8 @@ export default function CreateOrg(prop) {
 
   useEffect(() => {
     if (editMode) {
+      console.log("Edit Mode", editMode);
+      console.log("Active Mode", activeEdit);
       setImgActive(activeEdit?.image);
       setCheckedActivty(activeEdit?.gcr_activity_visibility);
       setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
@@ -117,6 +119,7 @@ export default function CreateOrg(prop) {
   const [editorContent, setEditorContent] = useState("");
   const [editorContentPolicy, setEditorContentPolicy] = useState("");
   const [editorContentTerms, setEditorContentTerms] = useState("");
+
   const saveChangesPolicy = () => {
     handlePolicyEditorChange(editorContentPolicy);
   };
@@ -161,6 +164,21 @@ export default function CreateOrg(prop) {
           privacy_policy_content: editMode
             ? activeEdit?.privacy_policy_content
             : "",
+          primary_color: editMode
+            ? activeEdit?.branding.primary_color
+            : "#084892",
+          secondary_color: editMode
+            ? activeEdit?.branding.secondary_color
+            : "#F8AF2C",
+          tertiary_color: editMode
+            ? activeEdit?.branding.tertiary_color
+            : "#515151",
+          primary_font_family: editMode
+            ? activeEdit?.branding.primary_font_family
+            : "Rubik",
+          secondary_font_family: editMode
+            ? activeEdit?.branding.secondary_font_family
+            : "Open Sans",
         }}
         validate={(values) => {
           const errors = {};
@@ -410,6 +428,177 @@ export default function CreateOrg(prop) {
                             />
                             <div className="error">
                               {errors.domain && touched.domain && errors.domain}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="form-group-create">
+                          <div className="tab-theming-section">
+                            {/* <h3>Upload an image</h3> */}
+                            <div
+                              className=""
+                              onClick={() => imgUpload.current.click()}
+                            >
+                              <input
+                                type="file"
+                                name="image"
+                                onChange={(e) => {
+                                  if (
+                                    !(
+                                      e.target.files[0].type.includes("png") ||
+                                      e.target.files[0].type.includes("jpg") ||
+                                      e.target.files[0].type.includes("gif") ||
+                                      e.target.files[0].type.includes("jpeg") ||
+                                      e.target.files[0].type.includes("svg")
+                                    )
+                                  ) {
+                                    Swal.fire({
+                                      icon: "error",
+                                      title: "Error",
+                                      text: "Invalid file selected.",
+                                    });
+                                  } else if (
+                                    e.target.files[0].size > 100000000
+                                  ) {
+                                    Swal.fire({
+                                      icon: "error",
+                                      title: "Error",
+                                      text:
+                                        "Selected file size should be less then 100MB.",
+                                    });
+                                  } else {
+                                    const formData = new FormData();
+                                    try {
+                                      formData.append(
+                                        "thumb",
+                                        e.target.files[0]
+                                      );
+                                      const imgurl = dispatch(
+                                        uploadImage(
+                                          allListState.currentOrganization?.id,
+                                          formData
+                                        )
+                                      );
+                                      imgurl.then((img) => {
+                                        setImgActive(img.data?.thumbUrl);
+                                        setFieldValue(
+                                          "image",
+                                          img.data?.thumbUrl
+                                        );
+                                      });
+                                    } catch (err) {
+                                      Swal.fire({
+                                        icon: "error",
+                                        title: "Error",
+                                        text:
+                                          "Image upload failed, kindly try again.",
+                                      });
+                                    }
+                                  }
+                                }}
+                                onBlur={handleBlur}
+                                ref={imgUpload}
+                                style={{ display: "none" }}
+                              />
+                              {/* {imageActive ? (
+                            <>
+                              <img
+                                src={`${global.config.resourceUrl}${imageActive}`}
+                                style={{
+                                  width: "120px",
+                                  height: "72px",
+                                  borderRadius: "8px",
+                                }}
+                              />
+                              <span className="upload-btn">
+                                <img src={pcIcon} alt="" />
+                                My device
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <img src={imgAvatar} alt="" />
+                              <span className="upload-btn">
+                                <img src={pcIcon} alt="" />
+                                My device
+                              </span>
+                            </>
+                          )} */}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {imageActive ? (
+                                  <>
+                                    <div>
+                                      <img
+                                        src={`${global.config.resourceUrl}${imageActive}`}
+                                        style={{
+                                          width: "120px",
+                                          height: "72px",
+                                          borderRadius: "8px",
+                                        }}
+                                      />
+                                    </div>
+                                    <div>
+                                      {/* <span className="upload-btn">
+                                  <img src={pcIcon} alt="" />
+                                  My device
+                                </span> */}
+                                      <div
+                                        className="button-group tab-theming-btn-icon"
+                                        style={{ paddingBottom: "0px" }}
+                                      >
+                                        {" "}
+                                        <button type="button" className="mr-16">
+                                          Upload new logo
+                                        </button>
+                                        {/* <button
+                                          type="button"
+                                          className="cancel"
+                                        >
+                                          Cancel
+                                        </button> */}
+                                      </div>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {/* <img src={imgAvatar} alt="" />
+                                <span className="upload-btn">
+                                  <img src={pcIcon} alt="" />
+                                  My device
+                                </span> */}
+                                    <div className="button-group tab-theming-btn-icon">
+                                      {" "}
+                                      <button type="button" className="mr-16">
+                                        Upload new logo
+                                      </button>
+                                      {/* <button type="button" className="cancel ">
+                                        Cancel
+                                      </button> */}
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+
+                              <div className="error">
+                                {errors.image && touched.image && errors.image}
+                              </div>
+                            </div>
+                            <div>
+                              {/* <div className="button-group tab-theming-btn-icon">
+                            {" "}
+                            <button type="button" className="mr-16">
+                              Upload new logo
+                            </button>
+                            <button type="button" className="cancel ">
+                              Cancel
+                            </button>
+                          </div> */}
                             </div>
                           </div>
                         </div>
@@ -903,10 +1092,10 @@ export default function CreateOrg(prop) {
               </Tab>
               <Tab eventKey="Theming options" title="Theming options">
                 <div className="tab-section">
-                  <div className="tab-inner-section mb-16 ">
+                  {/* <div className="tab-inner-section mb-16 ">
                     <div className="form-group-create">
                       <div className="tab-theming-section">
-                        {/* <h3>Upload an image</h3> */}
+                    
                         <div
                           className=""
                           onClick={() => imgUpload.current.click()}
@@ -964,30 +1153,7 @@ export default function CreateOrg(prop) {
                             ref={imgUpload}
                             style={{ display: "none" }}
                           />
-                          {/* {imageActive ? (
-                            <>
-                              <img
-                                src={`${global.config.resourceUrl}${imageActive}`}
-                                style={{
-                                  width: "120px",
-                                  height: "72px",
-                                  borderRadius: "8px",
-                                }}
-                              />
-                              <span className="upload-btn">
-                                <img src={pcIcon} alt="" />
-                                My device
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <img src={imgAvatar} alt="" />
-                              <span className="upload-btn">
-                                <img src={pcIcon} alt="" />
-                                My device
-                              </span>
-                            </>
-                          )} */}
+                          
                           <div
                             style={{ display: "flex", alignItems: "center" }}
                           >
@@ -1004,10 +1170,7 @@ export default function CreateOrg(prop) {
                                   />
                                 </div>
                                 <div>
-                                  {/* <span className="upload-btn">
-                                  <img src={pcIcon} alt="" />
-                                  My device
-                                </span> */}
+                                 
                                   <div
                                     className="button-group tab-theming-btn-icon"
                                     style={{ paddingBottom: "0px" }}
@@ -1024,11 +1187,7 @@ export default function CreateOrg(prop) {
                               </>
                             ) : (
                               <>
-                                {/* <img src={imgAvatar} alt="" />
-                                <span className="upload-btn">
-                                  <img src={pcIcon} alt="" />
-                                  My device
-                                </span> */}
+                               
                                 <div className="button-group tab-theming-btn-icon">
                                   {" "}
                                   <button type="button" className="mr-16">
@@ -1047,34 +1206,57 @@ export default function CreateOrg(prop) {
                           </div>
                         </div>
                         <div>
-                          {/* <div className="button-group tab-theming-btn-icon">
-                            {" "}
-                            <button type="button" className="mr-16">
-                              Upload new logo
-                            </button>
-                            <button type="button" className="cancel ">
-                              Cancel
-                            </button>
-                          </div> */}
+                          
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
                       <h1>Color</h1>
-                      <button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFieldValue("primary_color", "#084892");
+                          setFieldValue("secondary_color", "#F8AF2C");
+                          setFieldValue("tertiary_color", "#515151");
+                        }}
+                      >
                         <img src={ResetImg} alt="" />
                         <span>Reset</span>
                       </button>
                     </div>
+                    {/* <div className="form-group-create">
+                      <h3>Organization Name</h3>
+                      <input
+                        type="text"
+                        name="name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.name}
+                      />
+                      <div className="error">
+                        {errors.name && touched.name && errors.name}
+                      </div>
+                    </div> */}
                     <section className="tab_inner_color_section">
                       <div className="tab_inner_color">
                         <h4>Primary </h4>
                         <div>
-                          <input type="color" value="#084892" />
-                          <input type="text" />
+                          {/* <input type="color" value="#084892" /> */}
+
+                          <input
+                            type="color"
+                            name="primary_color"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.primary_color}
+                          />
+                          <input type="text" value={values.primary_color} />
+                          <div className="error">
+                            {errors.name && touched.name && errors.name}
+                          </div>
                         </div>
                         <p>
                           Use this color for Displays, Headings, Link texts, and
@@ -1085,8 +1267,15 @@ export default function CreateOrg(prop) {
                       <div className="tab_inner_color tab_inner_color_secondry">
                         <h4>Secondary </h4>
                         <div>
-                          <input type="color" value="#F8AF2C" />
-                          <input type="text" />
+                          {/* <input type="color" value="#F8AF2C" /> */}
+                          <input
+                            type="color"
+                            name="secondary_color"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.secondary_color}
+                          />
+                          <input type="text" value={values.secondary_color} />
                         </div>
                         <p>
                           Use this color for Displays, Headings, Link texts, and
@@ -1097,8 +1286,15 @@ export default function CreateOrg(prop) {
                       <div className="tab_inner_color tab_inner_color_tertiary">
                         <h4>Tertiary </h4>
                         <div>
-                          <input type="color" value="#515151" />
-                          <input type="text" />
+                          {/* <input type="color" value="#515151" /> */}
+                          <input
+                            type="color"
+                            name="tertiary_color"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.tertiary_color}
+                          />
+                          <input type="text" value={values.tertiary_color} />
                         </div>
                         <p>
                           Use this color for Displays, Headings, Link texts, and
@@ -1111,7 +1307,13 @@ export default function CreateOrg(prop) {
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
                       <h1>Font</h1>
-                      <button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFieldValue("primary_font_family", "Rubik");
+                          setFieldValue("secondary_font_family", "Open Sans");
+                        }}
+                      >
                         <img src={ResetImg} alt="" />
                         <span>Reset</span>
                       </button>
@@ -1119,17 +1321,37 @@ export default function CreateOrg(prop) {
                     <section className="tab_inner_font_section">
                       <div className="tab_inner_font_primary">
                         <h4>Primary </h4>
-                        <select>
-                          <option>Rubik</option>
+                        <select
+                          name="primary_font_family"
+                          onChange={(e) => {
+                            handleChange(e);
+                          }}
+                          onBlur={handleBlur}
+                          value={values.primary_font_family}
+                        >
+                          <option value="Arial Black">Arial Black </option>
+                          <option value="Rubik">Rubik</option>
+                          <option value="Bahnschrift">Bahnschrift</option>
+                          <option value="Calibri">Calibri</option>
                         </select>
                       </div>
                       <div className="tab_inner_font_primary">
                         <h4>Secondary </h4>
-                        <select>
-                          <option>Rubik</option>
+                        <select
+                          name="secondary_font_family"
+                          onChange={(e) => {
+                            handleChange(e);
+                          }}
+                          onBlur={handleBlur}
+                          value={values.secondary_font_family}
+                        >
+                          <option value="Arial Black">Arial Black </option>
+                          <option value="Rubik">Rubik</option>
+                          <option value="Bahnschrift">Bahnschrift</option>
+                          <option value="Open Sans">Open Sans</option>
                         </select>
                       </div>
-                      <div className="tab_inner_font_upload">
+                      {/* <div className="tab_inner_font_upload">
                         <div>
                           <img src={UploadImg} />
                         </div>
@@ -1137,7 +1359,7 @@ export default function CreateOrg(prop) {
                           <h6>Upload Custom Fonts</h6>
                           <p>Drag {"&"} drop or browse</p>
                         </div>
-                      </div>
+                      </div> */}
                     </section>
                   </div>
 
