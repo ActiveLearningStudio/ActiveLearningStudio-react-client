@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchImg from '../../../../../assets/images/Search.svg';
 import Arrow from '../../../../../assets/images/arrow-right.svg';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
@@ -24,6 +24,8 @@ const SearchForm = (props) => {
       ...params,
       ltiClientId: match.params.ltiClientId,
       userEmail,
+      subjectIds: [],
+      educationLevelIds: [],
       mode: 'search',
     });
   }, [match]);
@@ -66,7 +68,16 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>Subject area</label>
-            <select className="form-control" name="Subject" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="subjectIds"
+              onChange={(e) => {
+                updateParams({
+                  ...params,
+                  [e.target.name]: [...params.subjectIds, e.target.value],
+                });
+              }}
+            >
               <option value="" disabled selected hidden>
                 Subject Area
               </option>
@@ -79,12 +90,41 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
+      {params.subjectIds?.length > 0 && (
+        <div className="form-group wrap-keyword">
+          {params.subjectIds.map((data) => (
+            <div className="keywords-de">
+              {data}
+              <div
+                className="iocns"
+                onClick={() => {
+                  updateParams({
+                    ...params,
+                    subjectIds: params.subjectIds.filter((index) => index !== data),
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon="times" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="row">
         <div className="col">
           <div className="form-group">
             <label>Education level</label>
-            <select className="form-control" name="Education" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="educationLevelIds"
+              onChange={(e) => {
+                updateParams({
+                  ...params,
+                  [e.target.name]: [...params.educationLevelIds, e.target.value],
+                });
+              }}
+            >
               <option value="" disabled selected hidden>
                 Education Level
               </option>
@@ -97,17 +137,18 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
-      {/* {params.gradeArray?.length > 0 && (
+      {params.educationLevelIds?.length > 0 && (
         <div className="form-group wrap-keyword">
-          {values.gradeArray.map((data) => (
-            <div className="keywords-de" data-name={value}>
+          {params.educationLevelIds.map((data) => (
+            <div className="keywords-de">
               {data}
               <div
                 className="iocns"
                 onClick={() => {
-                  // eslint-disable-next-line no-param-reassign
-                  values.gradeArray = values.gradeArray.filter((index) => index !== data);
-                  setValue(value + 1);
+                  updateParams({
+                    ...params,
+                    educationLevelIds: params.educationLevelIds.filter((index) => index !== data),
+                  });
                 }}
               >
                 <FontAwesomeIcon icon="times" />
@@ -115,7 +156,7 @@ const SearchForm = (props) => {
             </div>
           ))}
         </div>
-      )} */}
+      )}
 
       <div className="row">
         <div className="col">
