@@ -145,6 +145,7 @@ export default function CreateActivityItem(props) {
           <form onSubmit={handleSubmit}>
             <h2>
               {editMode ? 'Edit' : 'Add'}
+              {' '}
               activity item
             </h2>
 
