@@ -58,7 +58,7 @@ const Project = (props) => {
                     {project.title.length === 0 && 'Project title not available'}
                   </h5>
                   <p className="project-detail-paragraph">
-                    {project.description.length > 0 && project.description.slice(0, 120)}
+                    {project.description.length > 0 && project?.description?.slice(0, 120)}
                     {project.description.length === 0 && 'Project description not available'}
                   </p>
                   {project.user && (
