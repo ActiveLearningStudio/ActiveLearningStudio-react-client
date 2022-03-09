@@ -295,13 +295,13 @@ class LoginPage extends React.Component {
                       ) : null}
                       <div className="termsandcondition">
                         By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s{' '}
-                        <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                        <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
                           Terms of Use
                         </a>{' '}
                         and{' '}
                         <a
                           target="_blank"
-                          href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
+                          href={domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
                         >
                           Privacy Policy.
                         </a>

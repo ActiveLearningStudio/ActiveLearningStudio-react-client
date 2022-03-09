@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchImg from '../../../../../assets/images/Search.svg';
 import Arrow from '../../../../../assets/images/arrow-right.svg';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
@@ -16,6 +16,7 @@ const SearchForm = (props) => {
   const searchParams = new URLSearchParams(window.location.search);
   const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
+  const [formValues, setformValues] = useState({});
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,29 +25,43 @@ const SearchForm = (props) => {
       ...params,
       ltiClientId: match.params.ltiClientId,
       userEmail,
+      subjectIds: [],
+      educationLevelIds: [],
       mode: 'search',
     });
   }, [match]);
 
+  useEffect(() => {
+    setformValues(params);
+  }, [params]);
+
   const onSubmit = (e) => {
     e.preventDefault();
+    updateParams(formValues);
     showResults();
   };
 
-  const fieldChanged = (e) => {
-    updateParams({
-      ...params,
-      [e.target.name]: e.target.value,
-    });
-  };
-  console.log(params);
+  // const fieldChanged = (e) => {
+  //   updateParams({
+  //     ...params,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
+
   return (
     <form onSubmit={onSubmit} className="search-form">
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">
             <label>Search *</label>
-            <input type="text" className="form-control" name="query" onChange={fieldChanged} />
+            <input
+              type="text"
+              className="form-control"
+              name="query"
+              onChange={(e) => {
+                setformValues({ ...formValues, query: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -54,7 +69,13 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>Shared / Private activities</label>
-            <select className="form-control" name="private" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="private"
+              onChange={(e) => {
+                setformValues({ ...formValues, private: e.target.value });
+              }}
+            >
               <option className="option-1">Select all</option>
               <option value="0">Shared</option>
               <option value="1">Private</option>
@@ -66,7 +87,16 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>Subject area</label>
-            <select className="form-control" name="Subject" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="subjectIds"
+              onChange={(e) => {
+                setformValues({
+                  ...formValues,
+                  subjectIds: [...formValues.subjectIds, e.target.value],
+                });
+              }}
+            >
               <option value="" disabled selected hidden>
                 Subject Area
               </option>
@@ -79,12 +109,41 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
+      {formValues.subjectIds?.length > 0 && (
+        <div className="form-group wrap-keyword">
+          {formValues.subjectIds.map((data) => (
+            <div className="keywords-de">
+              {data}
+              <div
+                className="iocns"
+                onClick={() => {
+                  setformValues({
+                    ...formValues,
+                    subjectIds: formValues.subjectIds.filter((index) => index !== data),
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon="times" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="row">
         <div className="col">
           <div className="form-group">
             <label>Education level</label>
-            <select className="form-control" name="Education" onChange={fieldChanged}>
+            <select
+              className="form-control"
+              name="educationLevelIds"
+              onChange={(e) => {
+                setformValues({
+                  ...formValues,
+                  educationLevelIds: [...formValues.educationLevelIds, e.target.value],
+                });
+              }}
+            >
               <option value="" disabled selected hidden>
                 Education Level
               </option>
@@ -97,17 +156,18 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
-      {/* {params.gradeArray?.length > 0 && (
+      {formValues.educationLevelIds?.length > 0 && (
         <div className="form-group wrap-keyword">
-          {values.gradeArray.map((data) => (
-            <div className="keywords-de" data-name={value}>
+          {formValues.educationLevelIds.map((data) => (
+            <div className="keywords-de">
               {data}
               <div
                 className="iocns"
                 onClick={() => {
-                  // eslint-disable-next-line no-param-reassign
-                  values.gradeArray = values.gradeArray.filter((index) => index !== data);
-                  setValue(value + 1);
+                  setformValues({
+                    ...formValues,
+                    educationLevelIds: formValues.educationLevelIds.filter((index) => index !== data),
+                  });
                 }}
               >
                 <FontAwesomeIcon icon="times" />
@@ -115,12 +175,19 @@ const SearchForm = (props) => {
             </div>
           ))}
         </div>
-      )} */}
+      )}
 
       <div className="row">
         <div className="col">
           <div className="form-group">
-            <select className="form-control" name="org" onChange={fieldChanged} defaultValue="">
+            <select
+              className="form-control"
+              name="org"
+              onChange={(e) => {
+                setformValues({ ...formValues, org: e.target.value });
+              }}
+              defaultValue=""
+            >
               <option value="" disabled>
                 Organization
               </option>
@@ -138,13 +205,29 @@ const SearchForm = (props) => {
         <div className="col">
           <div className="form-group">
             <label>From</label>
-            <input type="date" className="form-control" placeholder="From Date" name="start" onChange={fieldChanged} />
+            <input
+              type="date"
+              className="form-control"
+              placeholder="From Date"
+              name="start"
+              onChange={(e) => {
+                setformValues({ ...formValues, start: e.target.value });
+              }}
+            />
           </div>
         </div>
         <div className="col">
           <div className="form-group">
             <label>To</label>
-            <input type="date" className="form-control" placeholder="To Date" name="end" onChange={fieldChanged} />
+            <input
+              type="date"
+              className="form-control"
+              placeholder="To Date"
+              name="end"
+              onChange={(e) => {
+                setformValues({ ...formValues, end: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -154,8 +237,15 @@ const SearchForm = (props) => {
             <div className="form-group">
               <label>Author</label>
               <div className="Author-input">
-                <input type="text" className="form-control" placeholder="" name="author" onChange={fieldChanged} />
-                <img src={Arrow} alt="logo" />
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder=""
+                  name="author"
+                  onChange={(e) => {
+                    setformValues({ ...formValues, author: e.target.value });
+                  }}
+                />
               </div>
             </div>
           </div>
