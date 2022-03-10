@@ -1,5 +1,5 @@
 :root {
-  --main-primary-color: #08c892;
+  --main-primary-color: #084892;
   --main-secondary-color: #515151;
   --main-paragraph-text-color: #767676;
   --main-white-color: #ffffff;
@@ -17,7 +17,7 @@
   --main-bg-transparent: transparent;
 }
 
-/* Table of content 
+/* Table of content
 
 1. sidebar --- 15
 2. header  --- 22
@@ -26,7 +26,7 @@
 5. My Projects Search Library  --- 147
 6. Adnin Panel  --- 166
 7. My Interactive videos  --- 435
-8. Team 
+8. Team
 */
 
 /* sidebar branding */

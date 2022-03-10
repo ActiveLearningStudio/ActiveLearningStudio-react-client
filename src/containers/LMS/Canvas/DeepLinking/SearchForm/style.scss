@@ -42,6 +42,43 @@
       }
     }
   }
+  .form-group.wrap-keyword {
+    display: flex;
+    justify-content: initial;
+    flex-wrap: wrap;
+    .keywords-de {
+      background-color: $curriki-main-blue;
+      color: #fff;
+      border-radius: 30px;
+      padding: 6px 10px;
+      font-size: 12px;
+      position: relative;
+      margin: 5px 5px 0 0;
+
+      .iocns {
+        color: #fff;
+        background-color: #ff0000d1;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 30px;
+        stroke-width: 1px;
+        cursor: pointer;
+        display: none;
+
+        svg {
+          margin: 10px auto;
+          display: flex;
+        }
+      }
+
+      &:hover .iocns {
+        display: block;
+      }
+    }
+  }
 }
 
 .search-form h2 {

@@ -57,8 +57,8 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentPage: 'results',
-        searchProjects: action.results.projects.slice(0, 10),
-        searchHasMoreResults: action.results.projects.length > 10,
+        searchProjects: action.results.projects?.slice(0, 10),
+        searchHasMoreResults: action.results.projects?.length > 10,
       };
 
     case SHOW_RESULTS:
@@ -111,7 +111,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         searchParams: {
           ...state.searchParams,
-          from: (state.searchParams.from) ? state.searchParams.from + 10 : 10,
+          from: state.searchParams.from ? state.searchParams.from + 10 : 10,
         },
       };
 
@@ -143,7 +143,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
     case LTI_ACTIVITY_INIT:
       return {
         ...state,
-        attemptId: (state.attemptId) ? state.attemptId : Date.now(),
+        attemptId: state.attemptId ? state.attemptId : Date.now(),
       };
 
     case GET_LTI_SUMMARY:
@@ -177,11 +177,11 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         summaryError: null,
       };
 
-      case GET_LTI_SUMMARY_ACTIVITY_INFO:
-        return {
-          ...state,
-          summaryActivityInfo: action.summaryActivityInfo.activity,
-        };
+    case GET_LTI_SUMMARY_ACTIVITY_INFO:
+      return {
+        ...state,
+        summaryActivityInfo: action.summaryActivityInfo.activity,
+      };
 
     default:
       return state;

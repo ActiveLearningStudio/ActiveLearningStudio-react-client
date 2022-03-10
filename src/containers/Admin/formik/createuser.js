@@ -1,5 +1,4 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
@@ -12,18 +11,16 @@ import './createuser.scss';
 
 export default function CreateUser(prop) {
   const { editMode, checkedEmail } = prop;
-  const [activityImage, setActivityImage] = useState('')
-  const imgref = useRef();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const organizationTypes = useSelector((state) => state.auth.organizationTypes);
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
-  const { activeForm, currentUser } = adminState;
+  const { currentUser } = adminState;
 
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
-  }, [])
+  }, []);
   const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
@@ -74,7 +71,7 @@ export default function CreateUser(prop) {
             errors.organization_type = 'Required';
           }
           if (!values.organization_name || values.organization_name.trim() === '' || values.organization_name.length > 255) {
-            errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';;
+            errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.job_title || values.job_title.trim() === '' || values.job_title.length > 255) {
             errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
@@ -104,7 +101,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
                   htmlContainer: 'create-user-confirm-modal-content',
-                }
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
@@ -136,7 +133,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
                   htmlContainer: 'create-user-confirm-modal-content',
-                }
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
@@ -145,7 +142,6 @@ export default function CreateUser(prop) {
               });
             }
           }
-
         }}
       >
         {({
@@ -159,7 +155,11 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit} autoComplete="off">
-            <h2>{editMode ? 'Edit ' : 'Add '} user</h2>
+            <h2>
+              {editMode ? 'Edit ' : 'Add '}
+              {' '}
+              user
+            </h2>
             <div className="row">
               <div className="col">
                 <div className="form-group-create">
@@ -223,7 +223,7 @@ export default function CreateUser(prop) {
                   <div className="filter-dropdown-user">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
-                        {roles?.length > 0 && roles?.find(role => role.id === values.role_id)?.display_name}
+                        {roles?.length > 0 && roles?.find((role) => role.id === values.role_id)?.display_name}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {roles?.length > 0 && roles?.map((role) => (
@@ -241,7 +241,7 @@ export default function CreateUser(prop) {
                   <div className="filter-dropdown-user">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
-                        {organizationTypes?.length > 0 && organizationTypes?.find(type => type.label === values.organization_type)?.label}
+                        {organizationTypes?.length > 0 && organizationTypes?.find((type) => type.label === values.organization_type)?.label}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
@@ -284,7 +284,7 @@ export default function CreateUser(prop) {
             </div>
             <div className="button-group">
               <button type="submit">
-                {editMode ? 'Edit ' : 'Add '} user
+                Save
               </button>
               <button
                 type="button"
