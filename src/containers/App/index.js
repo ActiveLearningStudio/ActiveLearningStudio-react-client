@@ -46,9 +46,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
-                  document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
-                  document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
-                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -60,9 +60,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
-                  document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
-                  document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
-                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -116,25 +116,25 @@ function App(props) {
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
         const result = dispatch(getBranding('currikistudio'));
         result.then((data) => {
-          document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
-          document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
-          document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
         });
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain || 'currikistudio'));
         result
           .then((data) => {
-            document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
-            document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
-            document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+            // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+            // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+            // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
           })
           .catch((err) => err && window.location.replace('/login'));
       } else {
         const result = dispatch(getBranding('currikistudio'));
         result.then((data) => {
-          document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
-          document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
-          document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
         });
       }
     }
