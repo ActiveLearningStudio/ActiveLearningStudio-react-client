@@ -203,8 +203,7 @@ export const ProjectsPage = (props) => {
   };
 
   const onDragEnd = async (result) => {
-    const { source, destination } = result;
-
+    const { source, destination, draggableId } = result;
     // dropped outside the list
     if (!destination) {
       return;
@@ -222,10 +221,7 @@ export const ProjectsPage = (props) => {
 
           setProjectDivider(projectDivider);
           setValue((v) => v + 1);
-          const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
-
-          // allSidebarProjectsUpdate();
-          setAllProjects(reorderData.projects);
+          await loadMyReorderProjectsActionMethod(draggableId, projectDivider);
         }
       });
     } else {
@@ -262,10 +258,7 @@ export const ProjectsPage = (props) => {
 
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
-      const reorderData = await loadMyReorderProjectsActionMethod(projectDivider);
-
-      // allSidebarProjectsUpdate();
-      setAllProjects(reorderData.projects);
+      await loadMyReorderProjectsActionMethod(draggableId, projectDivider);
     }
   };
 
@@ -683,7 +676,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadProject: (id) => dispatch(loadProjectAction(id)),
   shareProject: (id) => dispatch(shareProjectAction(id)),
   loadLms: () => dispatch(loadLmsAction()),
-  loadMyReorderProjectsActionMethod: (projectDivider) => dispatch(loadMyReorderProjectsAction(projectDivider)),
+  loadMyReorderProjectsActionMethod: (projectId, dividerProjects) => dispatch(loadMyReorderProjectsAction(projectId, dividerProjects)),
   // allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),

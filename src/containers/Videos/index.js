@@ -68,7 +68,7 @@ const Index = () => {
             }}
           />
           <div className="inner-form-content">
-            {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} />}
+            {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
             {screenStatus == 'DescribeVideo' && <DescribeVideo setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />}
           </div>
         </div>
