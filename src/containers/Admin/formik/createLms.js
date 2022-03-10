@@ -1,18 +1,17 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
 import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import authapi from '../../../services/auth.service';
-import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
+import authapi from '../../../services/auth.service';
+import adminapi from '../../../services/admin.service';
 
 export default function CreateUser(prop) {
-  const { editMode, method, clone } = prop;
+  const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activeEdit } = organization;
@@ -47,7 +46,6 @@ export default function CreateUser(prop) {
           description: editMode ? activeEdit?.description : '',
           name: editMode ? (clone ? '' : activeEdit?.user?.name) : '',
           lms_login_id: editMode ? activeEdit?.lms_login_id : '',
-          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           // published: editMode ? (clone ? false : activeEdit?.published) : false,
           organization_id: organization?.activeOrganization?.id,
           activity_visibility: editMode ? (clone ? false : activeEdit?.activity_visibility) : false,
@@ -116,8 +114,8 @@ export default function CreateUser(prop) {
                 text: 'LMS settings edited successfully',
                 confirmButtonText: 'Close',
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -145,8 +143,8 @@ export default function CreateUser(prop) {
                 text: 'LMS settings added successfully',
                 confirmButtonText: 'Close',
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -170,11 +168,14 @@ export default function CreateUser(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</h2>
+              <h2 style={{ marginBottom: '45px' }}>
+                {editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}
+                LMS settings
+              </h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
-                <div style={{marginRight:"64px"}}>
+                <div style={{ marginRight: '64px' }}>
                   <div className="form-group-create">
                     <h3>LMS URL</h3>
                     <input type="text" name="lms_url" onChange={handleChange} onBlur={handleBlur} value={values.lms_url} />
@@ -324,6 +325,7 @@ export default function CreateUser(prop) {
                       autoComplete="off"
                       onChange={async (e) => {
                         setFieldValue('name', e.target.value);
+                        // eslint-disable-next-line eqeqeq
                         if (e.target.value == '') {
                           setStateOrgUsers([]);
                           return;
@@ -364,9 +366,8 @@ export default function CreateUser(prop) {
                   </div>
                 </div>
               </div>
-              
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LMS settings</button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

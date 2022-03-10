@@ -46,6 +46,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
+                  document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -57,6 +60,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
+                  document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -108,12 +114,28 @@ function App(props) {
     ) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
-        dispatch(getBranding('currikistudio'));
+        const result = dispatch(getBranding('currikistudio'));
+        result.then((data) => {
+          document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+        });
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain || 'currikistudio'));
-        result.then().catch((err) => err && window.location.replace('/login'));
+        result
+          .then((data) => {
+            document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+            document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+            document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+          })
+          .catch((err) => err && window.location.replace('/login'));
       } else {
-        dispatch(getBranding('currikistudio'));
+        const result = dispatch(getBranding('currikistudio'));
+        result.then((data) => {
+          document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+        });
       }
     }
     if (window.HubSpotConversations) {
@@ -127,7 +149,7 @@ function App(props) {
       ];
     }
   }, [window.location.href]);
-/*
+  /*
   useEffect(() => {
     const newScripts = [
       `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/jquery.js`,
@@ -198,7 +220,7 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
-*/  
+*/
 
   // useEffect(() => {
   //   function myStopFunction() {

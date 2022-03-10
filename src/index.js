@@ -17,6 +17,7 @@ import store from './store';
 import * as serviceWorker from './serviceWorker';
 import './config';
 import 'assets/css/main-style.scss';
+import 'assets/css/dynamicBranding.css';
 
 library.add(fas);
 library.add(far);
