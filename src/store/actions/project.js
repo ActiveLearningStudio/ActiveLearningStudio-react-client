@@ -495,7 +495,7 @@ export const ShareLMS = (
   }).then((result) => {
     if (result.value) {
       Swal.fire({
-        iconHtml: loaderImg,
+        icon: loaderImg,
         title: 'Publishing....',
         showCancelButton: false,
         showConfirmButton: false,
@@ -573,7 +573,7 @@ export const getProjectCourseFromLMS = (
     }).then((result) => {
       if (result.value) {
         Swal.fire({
-          iconHtml: loaderImg,
+          icon: loaderImg,
           title: 'Publishing....',
           showCancelButton: false,
           showConfirmButton: false,
@@ -636,7 +636,7 @@ export const getProjectCourseFromLMSPlaylist = (
   projectId,
 ) => async (dispatch) => {
   Swal.fire({
-    iconHtml: loaderImg,
+    icon: loaderImg,
     title: 'Fetching Information....',
     showCancelButton: false,
     showConfirmButton: false,
@@ -658,7 +658,7 @@ export const getProjectCourseFromLMSPlaylist = (
     }).then(async (result) => {
       if (result.value) {
         Swal.fire({
-          iconHtml: loaderImg,
+          icon: loaderImg,
           title: 'Publishing....',
           showCancelButton: false,
           showConfirmButton: false,
