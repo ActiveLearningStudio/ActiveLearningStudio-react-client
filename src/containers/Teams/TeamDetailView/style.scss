@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .inner-content {
   background: $white;
@@ -35,7 +35,7 @@
 }
 .add-team-page {
   .organization-name {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -79,7 +79,7 @@
     .team-detail {
       max-width: 800px;
       p {
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 14px;
@@ -340,7 +340,7 @@
       position: absolute;
       background: #fff;
       height: 50px;
-      content: "";
+      content: '';
       width: 50px;
       left: -24px;
       z-index: -9;
@@ -422,7 +422,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: "";
+            content: '';
             border: none;
           }
           &:hover {
@@ -504,4 +504,13 @@
 }
 .image_rotate {
   transform: rotate(180deg) !important;
+}
+
+.customOverlaySize {
+  background: rgba(36, 123, 160, 0.7);
+}
+.customModalSize {
+  background: #b2dbbf;
+  max-width: 500px;
+  width: 100%;
 }
