@@ -15,7 +15,7 @@ class LtiPreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
-    window.brightcoveAccountId = window.parent?.brightcoveAccountId;
+    window.brightcoveAccountId = '111111';
     // Logging the view for metrics
     const { match, previewType, logActivityView, logPlaylistView } = this.props;
     const { playlistId, activityId } = match.params;
