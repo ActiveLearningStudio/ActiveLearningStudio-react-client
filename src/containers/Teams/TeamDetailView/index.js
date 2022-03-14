@@ -1,7 +1,7 @@
-import React, {
-  useCallback, useMemo, useState, useEffect, useRef,
-} from 'react';
+/* eslint-disable */
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+
 import EditTeamImage from 'assets/images/svg/editTeam.svg';
 import EditDetailImage from 'assets/images/svg/detailEdit.svg';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
@@ -14,7 +14,15 @@ import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
 import {
-  changeUserRole, getTeamPermission, getWhiteBoardUrl, inviteMembersAction, loadTeamAction, removeMemberAction, removeProjectAction, setNewTeamData, updateTeamAction,
+  changeUserRole,
+  getTeamPermission,
+  getWhiteBoardUrl,
+  inviteMembersAction,
+  loadTeamAction,
+  removeMemberAction,
+  removeProjectAction,
+  setNewTeamData,
+  updateTeamAction,
 } from 'store/actions/team';
 import { connect, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -127,7 +135,7 @@ const TeamDetail = ({
         });
       });
     },
-    [removeProject, team?.id],
+    [removeProject, team?.id]
   );
   // User Role change handler for current team
   const roleChangeHandler = async (roleId, userId) => {
@@ -136,29 +144,35 @@ const TeamDetail = ({
     await getTeamPermissionAction(organization?.id, team?.id);
   };
   // Invite handler for new team
-  const handleInviteNewTeam = useCallback((users, note) => {
-    setSelectUsersNewTeam([...selectedUsersNewTeam, ...users.map((u) => ({ ...u, note }))]);
-    setMinimumUserFlag(false);
-    setShowInvite(false);
-  }, [selectedUsersNewTeam]);
+  const handleInviteNewTeam = useCallback(
+    (users, note) => {
+      setSelectUsersNewTeam([...selectedUsersNewTeam, ...users.map((u) => ({ ...u, note }))]);
+      setMinimumUserFlag(false);
+      setShowInvite(false);
+    },
+    [selectedUsersNewTeam]
+  );
   // Invite handler for current team
-  const handleInvite = useCallback((selectedUsers, emailNote) => {
-    inviteMembers(team?.id, selectedUsers, emailNote)
-      .then(() => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Successfully invited.',
+  const handleInvite = useCallback(
+    (selectedUsers, emailNote) => {
+      inviteMembers(team?.id, selectedUsers, emailNote)
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Successfully invited.',
+          });
+          setShowInvite(false);
+        })
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to invite user.',
+          });
         });
-        setShowInvite(false);
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to invite user.',
-        });
-      });
-  }, [inviteMembers, team?.id]);
+    },
+    [inviteMembers, team?.id]
+  );
   const onBlur = (e) => {
     if (e.target.name === 'team-name') {
       teamNameRef.current.blur();
@@ -170,12 +184,13 @@ const TeamDetail = ({
             name: e.target.value,
             description: team?.description,
             noovo_group_title: team?.noovo_group_title,
-          }).then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Successfully updated.',
-            });
           })
+            .then(() => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Successfully updated.',
+              });
+            })
             .catch(() => {
               Swal.fire({
                 icon: 'error',
@@ -203,12 +218,13 @@ const TeamDetail = ({
             name: team?.name,
             description: e.target.value,
             noovo_group_title: team?.noovo_group_title,
-          }).then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Successfully updated.',
-            });
           })
+            .then(() => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Successfully updated.',
+              });
+            })
             .catch(() => {
               Swal.fire({
                 icon: 'error',
@@ -235,12 +251,13 @@ const TeamDetail = ({
           name: team?.name,
           description: team?.description,
           noovo_group_title: e.target.value,
-        }).then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Successfully updated.',
-          });
         })
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Successfully updated.',
+            });
+          })
           .catch(() => {
             Swal.fire({
               icon: 'error',
@@ -295,14 +312,7 @@ const TeamDetail = ({
                 <div>
                   {!editTeam.editName && <h1 className="title">{team?.name || newTeam?.name}</h1>}
                   {editTeam.editName && (
-                    <textarea
-                      className="title"
-                      name="team-name"
-                      ref={teamNameRef}
-                      defaultValue={team?.name || newTeam?.name}
-                      onBlur={onBlur}
-                      onKeyPress={onEnterPress}
-                    />
+                    <textarea className="title" name="team-name" ref={teamNameRef} defaultValue={team?.name || newTeam?.name} onBlur={onBlur} onKeyPress={onEnterPress} />
                   )}
                 </div>
                 <div>
@@ -321,9 +331,7 @@ const TeamDetail = ({
               </div>
               <div className="add-team-detail">
                 <div className="team-detail">
-                  <p>
-                    {!editTeam.editDescription && (team?.description || newTeam?.description)}
-                  </p>
+                  <p>{!editTeam.editDescription && (team?.description || newTeam?.description)}</p>
                   {editTeam.editDescription && (
                     <textarea
                       className="description"
@@ -352,9 +360,7 @@ const TeamDetail = ({
               <div className="noovo-group-title">
                 <label>Noovo Group Title:</label>
                 {'  '}
-                {!editTeam?.editNoovoTitle ? (
-                  <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p>
-                ) : null}
+                {!editTeam?.editNoovoTitle ? <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p> : null}
                 {editTeam?.editNoovoTitle && (
                   <textarea
                     className="noovo-title"
@@ -382,18 +388,13 @@ const TeamDetail = ({
                   {team?.id && (
                     <div className="search-and-filters">
                       <div className="search-bar">
-                        <input
-                          type="text"
-                          className="search-input"
-                          placeholder="Search project"
-                          onChange={searchProjects}
-                        />
+                        <input type="text" className="search-input" placeholder="Search project" onChange={searchProjects} />
                         <img src={searchimg} alt="search" />
                       </div>
                     </div>
                   )}
                   {!adminPanel && (
-                    <div className="team-project-btns">
+                    <div className="team-project-btns whiteboard">
                       <Buttons
                         text="Open White Board"
                         secondary
@@ -402,12 +403,7 @@ const TeamDetail = ({
                         className="mr-16"
                         hover
                         onClick={() => {
-                          assignWhiteBoardUrl(
-                            organization?.id,
-                            1,
-                            auth.user?.id,
-                            'team',
-                          );
+                          assignWhiteBoardUrl(organization?.id, 1, auth.user?.id, 'team');
                           handleShowWhiteBoard();
                         }}
                       />
@@ -446,8 +442,12 @@ const TeamDetail = ({
                 <div className="row">
                   <div className="col-md-12">
                     <div className="check-home">
-                      {(loading && team?.id)
-                        ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
+                      {loading && team?.id ? (
+                        <Alert variant="primary" className="alert">
+                          Loading...
+                        </Alert>
+                      ) : allPersonalProjects.length > 0 ? (
+                        allPersonalProjects?.map((project) => (
                           <div className="playlist-resource" key={project.id}>
                             <ProjectCard
                               project={project}
@@ -459,18 +459,22 @@ const TeamDetail = ({
                               adminPanel={adminPanel}
                             />
                           </div>
-                        )) : team?.id && <Alert variant="danger" className="alert"> No project found.</Alert>}
+                        ))
+                      ) : (
+                        team?.id && (
+                          <Alert variant="danger" className="alert">
+                            {' '}
+                            No project found.
+                          </Alert>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className={`${toggleLeft ? 'width10' : ''} right`}>
-              <button
-                type="button"
-                className="toggle_btn"
-                onClick={() => setToggleLeft(!toggleLeft)}
-              >
+              <button type="button" className="toggle_btn" onClick={() => setToggleLeft(!toggleLeft)}>
                 <FontAwesomeIcon icon="chevron-circle-right" className={`${toggleLeft ? 'image_rotate' : ''}`} />
               </button>
               <div className="right_head">
@@ -481,22 +485,10 @@ const TeamDetail = ({
               <div className="right_select">
                 <div className={`${toggleLeft ? 'none' : ''}`}>
                   {teamPermission?.Team?.includes('team:add-team-user') && team?.users && (
-                    <InviteDialog
-                      users={team?.users}
-                      visible={showInvite}
-                      authUser={authUser}
-                      setShowInvite={setShowInvite}
-                      handleInvite={handleInvite}
-                    />
+                    <InviteDialog users={team?.users} visible={showInvite} authUser={authUser} setShowInvite={setShowInvite} handleInvite={handleInvite} />
                   )}
-                  {(newTeam?.name) && (
-                    <InviteDialog
-                      users={selectedUsersNewTeam}
-                      visible={showInvite}
-                      authUser={user}
-                      setShowInvite={setShowInvite}
-                      handleInvite={handleInviteNewTeam}
-                    />
+                  {newTeam?.name && (
+                    <InviteDialog users={selectedUsersNewTeam} visible={showInvite} authUser={user} setShowInvite={setShowInvite} handleInvite={handleInviteNewTeam} />
                   )}
                 </div>
               </div>
@@ -523,17 +515,8 @@ const TeamDetail = ({
           </div>
         </div>
       </div>
-      <WhiteBoardModal
-        url={whiteBoardUrl}
-        show={showWhiteBoard}
-        onHide={handleCloseWhiteBoard}
-        loading={loadingWhiteBoard}
-      />
-      <GoogleModel
-        projectId={selectedProjectId}
-        show={showGoogleModal}
-        onHide={() => setShowGoogleModal(false)}
-      />
+      <WhiteBoardModal url={whiteBoardUrl} show={showWhiteBoard} onHide={handleCloseWhiteBoard} loading={loadingWhiteBoard} />
+      <GoogleModel projectId={selectedProjectId} show={showGoogleModal} onHide={() => setShowGoogleModal(false)} />
     </div>
   );
 };

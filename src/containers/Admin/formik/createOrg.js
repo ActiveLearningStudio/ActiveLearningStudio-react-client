@@ -1,13 +1,11 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable eqeqeq */
+/* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
-import {
-  uploadImage, createOrganizationNew, checkBranding, updateOrganization, getsubOrgList,
-} from 'store/actions/organization';
+import { uploadImage, createOrganizationNew, checkBranding, updateOrganization, getsubOrgList } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
@@ -111,10 +109,10 @@ export default function CreateOrg(prop) {
           gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
           gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
           gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
-          tos_type: editMode ? !activeEdit?.tos_type ? 'Parent' : activeEdit?.tos_type : 'Parent',
+          tos_type: editMode ? (!activeEdit?.tos_type ? 'Parent' : activeEdit?.tos_type) : 'Parent',
           tos_url: editMode ? activeEdit?.tos_url : '',
           tos_content: editMode ? activeEdit?.tos_content : '',
-          privacy_policy_type: editMode ? !activeEdit?.privacy_policy_type ? 'Parent' : activeEdit?.privacy_policy_type : 'Parent',
+          privacy_policy_type: editMode ? (!activeEdit?.privacy_policy_type ? 'Parent' : activeEdit?.privacy_policy_type) : 'Parent',
           privacy_policy_url: editMode ? activeEdit?.privacy_policy_url : '',
           privacy_policy_content: editMode ? activeEdit?.privacy_policy_content : '',
         }}
@@ -241,11 +239,7 @@ export default function CreateOrg(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>
-              {editMode ? 'Edit ' : 'Add '}
-              {' '}
-              organization
-            </h2>
+            <h2>{editMode ? 'Edit ' : 'Add '} organization</h2>
             <FontAwesomeIcon
               icon="times"
               className="cross-all-pop"
@@ -299,7 +293,7 @@ export default function CreateOrg(prop) {
                       }
                     }}
                     onBlur={handleBlur}
-                  // value={values.admin}
+                    // value={values.admin}
                   />
                   <img src={loader} style={{ width: '25px', marginTop: '5px', visibility: loaderImg ? 'visible' : 'hidden' }} alt="" className="loader" />
                   <div className="error">{errors.domain && touched.domain && errors.domain}</div>
@@ -425,11 +419,11 @@ export default function CreateOrg(prop) {
                       onChange={(e) => {
                         if (
                           !(
-                            e.target.files[0].type.includes('png')
-                            || e.target.files[0].type.includes('jpg')
-                            || e.target.files[0].type.includes('gif')
-                            || e.target.files[0].type.includes('jpeg')
-                            || e.target.files[0].type.includes('svg')
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
                           )
                         ) {
                           Swal.fire({
@@ -542,7 +536,9 @@ export default function CreateOrg(prop) {
                           </div>
                         )}
 
-                        <p className="or-seprator"><span> Or </span></p>
+                        <p className="or-seprator">
+                          <span> Or </span>
+                        </p>
                         <button
                           type="button"
                           onClick={() => {
@@ -603,7 +599,9 @@ export default function CreateOrg(prop) {
                           </div>
                         )}
 
-                        <p className="or-seprator"><span> Or </span></p>
+                        <p className="or-seprator">
+                          <span> Or </span>
+                        </p>
                         <button
                           type="button"
                           onClick={() => {
@@ -627,7 +625,13 @@ export default function CreateOrg(prop) {
             <div className="error">{errors.privacy_policy_url && touched.privacy_policy_url && errors.privacy_policy_url}</div>
 
             <div className="button-group">
-              <button type="submit" onClick={() => { setFieldValue('tos_content', tosContentValue); setFieldValue('privacy_policy_content', ppContentValue); }}>
+              <button
+                type="submit"
+                onClick={() => {
+                  setFieldValue('tos_content', tosContentValue);
+                  setFieldValue('privacy_policy_content', ppContentValue);
+                }}
+              >
                 Save
               </button>
               <button
@@ -639,7 +643,6 @@ export default function CreateOrg(prop) {
               >
                 Cancel
               </button>
-
             </div>
           </form>
         )}

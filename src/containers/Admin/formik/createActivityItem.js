@@ -142,7 +142,10 @@ export default function CreateActivityItem(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit' : 'Add'} activity item</h2>
+            <h2>
+              {editMode ? 'Edit ' : 'Add '}
+              activity item
+            </h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
