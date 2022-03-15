@@ -168,6 +168,32 @@ p {
   color: var(--main-secondary-color) !important;
 }
 
+.add-activity-form
+  .add-activity-layout-formik-videoTag
+  .add-activity-layout-formik
+  .interactive-video-heading-two {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+/* .add-activity-form .upload-back-button .back-button p {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+  background-color: var(--main-white-color) !important;
+}
+.add-activity-form .upload-back-button .back-button {
+  background-color: var(--main-white-color) !important;
+  border-color: none !important;
+} */
+#back-button-none-bg {
+  background-color: var(--main-white-color) !important;
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+.add-activity-form .upload-back-button .back-button p {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
 /* My Projects Search Library branding */
 
 .search-div h4 {
@@ -1428,6 +1454,11 @@ textarea,
 }
 .team-modal h1 span {
   color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+.team-modal .modal-footer .add-team-btn {
+  color: var(--main-white-color) !important;
+  background-color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 

@@ -28,6 +28,7 @@ import ResetImg from "assets/images/svg/reset.svg";
 import UploadImg from "assets/images/svg/upload.svg";
 import Angle from "assets/images/svg/angledown.svg";
 import { Editor } from "@tinymce/tinymce-react";
+import { DynamicBrandingApply } from "containers/App/DynamicBrandingApply";
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -267,6 +268,7 @@ export default function CreateOrg(prop) {
               payload: response?.suborganization,
             });
             if (response?.suborganization.id === activeOrganization.id) {
+              DynamicBrandingApply(response?.suborganization);
               document
                 .querySelector(":root")
                 .style.setProperty(
@@ -283,7 +285,19 @@ export default function CreateOrg(prop) {
                 .querySelector(":root")
                 .style.setProperty(
                   "--main-paragraph-text-color",
-                  response?.suborganization?.org?.branding["secondary_color"]
+                  response?.suborganization?.branding["secondary_color"]
+                );
+              document
+                .querySelector(":root")
+                .style.setProperty(
+                  "--main-heading-font",
+                  response?.suborganization?.branding["primary_font_family"]
+                );
+              document
+                .querySelector(":root")
+                .style.setProperty(
+                  "--main-text-font",
+                  response?.suborganization?.branding["secondary_font_family"]
                 );
             }
             if (response) {
@@ -488,8 +502,7 @@ export default function CreateOrg(prop) {
                                     Swal.fire({
                                       icon: "error",
                                       title: "Error",
-                                      text:
-                                        "Selected file size should be less then 100MB.",
+                                      text: "Selected file size should be less then 100MB.",
                                     });
                                   } else {
                                     const formData = new FormData();
@@ -515,8 +528,7 @@ export default function CreateOrg(prop) {
                                       Swal.fire({
                                         icon: "error",
                                         title: "Error",
-                                        text:
-                                          "Image upload failed, kindly try again.",
+                                        text: "Image upload failed, kindly try again.",
                                       });
                                     }
                                   }
@@ -1353,10 +1365,13 @@ export default function CreateOrg(prop) {
                           onBlur={handleBlur}
                           value={values.primary_font_family}
                         >
-                          <option value="Arial Black">Arial Black </option>
                           <option value="Rubik">Rubik</option>
-                          <option value="Bahnschrift">Bahnschrift</option>
-                          <option value="Calibri">Calibri</option>
+                          <option value="SmoochSans">SmoochSans</option>
+                          <option value="Open Sans">Open Sans</option>
+                          <option value="Fredoka">Fredoka</option>
+                          <option value="BhuTukaExpandedOne">
+                            BhuTukaExpandedOne
+                          </option>
                         </select>
                       </div>
                       <div className="tab_inner_font_primary">
@@ -1369,10 +1384,13 @@ export default function CreateOrg(prop) {
                           onBlur={handleBlur}
                           value={values.secondary_font_family}
                         >
-                          <option value="Arial Black">Arial Black </option>
                           <option value="Rubik">Rubik</option>
-                          <option value="Bahnschrift">Bahnschrift</option>
+                          <option value="SmoochSans">SmoochSans</option>
                           <option value="Open Sans">Open Sans</option>
+                          <option value="Fredoka">Fredoka</option>
+                          <option value="BhuTukaExpandedOne">
+                            BhuTukaExpandedOne
+                          </option>
                         </select>
                       </div>
                       {/* <div className="tab_inner_font_upload">
