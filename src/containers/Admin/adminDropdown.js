@@ -751,7 +751,7 @@ const AdminDropdown = (props) => {
 
           {type === 'DefaultSso' && (
             <>
-              {permission?.Organization.includes('organization:update-default-sso') && (
+              {true && (
                 <Dropdown.Item
                   onClick={() => {
                     dispatch({
@@ -765,7 +765,7 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:delete-default-sso') && (
+              {true && (
                 <>
                   <Dropdown.Item
                     onClick={() => {
@@ -958,7 +958,7 @@ const AdminDropdown = (props) => {
                   dispatch({
                     type: actionTypes.UPDATE_SELECTED_TEAM,
                     payload: row,
-                  })
+                  });
                   dispatch(getTeamPermission(activeOrganization?.id, row?.id));
                 }}
               >
