@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, useEffect, useReducer} from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -94,7 +94,6 @@ const H5PPreview = (props) => {
   };
 
   const resourceLoaded = async (data) => {
-
     window.H5P = window.H5P || {};
     window.H5P.preventInit = true;
     window.H5PIntegration = data.h5p.settings;
@@ -131,6 +130,7 @@ const H5PPreview = (props) => {
           if (showLtiPreview) {
             const response = await loadH5pResourceSettingsOpen(activityId);
             if (response.h5p_activity) {
+              window.brightcoveAccountId = response.h5p_activity?.brightcoveData.accountId;
               await resourceLoaded(response.h5p_activity);
             }
           } else if (showActivityPreview) {
@@ -141,8 +141,7 @@ const H5PPreview = (props) => {
           } else if (showvideoH5p) {
             const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
             if (response.activity?.brightcoveData) {
-
-              window.brightcoveAccountId = response.activity?.brightcoveData.accountId
+              window.brightcoveAccountId = response.activity?.brightcoveData.accountId;
             }
             if (response.activity) {
               await resourceLoaded(response.activity);
@@ -175,7 +174,7 @@ const H5PPreview = (props) => {
       // eslint-disable-next-line no-use-before-define
       activityState.h5pObject.externalDispatcher.on('xAPI', (event) => {
         if (counter > 0) {
-          dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, {...props}))));
+          dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
         }
         counter += 1;
       });
