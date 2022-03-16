@@ -47,9 +47,12 @@ const Project = (props) => {
         <div className="col result">
           <div key={project.id} className="row project ">
             <div className="col project-about">
-              <div className=" project-img">
-                <Image src={project.thumb_url.includes('pexels.com') ? project.thumb_url : `${global.config.resourceUrl}${project.thumb_url}`} thumbnail />
-              </div>
+              <div
+                className="project-img"
+                style={{
+                  backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                }}
+              ></div>
 
               <div className="row project-details-row">
                 <div className="col project-detail">
@@ -76,7 +79,7 @@ const Project = (props) => {
             </div>
 
             {/* {selectedProject?.id !== project.id && ( */}
-            <div className="col-2 text-right actions">
+            <div className=" text-right actions">
               <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
                 View Playlists
               </button>
@@ -111,9 +114,14 @@ const Project = (props) => {
                               <div className="playlist-activities">
                                 {playlist.activities.map((activity) => (
                                   <div className="  activities" key={activity.id}>
-                                    {/*<div className="col-2.5">
-                                      <Image src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`} thumbnail />
-                                     </div>*/}
+                                    <div
+                                      className="project-img"
+                                      style={{
+                                        backgroundImage: activity.thumb_url.includes('pexels.com')
+                                          ? `url(${activity.thumb_url})`
+                                          : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                                      }}
+                                    ></div>
                                     <div className=" title">
                                       <p>{activity.title}</p>
                                     </div>
