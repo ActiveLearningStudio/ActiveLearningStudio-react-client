@@ -1461,6 +1461,17 @@ textarea,
   background-color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.teams-page .team-controller .search-and-filters .search-bar input {
+  border-bottom: 2px solid var(--main-primary-color) !important;
+}
+.add-team-page
+  .flex-button-top
+  .team-controller
+  .search-and-filters
+  .search-bar
+  input {
+  border-bottom: 2px solid var(--main-primary-color) !important;
+}
 
 /* Auth */
 .auth-page .auth-container nav .nav-link {

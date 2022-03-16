@@ -10,6 +10,7 @@ import DropDownEdit from "utils/DropDownEdit/dropdownedit";
 import videoServices from "services/videos.services";
 
 import "./addvideocard.scss";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const AddVideoCard = ({
   setModalShow,
@@ -25,6 +26,7 @@ const AddVideoCard = ({
   const currikiUtility = classNames("curriki-utility-addvideo-card", className);
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <>
       <div className={currikiUtility}>
@@ -61,7 +63,7 @@ const AddVideoCard = ({
               <FontAwesomeIcon
                 icon={faEye}
                 style={{ marginRight: "6px" }}
-                color="#084892"
+                color={primaryColor}
               />
               View &nbsp;&nbsp;&nbsp;
             </div>
@@ -112,7 +114,7 @@ const AddVideoCard = ({
               <FontAwesomeIcon
                 icon={faEdit}
                 style={{ marginRight: "6px" }}
-                color="#084892"
+                color={primaryColor}
               />
               Edit
             </div>
