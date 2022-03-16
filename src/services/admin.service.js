@@ -233,7 +233,7 @@ const deleteDefaultSso = (orgId, id) => httpService
   });
 
 const searchDefaultSso = (orgId, search, page) => httpService
-  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}&query=${search.replace(/#/, '%23')}`)
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
