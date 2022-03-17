@@ -29,7 +29,9 @@ import UploadImg from "assets/images/svg/upload.svg";
 import Angle from "assets/images/svg/angledown.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { DynamicBrandingApply } from "containers/App/DynamicBrandingApply";
+import loadable from "@loadable/component";
 
+const ProjectsPage = loadable(() => import("../../../containers/Projects"));
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
@@ -1387,7 +1389,24 @@ export default function CreateOrg(prop) {
                           : "tab-inner-preview"
                       }
                     >
-                      <h1>Preview {selectPreview}</h1>
+                      {/* <h1>Preview {selectPreview}</h1> */}
+                      {/* <div width="100%" height="100%">
+                        <ProjectsPage />
+                      </div> */}
+                      <div style={{ width: "100%" }}>
+                        <iframe
+                          src="http://localhost:3000/org/currikistudio"
+                          style={{
+                            width: "100vw",
+                            height: "100vh",
+                          }}
+                        ></iframe>
+                      </div>
+                      {/* <iframe
+                        src="http://localhost:3000/org/currikistudio"
+                        width="100%"
+                        height="100%"
+                      ></iframe> */}
                     </div>
                   </div>
                 </div>
