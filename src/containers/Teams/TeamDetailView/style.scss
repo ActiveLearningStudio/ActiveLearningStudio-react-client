@@ -512,10 +512,16 @@
 }
 
 .customOverlaySize {
-  background: rgba(36, 123, 160, 0.7);
+  padding: 20px;
 }
 .customModalSize {
-  background: #b2dbbf;
-  max-width: 500px;
+  max-width: 1450px !important;
   width: 100%;
+  height: auto;
+  margin: 0 !important;
+}
+.team-project-btns.whiteboard button {
+  &:hover {
+    color: #fff !important;
+  }
 }
