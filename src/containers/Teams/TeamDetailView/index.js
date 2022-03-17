@@ -1,19 +1,25 @@
 /* eslint-disable */
-import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import PropTypes from "prop-types";
 
-import EditTeamImage from 'assets/images/svg/editTeam.svg';
-import EditDetailImage from 'assets/images/svg/detailEdit.svg';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import './style.scss';
+import EditTeamImage from "assets/images/svg/editTeam.svg";
+import EditDetailImage from "assets/images/svg/detailEdit.svg";
+import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
+import "./style.scss";
 
-import { useHistory } from 'react-router-dom';
-import Buttons from 'utils/Buttons/buttons';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import UserIcon from 'assets/images/svg/user.svg';
-import InviteDialog from 'components/InviteDialog';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ProjectCard from 'containers/Projects/ProjectCard';
+import { useHistory } from "react-router-dom";
+import Buttons from "utils/Buttons/buttons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import UserIcon from "assets/images/svg/user.svg";
+import InviteDialog from "components/InviteDialog";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ProjectCard from "containers/Projects/ProjectCard";
 import {
   changeUserRole,
   getTeamPermission,
@@ -24,13 +30,14 @@ import {
   removeProjectAction,
   setNewTeamData,
   updateTeamAction,
-} from 'store/actions/team';
-import { connect, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import GoogleModel from 'components/models/GoogleLoginModal';
-import WhiteBoardModal from 'components/models/WhiteBoardModal';
-import { Alert } from 'react-bootstrap';
-import TeamMembers from './TeamMembers';
+} from "store/actions/team";
+import { connect, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import GoogleModel from "components/models/GoogleLoginModal";
+import WhiteBoardModal from "components/models/WhiteBoardModal";
+import { Alert } from "react-bootstrap";
+import TeamMembers from "./TeamMembers";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const TeamDetail = ({
   location,
@@ -70,8 +77,13 @@ const TeamDetail = ({
   const [whiteBoardUrl, setWhiteBoardUrl] = useState([]);
   const dataRedux = useSelector((state) => state);
   const [minimumUserFlag, setMinimumUserFlag] = useState(false);
-  const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState(newTeam?.users?.length > 0 ? newTeam.users : []);
-  const currentTeamUser = useMemo(() => (team?.users?.length > 0 ? team.users : []), [team?.users]);
+  const [selectedUsersNewTeam, setSelectUsersNewTeam] = useState(
+    newTeam?.users?.length > 0 ? newTeam.users : []
+  );
+  const currentTeamUser = useMemo(
+    () => (team?.users?.length > 0 ? team.users : []),
+    [team?.users]
+  );
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
@@ -92,10 +104,14 @@ const TeamDetail = ({
   }, [dataRedux.team.whiteBoardUrl]);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
-    if (location?.pathname?.includes('/teams/team-detail') && !newTeam?.name && organization?.domain) {
+    if (
+      location?.pathname?.includes("/teams/team-detail") &&
+      !newTeam?.name &&
+      organization?.domain
+    ) {
       history.push(`/org/${organization?.domain}/teams`);
     } else if (!team?.id && !newTeam?.name && organization?.domain) {
-      loadTeam(location?.pathname?.split('teams/')[1]);
+      loadTeam(location?.pathname?.split("teams/")[1]);
     }
   }, [organization]);
   const handleShow = () => {
@@ -104,11 +120,13 @@ const TeamDetail = ({
   // Team member delete handler function
   const deleteTeamMemberHandler = (userToDelete) => {
     if (team?.id) {
-      const remainingAdmin = team?.users?.filter((singleRole) => singleRole?.role?.id === 1);
+      const remainingAdmin = team?.users?.filter(
+        (singleRole) => singleRole?.role?.id === 1
+      );
       if (remainingAdmin?.length <= 1 && userToDelete?.role.id === 1) {
         Swal.fire({
-          icon: 'warning',
-          text: 'There should be at least one admin',
+          icon: "warning",
+          text: "There should be at least one admin",
         });
       } else {
         removeMember(team?.id, userToDelete?.id, userToDelete?.email)
@@ -119,14 +137,16 @@ const TeamDetail = ({
           })
           .catch(() => {
             Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to remove user.',
+              icon: "error",
+              title: "Error",
+              text: "Failed to remove user.",
             });
           });
       }
     } else if (newTeam?.name) {
-      setSelectUsersNewTeam((prevState) => prevState.filter((u) => u.id !== userToDelete.id));
+      setSelectUsersNewTeam((prevState) =>
+        prevState.filter((u) => u.id !== userToDelete.id)
+      );
     }
   };
   // Deleting current team project handler
@@ -134,9 +154,9 @@ const TeamDetail = ({
     (projectId) => {
       removeProject(team?.id, projectId).catch(() => {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to remove project.',
+          icon: "error",
+          title: "Error",
+          text: "Failed to remove project.",
         });
       });
     },
@@ -151,7 +171,10 @@ const TeamDetail = ({
   // Invite handler for new team
   const handleInviteNewTeam = useCallback(
     (users, note) => {
-      setSelectUsersNewTeam([...selectedUsersNewTeam, ...users.map((u) => ({ ...u, note }))]);
+      setSelectUsersNewTeam([
+        ...selectedUsersNewTeam,
+        ...users.map((u) => ({ ...u, note })),
+      ]);
       setMinimumUserFlag(false);
       setShowInvite(false);
     },
@@ -163,23 +186,23 @@ const TeamDetail = ({
       inviteMembers(team?.id, selectedUsers, emailNote)
         .then(() => {
           Swal.fire({
-            icon: 'success',
-            title: 'Successfully invited.',
+            icon: "success",
+            title: "Successfully invited.",
           });
           setShowInvite(false);
         })
         .catch(() => {
           Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to invite user.',
+            icon: "error",
+            title: "Error",
+            text: "Failed to invite user.",
           });
         });
     },
     [inviteMembers, team?.id]
   );
   const onBlur = (e) => {
-    if (e.target.name === 'team-name') {
+    if (e.target.name === "team-name") {
       teamNameRef.current.blur();
       setEditTeam({ ...editTeam, editName: false });
       if (e.target.value.length <= 100) {
@@ -192,28 +215,31 @@ const TeamDetail = ({
           })
             .then(() => {
               Swal.fire({
-                icon: 'success',
-                title: 'Successfully updated.',
+                icon: "success",
+                title: "Successfully updated.",
               });
             })
             .catch(() => {
               Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Update Team failed, kindly try again.',
+                icon: "error",
+                title: "Error",
+                text: "Update Team failed, kindly try again.",
               });
             });
-        } else if (Object.keys(newTeam).length && newTeam?.name !== e.target.value) {
+        } else if (
+          Object.keys(newTeam).length &&
+          newTeam?.name !== e.target.value
+        ) {
           newTeamData({ ...newTeam, name: e.target.value });
         }
       } else if (e.target.value.length > 100) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Exceeding length',
-          text: 'Cannot enter more than 100 character in team title.',
+          icon: "warning",
+          title: "Exceeding length",
+          text: "Cannot enter more than 100 character in team title.",
         });
       }
-    } else if (e.target.name === 'team-description') {
+    } else if (e.target.name === "team-description") {
       teamDescriptionRef.current.blur();
       setEditTeam({ ...editTeam, editDescription: false });
       if (e.target.value.length <= 1000) {
@@ -226,28 +252,31 @@ const TeamDetail = ({
           })
             .then(() => {
               Swal.fire({
-                icon: 'success',
-                title: 'Successfully updated.',
+                icon: "success",
+                title: "Successfully updated.",
               });
             })
             .catch(() => {
               Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Update Team failed, kindly try again.',
+                icon: "error",
+                title: "Error",
+                text: "Update Team failed, kindly try again.",
               });
             });
-        } else if (Object.keys(newTeam).length && newTeam?.description !== e.target.value) {
+        } else if (
+          Object.keys(newTeam).length &&
+          newTeam?.description !== e.target.value
+        ) {
           newTeamData({ ...newTeam, description: e.target.value });
         }
       } else if (e.target.value.length > 1000) {
         Swal.fire({
-          icon: 'warning',
-          title: 'Exceeding length',
-          text: 'Cannot enter more than 1000 character in team description.',
+          icon: "warning",
+          title: "Exceeding length",
+          text: "Cannot enter more than 1000 character in team description.",
         });
       }
-    } else if (e.target.name === 'noovo-group-title') {
+    } else if (e.target.name === "noovo-group-title") {
       teamNoovoTitleRef.current.blur();
       setEditTeam({ ...editTeam, editNoovoTitle: false });
       if (team?.id && team?.description !== e.target.value) {
@@ -259,18 +288,21 @@ const TeamDetail = ({
         })
           .then(() => {
             Swal.fire({
-              icon: 'success',
-              title: 'Successfully updated.',
+              icon: "success",
+              title: "Successfully updated.",
             });
           })
           .catch(() => {
             Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Update Team failed, kindly try again.',
+              icon: "error",
+              title: "Error",
+              text: "Update Team failed, kindly try again.",
             });
           });
-      } else if (Object.keys(newTeam).length && newTeam?.noovo_group_title !== e.target.value) {
+      } else if (
+        Object.keys(newTeam).length &&
+        newTeam?.noovo_group_title !== e.target.value
+      ) {
         newTeamData({ ...newTeam, noovo_group_title: e.target.value });
       }
     }
@@ -285,7 +317,9 @@ const TeamDetail = ({
   const searchProjects = ({ target }) => {
     const { value } = target;
     if (value.length > 0) {
-      const filteredProjects = allPersonalProjects.filter((project) => project.name.toLowerCase().includes(value.toLowerCase()));
+      const filteredProjects = allPersonalProjects.filter((project) =>
+        project.name.toLowerCase().includes(value.toLowerCase())
+      );
       setAllPersonalProjects(filteredProjects);
       setLoading(false);
     } else if (team?.id) {
@@ -306,65 +340,78 @@ const TeamDetail = ({
   const setProjectId = (projectId) => {
     setSelectedProjectId(projectId);
   };
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="team-detail-page">
       <div className="content">
         <div className="inner-content">
           <div className="add-team-page">
-            <div className={`${toggleLeft ? 'width90' : ''} left`}>
+            <div className={`${toggleLeft ? "width90" : ""} left`}>
               <div className="organization-name">{organization?.name}</div>
               <div className="title-image">
                 <div>
-                  {!editTeam.editName && <h1 className="title">{team?.name || newTeam?.name}</h1>}
+                  {!editTeam.editName && (
+                    <h1 className="title">{team?.name || newTeam?.name}</h1>
+                  )}
                   {editTeam.editName && (
-                    <textarea className="title" name="team-name" ref={teamNameRef} defaultValue={team?.name || newTeam?.name} onBlur={onBlur} onKeyPress={onEnterPress} />
+                    <textarea
+                      className="title"
+                      name="team-name"
+                      ref={teamNameRef}
+                      defaultValue={team?.name || newTeam?.name}
+                      onBlur={onBlur}
+                      onKeyPress={onEnterPress}
+                    />
                   )}
                 </div>
                 <div>
-                  {!editTeam.editName && teamPermission?.activeRole === 'admin' && (
-                    // <img
-                    //   className="editimage-tag"
-                    //   src={EditTeamImage}
-                    //   alt="EditTeamImage"
-                    //   onClick={() => {
-                    //     setEditTeam({ ...editTeam, editName: true });
-                    //     teamNameRef?.current?.focus();
-                    //   }}
-                    // />
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="editimage-tag"
-                      onClick={() => {
-                        setEditTeam({ ...editTeam, editName: true });
-                        teamNameRef?.current?.focus();
-                      }}
-                    >
-                      <path
-                        d="M6.36745 2.26508H2.19277C1.87642 2.26508 1.57304 2.39074 1.34935 2.61443C1.12567 2.83812 1 3.1415 1 3.45784V11.8072C1 12.1235 1.12567 12.4269 1.34935 12.6506C1.57304 12.8743 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8743 11.3855 12.6506C11.6092 12.4269 11.7349 12.1235 11.7349 11.8072V7.63252"
-                        stroke={primaryColor}
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M10.8394 1.37054C11.0767 1.13329 11.3985 1 11.734 1C12.0695 1 12.3913 1.13329 12.6286 1.37054C12.8658 1.6078 12.9991 1.92959 12.9991 2.26512C12.9991 2.60065 12.8658 2.92244 12.6286 3.15969L6.96292 8.82533L4.57739 9.42172L5.17378 7.03618L10.8394 1.37054Z"
-                        stroke={primaryColor}
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  )}
+                  {!editTeam.editName &&
+                    teamPermission?.activeRole === "admin" && (
+                      // <img
+                      //   className="editimage-tag"
+                      //   src={EditTeamImage}
+                      //   alt="EditTeamImage"
+                      //   onClick={() => {
+                      //     setEditTeam({ ...editTeam, editName: true });
+                      //     teamNameRef?.current?.focus();
+                      //   }}
+                      // />
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 14 14"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="editimage-tag"
+                        onClick={() => {
+                          setEditTeam({ ...editTeam, editName: true });
+                          teamNameRef?.current?.focus();
+                        }}
+                      >
+                        <path
+                          d="M6.36745 2.26508H2.19277C1.87642 2.26508 1.57304 2.39074 1.34935 2.61443C1.12567 2.83812 1 3.1415 1 3.45784V11.8072C1 12.1235 1.12567 12.4269 1.34935 12.6506C1.57304 12.8743 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8743 11.3855 12.6506C11.6092 12.4269 11.7349 12.1235 11.7349 11.8072V7.63252"
+                          stroke={primaryColor}
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M10.8394 1.37054C11.0767 1.13329 11.3985 1 11.734 1C12.0695 1 12.3913 1.13329 12.6286 1.37054C12.8658 1.6078 12.9991 1.92959 12.9991 2.26512C12.9991 2.60065 12.8658 2.92244 12.6286 3.15969L6.96292 8.82533L4.57739 9.42172L5.17378 7.03618L10.8394 1.37054Z"
+                          stroke={primaryColor}
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    )}
                 </div>
               </div>
               <div className="add-team-detail">
                 <div className="team-detail">
-                  <p>{!editTeam.editDescription && (team?.description || newTeam?.description)}</p>
+                  <p>
+                    {!editTeam.editDescription &&
+                      (team?.description || newTeam?.description)}
+                  </p>
                   {editTeam.editDescription && (
                     <textarea
                       className="description"
@@ -377,53 +424,70 @@ const TeamDetail = ({
                   )}
                 </div>
                 <div className="team-edit-detail">
-                  {!editTeam.editDescription && teamPermission?.activeRole === 'admin' && (
-                    <img
-                      className="editimage-tag"
-                      src={EditDetailImage}
-                      alt="EditDetailImage"
-                      onClick={() => {
-                        setEditTeam({ ...editTeam, editDescription: true });
-                        teamDescriptionRef?.current?.focus();
-                      }}
-                    />
-                  )}
+                  {!editTeam.editDescription &&
+                    teamPermission?.activeRole === "admin" && (
+                      <img
+                        className="editimage-tag"
+                        src={EditDetailImage}
+                        alt="EditDetailImage"
+                        onClick={() => {
+                          setEditTeam({ ...editTeam, editDescription: true });
+                          teamDescriptionRef?.current?.focus();
+                        }}
+                      />
+                    )}
                 </div>
               </div>
               <div className="noovo-group-title">
                 <label>Noovo Group Title:</label>
-                {'  '}
-                {!editTeam?.editNoovoTitle ? <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p> : null}
+                {"  "}
+                {!editTeam?.editNoovoTitle ? (
+                  <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p>
+                ) : null}
                 {editTeam?.editNoovoTitle && (
                   <textarea
                     className="noovo-title"
                     name="noovo-group-title"
                     ref={teamNoovoTitleRef}
-                    defaultValue={team?.noovo_group_title || newTeam?.noovo_group_title}
+                    defaultValue={
+                      team?.noovo_group_title || newTeam?.noovo_group_title
+                    }
                     onBlur={onBlur}
                     onKeyPress={onEnterPress}
                   />
                 )}
-                {!editTeam.editNoovoTitle && teamPermission?.activeRole === 'admin' && (
-                  <img
-                    className="editimage-tag"
-                    src={EditDetailImage}
-                    alt="EditDetailImage"
-                    onClick={() => {
-                      setEditTeam({ ...editTeam, editNoovoTitle: true });
-                      teamNoovoTitleRef?.current?.focus();
-                    }}
-                  />
-                )}
+                {!editTeam.editNoovoTitle &&
+                  teamPermission?.activeRole === "admin" && (
+                    <img
+                      className="editimage-tag"
+                      src={EditDetailImage}
+                      alt="EditDetailImage"
+                      onClick={() => {
+                        setEditTeam({ ...editTeam, editNoovoTitle: true });
+                        teamNoovoTitleRef?.current?.focus();
+                      }}
+                    />
+                  )}
               </div>
               <div className="flex-button-top">
                 <div className="team-controller">
                   {team?.id && (
                     <div className="search-and-filters">
                       <div className="search-bar">
-                        <input type="text" className="search-input" placeholder="Search project" onChange={searchProjects} />
+                        <input
+                          type="text"
+                          className="search-input"
+                          placeholder="Search project"
+                          onChange={searchProjects}
+                        />
                         <img src={searchimg} alt="search" />
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
                           <path
                             d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                             stroke={primaryColor}
@@ -431,7 +495,13 @@ const TeamDetail = ({
                             stroke-linecap="round"
                             stroke-linejoin="round"
                           />
-                          <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                          <path
+                            d="M21 20.9984L16.65 16.6484"
+                            stroke={primaryColor}
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
                         </svg>
                       </div>
                     </div>
@@ -446,11 +516,17 @@ const TeamDetail = ({
                         className="mr-16"
                         hover
                         onClick={() => {
-                          assignWhiteBoardUrl(organization?.id, 1, auth.user?.id, 'team');
+                          assignWhiteBoardUrl(
+                            organization?.id,
+                            1,
+                            auth.user?.id,
+                            "team"
+                          );
                           handleShowWhiteBoard();
                         }}
                       />
-                      {(teamPermission?.Team?.includes('team:add-project') || newTeam?.name) && (
+                      {(teamPermission?.Team?.includes("team:add-project") ||
+                        newTeam?.name) && (
                         <Buttons
                           icon={faPlus}
                           text="Add project"
@@ -460,12 +536,17 @@ const TeamDetail = ({
                           hover
                           onClick={() => {
                             if (team?.id) {
-                              history.push(`/org/${organization?.domain}/teams/${team?.id}/add-projects`);
+                              history.push(
+                                `/org/${organization?.domain}/teams/${team?.id}/add-projects`
+                              );
                             } else if (newTeam?.name) {
                               if (newTeam?.users) {
                                 newTeamData({
                                   ...newTeam,
-                                  users: [...newTeam?.users, ...selectedUsersNewTeam],
+                                  users: [
+                                    ...newTeam?.users,
+                                    ...selectedUsersNewTeam,
+                                  ],
                                 });
                               } else {
                                 newTeamData({
@@ -475,7 +556,9 @@ const TeamDetail = ({
                               }
                               if (selectedUsersNewTeam.length > 0) {
                                 setMinimumUserFlag(false);
-                                history.push(`/org/${organization?.domain}/teams/add-projects`);
+                                history.push(
+                                  `/org/${organization?.domain}/teams/add-projects`
+                                );
                               } else {
                                 setMinimumUserFlag(true);
                               }
@@ -512,7 +595,7 @@ const TeamDetail = ({
                       ) : (
                         team?.id && (
                           <Alert variant="danger" className="alert">
-                            {' '}
+                            {" "}
                             No project found.
                           </Alert>
                         )
@@ -522,14 +605,27 @@ const TeamDetail = ({
                 </div>
               </div>
             </div>
-            <div className={`${toggleLeft ? 'width10' : ''} right`}>
-              <button type="button" className="toggle_btn" onClick={() => setToggleLeft(!toggleLeft)}>
-                <FontAwesomeIcon icon="chevron-circle-right" className={`${toggleLeft ? 'image_rotate' : ''}`} />
+            <div className={`${toggleLeft ? "width10" : ""} right`}>
+              <button
+                type="button"
+                className="toggle_btn"
+                onClick={() => setToggleLeft(!toggleLeft)}
+              >
+                <FontAwesomeIcon
+                  icon="chevron-circle-right"
+                  className={`${toggleLeft ? "image_rotate" : ""}`}
+                />
               </button>
               <div className="right_head">
-                <h1 className={`${toggleLeft ? 'none' : ''}`}>Team members </h1>
+                <h1 className={`${toggleLeft ? "none" : ""}`}>Team members </h1>
                 {/* <img src={UserIcon} alt="" /> */}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M8.25309 15.0622C10.8933 15.0622 13.0336 12.9219 13.0336 10.2817C13.0336 7.64146 10.8933 5.50116 8.25309 5.50116C5.6129 5.50116 3.4726 7.64146 3.4726 10.2817C3.4726 12.9219 5.6129 15.0622 8.25309 15.0622Z"
                     fill="white"
@@ -560,14 +656,31 @@ const TeamDetail = ({
                   />
                 </svg>
               </div>
-              {minimumUserFlag && <Alert variant="danger">Invite at least 1 or more member to your team</Alert>}
+              {minimumUserFlag && (
+                <Alert variant="danger">
+                  Invite at least 1 or more member to your team
+                </Alert>
+              )}
               <div className="right_select">
-                <div className={`${toggleLeft ? 'none' : ''}`}>
-                  {teamPermission?.Team?.includes('team:add-team-user') && team?.users && (
-                    <InviteDialog users={team?.users} visible={showInvite} authUser={authUser} setShowInvite={setShowInvite} handleInvite={handleInvite} />
-                  )}
+                <div className={`${toggleLeft ? "none" : ""}`}>
+                  {teamPermission?.Team?.includes("team:add-team-user") &&
+                    team?.users && (
+                      <InviteDialog
+                        users={team?.users}
+                        visible={showInvite}
+                        authUser={authUser}
+                        setShowInvite={setShowInvite}
+                        handleInvite={handleInvite}
+                      />
+                    )}
                   {newTeam?.name && (
-                    <InviteDialog users={selectedUsersNewTeam} visible={showInvite} authUser={user} setShowInvite={setShowInvite} handleInvite={handleInviteNewTeam} />
+                    <InviteDialog
+                      users={selectedUsersNewTeam}
+                      visible={showInvite}
+                      authUser={user}
+                      setShowInvite={setShowInvite}
+                      handleInvite={handleInviteNewTeam}
+                    />
                   )}
                 </div>
               </div>
@@ -594,8 +707,17 @@ const TeamDetail = ({
           </div>
         </div>
       </div>
-      <WhiteBoardModal url={whiteBoardUrl} show={showWhiteBoard} onHide={handleCloseWhiteBoard} loading={loadingWhiteBoard} />
-      <GoogleModel projectId={selectedProjectId} show={showGoogleModal} onHide={() => setShowGoogleModal(false)} />
+      <WhiteBoardModal
+        url={whiteBoardUrl}
+        show={showWhiteBoard}
+        onHide={handleCloseWhiteBoard}
+        loading={loadingWhiteBoard}
+      />
+      <GoogleModel
+        projectId={selectedProjectId}
+        show={showGoogleModal}
+        onHide={() => setShowGoogleModal(false)}
+      />
     </div>
   );
 };
@@ -629,14 +751,20 @@ const mapStateToProps = (state) => ({
   organization: state.organization.activeOrganization,
 });
 const mapDispatchToProps = (dispatch) => ({
-  inviteMembers: (teamId, selectedUsers, emailNote) => dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
+  inviteMembers: (teamId, selectedUsers, emailNote) =>
+    dispatch(inviteMembersAction(teamId, selectedUsers, emailNote)),
   newTeamData: (newTeam) => dispatch(setNewTeamData(newTeam)),
-  removeProject: (teamId, projectId) => dispatch(removeProjectAction(teamId, projectId)),
-  changeUserRoleAction: (teamId, userDetail) => dispatch(changeUserRole(teamId, userDetail)),
+  removeProject: (teamId, projectId) =>
+    dispatch(removeProjectAction(teamId, projectId)),
+  changeUserRoleAction: (teamId, userDetail) =>
+    dispatch(changeUserRole(teamId, userDetail)),
   loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
-  getTeamPermissionAction: (orgId, teamId) => dispatch(getTeamPermission(orgId, teamId)),
-  removeMember: (teamId, userId, email) => dispatch(removeMemberAction(teamId, userId, email)),
+  getTeamPermissionAction: (orgId, teamId) =>
+    dispatch(getTeamPermission(orgId, teamId)),
+  removeMember: (teamId, userId, email) =>
+    dispatch(removeMemberAction(teamId, userId, email)),
   updateTeam: (teamId, data) => dispatch(updateTeamAction(teamId, data)),
-  whiteBoard: (orgId, objId, userId, objType) => dispatch(getWhiteBoardUrl(orgId, objId, userId, objType)),
+  whiteBoard: (orgId, objId, userId, objType) =>
+    dispatch(getWhiteBoardUrl(orgId, objId, userId, objType)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(TeamDetail);

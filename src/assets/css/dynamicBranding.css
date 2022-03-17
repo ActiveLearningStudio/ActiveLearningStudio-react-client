@@ -193,6 +193,22 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.curriki-theme-secondary-button:hover {
+  color: var(--main-white-color) !important;
+  background-color: var(--main-primary-color) !important;
+}
+.form-new-popup-myvideo
+  .add-video-form
+  .add-video-form-tabs
+  .main-tabs
+  .nav-item.active,
+.form-new-popup-myvideo
+  .add-video-form
+  .add-video-form-tabs
+  .nav-tabs
+  .nav-link:hover {
+  border-bottom-color: var(--main-primary-color) !important;
+}
 
 /* My Projects Search Library branding */
 
@@ -1190,6 +1206,16 @@ textarea,
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
+
+.curriki-utility-uploadimageV2 .uploadimage-option button:hover {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
+.swal2-popup .swal2-actions button.swal2-cancel:hover {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
+
 /* .addvideo-card-add-share{
   color: var(--main-user-text-color) !important;
   font-family: var(--main-heading-font) !important;
@@ -1502,4 +1528,10 @@ textarea,
   color: var(--main-black-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-secondary-color) !important;
+}
+.auth-page .auth-container .form-button .submit,
+.auth-page .auth-container .form-group .signUp-btn {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-white-color) !important;
+  background-color: var(--main-primary-color) !important;
 }
