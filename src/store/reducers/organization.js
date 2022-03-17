@@ -129,7 +129,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.REMOVE_SUBORG_DEL:
       return {
         ...state,
-        allSuborgList: state.allSuborgList.filter((remove) => remove.id !== action.payload.id),
+        allSuborgList: { data: state.allSuborgList.data?.filter((remove) => remove.id !== action.payload.id), links: state.allSuborgList.links, meta: state.allSuborgList.meta },
       };
     case actionTypes.ADD_SUBORG_EDIT:
       return {
