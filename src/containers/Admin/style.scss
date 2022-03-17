@@ -681,6 +681,11 @@
         right: 0;
         bottom: 4px;
       }
+      svg {
+        position: absolute;
+        right: 0;
+        bottom: 4px;
+      }
     }
 
     .import-user {
@@ -2235,6 +2240,7 @@
     margin-right: 20px;
     color: #084892;
     flex: 1;
+    font-family: $bhuTukaExpandedOne;
   }
   button {
     background-color: #f7faff;

@@ -63,6 +63,9 @@
           height: 16px;
           margin-right: 8px;
         }
+        svg {
+          margin-right: 8px;
+        }
         &:hover {
           color: #2e68bf;
           background: #f7faff;
@@ -83,6 +86,11 @@
     display: flex;
     align-items: center;
     img {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    svg {
       width: 16px;
       height: 16px;
       margin-right: 8px;
