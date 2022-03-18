@@ -1,29 +1,23 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
-
+import { Dropdown } from 'react-bootstrap';
 import { getLtiTools, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
+import loader from 'assets/images/dotsloader.gif';
+import { toolTypeArray } from 'utils';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
-import loader from 'assets/images/dotsloader.gif';
-import Switch from 'react-switch';
+import './createuser.scss';
 
 export default function CreateLtiTool(prop) {
-  const { editMode, method, clone } = prop;
+  const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    if (editMode && !clone) {
-      setChecked(activeEdit?.published);
-    }
-  }, [activeEdit, editMode]);
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -35,6 +29,7 @@ export default function CreateLtiTool(prop) {
           lti_version: editMode ? activeEdit?.lti_version || 'LTI-1p0' : 'LTI-1p0',
           tool_consumer_key: editMode ? activeEdit?.tool_consumer_key : '',
           tool_description: editMode ? activeEdit?.tool_description : '',
+          tool_type: editMode ? activeEdit?.tool_type : '',
           tool_secret_key: editMode ? activeEdit?.tool_secret_key : '',
           organization_id: organization?.activeOrganization?.id,
           user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
@@ -52,14 +47,14 @@ export default function CreateLtiTool(prop) {
             errors.lti_version = 'required';
           }
           if (!values.user_id) {
-						errors.user_id = 'Required';
-					}
+            errors.user_id = 'Required';
+          }
           return errors;
         }}
         onSubmit={async (values) => {
           if (editMode && !clone) {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Updating LTI Tool ...',
               allowOutsideClick: false,
@@ -73,18 +68,22 @@ export default function CreateLtiTool(prop) {
             result.then((res) => {
               Swal.fire({
                 icon: 'success',
-                text: res?.message,
+                text: 'LTI tool edited successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: 'LTI tool edited successfully',
+                payload: res?.data,
               });
             });
           } else {
             Swal.fire({
-              title: 'Users',
+              title: 'Lti tool',
               icon: 'info',
               text: 'Creating new LTI Tool...',
 
@@ -99,6 +98,10 @@ export default function CreateLtiTool(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'LTI tool added successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -122,7 +125,10 @@ export default function CreateLtiTool(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2>{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</h2>
+              <h2>
+                {editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}
+                LTI tool
+              </h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -143,6 +149,30 @@ export default function CreateLtiTool(prop) {
                     <h3>Tool Description</h3>
                     <textarea type="text" name="tool_description" onChange={handleChange} onBlur={handleBlur} value={values.tool_description} />
                     <div className="error">{errors.tool_description && touched.tool_description && errors.tool_description}</div>
+                  </div>
+
+                  <div className="form-group-create">
+                    <h3>Tool type</h3>
+                    <div className="filter-dropdown-tooltype">
+                      <Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic">
+                          {toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {toolTypeArray.map((type) => (
+                            <Dropdown.Item
+                              key={type.key}
+                              onClick={() => {
+                                setFieldValue('tool_type', type.key);
+                              }}
+                            >
+                              {type.value}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+
                   </div>
 
                   <div className="form-group-create">
@@ -179,57 +209,60 @@ export default function CreateLtiTool(prop) {
                   </div>
 
                   <div className="form-group-create">
-                        <h3>User &nbsp; (search users from dropdown list only)</h3>
-                        <input
-                          type="text"
-                          name="name"
-                          autoComplete="off"
-                          onChange={async (e) => {
-                            setFieldValue('name', e.target.value);
-                            if (e.target.value == '') {
-                              setStateOrgUsers([]);
-                              return;
-                            }
-                            setLoaderlmsImgUser(true);
-                            const lmsApi = authapi.searchUsers(e.target.value);
-                            lmsApi.then((data) => {
-                              setLoaderlmsImgUser(false);
+                    <h3>User &nbsp; (search users from dropdown list only)</h3>
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="off"
+                      onChange={async (e) => {
+                        setFieldValue('name', e.target.value);
+                        // eslint-disable-next-line eqeqeq
+                        if (e.target.value == '') {
+                          setStateOrgUsers([]);
+                          return;
+                        }
+                        setLoaderlmsImgUser(true);
+                        const lmsApi = authapi.searchUsers(e.target.value);
+                        lmsApi.then((data) => {
+                          setLoaderlmsImgUser(false);
 
-                              setStateOrgUsers(data?.users);
-                            });
-                          }}
-                          onBlur={handleBlur}
-                          value={values.name}
-                        />
-                        {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
-                        {stateOrgUsers?.length > 0 && (
-                          <ul className="all-users-list">
-                            {stateOrgUsers?.map((user) => (
-                              <li
-                                value={user}
-                                onClick={() => {
-                                  setFieldValue('user_id', user.id);
-                                  setFieldValue('name', user.name);
-                                  setStateOrgUsers([]);
-                                }}
-                              >
-                                {user.name}
-                                <p>
-                                  Email: &nbsp;
-                                  {user.email}
-                                </p>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
+                          setStateOrgUsers(data?.users);
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      value={values.name}
+                    />
+                    {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+                    {stateOrgUsers?.length > 0 && (
+                      <ul className="all-users-list">
+                        {stateOrgUsers?.map((user) => (
+                          <li
+                            value={user}
+                            onClick={() => {
+                              setFieldValue('user_id', user.id);
+                              setFieldValue('name', user.name);
+                              setStateOrgUsers([]);
+                            }}
+                          >
+                            {user.name}
+                            <p>
+                              Email: &nbsp;
+                              {user.email}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
                   </div>
 
                 </div>
               </div>
-              
+
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}LTI tool</button>
+                <button type="submit">
+                  Save
+                </button>
                 <button
                   type="button"
                   className="cancel"

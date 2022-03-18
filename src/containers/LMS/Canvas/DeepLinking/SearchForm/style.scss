@@ -1,8 +1,84 @@
 @import 'assets/css/index';
 
 .search-form {
-  padding-top: 2em;
-  padding-bottom: 2em;
+  margin: 16px 0 24px;
+  padding: 8px 16px;
+  background: #ffffff;
+  box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
+  border-radius: 4px;
+
+  & p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #767676;
+    margin-bottom: 4px !important;
+  }
+
+  .form-group {
+    & label {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #767676;
+      margin-bottom: 4px !important;
+    }
+    .form-control {
+      .option {
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #959595;
+      }
+    }
+    .Author-input {
+      position: relative;
+      & img {
+        position: absolute;
+        right: 8px;
+        top: 10px;
+        width: 28px;
+        height: 16px;
+      }
+    }
+  }
+  .form-group.wrap-keyword {
+    display: flex;
+    justify-content: initial;
+    flex-wrap: wrap;
+    .keywords-de {
+      background-color: $curriki-main-blue;
+      color: #fff;
+      border-radius: 30px;
+      padding: 6px 10px;
+      font-size: 12px;
+      position: relative;
+      margin: 5px 5px 0 0;
+
+      .iocns {
+        color: #fff;
+        background-color: #ff0000d1;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 30px;
+        stroke-width: 1px;
+        cursor: pointer;
+        display: none;
+
+        svg {
+          margin: 10px auto;
+          display: flex;
+        }
+      }
+
+      &:hover .iocns {
+        display: block;
+      }
+    }
+  }
 }
 
 .search-form h2 {
@@ -10,7 +86,27 @@
   font-size: 1.35rem;
 }
 
-.search-submit-button {
-  border-radius: 1.5rem;
-  background-color: $curriki-main-blue;
+.search-btn {
+  width: 85px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e5eeff;
+  border-radius: 4px;
+  margin: 24px 0 15px auto;
+  padding: 6px 8px;
+  .search-submit-button {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    background: #e5eeff;
+    color: #2e68bf;
+    padding: 0 !important;
+  }
+  & img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
 }

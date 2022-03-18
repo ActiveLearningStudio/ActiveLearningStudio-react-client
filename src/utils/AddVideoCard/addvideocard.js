@@ -68,19 +68,23 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                 if (result.activity?.brightcoveData) {
                   dispatch({
                     type: 'EDIT_CMS_SCREEN',
-                    payload: result.activity?.brightcoveData.accountId
-                  })
-                  window.brightcoveAccountId = result.activity?.brightcoveData.accountId
+                    payload: result.activity?.brightcoveData.accountId,
+                  });
+                  window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
                 }
 
                 toast.dismiss();
-
+                dispatch({
+                  type: 'ADD_VIDEO_URL',
+                  platform: '',
+                });
                 dispatch({
                   type: 'SET_ACTIVE_VIDEO_SCREEN',
                   payload: result.activity,
                 });
+
                 setOpenVideo(true);
-                setScreenStatus('DescribeVideo');
+                setScreenStatus('AddVideo');
               }}
             >
               <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} color="#084892" />

@@ -1,19 +1,18 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+/* eslint-disable eqeqeq */
+import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
 import { getDefaultSso, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import authapi from '../../../services/auth.service';
-import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
 import organizationsServices from 'services/organizations.services';
+import adminapi from '../../../services/admin.service';
 
 export default function CreateDefaultSso(prop) {
-  const { editMode, method, clone } = prop;
+  const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { activeEdit } = organization;
@@ -22,6 +21,12 @@ export default function CreateDefaultSso(prop) {
   const [checked, setChecked] = useState(false);
   const [organizationRole, setOrganizationRole] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
+  const getOrganazationRoles = (orgId) => {
+    const result = organizationsServices.getRoles(orgId);
+    result.then((role) => {
+      setOrganizationRole(role.data);
+    });
+  };
   useEffect(() => {
     if (editMode && !clone) {
       setChecked(activeEdit?.published);
@@ -31,12 +36,6 @@ export default function CreateDefaultSso(prop) {
     }
   }, [activeEdit, editMode]);
 
-  const getOrganazationRoles = (orgId) => {
-    const result = organizationsServices.getRoles(orgId);
-    result.then((role) => {
-      setOrganizationRole(role.data);
-    });
-  }
   return (
     <div className="create-form">
       <Formik
@@ -51,7 +50,6 @@ export default function CreateDefaultSso(prop) {
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : '',
           name: editMode ? (clone ? '' : activeEdit?.organization?.name) : '',
-          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
           published: editMode ? (clone ? false : activeEdit?.published) : false,
           role_id: editMode ? activeEdit?.role_id : '',
         }}
@@ -80,7 +78,7 @@ export default function CreateDefaultSso(prop) {
           if (!values.organization_id) {
             errors.organization_id = 'required';
           }
-          
+
           if (!values.role_id) {
             errors.role_id = 'required';
           }
@@ -104,6 +102,10 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -129,6 +131,10 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
               dispatch(getDefaultSso(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
@@ -151,7 +157,10 @@ export default function CreateDefaultSso(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</h2>
+            <h2>
+              {editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}
+              SSO Integration
+            </h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
@@ -230,9 +239,12 @@ export default function CreateDefaultSso(prop) {
                     }}
                   />
                 </div>
-                
+
                 <div className="form-group-create">
-                  <h3>Organization &nbsp;<small>(search organization from dropdown list only)</small></h3>
+                  <h3>
+                    Organization &nbsp;
+                    <small>(search organization from dropdown list only)</small>
+                  </h3>
                   <input
                     type="text"
                     name="organization_id"
@@ -283,11 +295,12 @@ export default function CreateDefaultSso(prop) {
                   <div className="form-group-create">
                     <h3>Select Role</h3>
                     <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                    <option defaultValue="">Nothing selected</option>
+                      <option defaultValue="">Nothing selected</option>
                       {organizationRole.length > 0 && (
-                        organizationRole?.map((role) => (<>
-                          { setSelectedRole(typeof values.role_id != 'undefined' && values.role_id == role.id ? 'selected' :'')}
-                          <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
+                        organizationRole?.map((role) => (
+                          <>
+                            {setSelectedRole(typeof values.role_id !== 'undefined' && values.role_id == role.id ? 'selected' : '')}
+                            <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
                           </>
                         ))
                       )}
@@ -298,9 +311,11 @@ export default function CreateDefaultSso(prop) {
 
               </div>
             </div>
-            
+
             <div className="button-group">
-              <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</button>
+              <button type="submit">
+                Save
+              </button>
               <button
                 type="button"
                 className="cancel"

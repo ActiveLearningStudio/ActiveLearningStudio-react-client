@@ -5,8 +5,11 @@ import TopHeading from 'utils/TopHeading/topheading';
 import { faFilter, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-
+import Pagination from 'react-js-pagination';
+import Swal from 'sweetalert2';
 import './style.scss';
+import '../Admin/style.scss';
+
 import HeadingText from 'utils/HeadingText/headingtext';
 import VideoImage from 'assets/images/svg/Interactivevideos.svg';
 import Footer from 'components/Footer';
@@ -31,6 +34,7 @@ const Index = () => {
   const { activeOrganization, permission } = useSelector((state) => state.organization);
   const { allVideos } = videos;
   const [searchQuery, setSearchQuery] = useState('');
+  const [ActivePage, setActivePage] = useState(1);
   const [currentActivity, setCurrentActivity] = useState(null);
   const dispatch = useDispatch();
 
@@ -47,19 +51,31 @@ const Index = () => {
             icon="times"
             className="cross-all-pop"
             onClick={() => {
-              setOpenVideo(!openMyVideo);
-              setScreenStatus('');
+              Swal.fire({
+                text: 'All changes will be lost if you don’t save them',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#084892',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Close it!',
+                allowOutsideClick: false,
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  setOpenVideo(!openMyVideo);
+                  setScreenStatus('');
+                }
+              });
             }}
           />
           <div className="inner-form-content">
-            {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} />}
+            {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
             {screenStatus == 'DescribeVideo' && <DescribeVideo setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />}
           </div>
         </div>
       )}
       <div className="myvideomain">
         <div className="content-wrapper">
-          <div className="inner-content">
+          <div style={{ paddingBottom: ' 66px' }} className="inner-content">
             {permission?.Video?.includes('video:view') ? (
               <>
                 <div className="topHeading-video-detail">
@@ -125,7 +141,7 @@ const Index = () => {
                             <span>Filter</span>
                           </div> */}
                       </div>
-                      {!allVideos.length ? (
+                      {!allVideos?.data?.length ? (
                         <>
                           <div className="video-default-contianer">
                             <HeadingTwo text="Start creating awesome interactive videos." className="video-heading-1" />
@@ -146,7 +162,7 @@ Interactive video has over xx interactions that can be added to video, It allows
                         <>
                           <div className="video-cards-contianer">
                             <div className="video-cards-detail">
-                              {allVideos?.map((video) => {
+                              {allVideos?.data?.map((video) => {
                                 return (
                                   <>
                                     <AddVideoCard
@@ -162,6 +178,21 @@ Interactive video has over xx interactions that can be added to video, It allows
                                 );
                               })}
                             </div>
+                            {allVideos?.data && (
+                              <div style={{}} className="admin-panel ">
+                                <Pagination
+                                  activePage={ActivePage}
+                                  pageRangeDisplayed={5}
+                                  itemsCountPerPage={allVideos?.meta?.per_page}
+                                  totalItemsCount={allVideos?.meta?.total}
+                                  onChange={(e) => {
+                                    console.log(e);
+                                    setActivePage(e);
+                                    dispatch(getAllVideos(activeOrganization.id, e));
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
                         </>
                       )}

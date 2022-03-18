@@ -15,7 +15,7 @@ const BouncyDiv = styled.div`
 `;
 
 function NewProjectPage(props) {
-  const { editMode, project, handleCloseProjectModal } = props;
+  const { project, handleCloseProjectModal } = props;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,7 +39,7 @@ function NewProjectPage(props) {
                 </button>
                 <div className="col-md-12">
                   <h1 className="mb-0">
-                    <span> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
+                    <span>Create a Project</span>
                   </h1>
                 </div>
               </div>
@@ -48,7 +48,7 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup editMode {...props} thumbUrl={project.thumbUrl} />
+                  <CreateProjectPopup {...props} thumbUrl={project.thumbUrl} />
                 </div>
               </div>
             </div>
@@ -61,7 +61,6 @@ function NewProjectPage(props) {
 
 NewProjectPage.propTypes = {
   project: PropTypes.object.isRequired,
-  editMode: PropTypes.bool.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
 };
 

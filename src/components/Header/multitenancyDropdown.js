@@ -31,7 +31,7 @@ export default function MultitenancyDropdown() {
       return 0;
     });
     setSortedOrganizations(sortedOrganization);
-  }
+  };
   useEffect(() => {
     setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
     if (stateHeader?.allOrganizations.length > 0) {
@@ -65,6 +65,9 @@ export default function MultitenancyDropdown() {
                   await dispatch(getAllPermission(org.id));
                   await dispatch(getRoles());
                   storageService.setItem(CURRENT_ORG, org.domain);
+                  document.querySelector(':root').style.setProperty('--main-primary-color', org?.branding['primary_color']);
+                  document.querySelector(':root').style.setProperty('--main-secondary-color', org?.branding['secondary_color']);
+                  document.querySelector(':root').style.setProperty('--main-paragraph-text-color', org?.branding['secondary_color']);
                   history.push(`/org/${org.domain}`);
                 }}
               >

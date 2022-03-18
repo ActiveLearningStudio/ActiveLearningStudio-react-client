@@ -43,3 +43,9 @@ export const alphabetsOnly = (value) => {
   const alphaNumericRegex = new RegExp('[^a-zA-Z]');
   return !alphaNumericRegex.test(value);
 };
+
+export const toolTypeArray = [
+  { key: 'kaltura', value: 'Kaltura' },
+  { key: 'safari_montage', value: 'Safari Montage' },
+  { key: 'other', value: 'Other' },
+];

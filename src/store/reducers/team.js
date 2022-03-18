@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   showCreation: false,
   showInviting: false,
   showAssigning: false,
+  newTeam: {},
   teams: [],
   selectedTeam: {},
   roles: null,
@@ -33,6 +34,7 @@ export default (state = INITIAL_STATE, action) => {
           ...state.selectedTeam,
           ...action.payload,
         },
+        newTeam: {},
       };
 
     case actionTypes.SHOW_CREATE_TEAM:
@@ -46,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TEAM_PERMISSION:
       return {
         ...state,
-        teamPermission: action.payload,
+        teamPermission: action.payload ? action.payload : {},
       };
 
     case actionTypes.CLEAR_TEAM_PERMISSIONS:
@@ -148,6 +150,7 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           isLoading: false,
+          selectedTeam: action.payload.team,
           teams,
         };
       }
@@ -263,6 +266,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         whiteBoardUrl: action.payload,
+      };
+    case actionTypes.NEW_TEAM:
+      return {
+        ...state,
+        newTeam: action.payload,
+        selectedTeam: {},
       };
     default:
       return state;

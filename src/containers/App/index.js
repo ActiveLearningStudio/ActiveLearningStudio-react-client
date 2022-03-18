@@ -46,6 +46,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
+                  // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -57,6 +60,9 @@ function App(props) {
                 .then((data) => {
                   if (permission?.Organization?.includes('organization:view')) dispatch(getOrganizationFirstTime(data?.organization?.id));
                   dispatch(getAllPermission(data?.organization?.id));
+                  // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+                  // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
                 })
                 .catch((err) => err && window.location.replace('/org/currikistudio'));
             })();
@@ -108,12 +114,28 @@ function App(props) {
     ) {
       const subDomain = window.location.pathname.split('/')[window.location.pathname.split('/').length - 1];
       if (subDomain?.includes('login') || subDomain?.includes('register') || subDomain?.includes('forgot-password') || window.location.pathname.includes('/reset-password')) {
-        dispatch(getBranding('currikistudio'));
+        const result = dispatch(getBranding('currikistudio'));
+        result.then((data) => {
+          // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+        });
       } else if (subDomain) {
         const result = dispatch(getBranding(subDomain || 'currikistudio'));
-        result.then().catch((err) => err && window.location.replace('/login'));
+        result
+          .then((data) => {
+            // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+            // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+            // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+          })
+          .catch((err) => err && window.location.replace('/login'));
       } else {
-        dispatch(getBranding('currikistudio'));
+        const result = dispatch(getBranding('currikistudio'));
+        result.then((data) => {
+          // document.querySelector(':root').style.setProperty('--main-primary-color', data?.organization?.branding['primary_color']);
+          // document.querySelector(':root').style.setProperty('--main-secondary-color', data?.organization?.branding['secondary_color']);
+          // document.querySelector(':root').style.setProperty('--main-paragraph-text-color', data?.organization?.branding['secondary_color']);
+        });
       }
     }
     if (window.HubSpotConversations) {
@@ -127,66 +149,32 @@ function App(props) {
       ];
     }
   }, [window.location.href]);
-
+  /*
   useEffect(() => {
     const newScripts = [
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/jquery.js`,
-      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-event-dispatcher.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api-event.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-content-type.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-confirmation-dialog.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-action-bar.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/request-queue.js`,
-      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
-      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progress-circle.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-simple-rounded-button.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-speech-bubble.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-throbber.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-tip.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-slider.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-score-bar.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progressbar.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-ui.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/jquery.js`,
+      // `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-event-dispatcher.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api-event.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-x-api.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-content-type.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-confirmation-dialog.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/h5p-action-bar.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-core/js/request-queue.js`,
+      // `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/h5p-editor/scripts/h5peditor-editor.js`,
+      // `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/laravel-h5p/js/laravel-h5p.js`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progress-circle.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-simple-rounded-button.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-speech-bubble.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-throbber.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-tip.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-slider.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-score-bar.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progressbar.js?ver=1.3.9`,
+      `${window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-ui.js?ver=1.3.9`,
 
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/question.js?ver=1.4.7`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/explainer.js?ver=1.4.7`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Question-1.4/scripts/score-points.js?ver=1.4.7`,
-      // `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/Drop-1.0/js/drop.min.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Transition-1.0/transition.js?ver=1.0.4`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-help-dialog.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-message-dialog.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progress-circle.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-simple-rounded-button.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-speech-bubble.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-throbber.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-tip.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-slider.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-score-bar.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-progressbar.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.JoubelUI-1.3/js/joubel-ui.js?ver=1.3.9`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebra3d-1.0/scripts/deployggb.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebra3d-1.0/scripts/geogebra.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraClassic-1.0/scripts/deployggb.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraClassic-1.0/scripts/geogebra.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraGeometry-1.0/scripts/geogebra.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraGeometry-1.0/scripts/deployggb.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraGraphing-1.0/scripts/deployggb.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraGraphing-1.0/scripts/geogebra.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/deployggb.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.GeoGebraIM68Math-1.0/scripts/geogebra.js?ver=1.0.2`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.DocumentsUpload-1.0/scripts/DocumentsUpload.js`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/memory-game.js?ver=1.3.5`,
-
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/collage.js?ver=0.3.14`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/template.js?ver=0.3.14`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.Collage-0.3/clip.js?ver=0.3.14`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.MemoryGame-1.3/card.js?ver=1.3.5`,
-      `${process.env.REACT_APP_RESOURCE_URL}/storage/h5p/libraries/H5P.PhetInteractiveSimulation-1.0/phet-simulation.js`,
 
       'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML',
     ];
@@ -198,6 +186,7 @@ function App(props) {
       document.body.appendChild(script);
     });
   }, []);
+*/
 
   // useEffect(() => {
   //   function myStopFunction() {
@@ -221,7 +210,7 @@ function App(props) {
         <meta name="description" content="CurrikiStudio" />
         <meta name="theme-color" content="#008f68" />
 
-        <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${process.env.REACT_APP_HUBSPOT}.js`} />
+        <script type="text/javascript" id="hs-script-loader" async defer src={`//js.hs-scripts.com/${window.__RUNTIME_CONFIG__.REACT_APP_HUBSPOT}.js`} />
       </Helmet>
       <AppRouter />
       <ToastContainer limit={1} />

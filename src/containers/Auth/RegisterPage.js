@@ -193,7 +193,7 @@ class RegisterPage extends React.Component {
               <div className="d-flex align-items-center justify-content-between">
                 <h1 className="auth-title mb2">
                   Welcome
-                  {!clicked ? ` to ${process.env.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
+                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
                 </h1>
 
                 {/* <strong>OR</strong> */}
@@ -341,13 +341,20 @@ class RegisterPage extends React.Component {
 
                           <div className="termsandcondition">
                             By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
-                            <a target="_blank" href={domain?.tos_type == 'URL' ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                            <a
+                              target="_blank"
+                              href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
+                            >
                               Terms of Use
                             </a>{' '}
                             and{' '}
                             <a
                               target="_blank"
-                              href={domain?.privacy_policy_type == 'URL' ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
+                              href={
+                                domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
+                                  ? domain?.privacy_policy_url
+                                  : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`
+                              }
                             >
                               Privacy Policy.
                             </a>

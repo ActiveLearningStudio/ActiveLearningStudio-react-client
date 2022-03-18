@@ -1,21 +1,20 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import imgAvatar from "assets/images/default-upload-img.png";
-import docAvatar from "assets/images/document-avatar.png";
-import { removeActiveAdminForm } from "store/actions/admin";
-import Swal from "sweetalert2";
+import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import imgAvatar from 'assets/images/default-upload-img.png';
+import docAvatar from 'assets/images/document-avatar.png';
+import { removeActiveAdminForm } from 'store/actions/admin';
+import Swal from 'sweetalert2';
 import {
   createActivityType,
   editActivityType,
   loadResourceTypesAction,
   uploadActivityTypeThumbAction,
   uploadActivityTypeFileAction,
-} from "store/actions/resource";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import pcIcon from "assets/images/pc-icon.png";
+} from 'store/actions/resource';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import pcIcon from 'assets/images/pc-icon.png';
 
 export default function CreateActivity(props) {
   const { editMode } = props;
@@ -39,36 +38,34 @@ export default function CreateActivity(props) {
     <div className="create-form">
       <Formik
         initialValues={{
-          title: editMode ? selectedType.title : "",
-          image: editMode ? selectedType.image : "",
-          order: editMode ? selectedType.order : "",
-          file: editMode ? selectedType.css_path : "",
+          title: editMode ? selectedType.title : '',
+          image: editMode ? selectedType.image : '',
+          order: editMode ? selectedType.order : '',
+          file: editMode ? selectedType.css_path : '',
         }}
         validate={(values) => {
           const errors = {};
           if (!values.title || values.title.length > 255) {
-            errors.title =
-              values.title.length > 255
-                ? "Length must be 255 characters or less"
-                : "Required";
+            errors.title = values.title.length > 255
+              ? 'Length must be 255 characters or less'
+              : 'Required';
           }
           if (!values.image) {
-            errors.image = "Required";
+            errors.image = 'Required';
           }
           if (!values.order || (values.order <= 0 && values.order !== 0)) {
-            errors.order =
-              values.order <= 0
-                ? "Zero or negative order is not allowed"
-                : values.order !== 0 && "Required";
+            errors.order = values.order <= 0
+              ? 'Zero or negative order is not allowed'
+              : values.order !== 0 && 'Required';
           }
           return errors;
         }}
         onSubmit={async (values) => {
           if (editMode) {
             Swal.fire({
-              title: "Activity",
-              icon: "info",
-              text: "Updating activity type...",
+              title: 'Activity',
+              icon: 'info',
+              text: 'Updating activity type...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
@@ -76,27 +73,29 @@ export default function CreateActivity(props) {
               button: false,
             });
             const response = await dispatch(
-              editActivityType(values, selectedType.id)
+              editActivityType(values, selectedType.id),
             );
             if (response) {
               Swal.fire({
                 text: 'Activity type edited successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: "#084892",
-                confirmButtonText: "OK",
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction("", activePage));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
           } else {
             Swal.fire({
-              title: "Activity",
-              icon: "info",
-              text: "Creating new activity type...",
+              title: 'Activity',
+              icon: 'info',
+              text: 'Creating new activity type...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
@@ -109,12 +108,14 @@ export default function CreateActivity(props) {
                 text: 'Activity type added successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: "#084892",
-                confirmButtonText: "OK",
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(loadResourceTypesAction("", activePage));
+                  dispatch(loadResourceTypesAction('', activePage));
                 }
               });
             }
@@ -132,7 +133,11 @@ export default function CreateActivity(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit' : 'Add'} activity type</h2>
+            <h2>
+              {editMode ? 'Edit' : 'Add'}
+              {' '}
+              activity type
+            </h2>
             <FontAwesomeIcon
               icon="times"
               className="cross-all-pop"
@@ -165,56 +170,57 @@ export default function CreateActivity(props) {
                       onChange={(e) => {
                         if (
                           !(
-                            e.target.files[0].type.includes("png") ||
-                            e.target.files[0].type.includes("jpg") ||
-                            e.target.files[0].type.includes("gif") ||
-                            e.target.files[0].type.includes("jpeg") ||
-                            e.target.files[0].type.includes("svg")
+                            e.target.files[0].type.includes('png')
+                            || e.target.files[0].type.includes('jpg')
+                            || e.target.files[0].type.includes('gif')
+                            || e.target.files[0].type.includes('jpeg')
+                            || e.target.files[0].type.includes('svg')
                           )
                         ) {
                           Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Invalid file selected.",
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid file selected.',
                           });
                         } else if (e.target.files[0].size > 100000000) {
                           Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Selected file size should be less then 100MB.",
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
                           });
                         } else {
                           const formData = new FormData();
                           try {
-                            formData.append("image", e.target.files[0]);
+                            formData.append('image', e.target.files[0]);
                             const imgurl = dispatch(
-                              uploadActivityTypeThumbAction(formData)
+                              uploadActivityTypeThumbAction(formData),
                             );
                             imgurl.then((img) => {
                               setImgActive(img);
-                              setFieldValue("image", img);
+                              setFieldValue('image', img);
                             });
                           } catch (err) {
                             Swal.fire({
-                              icon: "error",
-                              title: "Error",
-                              text: "Image upload failed, kindly try again.",
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'Image upload failed, kindly try again.',
                             });
                           }
                         }
                       }}
                       onBlur={handleBlur}
                       ref={imgUpload}
-                      style={{ display: "none" }}
+                      style={{ display: 'none' }}
                     />
                     {imageActive ? (
                       <>
                         <img
+                          alt="activity-type-thumb"
                           src={`${global.config.resourceUrl}${imageActive}`}
                           style={{
-                            width: "360px",
-                            height: "215px",
-                            borderRadius: "8px",
+                            width: '360px',
+                            height: '215px',
+                            borderRadius: '8px',
                           }}
                         />
                         <span className="upload-btn">
@@ -247,53 +253,53 @@ export default function CreateActivity(props) {
                       onChange={(e) => {
                         if (
                           !(
-                            e.target.files[0].type.includes("css") ||
-                            e.target.files[0].type.includes("scss")
+                            e.target.files[0].type.includes('css')
+                            || e.target.files[0].type.includes('scss')
                           )
                         ) {
                           Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Invalid file selected.",
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid file selected.',
                           });
                         } else if (e.target.files[0].size > 100000000) {
                           Swal.fire({
-                            icon: "error",
-                            title: "Error",
-                            text: "Selected file size should be less then 100MB.",
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
                           });
                         } else {
                           const formData = new FormData();
                           try {
-                            formData.append("file", e.target.files[0]);
-                            formData.append("fileName", e.target.files[0].name);
-                            formData.append("typeName", values.title);
+                            formData.append('file', e.target.files[0]);
+                            formData.append('fileName', e.target.files[0].name);
+                            formData.append('typeName', values.title);
                             const fileurl = dispatch(
-                              uploadActivityTypeFileAction(formData)
+                              uploadActivityTypeFileAction(formData),
                             );
                             fileurl.then((file) => {
                               setFileActive(file);
-                              setFieldValue("css_path", file);
+                              setFieldValue('css_path', file);
                             });
                           } catch (err) {
                             Swal.fire({
-                              icon: "error",
-                              title: "Error",
-                              text: "File upload failed, kindly try again.",
+                              icon: 'error',
+                              title: 'Error',
+                              text: 'File upload failed, kindly try again.',
                             });
                           }
                         }
                       }}
                       onBlur={handleBlur}
                       ref={fileUpload}
-                      style={{ display: "none" }}
+                      style={{ display: 'none' }}
                     />
                     {fileActive ? (
                       <>
                         <div>
                           <img src={docAvatar} alt="" height="85" />
                           <p className="text-center">
-                            {fileActive.replace(/^.*[\\\/]/, "")}
+                            {fileActive.replace(/^.*[\\/]/, '')}
                           </p>
                         </div>
                         <div
@@ -320,7 +326,7 @@ export default function CreateActivity(props) {
                     min="0"
                     onChange={handleChange}
                     onKeyDown={(e) => {
-                      if (["-", "+", "e", "E", "."].includes(e.key)) {
+                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
                         e.preventDefault();
                       }
                     }}
@@ -334,7 +340,7 @@ export default function CreateActivity(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit' : 'Add'} activity type</button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 className="cancel"

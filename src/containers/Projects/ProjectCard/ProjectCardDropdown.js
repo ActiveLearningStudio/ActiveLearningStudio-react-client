@@ -12,6 +12,8 @@ import {
 import { lmsPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import loader from 'assets/images/loader.svg';
+import { addProjectsAction } from 'store/actions/team';
+import Swal from 'sweetalert2';
 import Duplicate from '../../../assets/images/menu-dupli.svg';
 import Delete from '../../../assets/images/menu-dele.svg';
 import Publish from '../../../assets/images/menu-publish.svg';
@@ -28,6 +30,7 @@ const ProjectCardDropdown = (props) => {
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
+  const { selectedTeam } = useSelector((state) => state.team);
   const { permission } = organization;
   const dispatch = useDispatch();
   const AllLms = useSelector((state) => state.share);
@@ -77,7 +80,7 @@ const ProjectCardDropdown = (props) => {
           </Dropdown.Item>
         )} */}
 
-        {permission?.Project?.includes('project:clone') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-project') : permission?.Project?.includes('project:clone')) && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -89,7 +92,21 @@ const ProjectCardDropdown = (props) => {
                 autoClose: 10000,
                 icon: ImgLoader,
               });
-              cloneProject(project.id);
+              if (Object.keys(teamPermission).length && teamPermission?.Team?.includes('team:add-project')) {
+                dispatch(addProjectsAction(selectedTeam?.id, [project.id])).then((result) => {
+                  Swal.fire({
+                    icon: 'success',
+                    title: result?.message,
+                  });
+                }).catch((err) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: err?.message,
+                  });
+                });
+              } else {
+                cloneProject(project.id);
+              }
               toast.dismiss();
             }}
           >
@@ -205,13 +222,13 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
-  teamPermission: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
   // text: propTypes.string,
 };
 
-// ProjectCardDropdown.defaultProps = {
-//   text: propTypes.string,
-// };
+ProjectCardDropdown.defaultProps = {
+  teamPermission: {},
+};
 
 export default ProjectCardDropdown;

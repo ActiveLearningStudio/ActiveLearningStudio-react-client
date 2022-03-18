@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import {
   // Route,
@@ -55,10 +55,9 @@ const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
+const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
+const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
-const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
-
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
@@ -159,18 +158,15 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                   {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
-                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                   <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
-                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO={true} component={AdminPanel} />
                   <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
-                  <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/edit" component={TeamsPage} editMode />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects" component={TeamsPage} projectShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/channel" component={TeamsPage} channelShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/team-detail" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/add-projects" component={TeamAddProjects} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={TeamAddProjects} />
+                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
+                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
 
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
