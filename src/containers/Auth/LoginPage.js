@@ -194,7 +194,7 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title">Welcome to Curriki</h1>
+              <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
             </div>
             <p className="auth-Pdescrip">Start making a difference in the way learning experiences are created.</p>
             <div className="content-section">
@@ -295,13 +295,20 @@ class LoginPage extends React.Component {
                       ) : null}
                       <div className="termsandcondition">
                         By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s{' '}
-                        <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                        <a
+                          target="_blank"
+                          href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
+                        >
                           Terms of Use
                         </a>{' '}
                         and{' '}
                         <a
                           target="_blank"
-                          href={domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null ? domain?.privacy_policy_url : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`}
+                          href={
+                            domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
+                              ? domain?.privacy_policy_url
+                              : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`
+                          }
                         >
                           Privacy Policy.
                         </a>
