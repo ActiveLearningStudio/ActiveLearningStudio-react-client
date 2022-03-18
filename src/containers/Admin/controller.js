@@ -214,7 +214,7 @@ function Controller(props) {
 
         {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Client Id" onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search by Site name,URL or Client id" onChange={searchQueryChangeHandler} />
             <img src={searchimg} alt="search" />
           </div>
         )}
