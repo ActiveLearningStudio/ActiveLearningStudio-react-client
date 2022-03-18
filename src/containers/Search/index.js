@@ -904,7 +904,7 @@ function SearchInterface(props) {
                                     <ul>
                                       {res.user && (
                                         <li>
-                                          by <span>{res.user.first_name}</span>
+                                          by <span>{res?.team_name ? `(T) ${res?.team_name}` : res.user.first_name}</span>
                                         </li>
                                       )}
                                       <li>
@@ -1148,7 +1148,7 @@ function SearchInterface(props) {
                                         <ul>
                                           {res.user && (
                                             <li>
-                                              by <span>{res.user.first_name}</span>
+                                              by <span>{res?.team_name ? `(T) ${res?.team_name}` : res.user.first_name}</span>
                                             </li>
                                           )}
                                           <li>

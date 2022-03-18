@@ -551,7 +551,7 @@ function Table(props) {
                         </td>
 
                         <td>{row.id}</td>
-                        <td>{row.users?.[0]?.name}</td>
+                        <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
                           {permission?.Organization.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table">

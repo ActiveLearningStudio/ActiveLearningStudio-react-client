@@ -530,7 +530,7 @@ export default function Pills(props) {
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, size, activePage || 1);
+    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, activePage || 1);
     result.then((data) => {
       setDefaultSso(data);
     });

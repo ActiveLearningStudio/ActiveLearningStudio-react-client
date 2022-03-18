@@ -139,9 +139,6 @@ function AdminPanel({ showSSO }) {
                             'Activity Layouts',
                             permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
                             permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
                           ]}
                           type="Activities"
                         />
