@@ -2265,12 +2265,14 @@
 }
 .tab_inner_color_section {
   @media (max-width: 1024px) {
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
   }
   display: flex;
+  justify-content: space-between;
   .tab_inner_color {
     flex: 1;
-    padding-right: 32px;
+    // padding-right: 32px;
+    padding-right: 16px;
     h4 {
       color: #515151;
       font-size: 14px;
@@ -2303,10 +2305,11 @@
     }
   }
   .tab_inner_color_secondry {
-    padding-right: 32px;
+    // padding-right: 32px;
+    padding-right: 16px;
   }
   .tab_inner_color_tertiary {
-    padding-right: 0 !important;
+    // padding-right: 0 !important;
   }
 }
 

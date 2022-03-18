@@ -1278,9 +1278,9 @@ export default function CreateOrg(prop) {
                           <input type="text" value={values.secondary_color} />
                         </div>
                         <p>
-                          Use this color for Displays, Headings, Link texts, and
-                          some components in a default state if it says so on
-                          their own specs.
+                          This color should be use for details that we want to
+                          highlitght or that we want to make more visible for
+                          users.
                         </p>
                       </div>
                       <div className="tab_inner_color tab_inner_color_tertiary">
@@ -1297,9 +1297,9 @@ export default function CreateOrg(prop) {
                           <input type="text" value={values.tertiary_color} />
                         </div>
                         <p>
-                          Use this color for Displays, Headings, Link texts, and
-                          some components in a default state if it says so on
-                          their own specs.
+                          This color should be use for most of the body texts
+                          and some details that we want to highlitght or that we
+                          want to make more visible for users.
                         </p>
                       </div>
                     </section>
@@ -1329,7 +1329,7 @@ export default function CreateOrg(prop) {
                           onBlur={handleBlur}
                           value={values.primary_font_family}
                         >
-                          <option value="Rubik">Rubik</option>
+                          <option value="rubic">Rubik</option>
                           <option value="SmoochSans">SmoochSans</option>
                           <option value="Open Sans">Open Sans</option>
                           <option value="Fredoka">Fredoka</option>
@@ -1348,7 +1348,7 @@ export default function CreateOrg(prop) {
                           onBlur={handleBlur}
                           value={values.secondary_font_family}
                         >
-                          <option value="Rubik">Rubik</option>
+                          <option value="rubic">Rubik</option>
                           <option value="SmoochSans">SmoochSans</option>
                           <option value="Open Sans">Open Sans</option>
                           <option value="Fredoka">Fredoka</option>
