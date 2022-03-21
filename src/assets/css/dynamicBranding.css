@@ -13,8 +13,8 @@
   --main-user-text-color: #2f2f2f;
   --maim-playlist-border-color: #dddddd;
   --main-search-input-color: #959595;
-  --main-heading-font: Open Sans, sans-serif;
-  --main-text-font: rubic;
+  --main-heading-font: rubic;
+  --main-text-font: Open Sans, sans-serif;
   --main-bg-transparent: transparent;
 }
 
@@ -35,14 +35,14 @@
 
 .sidebar-all .sidebar-headings {
   color: var(--main-primary-color);
-  font-family: var(--main-heading-font);
+  font-family: var(--main-text-font);
 }
 
 /* header branding */
 
 .dropdown-multitenancy .dropdown-toggle .text {
   color: var(--main-primary-color);
-  font-family: var(--main-heading-font);
+  font-family: var(--main-text-font);
 }
 
 .header-icon-text {
@@ -82,12 +82,7 @@ p {
 
 /*  Notifications dropdown branding */
 
-.top-header
-  .notification-bar
-  .user-dropdown
-  .scroll-notification
-  .header-data
-  h2 {
+.top-header .notification-bar .user-dropdown .scroll-notification .header-data h2 {
   color: var(--main-secondary-color);
   font-family: var(--main-text-font);
 }
@@ -107,11 +102,7 @@ p {
   font-family: var(--main-text-font);
 }
 
-.top-header
-  .notification-bar
-  .user-dropdown
-  .btn-all-notification
-  .all-notification {
+.top-header .notification-bar .user-dropdown .btn-all-notification .all-notification {
   color: var(--main-primary-color);
   font-family: var(--main-text-font);
 }
@@ -169,10 +160,7 @@ p {
   color: var(--main-secondary-color) !important;
 }
 
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .interactive-video-heading-two {
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .interactive-video-heading-two {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -198,16 +186,8 @@ p {
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }
-.form-new-popup-myvideo
-  .add-video-form
-  .add-video-form-tabs
-  .main-tabs
-  .nav-item.active,
-.form-new-popup-myvideo
-  .add-video-form
-  .add-video-form-tabs
-  .nav-tabs
-  .nav-link:hover {
+.form-new-popup-myvideo .add-video-form .add-video-form-tabs .main-tabs .nav-item.active,
+.form-new-popup-myvideo .add-video-form .add-video-form-tabs .nav-tabs .nav-link:hover {
   border-bottom-color: var(--main-primary-color) !important;
 }
 
@@ -269,10 +249,7 @@ p {
   font-family: var(--main-heading-font) !important;
 }
 
-.project-headline-section
-  .project-share-previews
-  .project-preview
-  .dropdown-item {
+.project-headline-section .project-share-previews .project-preview .dropdown-item {
   font-family: var(--main-text-font) !important;
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
@@ -294,20 +271,12 @@ p {
   font-family: var(--main-heading-font) !important;
 }
 
-.project-headline-section
-  .new-playlist
-  .dropdown
-  .dropdown-menu.show
-  .dropdown-item {
+.project-headline-section .new-playlist .dropdown .dropdown-menu.show .dropdown-item {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.project-headline-section
-  .new-playlist
-  .dropdown
-  .show
-  > .btn-primary.dropdown-toggle,
+.project-headline-section .new-playlist .dropdown .show > .btn-primary.dropdown-toggle,
 .content .new-playlister button {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
@@ -326,12 +295,7 @@ p {
 
 .playlist-dropdown.check .dropdown-menu a,
 .activity-options-wrapper.check .dropdown-menu a,
-.inner-form-content-box
-  .activity-layout-form
-  .layout-cards-process-btn
-  .layout-process-btn
-  .nav
-  .nav-item {
+.inner-form-content-box .activity-layout-form .layout-cards-process-btn .layout-process-btn .nav .nav-item {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -341,35 +305,20 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.activity-layout-form
-  .layout-cards-process-btn
-  .activity-layout-cards
-  .activity-layoutCard-active {
+.activity-layout-form .layout-cards-process-btn .activity-layout-cards .activity-layoutCard-active {
   border-bottom-color: var(--main-heading-border) !important;
 }
 
-.activity-layout-form
-  .layout-cards-process-btn
-  .activity-layout-cards
-  .curriki-utility-layoutcard:hover {
+.activity-layout-form .layout-cards-process-btn .activity-layout-cards .curriki-utility-layoutcard:hover {
   border-bottom-color: var(--main-heading-border) !important;
 }
 
-.activity-layout-form
-  .layout-cards-process-btn
-  .activity-layout-cards
-  .curriki-utility-layoutcard
-  p {
+.activity-layout-form .layout-cards-process-btn .activity-layout-cards .curriki-utility-layoutcard p {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
 
-.inner-form-content-box
-  .activity-layout-form
-  .layout-cards-process-btn
-  .layout-process-btn
-  .nav
-  .nav-item.active {
+.inner-form-content-box .activity-layout-form .layout-cards-process-btn .layout-process-btn .nav .nav-item.active {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
   border-bottom-color: var(--main-primary-color) !important;
@@ -386,22 +335,12 @@ p {
   border-color: var(--main-primary-color) !important;
 }
 
-.site-container-preview
-  .container
-  .project-details
-  .project-title-desc
-  .project-title
-  h2 {
+.site-container-preview .container .project-details .project-title-desc .project-title h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.site-container-preview
-  .container
-  .project-details
-  .project-title-desc
-  .project.description
-  .expandiv {
+.site-container-preview .container .project-details .project-title-desc .project.description .expandiv {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
@@ -417,20 +356,14 @@ p {
   font-family: var(--main-heading-font) !important;
 }
 
-.react-confirm-alert
-  .share-project-preview-url.project-share-check
-  nav
-  a.active {
+.react-confirm-alert .share-project-preview-url.project-share-check nav a.active {
   color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
   border-bottom-color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.react-confirm-alert
-  .share-project-preview-url.project-share-check
-  nav
-  .nav-link {
+.react-confirm-alert .share-project-preview-url.project-share-check nav .nav-link {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -439,11 +372,7 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.react-confirm-alert
-  .share-project-preview-url.project-share-check
-  .tab-pane
-  a
-  input,
+.react-confirm-alert .share-project-preview-url.project-share-check .tab-pane a input,
 .react-confirm-alert .share-project-preview-url.project-share-check input {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
@@ -502,30 +431,13 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.preview.iframe-height-resource
-  .flex-container-preview
-  .act-top-header
-  .heading-wrapper
-  .main-heading
-  h3
-  span {
+.preview.iframe-height-resource .flex-container-preview .act-top-header .heading-wrapper .main-heading h3 span {
   color: var(--main-user-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.preview.iframe-height-resource
-  .flex-container-preview
-  .back-header
-  .right-control.vd-controls
-  .slider-btn
-  .slider-hover-section
-  a
-  svg,
-.preview.iframe-height-resource
-  .flex-container-preview
-  .back-header
-  .btn-expand-collapse
-  svg {
+.preview.iframe-height-resource .flex-container-preview .back-header .right-control.vd-controls .slider-btn .slider-hover-section a svg,
+.preview.iframe-height-resource .flex-container-preview .back-header .btn-expand-collapse svg {
   color: var(--main-primary-color) !important;
 }
 
@@ -545,12 +457,7 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.right-sidegolf-info
-  .all-laylist-oracle
-  .preview-activity-dropdown
-  .resource-dropdown
-  .dropdown-menu
-  a {
+.right-sidegolf-info .all-laylist-oracle .preview-activity-dropdown .resource-dropdown .dropdown-menu a {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -571,30 +478,14 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .curriki-utility-headingThree
-  h3,
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-videoTag
-  .layout-add-activity-title {
+.add-activity-layout-formik-videoTag .add-activity-layout-formik .curriki-utility-headingThree h3,
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-videoTag .layout-add-activity-title {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
 
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .layout-title-formik-textField
-  .textField-title
-  h3,
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .layout-title-formik-textField
-  .textField-detailText
-  p {
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField .textField-title h3,
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField .textField-detailText p {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -677,57 +568,32 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.admin-panel
-  .controller
-  .filter-dropdown-project
-  .dropdown-menu
-  .authorName-project
-  input {
+.admin-panel .controller .filter-dropdown-project .dropdown-menu .authorName-project input {
   color: var(--main-secondary-color) !important;
   border-color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.admin-panel
-  .controller
-  .filter-dropdown-project
-  .dropdown-menu
-  .from-project
-  span,
+.admin-panel .controller .filter-dropdown-project .dropdown-menu .from-project span,
 .to-project span {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
 }
 
-.admin-panel
-  .controller
-  .filter-dropdown-project
-  .dropdown-menu
-  .from-project
-  input,
+.admin-panel .controller .filter-dropdown-project .dropdown-menu .from-project input,
 .to-project input {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.admin-panel
-  .controller
-  .filter-dropdown-project
-  .dropdown-menu
-  .status-project
-  .library-status
-  span,
+.admin-panel .controller .filter-dropdown-project .dropdown-menu .status-project .library-status span,
 .shared-status span,
 .curriki-utility-headingText p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
 }
 
-.admin-panel
-  .controller
-  .filter-dropdown-project
-  .dropdown-menu
-  .filter-btn-project {
+.admin-panel .controller .filter-dropdown-project .dropdown-menu .filter-btn-project {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -757,11 +623,7 @@ button {
 
 .admin-panel .controller .btn-text button,
 .import-user,
-.react-confirm-alert
-  .share-project-preview-url.project-share-check
-  .share-popup-btn
-  .close-btn
-  button,
+.react-confirm-alert .share-project-preview-url.project-share-check .share-popup-btn .close-btn button,
 .playlist-modal .modal-footer .add-playlist-btn {
   font-family: var(--main-text-font) !important;
   color: var(--main-white-color) !important;
@@ -808,12 +670,7 @@ button {
   color: var(--main-primary-color) !important;
 }
 
-.admin-panel
-  .table-data
-  table
-  .filter-dropdown-table
-  .dropdown-menu
-  .dropdown-item {
+.admin-panel .table-data table .filter-dropdown-table .dropdown-menu .dropdown-item {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -847,13 +704,7 @@ button {
 }
 
 .custom-select-style-for-sub select,
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .form-group-create
-  .roles-permission-tab-row
-  select {
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create .roles-permission-tab-row select {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -874,11 +725,7 @@ button {
   background-color: var(--main-white-color) !important;
   border-color: var(--main-primary-color) !important;
 }
-.tab-section
-  .tab-tospp-section
-  .tab-inner-tospp-section
-  .tab_inner-tossp_header
-  h1 {
+.tab-section .tab-tospp-section .tab-inner-tospp-section .tab_inner-tossp_header h1 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -886,7 +733,7 @@ button {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.tab_inner_color_section .tab_inner_color > div input[type="text"] {
+.tab_inner_color_section .tab_inner_color > div input[type='text'] {
   color: var(--main-black-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-secondary-color) !important;
@@ -919,12 +766,7 @@ button {
   border-bottom-color: var(--main-heading-border) !important;
 }
 
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .form-group-create
-  h3,
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create h3,
 .tos-pp .radio-custom-label,
 .email-check-form label,
 .create-program-wrapper label h2,
@@ -934,36 +776,19 @@ button {
   font-family: var(--main-text-font) !important;
 }
 
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .form-group-create
-  input,
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create input,
 textarea,
 .form-control,
 .create-program-wrapper .create-playlist-form .project-name input,
 .form-control,
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .layout-title-formik-textField
-  input {
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField input {
   color: var(--main-black-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-secondary-color) !important;
 }
 
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .form-group-create
-  select,
-.add-activity-form
-  .add-activity-title-select
-  .activity-title-change-layout
-  select {
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create select,
+.add-activity-form .add-activity-title-select .activity-title-change-layout select {
   color: var(--main-black-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-secondary-color) !important;
@@ -992,31 +817,18 @@ textarea,
   border-bottom-color: var(--main-primary-color) !important;
 }
 
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .button-group
-  button,
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .button-group button,
 .email-check-form .addButton,
 .curriki-theme-primary-button,
 .interactive-btns .save-close .saveclosemodel,
-.create-program-wrapper
-  .create-playlist-form
-  .create-project-template-wrapper
-  .create-project-submit-btn,
+.create-program-wrapper .create-playlist-form .create-project-template-wrapper .create-project-submit-btn,
 .btns-margin button {
   border-color: var(--main-primary-color) !important;
   background-color: var(--main-primary-color) !important;
   color: var(--main-white-color) !important;
 }
 
-.admin-panel
-  .form-new-popup-admin
-  .inner-form-content
-  .create-form
-  .button-group
-  button.cancel,
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .button-group button.cancel,
 .form-horizontal .interactive-btns .cancel .backclosemodel {
   border-color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
@@ -1024,10 +836,7 @@ textarea,
 }
 
 .upload-btn,
-.describe-video-upload-section
-  .curriki-utility-uploadimageV2
-  .uploadimage-option
-  button,
+.describe-video-upload-section .curriki-utility-uploadimageV2 .uploadimage-option button,
 .upload-thumbnail.check .upload_placeholder .pexel p,
 .upload-thumbnail.check .upload_placeholder .pexel,
 .upload-thumbnail.check .upload_placeholder .gallery p,
@@ -1112,68 +921,30 @@ textarea,
   border-bottom-color: var(--main-primary-color) !important;
 }
 
-.form-new-popup-myvideo
-  .add-video-form
-  .add-video-form-tabs
-  .main-tabs
-  .nav-item.active,
-.form-new-popup-myvideo
-  .add-video-form
-  .add-video-form-tabs
-  .nav-tabs
-  .nav-link {
+.form-new-popup-myvideo .add-video-form .add-video-form-tabs .main-tabs .nav-item.active,
+.form-new-popup-myvideo .add-video-form .add-video-form-tabs .nav-tabs .nav-link {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
   border-bottom-color: var(--main-primary-color) !important;
 }
 
-.add-describevideo-form
-  .add-describevideo-section-layout-formik
-  .add-describevideo-layout-formik
-  .dec-title-formik-textField
-  span,
-.add-describevideo-form
-  .add-describevideo-section-layout-formik
-  .add-describevideo-layout-formik
-  .dec-title-formik-textField
-  p {
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField span,
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField p {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.add-describevideo-form
-  .add-describevideo-section-layout-formik
-  .add-describevideo-layout-formik
-  .dec-title-formik-textField
-  input,
-.add-describevideo-form
-  .add-describevideo-section-layout-formik
-  .add-describevideo-layout-formik
-  .layout-formik-select
-  .formik-select
-  select,
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .layout-formik-select
-  .formik-select
-  select {
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField input,
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select select,
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-formik-select .formik-select select {
   color: var(--main-black-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-secondary-color) !important;
 }
 
-.add-describevideo-form
-  .add-describevideo-section-layout-formik
-  .add-describevideo-layout-formik
-  .dec-title-formik-textField
-  ::placeholder,
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField ::placeholder,
 .form-control::placeholder,
-.add-activity-form
-  .add-activity-layout-formik-videoTag
-  .add-activity-layout-formik
-  .layout-title-formik-textField
-  input::placeholder {
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField input::placeholder {
   color: var(--main-paragraph-text-color) !important;
 }
 
@@ -1187,10 +958,7 @@ textarea,
   font-family: var(--main-text-font) !important;
 }
 
-.h5p-brightcoveinteractivevideo-editor
-  .form-manager-head
-  .form-manager-title:first-child
-  .truncatable-text {
+.h5p-brightcoveinteractivevideo-editor .form-manager-head .form-manager-title:first-child .truncatable-text {
   font-family: var(--main-heading-font) !important;
   color: var(--main-secondary-color) !important;
 }
@@ -1250,21 +1018,13 @@ textarea,
 /*  */
 
 .preview-layout-model .modal-content .model-top-heading h2,
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-top-header
-  .NetSuite-heading
-  h2 {
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-top-header .NetSuite-heading h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
 .preview-layout-model .video-model-tab .nav-menu-heading h3,
-.preview-layout-model
-  .video-model-tab-row
-  #role-permission-tab-id
-  .nav-link.active {
+.preview-layout-model .video-model-tab-row #role-permission-tab-id .nav-link.active {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
@@ -1274,52 +1034,22 @@ textarea,
   font-family: var(--main-heading-font) !important;
 }
 
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-top-header
-  .NetSuite-section-searching
-  .section-input-search {
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-top-header .NetSuite-section-searching .section-input-search {
   border-color: var(--main-primary-color) !important;
 }
 
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-top-header
-  .NetSuite-section-searching
-  .section-input-search
-  input {
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-top-header .NetSuite-section-searching .section-input-search input {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-table
-  table
-  thead
-  tr
-  th,
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-table
-  table
-  td {
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-table table thead tr th,
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-table table td {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.preview-layout-model
-  .detail-permission-tab
-  .for-NetSuite-section
-  .NetSuite-section-table
-  table
-  tr
-  td
-  span {
+.preview-layout-model .detail-permission-tab .for-NetSuite-section .NetSuite-section-table table tr td span {
   color: var(--main-primary-color) !important;
 }
 
@@ -1347,11 +1077,7 @@ textarea,
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.team-card-content
-  .team-member-content
-  .member-mark-container
-  .member-name-mark
-  span {
+.team-card-content .team-member-content .member-mark-container .member-name-mark span {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1368,17 +1094,10 @@ textarea,
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.create-team-sidebar
-  .team-sidebar-btn.selected
-  .btn-box
-  span.top-vertical-line {
+.create-team-sidebar .team-sidebar-btn.selected .btn-box span.top-vertical-line {
   background-color: var(--main-primary-color) !important;
 }
-.create-team-sidebar
-  .team-sidebar-btn.selected
-  .btn-box
-  .number-box
-  span.number {
+.create-team-sidebar .team-sidebar-btn.selected .btn-box .number-box span.number {
   background-color: var(--main-primary-color) !important;
   color: var(--main-white-color) !important;
 }
@@ -1389,12 +1108,7 @@ textarea,
 .create-team-wrapper .creation-panel .satelliteteaminfo {
   color: var(--main-secondary-color) !important;
 }
-.create-team-wrapper
-  .creation-panel
-  .create-team-form
-  .team-info-input
-  > div
-  h2 {
+.create-team-wrapper .creation-panel .create-team-form .team-info-input > div h2 {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1404,12 +1118,7 @@ textarea,
   /* C-CFM-S (color) */
   font-family: var(--main-text-font) !important;
 }
-.team-information
-  .projects-wrapper
-  .project-list
-  .project-content-item
-  .project-title
-  a {
+.team-information .projects-wrapper .project-list .project-content-item .project-title a {
   color: var(--main-anchor-tag-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1419,16 +1128,10 @@ textarea,
   color: var(--main-white-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.assign-project-wrapper
-  .assign-projects
-  .assign-project-item
-  .assign-project-radio {
+.assign-project-wrapper .assign-projects .assign-project-item .assign-project-radio {
   border-color: var(--main-primary-color) !important;
 }
-.assign-project-wrapper
-  .assign-projects
-  .assign-project-item
-  .assign-project-title {
+.assign-project-wrapper .assign-projects .assign-project-item .assign-project-title {
   color: var(--main-secondary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1440,13 +1143,7 @@ textarea,
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.member-manage
-  .team-information
-  .member-management-wrapper
-  .member-list
-  .member-item
-  .member-info
-  .member-name {
+.member-manage .team-information .member-management-wrapper .member-list .member-item .member-info .member-name {
   color: var(--main-user-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1454,13 +1151,7 @@ textarea,
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.member-manage
-  .team-information
-  .member-management-wrapper
-  .member-list
-  .member-item
-  .member-name-mark
-  span {
+.member-manage .team-information .member-management-wrapper .member-list .member-item .member-name-mark span {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -1491,12 +1182,7 @@ textarea,
 .teams-page .team-controller .search-and-filters .search-bar input {
   border-bottom: 2px solid var(--main-primary-color) !important;
 }
-.add-team-page
-  .flex-button-top
-  .team-controller
-  .search-and-filters
-  .search-bar
-  input {
+.add-team-page .flex-button-top .team-controller .search-and-filters .search-bar input {
   border-bottom: 2px solid var(--main-primary-color) !important;
 }
 
@@ -1606,14 +1292,7 @@ textarea,
   font-family: var(--main-heading-font) !important;
   color: var(--main-paragraph-text-color) !important;
 }
-.search-result-main
-  .right-search
-  .results_search
-  .box
-  .search-content
-  ul
-  li
-  span {
+.search-result-main .right-search .results_search .box .search-content ul li span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }

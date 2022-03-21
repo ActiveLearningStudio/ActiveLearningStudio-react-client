@@ -1,61 +1,38 @@
 /* eslint-disable */
-import React, { useEffect, useState, useMemo } from "react";
-import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  Accordion,
-  Card,
-  Tabs,
-  Tab,
-  Modal,
-  Alert,
-  Dropdown,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Swal from "sweetalert2";
-import Pagination from "react-js-pagination";
-import QueryString from "query-string";
-import { simpleSearchAction, cloneProject } from "store/actions/search";
-import { loadResourceTypesAction } from "store/actions/resource";
-import {
-  addProjectFav,
-  loadLmsAction,
-  getProjectCourseFromLMS,
-} from "store/actions/project";
-import { getProjectId, googleShare } from "store/actions/gapi";
-import GoogleModel from "components/models/GoogleLoginModal";
-import {
-  educationLevels,
-  subjects,
-} from "components/ResourceCard/AddResource/dropdownData";
-import ShareLink from "components/ResourceCard/ShareLink";
-import { lmsPlaylist } from "store/actions/playlist";
-import {
-  loadSafariMontagePublishToolAction,
-  closeSafariMontageToolAction,
-} from "store/actions/LMS/genericLMS";
-import teamicon from "assets/images/sidebar/users-team.svg";
+import React, { useEffect, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { Accordion, Card, Tabs, Tab, Modal, Alert, Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2';
+import Pagination from 'react-js-pagination';
+import QueryString from 'query-string';
+import { simpleSearchAction, cloneProject } from 'store/actions/search';
+import { loadResourceTypesAction } from 'store/actions/resource';
+import { addProjectFav, loadLmsAction, getProjectCourseFromLMS } from 'store/actions/project';
+import { getProjectId, googleShare } from 'store/actions/gapi';
+import GoogleModel from 'components/models/GoogleLoginModal';
+import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
+import ShareLink from 'components/ResourceCard/ShareLink';
+import { lmsPlaylist } from 'store/actions/playlist';
+import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
+import teamicon from 'assets/images/sidebar/users-team.svg';
 // import Header from 'components/Header';
-import Footer from "components/Footer";
+import Footer from 'components/Footer';
 // import Sidebar from 'components/Sidebar';
-import CloneModel from "./CloneModel";
+import CloneModel from './CloneModel';
 
-import "./style.scss";
+import './style.scss';
 
 let paginationStarter = true;
 
 function MyVerticallyCenteredModal(props) {
   const { clone } = props;
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
+    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Duplicate <b>{clone ? clone.title : ""}</b> {clone ? clone.model : ""}{" "}
+          Duplicate <b>{clone ? clone.title : ''}</b> {clone ? clone.model : ''}{' '}
         </Modal.Title>
       </Modal.Header>
 
@@ -84,12 +61,8 @@ function SearchInterface(props) {
   });
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization, permission } = useSelector(
-    (state) => state.organization
-  );
-  const safariMontagePublishTool = useSelector(
-    (state) => state.genericLMS.safariMontagePublishTool
-  );
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
   const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -98,19 +71,19 @@ function SearchInterface(props) {
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [search, setSearch] = useState([]);
-  const [searchQueries, SetSearchQuery] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+  const [searchQueries, SetSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [meta, setMeta] = useState({});
   const [clone, setClone] = useState();
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [activeModel, setActiveModel] = useState("");
+  const [activeModel, setActiveModel] = useState('');
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [searchType, setSearchType] = useState(null);
-  const [authorName, SetAuthor] = useState("");
-  const [activetab, setActiveTab] = useState(fromTeam ? "projects" : "total");
+  const [authorName, SetAuthor] = useState('');
+  const [activetab, setActiveTab] = useState(fromTeam ? 'projects' : 'total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
@@ -144,7 +117,7 @@ function SearchInterface(props) {
     return false;
   });
   const safariMontageActivity = allLms?.shareVendors?.map((data) => {
-    if (data.lms_name === "safarimontage") {
+    if (data.lms_name === 'safarimontage') {
       return true;
     }
     return false;
@@ -160,38 +133,38 @@ function SearchInterface(props) {
     const query = QueryString.parse(location.search);
     // console.log(query);
     if (query.type) {
-      if (query.type === "private") {
-        setSearchType("private");
-      } else if (query.type === "public") {
-        setSearchType("public");
+      if (query.type === 'private') {
+        setSearchType('private');
+      } else if (query.type === 'public') {
+        setSearchType('public');
       } else {
-        setSearchType("orgSearch");
+        setSearchType('orgSearch');
       }
     }
     if (query.h5p) {
-      setActiveType(query.h5p.split(","));
+      setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
       // if (query.grade.includes('and')) {
       //   query.grade = query.grade.replace('and', '&');
       // }
-      setActiveSubject(query?.grade?.replace("and", "&")?.split(","));
+      setActiveSubject(query?.grade?.replace('and', '&')?.split(','));
     }
     if (query.education) {
       // if (query.education.includes('and')) {
       //   query.education = query.education.replace('and', '&');
       // }
-      setActiveEducation(query?.education?.replace("and", "&")?.split(","));
+      setActiveEducation(query?.education?.replace('and', '&')?.split(','));
     }
     if (query.author) {
       SetAuthor(query.author);
     }
-    if (query.fromDate && query.fromDate !== "undefined") {
+    if (query.fromDate && query.fromDate !== 'undefined') {
       Setfromdate(query.fromDate);
     } else {
       Setfromdate(undefined);
     }
-    if (query.toDate && query.fromDate !== "undefined") {
+    if (query.toDate && query.fromDate !== 'undefined') {
       Settodate(query.toDate);
     } else {
       Settodate(undefined);
@@ -202,16 +175,12 @@ function SearchInterface(props) {
     // eslint-disable-next-line no-restricted-globals
   }, [location.search]);
   window.onbeforeunload = () => {
-    localStorage.setItem("refreshPage", "true");
+    localStorage.setItem('refreshPage', 'true');
   };
   useEffect(() => {
-    if (
-      localStorage.getItem("refreshPage") === "true" &&
-      currentOrganization &&
-      searchType
-    ) {
+    if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
       let dataSend;
-      if (searchType === "orgSearch") {
+      if (searchType === 'orgSearch') {
         dataSend = {
           phrase: searchInput.trim(),
           subjectArray: activeSubject,
@@ -243,8 +212,8 @@ function SearchInterface(props) {
       const tempSubject = [];
       if (activeEducation) {
         activeEducation.forEach((edu) => {
-          if (String(edu).includes("&")) {
-            const temp = String(edu).replace("&", "and");
+          if (String(edu).includes('&')) {
+            const temp = String(edu).replace('&', 'and');
             tempEducation.push(temp);
           } else {
             tempEducation.push(edu);
@@ -254,8 +223,8 @@ function SearchInterface(props) {
       }
       if (activeSubject) {
         activeSubject.forEach((sub) => {
-          if (String(sub).includes("&")) {
-            const temp = String(sub).replace("&", "and");
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
             tempSubject.push(temp);
           } else {
             tempSubject.push(sub);
@@ -281,14 +250,14 @@ function SearchInterface(props) {
         SetSearchQuery(allState.searchQuery);
         setSearchInput(allState.searchQuery);
         setMeta(allState.searchMeta);
-        localStorage.setItem("loading", "false");
+        localStorage.setItem('loading', 'false');
         Swal.close();
       } else if (allState.searchMeta.total === 0) {
         setSearch([]);
         SetSearchQuery(allState.searchQuery);
         setSearchInput(allState.searchQuery);
         setMeta({});
-        localStorage.setItem("loading", "false");
+        localStorage.setItem('loading', 'false');
         Swal.close();
       }
     }
@@ -304,9 +273,9 @@ function SearchInterface(props) {
   }, [allState.searchMeta, allState.searchResult, totalCount]);
 
   useEffect(() => {
-    if (localStorage.getItem("loading") === "true") {
+    if (localStorage.getItem('loading') === 'true') {
       Swal.fire({
-        html: "Searching...", // add html attribute if you want or remove
+        html: 'Searching...', // add html attribute if you want or remove
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();
@@ -344,51 +313,35 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) =>
-      data.activityItems.map((itm) => allItems.push(itm))
-    );
+    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
   // console.log(activeSubject, activeEducation);
   return (
     <>
       <div>
-        <div className={!fromTeam && "search-wrapper"}>
-          <MyVerticallyCenteredModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-            className="clone-lti"
-            clone={clone}
-          />
+        <div className={!fromTeam && 'search-wrapper'}>
+          <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
 
           <div className="content-search">
             {true ? (
               <div className="search-result-main">
-                {!fromTeam && (
-                  <div className="current-org-search">
-                    {currentOrganization?.name}
-                  </div>
-                )}
-                {!fromTeam && (
-                  <div className="exp-lib-cnt">Explore library content</div>
-                )}
+                {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
+                {!fromTeam && <div className="exp-lib-cnt">Explore library content</div>}
                 <div
                   className="total-count"
                   style={{
-                    display:
-                      totalCount > 1000 || !!searchQueries ? "block" : "none",
+                    display: totalCount > 1000 || !!searchQueries ? 'block' : 'none',
                   }}
                 >
                   {totalCount > 10000 ? (
                     <div>
-                      Your search returned more than <span>10,000</span>{" "}
-                      results. Please refine your search criteria.
+                      Your search returned more than <span>10,000</span> results. Please refine your search criteria.
                     </div>
                   ) : null}
                   {!!searchQueries && (
                     <div>
-                      Showing {search ? meta.total : "0"} results For{" "}
-                      <span>{searchQueries}</span>
+                      Showing {search ? meta.total : '0'} results For <span>{searchQueries}</span>
                     </div>
                   )}
                 </div>
@@ -409,14 +362,7 @@ function SearchInterface(props) {
                             }
                           >
                             Search Library
-                            <FontAwesomeIcon
-                              className="ml-2"
-                              icon={
-                                toggleStates.searchLibrary
-                                  ? "chevron-up"
-                                  : "chevron-down"
-                              }
-                            />
+                            <FontAwesomeIcon className="ml-2" icon={toggleStates.searchLibrary ? 'chevron-up' : 'chevron-down'} />
                           </Accordion.Toggle>
 
                           <Accordion.Collapse eventKey="0">
@@ -429,27 +375,22 @@ function SearchInterface(props) {
                                     setSearchInput(e.target.value);
                                   }}
                                   onKeyPress={async (e) => {
-                                    if (e.key === "Enter") {
-                                      if (
-                                        !searchInput.trim() &&
-                                        searchType !== "orgSearch"
-                                      ) {
-                                        Swal.fire("Search field is required.");
+                                    if (e.key === 'Enter') {
+                                      if (!searchInput.trim() && searchType !== 'orgSearch') {
+                                        Swal.fire('Search field is required.');
                                       } else if (searchInput.length > 255) {
-                                        Swal.fire(
-                                          "Character limit should be less than 255."
-                                        );
+                                        Swal.fire('Character limit should be less than 255.');
                                       } else {
                                         Swal.fire({
-                                          title: "Searching...", // add html attribute if you want or remove
-                                          html: "We are fetching results for you!",
+                                          title: 'Searching...', // add html attribute if you want or remove
+                                          html: 'We are fetching results for you!',
                                           allowOutsideClick: false,
                                           onBeforeOpen: () => {
                                             Swal.showLoading();
                                           },
                                         });
                                         let dataSend;
-                                        if (searchType === "orgSearch") {
+                                        if (searchType === 'orgSearch') {
                                           dataSend = {
                                             phrase: searchInput.trim(),
                                             subjectArray: activeSubject,
@@ -472,19 +413,14 @@ function SearchInterface(props) {
                                             size: 20,
                                           };
                                         }
-                                        const result = await dispatch(
-                                          simpleSearchAction(dataSend)
-                                        );
+                                        const result = await dispatch(simpleSearchAction(dataSend));
                                         setTotalCount(result.meta?.total);
                                         const tempEducation = [];
                                         const tempSubject = [];
                                         if (activeEducation) {
                                           activeEducation.forEach((edu) => {
-                                            if (String(edu).includes("&")) {
-                                              const temp = String(edu).replace(
-                                                "&",
-                                                "and"
-                                              );
+                                            if (String(edu).includes('&')) {
+                                              const temp = String(edu).replace('&', 'and');
                                               tempEducation.push(temp);
                                             } else {
                                               tempEducation.push(edu);
@@ -494,11 +430,8 @@ function SearchInterface(props) {
                                         }
                                         if (activeSubject) {
                                           activeSubject.forEach((sub) => {
-                                            if (String(sub).includes("&")) {
-                                              const temp = String(sub).replace(
-                                                "&",
-                                                "and"
-                                              );
+                                            if (String(sub).includes('&')) {
+                                              const temp = String(sub).replace('&', 'and');
                                               tempSubject.push(temp);
                                             } else {
                                               tempSubject.push(sub);
@@ -532,7 +465,7 @@ function SearchInterface(props) {
                                             setSearchType(e.target.value);
                                           }}
                                           value="private"
-                                          checked={searchType === "private"}
+                                          checked={searchType === 'private'}
                                           type="radio"
                                         />
                                         <span>My Projects</span>
@@ -546,7 +479,7 @@ function SearchInterface(props) {
                                             setSearchType(e.target.value);
                                           }}
                                           value="public"
-                                          checked={searchType === "public"}
+                                          checked={searchType === 'public'}
                                           type="radio"
                                         />
                                         <span>All Shared Projects</span>
@@ -560,31 +493,19 @@ function SearchInterface(props) {
                                             setSearchType(e.target.value);
                                           }}
                                           value="orgSearch"
-                                          checked={searchType === "orgSearch"}
+                                          checked={searchType === 'orgSearch'}
                                           type="radio"
                                         />
-                                        <span>
-                                          All Shared Projects In My Org
-                                        </span>
+                                        <span>All Shared Projects In My Org</span>
                                       </label>
                                     )}
                                   </div>
                                 </div>
-                                {permission?.Organization?.includes(
-                                  "organization:view-user"
-                                ) &&
-                                  searchType !== "private" && (
-                                    <div className="author-label">Author</div>
-                                  )}
+                                {permission?.Organization?.includes('organization:view-user') && searchType !== 'private' && <div className="author-label">Author</div>}
                                 <div
                                   className="form-group"
                                   style={{
-                                    display:
-                                      permission?.Organization?.includes(
-                                        "organization:view-user"
-                                      ) && searchType !== "private"
-                                        ? "block"
-                                        : "none",
+                                    display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none',
                                   }}
                                 >
                                   <input
@@ -595,7 +516,7 @@ function SearchInterface(props) {
                                       if (target.value) {
                                         SetAuthor(target.value);
                                       } else {
-                                        SetAuthor("");
+                                        SetAuthor('');
                                       }
                                     }}
                                   />
@@ -605,33 +526,24 @@ function SearchInterface(props) {
                                   onClick={async () => {
                                     Setfromdate(undefined);
                                     Settodate(undefined);
-                                    setActiveTab(
-                                      fromTeam ? "projects" : "total"
-                                    );
-                                    if (
-                                      !searchInput.trim() &&
-                                      searchType !== "orgSearch"
-                                    ) {
-                                      Swal.fire("Search field is required.");
+                                    setActiveTab(fromTeam ? 'projects' : 'total');
+                                    if (!searchInput.trim() && searchType !== 'orgSearch') {
+                                      Swal.fire('Search field is required.');
                                     } else if (searchInput.length > 255) {
-                                      Swal.fire(
-                                        "Character limit should be less than 255."
-                                      );
+                                      Swal.fire('Character limit should be less than 255.');
                                     } else if (!searchType) {
-                                      Swal.fire(
-                                        "Search type is required. Click one of the radio buttons."
-                                      );
+                                      Swal.fire('Search type is required. Click one of the radio buttons.');
                                     } else {
                                       Swal.fire({
-                                        title: "Searching...", // add html attribute if you want or remove
-                                        html: "We are fetching results for you!",
+                                        title: 'Searching...', // add html attribute if you want or remove
+                                        html: 'We are fetching results for you!',
                                         allowOutsideClick: false,
                                         onBeforeOpen: () => {
                                           Swal.showLoading();
                                         },
                                       });
                                       let dataSend;
-                                      if (searchType === "orgSearch") {
+                                      if (searchType === 'orgSearch') {
                                         dataSend = {
                                           phrase: searchInput.trim(),
                                           subjectArray: activeSubject,
@@ -658,19 +570,14 @@ function SearchInterface(props) {
                                           size: 20,
                                         };
                                       }
-                                      const result = await dispatch(
-                                        simpleSearchAction(dataSend)
-                                      );
+                                      const result = await dispatch(simpleSearchAction(dataSend));
                                       setTotalCount(result.meta?.total);
                                       const tempEducation = [];
                                       const tempSubject = [];
                                       if (activeEducation) {
                                         activeEducation.forEach((edu) => {
-                                          if (String(edu).includes("&")) {
-                                            const temp = String(edu).replace(
-                                              "&",
-                                              "and"
-                                            );
+                                          if (String(edu).includes('&')) {
+                                            const temp = String(edu).replace('&', 'and');
                                             tempEducation.push(temp);
                                           } else {
                                             tempEducation.push(edu);
@@ -680,11 +587,8 @@ function SearchInterface(props) {
                                       }
                                       if (activeSubject) {
                                         activeSubject.forEach((sub) => {
-                                          if (String(sub).includes("&")) {
-                                            const temp = String(sub).replace(
-                                              "&",
-                                              "and"
-                                            );
+                                          if (String(sub).includes('&')) {
+                                            const temp = String(sub).replace('&', 'and');
                                             tempSubject.push(temp);
                                           } else {
                                             tempSubject.push(sub);
@@ -732,14 +636,7 @@ function SearchInterface(props) {
                             }
                           >
                             Subject
-                            <FontAwesomeIcon
-                              className="ml-2"
-                              icon={
-                                toggleStates.subject
-                                  ? "chevron-up"
-                                  : "chevron-down"
-                              }
-                            />
+                            <FontAwesomeIcon className="ml-2" icon={toggleStates.subject ? 'chevron-up' : 'chevron-down'} />
                           </Accordion.Toggle>
                           <Accordion.Collapse eventKey="0">
                             <Card.Body>
@@ -750,46 +647,25 @@ function SearchInterface(props) {
                                   value={data.subject}
                                   onClick={() => {
                                     if (activeSubject.includes(data.subject)) {
-                                      if (
-                                        data.subject ===
-                                        "Career & Technical Education"
-                                      ) {
+                                      if (data.subject === 'Career & Technical Education') {
                                         setActiveSubject(
                                           activeSubject.filter((index) => {
-                                            if (
-                                              index ===
-                                                "Career & Technical Education" ||
-                                              index ===
-                                                "Career and Technical Education"
-                                            ) {
+                                            if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
                                               return false;
                                             }
                                             return true;
                                           })
                                         );
                                       } else {
-                                        setActiveSubject(
-                                          activeSubject.filter(
-                                            (index) => index !== data.subject
-                                          )
-                                        );
+                                        setActiveSubject(activeSubject.filter((index) => index !== data.subject));
                                       }
                                     } else {
-                                      setActiveSubject([
-                                        ...activeSubject,
-                                        data.subject,
-                                      ]);
+                                      setActiveSubject([...activeSubject, data.subject]);
                                     }
                                   }}
                                 >
-                                  {data.subject ===
-                                  "Career & Technical Education" ? (
-                                    activeSubject.includes(
-                                      "Career & Technical Education"
-                                    ) ||
-                                    activeSubject.includes(
-                                      "Career and Technical Education"
-                                    ) ? (
+                                  {data.subject === 'Career & Technical Education' ? (
+                                    activeSubject.includes('Career & Technical Education') || activeSubject.includes('Career and Technical Education') ? (
                                       <FontAwesomeIcon icon="check-square" />
                                     ) : (
                                       <FontAwesomeIcon icon="square" />
@@ -820,14 +696,7 @@ function SearchInterface(props) {
                             }
                           >
                             Education Level
-                            <FontAwesomeIcon
-                              className="ml-2"
-                              icon={
-                                toggleStates.education
-                                  ? "chevron-up"
-                                  : "chevron-down"
-                              }
-                            />
+                            <FontAwesomeIcon className="ml-2" icon={toggleStates.education ? 'chevron-up' : 'chevron-down'} />
                           </Accordion.Toggle>
 
                           <Accordion.Collapse eventKey="1">
@@ -839,40 +708,25 @@ function SearchInterface(props) {
                                   value={data.name}
                                   onClick={() => {
                                     if (activeEducation.includes(data.name)) {
-                                      if (data.name === "College & Beyond") {
+                                      if (data.name === 'College & Beyond') {
                                         setActiveEducation(
                                           activeEducation.filter((index) => {
-                                            if (
-                                              index === "College & Beyond" ||
-                                              index === "College and Beyond"
-                                            ) {
+                                            if (index === 'College & Beyond' || index === 'College and Beyond') {
                                               return false;
                                             }
                                             return true;
                                           })
                                         );
                                       } else {
-                                        setActiveEducation(
-                                          activeEducation.filter(
-                                            (index) => index !== data.name
-                                          )
-                                        );
+                                        setActiveEducation(activeEducation.filter((index) => index !== data.name));
                                       }
                                     } else {
-                                      setActiveEducation([
-                                        ...activeEducation,
-                                        data.name,
-                                      ]);
+                                      setActiveEducation([...activeEducation, data.name]);
                                     }
                                   }}
                                 >
-                                  {data.name === "College & Beyond" ? (
-                                    activeEducation.includes(
-                                      "College & Beyond"
-                                    ) ||
-                                    activeEducation.includes(
-                                      "College and Beyond"
-                                    ) ? (
+                                  {data.name === 'College & Beyond' ? (
+                                    activeEducation.includes('College & Beyond') || activeEducation.includes('College and Beyond') ? (
                                       <FontAwesomeIcon icon="check-square" />
                                     ) : (
                                       <FontAwesomeIcon icon="square" />
@@ -904,20 +758,13 @@ function SearchInterface(props) {
                             }
                           >
                             Type of Activity
-                            <FontAwesomeIcon
-                              className="ml-2"
-                              icon={
-                                toggleStates.type
-                                  ? "chevron-up"
-                                  : "chevron-down"
-                              }
-                            />
+                            <FontAwesomeIcon className="ml-2" icon={toggleStates.type ? 'chevron-up' : 'chevron-down'} />
                           </Accordion.Toggle>
                           <Accordion.Collapse eventKey="3">
                             <Card.Body
                               style={{
-                                "max-height": "300px",
-                                "overflow-y": "auto",
+                                'max-height': '300px',
+                                'overflow-y': 'auto',
                               }}
                             >
                               {activityTypes.map((data) => (
@@ -928,24 +775,13 @@ function SearchInterface(props) {
                                   onClick={() => {
                                     if (activeType.includes(data.h5pLib)) {
                                       // eslint-disable-next-line eqeqeq
-                                      setActiveType(
-                                        activeType.filter(
-                                          (index) => index != data.h5pLib
-                                        )
-                                      );
+                                      setActiveType(activeType.filter((index) => index != data.h5pLib));
                                     } else {
-                                      setActiveType([
-                                        ...activeType,
-                                        data.h5pLib,
-                                      ]);
+                                      setActiveType([...activeType, data.h5pLib]);
                                     }
                                   }}
                                 >
-                                  {activeType.includes(data.h5pLib) ? (
-                                    <FontAwesomeIcon icon="check-square" />
-                                  ) : (
-                                    <FontAwesomeIcon icon="square" />
-                                  )}
+                                  {activeType.includes(data.h5pLib) ? <FontAwesomeIcon icon="check-square" /> : <FontAwesomeIcon icon="square" />}
                                   <span>{data.title}</span>
                                 </div>
                               ))}
@@ -956,21 +792,18 @@ function SearchInterface(props) {
                     </div>
                   </div>
 
-                  <div
-                    className="right-search"
-                    id="right-search-branding-style"
-                  >
+                  <div className="right-search" id="right-search-branding-style">
                     <Tabs
                       activeKey={activetab}
                       id="uncontrolled-tab-example"
                       onSelect={async (e) => {
-                        if (!searchInput && searchType !== "orgSearch") {
-                          Swal.fire("Search field is required.");
+                        if (!searchInput && searchType !== 'orgSearch') {
+                          Swal.fire('Search field is required.');
                         } else {
                           setActiveTab(e);
-                          if (e === "total") {
+                          if (e === 'total') {
                             let searchData;
-                            if (searchType === "orgSearch") {
+                            if (searchType === 'orgSearch') {
                               searchData = {
                                 phrase: searchQueries.trim() || searchInput,
                                 from: 0,
@@ -998,22 +831,20 @@ function SearchInterface(props) {
                               };
                             }
                             Swal.fire({
-                              title: "Loading...", // add html attribute if you want or remove
+                              title: 'Loading...', // add html attribute if you want or remove
                               allowOutsideClick: false,
                               onBeforeOpen: () => {
                                 Swal.showLoading();
                               },
                             });
-                            const resultModel = await dispatch(
-                              simpleSearchAction(searchData)
-                            );
+                            const resultModel = await dispatch(simpleSearchAction(searchData));
                             Swal.close();
                             setTotalCount(resultModel.meta[e]);
                             setActiveModel(e);
                             setActivePage(1);
                           } else {
                             let searchData;
-                            if (searchType === "orgSearch") {
+                            if (searchType === 'orgSearch') {
                               searchData = {
                                 phrase: searchQueries.trim() || searchInput,
                                 from: 0,
@@ -1043,15 +874,13 @@ function SearchInterface(props) {
                               };
                             }
                             Swal.fire({
-                              title: "Loading...", // add html attribute if you want or remove
+                              title: 'Loading...', // add html attribute if you want or remove
                               allowOutsideClick: false,
                               onBeforeOpen: () => {
                                 Swal.showLoading();
                               },
                             });
-                            const resultModel = await dispatch(
-                              simpleSearchAction(searchData)
-                            );
+                            const resultModel = await dispatch(simpleSearchAction(searchData));
                             Swal.close();
                             setTotalCount(resultModel.meta[e]);
                             setActiveModel(e);
@@ -1061,14 +890,7 @@ function SearchInterface(props) {
                       }}
                     >
                       {!fromTeam && (
-                        <Tab
-                          eventKey="total"
-                          title={
-                            !!search && !!meta.total
-                              ? `all (${meta.total})`
-                              : "all (0)"
-                          }
-                        >
+                        <Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
                           <div className="results_search">
                             {!!search && search.length > 0 ? (
                               search.map((res) => (
@@ -1077,10 +899,7 @@ function SearchInterface(props) {
                                     {res.thumb_url ? (
                                       <div
                                         style={{
-                                          backgroundImage:
-                                            res.thumb_url.includes("pexels.com")
-                                              ? `url(${res.thumb_url})`
-                                              : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                          backgroundImage: res.thumb_url.includes('pexels.com') ? `url(${res.thumb_url})` : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                         }}
                                       />
                                     ) : (
@@ -1088,7 +907,7 @@ function SearchInterface(props) {
                                         style={{
                                           // eslint-disable-next-line max-len
                                           backgroundImage:
-                                            "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+                                            'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                         }}
                                       />
                                     )}
@@ -1099,10 +918,10 @@ function SearchInterface(props) {
                                     <div className="search-content">
                                       <a
                                         href={
-                                          res.model === "Activity"
+                                          res.model === 'Activity'
                                             ? // eslint-disable-next-line max-len
                                               `/activity/${res.id}/preview`
-                                            : res.model === "Playlist"
+                                            : res.model === 'Playlist'
                                             ? `/playlist/${res.id}/preview/lti`
                                             : `/project/${res.id}/preview`
                                         }
@@ -1114,325 +933,213 @@ function SearchInterface(props) {
                                       <ul>
                                         {res.user && (
                                           <li>
-                                            by{" "}
-                                            <span>{res.user.first_name}</span>
+                                            by <span>{res.user.first_name}</span>
                                           </li>
                                         )}
                                         <li>
-                                          Type{" "}
-                                          <span className="type">
-                                            {res.model}
-                                          </span>
+                                          by <span>{res?.team_name ? `(T) ${res?.team_name}` : res.user.first_name}</span>
                                         </li>
                                         {/* <li>
                                             Member Rating{" "}
                                             <span className="type">Project</span>
                                           </li> */}
-                                        {res.model === "Project" &&
-                                          permission?.Project?.includes(
-                                            "project:favorite"
-                                          ) && (
-                                            <div
-                                              className={`btn-fav ${res.favored}`}
-                                              onClick={(e) => {
-                                                if (
-                                                  e.target.classList.contains(
-                                                    "true"
-                                                  )
-                                                ) {
-                                                  e.target.classList.remove(
-                                                    "true"
-                                                  );
-                                                  e.target.classList.add(
-                                                    "false"
-                                                  );
-                                                } else {
-                                                  e.target.classList.add(
-                                                    "true"
-                                                  );
-                                                }
-                                                dispatch(addProjectFav(res.id));
+                                        {res.model === 'Project' && permission?.Project?.includes('project:favorite') && (
+                                          <div
+                                            className={`btn-fav ${res.favored}`}
+                                            onClick={(e) => {
+                                              if (e.target.classList.contains('true')) {
+                                                e.target.classList.remove('true');
+                                                e.target.classList.add('false');
+                                              } else {
+                                                e.target.classList.add('true');
+                                              }
+                                              dispatch(addProjectFav(res.id));
+                                            }}
+                                          >
+                                            <FontAwesomeIcon
+                                              className="mr-2"
+                                              icon="star"
+                                              style={{
+                                                pointerEvents: 'none',
                                               }}
-                                            >
-                                              <FontAwesomeIcon
-                                                className="mr-2"
-                                                icon="star"
-                                                style={{
-                                                  pointerEvents: "none",
-                                                }}
-                                              />{" "}
-                                              Favorite
-                                            </div>
-                                          )}
+                                            />{' '}
+                                            Favorite
+                                          </div>
+                                        )}
                                       </ul>
                                       <p>{res.description}</p>
                                     </div>
-                                    {(permission?.Project?.includes(
-                                      "project:clone"
-                                    ) ||
-                                      permission?.Project?.includes(
-                                        "project:publish"
-                                      )) &&
-                                      res.model === "Project" && (
-                                        <Dropdown className="playlist-dropdown check">
-                                          <Dropdown.Toggle>
-                                            <FontAwesomeIcon icon="ellipsis-v" />
-                                          </Dropdown.Toggle>
-                                          <Dropdown.Menu>
-                                            {permission?.Project?.includes(
-                                              "project:clone"
-                                            ) && (
-                                              <Dropdown.Item
-                                                onClick={() => {
-                                                  Swal.fire({
-                                                    html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                    showCancelButton: true,
-                                                    confirmButtonColor:
-                                                      "#3085d6",
-                                                    cancelButtonColor: "#d33",
-                                                    confirmButtonText: "Ok",
-                                                  }).then((result) => {
-                                                    if (result.value) {
-                                                      cloneProject(res.id);
-                                                    }
-                                                  });
-                                                }}
-                                              >
-                                                <FontAwesomeIcon
-                                                  className="mr-2"
-                                                  icon="clone"
-                                                />
-                                                Duplicate
-                                              </Dropdown.Item>
-                                            )}
-                                            {permission?.Project?.includes(
-                                              "project:publish"
-                                            ) && (
-                                              <li
-                                                className="dropdown-submenu send"
-                                                style={{
-                                                  display:
-                                                    projectVisibilityLMS[0] ||
-                                                    currentOrganization?.gcr_project_visibility
-                                                      ? "block"
-                                                      : "none",
-                                                }}
-                                              >
-                                                <a tabIndex="-1">
-                                                  <FontAwesomeIcon
-                                                    icon="newspaper"
-                                                    className="mr-2"
-                                                  />
-                                                  Publish
-                                                </a>
-                                                <ul className="dropdown-menu check">
-                                                  {currentOrganization?.gcr_project_visibility && (
-                                                    // eslint-disable-next-line react/jsx-indent
-                                                    <li
-                                                      onClick={() => {
-                                                        setShow(true);
-                                                        getProjectId(res.id);
-                                                        setSelectedProjectId(
-                                                          res.id
-                                                        );
-                                                        dispatch(
-                                                          googleShare(false)
-                                                        );
-                                                      }}
-                                                    >
-                                                      <a>Google Classroom</a>
-                                                    </li>
-                                                  )}
-                                                  {allLms.shareVendors &&
-                                                    allLms.shareVendors.map(
-                                                      (data) =>
-                                                        data?.project_visibility && (
-                                                          <li>
-                                                            <a
-                                                              onClick={async () => {
-                                                                const allPlaylist =
-                                                                  await dispatch(
-                                                                    lmsPlaylist(
-                                                                      res.id
-                                                                    )
-                                                                  );
-                                                                if (
-                                                                  allPlaylist
-                                                                ) {
-                                                                  dispatch(
-                                                                    getProjectCourseFromLMS(
-                                                                      data.lms_name.toLowerCase(),
-                                                                      data.id,
-                                                                      res.id,
-                                                                      allPlaylist.playlists,
-                                                                      data.lms_url
-                                                                    )
-                                                                  );
-                                                                }
-                                                              }}
-                                                            >
-                                                              {data.site_name}
-                                                            </a>
-                                                          </li>
-                                                        )
-                                                    )}
-                                                </ul>
-                                              </li>
-                                            )}
-                                          </Dropdown.Menu>
-                                        </Dropdown>
-                                      )}
-                                  </div>
-                                  {permission?.Playlist?.includes(
-                                    "playlist:duplicate"
-                                  ) &&
-                                    res.model === "Playlist" && (
+                                    {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && res.model === 'Project' && (
                                       <Dropdown className="playlist-dropdown check">
                                         <Dropdown.Toggle>
                                           <FontAwesomeIcon icon="ellipsis-v" />
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
+                                          {permission?.Project?.includes('project:clone') && (
+                                            <Dropdown.Item
+                                              onClick={() => {
+                                                Swal.fire({
+                                                  html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                  showCancelButton: true,
+                                                  confirmButtonColor: '#3085d6',
+                                                  cancelButtonColor: '#d33',
+                                                  confirmButtonText: 'Ok',
+                                                }).then((result) => {
+                                                  if (result.value) {
+                                                    cloneProject(res.id);
+                                                  }
+                                                });
+                                              }}
+                                            >
+                                              <FontAwesomeIcon className="mr-2" icon="clone" />
+                                              Duplicate
+                                            </Dropdown.Item>
+                                          )}
+                                          {permission?.Project?.includes('project:publish') && (
+                                            <li
+                                              className="dropdown-submenu send"
+                                              style={{
+                                                display: projectVisibilityLMS[0] || currentOrganization?.gcr_project_visibility ? 'block' : 'none',
+                                              }}
+                                            >
+                                              <a tabIndex="-1">
+                                                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                Publish
+                                              </a>
+                                              <ul className="dropdown-menu check">
+                                                {currentOrganization?.gcr_project_visibility && (
+                                                  // eslint-disable-next-line react/jsx-indent
+                                                  <li
+                                                    onClick={() => {
+                                                      setShow(true);
+                                                      getProjectId(res.id);
+                                                      setSelectedProjectId(res.id);
+                                                      dispatch(googleShare(false));
+                                                    }}
+                                                  >
+                                                    <a>Google Classroom</a>
+                                                  </li>
+                                                )}
+                                                {allLms.shareVendors &&
+                                                  allLms.shareVendors.map(
+                                                    (data) =>
+                                                      data?.project_visibility && (
+                                                        <li>
+                                                          <a
+                                                            onClick={async () => {
+                                                              const allPlaylist = await dispatch(lmsPlaylist(res.id));
+                                                              if (allPlaylist) {
+                                                                dispatch(
+                                                                  getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, res.id, allPlaylist.playlists, data.lms_url)
+                                                                );
+                                                              }
+                                                            }}
+                                                          >
+                                                            {data.site_name}
+                                                          </a>
+                                                        </li>
+                                                      )
+                                                  )}
+                                              </ul>
+                                            </li>
+                                          )}
+                                        </Dropdown.Menu>
+                                      </Dropdown>
+                                    )}
+                                  </div>
+                                  {permission?.Playlist?.includes('playlist:duplicate') && res.model === 'Playlist' && (
+                                    <Dropdown className="playlist-dropdown check">
+                                      <Dropdown.Toggle>
+                                        <FontAwesomeIcon icon="ellipsis-v" />
+                                      </Dropdown.Toggle>
+                                      <Dropdown.Menu>
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            setModalShow(true);
+                                            setClone(res);
+                                          }}
+                                        >
+                                          <FontAwesomeIcon className="mr-2" icon="clone" />
+                                          Duplicate
+                                        </Dropdown.Item>
+                                        {permission?.Playlist?.includes('playlist:publish') && (
+                                          <ShareLink
+                                            playlistId={res.id}
+                                            projectId={res.project_id}
+                                            setProjectId={setProjectId}
+                                            handleShow={handleShow}
+                                            gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                            setProjectPlaylistId={setProjectPlaylistId}
+                                          />
+                                        )}
+                                      </Dropdown.Menu>
+                                    </Dropdown>
+                                  )}
+                                  {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
+                                    <Dropdown className="playlist-dropdown check">
+                                      <Dropdown.Toggle>
+                                        <FontAwesomeIcon icon="ellipsis-v" />
+                                      </Dropdown.Toggle>
+                                      <Dropdown.Menu>
+                                        <>
                                           <Dropdown.Item
                                             onClick={() => {
                                               setModalShow(true);
                                               setClone(res);
                                             }}
                                           >
-                                            <FontAwesomeIcon
-                                              className="mr-2"
-                                              icon="clone"
-                                            />
+                                            <FontAwesomeIcon className="mr-2" icon="clone" />
                                             Duplicate
                                           </Dropdown.Item>
-                                          {permission?.Playlist?.includes(
-                                            "playlist:publish"
-                                          ) && (
-                                            <ShareLink
-                                              playlistId={res.id}
-                                              projectId={res.project_id}
-                                              setProjectId={setProjectId}
-                                              handleShow={handleShow}
-                                              gcr_playlist_visibility={
-                                                currentOrganization.gcr_playlist_visibility
-                                              }
-                                              setProjectPlaylistId={
-                                                setProjectPlaylistId
-                                              }
-                                            />
-                                          )}
-                                        </Dropdown.Menu>
-                                      </Dropdown>
-                                    )}
-                                  {permission?.Activity?.includes(
-                                    "activity:duplicate"
-                                  ) &&
-                                    res.model === "Activity" && (
-                                      <Dropdown className="playlist-dropdown check">
-                                        <Dropdown.Toggle>
-                                          <FontAwesomeIcon icon="ellipsis-v" />
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                          <>
-                                            <Dropdown.Item
-                                              onClick={() => {
-                                                setModalShow(true);
-                                                setClone(res);
+                                          {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                            <li
+                                              className="dropdown-submenu send"
+                                              style={{
+                                                display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
                                               }}
                                             >
-                                              <FontAwesomeIcon
-                                                className="mr-2"
-                                                icon="clone"
-                                              />
-                                              Duplicate
-                                            </Dropdown.Item>
-                                            {permission?.Activity?.includes(
-                                              "activity:share"
-                                            ) &&
-                                              allLms?.length !== 0 && (
-                                                <li
-                                                  className="dropdown-submenu send"
-                                                  style={{
-                                                    display:
-                                                      activityVisibilityLMS.includes(
-                                                        true
-                                                      ) &&
-                                                      safariMontageActivity.includes(
-                                                        true
-                                                      )
-                                                        ? "block"
-                                                        : "none",
-                                                  }}
+                                              <a tabIndex="-1" className="dropdown-item">
+                                                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                Publish
+                                              </a>
+                                              <ul className="dropdown-menu check">
+                                                {allLms?.shareVendors.map((data) =>
+                                                  data.lms_name !== 'safarimontage' ? null : (
+                                                    <>
+                                                      {data?.activity_visibility && (
+                                                        <li>
+                                                          <a
+                                                            onClick={() => {
+                                                              dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
+                                                            }}
+                                                          >
+                                                            {data.site_name}
+                                                          </a>
+                                                        </li>
+                                                      )}
+                                                    </>
+                                                  )
+                                                )}
+                                                <Modal
+                                                  dialogClassName="safari-modal"
+                                                  show={safariMontagePublishTool}
+                                                  onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                  aria-labelledby="example-modal-sizes-title-lg"
                                                 >
-                                                  <a
-                                                    tabIndex="-1"
-                                                    className="dropdown-item"
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      icon="newspaper"
-                                                      className="mr-2"
-                                                    />
-                                                    Publish
-                                                  </a>
-                                                  <ul className="dropdown-menu check">
-                                                    {allLms?.shareVendors.map(
-                                                      (data) =>
-                                                        data.lms_name !==
-                                                        "safarimontage" ? null : (
-                                                          <>
-                                                            {data?.activity_visibility && (
-                                                              <li>
-                                                                <a
-                                                                  onClick={() => {
-                                                                    dispatch(
-                                                                      loadSafariMontagePublishToolAction(
-                                                                        res.project_id,
-                                                                        res.playlist_id,
-                                                                        res.id,
-                                                                        data.id
-                                                                      )
-                                                                    );
-                                                                  }}
-                                                                >
-                                                                  {
-                                                                    data.site_name
-                                                                  }
-                                                                </a>
-                                                              </li>
-                                                            )}
-                                                          </>
-                                                        )
-                                                    )}
-                                                    <Modal
-                                                      dialogClassName="safari-modal"
-                                                      show={
-                                                        safariMontagePublishTool
-                                                      }
-                                                      onHide={() =>
-                                                        dispatch(
-                                                          closeSafariMontageToolAction()
-                                                        )
-                                                      }
-                                                      aria-labelledby="example-modal-sizes-title-lg"
-                                                    >
-                                                      <Modal.Header closeButton>
-                                                        <Modal.Title id="example-modal-sizes-title-lg">
-                                                          Safari Montage
-                                                        </Modal.Title>
-                                                      </Modal.Header>
-                                                      <Modal.Body>
-                                                        <iframe
-                                                          title="Safari Montage"
-                                                          src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
-                                                        />
-                                                      </Modal.Body>
-                                                    </Modal>
-                                                  </ul>
-                                                </li>
-                                              )}
-                                          </>
-                                        </Dropdown.Menu>
-                                      </Dropdown>
-                                    )}
+                                                  <Modal.Header closeButton>
+                                                    <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+                                                  </Modal.Header>
+                                                  <Modal.Body>
+                                                    <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+                                                  </Modal.Body>
+                                                </Modal>
+                                              </ul>
+                                            </li>
+                                          )}
+                                        </>
+                                      </Dropdown.Menu>
+                                    </Dropdown>
+                                  )}
                                 </div>
                               ))
                             ) : (
@@ -1442,30 +1149,18 @@ function SearchInterface(props) {
                         </Tab>
                       )}
 
-                      <Tab
-                        eventKey="projects"
-                        title={
-                          !!search && !!meta.projects
-                            ? `project (${meta.projects})`
-                            : "project (0)"
-                        }
-                      >
+                      <Tab eventKey="projects" title={!!search && !!meta.projects ? `project (${meta.projects})` : 'project (0)'}>
                         <div className="results_search">
                           {!!search && search.length > 0 ? (
                             search.map((res) => (
                               <>
-                                {res.model === "Project" && (
+                                {res.model === 'Project' && (
                                   <div className="box">
                                     <div className="imgbox">
                                       {res.thumb_url ? (
                                         <div
                                           style={{
-                                            backgroundImage:
-                                              res.thumb_url.includes(
-                                                "pexels.com"
-                                              )
-                                                ? `url(${res.thumb_url})`
-                                                : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                            backgroundImage: res.thumb_url.includes('pexels.com') ? `url(${res.thumb_url})` : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                           }}
                                         />
                                       ) : (
@@ -1473,7 +1168,7 @@ function SearchInterface(props) {
                                           style={{
                                             // eslint-disable-next-line max-len
                                             backgroundImage:
-                                              "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+                                              'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                           }}
                                         />
                                       )}
@@ -1484,9 +1179,9 @@ function SearchInterface(props) {
                                       <div className="search-content">
                                         <a
                                           href={
-                                            res.model === "Activity"
+                                            res.model === 'Activity'
                                               ? `/activity/${res.id}/preview`
-                                              : res.model === "Playlist"
+                                              : res.model === 'Playlist'
                                               ? `/playlist/${res.id}/preview/lti`
                                               : `/project/${res.id}/preview`
                                           }
@@ -1498,75 +1193,50 @@ function SearchInterface(props) {
                                         <ul>
                                           {res.user && (
                                             <li>
-                                              by{" "}
-                                              <span>{res.user.first_name}</span>
+                                              by <span>{res?.team_name ? `(T) ${res?.team_name}` : res.user.first_name}</span>
                                             </li>
                                           )}
                                           <li>
-                                            Type{" "}
-                                            <span className="type">
-                                              {res.model}
-                                            </span>
+                                            Type <span className="type">{res.model}</span>
                                           </li>
                                           {/* <li>
                                                 Member Rating{" "}
                                                 <span className="type">Project</span>
                                               </li> */}
-                                          {permission?.Project?.includes(
-                                            "project:favorite"
-                                          ) && (
+                                          {permission?.Project?.includes('project:favorite') && (
                                             <div
                                               className={`btn-fav ${res.favored}`}
                                               onClick={(e) => {
-                                                if (
-                                                  e.target.classList.contains(
-                                                    " true"
-                                                  )
-                                                ) {
-                                                  e.target.classList.remove(
-                                                    "true"
-                                                  );
+                                                if (e.target.classList.contains(' true')) {
+                                                  e.target.classList.remove('true');
                                                 } else {
-                                                  e.target.classList.add(
-                                                    "true"
-                                                  );
+                                                  e.target.classList.add('true');
                                                 }
                                                 dispatch(addProjectFav(res.id));
                                               }}
                                             >
-                                              <FontAwesomeIcon
-                                                className="mr-2"
-                                                icon="star"
-                                              />
+                                              <FontAwesomeIcon className="mr-2" icon="star" />
                                               Favorite
                                             </div>
                                           )}
                                         </ul>
                                         <p>{res.description}</p>
                                       </div>
-                                      {(permission?.Project?.includes(
-                                        "project:clone"
-                                      ) ||
-                                        permission?.Project?.includes(
-                                          "project:publish"
-                                        )) && (
+                                      {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && (
                                         <Dropdown className="playlist-dropdown check">
                                           <Dropdown.Toggle>
                                             <FontAwesomeIcon icon="ellipsis-v" />
                                           </Dropdown.Toggle>
                                           <Dropdown.Menu>
-                                            {permission?.Project?.includes(
-                                              "project:clone"
-                                            ) && (
+                                            {permission?.Project?.includes('project:clone') && (
                                               <Dropdown.Item
                                                 onClick={() => {
                                                   Swal.fire({
                                                     html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
                                                     showCancelButton: true,
-                                                    confirmButtonColor:
-                                                      "#3085d6",
-                                                    cancelButtonColor: "#d33",
-                                                    confirmButtonText: "Ok",
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Ok',
                                                   }).then((result) => {
                                                     if (result.value) {
                                                       cloneProject(res.id);
@@ -1574,31 +1244,19 @@ function SearchInterface(props) {
                                                   });
                                                 }}
                                               >
-                                                <FontAwesomeIcon
-                                                  className="mr-2"
-                                                  icon="clone"
-                                                />
+                                                <FontAwesomeIcon className="mr-2" icon="clone" />
                                                 Duplicate
                                               </Dropdown.Item>
                                             )}
-                                            {permission?.Project?.includes(
-                                              "project:publish"
-                                            ) && (
+                                            {permission?.Project?.includes('project:publish') && (
                                               <li
                                                 className="dropdown-submenu send"
                                                 style={{
-                                                  display:
-                                                    projectVisibilityLMS[0] ||
-                                                    currentOrganization?.gcr_project_visibility
-                                                      ? "block"
-                                                      : "none",
+                                                  display: projectVisibilityLMS[0] || currentOrganization?.gcr_project_visibility ? 'block' : 'none',
                                                 }}
                                               >
                                                 <a tabIndex="-1">
-                                                  <FontAwesomeIcon
-                                                    icon="newspaper"
-                                                    className="mr-2"
-                                                  />
+                                                  <FontAwesomeIcon icon="newspaper" className="mr-2" />
                                                   Publish
                                                 </a>
                                                 <ul className="dropdown-menu check">
@@ -1607,12 +1265,8 @@ function SearchInterface(props) {
                                                       onClick={() => {
                                                         setShow(true);
                                                         getProjectId(res.id);
-                                                        setSelectedProjectId(
-                                                          res.id
-                                                        );
-                                                        dispatch(
-                                                          googleShare(false)
-                                                        );
+                                                        setSelectedProjectId(res.id);
+                                                        dispatch(googleShare(false));
                                                       }}
                                                     >
                                                       <a>Google Classroom</a>
@@ -1625,23 +1279,10 @@ function SearchInterface(props) {
                                                           <li>
                                                             <a
                                                               onClick={async () => {
-                                                                const allPlaylist =
-                                                                  await dispatch(
-                                                                    lmsPlaylist(
-                                                                      res.id
-                                                                    )
-                                                                  );
-                                                                if (
-                                                                  allPlaylist
-                                                                ) {
+                                                                const allPlaylist = await dispatch(lmsPlaylist(res.id));
+                                                                if (allPlaylist) {
                                                                   dispatch(
-                                                                    getProjectCourseFromLMS(
-                                                                      data.lms_name.toLowerCase(),
-                                                                      data.id,
-                                                                      res.id,
-                                                                      allPlaylist.playlists,
-                                                                      data.lms_url
-                                                                    )
+                                                                    getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, res.id, allPlaylist.playlists, data.lms_url)
                                                                   );
                                                                 }
                                                               }}
@@ -1657,36 +1298,21 @@ function SearchInterface(props) {
                                             {fromTeam && (
                                               <Dropdown.Item
                                                 onClick={() => {
-                                                  if (
-                                                    selectProject.length ===
-                                                      0 &&
-                                                    fromTeam
-                                                  ) {
+                                                  if (selectProject.length === 0 && fromTeam) {
                                                     setSelectProject([res.id]);
-                                                  } else if (
-                                                    selectProject[0] ===
-                                                      res.id &&
-                                                    fromTeam
-                                                  ) {
+                                                  } else if (selectProject[0] === res.id && fromTeam) {
                                                     setSelectProject([]);
                                                   } else {
                                                     Swal.fire({
-                                                      icon: "warning",
-                                                      title:
-                                                        "Action Prohibited",
-                                                      text: "You are only allowed to select 1 project.",
+                                                      icon: 'warning',
+                                                      title: 'Action Prohibited',
+                                                      text: 'You are only allowed to select 1 project.',
                                                     });
                                                   }
                                                 }}
                                               >
-                                                <img
-                                                  src={teamicon}
-                                                  alt="teams_logo"
-                                                  className="teams-logo"
-                                                />
-                                                {selectProject.includes(res.id)
-                                                  ? "Remove from "
-                                                  : "Add to "}
+                                                <img src={teamicon} alt="teams_logo" className="teams-logo" />
+                                                {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}
                                                 team
                                               </Dropdown.Item>
                                             )}
@@ -1705,30 +1331,18 @@ function SearchInterface(props) {
                       </Tab>
 
                       {!fromTeam && (
-                        <Tab
-                          eventKey="playlists"
-                          title={
-                            !!search && !!meta.playlists
-                              ? `playlist (${meta.playlists})`
-                              : "playlist (0)"
-                          }
-                        >
+                        <Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
                           <div className="results_search">
                             {!!search && search.length > 0 ? (
                               search.map((res) => (
                                 <>
-                                  {res.model === "Playlist" && (
+                                  {res.model === 'Playlist' && (
                                     <div className="box">
                                       <div className="imgbox">
                                         {res.thumb_url ? (
                                           <div
                                             style={{
-                                              backgroundImage:
-                                                res.thumb_url.includes(
-                                                  "pexels.com"
-                                                )
-                                                  ? `url(${res.thumb_url})`
-                                                  : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                              backgroundImage: res.thumb_url.includes('pexels.com') ? `url(${res.thumb_url})` : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                             }}
                                           />
                                         ) : (
@@ -1736,7 +1350,7 @@ function SearchInterface(props) {
                                             style={{
                                               // eslint-disable-next-line max-len
                                               backgroundImage:
-                                                "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+                                                'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                             }}
                                           />
                                         )}
@@ -1748,10 +1362,10 @@ function SearchInterface(props) {
                                         <div className="search-content">
                                           <a
                                             href={
-                                              res.model === "Activity"
+                                              res.model === 'Activity'
                                                 ? // eslint-disable-next-line max-len
                                                   `/activity/${res.id}/preview`
-                                                : res.model === "Playlist"
+                                                : res.model === 'Playlist'
                                                 ? `/playlist/${res.id}/preview/lti`
                                                 : `/project/${res.id}/preview`
                                             }
@@ -1763,17 +1377,11 @@ function SearchInterface(props) {
                                           <ul>
                                             {res.user && (
                                               <li>
-                                                by{" "}
-                                                <span>
-                                                  {res.user.first_name}
-                                                </span>
+                                                by <span>{res.user.first_name}</span>
                                               </li>
                                             )}
                                             <li>
-                                              Type{" "}
-                                              <span className="type">
-                                                {res.model}
-                                              </span>
+                                              Type <span className="type">{res.model}</span>
                                             </li>
                                             {/* <li>
                                                 Member Rating{" "}
@@ -1782,9 +1390,7 @@ function SearchInterface(props) {
                                           </ul>
                                           <p>{res.description}</p>
                                         </div>
-                                        {permission?.Playlist?.includes(
-                                          "playlist:duplicate"
-                                        ) && (
+                                        {permission?.Playlist?.includes('playlist:duplicate') && (
                                           <Dropdown className="playlist-dropdown check">
                                             <Dropdown.Toggle>
                                               <FontAwesomeIcon icon="ellipsis-v" />
@@ -1796,28 +1402,17 @@ function SearchInterface(props) {
                                                   setClone(res);
                                                 }}
                                               >
-                                                <FontAwesomeIcon
-                                                  className="mr-2"
-                                                  icon="clone"
-                                                />
+                                                <FontAwesomeIcon className="mr-2" icon="clone" />
                                                 Duplicate
                                               </Dropdown.Item>
-                                              {permission?.Playlist?.includes(
-                                                "playlist:publish"
-                                              ) && (
+                                              {permission?.Playlist?.includes('playlist:publish') && (
                                                 <ShareLink
                                                   playlistId={res.id}
                                                   projectId={res.project_id}
-                                                  setProjectId={
-                                                    setSelectedProjectId
-                                                  }
+                                                  setProjectId={setSelectedProjectId}
                                                   handleShow={handleShow}
-                                                  gcr_playlist_visibility={
-                                                    currentOrganization.gcr_playlist_visibility
-                                                  }
-                                                  setProjectPlaylistId={
-                                                    setSelectedProjectPlaylistId
-                                                  }
+                                                  gcr_playlist_visibility={currentOrganization.gcr_playlist_visibility}
+                                                  setProjectPlaylistId={setSelectedProjectPlaylistId}
                                                 />
                                               )}
                                             </Dropdown.Menu>
@@ -1836,31 +1431,21 @@ function SearchInterface(props) {
                       )}
 
                       {!fromTeam && (
-                        <Tab
-                          eventKey="activities"
-                          title={
-                            !!search && !!meta.activities
-                              ? `activity (${meta.activities})`
-                              : "activity (0)"
-                          }
-                        >
+                        <Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
                           <div className="content">
                             <div className="results_search">
                               {!!search && search.length > 0 ? (
                                 search.map((res) => (
                                   <>
-                                    {res.model === "Activity" && (
+                                    {res.model === 'Activity' && (
                                       <div className="box">
                                         <div className="imgbox">
                                           {res.thumb_url ? (
                                             <div
                                               style={{
-                                                backgroundImage:
-                                                  res.thumb_url.includes(
-                                                    "pexels.com"
-                                                  )
-                                                    ? `url(${res.thumb_url})`
-                                                    : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                                backgroundImage: res.thumb_url.includes('pexels.com')
+                                                  ? `url(${res.thumb_url})`
+                                                  : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                               }}
                                             />
                                           ) : (
@@ -1868,7 +1453,7 @@ function SearchInterface(props) {
                                               style={{
                                                 // eslint-disable-next-line max-len
                                                 backgroundImage:
-                                                  "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+                                                  'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                               }}
                                             />
                                           )}
@@ -1880,9 +1465,9 @@ function SearchInterface(props) {
                                           <div className="search-content">
                                             <a
                                               href={
-                                                res.model === "Activity"
+                                                res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
-                                                  : res.model === "Playlist"
+                                                  : res.model === 'Playlist'
                                                   ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                               }
@@ -1894,17 +1479,11 @@ function SearchInterface(props) {
                                             <ul>
                                               {res.user && (
                                                 <li>
-                                                  by{" "}
-                                                  <span>
-                                                    {res.user.first_name}
-                                                  </span>
+                                                  by <span>{res.user.first_name}</span>
                                                 </li>
                                               )}
                                               <li>
-                                                Type{" "}
-                                                <span className="type">
-                                                  {res.model}
-                                                </span>
+                                                Type <span className="type">{res.model}</span>
                                               </li>
                                               {/* <li>
                                                   Member Rating{" "}
@@ -1913,121 +1492,70 @@ function SearchInterface(props) {
                                             </ul>
                                             <p>{res.description}</p>
                                           </div>
-                                          {permission?.Activity?.includes(
-                                            "activity:duplicate"
-                                          ) &&
-                                            res.model === "Activity" && (
-                                              <Dropdown className="playlist-dropdown check">
-                                                <Dropdown.Toggle>
-                                                  <FontAwesomeIcon icon="ellipsis-v" />
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                  <>
-                                                    <Dropdown.Item
-                                                      onClick={() => {
-                                                        setModalShow(true);
-                                                        setClone(res);
+                                          {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
+                                            <Dropdown className="playlist-dropdown check">
+                                              <Dropdown.Toggle>
+                                                <FontAwesomeIcon icon="ellipsis-v" />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      setModalShow(true);
+                                                      setClone(res);
+                                                    }}
+                                                  >
+                                                    <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                    Duplicate
+                                                  </Dropdown.Item>
+                                                  {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                                    <li
+                                                      className="dropdown-submenu send"
+                                                      style={{
+                                                        display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
                                                       }}
                                                     >
-                                                      <FontAwesomeIcon
-                                                        className="mr-2"
-                                                        icon="clone"
-                                                      />
-                                                      Duplicate
-                                                    </Dropdown.Item>
-                                                    {permission?.Activity?.includes(
-                                                      "activity:share"
-                                                    ) &&
-                                                      allLms?.length !== 0 && (
-                                                        <li
-                                                          className="dropdown-submenu send"
-                                                          style={{
-                                                            display:
-                                                              activityVisibilityLMS.includes(
-                                                                true
-                                                              ) &&
-                                                              safariMontageActivity.includes(
-                                                                true
-                                                              )
-                                                                ? "block"
-                                                                : "none",
-                                                          }}
+                                                      <a tabIndex="-1" className="dropdown-item">
+                                                        <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                        Publish
+                                                      </a>
+                                                      <ul className="dropdown-menu check">
+                                                        {allLms?.shareVendors.map((data) => {
+                                                          if (data.lms_name !== 'safarimontage') return false;
+                                                          return (
+                                                            data?.activity_visibility && (
+                                                              <li>
+                                                                <a
+                                                                  onClick={() => {
+                                                                    dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
+                                                                  }}
+                                                                >
+                                                                  {data.site_name}
+                                                                </a>
+                                                              </li>
+                                                            )
+                                                          );
+                                                        })}
+                                                        <Modal
+                                                          dialogClassName="safari-modal"
+                                                          show={safariMontagePublishTool}
+                                                          onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                          aria-labelledby="example-modal-sizes-title-lg"
                                                         >
-                                                          <a
-                                                            tabIndex="-1"
-                                                            className="dropdown-item"
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon="newspaper"
-                                                              className="mr-2"
-                                                            />
-                                                            Publish
-                                                          </a>
-                                                          <ul className="dropdown-menu check">
-                                                            {allLms?.shareVendors.map(
-                                                              (data) => {
-                                                                if (
-                                                                  data.lms_name !==
-                                                                  "safarimontage"
-                                                                )
-                                                                  return false;
-                                                                return (
-                                                                  data?.activity_visibility && (
-                                                                    <li>
-                                                                      <a
-                                                                        onClick={() => {
-                                                                          dispatch(
-                                                                            loadSafariMontagePublishToolAction(
-                                                                              res.project_id,
-                                                                              res.playlist_id,
-                                                                              res.id,
-                                                                              data.id
-                                                                            )
-                                                                          );
-                                                                        }}
-                                                                      >
-                                                                        {
-                                                                          data.site_name
-                                                                        }
-                                                                      </a>
-                                                                    </li>
-                                                                  )
-                                                                );
-                                                              }
-                                                            )}
-                                                            <Modal
-                                                              dialogClassName="safari-modal"
-                                                              show={
-                                                                safariMontagePublishTool
-                                                              }
-                                                              onHide={() =>
-                                                                dispatch(
-                                                                  closeSafariMontageToolAction()
-                                                                )
-                                                              }
-                                                              aria-labelledby="example-modal-sizes-title-lg"
-                                                            >
-                                                              <Modal.Header
-                                                                closeButton
-                                                              >
-                                                                <Modal.Title id="example-modal-sizes-title-lg">
-                                                                  Safari Montage
-                                                                </Modal.Title>
-                                                              </Modal.Header>
-                                                              <Modal.Body>
-                                                                <iframe
-                                                                  title="Safari Montage"
-                                                                  src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
-                                                                />
-                                                              </Modal.Body>
-                                                            </Modal>
-                                                          </ul>
-                                                        </li>
-                                                      )}
-                                                  </>
-                                                </Dropdown.Menu>
-                                              </Dropdown>
-                                            )}
+                                                          <Modal.Header closeButton>
+                                                            <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+                                                          </Modal.Header>
+                                                          <Modal.Body>
+                                                            <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+                                                          </Modal.Body>
+                                                        </Modal>
+                                                      </ul>
+                                                    </li>
+                                                  )}
+                                                </>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
                                         </div>
                                       </div>
                                     )}
@@ -2045,13 +1573,11 @@ function SearchInterface(props) {
                       <Pagination
                         activePage={activePage}
                         itemsCountPerPage={20}
-                        totalItemsCount={
-                          totalCount > 10000 ? 10000 : totalCount
-                        }
+                        totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
                         pageRangeDisplayed={8}
                         onChange={async (e) => {
                           setActivePage(e);
-                          if (activeModel === "total") {
+                          if (activeModel === 'total') {
                             const searchData = {
                               phrase: searchQueries.trim(),
                               from: e * 20 - 20,
@@ -2063,7 +1589,7 @@ function SearchInterface(props) {
                               author: authorName || undefined,
                             };
                             Swal.fire({
-                              title: "Loading...",
+                              title: 'Loading...',
                               allowOutsideClick: false,
                               onBeforeOpen: () => {
                                 Swal.showLoading();
@@ -2084,7 +1610,7 @@ function SearchInterface(props) {
                               author: authorName || undefined,
                             };
                             Swal.fire({
-                              title: "Loading...",
+                              title: 'Loading...',
                               allowOutsideClick: false,
                               onBeforeOpen: () => {
                                 Swal.showLoading();
@@ -2102,9 +1628,7 @@ function SearchInterface(props) {
                 </div>
               </div>
             ) : (
-              <Alert variant="danger">
-                You are not authorized to view this page!
-              </Alert>
+              <Alert variant="danger">You are not authorized to view this page!</Alert>
             )}
           </div>
         </div>
