@@ -7,7 +7,7 @@ const WhiteBoardModal = ({ show, onHide, url, loading }) => {
     <Modal
       open={show}
       onClose={onHide}
-      size="lg"
+      size="xl"
       center
       classNames={{
         overlay: 'customOverlaySize',
