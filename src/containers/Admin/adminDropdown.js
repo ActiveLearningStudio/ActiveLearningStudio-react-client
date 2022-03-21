@@ -25,6 +25,7 @@ import * as actionTypes from 'store/actionTypes';
 
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const AdminDropdown = (props) => {
   const {
@@ -59,6 +60,7 @@ const AdminDropdown = (props) => {
   // }, [AllLms]);
 
   const [projectID, setProjectID] = useState('');
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <Dropdown drop="start" className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
@@ -72,7 +74,30 @@ const AdminDropdown = (props) => {
           }}
         /> */}
           {/* <span>{text}</span> */}
-          <img src={MenuLogo} alt="menu" />
+          {/* <img src={MenuLogo} alt="menu" /> */}
+          <svg width="6" height="20" viewBox="0 0 6 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3.00001 11.125C3.62133 11.125 4.12501 10.6213 4.12501 10C4.12501 9.37868 3.62133 8.875 3.00001 8.875C2.37868 8.875 1.875 9.37868 1.875 10C1.875 10.6213 2.37868 11.125 3.00001 11.125Z"
+              stroke={primaryColor}
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M3.00001 3.25001C3.62133 3.25001 4.12501 2.74633 4.12501 2.12501C4.12501 1.50368 3.62133 1 3.00001 1C2.37868 1 1.875 1.50368 1.875 2.12501C1.875 2.74633 2.37868 3.25001 3.00001 3.25001Z"
+              stroke={primaryColor}
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M3.00001 19C3.62133 19 4.12501 18.4963 4.12501 17.875C4.12501 17.2537 3.62133 16.75 3.00001 16.75C2.37868 16.75 1.875 17.2537 1.875 17.875C1.875 18.4963 2.37868 19 3.00001 19Z"
+              stroke={primaryColor}
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="menu">
@@ -89,7 +114,23 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -118,7 +159,18 @@ const AdminDropdown = (props) => {
                       }
                     }}
                   >
-                    <img src={Export} alt="Preview" className="menue-img" />
+                    {/* <img src={Export} alt="Preview" className="menue-img" /> */}
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                      <path
+                        d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
+                        stroke={primaryColor}
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                     Manage
                   </Dropdown.Item>
                 </>
@@ -155,7 +207,19 @@ const AdminDropdown = (props) => {
                       });
                     }}
                   >
-                    <img src={Delete} alt="Preview" className="menue-img" />
+                    {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                      <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                        stroke={primaryColor}
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                     Delete
                   </Dropdown.Item>
                 </>
@@ -198,7 +262,18 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Export} alt="Preview" className="menue-img" />
+                  {/* <img src={Export} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Export
                 </Dropdown.Item>
               )}
@@ -259,7 +334,18 @@ const AdminDropdown = (props) => {
                     // });
                   }}
                 >
-                  <img src={Export} alt="Preview" className="menue-img" />
+                  {/* <img src={Export} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Get shared link
                 </Dropdown.Item>
               ) : null}
@@ -274,7 +360,23 @@ const AdminDropdown = (props) => {
                     setActivePageNumber(activePage);
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -322,7 +424,19 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Delete} alt="Preview" className="menue-img" />
+                  {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Delete
                 </Dropdown.Item>
               )}
@@ -343,7 +457,23 @@ const AdminDropdown = (props) => {
                     }
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -389,7 +519,19 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Delete} alt="Preview" className="menue-img" />
+                  {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Delete
                 </Dropdown.Item>
               )}
@@ -410,7 +552,23 @@ const AdminDropdown = (props) => {
                     }
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -456,7 +614,19 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Delete} alt="Preview" className="menue-img" />
+                  {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Delete
                 </Dropdown.Item>
               )}
@@ -474,7 +644,23 @@ const AdminDropdown = (props) => {
                   dispatch(setActiveAdminForm('edit_subject'));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
@@ -517,7 +703,19 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Delete} alt="Preview" className="menue-img" />
+                {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 Delete
               </Dropdown.Item>
             </>
@@ -534,7 +732,23 @@ const AdminDropdown = (props) => {
                   dispatch(setActiveAdminForm('edit_education_level'));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
@@ -577,7 +791,19 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Delete} alt="Preview" className="menue-img" />
+                {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 Delete
               </Dropdown.Item>
             </>
@@ -594,7 +820,23 @@ const AdminDropdown = (props) => {
                   dispatch(setActiveAdminForm('edit_author_tag'));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
@@ -637,7 +879,19 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Delete} alt="Preview" className="menue-img" />
+                {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 Delete
               </Dropdown.Item>
             </>
@@ -653,13 +907,33 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('edit_user'));
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
               {permission?.Organization.includes('organization:remove-user') && auth?.user?.id !== user.id && (
                 <Dropdown.Item onClick={() => dispatch(showRemoveUser(user))}>
-                  <img src={Remove} alt="Preview" className="menue-img" />
+                  {/* <img src={Remove} alt="Preview" className="menue-img" /> */}
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M19 5L5 19" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M5 5L19 19" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Remove
                 </Dropdown.Item>
               )}
@@ -678,7 +952,23 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('edit_lms'));
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   &nbsp;&nbsp;Edit&nbsp;&nbsp;
                 </Dropdown.Item>
               )}
@@ -693,7 +983,18 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('clone_lms'));
                   }}
                 >
-                  <img src={Clone} alt="Preview" className="menue-img" />
+                  {/* <img src={Clone} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   &nbsp;&nbsp;Clone&nbsp;&nbsp;
                 </Dropdown.Item>
               )}
@@ -742,7 +1043,19 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Delete} alt="Preview" className="menue-img" />
+                  {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   &nbsp;&nbsp;Delete&nbsp;&nbsp;
                 </Dropdown.Item>
               )}
@@ -761,7 +1074,23 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('edit_default_sso'));
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -807,7 +1136,19 @@ const AdminDropdown = (props) => {
                       });
                     }}
                   >
-                    <img src={Delete} alt="Preview" className="menue-img" />
+                    {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                      <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                        stroke={primaryColor}
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
                     Delete
                   </Dropdown.Item>
                 </>
@@ -827,7 +1168,23 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('edit_lti_tool'));
                   }}
                 >
-                  <img src={Edit} alt="Preview" className="menue-img" />
+                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
                   Edit
                 </Dropdown.Item>
               )}
@@ -842,7 +1199,18 @@ const AdminDropdown = (props) => {
                     dispatch(setActiveAdminForm('clone_lti_tool'));
                   }}
                 >
-                  <img src={Clone} alt="Preview" className="menue-img" />
+                  {/* <img src={Clone} alt="Preview" className="menue-img" /> */}
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path
+                      d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Clone
                 </Dropdown.Item>
               )}
@@ -887,7 +1255,19 @@ const AdminDropdown = (props) => {
                     });
                   }}
                 >
-                  <img src={Delete} alt="Preview" className="menue-img" />
+                  {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                  <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                    <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                      stroke={primaryColor}
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                   Delete
                 </Dropdown.Item>
               )}
@@ -904,7 +1284,23 @@ const AdminDropdown = (props) => {
                   dispatch(setActiveAdminForm('edit_bright_form'));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Edit
               </Dropdown.Item>
 
@@ -945,7 +1341,19 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Delete} alt="Preview" className="menue-img" />
+                {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 Delete
               </Dropdown.Item>
             </>
@@ -962,7 +1370,23 @@ const AdminDropdown = (props) => {
                   dispatch(getTeamPermission(activeOrganization?.id, row?.id));
                 }}
               >
-                <img src={Edit} alt="Preview" className="menue-img" />
+                {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Edit
               </Dropdown.Item>
               <Dropdown.Item
@@ -982,7 +1406,19 @@ const AdminDropdown = (props) => {
                   });
                 }}
               >
-                <img src={Delete} alt="Preview" className="menue-img" />
+                {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
+                    stroke={primaryColor}
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 Delete
               </Dropdown.Item>
             </>

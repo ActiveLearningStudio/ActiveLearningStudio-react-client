@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .top-header {
   .dropdown-toggle {
@@ -183,7 +183,13 @@
     width: 18px;
     cursor: pointer;
   }
-
+  .searchiconSvg {
+    position: absolute;
+    top: 11px;
+    right: 40px;
+    width: 18px;
+    cursor: pointer;
+  }
   .fa-chevron-down {
     position: absolute;
     right: 20px;
@@ -283,8 +289,8 @@
         }
       }
 
-      input[type='date'],
-      input[type='select'] {
+      input[type="date"],
+      input[type="select"] {
         cursor: pointer;
       }
 
@@ -310,7 +316,7 @@
             margin-right: 10px;
             cursor: pointer;
           }
-          input[type='radio']:after {
+          input[type="radio"]:after {
             width: 15px;
             height: 15px;
             border-radius: 15px;
@@ -318,12 +324,12 @@
             left: -1px;
             position: relative;
             background-color: #fff;
-            content: '';
+            content: "";
             display: inline-block;
             visibility: visible;
             border: 2px solid $fun-blue-1;
           }
-          input[type='radio']:checked:after {
+          input[type="radio"]:checked:after {
             width: 15px;
             height: 15px;
             border-radius: 15px;
@@ -331,7 +337,7 @@
             left: -1px;
             position: relative;
             background-color: $fun-blue-1;
-            content: '';
+            content: "";
             display: inline-block;
             visibility: visible;
             border: 2px solid $fun-blue-1;
@@ -543,6 +549,9 @@
     height: 20px;
     margin: 0 10px 0 -15px;
     // border: 5px solid black;
+  }
+  svg {
+    margin: 0 10px 0 -15px;
   }
   &:active {
     color: white;

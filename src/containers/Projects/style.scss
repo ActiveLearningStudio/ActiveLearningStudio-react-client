@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .project-list-all {
   // display: flex;
@@ -157,7 +157,8 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat
+            center;
         }
       }
 
@@ -172,7 +173,8 @@
           margin-right: 8px;
           display: block;
           float: left;
-          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png)
+            no-repeat center;
         }
       }
     }
@@ -383,7 +385,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
 
       input {
         border: none;
