@@ -87,6 +87,7 @@ const H5PPreview = (props) => {
           if (showLtiPreview) {
             const response = await loadH5pResourceSettingsOpen(activityId);
             if (response.h5p_activity) {
+              window.brightcoveAccountId = response.h5p_activity?.brightcoveData.accountId;
               await resourceLoaded(response.h5p_activity);
             }
           } else if (showActivityPreview) {
@@ -97,8 +98,7 @@ const H5PPreview = (props) => {
           } else if (showvideoH5p) {
             const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
             if (response.activity?.brightcoveData) {
-
-              window.brightcoveAccountId = response.activity?.brightcoveData.accountId
+              window.brightcoveAccountId = response.activity?.brightcoveData.accountId;
             }
             if (response.activity) {
               await resourceLoaded(response.activity);
@@ -129,7 +129,7 @@ const H5PPreview = (props) => {
                 });
               }
             }
-          } catch (e) { }
+          } catch (e) {}
         });
 
         const stopXapi = () => clearInterval(checkXapi);
