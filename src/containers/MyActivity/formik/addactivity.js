@@ -18,7 +18,7 @@ import { editResourceMetaDataAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 // import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import Select from 'react-select-2'
+import Select from 'react-select';
 
 
 const AddActivity = (props) => {
@@ -51,7 +51,12 @@ const AddActivity = (props) => {
     if(!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
       result_sub.then((data) => {
-        setSubjects(data)
+        let subj_array = [];
+        data?.data.map((subject)=> {
+          let sub = {value: subject.id, label: subject.name};
+          subj_array.push(sub);
+        })
+        setSubjects(subj_array);
       });
     }
   }, [subjects]);
@@ -60,7 +65,12 @@ const AddActivity = (props) => {
     if(!educationLevels) {
       const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
       result_edu.then((data) => {
-        setEducationLevels(data)
+        let edu_array = [];
+        data?.data.map((edu_lvl)=> {
+          let edu = {value: edu_lvl.id, label: edu_lvl.name};
+          edu_array.push(edu);
+        });
+        setEducationLevels(edu_array);
       });
     }
   }, [educationLevels]);
@@ -69,7 +79,12 @@ const AddActivity = (props) => {
     if(!authorTags) {
       const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
       result_tag.then((data) => {
-        setAuthorTags(data)
+        let tag_array = [];
+        data?.data.map((tag)=> {
+          let auth_tag = {value: tag.id, label: tag.name};
+          tag_array.push(auth_tag);
+        });
+        setAuthorTags(tag_array);
       });
     }
   }, [authorTags]);
@@ -289,41 +304,19 @@ const AddActivity = (props) => {
                     </div>
                   </div>
                   <div className="layout-formik-select">
-                    <div className="formik-select mr-32">
+                    <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
-                      <Select name="subject_id" onChange={handleChange} onBlur={handleBlur} isMulti option={subjects?.data}/>
-                      <select name="subject_id" onChange={handleChange} onBlur={handleBlur} value={values.subject_id} multiple>
-                        <option hidden>Select</option>
-                        {subjects?.data.map((data) => (
-                          <option key={data.id} value={data.id}>
-                            {data.name}
-                          </option>
-                        ))}
-                      </select>
+                      <Select name="subject_id" onBlur={handleBlur} isMulti options={subjects}/>
+                    </div>
+
+                    <div className="formik-select mr-16">
+                      <HeadingText text="Education level" className="formik-select-title" />
+                      <Select name="education_level_id" onBlur={handleBlur} isMulti options={educationLevels}/>
                     </div>
 
                     <div className="formik-select">
-                      <HeadingText text="Education level" className="formik-select-title" />
-                      <select name="education_level_id" onChange={handleChange} onBlur={handleBlur} value={values.education_level_id} multiple>
-                        <option hidden>Select</option>
-                        {educationLevels?.data.map((data) => (
-                          <option key={data.id} value={data.id}>
-                            {data.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="formik-select ">
                       <HeadingText text="Author Tags" className="formik-select-title" />
-                      <select name="author_tag_id" onChange={handleChange} onBlur={handleBlur} value={values.author_tag_id} multiple>
-                        <option hidden>Select</option>
-                        {authorTags?.data.map((data) => (
-                          <option key={data.id} value={data.id}>
-                            {data.name}
-                          </option>
-                        ))}
-                      </select>
+                      <Select name="author_tag_id" onBlur={handleBlur} isMulti options={authorTags}/>
                     </div>
                   </div>
                   <div className="formik-uploadimage">
