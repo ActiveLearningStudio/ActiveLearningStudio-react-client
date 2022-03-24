@@ -877,7 +877,7 @@ function Controller(props) {
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'All'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -886,7 +886,7 @@ function Controller(props) {
                       setSelectedFilterItem(null);
                     }}
                   >
-                    Select
+                    All
                   </Dropdown.Item>
                   {integratedLMS?.map((data) => (
                     <Dropdown.Item
