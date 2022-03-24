@@ -334,13 +334,13 @@ function Table(props) {
             {type === 'Organization' &&
               (localOrganizationList ? (
                 localOrganizationList?.data?.length > 0 ? (
-                  localOrganizationList?.data?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localOrganizationList?.data?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundImage: row.image?.includes('pexels.com') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',
@@ -1052,8 +1052,8 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === 'Teams' && (
-              Object.keys(data).length > 0 ? (
+            {type === 'Teams' &&
+              (Object.keys(data).length > 0 ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((row) => (
                     <tr key={row} className="admin-panel-rows">
