@@ -99,8 +99,9 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (subOrgId, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}`)
+const getLmsProject = (subOrgId, page, filterBy = '') => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}
+  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

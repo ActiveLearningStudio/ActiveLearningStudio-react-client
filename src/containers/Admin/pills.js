@@ -538,11 +538,11 @@ export default function Pills(props) {
     });
   };
  
-  const filterLmsSetting = (item) => {
-    setLtiTool(null);
-    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+  const filterLmsSetting = (filterBy) => {
+    setLmsProject(null);
+    const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1, filterBy);
     result.then((data) => {
-      setLtiTool(data);
+      setLmsProject(data);
     });
   };
 
