@@ -25,6 +25,7 @@ import adminService from 'services/admin.service';
 import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
 
 function Controller(props) {
   const {
@@ -863,6 +864,38 @@ function Controller(props) {
                       }}
                     >
                       {t.value}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
+        
+        {(type === 'DefaultSso' || subType === 'All settings') && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'Select'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    Select
+                  </Dropdown.Item>
+                  {integratedLMS?.map((data) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(data.value);
+                        setSelectedFilterItem(data);
+                      }}
+                    >
+                      {data.name}
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>

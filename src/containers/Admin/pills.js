@@ -528,6 +528,25 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+
+  
+  const filterDefaultSso = (item) => {
+    setLtiTool(null);
+    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
+    });
+  };
+ 
+  const filterLmsSetting = (item) => {
+    setLtiTool(null);
+    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+    result.then((data) => {
+      setLtiTool(data);
+    });
+  };
+
+
   useEffect(() => {
     // if (subTypeState === 'Library requests') {
     //   setActivePage(1);
@@ -777,6 +796,7 @@ export default function Pills(props) {
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+                  filteredItems={filterLmsSetting}
                 />
               )}
               {type === 'LMS' && subTypeState === 'BrightCove' && (
@@ -1023,6 +1043,7 @@ export default function Pills(props) {
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+                  filteredItems={filterDefaultSso}
                 />
               )}
               {type === 'LMS' && subTypeState === 'LTI Tools' && (
