@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,8 +30,8 @@ import Angle from "assets/images/svg/angledown.svg";
 import { Editor } from "@tinymce/tinymce-react";
 import { DynamicBrandingApply } from "containers/App/DynamicBrandingApply";
 import loadable from "@loadable/component";
+import BrandingPage from "containers/Branding";
 
-const ProjectsPage = loadable(() => import("../../../containers/Projects"));
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
@@ -127,6 +127,7 @@ export default function CreateOrg(prop) {
   const saveChangesTerms = () => {
     handleTermsEditorChange(editorContentTerms);
   };
+
   return (
     <div className="create-form">
       <Formik
@@ -1369,7 +1370,7 @@ export default function CreateOrg(prop) {
                     </section>
                   </div>
 
-                  <div className="tab-inner-section ">
+                  <div className="tab-inner-section tab-inner-section-preview ">
                     <div className="tab_inner_header">
                       <h1>Preview</h1>
                       <div>
@@ -1393,20 +1394,10 @@ export default function CreateOrg(prop) {
                       {/* <div width="100%" height="100%">
                         <ProjectsPage />
                       </div> */}
+
                       <div style={{ width: "100%" }}>
-                        <iframe
-                          src="http://localhost:3000/org/currikistudio"
-                          style={{
-                            width: "100vw",
-                            height: "100vh",
-                          }}
-                        ></iframe>
+                        <BrandingPage />
                       </div>
-                      {/* <iframe
-                        src="http://localhost:3000/org/currikistudio"
-                        width="100%"
-                        height="100%"
-                      ></iframe> */}
                     </div>
                   </div>
                 </div>
