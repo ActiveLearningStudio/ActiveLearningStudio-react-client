@@ -266,7 +266,8 @@ export default function CreateDefaultSso(prop) {
                     value={values.name}
                   />
 
-                  {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+                  {loaderlmsImgUser && <div><img src={loader} alt="" style={{ width: '25px' }} className="loader" /></div>}
+
                   {stateOrgSearch?.length > 0 && (
                     <ul className="all-users-list">
                       {stateOrgSearch?.map((org) => (

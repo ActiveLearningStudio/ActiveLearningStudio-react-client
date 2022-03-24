@@ -18,7 +18,7 @@ import SearchInterface from 'containers/Search';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { loadMyProjectsAction } from 'store/actions/project';
 import {
-  createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction,
+  createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction,
 } from 'store/actions/team';
 import Swal from 'sweetalert2';
 
@@ -31,6 +31,7 @@ const AddTeamProjects = (props) => {
     newTeamData,
     createTeam,
     loadTeam,
+    loadTeams,
     addProjectToTeam,
   } = props;
   const dispatch = useDispatch();
@@ -167,11 +168,12 @@ const AddTeamProjects = (props) => {
                               onClick={() => {
                                 if (selectProject.length > 0) {
                                   addProjectToTeam(team?.id, selectProject).then((result) => {
-                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
                                     Swal.fire({
                                       icon: 'success',
                                       title: result?.message,
                                     });
+                                    loadTeam(team?.id);
+                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
                                   }).catch((err) => {
                                     Swal.fire({
                                       icon: 'error',
@@ -198,6 +200,7 @@ const AddTeamProjects = (props) => {
                                     icon: 'success',
                                     title: 'Team added successfully.',
                                   });
+                                  loadTeams();
                                   history.push(`/org/${organization?.domain}/teams`);
                                 })
                                   .catch((err) => {
@@ -272,6 +275,7 @@ AddTeamProjects.propTypes = {
   newTeamData: PropTypes.func.isRequired,
   createTeam: PropTypes.func.isRequired,
   loadTeam: PropTypes.func.isRequired,
+  loadTeams: PropTypes.func.isRequired,
   addProjectToTeam: PropTypes.func.isRequired,
 };
 
@@ -284,6 +288,7 @@ const mapDispatchToProps = (dispatch) => ({
   newTeamData: (team) => dispatch(setNewTeamData(team)),
   createTeam: (data) => dispatch(createTeamAction(data)),
   loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
+  loadTeams: () => dispatch(loadTeamsAction()),
   addProjectToTeam: (teamId, projectId) => dispatch(addProjectsAction(teamId, projectId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddTeamProjects);
