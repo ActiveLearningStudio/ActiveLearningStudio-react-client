@@ -530,11 +530,11 @@ export default function Pills(props) {
   };
 
   
-  const filterDefaultSso = (item) => {
-    setLtiTool(null);
-    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+  const filterDefaultSso = (filterBy) => {
+    setDefaultSso(null);
+    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, filterBy);
     result.then((data) => {
-      setLtiTool(data);
+      setDefaultSso(data);
     });
   };
  

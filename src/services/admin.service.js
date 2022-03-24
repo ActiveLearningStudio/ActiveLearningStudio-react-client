@@ -201,8 +201,9 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (orgId, page) => httpService
-  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}`)
+const getDefaultSso = (orgId, page, filterBy = '') => httpService
+  .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
+  ${filterBy ? `&filter=${filterBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
