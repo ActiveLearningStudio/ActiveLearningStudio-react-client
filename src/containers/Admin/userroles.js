@@ -8,7 +8,7 @@ import updateImg from '../../assets/images/update.svg';
 
 function UserRoles() {
   const dispatch = useDispatch();
-  const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
+  const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
   const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
 
   // organization all projects
@@ -266,7 +266,7 @@ function UserRoles() {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              dispatch(updateRole(activeOrganization.id, values));
+              dispatch(updateRole(activeOrganization.id, values, currentOrganization.id));
             }}
           >
             {({

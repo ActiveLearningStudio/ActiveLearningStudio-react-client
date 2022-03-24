@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -24,57 +25,6 @@ const INITIAL_STATE = {
   activePermission: null,
   permissionsId: null,
   activeEdit: null,
-  // permission: {
-  //   activeRole: 'member',
-  //   roleId: 3,
-  //   Organization: [
-  //     'organization:edit',
-  //     'organization:view',
-  //     'organization:invite-members',
-  //     'organization:add-user',
-  //     'organization:add-admin',
-  //     'organization:delete',
-  //     'organization::update-user',
-  //     'organization:delete-user',
-  //     'organization:view-user',
-  //     'organization:create',
-  //   ],
-  //   Project: ['project:edit', 'project:delete', 'project:view', 'project:create', 'project:share', 'project:clone', 'project:request-indexing', 'project:publish'],
-  //   Playlist: ['playlist:edit', 'playlist:delete', 'playlist:view', 'playlist:create', 'playlist:clone', 'playlist:publish', 'playlist:share'],
-  //   Activity: ['activity:edit', 'activity:view', 'activity:delete', 'activity:create', 'activity:share', 'activity:clone', 'activity:upload'],
-  //   Account: ['update', 'view'],
-  //   Search: ['view'],
-  //   Dashboard: ['dashboard:view'],
-  //   Team: [
-  //     'team:edit',
-  //     'team:delete',
-  //     'team:view',
-  //     'team:create',
-  //     'team:add-projects',
-  //     'team:remove-projects',
-  //     'team:add-project-user',
-  //     'team:remove-project-user',
-  //     'team:add-user',
-  //     'team:remove-user',
-  //     'team:invite-member1',
-  //     'team:request-indexing',
-  //   ],
-  //   Group: [
-  //     'group:edit',
-  //     'group:delete',
-  //     'group:view',
-  //     'group:create',
-  //     'group:add-projects',
-  //     'group:remove-projects',
-  //     'group:add-project-user',
-  //     'group:remove-project-user',
-  //     'group:add-user',
-  //     'group:remove-user',
-  //     'group:invite-member',
-  //     'group:request-indexing',
-  //   ],
-  //   User: ['user:view', 'user:edit', 'user:delete', 'delete-admin'],
-  // },
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -119,7 +69,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newlyCreated: action.payload,
-        allSuborgList: [action.payload, ...state.allSuborgList],
+        allSuborgList: { ...state.allSuborgList, data: [action.payload, ...state.allSuborgList.data] },
       };
     case actionTypes.REMOVE_SUBORG_ADD:
       return {
@@ -134,13 +84,15 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_SUBORG_EDIT:
       return {
         ...state,
-        allSuborgList: state?.allSuborgList?.data?.map((edit) => {
-          if (edit.id === action.payload.id) {
-            return action.payload;
-          }
-          return edit;
-        }),
-        // activeOrganization: action.payload,
+        allSuborgList: {
+          ...state.allSuborgList,
+          data: state?.allSuborgList?.data?.map((edit) => {
+            if (edit.id === action.payload.id) {
+              return action.payload;
+            }
+            return edit;
+          }),
+        },
       };
     case actionTypes.EDIT_ORGANIZATION:
       return {
