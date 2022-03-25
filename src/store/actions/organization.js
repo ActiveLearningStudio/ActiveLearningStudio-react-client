@@ -1,9 +1,9 @@
 /* eslint-disable */
-import organization from "services/organizations.services";
-import store from "store";
-import Swal from "sweetalert2";
+import organization from 'services/organizations.services';
+import store from 'store';
+import Swal from 'sweetalert2';
 
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 
 export const updateOrganizationScreen = (screen) => (dispatch) => {
   dispatch({
@@ -27,13 +27,8 @@ export const getAllOrganization = () => async (dispatch) => {
   });
 };
 
-export const getOrgsForDeepLinkingAction = (userEmail, ltiClientId) => async (
-  dispatch
-) => {
-  const result = await organization.getOrgsForDeepLinking(
-    userEmail,
-    ltiClientId
-  );
+export const getOrgsForDeepLinkingAction = (userEmail, ltiClientId) => async (dispatch) => {
+  const result = await organization.getOrgsForDeepLinking(userEmail, ltiClientId);
   dispatch({
     type: actionTypes.ADD_ALL_ORG,
     payload: result.organizations,
@@ -73,9 +68,7 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
 export const getAllOrganizationforSSO = () => async (dispatch) => {
   const result = await organization.getAll();
 
-  const permissionsResult = await organization.allPermission(
-    result?.data[0].id
-  );
+  const permissionsResult = await organization.allPermission(result?.data[0].id);
   dispatch({
     type: actionTypes.SET_ALL_PERSMISSION,
     payload: permissionsResult.permissions,
@@ -134,14 +127,16 @@ export const checkBranding = (data) => async () => {
   return result;
 };
 
-export const getsubOrgList = (id, size = 10, page = 1) => async (dispatch) => {
-  const result = await organization.getSubOrganizationList(id, size, page);
-  dispatch({
-    type: actionTypes.ADD_SUBORG_LIST,
-    payload: result,
-  });
-  return result;
-};
+export const getsubOrgList =
+  (id, size = 10, page = 1) =>
+  async (dispatch) => {
+    const result = await organization.getSubOrganizationList(id, size, page);
+    dispatch({
+      type: actionTypes.ADD_SUBORG_LIST,
+      payload: result,
+    });
+    return result;
+  };
 
 export const clearSuborgList = () => (dispatch) => {
   dispatch({
@@ -149,8 +144,7 @@ export const clearSuborgList = () => (dispatch) => {
   });
 };
 
-export const uploadImage = (id, formData) => () =>
-  organization.upload(id, formData);
+export const uploadImage = (id, formData) => () => organization.upload(id, formData);
 
 export const deleteOrganization = (data) => async (dispatch) => {
   const result = await organization.deleteOrganization(data.id);
@@ -202,7 +196,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
       payload: newOrg.suborganization,
     });
     dispatch({
-      type: "CLEAR_ACTIVE_FORM",
+      type: 'CLEAR_ACTIVE_FORM',
     });
   });
   return result;
@@ -226,9 +220,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     image: data.image,
     parent_id: parent,
     domain: data.domain,
-    account_id: data.account_id || "",
-    api_key: data.api_key || "",
-    unit_path: data.unit_path || "",
+    account_id: data.account_id || '',
+    api_key: data.api_key || '',
+    unit_path: data.unit_path || '',
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || undefined,
     gcr_project_visibility: data?.gcr_project_visibility || false,
@@ -261,7 +255,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       });
     }
     dispatch({
-      type: "CLEAR_ACTIVE_FORM",
+      type: 'CLEAR_ACTIVE_FORM',
     });
   });
   return result;
@@ -317,7 +311,7 @@ export const clearHistory = () => async (dispatch) => {
 };
 
 export const getOrgUsers = (id, page, activeRole, size) => async (dispatch) => {
-  let result = "";
+  let result = '';
   // const centralizedState = store.getState();
   // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   // if (activeOrganization?.id !== currentOrganization?.id) {
@@ -335,16 +329,11 @@ export const getOrgUsers = (id, page, activeRole, size) => async (dispatch) => {
   return result;
 };
 
-export const deleteUserFromOrganization = (id, preserveData) => async (
-  dispatch
-) => {
+export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
   const {
     organization: { activeOrganization, users, searchUsers },
   } = store.getState();
-  const result = await organization.deleteUserFromOrganization(
-    activeOrganization?.id,
-    { user_id: id, preserve_data: preserveData }
-  );
+  const result = await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);
     searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
@@ -355,16 +344,11 @@ export const deleteUserFromOrganization = (id, preserveData) => async (
   }
 };
 
-export const removeUserFromOrganization = (id, preserveData) => async (
-  dispatch
-) => {
+export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
   const {
     organization: { activeOrganization, users, searchUsers },
   } = store.getState();
-  const result = await organization.removeUserFromOrganization(
-    activeOrganization?.id,
-    { user_id: id, preserve_data: preserveData }
-  );
+  const result = await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
   if (result) {
     users.data = users.data?.filter((user) => user.id !== id);
     searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
@@ -375,15 +359,8 @@ export const removeUserFromOrganization = (id, preserveData) => async (
   }
 };
 
-export const searchUserInOrganization = (id, query, page, role) => async (
-  dispatch
-) => {
-  const result = await organization.searchUserInOrganization(
-    id,
-    query,
-    page,
-    role
-  );
+export const searchUserInOrganization = (id, query, page, role) => async (dispatch) => {
+  const result = await organization.searchUserInOrganization(id, query, page, role);
   dispatch({
     type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
     payload: result,
@@ -432,10 +409,10 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
   });
 };
 
-export const updateRole = (id, roleId) => async (dispatch) => {
+export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
   Swal.fire({
-    title: "Please Wait !",
-    html: "Updating Role ...",
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();
@@ -443,9 +420,11 @@ export const updateRole = (id, roleId) => async (dispatch) => {
   });
   const result = organization.updateRole(id, roleId);
   result.then((res) => {
-    dispatch(getAllPermission(id));
+    if (id === currentOrg) {
+      dispatch(getAllPermission(id));
+    }
     Swal.fire({
-      icon: "success",
+      icon: 'success',
       title: res?.message,
     });
   });
@@ -453,8 +432,8 @@ export const updateRole = (id, roleId) => async (dispatch) => {
 
 export const addRole = (id, data) => async () => {
   Swal.fire({
-    title: "Please Wait !",
-    html: "Updating Role ...",
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();
@@ -463,7 +442,7 @@ export const addRole = (id, data) => async () => {
   const result = organization.addRole(id, data);
   result.then((res) => {
     Swal.fire({
-      icon: "success",
+      icon: 'success',
       title: res?.message,
     });
   });
