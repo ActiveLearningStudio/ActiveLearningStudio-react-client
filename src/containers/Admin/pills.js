@@ -556,7 +556,7 @@ export default function Pills(props) {
   
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
-    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, filterBy);
+    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -564,7 +564,7 @@ export default function Pills(props) {
  
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
-    const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1, filterBy);
+    const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
     result.then((data) => {
       setLmsProject(data);
     });
