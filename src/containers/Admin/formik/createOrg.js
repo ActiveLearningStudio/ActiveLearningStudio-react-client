@@ -1,23 +1,29 @@
 /* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
-import { uploadImage, createOrganizationNew, checkBranding, updateOrganization, getsubOrgList } from 'store/actions/organization';
+import { uploadImage, createOrganizationNew, checkBranding, updateOrganization, getsubOrgList, getOrganization } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
+import imgAvatar from 'assets/images/default-upload-img.png';
+import pcIcon from 'assets/images/pc-icon.png';
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
+import EditActivity from 'containers/EditActivity';
 import { alphabetsOnly } from 'utils';
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import editIcon from 'assets/images/project-edit.svg';
 import TermsModal from 'components/models/TermsModal';
 import PolicyModal from 'components/models/PolicyModal';
 import ResetImg from 'assets/images/svg/reset.svg';
+import UploadImg from 'assets/images/svg/upload.svg';
 import Angle from 'assets/images/svg/angledown.svg';
 import { Editor } from '@tinymce/tinymce-react';
 import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
+import loadable from '@loadable/component';
+import BrandingPage from 'containers/Branding';
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -112,6 +118,7 @@ export default function CreateOrg(prop) {
   const saveChangesTerms = () => {
     handleTermsEditorChange(editorContentTerms);
   };
+
   return (
     <div className="create-form">
       <Formik
@@ -883,7 +890,7 @@ export default function CreateOrg(prop) {
                     </section>
                   </div>
 
-                  <div className="tab-inner-section ">
+                  <div className="tab-inner-section tab-inner-section-preview ">
                     <div className="tab_inner_header">
                       <h1>Preview</h1>
                       <div>
@@ -901,20 +908,10 @@ export default function CreateOrg(prop) {
                       {/* <div width="100%" height="100%">
                         <ProjectsPage />
                       </div> */}
+
                       <div style={{ width: '100%' }}>
-                        <iframe
-                          src="http://localhost:3000/org/currikistudio"
-                          style={{
-                            width: '100vw',
-                            height: '100vh',
-                          }}
-                        ></iframe>
+                        <BrandingPage />
                       </div>
-                      {/* <iframe
-                        src="http://localhost:3000/org/currikistudio"
-                        width="100%"
-                        height="100%"
-                      ></iframe> */}
                     </div>
                   </div>
                 </div>
