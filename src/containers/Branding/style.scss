@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .branding-preview {
   // Header
@@ -171,8 +171,8 @@
           }
         }
 
-        input[type='date'],
-        input[type='select'] {
+        input[type="date"],
+        input[type="select"] {
           cursor: pointer;
         }
 
@@ -198,7 +198,7 @@
               margin-right: 10px;
               cursor: pointer;
             }
-            input[type='radio']:after {
+            input[type="radio"]:after {
               width: 15px;
               height: 15px;
               border-radius: 15px;
@@ -206,12 +206,12 @@
               left: -1px;
               position: relative;
               background-color: #fff;
-              content: '';
+              content: "";
               display: inline-block;
               visibility: visible;
               border: 2px solid $fun-blue-1;
             }
-            input[type='radio']:checked:after {
+            input[type="radio"]:checked:after {
               width: 15px;
               height: 15px;
               border-radius: 15px;
@@ -219,7 +219,7 @@
               left: -1px;
               position: relative;
               background-color: $fun-blue-1;
-              content: '';
+              content: "";
               display: inline-block;
               visibility: visible;
               border: 2px solid $fun-blue-1;
@@ -313,7 +313,7 @@
     height: 5px;
     left: calc(50% - 218.5px / 2 - 3.75px);
     top: calc(50% - 0px / 2 + 12px);
-    border-bottom: 1px solid #e5e5e5;
+    // border-bottom: 1px solid #e5e5e5;
   }
 
   .user-dropdown-item-name {
@@ -445,7 +445,7 @@
         padding-left: 16px;
         padding-right: 60px;
 
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
 
         input {
           border: none;
@@ -552,8 +552,12 @@
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         // background-color: rgba(113, 117, 119, 0.7);
-        background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
-        content: '';
+        background: linear-gradient(
+          180deg,
+          rgba(81, 81, 81, 0.2) 0%,
+          rgba(0, 0, 0, 0.8) 100%
+        );
+        content: "";
         display: block;
         height: 100%;
         position: absolute;
@@ -565,7 +569,8 @@
         top: 17px;
         right: 23px;
       }
-      .myproject-card-title {
+      // .myproject-card-title
+      #preview-myproject-card-title {
         position: absolute;
         bottom: 10px;
         left: 15px;
@@ -577,17 +582,18 @@
           line-height: 21px;
           color: #ffffff;
           word-break: break-all;
-          &:hover {
-            text-decoration: underline;
-            color: #ffc107;
-          }
+          border-bottom: none !important;
+          // &:hover {
+          //   text-decoration: underline;
+          //   color: #ffc107;
+          // }
         }
       }
     }
     .myproject-card-detail {
       padding: 16px;
       p {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -599,7 +605,7 @@
     }
     .updated-date {
       padding-left: 16px;
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 12px;
@@ -701,7 +707,7 @@
       color: #fff !important;
 
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: -8px;
         left: 50%;

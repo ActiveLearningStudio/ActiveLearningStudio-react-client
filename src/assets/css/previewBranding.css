@@ -1,7 +1,7 @@
 :root {
   /* --main-preview-primary-color: #084892; */
   --main-preview-primary-color: #529208;
-  --main-preview-secondary-color: #a70000;
+  --main-preview-secondary-color: #0b1529;
   --main-preview-paragraph-text-color: #767676;
   --main-preview-white-color: #ffffff;
   --main-preview-black-color: #000000;
@@ -26,7 +26,7 @@
   background-color: var(--main-preview-primary-color) !important;
   font-family: var(--main-preview-heading-font) !important;
 }
-.branding-preview .branding-preview .main-myproject-card .myproject-card-top .myproject-card-title h2 {
+.branding-preview #preview-myproject-card-title h2 {
   color: var(--main-preview-white-color) !important;
   font-family: var(--main-preview-heading-font) !important;
 }
@@ -34,9 +34,14 @@
   color: var(--main-preview-primary-color) !important;
   font-family: var(--main-preview-text-font) !important;
 }
-.branding-preview .curriki-utility-headings {
+/* .branding-preview .heading-image .preview-myproject-heading {
   color: var(--main-preview-primary-color) !important;
   font-family: var(--main-preview-heading-font) !important;
+} */
+.branding-preview #preview-heading-myproject .preview-myproject-heading {
+  color: var(--main-preview-primary-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+  border-bottom-color: var(--main-preview-primary-color) !important;
 }
 .branding-preview .project-headline .search-main-relaced .search-block {
   border: 1px solid var(--main-preview-primary-color) !important;
@@ -67,11 +72,23 @@
   color: var(--main-preview-primary-color) !important;
 }
 
-.branding-preview .search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:checked:after {
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:checked:after {
   background-color: var(--main-preview-primary-color) !important;
   border: 2px solid var(--main-preview-primary-color) !important;
 }
-.branding-preview .search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:after {
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:after {
   border: 2px solid var(--main-preview-primary-color) !important;
 }
 .branding-preview .search-div h4 {
@@ -97,6 +114,10 @@
   color: var(--main-preview-secondary-color) !important;
   font-family: var(--main-preview-text-font) !important;
 }
-.branding-preview .project-headline .search-main-relaced .search-block .fa-chevron-down {
+.branding-preview
+  .project-headline
+  .search-main-relaced
+  .search-block
+  .fa-chevron-down {
   color: var(--main-preview-primary-color) !important;
 }

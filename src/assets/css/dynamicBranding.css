@@ -199,6 +199,7 @@ p {
 .curriki-theme-secondary-button:hover {
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
 }
 .form-new-popup-myvideo
   .add-video-form
@@ -291,6 +292,13 @@ p {
   background-color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
 }
+.project-headline-section
+  .project-share-previews
+  .project-preview
+  .dropdown-item:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
+}
 
 .project-headline-section .project-share-previews .share-button {
   color: var(--main-secondary-color) !important;
@@ -362,14 +370,14 @@ p {
   .layout-cards-process-btn
   .activity-layout-cards
   .activity-layoutCard-active {
-  border-bottom-color: var(--main-heading-border) !important;
+  border-bottom-color: var(--main-primary-color) !important;
 }
 
 .activity-layout-form
   .layout-cards-process-btn
   .activity-layout-cards
   .curriki-utility-layoutcard:hover {
-  border-bottom-color: var(--main-heading-border) !important;
+  border-bottom-color: var(--main-primary-color) !important;
 }
 
 .activity-layout-form
@@ -474,7 +482,7 @@ p {
 }
 
 .playlist-div .playlist-title-div .title-md:before {
-  background: var(--main-heading-border) !important;
+  background: var(--main-primary-color) !important;
 }
 
 .all-playlist.check-custom .playlist-accordion .plydet {
@@ -791,6 +799,24 @@ button {
   background-color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
 }
+.admin-panel .controller .btn-text button:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
+}
+.admin-panel .controller .import-user:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
+}
+.admin-panel
+  .form-new-popup-admin
+  .inner-form-content
+  .create-form
+  .button-group
+  button.cancel:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
+  color: var(--main-white-color) !important;
+}
 
 .admin-panel nav {
   border-bottom-color: var(--main-primary-color) !important;
@@ -945,7 +971,10 @@ button {
 .curriki-utility-headingTwo h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
-  border-bottom-color: var(--main-heading-border) !important;
+  border-bottom-color: var(--main-primary-color) !important;
+}
+.create-user-modal-header .modal-title {
+  text-decoration: underline var(--main-primary-color) !important;
 }
 
 .admin-panel
@@ -1046,6 +1075,24 @@ textarea,
   .inner-form-content
   .create-form
   .button-group
+  button:hover,
+.email-check-form .addButton:hover,
+.curriki-theme-primary-button:hover,
+.interactive-btns .save-close .saveclosemodel:hover,
+.create-program-wrapper
+  .create-playlist-form
+  .create-project-template-wrapper
+  .create-project-submit-btn:hover,
+.btns-margin button:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
+}
+
+.admin-panel
+  .form-new-popup-admin
+  .inner-form-content
+  .create-form
+  .button-group
   button.cancel,
 .form-horizontal .interactive-btns .cancel .backclosemodel {
   border-color: var(--main-primary-color) !important;
@@ -1121,7 +1168,8 @@ textarea,
 .add-describevideo-tabs .curriki-utility-tabs .activeTabs,
 .interactive-video-H5P .curriki-utility-tabs .activeTabs,
 .curriki-utility-tabs .activeTabs {
-  background-color: var(--main-heading-border) !important;
+  /* background-color: var(--main-heading-border) !important; */
+  background-color: var(--main-primary-color) !important;
 }
 
 .add-video-tabs .curriki-utility-tabs .tabs {
@@ -1243,10 +1291,12 @@ textarea,
 
 .curriki-utility-uploadimageV2 .uploadimage-option button:hover {
   background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
   color: var(--main-white-color) !important;
 }
 .swal2-popup .swal2-actions button.swal2-cancel:hover {
   background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
   color: var(--main-white-color) !important;
 }
 
@@ -1372,6 +1422,10 @@ textarea,
   background-color: var(--main-primary-color) !important;
   color: var(--main-white-color) !important;
   font-family: var(--main-text-font) !important;
+}
+.teams-page .btn-top-page:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
 }
 .back-button {
   background-color: var(--main-primary-color) !important;
@@ -1527,11 +1581,16 @@ textarea,
 .team-modal h1 span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
+  border-bottom: 2px solid var(--main-primary-color) !important;
 }
 .team-modal .modal-footer .add-team-btn {
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
+}
+.team-modal .modal-footer .add-team-btn:hover {
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7 !important;
 }
 .teams-page .team-controller .search-and-filters .search-bar input {
   border-bottom: 2px solid var(--main-primary-color) !important;
