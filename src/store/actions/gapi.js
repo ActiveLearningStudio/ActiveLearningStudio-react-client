@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Swal from 'sweetalert2';
 import searchService from 'services/search.service';
 import gapiService from 'services/gapi.service';
@@ -121,17 +122,19 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
   });
 };
 
-export const loadH5pResourceSettings = (activityId, studentId = null, submissionId = null) => async (dispatch) => {
-  const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
-  dispatch({
-    type: GET_H5P_SETTINGS,
-    h5pSettings,
-  });
-};
+export const loadH5pResourceSettings =
+  (activityId, studentId = null, submissionId = null) =>
+  async (dispatch) => {
+    const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
+    dispatch({
+      type: GET_H5P_SETTINGS,
+      h5pSettings,
+    });
+    window.brightcoveAccountId = h5pSettings?.h5p?.brightcoveData?.accountId;
+  };
 
 export const getSubmissionAction = (classworkId, courseId, auth) => async (dispatch) => {
-  const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj))
-    .catch((err) => err);
+  const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj)).catch((err) => err);
 
   dispatch({
     type: GET_SUBMISSION,

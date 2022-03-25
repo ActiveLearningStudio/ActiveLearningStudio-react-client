@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -118,7 +119,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+              // dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -147,7 +148,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+              // dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -225,7 +226,6 @@ export default function CreateUser(prop) {
                     <input type="text" name="lms_access_key" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_key} />
                     <div className="error">{errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}</div>
                   </div>
-
                 </div>
 
                 {/* Right Container */}
