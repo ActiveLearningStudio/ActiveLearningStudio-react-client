@@ -101,10 +101,11 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (subOrgId, page, size, query, column, orderBy) => httpService
+const getLmsProject = (subOrgId, page, size, query, column, orderBy, filterBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
-  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
+  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
+  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -205,10 +206,11 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (orgId, page, query, size, column, orderBy) => httpService
+const getDefaultSso = (orgId, page, query, size, column, orderBy, filterBy = '') => httpService
   .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
-  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
+  ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
+  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);

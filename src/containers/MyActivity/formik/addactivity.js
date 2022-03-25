@@ -18,8 +18,9 @@ import { editResourceMetaDataAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 // import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import Select from 'react-select';
-
+import { default as Select } from 'react-select';
+import { components } from 'react-select';
+import { values } from 'lodash';
 
 const AddActivity = (props) => {
   const {
@@ -31,6 +32,22 @@ const AddActivity = (props) => {
   const { layout, selectedLayout, activity, singleLayout } = useSelector(
     (state) => state.myactivities
   );
+
+  const Option = (props) => {
+    return (
+      <div>
+        <components.Option {...props}>
+          <input
+            type="checkbox"
+            checked={props.isSelected}
+            onChange={() => null}
+          />{" "}
+          <label>{props.label}</label>
+        </components.Option>
+      </div>
+    );
+  };
+
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
   const [activeRadio, setActiveRadio] = useState("");
@@ -44,9 +61,14 @@ const AddActivity = (props) => {
   const [subjects, setSubjects] = useState(null);
   const [authorTags, setAuthorTags] = useState(null);
   const [educationLevels, setEducationLevels] = useState(null);
+  const [selectedSubjects, setSelectedSubjects] = useState(null);
   const formRef = useRef();
   var counter;
 
+  const handleSelected = (selected) => {
+      setSelectedSubjects(selected[0].value);
+  };
+  
   useEffect(()=> {
     if(!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
@@ -239,7 +261,7 @@ const AddActivity = (props) => {
               initialValues={{
                 author_tag_id: activity?.author_tag_id || "",
                 education_level_id: activity?.education_level_id || "",
-                subject_id: activity?.subject_id || "",
+                subject_id: activity?.subject_id || selectedSubjects,
                 thumb_url: activity?.thumb_url || 
                 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
@@ -306,7 +328,19 @@ const AddActivity = (props) => {
                   <div className="layout-formik-select">
                     <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
-                      <Select name="subject_id" onBlur={handleBlur} isMulti options={subjects}/>
+                      <Select name="subject_id"
+                       onBlur={handleBlur}
+                       isMulti
+                       options={subjects}
+                       components={{
+                        Option
+                        }}
+                       allowSelectAll={true}
+                       closeMenuOnSelect={false}
+                       hideSelectedOptions={false}
+                       onChange={handleSelected}
+                       value={values.subject_id}
+                      />
                     </div>
 
                     <div className="formik-select mr-16">

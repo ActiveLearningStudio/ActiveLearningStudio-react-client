@@ -164,13 +164,13 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {
+                  {permission?.Organization?.includes('organization:view-user') && (
                     <Tab eventKey="Teams" title="Teams">
                       <div className="module-content">
                         <Pills type="Teams" modules={['All teams']} subType="All teams" setModalShowTeam={setModalShowTeam} />
                       </div>
                     </Tab>
-                  }
+                  )}
                   {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
