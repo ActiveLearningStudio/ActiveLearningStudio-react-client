@@ -8,6 +8,7 @@ import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
+import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
 
@@ -211,14 +212,11 @@ export default function CreateUser(prop) {
                   value={values.role}
                 /> */}
                     <select className="lms-option" name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                      <option selected value="moodle">
-                        Moodle
-                      </option>
-                      <option value="canvas">Canvas</option>
-                      <option value="safarimontage">Safari Montage</option>
-                      <option value="schoology">Schoology</option>
-                      <option value="d2l">D2L</option>
-                      <option value="sakai">Sakai</option>
+                      {integratedLMS.map((data) => (
+                        <option key={data.value} value={data.value}>
+                          {data.name}
+                        </option>
+                      ))}
                     </select>
                     <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
                   </div>

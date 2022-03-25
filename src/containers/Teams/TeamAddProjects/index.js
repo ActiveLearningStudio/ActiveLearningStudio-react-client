@@ -168,11 +168,12 @@ const AddTeamProjects = (props) => {
                               onClick={() => {
                                 if (selectProject.length > 0) {
                                   addProjectToTeam(team?.id, selectProject).then((result) => {
-                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
                                     Swal.fire({
                                       icon: 'success',
                                       title: result?.message,
                                     });
+                                    loadTeam(team?.id);
+                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
                                   }).catch((err) => {
                                     Swal.fire({
                                       icon: 'error',
