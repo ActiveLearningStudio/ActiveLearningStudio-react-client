@@ -878,7 +878,7 @@ function Controller(props) {
             </span>
           </div>
         )}
-        
+
         {(type === 'DefaultSso' || subType === 'All settings') && (
           <div className="filter-dropdown-activityItems">
             Filter by type
