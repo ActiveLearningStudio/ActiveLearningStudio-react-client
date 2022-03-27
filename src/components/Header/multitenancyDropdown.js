@@ -1,20 +1,15 @@
 /* eslint-disable */
-import React, { useEffect, useMemo, useState } from "react";
-import { Dropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dropdown } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import storageService from "services/storage.service";
-import { CURRENT_ORG } from "constants/index";
-import {
-  getAllOrganization,
-  setCurrentOrganization,
-  setActiveOrganization,
-  getAllPermission,
-  getRoles,
-} from "store/actions/organization";
-import menu from "assets/images/menu.svg";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import storageService from 'services/storage.service';
+import { CURRENT_ORG } from 'constants/index';
+import { getAllOrganization, setCurrentOrganization, setActiveOrganization, getAllPermission, getRoles } from 'store/actions/organization';
+import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
+
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 export default function MultitenancyDropdown() {
   const dispatch = useDispatch();
@@ -22,9 +17,7 @@ export default function MultitenancyDropdown() {
   const [sortedOrganizations, setSortedOrganizations] = useState([]);
   const stateHeader = useSelector((state) => state.organization);
   const auth = useSelector((state) => state.auth);
-  const [selectOrg, setSelectOrg] = useState(
-    stateHeader.currentOrganization?.name || "Select Organization"
-  );
+  const [selectOrg, setSelectOrg] = useState(stateHeader.currentOrganization?.name || 'Select Organization');
   const sortStateHeaderAlphabetically = () => {
     // Sort stateHeader.allOrganizations array of objects alphabetically and store in new array and return it using filter
     const sortedOrganization = stateHeader.allOrganizations.sort((a, b) => {
@@ -42,9 +35,7 @@ export default function MultitenancyDropdown() {
     setSortedOrganizations(sortedOrganization);
   };
   useEffect(() => {
-    setSelectOrg(
-      stateHeader.currentOrganization?.name || "Select Organization"
-    );
+    setSelectOrg(stateHeader.currentOrganization?.name || 'Select Organization');
     if (stateHeader?.allOrganizations.length > 0) {
       sortStateHeaderAlphabetically();
     }
@@ -54,18 +45,12 @@ export default function MultitenancyDropdown() {
       dispatch(getAllOrganization());
     }
   }, [auth?.user]);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <Dropdown className="dropdown-multitenancy">
       <Dropdown.Toggle id="dropdown-basic">
         {/* <img src={menu} alt="organizations" /> */}
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M9.28366 3H4.31782C3.59167 3 3.00098 3.59076 3.00098 4.31699V9.28336C3.00098 10.0096 3.59167 10.6003 4.31782 10.6003H9.28366C10.0098 10.6003 10.6005 10.0096 10.6005 9.28336V4.31699C10.6004 3.59076 10.0098 3 9.28366 3Z"
             stroke={primaryColor}
@@ -98,30 +83,13 @@ export default function MultitenancyDropdown() {
             <div key={key} className="all-tg-lister">
               <Dropdown.Item
                 onClick={async () => {
+                  DynamicBrandingApply(org);
                   setSelectOrg(org.name);
                   await dispatch(setCurrentOrganization(org));
                   await dispatch(setActiveOrganization(org));
                   await dispatch(getAllPermission(org.id));
                   await dispatch(getRoles());
                   storageService.setItem(CURRENT_ORG, org.domain);
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-primary-color",
-                      org?.branding["primary_color"]
-                    );
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-secondary-color",
-                      org?.branding["secondary_color"]
-                    );
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-paragraph-text-color",
-                      org?.branding["secondary_color"]
-                    );
                   history.push(`/org/${org.domain}`);
                 }}
               >
@@ -129,11 +97,11 @@ export default function MultitenancyDropdown() {
               </Dropdown.Item>
               <p>
                 Parent: &nbsp;
-                {org?.parent?.name || "NA"}
+                {org?.parent?.name || 'NA'}
               </p>
               <p>
                 Domain: &nbsp;
-                {org?.domain || "NA"}
+                {org?.domain || 'NA'}
               </p>
             </div>
           ))}

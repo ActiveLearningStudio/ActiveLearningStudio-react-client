@@ -2,8 +2,8 @@
 import organization from 'services/organizations.services';
 import store from 'store';
 import Swal from 'sweetalert2';
-
 import * as actionTypes from '../actionTypes';
+import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
 
 export const updateOrganizationScreen = (screen) => (dispatch) => {
   dispatch({
@@ -241,7 +241,13 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       type: actionTypes.ADD_SUBORG_EDIT,
       payload: newOrg.suborganization,
     });
+    dispatch({
+      type: actionTypes.UPDATE_ALL_ORG,
+      payload: newOrg.suborganization,
+    });
+
     if (newOrg.suborganization.id === currentOrganization.id) {
+      DynamicBrandingApply(newOrg?.suborganization);
       dispatch({
         type: actionTypes.ADD_CURRENT_ORG,
         payload: newOrg.suborganization,
