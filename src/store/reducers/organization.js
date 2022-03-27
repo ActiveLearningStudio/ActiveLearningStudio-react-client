@@ -44,6 +44,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allOrganizations: action.payload,
       };
+    case actionTypes.UPDATE_ALL_ORG:
+      return {
+        ...state,
+        allOrganizations: state.allOrganizations.map((data) => (data.id == action.payload.id ? action.payload : data)),
+      };
     case actionTypes.ADD_CURRENT_ORG:
       return {
         ...state,

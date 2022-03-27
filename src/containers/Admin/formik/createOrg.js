@@ -4,25 +4,23 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
-import { uploadImage, createOrganizationNew, checkBranding, updateOrganization, getsubOrgList, getOrganization } from 'store/actions/organization';
+import { uploadImage, createOrganizationNew, checkBranding, updateOrganization } from 'store/actions/organization';
 import { removeActiveAdminForm } from 'store/actions/admin';
-import imgAvatar from 'assets/images/default-upload-img.png';
-import pcIcon from 'assets/images/pc-icon.png';
+
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
-import EditActivity from 'containers/EditActivity';
+
 import { alphabetsOnly } from 'utils';
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import editIcon from 'assets/images/project-edit.svg';
+
 import TermsModal from 'components/models/TermsModal';
 import PolicyModal from 'components/models/PolicyModal';
 import ResetImg from 'assets/images/svg/reset.svg';
-import UploadImg from 'assets/images/svg/upload.svg';
+
 import Angle from 'assets/images/svg/angledown.svg';
 import { Editor } from '@tinymce/tinymce-react';
-import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
-import loadable from '@loadable/component';
+
 import BrandingPage from 'containers/Branding';
 
 export default function CreateOrg(prop) {
@@ -119,9 +117,30 @@ export default function CreateOrg(prop) {
     handleTermsEditorChange(editorContentTerms);
   };
 
+  const updatePreviewScreen = (primaryColor, secondaryColor, teritaryColor, primaryFont, secondaryFont) => {
+    document.querySelector(':root').style.setProperty('--main-preview-primary-color', primaryColor);
+    document.querySelector(':root').style.setProperty('--main-preview-secondary-color', secondaryColor);
+    document.querySelector(':root').style.setProperty('--main-preview-paragraph-text-color', teritaryColor);
+    document.querySelector(':root').style.setProperty('--main-preview-heading-font', primaryFont);
+    document.querySelector(':root').style.setProperty('--main-preview-text-font', secondaryFont);
+  };
+
+  useEffect(() => {
+    if (editMode) {
+      updatePreviewScreen(
+        activeEdit?.branding.primary_color,
+        activeEdit?.branding.secondary_color,
+        activeEdit?.branding.tertiary_color,
+        activeEdit?.branding.primary_font_family,
+        activeEdit?.branding.secondary_font_family
+      );
+    }
+  }, [activeEdit, editMode]);
+
   return (
     <div className="create-form">
       <Formik
+        enableReinitialize
         initialValues={{
           image: editMode ? activeEdit.image : 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
           name: editMode ? activeEdit?.name : '',
@@ -144,7 +163,7 @@ export default function CreateOrg(prop) {
           primary_color: editMode ? (activeEdit?.branding.primary_color ? activeEdit?.branding.primary_color : '#084892') : '#084892',
           secondary_color: editMode ? (activeEdit?.branding.secondary_color ? activeEdit?.branding.secondary_color : '#F8AF2C') : '#F8AF2C',
           tertiary_color: editMode ? (activeEdit?.branding.tertiary_color ? activeEdit?.branding.tertiary_color : '#515151') : '#515151',
-          primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'Rubik',
+          primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'rubic',
           secondary_font_family: editMode ? activeEdit?.branding.secondary_font_family : 'Open Sans',
         }}
         validate={(values) => {
@@ -208,9 +227,9 @@ export default function CreateOrg(prop) {
           if (editMode) {
             const response = await dispatch(updateOrganization(activeEdit.id, values, activeEdit.parent ? activeEdit.parent.id : undefined));
 
-            if (response?.suborganization.id === currentOrganization.id) {
-              DynamicBrandingApply(response?.suborganization);
-            }
+            // if (response?.suborganization.id === currentOrganization.id) {
+            //   DynamicBrandingApply(response?.suborganization);
+            // }
             if (response) {
               Swal.fire({
                 text: 'Organization edited successfully',
@@ -768,7 +787,7 @@ export default function CreateOrg(prop) {
                               <div className="button-group tab-theming-btn-icon" style={{ paddingBottom: '0px' }}>
                                 {' '}
                                 <button type="button" className="mr-16">
-                                  Upload new logo
+                                  Upload new logo & favicon
                                 </button>
                               </div>
                             </div>
@@ -790,6 +809,7 @@ export default function CreateOrg(prop) {
                           setFieldValue('primary_color', '#084892');
                           setFieldValue('secondary_color', '#F8AF2C');
                           setFieldValue('tertiary_color', '#515151');
+                          updatePreviewScreen('#084892', '#F8AF2C', '#515151', values.primary_font_family, values.secondary_font_family);
                         }}
                       >
                         <img src={ResetImg} alt="" />
@@ -803,7 +823,16 @@ export default function CreateOrg(prop) {
                         <div>
                           {/* <input type="color" value="#084892" /> */}
 
-                          <input type="color" name="primary_color" onChange={handleChange} onBlur={handleBlur} value={values.primary_color} />
+                          <input
+                            type="color"
+                            name="primary_color"
+                            onChange={(e) => {
+                              handleChange(e);
+                              updatePreviewScreen(e.target.value, values.secondary_color, values.tertiary_color, values.primary_font_family, values.secondary_font_family);
+                            }}
+                            onBlur={handleBlur}
+                            value={values.primary_color}
+                          />
                           <input type="text" value={values.primary_color} />
                           <div className="error">{errors.name && touched.name && errors.name}</div>
                         </div>
@@ -813,7 +842,16 @@ export default function CreateOrg(prop) {
                         <h4>Secondary </h4>
                         <div>
                           {/* <input type="color" value="#F8AF2C" /> */}
-                          <input type="color" name="secondary_color" onChange={handleChange} onBlur={handleBlur} value={values.secondary_color} />
+                          <input
+                            type="color"
+                            name="secondary_color"
+                            onChange={(e) => {
+                              handleChange(e);
+                              updatePreviewScreen(values.primary_color, e.target.value, values.tertiary_color, values.primary_font_family, values.secondary_font_family);
+                            }}
+                            onBlur={handleBlur}
+                            value={values.secondary_color}
+                          />
                           <input type="text" value={values.secondary_color} />
                         </div>
                         <p>This color should be use for details that we want to highlitght or that we want to make more visible for users.</p>
@@ -822,7 +860,16 @@ export default function CreateOrg(prop) {
                         <h4>Tertiary </h4>
                         <div>
                           {/* <input type="color" value="#515151" /> */}
-                          <input type="color" name="tertiary_color" onChange={handleChange} onBlur={handleBlur} value={values.tertiary_color} />
+                          <input
+                            type="color"
+                            name="tertiary_color"
+                            onChange={(e) => {
+                              handleChange(e);
+                              updatePreviewScreen(values.primary_color, values.secondary_color, e.target.value, values.primary_font_family, values.secondary_font_family);
+                            }}
+                            onBlur={handleBlur}
+                            value={values.tertiary_color}
+                          />
                           <input type="text" value={values.tertiary_color} />
                         </div>
                         <p>This color should be use for most of the body texts and some details that we want to highlitght or that we want to make more visible for users.</p>
@@ -835,8 +882,9 @@ export default function CreateOrg(prop) {
                       <button
                         type="button"
                         onClick={() => {
-                          setFieldValue('primary_font_family', 'Rubik');
+                          setFieldValue('primary_font_family', 'rubic');
                           setFieldValue('secondary_font_family', 'Open Sans');
+                          updatePreviewScreen(values.primary_color, values.secondary_color, values.tertiary_color, 'rubic', 'Open Sans');
                         }}
                       >
                         <img src={ResetImg} alt="" />
@@ -850,11 +898,12 @@ export default function CreateOrg(prop) {
                           name="primary_font_family"
                           onChange={(e) => {
                             handleChange(e);
+                            updatePreviewScreen(values.primary_color, values.secondary_color, values.tertiary_color, e.target.value, values.secondary_font_family);
                           }}
                           onBlur={handleBlur}
                           value={values.primary_font_family}
                         >
-                          <option value="rubic">Rubik</option>
+                          <option value="rubic">Rubic</option>
                           <option value="SmoochSans">SmoochSans</option>
                           <option value="Open Sans">Open Sans</option>
                           <option value="Fredoka">Fredoka</option>
@@ -867,11 +916,12 @@ export default function CreateOrg(prop) {
                           name="secondary_font_family"
                           onChange={(e) => {
                             handleChange(e);
+                            updatePreviewScreen(values.primary_color, values.secondary_color, e.target.value, values.primary_font_family, e.target.value);
                           }}
                           onBlur={handleBlur}
                           value={values.secondary_font_family}
                         >
-                          <option value="rubic">Rubik</option>
+                          <option value="rubic">Rubic</option>
                           <option value="SmoochSans">SmoochSans</option>
                           <option value="Open Sans">Open Sans</option>
                           <option value="Fredoka">Fredoka</option>
@@ -910,7 +960,7 @@ export default function CreateOrg(prop) {
                       </div> */}
 
                       <div style={{ width: '100%' }}>
-                        <BrandingPage />
+                        <BrandingPage getShow={true} />
                       </div>
                     </div>
                   </div>

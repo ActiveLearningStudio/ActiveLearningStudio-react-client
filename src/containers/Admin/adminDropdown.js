@@ -1034,9 +1034,9 @@ const AdminDropdown = (props) => {
                               },
                             });
                             // dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
-                            console.log(localStateData);
+
                             const filterLMS = localStateData.filter((each) => each.id != row.id);
-                            console.log(filterLMS);
+
                             setLocalStateData(filterLMS);
                           })
                           .catch((err) => console.log(err));
@@ -1249,7 +1249,8 @@ const AdminDropdown = (props) => {
                                 confirmButton: 'confirmation-close-btn',
                               },
                             });
-                            dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+                            const filterLMS = localStateData.filter((each) => each.id != row.id);
+                            setLocalStateData(filterLMS);
                           })
                           .catch((err) => console.log(err));
                       }

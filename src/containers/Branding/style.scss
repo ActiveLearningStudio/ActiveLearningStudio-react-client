@@ -2,6 +2,14 @@
 
 .branding-preview {
   // Header
+  position: relative;
+  .disablelayer {
+    background-color: transparent;
+    position: absolute;
+    z-index: 1111;
+    width: 100vw;
+    height: 100vh;
+  }
   header {
     width: 100%;
     clear: both;
@@ -313,7 +321,7 @@
     height: 5px;
     left: calc(50% - 218.5px / 2 - 3.75px);
     top: calc(50% - 0px / 2 + 12px);
-    border-bottom: 1px solid #e5e5e5;
+    // border-bottom: 1px solid #e5e5e5;
   }
 
   .user-dropdown-item-name {
@@ -565,7 +573,8 @@
         top: 17px;
         right: 23px;
       }
-      .myproject-card-title {
+      // .myproject-card-title
+      #preview-myproject-card-title {
         position: absolute;
         bottom: 10px;
         left: 15px;
@@ -577,10 +586,11 @@
           line-height: 21px;
           color: #ffffff;
           word-break: break-all;
-          &:hover {
-            text-decoration: underline;
-            color: #ffc107;
-          }
+          border-bottom: none !important;
+          // &:hover {
+          //   text-decoration: underline;
+          //   color: #ffc107;
+          // }
         }
       }
     }

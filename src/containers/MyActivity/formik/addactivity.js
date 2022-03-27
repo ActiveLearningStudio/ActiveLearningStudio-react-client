@@ -20,6 +20,7 @@ import {
   educationLevels,
   subjects,
 } from "components/ResourceCard/AddResource/dropdownData";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 // import { subjects, educationLevels } from 'components/ac /dropdownData';
 
 const AddActivity = (props) => {
@@ -57,6 +58,7 @@ const AddActivity = (props) => {
     setInterval(() => {
       setSuccessMessage(false);
     }, 5000);
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <>
       <PreviewLayoutModel
@@ -127,7 +129,30 @@ const AddActivity = (props) => {
                 changeScreenHandler("layout", "create");
               }}
             >
-              <img src={BackButton} alt="back button " />
+              {/* <img src={BackButton} alt="back button " /> */}
+              <svg
+                width="14"
+                height="10"
+                viewBox="0 0 14 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ marginRight: "8px", marginTop: "4px" }}
+              >
+                <path
+                  d="M13 5L1 5"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 1L1 5L5 9"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
               <p className="">Back to options</p>
             </div>
             {activtyMethod !== "upload" && singleLayout === null && (
