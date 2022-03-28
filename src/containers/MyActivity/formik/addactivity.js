@@ -48,40 +48,34 @@ const AddActivity = (props) => {
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
-  const [subjectIds, setSubjectIds] = useState(null);
-  const [tagIds, setTagIds] = useState(null);
-  const [eduLvlIds, setEduLvlIds] = useState(null);
   const formRef = useRef();
   var counter;
 
   const handleSubjSelect = (selectSub) => {
-    setSelectedSubjects(selectSub);
 
     let subjIds = [];
     selectSub?.map(data=>{
       subjIds.push(data.value);
     });
-    setSubjectIds(subjIds);
+    setSelectedSubjects(subjIds);
   };
 
   const handleAuthTagSelect = (selectTag) => {
-    setSelecteAuthorTags(selectTag);
 
     let tagIds = [];
     selectTag?.map(data=>{
       tagIds.push(data.value);
     });
-    setTagIds(tagIds);
+    setSelecteAuthorTags(tagIds);
   };
 
   const handleEduLvlSelect = (selectEduLvl) => {
-    setSelectedEducationLevel(selectEduLvl);
     
     let eduLvlIds = [];
     selectEduLvl?.map(data=>{
       eduLvlIds.push(data.value);
     });
-    setEduLvlIds(eduLvlIds);
+    setSelectedEducationLevel(eduLvlIds);
   };
   
   useEffect(()=> {
@@ -305,15 +299,11 @@ const AddActivity = (props) => {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
-                setFieldValue
                 /* and other goodies */
               }) => (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    setFieldValue('subject_id',subjectIds);
-                    setFieldValue('author_tag_id',tagIds);
-                    setFieldValue('education_level_id',eduLvlIds);
                     handleSubmit();
                   }}
                 >
