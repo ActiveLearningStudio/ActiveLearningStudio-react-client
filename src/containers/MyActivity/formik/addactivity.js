@@ -18,9 +18,8 @@ import { editResourceMetaDataAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 // import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import { default as Select } from 'react-select';
-import { components } from 'react-select';
 import { values } from 'lodash';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const AddActivity = (props) => {
   const {
@@ -32,21 +31,6 @@ const AddActivity = (props) => {
   const { layout, selectedLayout, activity, singleLayout } = useSelector(
     (state) => state.myactivities
   );
-
-  const Option = (props) => {
-    return (
-      <div>
-        <components.Option {...props}>
-          <input
-            type="checkbox"
-            checked={props.isSelected}
-            onChange={() => null}
-          />{" "}
-          <label>{props.label}</label>
-        </components.Option>
-      </div>
-    );
-  };
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
@@ -62,12 +46,10 @@ const AddActivity = (props) => {
   const [authorTags, setAuthorTags] = useState(null);
   const [educationLevels, setEducationLevels] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(null);
+  const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
   const formRef = useRef();
   var counter;
-
-  const handleSelected = (selected) => {
-      setSelectedSubjects(selected[0].value);
-  };
   
   useEffect(()=> {
     if(!subjects) {
@@ -259,8 +241,8 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                author_tag_id: activity?.author_tag_id || "",
-                education_level_id: activity?.education_level_id || "",
+                author_tag_id: activity?.author_tag_id || selecteAuthorTags,
+                education_level_id: activity?.education_level_id || selectedEducationLevel,
                 subject_id: activity?.subject_id || selectedSubjects,
                 thumb_url: activity?.thumb_url || 
                 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
@@ -328,29 +310,29 @@ const AddActivity = (props) => {
                   <div className="layout-formik-select">
                     <div className="formik-select mr-16">
                       <HeadingText text="Subject" className="formik-select-title" />
-                      <Select name="subject_id"
-                       onBlur={handleBlur}
-                       isMulti
-                       options={subjects}
-                       components={{
-                        Option
-                        }}
-                       allowSelectAll={true}
-                       closeMenuOnSelect={false}
-                       hideSelectedOptions={false}
-                       onChange={handleSelected}
-                       value={values.subject_id}
+                      <ReactMultiSelectCheckboxes
+                        name="subject_id"
+                        options={subjects}
+                        onChange={setSelectedSubjects}
                       />
                     </div>
 
                     <div className="formik-select mr-16">
                       <HeadingText text="Education level" className="formik-select-title" />
-                      <Select name="education_level_id" onBlur={handleBlur} isMulti options={educationLevels}/>
+                      <ReactMultiSelectCheckboxes
+                        name="education_level_id"
+                        options={educationLevels}
+                        onChange={setSelectedEducationLevel}
+                      />
                     </div>
 
                     <div className="formik-select">
                       <HeadingText text="Author Tags" className="formik-select-title" />
-                      <Select name="author_tag_id" onBlur={handleBlur} isMulti options={authorTags}/>
+                      <ReactMultiSelectCheckboxes
+                        name="author_tag_id"
+                        options={authorTags}
+                        onChange={setSelecteAuthorTags}
+                      />
                     </div>
                   </div>
                   <div className="formik-uploadimage">
