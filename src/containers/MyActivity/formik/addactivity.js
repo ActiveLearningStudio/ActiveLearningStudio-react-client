@@ -347,6 +347,7 @@ const AddActivity = (props) => {
                       <HeadingText text="Subject" className="formik-select-title" />
                       <ReactMultiSelectCheckboxes
                         name="subject_id"
+                        hideSearch
                         options={subjects}
                         onChange={handleSubjSelect}
                         value={values.subject_id}
@@ -357,6 +358,7 @@ const AddActivity = (props) => {
                       <HeadingText text="Education level" className="formik-select-title" />
                       <ReactMultiSelectCheckboxes
                         name="education_level_id"
+                        hideSearch
                         options={educationLevels}
                         onChange={handleEduLvlSelect}
                         value={values.education_level_id}
@@ -367,6 +369,7 @@ const AddActivity = (props) => {
                       <HeadingText text="Author Tags" className="formik-select-title" />
                       <ReactMultiSelectCheckboxes
                         name="author_tag_id"
+                        hideSearch
                         options={authorTags}
                         onChange={handleAuthTagSelect}
                         value={values.author_tag_id}
