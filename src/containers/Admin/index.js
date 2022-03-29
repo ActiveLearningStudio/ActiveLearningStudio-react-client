@@ -205,7 +205,7 @@ function AdminPanel({ showSSO }) {
                   }}
                 >
                   {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
-                    <Tab eventKey="DefaultSso" title="Default SSO Integrations">
+                    <Tab eventKey="DefaultSso" title="Default SSO settings">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
                       </div>

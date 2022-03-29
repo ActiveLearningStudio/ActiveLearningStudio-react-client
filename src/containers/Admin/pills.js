@@ -1227,7 +1227,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   print={false}
-                  btnText="Create New Default SSO"
+                  btnText="Add Default SSO settings"
                   btnAction="add_default_sso"
                   importUser={false}
                   filter={false}
