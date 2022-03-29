@@ -139,9 +139,7 @@ function UserRoles() {
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
-    if (!!roles) {
-      if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
-    }
+    dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
   }, [activeOrganization]);
 
   useEffect(() => {

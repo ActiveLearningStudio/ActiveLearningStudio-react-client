@@ -97,7 +97,7 @@ function AdminPanel({ showSSO }) {
                               dispatch(setActiveAdminForm('edit_org'));
                               dispatch({
                                 type: 'SET_ACTIVE_EDIT',
-                                payload: activeOrganization,
+                                payload: currentOrganization,
                               });
                             }}
                           >

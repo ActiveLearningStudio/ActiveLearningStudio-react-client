@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 * {
   padding: 0;
   margin: 0;
@@ -91,7 +91,7 @@
             width: 100%;
             border: none;
             outline: none;
-            font-family: 'Open Sans', sans-serif;
+            font-family: "Open Sans", sans-serif;
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -495,6 +495,11 @@
           height: 16px;
           margin-right: 8px;
         }
+        svg {
+          width: 16px;
+          height: 16px;
+          margin-right: 8px;
+        }
 
         & p {
           margin: 0;
@@ -585,7 +590,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type='radio'] {
+      input[type="radio"] {
         width: 20px;
         height: 20px;
       }
@@ -675,7 +680,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type='radio'] {
+      input[type="radio"] {
         width: 20px;
         height: 20px;
       }
@@ -709,7 +714,7 @@
       select {
         border: none;
 
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -977,7 +982,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -1064,7 +1069,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;

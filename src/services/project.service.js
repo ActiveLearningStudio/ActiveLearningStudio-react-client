@@ -127,6 +127,11 @@ const searchPreviewProject = (subOrgId, projectId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const exportProjectsToNoovo = (subOrgId, projectId, teamId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/teams/${teamId}/projects/${projectId}/export-projects-to-noovo`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -150,4 +155,5 @@ export default {
   shareProjects,
   visibilityTypes,
   searchPreviewProject,
+  exportProjectsToNoovo,
 };

@@ -6,20 +6,18 @@ import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
 import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
-
-import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import UploadImageV2 from 'utils/uploadimagev2/uploadimagev2';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import BackButton from '../../../assets/images/left-arrow.svg';
-import UploadFile from 'utils/uploadselectfile/uploadfile';
-import { useSelector, useDispatch } from 'react-redux';
-import { editResourceMetaDataAction } from 'store/actions/resource';
-import * as actionTypes from 'store/actionTypes';
-// import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
-import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import { values } from 'lodash';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import BackButton from "../../../assets/images/left-arrow.svg";
+import UploadFile from "utils/uploadselectfile/uploadfile";
+import { useSelector, useDispatch } from "react-redux";
+import { editResourceMetaDataAction } from "store/actions/resource";
+import * as actionTypes from "store/actionTypes";
+import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const AddActivity = (props) => {
   const {
@@ -142,6 +140,7 @@ const AddActivity = (props) => {
     setInterval(() => {
       setSuccessMessage(false);
     }, 5000);
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <>
       <PreviewLayoutModel
@@ -212,7 +211,30 @@ const AddActivity = (props) => {
                 changeScreenHandler("layout", "create");
               }}
             >
-              <img src={BackButton} alt="back button " />
+              {/* <img src={BackButton} alt="back button " /> */}
+              <svg
+                width="14"
+                height="10"
+                viewBox="0 0 14 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ marginRight: "8px", marginTop: "4px" }}
+              >
+                <path
+                  d="M13 5L1 5"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 1L1 5L5 9"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
               <p className="">Back to options</p>
             </div>
             {activtyMethod !== "upload" && singleLayout === null && (

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { Link } from 'react-router-dom';
 import { Dropdown, Tabs, Tab } from 'react-bootstrap';
@@ -10,15 +10,18 @@ import Headings from 'curriki-design-system/dist/utils/Headings/headings';
 import Buttons from 'utils/Buttons/buttons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Formik } from 'formik';
+
 import 'assets/css/previewBranding.css';
-const BrandingPage = () => {
+const BrandingPage = ({ getShow }) => {
   const primaryColor = getGlobalColor('--main-preview-primary-color');
   const [selectTab, setSelectTab] = useState('My Projects');
-
+  const [show, setShow] = useState(true);
+  useEffect(() => {
+    setShow(getShow);
+  }, [getShow]);
   return (
     <div className="branding-preview">
-      {/* Header Portion */}
+      <div className="disablelayer"></div>
 
       <header>
         <div className="top-header-preview flex-div align-items-center">
@@ -117,18 +120,18 @@ const BrandingPage = () => {
                 </li>
 
                 <li className="menu-user-settings d-flex align-items-center">
-                  <Dropdown>
+                  <Dropdown show={show}>
                     <Dropdown.Toggle className="align-items-center">
                       <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
-                        BS
+                        B
                       </div>
                       <p className="header-icon-text">My Profile</p>
                     </Dropdown.Toggle>
 
-                    <Dropdown.Menu show className="user-dropdown">
+                    <Dropdown.Menu show={show} className="user-dropdown">
                       <div className="user-dropdown-item-name">
                         <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
-                          BS
+                          B
                         </div>
                         <div className="basic-info">
                           <b>
@@ -350,7 +353,7 @@ const BrandingPage = () => {
               <div className="title">
                 <div className="title-name-heading-image">
                   <Headings text="CurrikiStudio" headingType="body2" color="#084892" />
-                  <div className="heading-image">
+                  <div className="heading-image " id="preview-heading-myproject">
                     <svg width="35" height="35" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g clip-path="url(#clip0)">
                         <path
@@ -374,7 +377,7 @@ const BrandingPage = () => {
                     </svg>
 
                     {/* Projects */}
-                    <Headings text="My Projects" headingType="h2" color="#084892" />
+                    <Headings className="preview-myproject-heading" text="My Projects" headingType="h2" color="#084892" />
                   </div>
                 </div>
                 <div className="search-main-relaced">
@@ -402,7 +405,7 @@ const BrandingPage = () => {
                                   }}
                                 >
                                   <div className="myproject-card-dropdown">
-                                    <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
+                                    <Dropdown show={show} className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
                                       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
                                         <FontAwesomeIcon
                                           icon="ellipsis-v"
@@ -450,8 +453,8 @@ const BrandingPage = () => {
                                     </Dropdown>
                                   </div>
                                   <Link to="#">
-                                    <div className="myproject-card-title">
-                                      <h2>Design, Art & History</h2>
+                                    <div className="myproject-card-title" id="preview-myproject-card-title">
+                                      <h2>Design, Art & History tagr</h2>
                                     </div>
                                   </Link>
                                 </div>
@@ -600,607 +603,7 @@ const BrandingPage = () => {
                                     </Dropdown>
                                   </div>
                                   <Link to="#">
-                                    <div className="myproject-card-title">
-                                      <h2>Design, Art & History</h2>
-                                    </div>
-                                  </Link>
-                                </div>
-                              </>
-                            </div>
-                            <Link className="project-description" to="#">
-                              <div className="myproject-card-detail">
-                                <p>Within the six categories, there are over 50 learning activity types. These range from Interactive Video.</p>
-                              </div>
-                            </Link>
-                            <div className="updated-date">Updated: 07/19/2021</div>
-                            <div className="myproject-card-add-share">
-                              <button type="button">
-                                <Link
-                                  to="#"
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#084892',
-                                  }}
-                                >
-                                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                    <path
-                                      d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z"
-                                      fill="white"
-                                    />
-                                    <path
-                                      d="M2.375 16C2.375 16 5.875 9 12 9C18.125 9 21.625 16 21.625 16C21.625 16 18.125 23 12 23C5.875 23 2.375 16 2.375 16Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M12 18.625C13.4497 18.625 14.625 17.4497 14.625 16C14.625 14.5503 13.4497 13.375 12 13.375C10.5503 13.375 9.375 14.5503 9.375 16C9.375 17.4497 10.5503 18.625 12 18.625Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-
-                                  <span className="textinButton">Preview</span>
-                                </Link>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M11.0513 8.89767H4.78927C4.31476 8.89767 3.85968 9.08617 3.52415 9.4217C3.18862 9.75723 3.00012 10.2123 3.00012 10.6868V23.2108C3.00012 23.6854 3.18862 24.1404 3.52415 24.476C3.85968 24.8115 4.31476 25 4.78927 25H17.3133C17.7878 25 18.2429 24.8115 18.5784 24.476C18.9139 24.1404 19.1024 23.6854 19.1024 23.2108V16.9488"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M17.7605 7.55582C18.1163 7.19993 18.599 7 19.1023 7C19.6056 7 20.0883 7.19993 20.4442 7.55582C20.8001 7.9117 21 8.39438 21 8.89768C21 9.40097 20.8001 9.88365 20.4442 10.2395L11.9457 18.738L8.36743 19.6326L9.262 16.0543L17.7605 7.55582Z"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Edit</span>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M10.1899 16.906C10.5786 17.4262 11.0746 17.8566 11.644 18.168C12.2135 18.4795 12.8433 18.6647 13.4905 18.7111C14.1378 18.7575 14.7875 18.664 15.3955 18.437C16.0035 18.21 16.5557 17.8547 17.0144 17.3953L19.7298 14.6772C20.5541 13.8228 21.0103 12.6785 21 11.4907C20.9897 10.303 20.5137 9.16675 19.6746 8.32683C18.8356 7.48692 17.7005 7.01049 16.5139 7.00017C15.3273 6.98985 14.1842 7.44646 13.3307 8.27165L11.7739 9.82094"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M13.8101 15.094C13.4214 14.5738 12.9255 14.1434 12.356 13.832C11.7865 13.5205 11.1567 13.3353 10.5095 13.2889C9.86218 13.2425 9.2125 13.336 8.60449 13.563C7.99648 13.7901 7.44435 14.1453 6.98557 14.6048L4.27025 17.3228C3.44589 18.1772 2.98974 19.3215 3.00005 20.5093C3.01036 21.6971 3.48631 22.8333 4.32538 23.6732C5.16445 24.5131 6.29951 24.9895 7.48609 24.9999C8.67267 25.0102 9.81583 24.5536 10.6694 23.7284L12.2171 22.1791"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Shared link</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="playlist-resource">
-                          <div className="main-myproject-card">
-                            <div>
-                              <>
-                                <div
-                                  className="myproject-card-top"
-                                  style={{
-                                    backgroundImage: `url(${cardBg})`,
-                                  }}
-                                >
-                                  <div className="myproject-card-dropdown">
-                                    <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
-                                      <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-                                        <FontAwesomeIcon
-                                          icon="ellipsis-v"
-                                          style={{
-                                            fontSize: '13px',
-                                            color: '#ffffff',
-                                            marginLeft: '5px',
-                                          }}
-                                        />
-                                        {/* <span>{text}</span> */}
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <Dropdown.Item to="#">
-                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path
-                                              d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Duplicate
-                                        </Dropdown.Item>
-
-                                        <Dropdown.Item to="#">
-                                          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                              d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Delete
-                                        </Dropdown.Item>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </div>
-                                  <Link to="#">
-                                    <div className="myproject-card-title">
-                                      <h2>Design, Art & History</h2>
-                                    </div>
-                                  </Link>
-                                </div>
-                              </>
-                            </div>
-                            <Link className="project-description" to="#">
-                              <div className="myproject-card-detail">
-                                <p>Within the six categories, there are over 50 learning activity types. These range from Interactive Video.</p>
-                              </div>
-                            </Link>
-                            <div className="updated-date">Updated: 07/19/2021</div>
-                            <div className="myproject-card-add-share">
-                              <button type="button">
-                                <Link
-                                  to="#"
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#084892',
-                                  }}
-                                >
-                                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                    <path
-                                      d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z"
-                                      fill="white"
-                                    />
-                                    <path
-                                      d="M2.375 16C2.375 16 5.875 9 12 9C18.125 9 21.625 16 21.625 16C21.625 16 18.125 23 12 23C5.875 23 2.375 16 2.375 16Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M12 18.625C13.4497 18.625 14.625 17.4497 14.625 16C14.625 14.5503 13.4497 13.375 12 13.375C10.5503 13.375 9.375 14.5503 9.375 16C9.375 17.4497 10.5503 18.625 12 18.625Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-
-                                  <span className="textinButton">Preview</span>
-                                </Link>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M11.0513 8.89767H4.78927C4.31476 8.89767 3.85968 9.08617 3.52415 9.4217C3.18862 9.75723 3.00012 10.2123 3.00012 10.6868V23.2108C3.00012 23.6854 3.18862 24.1404 3.52415 24.476C3.85968 24.8115 4.31476 25 4.78927 25H17.3133C17.7878 25 18.2429 24.8115 18.5784 24.476C18.9139 24.1404 19.1024 23.6854 19.1024 23.2108V16.9488"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M17.7605 7.55582C18.1163 7.19993 18.599 7 19.1023 7C19.6056 7 20.0883 7.19993 20.4442 7.55582C20.8001 7.9117 21 8.39438 21 8.89768C21 9.40097 20.8001 9.88365 20.4442 10.2395L11.9457 18.738L8.36743 19.6326L9.262 16.0543L17.7605 7.55582Z"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Edit</span>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M10.1899 16.906C10.5786 17.4262 11.0746 17.8566 11.644 18.168C12.2135 18.4795 12.8433 18.6647 13.4905 18.7111C14.1378 18.7575 14.7875 18.664 15.3955 18.437C16.0035 18.21 16.5557 17.8547 17.0144 17.3953L19.7298 14.6772C20.5541 13.8228 21.0103 12.6785 21 11.4907C20.9897 10.303 20.5137 9.16675 19.6746 8.32683C18.8356 7.48692 17.7005 7.01049 16.5139 7.00017C15.3273 6.98985 14.1842 7.44646 13.3307 8.27165L11.7739 9.82094"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M13.8101 15.094C13.4214 14.5738 12.9255 14.1434 12.356 13.832C11.7865 13.5205 11.1567 13.3353 10.5095 13.2889C9.86218 13.2425 9.2125 13.336 8.60449 13.563C7.99648 13.7901 7.44435 14.1453 6.98557 14.6048L4.27025 17.3228C3.44589 18.1772 2.98974 19.3215 3.00005 20.5093C3.01036 21.6971 3.48631 22.8333 4.32538 23.6732C5.16445 24.5131 6.29951 24.9895 7.48609 24.9999C8.67267 25.0102 9.81583 24.5536 10.6694 23.7284L12.2171 22.1791"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Shared link</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="playlist-resource">
-                          <div className="main-myproject-card">
-                            <div>
-                              <>
-                                <div
-                                  className="myproject-card-top"
-                                  style={{
-                                    backgroundImage: `url(${cardBg})`,
-                                  }}
-                                >
-                                  <div className="myproject-card-dropdown">
-                                    <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
-                                      <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-                                        <FontAwesomeIcon
-                                          icon="ellipsis-v"
-                                          style={{
-                                            fontSize: '13px',
-                                            color: '#ffffff',
-                                            marginLeft: '5px',
-                                          }}
-                                        />
-                                        {/* <span>{text}</span> */}
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <Dropdown.Item to="#">
-                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path
-                                              d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Duplicate
-                                        </Dropdown.Item>
-
-                                        <Dropdown.Item to="#">
-                                          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                              d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Delete
-                                        </Dropdown.Item>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </div>
-                                  <Link to="#">
-                                    <div className="myproject-card-title">
-                                      <h2>Design, Art & History</h2>
-                                    </div>
-                                  </Link>
-                                </div>
-                              </>
-                            </div>
-                            <Link className="project-description" to="#">
-                              <div className="myproject-card-detail">
-                                <p>Within the six categories, there are over 50 learning activity types. These range from Interactive Video.</p>
-                              </div>
-                            </Link>
-                            <div className="updated-date">Updated: 07/19/2021</div>
-                            <div className="myproject-card-add-share">
-                              <button type="button">
-                                <Link
-                                  to="#"
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#084892',
-                                  }}
-                                >
-                                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                    <path
-                                      d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z"
-                                      fill="white"
-                                    />
-                                    <path
-                                      d="M2.375 16C2.375 16 5.875 9 12 9C18.125 9 21.625 16 21.625 16C21.625 16 18.125 23 12 23C5.875 23 2.375 16 2.375 16Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M12 18.625C13.4497 18.625 14.625 17.4497 14.625 16C14.625 14.5503 13.4497 13.375 12 13.375C10.5503 13.375 9.375 14.5503 9.375 16C9.375 17.4497 10.5503 18.625 12 18.625Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-
-                                  <span className="textinButton">Preview</span>
-                                </Link>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M11.0513 8.89767H4.78927C4.31476 8.89767 3.85968 9.08617 3.52415 9.4217C3.18862 9.75723 3.00012 10.2123 3.00012 10.6868V23.2108C3.00012 23.6854 3.18862 24.1404 3.52415 24.476C3.85968 24.8115 4.31476 25 4.78927 25H17.3133C17.7878 25 18.2429 24.8115 18.5784 24.476C18.9139 24.1404 19.1024 23.6854 19.1024 23.2108V16.9488"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M17.7605 7.55582C18.1163 7.19993 18.599 7 19.1023 7C19.6056 7 20.0883 7.19993 20.4442 7.55582C20.8001 7.9117 21 8.39438 21 8.89768C21 9.40097 20.8001 9.88365 20.4442 10.2395L11.9457 18.738L8.36743 19.6326L9.262 16.0543L17.7605 7.55582Z"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Edit</span>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M10.1899 16.906C10.5786 17.4262 11.0746 17.8566 11.644 18.168C12.2135 18.4795 12.8433 18.6647 13.4905 18.7111C14.1378 18.7575 14.7875 18.664 15.3955 18.437C16.0035 18.21 16.5557 17.8547 17.0144 17.3953L19.7298 14.6772C20.5541 13.8228 21.0103 12.6785 21 11.4907C20.9897 10.303 20.5137 9.16675 19.6746 8.32683C18.8356 7.48692 17.7005 7.01049 16.5139 7.00017C15.3273 6.98985 14.1842 7.44646 13.3307 8.27165L11.7739 9.82094"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M13.8101 15.094C13.4214 14.5738 12.9255 14.1434 12.356 13.832C11.7865 13.5205 11.1567 13.3353 10.5095 13.2889C9.86218 13.2425 9.2125 13.336 8.60449 13.563C7.99648 13.7901 7.44435 14.1453 6.98557 14.6048L4.27025 17.3228C3.44589 18.1772 2.98974 19.3215 3.00005 20.5093C3.01036 21.6971 3.48631 22.8333 4.32538 23.6732C5.16445 24.5131 6.29951 24.9895 7.48609 24.9999C8.67267 25.0102 9.81583 24.5536 10.6694 23.7284L12.2171 22.1791"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Shared link</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="playlist-resource">
-                          <div className="main-myproject-card">
-                            <div>
-                              <>
-                                <div
-                                  className="myproject-card-top"
-                                  style={{
-                                    backgroundImage: `url(${cardBg})`,
-                                  }}
-                                >
-                                  <div className="myproject-card-dropdown">
-                                    <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
-                                      <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-                                        <FontAwesomeIcon
-                                          icon="ellipsis-v"
-                                          style={{
-                                            fontSize: '13px',
-                                            color: '#ffffff',
-                                            marginLeft: '5px',
-                                          }}
-                                        />
-                                        {/* <span>{text}</span> */}
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <Dropdown.Item to="#">
-                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path
-                                              d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Duplicate
-                                        </Dropdown.Item>
-
-                                        <Dropdown.Item to="#">
-                                          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                              d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Delete
-                                        </Dropdown.Item>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </div>
-                                  <Link to="#">
-                                    <div className="myproject-card-title">
-                                      <h2>Design, Art & History</h2>
-                                    </div>
-                                  </Link>
-                                </div>
-                              </>
-                            </div>
-                            <Link className="project-description" to="#">
-                              <div className="myproject-card-detail">
-                                <p>Within the six categories, there are over 50 learning activity types. These range from Interactive Video.</p>
-                              </div>
-                            </Link>
-                            <div className="updated-date">Updated: 07/19/2021</div>
-                            <div className="myproject-card-add-share">
-                              <button type="button">
-                                <Link
-                                  to="#"
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: '#084892',
-                                  }}
-                                >
-                                  <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                    <path
-                                      d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z"
-                                      fill="white"
-                                    />
-                                    <path
-                                      d="M2.375 16C2.375 16 5.875 9 12 9C18.125 9 21.625 16 21.625 16C21.625 16 18.125 23 12 23C5.875 23 2.375 16 2.375 16Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                    <path
-                                      d="M12 18.625C13.4497 18.625 14.625 17.4497 14.625 16C14.625 14.5503 13.4497 13.375 12 13.375C10.5503 13.375 9.375 14.5503 9.375 16C9.375 17.4497 10.5503 18.625 12 18.625Z"
-                                      stroke={primaryColor}
-                                      stroke-width="2"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                    />
-                                  </svg>
-
-                                  <span className="textinButton">Preview</span>
-                                </Link>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M11.0513 8.89767H4.78927C4.31476 8.89767 3.85968 9.08617 3.52415 9.4217C3.18862 9.75723 3.00012 10.2123 3.00012 10.6868V23.2108C3.00012 23.6854 3.18862 24.1404 3.52415 24.476C3.85968 24.8115 4.31476 25 4.78927 25H17.3133C17.7878 25 18.2429 24.8115 18.5784 24.476C18.9139 24.1404 19.1024 23.6854 19.1024 23.2108V16.9488"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M17.7605 7.55582C18.1163 7.19993 18.599 7 19.1023 7C19.6056 7 20.0883 7.19993 20.4442 7.55582C20.8001 7.9117 21 8.39438 21 8.89768C21 9.40097 20.8001 9.88365 20.4442 10.2395L11.9457 18.738L8.36743 19.6326L9.262 16.0543L17.7605 7.55582Z"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Edit</span>
-                              </button>
-                              <button type="button">
-                                <svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-3">
-                                  <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
-                                  <path
-                                    d="M10.1899 16.906C10.5786 17.4262 11.0746 17.8566 11.644 18.168C12.2135 18.4795 12.8433 18.6647 13.4905 18.7111C14.1378 18.7575 14.7875 18.664 15.3955 18.437C16.0035 18.21 16.5557 17.8547 17.0144 17.3953L19.7298 14.6772C20.5541 13.8228 21.0103 12.6785 21 11.4907C20.9897 10.303 20.5137 9.16675 19.6746 8.32683C18.8356 7.48692 17.7005 7.01049 16.5139 7.00017C15.3273 6.98985 14.1842 7.44646 13.3307 8.27165L11.7739 9.82094"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                  <path
-                                    d="M13.8101 15.094C13.4214 14.5738 12.9255 14.1434 12.356 13.832C11.7865 13.5205 11.1567 13.3353 10.5095 13.2889C9.86218 13.2425 9.2125 13.336 8.60449 13.563C7.99648 13.7901 7.44435 14.1453 6.98557 14.6048L4.27025 17.3228C3.44589 18.1772 2.98974 19.3215 3.00005 20.5093C3.01036 21.6971 3.48631 22.8333 4.32538 23.6732C5.16445 24.5131 6.29951 24.9895 7.48609 24.9999C8.67267 25.0102 9.81583 24.5536 10.6694 23.7284L12.2171 22.1791"
-                                    stroke={primaryColor}
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                  />
-                                </svg>
-
-                                <span className="textinButton">Shared link</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="playlist-resource">
-                          <div className="main-myproject-card">
-                            <div>
-                              <>
-                                <div
-                                  className="myproject-card-top"
-                                  style={{
-                                    backgroundImage: `url(${cardBg})`,
-                                  }}
-                                >
-                                  <div className="myproject-card-dropdown">
-                                    <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
-                                      <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
-                                        <FontAwesomeIcon
-                                          icon="ellipsis-v"
-                                          style={{
-                                            fontSize: '13px',
-                                            color: '#ffffff',
-                                            marginLeft: '5px',
-                                          }}
-                                        />
-                                        {/* <span>{text}</span> */}
-                                      </Dropdown.Toggle>
-
-                                      <Dropdown.Menu>
-                                        <Dropdown.Item to="#">
-                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path
-                                              d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M7 4.33325V9.66659" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M4.33301 7H9.66634" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Duplicate
-                                        </Dropdown.Item>
-
-                                        <Dropdown.Item to="#">
-                                          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                                            <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                              d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
-                                              stroke={primaryColor}
-                                              stroke-width="1.5"
-                                              stroke-linecap="round"
-                                              stroke-linejoin="round"
-                                            />
-                                            <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                          </svg>
-                                          Delete
-                                        </Dropdown.Item>
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </div>
-                                  <Link to="#">
-                                    <div className="myproject-card-title">
+                                    <div className="myproject-card-title" id="preview-myproject-card-title">
                                       <h2>Design, Art & History</h2>
                                     </div>
                                   </Link>
