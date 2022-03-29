@@ -655,9 +655,9 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     title: metadata?.title,
     type: 'h5p',
     content: 'place_holder',
-    subject_id: metadata.subject_id,
-    education_level_id: metadata.education_level_id,
-    author_tag_id: metadata.author_tag_id,
+    subject_id: formatSelectBoxData(metadata.subject_id),
+    education_level_id: formatSelectBoxData(metadata.education_level_id),
+    author_tag_id: formatSelectBoxData(metadata.author_tag_id),
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
@@ -811,3 +811,11 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   });
   return result;
 };
+
+export const formatSelectBoxData = (data) => {
+  let ids = [];
+  data?.map(datum=>{
+    ids.push(datum.value);
+  });
+  return ids;
+}

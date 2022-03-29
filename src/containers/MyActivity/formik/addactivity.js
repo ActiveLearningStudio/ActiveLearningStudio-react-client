@@ -52,31 +52,24 @@ const AddActivity = (props) => {
   var counter;
 
   const handleSubjSelect = (selectSub) => {
-
-    let subjIds = [];
-    selectSub?.map(data=>{
-      subjIds.push(data.value);
-    });
-    setSelectedSubjects(subjIds);
+    setSelectedSubjects(selectSub);
   };
 
   const handleAuthTagSelect = (selectTag) => {
-
-    let tagIds = [];
-    selectTag?.map(data=>{
-      tagIds.push(data.value);
-    });
-    setSelecteAuthorTags(tagIds);
+    setSelecteAuthorTags(selectTag);
   };
 
   const handleEduLvlSelect = (selectEduLvl) => {
-    
-    let eduLvlIds = [];
-    selectEduLvl?.map(data=>{
-      eduLvlIds.push(data.value);
-    });
-    setSelectedEducationLevel(eduLvlIds);
+    setSelectedEducationLevel(selectEduLvl);
   };
+
+  const formatApiData = (data) => {
+    let ids = [];
+    data.map(datum=>{
+      ids.push(datum.id);
+    });
+    return ids;
+  }
   
   useEffect(()=> {
     if(!subjects) {
@@ -120,6 +113,21 @@ const AddActivity = (props) => {
     }
   }, [authorTags]);
 
+  useEffect(()=>{
+    if(activity?.subjects && !selectedSubjects){
+      let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
+      setSelectedSubjects(output);
+    }
+    if(activity?.author_tags && !selecteAuthorTags){
+      let output = authorTags?.filter((obj) => formatApiData(activity?.author_tags).indexOf(obj.value) !== -1);
+      setSelecteAuthorTags(output);
+    }
+    
+    if(activity?.education_levels && !selectedEducationLevel){
+      let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
+      setSelectedEducationLevel(output);
+    }
+  })
   useEffect(() => {
     if (selectedLayout) {
       setTitle(selectedLayout.title);
@@ -268,9 +276,9 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                author_tag_id: activity?.author_tag_id || selecteAuthorTags,
-                education_level_id: activity?.education_level_id || selectedEducationLevel,
-                subject_id: activity?.subject_id || selectedSubjects,
+                author_tag_id: selecteAuthorTags,
+                education_level_id: selectedEducationLevel,
+                subject_id: selectedSubjects,
                 thumb_url: activity?.thumb_url || 
                 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
@@ -341,6 +349,7 @@ const AddActivity = (props) => {
                         name="subject_id"
                         options={subjects}
                         onChange={handleSubjSelect}
+                        value={values.subject_id}
                       />
                     </div>
 
@@ -350,6 +359,7 @@ const AddActivity = (props) => {
                         name="education_level_id"
                         options={educationLevels}
                         onChange={handleEduLvlSelect}
+                        value={values.education_level_id}
                       />
                     </div>
 
@@ -359,6 +369,7 @@ const AddActivity = (props) => {
                         name="author_tag_id"
                         options={authorTags}
                         onChange={handleAuthTagSelect}
+                        value={values.author_tag_id}
                       />
                     </div>
                   </div>
