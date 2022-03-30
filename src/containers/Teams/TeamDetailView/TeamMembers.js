@@ -58,7 +58,7 @@ const TeamMembers = (props) => {
                           onClick={() => {
                             if (element.role_id) {
                               const newRoleArray = arrayToRender?.filter((value) => {
-                                if (value.role_id === element.role_id) {
+                                if (value.id === element.id) {
                                   // eslint-disable-next-line no-param-reassign
                                   value.role_id = role.id;
                                   return value;
