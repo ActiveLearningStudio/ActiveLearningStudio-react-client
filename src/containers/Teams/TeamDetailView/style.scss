@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .inner-content {
   background: $white;
@@ -35,7 +35,7 @@
 }
 .add-team-page {
   .organization-name {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -79,7 +79,7 @@
     .team-detail {
       max-width: 800px;
       p {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 14px;
@@ -199,7 +199,9 @@
       display: flex;
       flex-wrap: wrap;
       .alert {
-        width: 945px;
+        width: 100%;
+        min-width: 500px;
+        max-width: 1000px;
       }
     }
     .playlist-resource {
@@ -345,7 +347,7 @@
       position: absolute;
       background: #fff;
       height: 50px;
-      content: '';
+      content: "";
       width: 50px;
       left: -24px;
       z-index: -9;
@@ -427,7 +429,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: '';
+            content: "";
             border: none;
           }
           &:hover {
