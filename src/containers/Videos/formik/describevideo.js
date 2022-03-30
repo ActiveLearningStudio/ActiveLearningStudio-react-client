@@ -40,6 +40,14 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
     setSelectedEducationLevel(selectEduLvl);
   };
 
+  const formatApiData = (data) => {
+    let ids = [];
+    data.map(datum=>{
+      ids.push(datum.id);
+    });
+    return ids;
+  }
+  
   useEffect(()=> {
     if(!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
