@@ -56,7 +56,7 @@ const ActivityLayout = (props) => {
   }, [allActivity]);
   useEffect(() => {
     const setData = [];
-    allActivitytypes?.forEach((data) => {
+    allActivitytypes?.data?.forEach((data) => {
       setData.push(data.id);
     });
     setFilterData(setData);
@@ -140,8 +140,8 @@ const ActivityLayout = (props) => {
           </div>
 
           <div class="dropdown-content-select">
-            {allActivitytypes?.length > 0 &&
-              allActivitytypes?.map((data, counter) => {
+            {allActivitytypes?.data?.length > 0 &&
+              allActivitytypes?.data?.map((data, counter) => {
                 return (
                   <label>
                     <input
