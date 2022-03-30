@@ -64,23 +64,23 @@ class PlaylistCardDropdown extends React.Component {
             <path
               d="M3.00001 11.125C3.62133 11.125 4.12501 10.6213 4.12501 10C4.12501 9.37868 3.62133 8.875 3.00001 8.875C2.37868 8.875 1.875 9.37868 1.875 10C1.875 10.6213 2.37868 11.125 3.00001 11.125Z"
               stroke={primaryColor}
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M3.00001 3.25001C3.62133 3.25001 4.12501 2.74633 4.12501 2.12501C4.12501 1.50368 3.62133 1 3.00001 1C2.37868 1 1.875 1.50368 1.875 2.12501C1.875 2.74633 2.37868 3.25001 3.00001 3.25001Z"
               stroke={primaryColor}
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M3.00001 19C3.62133 19 4.12501 18.4963 4.12501 17.875C4.12501 17.2537 3.62133 16.75 3.00001 16.75C2.37868 16.75 1.875 17.2537 1.875 17.875C1.875 18.4963 2.37868 19 3.00001 19Z"
               stroke={primaryColor}
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </Dropdown.Toggle>
@@ -107,16 +107,16 @@ class PlaylistCardDropdown extends React.Component {
                 <path
                   d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               Preview
@@ -145,16 +145,16 @@ class PlaylistCardDropdown extends React.Component {
                 <path
                   d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               Edit
@@ -180,23 +180,23 @@ class PlaylistCardDropdown extends React.Component {
                 <path
                   d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M7 4.33325V9.66659"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M4.33301 7H9.66634"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               Duplicate
@@ -266,30 +266,30 @@ class PlaylistCardDropdown extends React.Component {
                   <path
                     d="M0.75 3.39966H1.91667H11.25"
                     stroke={primaryColor}
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
                     stroke={primaryColor}
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M4.83301 6.39966V9.99966"
                     stroke={primaryColor}
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                   <path
                     d="M7.16699 6.39966V9.99966"
                     stroke={primaryColor}
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 Delete

@@ -2182,8 +2182,14 @@
     border-radius: 8px;
     .tab-theming-section {
       display: flex;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
+      .mr-100 {
+        margin-left: 100px;
+      }
+      .dimensions-detail {
+        margin-top: 8px;
+      }
     }
     .tab-theming-btn-icon {
       justify-content: flex-start !important;
@@ -2191,6 +2197,9 @@
       .mr-16 {
         margin-right: 16px;
         margin-left: 16px;
+      }
+      .favicon-btn {
+        background-color: #055160;
       }
     }
 

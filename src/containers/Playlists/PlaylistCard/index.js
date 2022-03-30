@@ -253,16 +253,16 @@ class PlaylistCard extends React.Component {
                       <path
                         d="M1.5 8C1.51004 8 10.8375 8.00009 15.5 8.00014"
                         stroke={primaryColor}
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M8.5 15C8.5 14.99 8.5 5.66248 8.5 0.999999"
                         stroke={primaryColor}
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                     Create or upload activity
