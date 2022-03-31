@@ -16,6 +16,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import BrightcoveModel from "../model/brightmodel";
 import { useSelector } from "react-redux";
 import UploadImg from "assets/images/upload1.png";
+import Uploadicon from "assets/images/uploadBtnIcon.png";
 import Swal from "sweetalert2";
 import "utils/uploadselectfile/uploadfile.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -505,9 +506,11 @@ const FormikVideo = ({
                       }}
                       type="reset"
                     >
-                      <FontAwesomeIcon
-                        icon={faUpload}
-                        className="curriki_btn-mr-2"
+                      <img
+                        style={{ cursor: "pointer", marginTop: "-2px" }}
+                        src={Uploadicon}
+                        alt="upload"
+                        className="mr-2"
                       />
                       Select File
                     </button>
@@ -563,9 +566,10 @@ const FormikVideo = ({
                       ref={imgUpload}
                       style={{
                         cursor: "pointer",
-                        background: "transparent",
-                        padding: "125px 41px 0px 41px",
-                        border: "3px dashed #ddd",
+                        background: "#F1F1F1",
+                        padding: "160px 41px 0px 41px",
+                        borderRadius: "8px",
+                        border: "none",
                       }}
                       onClick={(e) => {
                         e.target.value = "";
@@ -585,7 +589,7 @@ const FormikVideo = ({
                         alt="upload"
                         className="mr-2"
                       />
-                      <p> click to upload</p>
+                      <p>Drag & drop file or <span style={{color:"#2e8df5"}}>browse</span> to upload</p>
                     </div>
                   </div>
                   {uploadedFile && (
