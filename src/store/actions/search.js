@@ -1,7 +1,13 @@
 import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
-import { SEARCH_REDUX, CLEAR_SEARCH } from '../actionTypes';
+import resourceService from 'services/resource.service';
+import {
+  SEARCH_REDUX,
+  CLEAR_SEARCH,
+  SELECT_EXISTING_ACTIVITY,
+  RESET_EXISTING_ACTIVITY,
+} from '../actionTypes';
 import store from '../index';
 
 export const searchRedux = (data, searchQuery, meta) => ({
@@ -155,3 +161,13 @@ export const clonePlaylist = (projectId, playlistId) => {
 export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
+
+export const existingActivitySearchGetAction = (activityId) => async (dispatch) => {
+  const result = await resourceService.h5pResourceSettings(activityId);
+  dispatch({
+    type: SELECT_EXISTING_ACTIVITY,
+    activity: result,
+  });
+};
+
+export const existingActivitySearchResetAction = () => async (dispatch) => dispatch({ type: RESET_EXISTING_ACTIVITY });
