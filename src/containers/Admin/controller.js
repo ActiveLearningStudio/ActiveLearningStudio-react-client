@@ -153,6 +153,7 @@ function Controller(props) {
     setSelectedIndexValueid(id);
   };
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (

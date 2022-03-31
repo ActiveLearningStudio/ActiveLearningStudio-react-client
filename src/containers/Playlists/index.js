@@ -549,7 +549,7 @@ function PlaylistsPage(props) {
     setSelectedProjectPlaylistActivityId(playlistActivityId);
   };
   const primaryColor = getGlobalColor("--main-primary-color");
-
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <>
       <div
@@ -933,7 +933,12 @@ function PlaylistsPage(props) {
                             className="dropdown-item"
                             to={`/org/${organization.currentOrganization?.domain}/project/${projectIdFilter}/preview`}
                           >
-                            <img src={Preview} alt="img" className="mr-2" />
+                            {/* <img src={Preview} alt="img" className="mr-2" /> */}
+                            <FontAwesomeIcon
+                              icon="eye"
+                              className="mr-2"
+                              color={secondaryColor}
+                            />
                             Project Preview
                           </Link>
                         </div>

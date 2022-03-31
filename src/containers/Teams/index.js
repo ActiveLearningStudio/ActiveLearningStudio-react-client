@@ -85,6 +85,7 @@ function TeamsPage(props) {
     }
   }, [loadTeams, searchQuery]);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <>
       {/* <div className="side-wrapper-team">
@@ -200,7 +201,11 @@ function TeamsPage(props) {
                       }}
                     >
                       <div className="btn-top-page">
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        <FontAwesomeIcon
+                          icon="plus"
+                          className="mr-2"
+                          color={secondaryColor}
+                        />
                         Add Team
                       </div>
                     </div>

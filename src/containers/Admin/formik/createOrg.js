@@ -28,6 +28,7 @@ import { Editor } from "@tinymce/tinymce-react";
 
 import faviconDefault from "../../../assets/images/svg/Globe.svg";
 import BrandingPage from "containers/Branding";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -50,6 +51,12 @@ export default function CreateOrg(prop) {
   const [ppContentValue, setPpContentValue] = useState(null);
   const [checkedTosContent, setCheckedTosContent] = useState(null);
   const [checkedPpContent, setCheckedPpContent] = useState(null);
+
+  const [checkedColorsParent, setCheckedColorsParent] = useState(false);
+  const [checkedColorsOwn, setCheckedColorsOwn] = useState(true);
+
+  const [checkedFontsParent, setCheckedFontsParent] = useState(false);
+  const [checkedFontsOwn, setCheckedFontsOwn] = useState(true);
 
   useEffect(() => {
     if (editMode) {
@@ -158,7 +165,7 @@ export default function CreateOrg(prop) {
       );
     }
   }, [activeEdit, editMode]);
-
+  const secondaryColorIcon = getGlobalColor("--main-secondary-color");
   return (
     <div className="create-form">
       <Formik
@@ -167,7 +174,7 @@ export default function CreateOrg(prop) {
           image: editMode
             ? activeEdit.image
             : "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
-          image_favicon: editMode ? activeEdit?.image_favicon : faviconDefault,
+          // image_favicon: editMode ? activeEdit?.image_favicon : faviconDefault,
           name: editMode ? activeEdit?.name : "",
           description: editMode ? activeEdit?.description : "",
           domain: editMode ? activeEdit?.domain : "",
@@ -246,9 +253,9 @@ export default function CreateOrg(prop) {
           if (!values.image) {
             errors.image = "Required";
           }
-          if (!values.image_favicon) {
-            errors.image_favicon = "Required";
-          }
+          // if (!values.image_favicon) {
+          //   errors.image_favicon = "Required";
+          // }
           if (!values.tos_type) {
             errors.tos_type = "Required";
           }
@@ -501,7 +508,28 @@ export default function CreateOrg(prop) {
                               value={values.unit_path}
                             />
                           </div>
-
+                          <div className="form-group-create">
+                            <h3>LearnSafe API Key</h3>
+                            <input
+                              type="text"
+                              name="api_key"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.api_key}
+                            />
+                          </div>
+                          <div className="form-group-create">
+                            <h3>Noovo client ID </h3>
+                            <input
+                              type="text"
+                              name="noovo_client_id"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.noovo_client_id}
+                            />
+                          </div>
+                        </div>
+                        <div className="tab-form-section-right">
                           <div className="toggle-group-button">
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
@@ -580,29 +608,6 @@ export default function CreateOrg(prop) {
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="tab-form-section-right">
-                          <div className="form-group-create">
-                            <h3>LearnSafe API Key</h3>
-                            <input
-                              type="text"
-                              name="api_key"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.api_key}
-                            />
-                          </div>
-                          <div className="form-group-create">
-                            <h3>Noovo client ID </h3>
-                            <input
-                              type="text"
-                              name="noovo_client_id"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.noovo_client_id}
-                            />
-                          </div>
-
                           <div className="form-group-create">
                             <h3>Self Registration</h3>
                             <div className="custom-toggle-button">
@@ -847,6 +852,7 @@ export default function CreateOrg(prop) {
                       </div>
                     </div>
                   </div>
+
                   {checkedPpContent && (
                     <>
                       <div className="tab-tossp-detail">
@@ -873,7 +879,7 @@ export default function CreateOrg(prop) {
                       <div style={{ marginTop: "16px" }}>
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-primary edit-org-save-btn"
                           onClick={() => {
                             saveChangesPolicy();
                           }}
@@ -909,7 +915,7 @@ export default function CreateOrg(prop) {
                       <div style={{ marginTop: "16px" }}>
                         <button
                           type="button"
-                          class="btn btn-primary"
+                          class="btn btn-primary edit-org-save-btn"
                           onClick={() => {
                             saveChangesTerms();
                           }}
@@ -932,6 +938,13 @@ export default function CreateOrg(prop) {
               <Tab eventKey="Theming options" title="Theming options">
                 <div className="tab-section">
                   <div className="tab-inner-section mb-16">
+                    <div className="tab_inner_header">
+                      <h1>Logo</h1>
+                      <button type="button">
+                        <img src={ResetImg} alt="" />
+                        <span>Reset</span>
+                      </button>
+                    </div>
                     <div className="form-group-create">
                       <div className="tab-theming-section">
                         {/* Upload Logo */}
@@ -1024,6 +1037,7 @@ export default function CreateOrg(prop) {
                                   <FontAwesomeIcon
                                     icon="upload"
                                     style={{ marginRight: "16px" }}
+                                    color={secondaryColorIcon}
                                   />
                                   Upload logo
                                 </button>
@@ -1045,7 +1059,7 @@ export default function CreateOrg(prop) {
                         >
                           <input
                             type="file"
-                            name="image_favicon"
+                            name="image"
                             onChange={(e) => {
                               if (
                                 !(
@@ -1079,10 +1093,7 @@ export default function CreateOrg(prop) {
                                   );
                                   imgurl.then((img) => {
                                     setImgActive(img.data?.thumbUrl);
-                                    setFieldValue(
-                                      "image_favicon",
-                                      img.data?.thumbUrl
-                                    );
+                                    setFieldValue("image", img.data?.thumbUrl);
                                   });
                                 } catch (err) {
                                   Swal.fire({
@@ -1111,7 +1122,7 @@ export default function CreateOrg(prop) {
                                     ? imageActive.includes("pexels.com")
                                       ? imageActive
                                       : `${global.config.resourceUrl}${imageActive}`
-                                    : values.image_favicon
+                                    : values.image
                                 }
                                 style={{
                                   width: "72px",
@@ -1123,14 +1134,11 @@ export default function CreateOrg(prop) {
                             </div>
                             <div>
                               <div
-                                className="button-group tab-theming-btn-icon"
+                                className="button-group-favicon tab-theming-btn-icon"
                                 style={{ paddingBottom: "0px" }}
                               >
                                 {" "}
-                                <button
-                                  type="button"
-                                  className="favicon-btn mr-16"
-                                >
+                                <button type="button" className="favicon mr-16">
                                   <FontAwesomeIcon
                                     icon="upload"
                                     style={{ marginRight: "16px" }}
@@ -1145,9 +1153,7 @@ export default function CreateOrg(prop) {
                           </div>
 
                           <div className="error">
-                            {errors.image_favicon &&
-                              touched.image_favicon &&
-                              errors.image_favicon}
+                            {errors.image && touched.image && errors.image}
                           </div>
                         </div>
                       </div>
@@ -1156,7 +1162,7 @@ export default function CreateOrg(prop) {
 
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
-                      <h1>Color</h1>
+                      <h1>Colors</h1>
                       <button
                         type="button"
                         onClick={() => {
@@ -1175,6 +1181,49 @@ export default function CreateOrg(prop) {
                         <img src={ResetImg} alt="" />
                         <span>Reset</span>
                       </button>
+                    </div>
+                    {/* Radio-For-Color */}
+                    <div className="organization-own-select-radio">
+                      <div className="form-check mr-43">
+                        <input
+                          className="form-check-input radio-custom"
+                          onClick={() => {
+                            setCheckedColorsParent(true);
+                            setCheckedColorsOwn(false);
+                            // setFieldValue("tos_type", "Parent");
+                          }}
+                          type="radio"
+                          // name="tos_type"
+                          // id="TosParent"
+                          checked={checkedColorsParent}
+                        />
+                        <label
+                          className="form-check-label radio-custom-label"
+                          for="TosParent"
+                        >
+                          Use from the parent organization
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input radio-custom"
+                          onClick={() => {
+                            setCheckedColorsParent(false);
+                            setCheckedColorsOwn(true);
+                            // setFieldValue("tos_type", "Parent");
+                          }}
+                          type="radio"
+                          // name="tos_type"
+                          // id="TosParent"
+                          checked={checkedColorsOwn}
+                        />
+                        <label
+                          className="form-check-label radio-custom-label"
+                          for="TosParent"
+                        >
+                          Add my own colors
+                        </label>
+                      </div>
                     </div>
 
                     <section className="tab_inner_color_section">
@@ -1288,6 +1337,49 @@ export default function CreateOrg(prop) {
                         <img src={ResetImg} alt="" />
                         <span>Reset</span>
                       </button>
+                    </div>
+                    {/* Radio-For-Color */}
+                    <div className="organization-own-select-radio">
+                      <div className="form-check mr-43">
+                        <input
+                          className="form-check-input radio-custom"
+                          onClick={() => {
+                            setCheckedFontsParent(true);
+                            setCheckedFontsOwn(false);
+                            // setFieldValue("tos_type", "Parent");
+                          }}
+                          type="radio"
+                          // name="tos_type"
+                          // id="TosParent"
+                          checked={checkedFontsParent}
+                        />
+                        <label
+                          className="form-check-label radio-custom-label"
+                          for="TosParent"
+                        >
+                          Use from the parent organization
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          className="form-check-input radio-custom"
+                          onClick={() => {
+                            setCheckedFontsParent(false);
+                            setCheckedFontsOwn(true);
+                            setFieldValue("tos_type", "Parent");
+                          }}
+                          type="radio"
+                          // name="tos_type"
+                          // id="TosParent"
+                          checked={checkedFontsOwn}
+                        />
+                        <label
+                          className="form-check-label radio-custom-label"
+                          for="TosParent"
+                        >
+                          Add my own fonts
+                        </label>
+                      </div>
                     </div>
                     <section className="tab_inner_font_section">
                       <div className="tab_inner_font_primary">

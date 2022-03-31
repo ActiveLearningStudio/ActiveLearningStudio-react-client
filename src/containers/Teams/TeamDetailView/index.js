@@ -341,6 +341,7 @@ const TeamDetail = ({
     setSelectedProjectId(projectId);
   };
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <div className="team-detail-page">
       <div className="content">
@@ -530,6 +531,7 @@ const TeamDetail = ({
                         <Buttons
                           icon={faPlus}
                           text="Add project"
+                          iconColor={secondaryColor}
                           primary
                           width="128px"
                           height="32px"

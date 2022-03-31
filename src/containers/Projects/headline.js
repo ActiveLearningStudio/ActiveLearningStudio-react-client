@@ -72,6 +72,7 @@ export default function Headline({ setCreateProject }) {
                 primary
                 text="Create a project"
                 icon={faPlus}
+                iconColor="#FF0000"
                 width="165px"
                 height="35px"
                 onClick={() => {

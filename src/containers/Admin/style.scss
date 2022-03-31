@@ -1128,7 +1128,9 @@
   }
   .form-new-popup-admin {
     position: fixed;
-    background: #0848928f;
+    // background: #0848928f;
+    background: rgba(8, 72, 146, 0.8);
+    // opacity: 80%;
     top: 0;
     width: 100%;
     z-index: 1060;
@@ -1298,10 +1300,14 @@
             color: #ffffff;
             border: none;
             padding: 10px 24px;
-            border: 1px solid$fun-blue-1;
+            border: 1px solid $fun-blue-1;
           }
           button.cancel {
             color: $fun-blue-1;
+            background: #fff;
+          }
+          button.favicon {
+            color: black;
             background: #fff;
           }
         }
@@ -2129,7 +2135,7 @@
 // Update Tabs in Edit Orgainzation----MQ-Start
 .tab-section {
   // width: 100%;
-  max-width: 840px;
+  width: 840px;
   margin-top: 16px;
   background-color: #f1f1f1;
   border-radius: 8px;
@@ -2139,6 +2145,10 @@
     padding: 20px 16px;
     border-radius: 8px;
     margin-top: 22px;
+  }
+  .edit-org-save-btn {
+    background-color: $curriki-main-blue;
+    color: $white;
   }
   .tab-tospp-section {
     display: flex;
@@ -2190,6 +2200,32 @@
       .dimensions-detail {
         margin-top: 8px;
       }
+
+      .button-group-favicon {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        padding-bottom: 40px;
+
+        button {
+          background: $fun-blue-1;
+          border-radius: 50px;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          text-align: center;
+          color: #ffffff;
+          border: none;
+          padding: 10px 24px;
+          border: 1px solid $fun-blue-1;
+        }
+        button.favicon {
+          color: #515151;
+          background: #fff;
+          border-color: #515151;
+        }
+      }
     }
     .tab-theming-btn-icon {
       justify-content: flex-start !important;
@@ -2197,9 +2233,6 @@
       .mr-16 {
         margin-right: 16px;
         margin-left: 16px;
-      }
-      .favicon-btn {
-        background-color: #055160;
       }
     }
 
@@ -2224,6 +2257,14 @@
         line-height: 28px;
         font-size: 24px;
         font-weight: 500;
+      }
+    }
+    .organization-own-select-radio {
+      margin-bottom: 22px;
+      display: flex;
+
+      .mr-43 {
+        margin-right: 43px;
       }
     }
   }

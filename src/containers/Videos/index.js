@@ -47,6 +47,7 @@ const Index = () => {
     }
   }, [activeOrganization]);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <>
       {openMyVideo && (
@@ -147,6 +148,7 @@ const Index = () => {
                       primary={true}
                       text="Create a video"
                       icon={faPlus}
+                      iconColor={secondaryColor}
                       width="163px"
                       height="35px"
                       onClick={() => {

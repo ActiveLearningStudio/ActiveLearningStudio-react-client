@@ -370,14 +370,14 @@ p {
   .layout-cards-process-btn
   .activity-layout-cards
   .activity-layoutCard-active {
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 
 .activity-layout-form
   .layout-cards-process-btn
   .activity-layout-cards
   .curriki-utility-layoutcard:hover {
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 
 .activity-layout-form
@@ -482,7 +482,7 @@ p {
 }
 
 .playlist-div .playlist-title-div .title-md:before {
-  background: var(--main-primary-color) !important;
+  background: var(--main-secondary-color) !important;
 }
 
 .all-playlist.check-custom .playlist-accordion .plydet {
@@ -915,7 +915,7 @@ p {
   font-family: var(--main-text-font) !important;
   color: var(--main-update-permissions-color) !important;
 }
-/* MQ */
+
 .admin-panel nav .nav-link {
   font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
@@ -938,7 +938,7 @@ p {
 }
 .tab_inner_header h1 {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .tab_inner_color_section .tab_inner_color > div input[type="text"] {
   color: var(--main-black-color) !important;
@@ -970,10 +970,10 @@ p {
 .curriki-utility-headingTwo h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 .create-user-modal-header .modal-title {
-  text-decoration: underline var(--main-primary-color) !important;
+  text-decoration: underline var(--main-secondary-color) !important;
 }
 
 .admin-panel
@@ -1111,6 +1111,10 @@ textarea,
 .curriki-utility-uploadimageV2 .uploadimage-option button {
   border-color: var(--main-paragraph-text-color) !important;
   color: var(--main-paragraph-text-color) !important;
+}
+.tab-section .edit-org-save-btn {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
 }
 
 /* My Interactive videos branding */
@@ -1580,7 +1584,7 @@ textarea,
 .team-modal h1 span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
-  border-bottom: 2px solid var(--main-primary-color) !important;
+  border-bottom: 2px solid var(--main-secondary-color) !important;
 }
 .team-modal .modal-footer .add-team-btn {
   color: var(--main-white-color) !important;
@@ -1719,4 +1723,25 @@ textarea,
   span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
+}
+
+/* Button Icons */
+.project-headline button .fa-plus {
+  color: var(--main-secondary-color) !important;
+}
+.teams-page .btn-top-page svg {
+  color: var(--main-secondary-color) !important;
+}
+.admin-panel .controller .btn-text button svg {
+  color: var(--main-secondary-color) !important;
+}
+.admin-panel .controller .import-user svg {
+  color: var(--main-secondary-color) !important;
+}
+.team-modal .modal-footer .add-team-btn svg {
+  color: var(--main-secondary-color) !important;
+}
+
+.project-headline-section .project-share-previews .dropdown-item svg {
+  color: var(--main-secondary-color) !important;
 }
