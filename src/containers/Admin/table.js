@@ -719,6 +719,7 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => {
+                    console.log(row);
                     return (
                       <tr key={counter} className="org-rows">
                         <td>{row.project}</td>
