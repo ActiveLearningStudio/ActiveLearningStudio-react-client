@@ -9,6 +9,7 @@ import {
   createOrganizationNew,
   checkBranding,
   updateOrganization,
+  uploadFaviconIcon,
 } from "store/actions/organization";
 import { removeActiveAdminForm } from "store/actions/admin";
 
@@ -33,7 +34,9 @@ import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 export default function CreateOrg(prop) {
   const { editMode } = prop;
   const [imageActive, setImgActive] = useState(null);
+  const [faviconActive, setFaviconActive] = useState(null);
   const imgUpload = useRef();
+  const faviconUpload = useRef();
   const allListState = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [loaderImg, setLoaderImg] = useState(false);
@@ -58,11 +61,23 @@ export default function CreateOrg(prop) {
   const [checkedFontsParent, setCheckedFontsParent] = useState(false);
   const [checkedFontsOwn, setCheckedFontsOwn] = useState(true);
 
+  const [saveAddOwnprimaryColor, setSaveAddOwnprimaryColor] =
+    useState("#084892");
+  const [saveAddOwnsecondaryColor, setSaveAddOwnsecondaryColor] =
+    useState("#F8AF2C");
+  const [saveAddOwnteritaryColor, setSaveAddOwnteritaryColor] =
+    useState("#515151");
+
+  const [saveAddOwnprimaryFont, setSaveAddOwnprimaryFont] = useState("rubic");
+  const [saveAddOwnsecondaryFont, setSaveAddOwnsecondaryFont] =
+    useState("Open Sans");
   useEffect(() => {
     if (editMode) {
       console.log("Edit Mode", editMode);
       console.log("Active Mode", activeEdit);
+      console.log("activeOrganization", activeOrganization);
       setImgActive(activeEdit?.image);
+      setFaviconActive(activeEdit?.favicon);
       setCheckedActivty(activeEdit?.gcr_activity_visibility);
       setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
       setCheckedProject(activeEdit?.gcr_project_visibility);
@@ -93,6 +108,7 @@ export default function CreateOrg(prop) {
       }
     } else {
       setImgActive(null);
+      setFaviconActive(null);
     }
   }, [editMode, activeEdit]);
 
@@ -174,7 +190,11 @@ export default function CreateOrg(prop) {
           image: editMode
             ? activeEdit.image
             : "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
-          // image_favicon: editMode ? activeEdit?.image_favicon : faviconDefault,
+          favicon: editMode
+            ? activeEdit?.favicon
+              ? activeEdit?.favicon
+              : faviconDefault
+            : faviconDefault,
           name: editMode ? activeEdit?.name : "",
           description: editMode ? activeEdit?.description : "",
           domain: editMode ? activeEdit?.domain : "",
@@ -1052,14 +1072,16 @@ export default function CreateOrg(prop) {
                             {errors.image && touched.image && errors.image}
                           </div>
                         </div>
+
                         {/* Upload Favicon */}
+
                         <div
                           className="mr-100"
-                          onClick={() => imgUpload.current.click()}
+                          onClick={() => faviconUpload.current.click()}
                         >
                           <input
                             type="file"
-                            name="image"
+                            name="favicon"
                             onChange={(e) => {
                               if (
                                 !(
@@ -1084,16 +1106,20 @@ export default function CreateOrg(prop) {
                               } else {
                                 const formData = new FormData();
                                 try {
-                                  formData.append("thumb", e.target.files[0]);
+                                  formData.append("favicon", e.target.files[0]);
                                   const imgurl = dispatch(
-                                    uploadImage(
+                                    uploadFaviconIcon(
                                       allListState.currentOrganization?.id,
                                       formData
                                     )
                                   );
                                   imgurl.then((img) => {
-                                    setImgActive(img.data?.thumbUrl);
-                                    setFieldValue("image", img.data?.thumbUrl);
+                                    console.log(img.data?.faviconUrl);
+                                    setFaviconActive(img.data?.faviconUrl);
+                                    setFieldValue(
+                                      "favicon",
+                                      img.data?.faviconUrl
+                                    );
                                   });
                                 } catch (err) {
                                   Swal.fire({
@@ -1105,7 +1131,7 @@ export default function CreateOrg(prop) {
                               }
                             }}
                             onBlur={handleBlur}
-                            ref={imgUpload}
+                            ref={faviconUpload}
                             style={{ display: "none" }}
                           />
 
@@ -1118,11 +1144,11 @@ export default function CreateOrg(prop) {
                             <div>
                               <img
                                 src={
-                                  imageActive
-                                    ? imageActive.includes("pexels.com")
-                                      ? imageActive
-                                      : `${global.config.resourceUrl}${imageActive}`
-                                    : values.image
+                                  faviconActive
+                                    ? faviconActive.includes("pexels.com")
+                                      ? faviconActive
+                                      : `${global.config.resourceUrl}${faviconActive}`
+                                    : values.favicon
                                 }
                                 style={{
                                   width: "72px",
@@ -1153,7 +1179,9 @@ export default function CreateOrg(prop) {
                           </div>
 
                           <div className="error">
-                            {errors.image && touched.image && errors.image}
+                            {errors.favicon &&
+                              touched.favicon &&
+                              errors.favicon}
                           </div>
                         </div>
                       </div>
@@ -1190,11 +1218,58 @@ export default function CreateOrg(prop) {
                           onClick={() => {
                             setCheckedColorsParent(true);
                             setCheckedColorsOwn(false);
-                            // setFieldValue("tos_type", "Parent");
+                            if (editMode) {
+                              activeEdit?.parent?.branding &&
+                                setFieldValue(
+                                  "primary_color",
+                                  activeEdit?.parent?.branding.primary_color
+                                );
+
+                              activeEdit?.parent?.branding &&
+                                setFieldValue(
+                                  "secondary_color",
+                                  activeEdit?.parent?.branding.secondary_color
+                                );
+
+                              activeEdit?.parent?.branding &&
+                                setFieldValue(
+                                  "tertiary_color",
+                                  activeEdit?.parent?.branding.tertiary_color
+                                );
+                              activeEdit?.parent?.branding &&
+                                updatePreviewScreen(
+                                  activeEdit?.parent?.branding.primary_color,
+                                  activeEdit?.parent?.branding.secondary_color,
+                                  activeEdit?.parent?.branding.tertiary_color,
+                                  values.primary_font_family,
+                                  values.secondary_font_family
+                                );
+                            } else {
+                              updatePreviewScreen(
+                                activeOrganization?.branding.primary_color,
+                                activeOrganization?.branding.secondary_color,
+                                activeOrganization?.branding.tertiary_color,
+                                values.primary_font_family,
+                                values.secondary_font_family
+                              );
+                              activeOrganization?.branding &&
+                                setFieldValue(
+                                  "primary_color",
+                                  activeOrganization?.branding.primary_color
+                                );
+                              activeOrganization?.branding &&
+                                setFieldValue(
+                                  "secondary_color",
+                                  activeOrganization?.branding.secondary_color
+                                );
+                              activeOrganization?.branding &&
+                                setFieldValue(
+                                  "tertiary_color",
+                                  activeOrganization?.branding.tertiary_color
+                                );
+                            }
                           }}
                           type="radio"
-                          // name="tos_type"
-                          // id="TosParent"
                           checked={checkedColorsParent}
                         />
                         <label
@@ -1210,7 +1285,59 @@ export default function CreateOrg(prop) {
                           onClick={() => {
                             setCheckedColorsParent(false);
                             setCheckedColorsOwn(true);
-                            // setFieldValue("tos_type", "Parent");
+                            if (editMode) {
+                              activeEdit?.branding &&
+                                setFieldValue(
+                                  "primary_color",
+                                  activeEdit?.branding.primary_color
+                                );
+
+                              activeEdit?.branding &&
+                                setFieldValue(
+                                  "secondary_color",
+                                  activeEdit?.branding.secondary_color
+                                );
+
+                              activeEdit?.branding &&
+                                setFieldValue(
+                                  "tertiary_color",
+                                  activeEdit?.branding.tertiary_color
+                                );
+                              updatePreviewScreen(
+                                activeEdit?.branding.primary_color,
+                                activeEdit?.branding.secondary_color,
+                                activeEdit?.branding.tertiary_color,
+                                values.primary_font_family,
+                                values.secondary_font_family
+                              );
+                            } else {
+                              setFieldValue(
+                                "primary_color",
+                                saveAddOwnprimaryColor
+                              );
+                              setFieldValue(
+                                "secondary_color",
+                                saveAddOwnsecondaryColor
+                              );
+                              setFieldValue(
+                                "tertiary_color",
+                                saveAddOwnteritaryColor
+                              );
+                              // updatePreviewScreen(
+                              //   saveAddOwnprimaryColor,
+                              //   saveAddOwnsecondaryColor,
+                              //   saveAddOwnteritaryColor,
+                              //   values.primary_font_family,
+                              //   values.secondary_font_family
+                              // );
+                              updatePreviewScreen(
+                                values.primary_color,
+                                values.secondary_color,
+                                values.tertiary_color,
+                                values.primary_font_family,
+                                values.secondary_font_family
+                              );
+                            }
                           }}
                           type="radio"
                           // name="tos_type"
@@ -1225,97 +1352,111 @@ export default function CreateOrg(prop) {
                         </label>
                       </div>
                     </div>
+                    {checkedColorsOwn && (
+                      <>
+                        <section className="tab_inner_color_section">
+                          <div className="tab_inner_color">
+                            <h4>Primary </h4>
+                            <div>
+                              {/* <input type="color" value="#084892" /> */}
 
-                    <section className="tab_inner_color_section">
-                      <div className="tab_inner_color">
-                        <h4>Primary </h4>
-                        <div>
-                          {/* <input type="color" value="#084892" /> */}
-
-                          <input
-                            type="color"
-                            name="primary_color"
-                            onChange={(e) => {
-                              handleChange(e);
-                              updatePreviewScreen(
-                                e.target.value,
-                                values.secondary_color,
-                                values.tertiary_color,
-                                values.primary_font_family,
-                                values.secondary_font_family
-                              );
-                            }}
-                            onBlur={handleBlur}
-                            value={values.primary_color}
-                          />
-                          <input type="text" value={values.primary_color} />
-                          <div className="error">
-                            {errors.name && touched.name && errors.name}
+                              <input
+                                type="color"
+                                name="primary_color"
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  updatePreviewScreen(
+                                    e.target.value,
+                                    values.secondary_color,
+                                    values.tertiary_color,
+                                    values.primary_font_family,
+                                    values.secondary_font_family
+                                  );
+                                }}
+                                // onMouseLeave={(e) => {
+                                //   alert("Mouse Leve");
+                                //   checkedColorsOwn &&
+                                //     saveAddOwnprimaryColor(e.target.value);
+                                // }}
+                                onBlur={handleBlur}
+                                value={values.primary_color}
+                              />
+                              <input type="text" value={values.primary_color} />
+                              <div className="error">
+                                {errors.name && touched.name && errors.name}
+                              </div>
+                            </div>
+                            <p>
+                              Use this color for Displays, Headings, Link texts,
+                              and some components in a default state if it says
+                              so on their own specs.
+                            </p>
                           </div>
-                        </div>
-                        <p>
-                          Use this color for Displays, Headings, Link texts, and
-                          some components in a default state if it says so on
-                          their own specs.
-                        </p>
-                      </div>
-                      <div className="tab_inner_color tab_inner_color_secondry">
-                        <h4>Secondary </h4>
-                        <div>
-                          {/* <input type="color" value="#F8AF2C" /> */}
-                          <input
-                            type="color"
-                            name="secondary_color"
-                            onChange={(e) => {
-                              handleChange(e);
-                              updatePreviewScreen(
-                                values.primary_color,
-                                e.target.value,
-                                values.tertiary_color,
-                                values.primary_font_family,
-                                values.secondary_font_family
-                              );
-                            }}
-                            onBlur={handleBlur}
-                            value={values.secondary_color}
-                          />
-                          <input type="text" value={values.secondary_color} />
-                        </div>
-                        <p>
-                          This color should be use for details that we want to
-                          highlitght or that we want to make more visible for
-                          users.
-                        </p>
-                      </div>
-                      <div className="tab_inner_color tab_inner_color_tertiary">
-                        <h4>Tertiary </h4>
-                        <div>
-                          {/* <input type="color" value="#515151" /> */}
-                          <input
-                            type="color"
-                            name="tertiary_color"
-                            onChange={(e) => {
-                              handleChange(e);
-                              updatePreviewScreen(
-                                values.primary_color,
-                                values.secondary_color,
-                                e.target.value,
-                                values.primary_font_family,
-                                values.secondary_font_family
-                              );
-                            }}
-                            onBlur={handleBlur}
-                            value={values.tertiary_color}
-                          />
-                          <input type="text" value={values.tertiary_color} />
-                        </div>
-                        <p>
-                          This color should be use for most of the body texts
-                          and some details that we want to highlitght or that we
-                          want to make more visible for users.
-                        </p>
-                      </div>
-                    </section>
+                          <div className="tab_inner_color tab_inner_color_secondry">
+                            <h4>Secondary </h4>
+                            <div>
+                              {/* <input type="color" value="#F8AF2C" /> */}
+                              <input
+                                type="color"
+                                name="secondary_color"
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  updatePreviewScreen(
+                                    values.primary_color,
+                                    e.target.value,
+                                    values.tertiary_color,
+                                    values.primary_font_family,
+                                    values.secondary_font_family
+                                  );
+                                }}
+                                onBlur={handleBlur}
+                                value={values.secondary_color}
+                              />
+                              <input
+                                type="text"
+                                value={values.secondary_color}
+                              />
+                            </div>
+                            <p>
+                              This color should be use for details that we want
+                              to highlitght or that we want to make more visible
+                              for users.
+                            </p>
+                          </div>
+                          <div className="tab_inner_color tab_inner_color_tertiary">
+                            <h4>Tertiary </h4>
+                            <div>
+                              {/* <input type="color" value="#515151" /> */}
+                              <input
+                                type="color"
+                                name="tertiary_color"
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  updatePreviewScreen(
+                                    values.primary_color,
+                                    values.secondary_color,
+                                    e.target.value,
+                                    values.primary_font_family,
+                                    values.secondary_font_family
+                                  );
+                                }}
+                                onBlur={handleBlur}
+                                value={values.tertiary_color}
+                              />
+                              <input
+                                type="text"
+                                value={values.tertiary_color}
+                              />
+                            </div>
+                            <p>
+                              This color should be use for most of the body
+                              texts and some details that we want to highlitght
+                              or that we want to make more visible for users.
+                            </p>
+                          </div>
+                        </section>
+                      </>
+                    )}
                   </div>
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
@@ -1346,11 +1487,55 @@ export default function CreateOrg(prop) {
                           onClick={() => {
                             setCheckedFontsParent(true);
                             setCheckedFontsOwn(false);
-                            // setFieldValue("tos_type", "Parent");
+                            if (editMode) {
+                              activeEdit?.parent?.branding &&
+                                setFieldValue(
+                                  "primary_font_family",
+                                  activeEdit?.parent?.branding
+                                    .primary_font_family
+                                );
+                              activeEdit?.parent?.branding &&
+                                setFieldValue(
+                                  "secondary_font_family",
+                                  activeEdit?.parent?.branding
+                                    .secondary_font_family
+                                );
+
+                              activeEdit?.parent?.branding &&
+                                updatePreviewScreen(
+                                  values.primary_color,
+                                  values.secondary_color,
+                                  values.tertiary_color,
+                                  activeEdit?.parent?.branding
+                                    .primary_font_family,
+                                  activeEdit?.parent?.branding
+                                    .secondary_font_family
+                                );
+                            } else {
+                              updatePreviewScreen(
+                                values.primary_color,
+                                values.secondary_color,
+                                values.tertiary_color,
+                                activeOrganization?.branding
+                                  .primary_font_family,
+                                activeOrganization?.branding
+                                  .secondary_font_family
+                              );
+                              activeOrganization?.branding &&
+                                setFieldValue(
+                                  "primary_font_family",
+                                  activeOrganization?.branding
+                                    .primary_font_family
+                                );
+                              activeOrganization?.branding &&
+                                setFieldValue(
+                                  "secondary_font_family",
+                                  activeOrganization?.branding
+                                    .secondary_font_family
+                                );
+                            }
                           }}
                           type="radio"
-                          // name="tos_type"
-                          // id="TosParent"
                           checked={checkedFontsParent}
                         />
                         <label
@@ -1366,7 +1551,43 @@ export default function CreateOrg(prop) {
                           onClick={() => {
                             setCheckedFontsParent(false);
                             setCheckedFontsOwn(true);
-                            setFieldValue("tos_type", "Parent");
+                            if (editMode) {
+                              activeEdit?.branding &&
+                                setFieldValue(
+                                  "primary_font_family",
+                                  activeEdit?.branding.primary_font_family
+                                );
+
+                              activeEdit?.branding &&
+                                setFieldValue(
+                                  "secondary_font_family",
+                                  activeEdit?.branding.secondary_font_family
+                                );
+
+                              updatePreviewScreen(
+                                values.primary_color,
+                                values.secondary_color,
+                                values.tertiary_color,
+                                activeEdit?.branding.primary_font_family,
+                                activeEdit?.branding.secondary_font_family
+                              );
+                            } else {
+                              updatePreviewScreen(
+                                values.primary_color,
+                                values.secondary_color,
+                                values.tertiary_color,
+                                saveAddOwnprimaryFont,
+                                saveAddOwnsecondaryFont
+                              );
+                              setFieldValue(
+                                "primary_font_family",
+                                saveAddOwnprimaryFont
+                              );
+                              setFieldValue(
+                                "secondary_font_family",
+                                saveAddOwnsecondaryFont
+                              );
+                            }
                           }}
                           type="radio"
                           // name="tos_type"
@@ -1381,60 +1602,62 @@ export default function CreateOrg(prop) {
                         </label>
                       </div>
                     </div>
-                    <section className="tab_inner_font_section">
-                      <div className="tab_inner_font_primary">
-                        <h4>Primary </h4>
-                        <select
-                          name="primary_font_family"
-                          onChange={(e) => {
-                            handleChange(e);
-                            updatePreviewScreen(
-                              values.primary_color,
-                              values.secondary_color,
-                              values.tertiary_color,
-                              e.target.value,
-                              values.secondary_font_family
-                            );
-                          }}
-                          onBlur={handleBlur}
-                          value={values.primary_font_family}
-                        >
-                          <option value="rubic">Rubic</option>
-                          <option value="SmoochSans">SmoochSans</option>
-                          <option value="Open Sans">Open Sans</option>
-                          <option value="Fredoka">Fredoka</option>
-                          <option value="BhuTukaExpandedOne">
-                            BhuTukaExpandedOne
-                          </option>
-                        </select>
-                      </div>
-                      <div className="tab_inner_font_primary">
-                        <h4>Secondary </h4>
-                        <select
-                          name="secondary_font_family"
-                          onChange={(e) => {
-                            handleChange(e);
-                            updatePreviewScreen(
-                              values.primary_color,
-                              values.secondary_color,
-                              e.target.value,
-                              values.primary_font_family,
-                              e.target.value
-                            );
-                          }}
-                          onBlur={handleBlur}
-                          value={values.secondary_font_family}
-                        >
-                          <option value="rubic">Rubic</option>
-                          <option value="SmoochSans">SmoochSans</option>
-                          <option value="Open Sans">Open Sans</option>
-                          <option value="Fredoka">Fredoka</option>
-                          <option value="BhuTukaExpandedOne">
-                            BhuTukaExpandedOne
-                          </option>
-                        </select>
-                      </div>
-                      {/* <div className="tab_inner_font_upload">
+                    {checkedFontsOwn && (
+                      <>
+                        <section className="tab_inner_font_section">
+                          <div className="tab_inner_font_primary">
+                            <h4>Primary </h4>
+                            <select
+                              name="primary_font_family"
+                              onChange={(e) => {
+                                handleChange(e);
+                                updatePreviewScreen(
+                                  values.primary_color,
+                                  values.secondary_color,
+                                  values.tertiary_color,
+                                  e.target.value,
+                                  values.secondary_font_family
+                                );
+                              }}
+                              onBlur={handleBlur}
+                              value={values.primary_font_family}
+                            >
+                              <option value="rubic">Rubic</option>
+                              <option value="SmoochSans">SmoochSans</option>
+                              <option value="Open Sans">Open Sans</option>
+                              <option value="Fredoka">Fredoka</option>
+                              <option value="BhuTukaExpandedOne">
+                                BhuTukaExpandedOne
+                              </option>
+                            </select>
+                          </div>
+                          <div className="tab_inner_font_primary">
+                            <h4>Secondary </h4>
+                            <select
+                              name="secondary_font_family"
+                              onChange={(e) => {
+                                handleChange(e);
+                                updatePreviewScreen(
+                                  values.primary_color,
+                                  values.secondary_color,
+                                  e.target.value,
+                                  values.primary_font_family,
+                                  e.target.value
+                                );
+                              }}
+                              onBlur={handleBlur}
+                              value={values.secondary_font_family}
+                            >
+                              <option value="rubic">Rubic</option>
+                              <option value="SmoochSans">SmoochSans</option>
+                              <option value="Open Sans">Open Sans</option>
+                              <option value="Fredoka">Fredoka</option>
+                              <option value="BhuTukaExpandedOne">
+                                BhuTukaExpandedOne
+                              </option>
+                            </select>
+                          </div>
+                          {/* <div className="tab_inner_font_upload">
                         <div>
                           <img src={UploadImg} />
                         </div>
@@ -1443,7 +1666,9 @@ export default function CreateOrg(prop) {
                           <p>Drag {"&"} drop or browse</p>
                         </div>
                       </div> */}
-                    </section>
+                        </section>
+                      </>
+                    )}
                   </div>
 
                   <div className="tab-inner-section tab-inner-section-preview ">
