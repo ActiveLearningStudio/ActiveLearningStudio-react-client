@@ -31,6 +31,8 @@ const NotificationArea = (props) => {
     }
   }, [content.data]);
 
+  console.log(notificationText);
+
   return (
     <>
       {content.data?.message && (
@@ -38,7 +40,22 @@ const NotificationArea = (props) => {
           <div className="user-detail">
             {/* <img src={flashCards} alt="" /> */}
             <div className="user-icons">{userNameImg.toUpperCase()}</div>
-            <p ref={notificationText} />
+            <p>
+              Project &nbsp;
+              <b>{content.data.project}</b>
+              &nbsp; has been exported successfully.
+              <br />
+              Please&nbsp;
+              <a
+                target="_blank"
+                // eslint-disable-next-line max-len
+                href={`${process.env.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
+                rel="noreferrer"
+              >
+                Click here
+              </a>
+              &nbsp; to download the exported file
+            </p>
           </div>
 
           <div className="settings-notification">
@@ -55,9 +72,7 @@ const NotificationArea = (props) => {
                 </Dropdown.Menu>
               </Dropdown>
             )}
-            <div className="timer">
-              {content.created_at}
-            </div>
+            <div className="timer">{content.created_at}</div>
           </div>
         </div>
       )}

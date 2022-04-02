@@ -199,7 +199,9 @@
       display: flex;
       flex-wrap: wrap;
       .alert {
-        width: 945px;
+        width: 100%;
+        min-width: 500px;
+        max-width: 1000px;
       }
     }
     .playlist-resource {
@@ -519,6 +521,7 @@
   width: 100%;
   height: auto;
   margin: 0 !important;
+  resize: both;
 }
 .team-project-btns.whiteboard button {
   &:hover {
