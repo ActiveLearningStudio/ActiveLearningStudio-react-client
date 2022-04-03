@@ -517,14 +517,24 @@
   padding: 20px;
 }
 .customModalSize {
-  max-width: 1450px !important;
+  max-width: 100% !important;
   width: 100%;
   height: auto;
-  margin: 0 !important;
+  height: 100%;
   resize: both;
+  margin: 0 !important;
+  padding: 0 !important;
+  iframe {
+    height: calc(100vh - 80px);
+  }
 }
 .team-project-btns.whiteboard button {
   &:hover {
     color: #fff !important;
   }
+}
+
+.react-responsive-modal-container.react-responsive-modal-containerCenter {
+  margin: 0 40px;
+  margin-bottom: 40px;
 }
