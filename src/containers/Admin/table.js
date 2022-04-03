@@ -58,6 +58,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
     { indexing: 1, indexing_text: 'REQUESTED' },
@@ -347,7 +348,7 @@ function Table(props) {
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: row.image?.includes('pexels.com') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
+                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',

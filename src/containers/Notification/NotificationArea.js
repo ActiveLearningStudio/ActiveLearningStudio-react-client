@@ -49,7 +49,7 @@ const NotificationArea = (props) => {
               <a
                 target="_blank"
                 // eslint-disable-next-line max-len
-                href={`${process.env.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
+                href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
                 rel="noreferrer"
               >
                 Click here
