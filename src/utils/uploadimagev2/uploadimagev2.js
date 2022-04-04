@@ -19,9 +19,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
   const currikiUtility = classNames('curriki-utility-uploadimageV2', className);
   const dispatch = useDispatch();
   const openFile = useRef();
-  const [uploadImage, setUploadImage] = useState(
-    thumb_url
-  );
+  const [uploadImage, setUploadImage] = useState(thumb_url);
 
   const uploadThumb = async (e) => {
     const formData = new FormData();
