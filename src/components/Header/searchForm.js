@@ -58,9 +58,7 @@ function SearchForm() {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) =>
-      data?.activityItems?.map((itm) => allItems.push(itm))
-    );
+    activityTypesState?.data?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
       setSimpleSearch("");
@@ -484,7 +482,7 @@ function SearchForm() {
                     <option value="" disabled selected hidden>
                       Type of Activity
                     </option>
-                    {activityTypes.map((data) => (
+                    {activityTypes?.map((data) => (
                       <option key={data.id} value={data.h5pLib}>
                         {data.title}
                       </option>

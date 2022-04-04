@@ -57,8 +57,8 @@ function Controller(props) {
     setActiveRole,
     setActivePage,
     type,
-    searchQueryActivities,
-    setSearchQueryActivities,
+    // searchQueryActivities,
+    // setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     setSearchQueryProject,
@@ -67,7 +67,7 @@ function Controller(props) {
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
-    searchActivitiesQueryHandler,
+    // searchActivitiesQueryHandler,
     setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
@@ -586,6 +586,13 @@ function Controller(props) {
             </svg>
           </div>
         )}
+
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} />
+            <img src={searchimg} alt="search" />
+          </div>
+        )}
         {paginationCounter && (
           <div className="pagination-counter drop-counter ">
             Rows per page
@@ -974,19 +981,9 @@ function Controller(props) {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && (
-                    <Dropdown.Item
-                      onClick={() => setSelectedActivityType(null)}
-                    >
-                      Select
-                    </Dropdown.Item>
-                  )}
-                  {activityTypes?.map((item) => (
-                    <Dropdown.Item
-                      onClick={() => setSelectedActivityType(item)}
-                    >
-                      {item.title}
-                    </Dropdown.Item>
+                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
+                  {activityTypes?.data.map((item) => (
+                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -1351,23 +1348,36 @@ function Controller(props) {
             </div>
           )}
 
-        {!!btnText &&
-          subType ===
-            "Author Tags" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_author_tag") {
-                    dispatch(setActiveAdminForm("add_author_tag"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_author_tag') {
+                  dispatch(setActiveAdminForm('add_author_tag'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */&& (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
 
         {!!btnText &&
           subType === "Manage Roles" &&
@@ -1562,8 +1572,8 @@ Controller.propTypes = {
   setActiveRole: PropTypes.func,
   setActivePage: PropTypes.func,
   type: PropTypes.string,
-  searchQueryActivities: PropTypes.string,
-  setSearchQueryActivities: PropTypes.func,
+  // searchQueryActivities: PropTypes.string,
+  // setSearchQueryActivities: PropTypes.func,
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
@@ -1572,7 +1582,7 @@ Controller.propTypes = {
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
   searchProjectQueryChangeHandler: PropTypes.func,
-  searchActivitiesQueryHandler: PropTypes.func,
+  // searchActivitiesQueryHandler: PropTypes.func,
   // searchUserReportQueryHandler: PropTypes.func,
   size: PropTypes.number,
   setSize: PropTypes.func,
@@ -1606,11 +1616,11 @@ Controller.defaultProps = {
   setActiveRole: {},
   setActivePage: {},
   filteredItems: {},
-  type: "",
-  searchQueryActivities: "",
-  setSearchQueryActivities: {},
-  searchQuery: "",
-  searchQueryProject: "",
+  type: '',
+  // searchQueryActivities: '',
+  // setSearchQueryActivities: {},
+  searchQuery: '',
+  searchQueryProject: '',
   setSearchQueryProject: {},
   setSearchQueryTeam: {},
   // searchQueryStats: PropTypes.string,
@@ -1618,7 +1628,7 @@ Controller.defaultProps = {
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  searchActivitiesQueryHandler: {},
+  // searchActivitiesQueryHandler: {},
   // searchUserReportQueryHandler: PropTypes.func,
   size: 10,
   setSize: {},

@@ -10,24 +10,15 @@ import projectService from "services/project.service";
 
 import "./style.scss";
 
-import Delete from "../../assets/images/menu-dele.svg";
-import Clone from "../../assets/images/menu-dupli.svg";
-import Edit from "../../assets/images/menu-edit.svg";
-import Export from "../../assets/images/export-img.svg";
-import MenuLogo from "../../assets/images/menu-logo.svg";
-import Remove from "../../assets/images/close.svg";
-import {
-  getAuthorTag,
-  getDefaultSso,
-  getEducationLevel,
-  getLmsProject,
-  getLtiTools,
-  getSubjects,
-  setActiveAdminForm,
-  setCurrentUser,
-  showRemoveUser,
-} from "store/actions/admin";
-import { deleteBrightCove } from "store/actions/videos";
+import Delete from '../../assets/images/menu-dele.svg';
+import Clone from '../../assets/images/menu-dupli.svg';
+import Edit from '../../assets/images/menu-edit.svg';
+import Export from '../../assets/images/export-img.svg';
+import MenuLogo from '../../assets/images/menu-logo.svg';
+import Remove from '../../assets/images/close.svg';
+import { getAuthorTag, getDefaultSso, getEducationLevel, getLmsProject, getLtiTools,
+   getSubjects, setActiveAdminForm, setCurrentUser, showRemoveUser, getActivityLayout } from 'store/actions/admin';
+import { deleteBrightCove } from 'store/actions/videos';
 
 import {
   deleteOrganization,
@@ -764,11 +755,11 @@ const AdminDropdown = (props) => {
                   onClick={() => {
                     if (subType === "Activity Items") {
                       selectActivityItem();
-                      dispatch(selectActivityItem(type1));
-                      dispatch(setActiveAdminForm("edit_activity_item"));
+                      dispatch(selectActivityItem(row));
+                      dispatch(setActiveAdminForm('edit_activity_item'));
                     } else {
-                      dispatch(selectActivityType(type1));
-                      dispatch(setActiveAdminForm("edit_activity_type"));
+                      dispatch(selectActivityType(row));
+                      dispatch(setActiveAdminForm('edit_activity_type'));
                     }
                   }}
                 >
@@ -817,15 +808,11 @@ const AdminDropdown = (props) => {
                       if (result.isConfirmed) {
                         Swal.showLoading();
                         var resultDel;
-                        if (subType === "Activity Items") {
-                          resultDel = await dispatch(
-                            deleteActivityItem(type1.id)
-                          );
-                          dispatch(loadResourceItemAction(type1.id));
+                        if (subType === 'Activity Items') {
+                          resultDel = await dispatch(deleteActivityItem(row.id));
+                          dispatch(loadResourceItemAction(row.id));
                         } else {
-                          resultDel = await dispatch(
-                            deleteActivityType(type1.id)
-                          );
+                          resultDel = await dispatch(deleteActivityType(row.id));
 
                           if (resultDel) {
                             Swal.fire({
@@ -950,7 +937,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteSubject(row?.id);
+                      const response = adminService.deleteSubject(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -961,7 +948,7 @@ const AdminDropdown = (props) => {
                               confirmButton: "confirmation-close-btn",
                             },
                           });
-                          dispatch(getSubjects(activePage || 1));
+                          dispatch(getSubjects(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -1070,9 +1057,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteEducationLevel(
-                        row?.id
-                      );
+                      const response = adminService.deleteEducationLevel(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -1083,7 +1068,7 @@ const AdminDropdown = (props) => {
                               confirmButton: "confirmation-close-btn",
                             },
                           });
-                          dispatch(getEducationLevel(activePage || 1));
+                          dispatch(getEducationLevel(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }
@@ -1192,7 +1177,7 @@ const AdminDropdown = (props) => {
                         },
                         button: false,
                       });
-                      const response = adminService.deleteAuthorTag(row?.id);
+                      const response = adminService.deleteAuthorTag(activeOrganization?.id, row?.id);
                       response
                         .then((res) => {
                           Swal.fire({
@@ -1203,7 +1188,67 @@ const AdminDropdown = (props) => {
                               confirmButton: "confirmation-close-btn",
                             },
                           });
-                          dispatch(getAuthorTag(activePage || 1));
+                          dispatch(getAuthorTag(activeOrganization?.id, activePage || 1));
+                        })
+                        .catch((err) => console.log(err));
+                    }
+                  });
+                }}
+              >
+                <img src={Delete} alt="Preview" className="menue-img" />
+                Delete
+              </Dropdown.Item>
+            </>
+          )}
+          
+          {type === 'Activities' && subType === 'Activity Layouts' && (
+            <>
+              <Dropdown.Item
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('edit_activity_layout'));
+                }}
+              >
+                <img src={Edit} alt="Preview" className="menue-img" />
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#084892',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete it',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      Swal.fire({
+                        title: 'Author Tag',
+                        icon: 'info',
+                        text: 'Deleting activity layout...',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                        button: false,
+                      });
+                      const response = adminService.deleteActivityLayout(activeOrganization?.id, row?.id);
+                      response
+                        .then((res) => {
+                          Swal.fire({
+                            icon: 'success',
+                            text: 'Activity layout deleted successfully',
+                            confirmButtonText: 'Close',
+                            customClass: {
+                              confirmButton: 'confirmation-close-btn',
+                            },
+                          });
+                          dispatch(getActivityLayout(activeOrganization?.id, activePage || 1));
                         })
                         .catch((err) => console.log(err));
                     }

@@ -4,40 +4,42 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import * as actionTypes from 'store/actionTypes';
 import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
-import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction } from 'store/actions/resource';
+import { uploadActivityLayoutThumbAction } from 'store/actions/resource';
+import { getActivityLayout, removeActiveAdminForm } from 'store/actions/admin';
+import adminapi from '../../../services/admin.service';
 
-export default function CreateActivityItem(props) {
+export default function CreateActivityLayout(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
   const imgUpload = useRef();
   const dispatch = useDispatch();
-  const activityTypes = useSelector((state) => state.admin.activityTypes);
+  const organization = useSelector((state) => state.organization);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activePage } = useSelector((state) => state.organization);
+  const { activeEdit } = organization;
   useEffect(() => {
     if (editMode) {
-      setImgActive(selectedItem?.image);
+      setImgActive(activeEdit?.image);
     } else {
       setImgActive(null);
     }
-  }, [editMode, selectedItem]);
+  }, [editMode, activeEdit]);
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          title: editMode ? selectedItem?.title : '',
-          description: editMode ? selectedItem?.description : '',
-          activity_type_id: editMode ? selectedItem?.activityType?.id : '',
-          type: editMode ? selectedItem?.type : '',
-          h5pLib: editMode ? selectedItem?.h5pLib : '',
-          demo_activity_id: editMode ? selectedItem?.demo_activity_id : '',
-          demo_video_id: editMode ? selectedItem?.demo_video_id : '',
-          image: editMode ? selectedItem?.image : '',
-          order: editMode ? selectedItem?.order : '',
+          title: editMode ? activeEdit?.title : '',
+          description: editMode ? activeEdit?.description : '',
+          type: editMode ? activeEdit?.type : '',
+          h5pLib: editMode ? activeEdit?.h5pLib : '',
+          demo_activity_id: editMode ? activeEdit?.demo_activity_id : '',
+          demo_video_id: editMode ? activeEdit?.demo_video_id : '',
+          image: editMode ? activeEdit?.image : '',
+          order: editMode ? activeEdit?.order : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -46,9 +48,6 @@ export default function CreateActivityItem(props) {
           }
           if (!values.description) {
             errors.description = 'Required';
-          }
-          if (!values.activity_type_id) {
-            errors.activity_type_id = 'Required';
           }
           if (!values.type) {
             errors.type = 'Required';
@@ -71,63 +70,62 @@ export default function CreateActivityItem(props) {
           return errors;
         }}
         onSubmit={async (values) => {
-          console.log(values);
           if (editMode) {
             Swal.fire({
               title: 'Activity',
               icon: 'info',
-              text: 'Updating activity item...',
+              text: 'Updating activity layout...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
               },
               button: false,
             });
-            const response = await dispatch(editActivityItem(values, selectedItem.id));
-            if (response) {
+            const result = adminapi.updateActivityLayout(organization?.activeOrganization?.id, activeEdit?.id, values);
+            result.then((res) => {
               Swal.fire({
-                text: 'Activity item edited successfully',
                 icon: 'success',
-                showCancelButton: false,
+                text: "Activity layout edited successfully",
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',               
                 }
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
-                }
               });
-            }
+              dispatch(getActivityLayout(organization?.activeOrganization?.id, 1));
+              dispatch(removeActiveAdminForm());
+              dispatch({
+                type: actionTypes.NEWLY_EDIT_RESOURCE,
+                payload: res?.data,
+              });
+            });
           } else {
             Swal.fire({
               title: 'Activity',
               icon: 'info',
-              text: 'Creating new activity item...',
+              text: 'Creating new activity layout...',
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
               },
               button: false,
             });
-            const response = await dispatch(createActivityItem(values));
-            if (response) {
+            const result = adminapi.createActivityLayout(organization?.activeOrganization?.id, values);
+            result.then((res) => {
               Swal.fire({
-                text: 'Activity item added successfully',
                 icon: 'success',
-                showCancelButton: false,
+                text: 'Activity added successfully',
                 confirmButtonText: 'Close',
                 customClass: {
                   confirmButton: 'confirmation-close-btn',               
                 }
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
-                }
               });
-            }
+              dispatch(getActivityLayout(organization?.activeOrganization?.id, 1));
+              dispatch(removeActiveAdminForm());
+              dispatch({
+                type: actionTypes.NEWLY_CREATED_RESOURCE,
+                payload: res?.data,
+              });
+            });
           }
         }}
       >
@@ -142,10 +140,7 @@ export default function CreateActivityItem(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>
-              {editMode ? 'Edit ' : 'Add '}
-              activity item
-            </h2>
+            <h2>{editMode ? 'Edit' : 'Add'} activity layout</h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
@@ -178,20 +173,6 @@ export default function CreateActivityItem(props) {
                     value={values.order}
                   />
                   <div className="error">{errors.order && touched.order && errors.order}</div>
-                </div>
-
-                <div className="form-group-create">
-                  <h3>Activity Type</h3>
-                  <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
-                    <option value=""> </option>
-                    {activityTypes?.data.length > 0 &&
-                      activityTypes?.data.map((type) => (
-                        <option value={type?.id} key={type?.id}>
-                          {type?.title}
-                        </option>
-                      ))}
-                  </select>
-                  <div className="error">{errors.activity_type_id && touched.activity_type_id && errors.activity_type_id}</div>
                 </div>
 
                 <div className="form-group-create">
@@ -252,7 +233,7 @@ export default function CreateActivityItem(props) {
                             const formData = new FormData();
                             try {
                               formData.append('image', e.target.files[0]);
-                              const imgurl = dispatch(uploadActivityItemThumbAction(formData));
+                              const imgurl = dispatch(uploadActivityLayoutThumbAction(formData));
                               imgurl.then((img) => {
                                 setImgActive(img);
                                 setFieldValue('image', img);
@@ -300,7 +281,7 @@ export default function CreateActivityItem(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit' : 'Add'} activity item</button>
+              <button type="submit">{editMode ? 'Edit' : 'Add'} activity layout</button>
               <button
                 type="button"
                 className="cancel"
@@ -318,9 +299,9 @@ export default function CreateActivityItem(props) {
   );
 }
 
-CreateActivityItem.propTypes = {
+CreateActivityLayout.propTypes = {
   editMode: PropTypes.bool,
 };
-CreateActivityItem.defaultProps = {
+CreateActivityLayout.defaultProps = {
   editMode: false,
 };

@@ -1,35 +1,36 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import { Tabs, Tab, Alert } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch, useSelector } from "react-redux";
-import { setActiveAdminForm } from "store/actions/admin";
-import EditProjectModel from "./model/editprojectmodel";
-import { removeActiveAdminForm, setActiveTab } from "store/actions/admin";
-import CreateActivityItem from "./formik/createActivityItem";
-import CreateActivityType from "./formik/createActivity";
-import CreateOrg from "./formik/createOrg";
-import AddRole from "./formik/addRole";
-import CreateUser from "./CreateUser";
-import CreateUserForm from "containers/Admin/formik/createuser";
-import BrightCove from "./formik/createBrightCove";
-import Pills from "./pills";
-import Heading from "./heading";
-import Breadcrump from "utils/BreadCrump/breadcrump";
-import * as actionTypes from "store/actionTypes";
-import CreateLms from "./formik/createLms";
-import CreateDefaultSso from "./formik/createDefaultSso";
-import CreateLtiTool from "./formik/createLtiTool";
-import RemoveUser from "./RemoveUser";
-import "./style.scss";
-import { getRoles } from "store/actions/organization";
-import EditProject from "./formik/editProject";
-import { useHistory } from "react-router-dom";
-import editicon from "assets/images/edit-icon.png";
-import CreateSubject from "./formik/createSubject";
-import CreateEducationLevel from "./formik/createEducationLevel";
-import CreateAuthorTag from "./formik/createAuthorTag";
-import EditTeamModel from "./model/EditTeamModel";
+import React, { useEffect, useState } from 'react';
+import { Tabs, Tab, Alert } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveAdminForm } from 'store/actions/admin';
+import EditProjectModel from './model/editprojectmodel';
+import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
+import CreateActivityItem from './formik/createActivityItem';
+import CreateActivityType from './formik/createActivity';
+import CreateOrg from './formik/createOrg';
+import AddRole from './formik/addRole';
+import CreateUser from './CreateUser';
+import CreateUserForm from 'containers/Admin/formik/createuser';
+import BrightCove from './formik/createBrightCove';
+import Pills from './pills';
+import Heading from './heading';
+import Breadcrump from 'utils/BreadCrump/breadcrump';
+import * as actionTypes from 'store/actionTypes';
+import CreateLms from './formik/createLms';
+import CreateDefaultSso from './formik/createDefaultSso';
+import CreateLtiTool from './formik/createLtiTool';
+import RemoveUser from './RemoveUser';
+import './style.scss';
+import { getRoles } from 'store/actions/organization';
+import EditProject from './formik/editProject';
+import { useHistory } from 'react-router-dom';
+import editicon from 'assets/images/edit-icon.png';
+import CreateSubject from './formik/createSubject';
+import CreateEducationLevel from './formik/createEducationLevel';
+import CreateAuthorTag from './formik/createAuthorTag';
+import CreateActivityLayout from './formik/createActivityLayout';
+import EditTeamModel from './model/EditTeamModel';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -162,12 +163,12 @@ function AdminPanel({ showSSO }) {
                       <div className="module-content">
                         <Pills
                           modules={[
-                            permission?.Organization?.includes(
-                              "organization:view-activity-type"
-                            ) && "Activity Types",
-                            permission?.Organization?.includes(
-                              "organization:view-activity-item"
-                            ) && "Activity Items",
+                            'Activity Layouts',
+                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                            'Subjects',
+                            'Education Level',
+                            'Author Tags',
                           ]}
                           type="Activities"
                         />
@@ -257,20 +258,13 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem("activeTab", key);
                   }}
                 >
-                  {permission.activeRole?.includes("admin") &&
-                    !currentOrganization?.parent && (
-                      <Tab
-                        eventKey="DefaultSso"
-                        title="Default SSO Integrations"
-                      >
-                        <div className="module-content">
-                          <Pills
-                            modules={["All Default SSO Settings"]}
-                            type="DefaultSso"
-                          />
-                        </div>
-                      </Tab>
-                    )}
+                  {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
+                    <Tab eventKey="DefaultSso" title="Default SSO settings">
+                      <div className="module-content">
+                        <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
+                      </div>
+                    </Tab>
+                  )}
                 </Tabs>
               )}
             </div>
@@ -360,6 +354,18 @@ function AdminPanel({ showSSO }) {
                   <CreateAuthorTag editMode />
                 )}
               </div>
+            </div>
+          )}
+          {(activeForm === 'add_activity_layout' || activeForm === 'edit_activity_layout') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_activity_layout' ? <CreateActivityLayout /> : <CreateActivityLayout editMode />}</div>
             </div>
           )}
           {(activeForm === "add_org" || activeForm === "edit_org") && (

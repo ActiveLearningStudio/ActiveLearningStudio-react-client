@@ -133,16 +133,14 @@ export const checkBranding = (data) => async () => {
   return result;
 };
 
-export const getsubOrgList =
-  (id, size = 10, page = 1) =>
-  async (dispatch) => {
-    const result = await organization.getSubOrganizationList(id, size, page);
-    dispatch({
-      type: actionTypes.ADD_SUBORG_LIST,
-      payload: result,
-    });
-    return result;
-  };
+export const getsubOrgList = (id, size = 10, page = 1, query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await organization.getSubOrganizationList(id, size, page, query, column, orderBy);
+  dispatch({
+    type: actionTypes.ADD_SUBORG_LIST,
+    payload: result,
+  });
+  return result;
+};
 
 export const clearSuborgList = () => (dispatch) => {
   dispatch({
@@ -321,14 +319,14 @@ export const clearHistory = () => async (dispatch) => {
   });
 };
 
-export const getOrgUsers = (id, page, activeRole, size) => async (dispatch) => {
+export const getOrgUsers = (id, page, activeRole, size, query = '', column = '', orderBy = '') => async (dispatch) => {
   let result = "";
   // const centralizedState = store.getState();
   // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   // if (activeOrganization?.id !== currentOrganization?.id) {
   //   result = await organization.getOrgUsers(id, page, size);
   // }
-  result = await organization.getOrgUsers(id, page, activeRole, size);
+  result = await organization.getOrgUsers(id, page, activeRole, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_ORGANIZATION_USERS,
     payload: {

@@ -6,7 +6,6 @@ import Tabs from "utils/Tabs/tabs";
 import Buttons from "utils/Buttons/buttons";
 import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
-
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
@@ -16,12 +15,9 @@ import UploadFile from "utils/uploadselectfile/uploadfile";
 import { useSelector, useDispatch } from "react-redux";
 import { editResourceMetaDataAction } from "store/actions/resource";
 import * as actionTypes from "store/actionTypes";
-import {
-  educationLevels,
-  subjects,
-} from "components/ResourceCard/AddResource/dropdownData";
+import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-// import { subjects, educationLevels } from 'components/ac /dropdownData';
 
 const AddActivity = (props) => {
   const {
@@ -33,17 +29,103 @@ const AddActivity = (props) => {
   const { layout, selectedLayout, activity, singleLayout } = useSelector(
     (state) => state.myactivities
   );
+
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
   const [activeRadio, setActiveRadio] = useState("");
+  const organization = useSelector((state) => state.organization);
 
   const [title, setTitle] = useState("");
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
   const [formData, setFormData] = useState("");
+  const [subjects, setSubjects] = useState(null);
+  const [authorTags, setAuthorTags] = useState(null);
+  const [educationLevels, setEducationLevels] = useState(null);
+  const [selectedSubjects, setSelectedSubjects] = useState(null);
+  const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
+  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
   const formRef = useRef();
   var counter;
+
+  const handleSubjSelect = (selectSub) => {
+    setSelectedSubjects(selectSub);
+  };
+
+  const handleAuthTagSelect = (selectTag) => {
+    setSelecteAuthorTags(selectTag);
+  };
+
+  const handleEduLvlSelect = (selectEduLvl) => {
+    setSelectedEducationLevel(selectEduLvl);
+  };
+
+  const formatApiData = (data) => {
+    let ids = [];
+    data.map(datum=>{
+      ids.push(datum.id);
+    });
+    return ids;
+  }
+  
+  useEffect(()=> {
+    if(!subjects) {
+      const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
+      result_sub.then((data) => {
+        let subj_array = [];
+        data?.data.map((subject)=> {
+          let sub = {value: subject.id, label: subject.name};
+          subj_array.push(sub);
+        })
+        setSubjects(subj_array);
+      });
+    }
+  }, [subjects]);
+  
+  useEffect(()=> {
+    if(!educationLevels) {
+      const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
+      result_edu.then((data) => {
+        let edu_array = [];
+        data?.data.map((edu_lvl)=> {
+          let edu = {value: edu_lvl.id, label: edu_lvl.name};
+          edu_array.push(edu);
+        });
+        setEducationLevels(edu_array);
+      });
+    }
+  }, [educationLevels]);
+
+  useEffect(()=> {    
+    if(!authorTags) {
+      const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
+      result_tag.then((data) => {
+        let tag_array = [];
+        data?.data.map((tag)=> {
+          let auth_tag = {value: tag.id, label: tag.name};
+          tag_array.push(auth_tag);
+        });
+        setAuthorTags(tag_array);
+      });
+    }
+  }, [authorTags]);
+
+  useEffect(()=>{
+    if(activity?.subjects && !selectedSubjects){
+      let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
+      setSelectedSubjects(output);
+    }
+    if(activity?.author_tags && !selecteAuthorTags){
+      let output = authorTags?.filter((obj) => formatApiData(activity?.author_tags).indexOf(obj.value) !== -1);
+      setSelecteAuthorTags(output);
+    }
+    
+    if(activity?.education_levels && !selectedEducationLevel){
+      let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
+      setSelectedEducationLevel(output);
+    }
+  })
   useEffect(() => {
     if (selectedLayout) {
       setTitle(selectedLayout.title);
@@ -216,11 +298,11 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                education_level_id: activity?.education_level_id || "",
-                subject_id: activity?.subject_id || "",
-                thumb_url:
-                  activity?.thumb_url ||
-                  "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
+                author_tag_id: selecteAuthorTags,
+                education_level_id: selectedEducationLevel,
+                subject_id: selectedSubjects,
+                thumb_url: activity?.thumb_url || 
+                'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
               }}
               enableReinitialize
@@ -283,43 +365,37 @@ const AddActivity = (props) => {
                     </div>
                   </div>
                   <div className="layout-formik-select">
-                    <div className="formik-select mr-32">
-                      <HeadingText
-                        text="Subject"
-                        className="formik-select-title"
-                      />
-                      <select
+                    <div className="formik-select mr-16">
+                      <HeadingText text="Subject" className="formik-select-title" />
+                      <ReactMultiSelectCheckboxes
                         name="subject_id"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        hideSearch
+                        options={subjects}
+                        onChange={handleSubjSelect}
                         value={values.subject_id}
-                      >
-                        <option hidden>Select</option>
-                        {subjects.map((data) => (
-                          <option key={data.value} value={data.subject}>
-                            {data.subject}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="formik-select ">
-                      <HeadingText
-                        text="Education level"
-                        className="formik-select-title"
                       />
-                      <select
+                    </div>
+
+                    <div className="formik-select mr-16">
+                      <HeadingText text="Education level" className="formik-select-title" />
+                      <ReactMultiSelectCheckboxes
                         name="education_level_id"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
+                        hideSearch
+                        options={educationLevels}
+                        onChange={handleEduLvlSelect}
                         value={values.education_level_id}
-                      >
-                        <option hidden>Select</option>
-                        {educationLevels.map((data) => (
-                          <option key={data.value} value={data.name}>
-                            {data.name}
-                          </option>
-                        ))}
-                      </select>
+                      />
+                    </div>
+
+                    <div className="formik-select">
+                      <HeadingText text="Author Tags" className="formik-select-title" />
+                      <ReactMultiSelectCheckboxes
+                        name="author_tag_id"
+                        hideSearch
+                        options={authorTags}
+                        onChange={handleAuthTagSelect}
+                        value={values.author_tag_id}
+                      />
                     </div>
                   </div>
                   <div className="formik-uploadimage">
