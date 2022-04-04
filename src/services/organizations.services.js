@@ -1,7 +1,8 @@
-import config from 'config';
-import { errorCatcher } from './errors';
+/* eslint-disable */
+import config from "config";
+import { errorCatcher } from "./errors";
 
-import httpService from './http.service';
+import httpService from "./http.service";
 
 const { apiVersion } = config;
 
@@ -178,6 +179,17 @@ const getOrgsForDeepLinking = (userEmail, ltiClientId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const uploadFavicon = (id, formData) =>
+  httpService
+    .post(`/${apiVersion}/suborganizations/${id}/upload-favicon`, formData, {
+      "Content-Type": "multipart/form-data",
+    })
+    .then((data) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
   getAll,
   getOrganization,
@@ -185,6 +197,7 @@ export default {
   getSubOrganizationList,
   getAllUsers,
   upload,
+  uploadFavicon,
   createOrganization,
   updateOrganization,
   deleteOrganization,

@@ -223,16 +223,16 @@ const AddActivity = (props) => {
                 <path
                   d="M13 5L1 5"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M5 1L1 5L5 9"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <p className="">Back to options</p>

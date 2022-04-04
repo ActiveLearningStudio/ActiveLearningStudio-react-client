@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .inner-content {
   background: $white;
@@ -35,7 +35,7 @@
 }
 .add-team-page {
   .organization-name {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -79,7 +79,7 @@
     .team-detail {
       max-width: 800px;
       p {
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 14px;
@@ -347,7 +347,7 @@
       position: absolute;
       background: #fff;
       height: 50px;
-      content: "";
+      content: '';
       width: 50px;
       left: -24px;
       z-index: -9;
@@ -429,7 +429,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: "";
+            content: '';
             border: none;
           }
           &:hover {
@@ -517,13 +517,24 @@
   padding: 20px;
 }
 .customModalSize {
-  max-width: 1450px !important;
+  max-width: 100% !important;
   width: 100%;
   height: auto;
+  height: 100%;
+  resize: both;
   margin: 0 !important;
+  padding: 0 !important;
+  iframe {
+    height: calc(100vh - 80px);
+  }
 }
 .team-project-btns.whiteboard button {
   &:hover {
     color: #fff !important;
   }
+}
+
+.react-responsive-modal-container.react-responsive-modal-containerCenter {
+  margin: 0 40px;
+  margin-bottom: 40px;
 }

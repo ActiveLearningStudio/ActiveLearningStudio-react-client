@@ -85,6 +85,7 @@ function TeamsPage(props) {
     }
   }, [loadTeams, searchQuery]);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <>
       {/* <div className="side-wrapper-team">
@@ -168,16 +169,16 @@ function TeamsPage(props) {
                           <path
                             d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                             stroke={primaryColor}
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                           <path
                             d="M21 20.9984L16.65 16.6484"
                             stroke={primaryColor}
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       </div>
@@ -200,7 +201,11 @@ function TeamsPage(props) {
                       }}
                     >
                       <div className="btn-top-page">
-                        <FontAwesomeIcon icon="plus" className="mr-2" />
+                        <FontAwesomeIcon
+                          icon="plus"
+                          className="mr-2"
+                          color={secondaryColor}
+                        />
                         Add Team
                       </div>
                     </div>
