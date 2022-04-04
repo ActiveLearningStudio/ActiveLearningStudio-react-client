@@ -9,11 +9,12 @@ import Buttons from 'utils/Buttons/buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import UploadImage from 'utils/uploadimagev2/uploadimagev2';
 import HeadingText from 'utils/HeadingText/headingtext';
+import HeadingThree from "utils/HeadingThree/headingthree";
 import DefaultUpload from 'assets/images/defaultUpload.png';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
 import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -106,6 +107,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
     }
   })
 
+  const primaryColor = getGlobalColor("--main-primary-color");
   const formRef = useRef();
   return (
     <>
@@ -132,7 +134,44 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
-            <HeadingTwo text="Describe video" color="#084892" />
+            <HeadingTwo text="Interactive Video" color="#084892" />
+          </div>
+          <div
+              className="back-button"
+              id="back-button-none-bg"
+              onClick={() => {
+                if (showback) {
+                  changeScreenHandler('addvideo');
+                } else {
+                  setScreenStatus('AddVideo');
+                }
+              }}
+            >
+              {/* <img src={BackButton} alt="back button " /> */}
+              <svg
+                width="14"
+                height="10"
+                viewBox="0 0 14 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ marginRight: "8px", marginTop: "4px" }}
+              >
+                <path
+                  d="M13 5L1 5"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5 1L1 5L5 9"
+                  stroke={primaryColor}
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <p className="">Back to options</p>
           </div>
           {/* <div className="add-describevideo-tour">
             <span>
@@ -176,10 +215,21 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     handleSubmit();
                   }}
                 >
+                  <h4 className="interactive-video-heading-two">
+                    Describe layout
+                  </h4>
                   <div>
                     <div className="dec-title-formik-textField">
-                      <span>Title</span>
-                      <p>Used for searching, reports and copyright information</p>
+                      <HeadingThree
+                        text="Title"
+                        color="#515151"
+                        className="textField-title"
+                      />
+                      <HeadingText
+                        text="Used for searching, reports and copyright information"
+                        color="#515151"
+                        className="textField-detailText"
+                      />
                       <input
                         type="text"
                         name="title"
@@ -241,56 +291,30 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="describe-video-upload-section">
-                    <UploadImage
-                      title="Upload poster (Optional)"
-                      defuaultImage={DefaultUpload}
-                      className="uploadImage-describe-video"
-                      setUploadImageStatus={setUploadImageStatus}
-                      formRef={formRef}
-                      thumb_url={editVideo?.thumb_url}
-                    />
+
+                    <div className="formik-uploadimage">
+                      <UploadImage
+                        title="Upload poster (Optional)"
+                        defuaultImage={DefaultUpload}
+                        className="uploadImage-describe-video"
+                        setUploadImageStatus={setUploadImageStatus}
+                        formRef={formRef}
+                        thumb_url={editVideo?.thumb_url}
+                      />
+                    </div>
                   </div>
                   <div className="describe-video">
-                    {true && (
-                      <Buttons
-                        onClick={() => {
-                          if (showback) {
-                            changeScreenHandler('addvideo');
-                          } else {
-                            setScreenStatus('AddVideo');
-                          }
-                        }}
-                        secondary={true}
-                        text="Back"
-                        width="162px"
-                        height="32px"
-                        hover={true}
-                      />
-                    )}
-                    {/* {editVideo && (
-                      <Buttons
-                        onClick={() => {
-                          if (showback) {
-                            changeScreenHandler('addvideo');
-                          } else {
-                            setScreenStatus('AddVideo');
-                          }
-                        }}
-                        primary={true}
-                        text="Save"
-                        width="162px"
-                        height="32px"
-                        hover={true}
-                      />
-                    )} */}
-                    <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                  <h4 className="interactive-video-heading-two">
+                    Add Interactions
+                  </h4>
+                  <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
+                  <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>
               )}
             </Formik>
           </div>
+          
         </div>
       </div>
     </>

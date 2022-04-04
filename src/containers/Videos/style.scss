@@ -389,39 +389,24 @@
   }
   .add-describevideo-section-layout-formik {
     display: flex;
-
+    align-items: flex-start;
     .add-describevideo-layout-formik {
-      // @media screen and (max-width: 1024px) {
-      //   width: 280px;
-      // }
-      form {
-        display: flex;
-        // justify-content: space-between;
+      @media screen and (max-width: 1024px) {
+        width: 280px;
       }
-      // max-width: 472px;
-      // margin-right: 128px;
-      // margin-top: 34px;
+      max-width: 536px;
+      margin-top: 32px;
+      width: 70%;
+
+      .interactive-video-heading-two {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: #084892;
+      }
 
       .dec-title-formik-textField {
         margin-top: 16px;
-        span {
-          font-family: $rubik;
-          font-style: normal;
-          font-weight: normal;
-          font-size: 14px;
-          line-height: 20px;
-          display: flex;
-          color: #515151;
-        }
-        p {
-          font-style: normal;
-          font-weight: normal;
-          font-size: 12px;
-          line-height: 16px;
-          display: flex;
-          color: #515151;
-          margin-bottom: 0px !important;
-        }
         .textField-title {
           h3 {
             font-weight: 400;
@@ -436,8 +421,8 @@
           }
         }
         input {
-          width: 472px;
-          height: 36px;
+          width: 100%;
+          height: 40px;
           outline: none;
           background: #ffffff;
           border: 1px solid #515151;
@@ -445,7 +430,7 @@
           text-indent: 10px;
         }
         textarea {
-          width: 472px;
+          width: 100%;
           // height: 40px;
           outline: none;
           background: #ffffff;
@@ -493,6 +478,10 @@
           margin-right: 16px;
         }
       }
+
+      .formik-uploadimage {
+        margin-top: 33px;
+      }
     }
     .describe-video-upload-section {
       margin-left: 100px;
@@ -507,11 +496,12 @@
 
   .describe-video {
     position: absolute;
-    bottom: 80px;
-    right: 80px;
-    display: flex;
+    top: 243px;
+    left: 54%;
+    right: 10px;
+    // display: flex;
     button {
-      margin-left: 15px;
+      margin-top: 50px;
     }
   }
 }
@@ -543,4 +533,22 @@
 }
 .main-tabs .nav-item.active:after {
   display: none !important;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  & img {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+  & p {
+    color: #084892;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+  }
 }
