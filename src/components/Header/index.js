@@ -1,19 +1,19 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { Dropdown } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 
-import { SHOW_HELP } from "store/actionTypes";
-import { logoutAction } from "store/actions/auth";
-import { Event } from "trackers/ga";
+import { SHOW_HELP } from 'store/actionTypes';
+import { logoutAction } from 'store/actions/auth';
+import { Event } from 'trackers/ga';
 
-import HeaderNotification from "./notification";
-import MultitenancyDropdown from "./multitenancyDropdown";
+import HeaderNotification from './notification';
+import MultitenancyDropdown from './multitenancyDropdown';
 
-import "./style.scss";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 function Header(props) {
   const { logout } = props;
@@ -21,10 +21,9 @@ function Header(props) {
   const stateHeader = useSelector((state) => state.organization);
   const { user } = useSelector((state) => state.auth);
   const { currentOrganization } = stateHeader;
-  const primaryColorFunction = getGlobalColor("--main-primary-color");
   const [primaryColor, setPrimaryColor] = useState();
   useEffect(() => {
-    const primaryColorFunction = getGlobalColor("--main-primary-color");
+    const primaryColorFunction = getGlobalColor('--main-primary-color');
     setPrimaryColor(primaryColorFunction);
   }, [currentOrganization]);
   return (
@@ -32,19 +31,17 @@ function Header(props) {
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
           <div className="tophd_left">
-            <Link
-              to={`/org/${stateHeader?.currentOrganization?.domain}`}
-              className="top_logo"
-            >
+            <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
               <div
                 className="nav-logo"
                 style={{
-                  backgroundImage: `url(${
-                    global.config.resourceUrl + currentOrganization?.image
-                  })`,
-                  backgroundPosition: "left",
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
+                  backgroundImage:
+                    !!currentOrganization?.image && currentOrganization?.image.includes('dev.currikistudio')
+                      ? `url(${currentOrganization?.image})`
+                      : `url(${global.config.resourceUrl}${currentOrganization?.image})`,
+                  backgroundPosition: 'left',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
                 }}
               />
             </Link>
@@ -58,7 +55,7 @@ function Header(props) {
               </li>
               <li>
                 <div
-                  style={{ cursor: "pointer", textAlign: "center" }}
+                  style={{ cursor: 'pointer', textAlign: 'center' }}
                   onClick={() => {
                     dispatch({
                       type: SHOW_HELP,
@@ -67,13 +64,7 @@ function Header(props) {
                   }}
                 >
                   {/* <img src={help} alt="help" /> */}
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
                       stroke={primaryColor}
@@ -88,13 +79,7 @@ function Header(props) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                    <path
-                      d="M12 16.5H12.0094"
-                      stroke={primaryColor}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M12 16.5H12.0094" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
 
                   <p className="header-icon-text">Help</p>
@@ -106,10 +91,7 @@ function Header(props) {
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">
-                    <div
-                      className="profile-avatar"
-                      style={{ backgroundColor: primaryColor }}
-                    >
+                    <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
                       {user?.first_name[0]}
                     </div>
                     <p className="header-icon-text">My Profile</p>
@@ -117,10 +99,7 @@ function Header(props) {
 
                   <Dropdown.Menu className="user-dropdown">
                     <div className="user-dropdown-item-name">
-                      <div
-                        className="profile-avatar"
-                        style={{ backgroundColor: primaryColor }}
-                      >
+                      <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
                         {user?.first_name[0]}
                       </div>
                       <div className="basic-info">
@@ -135,19 +114,10 @@ function Header(props) {
                       </div>
                     </div>
                     <hr />
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/org/${stateHeader.currentOrganization?.domain}/account`}
-                    >
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
                       <div className="user-dropdown-item">
                         {/* <img src={edit} alt="edit" /> */}
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M11.0512 4.89746H4.78915C4.31464 4.89746 3.85956 5.08596 3.52403 5.42149C3.1885 5.75702 3 6.2121 3 6.68661V19.2106C3 19.6851 3.1885 20.1402 3.52403 20.4757C3.85956 20.8113 4.31464 20.9998 4.78915 20.9998H17.3132C17.7877 20.9998 18.2428 20.8113 18.5783 20.4757C18.9138 20.1402 19.1023 19.6851 19.1023 19.2106V12.9486"
                             stroke={primaryColor}
@@ -167,23 +137,14 @@ function Header(props) {
                       </div>
                     </Dropdown.Item>
                     <hr />
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}
-                    >
+                    <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
                       <div className="user-dropdown-item">
                         {/* <img
                           className="img-change-password"
                           src={changePassword}
                           alt="changePassword"
                         /> */}
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M18.2222 11.1025H5.77778C4.79594 11.1025 4 11.9082 4 12.9021V19.2005C4 20.1944 4.79594 21.0001 5.77778 21.0001H18.2222C19.2041 21.0001 20 20.1944 20 19.2005V12.9021C20 11.9082 19.2041 11.1025 18.2222 11.1025Z"
                             stroke={primaryColor}
@@ -206,23 +167,13 @@ function Header(props) {
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
-                        Event(
-                          "button click",
-                          "User press Logout button",
-                          "Login Page"
-                        );
+                        Event('button click', 'User press Logout button', 'Login Page');
                         logout();
                       }}
                     >
                       <div className="user-dropdown-item">
                         {/* <img src={logoutIcon} alt="logoutIcon" /> */}
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15"
                             stroke={primaryColor}
@@ -230,20 +181,8 @@ function Header(props) {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
-                          <path
-                            d="M10 17L15 12L10 7"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M15 12H3"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
+                          <path d="M10 17L15 12L10 7" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M15 12H3" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         Logout
                       </div>

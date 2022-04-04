@@ -223,7 +223,7 @@ let CreateProjectPopup = (props) => {
 
             <p className="disclaimer">
               Project Image dimension should be <strong>280px width and 200px height. </strong>
-              Maximun File size allowed is <strong>100MB.</strong>
+              Maximum File size allowed is <strong>100MB.</strong>
             </p>
           </div>
           <div className="create-project-template-wrapper">
