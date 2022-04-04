@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .admin-panel {
   .main-heading {
@@ -444,7 +444,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -472,7 +472,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -533,7 +533,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -557,7 +557,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -888,7 +888,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: 'Open Sans';
+        font-family: "Open Sans";
         span {
           display: flex;
         }
@@ -930,7 +930,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -952,7 +952,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: 'Open Sans';
+          font-family: "Open Sans";
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1020,7 +1020,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: '';
+            content: "";
             border: none;
           }
         }
@@ -1631,7 +1631,7 @@
     position: relative;
 
     &::before {
-      content: ' ';
+      content: " ";
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1657,7 +1657,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1669,7 +1669,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1684,7 +1684,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1697,7 +1697,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1818,7 +1818,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url('../../assets/images/svg/VectorAngleRight.svg');
+      content: url("../../assets/images/svg/VectorAngleRight.svg");
     }
   }
 }
@@ -1845,7 +1845,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url('../../assets/images/svg/angledown.svg');
+    content: url("../../assets/images/svg/angledown.svg");
   }
 }
 .checkbox_section_custom {
@@ -2060,7 +2060,7 @@
     border-bottom: 4px solid #084892 !important;
   }
   input:radio {
-    content: '\f00c';
+    content: "\f00c";
     position: absolute;
     display: none;
   }
@@ -2088,7 +2088,7 @@
 
   .checkbox-custom + .checkbox-custom-label:before,
   .radio-custom + .radio-custom-label:before {
-    content: '';
+    content: "";
     background: #fff;
     border: 2px solid #084892;
     display: inline-block;
@@ -2103,7 +2103,7 @@
   }
 
   .checkbox-custom:checked + .checkbox-custom-label:before {
-    content: '\f00c';
+    content: "\f00c";
     font-family: $fontawesome;
     background: #084892;
     color: #fff;
@@ -2115,7 +2115,7 @@
   }
 
   .radio-custom:checked + .radio-custom-label:before {
-    content: '\f00c';
+    content: "\f00c";
     font-family: $fontawesome;
     color: #fff;
     background: #084892;
@@ -2124,7 +2124,7 @@
 }
 
 .sorting-icon:after {
-  content: '\f0dc';
+  content: "\f0dc";
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
@@ -2337,7 +2337,7 @@
       width: 100% !important;
       align-items: center;
       display: flex;
-      input[type='color'] {
+      input[type="color"] {
         background-color: transparent;
         border: none !important;
         width: 60px;
@@ -2346,8 +2346,9 @@
         overflow: hidden;
         outline: none;
       }
-      input[type='text'] {
-        flex: 1;
+      input[type="text"] {
+        // flex: 1;
+        width: 161px;
         text-indent: 15px;
         margin-left: 15px;
         height: 36px;

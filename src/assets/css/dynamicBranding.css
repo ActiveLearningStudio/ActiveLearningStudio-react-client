@@ -579,7 +579,9 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
-
+.playlist-add-res-button .add-resource-to-playlist-btn {
+  color: var(--main-primary-color) !important;
+}
 .h5p-iframe .h5p-actions > .h5p-button {
   color: var(--main-paragraph-text-color) !important;
 }
@@ -1335,8 +1337,8 @@ textarea,
 }
 
 .swal2-popup .swal2-icon.swal2-warning {
-  border-color: var(--main-heading-border) !important;
-  color: var(--main-heading-border) !important;
+  border-color: var(--main-secondary-color) !important;
+  color: var(--main-secondary-color) !important;
 }
 /*  */
 
@@ -1724,6 +1726,23 @@ textarea,
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
+.search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:after {
+  border: 2px solid var(--main-primary-color) !important;
+}
+.search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:checked:after {
+  background-color: var(--main-primary-color) !important;
+  border: 2px solid var(--main-primary-color) !important;
+}
 
 /* Button Icons */
 .project-headline button .fa-plus {
@@ -1743,5 +1762,8 @@ textarea,
 }
 
 .project-headline-section .project-share-previews .dropdown-item svg {
+  color: var(--main-secondary-color) !important;
+}
+.search-result-main .search-library .card-body .src-btn svg {
   color: var(--main-secondary-color) !important;
 }
