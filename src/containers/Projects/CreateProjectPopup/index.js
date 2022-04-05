@@ -27,28 +27,34 @@ const projectShare = true;
 const onSubmit = async (values, dispatch, props) => {
   const {
     history,
-    project: { thumbUrl, selectedProject },
+    project,
+    fromTeam,
+    selectedTeam,
+    handleCloseProjectModal,
   } = props;
   const { name, description, vType } = values;
   const result = await dispatch(
-    props.project.thumbUrl
+    project?.thumbUrl
       ? createProjectAction({
         name,
         description,
         thumb_url: thumbUrl,
         is_public: projectShare,
         organization_visibility_type_id: 1,
+        team_id: fromTeam && selectedTeam ? selectedTeam?.id : null
       })
       : createProjectAction({
         name,
         description,
         is_public: projectShare,
         organization_visibility_type_id: 1,
+        team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
         // eslint-disable-next-line max-len
         thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
       })
   );
-  if (result) {
+  handleCloseProjectModal(false);
+  if (result && !fromTeam) {
     history.push('/projects');
   }
 };
@@ -179,7 +185,7 @@ let CreateProjectPopup = (props) => {
               <span className="validation-error">{imageValidation}</span>
 
               <div>
-                {project.thumbUrl ? (
+                {project?.thumbUrl ? (
                   <div className="thumb-display">
                     <label>
                       <h2>Upload Image</h2>
@@ -269,6 +275,7 @@ const mapStateToProps = (state) => ({
     vType: state.project.selectedProject?.organization_visibility_type_id ? state.project.selectedProject?.organization_visibility_type_id : null,
   },
   isLoading: state.project.isLoading,
+  selectedTeam: state.team.selectedTeam,
 });
 
 export default React.memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateProjectPopup)));

@@ -171,6 +171,8 @@
     }
     .team-project-btns {
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
       .mr-16 {
         margin-right: 16px;
