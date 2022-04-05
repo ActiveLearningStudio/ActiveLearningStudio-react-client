@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import AddVideoImage from "assets/images/svg/addvidobright.svg";
 import AddVideoTube from "assets/images/svg/youtube.svg";
 import AddKaltura from "assets/images/kaltura.jpg";
+import AddVemeo from "assets/images/vemeo.PNG";
 import BackButton from "../../../assets/images/left-arrow.svg";
 import Buttons from "utils/Buttons/buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,6 +31,7 @@ const AddVideo = ({
   const [activeKey, setActiveKey] = useState("Mydevice");
   const [selectedVideoId, setSelectedVideoId] = useState("");
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState("");
+  const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState("");
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState("");
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState("Mydevice");
@@ -51,6 +53,7 @@ const AddVideo = ({
         }}
         setSelectedVideoId={setSelectedVideoId}
         setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
+        setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
         showSidebar={showSidebar}
         platform={platform}
       />
@@ -378,6 +381,57 @@ const AddVideo = ({
                   </Tab>
                 )
               )}
+
+              {/* Vemo Video */}
+
+              {!editVideo ? (
+                <Tab
+                  eventKey="Vimeo"
+                  title="Vimeo"
+                  onClick={() => {
+                    setplatform("Vimeo");
+                    setShowSidebar(false);
+                  }}
+                >
+                  <FormikVideo
+                    Input
+                    showBrowse
+                    setModalShow={setModalShow}
+                    showback={showback}
+                    changeScreenHandler={changeScreenHandler}
+                    type={AddVemeo}
+                    setScreenStatus={setScreenStatus}
+                    selectedVideoId={selectedVideoIdVimeo}
+                    platform={platform}
+                    placeholder={"Enter a video url"}
+                  />
+                </Tab>
+              ) : (
+                editVideo.source_type === "Vimeo" && (
+                  <Tab
+                    eventKey="Vimeo"
+                    title="Vimeo"
+                    onClick={() => {
+                      setplatform("Vimeo");
+                      setShowSidebar(false);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showBrowse
+                      setModalShow={setModalShow}
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      type={AddVemeo}
+                      setScreenStatus={setScreenStatus}
+                      selectedVideoId={selectedVideoIdVimeo}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={"Enter a video url"}
+                    />
+                  </Tab>
+                )
+              )}
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
@@ -589,7 +643,11 @@ const FormikVideo = ({
                         alt="upload"
                         className="mr-2"
                       />
-                      <p>Drag & drop file or <span style={{color:"#2e8df5"}}>browse</span> to upload</p>
+                      <p>
+                        Drag & drop file or{" "}
+                        <span style={{ color: "#2e8df5" }}>browse</span> to
+                        upload
+                      </p>
                     </div>
                   </div>
                   {uploadedFile && (

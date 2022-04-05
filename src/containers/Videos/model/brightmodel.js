@@ -16,6 +16,7 @@ import {
   getBrightVideos,
   getBrightVideosSearch,
   getKalturaVideos,
+  getVimeoVideos,
 } from "store/actions/videos";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 const BrightcoveModel = (props) => {
@@ -23,6 +24,7 @@ const BrightcoveModel = (props) => {
   const { platform, showSidebar, setSelectedVideoIdKaltura } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
+  const [vimeo, setVimeo] = useState(null);
   const [cmsVideo, setcmsVideo] = useState(null);
   const [activeCms, setActiveCms] = useState(null);
   const [offset, setOffset] = useState(0);
@@ -45,6 +47,16 @@ const BrightcoveModel = (props) => {
           setError("No record Found");
         } else {
           setkaltura(result);
+        }
+      } else if (platform == "Vimeo") {
+        setActiveCms(null);
+        const result = await dispatch(getVimeoVideos());
+        if (result?.errors) {
+          setVimeo([]);
+          setError("No record Found");
+        } else {
+          setVimeo(result);
+          console.log("Result:", result.data);
         }
       }
     })();
@@ -181,6 +193,18 @@ const BrightcoveModel = (props) => {
                                 setkaltura([]);
                                 setError("No record Found");
                               }
+                            } else if (platform == "Vimeo") {
+                              setVimeo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(
+                                getVimeoVideos(searchId)
+                              );
+                              if (result.totalCount) {
+                                setVimeo(result);
+                              } else {
+                                setVimeo([]);
+                                setError("No record Found");
+                              }
                             }
                           }}
                         >
@@ -214,6 +238,11 @@ const BrightcoveModel = (props) => {
                               setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos());
                               setkaltura(result);
+                            } else if (platform == "Vimeo") {
+                              setVimeo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(getVimeoVideos());
+                              setVimeo(result);
                             }
                           }}
                           className="reset-btn"
@@ -388,6 +417,95 @@ const BrightcoveModel = (props) => {
                                     getKalturaVideos("", e, 6)
                                   );
                                   setkaltura(result);
+                                }}
+                              />
+                            )}
+                          </Card.Body>
+                        </Tab.Pane>
+                      </Tab.Content>
+                    )}
+
+                    {/* Vimeo */}
+                    {platform == "Vimeo" && (
+                      <Tab.Content>
+                        <Tab.Pane eventKey="manual-1">
+                          <Card.Body style={{ padding: "0px" }}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Created</th>
+                                  <th>Video Id</th>
+                                  <th>Updated At</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {vimeo ? (
+                                  vimeo?.data?.length > 0 ? (
+                                    vimeo?.data?.map((data) => {
+                                      var created = new Date(data.created_time);
+                                      var update = new Date(data.modified_time);
+                                      return (
+                                        <tr>
+                                          <td className="firstname">
+                                            <input
+                                              name="video"
+                                              onChange={() => {
+                                                props.setSelectedVideoIdVimeo(
+                                                  data.link
+                                                );
+                                              }}
+                                              type="radio"
+                                            />
+                                            <img
+                                              src={data?.thumbnailUrl}
+                                              className="image-size"
+                                            />
+                                            <span>{data.name}</span>
+                                          </td>
+                                          <td>
+                                            {created?.toLocaleDateString()}
+                                          </td>
+                                          <td>{data.resource_key}</td>
+                                          <td>
+                                            {update?.toLocaleDateString()}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="4">
+                                        <Alert variant="danger" colSpan={3}>
+                                          {error}
+                                        </Alert>
+                                      </td>
+                                    </tr>
+                                  )
+                                ) : (
+                                  <tr>
+                                    <td colSpan="4">
+                                      <Alert variant="primary" colSpan={4}>
+                                        Loading...
+                                      </Alert>
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+
+                            {vimeo?.objects?.length > 0 && (
+                              <Pagination
+                                activePage={paginationCounter}
+                                pageRangeDisplayed={7}
+                                itemsCountPerPage={6}
+                                totalItemsCount={vimeo?.totalCount}
+                                onChange={async (e) => {
+                                  setPaginationCounter(e);
+                                  const result = await dispatch(
+                                    getVimeoVideos("", e, 6)
+                                  );
+                                  setVimeo(result);
                                 }}
                               />
                             )}
