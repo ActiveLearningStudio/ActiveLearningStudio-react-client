@@ -33,6 +33,14 @@
 9.Auth
 */
 
+.project-loading {
+  background: var(--main-primary-color) !important;
+  color: #fff !important;
+}
+.project-loading.Toastify__progress-bar {
+  background: var(--main-paragraph-text-color) !important;
+}
+
 /* sidebar branding */
 
 .sidebar-all .sidebar-headings {
@@ -117,8 +125,13 @@ p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.notification-area .user-detail p a {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
 
-.top-header .notification-bar .user-dropdown .btn-all-notification .all-notification {
+.top-header .notification-bar .user-dropdown .btn-all-notification .all-notification,
+.top-header .notification-bar .user-dropdown .scroll-notification p a {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -141,6 +154,11 @@ p {
 
 .user-dropdown-item {
   color: var(--main-primary-color) !important;
+}
+
+.noovo-group-title label {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 
 /* footer branding */
@@ -202,6 +220,19 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+
+.curriki-theme-secondary-button {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+
+  border-color: var(--main-primary-color) !important;
+}
+
+.curriki-utility-uploadfile .uploadfile-box button {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
 .curriki-theme-secondary-button:hover {
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
@@ -318,6 +349,11 @@ p {
   font-family: var(--main-heading-font) !important;
   border-color: var(--main-primary-color) !important;
 }
+.team-project-btns.whiteboard button:first-child {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+  border-color: var(--main-primary-color) !important;
+}
 
 .board-custom .list .playlist-header-name .playlist-title-wrapper span {
   color: var(--main-primary-color) !important;
@@ -329,6 +365,10 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.team-modal .modal-body .satelliteteaminfo {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 .playlist-dropdown.check .dropdown-menu a,
 .activity-options-wrapper.check .dropdown-menu a,
 .inner-form-content-box .activity-layout-form .layout-cards-process-btn .layout-process-btn .nav .nav-item {
@@ -341,6 +381,11 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.dropdown .btn-primary {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+  border-bottom-color: var(--main-primary-color) !important;
+}
 .activity-layout-form .layout-cards-process-btn .activity-layout-cards .activity-layoutCard-active {
   border-bottom-color: var(--main-secondary-color) !important;
 }
@@ -541,6 +586,10 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.admin-panel .controller .role-dropdown {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font);
+}
 .admin-panel .main-heading .secand-heading h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font);

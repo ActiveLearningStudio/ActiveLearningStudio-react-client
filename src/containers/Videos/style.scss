@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .myvideomain {
   .inner-content {
@@ -460,16 +460,16 @@
             padding: 0 8px;
           }
           button {
-          width: 100%;
-          height: 40px;
-          outline: none;
-          color: #515151 !important;
-          background: #ffffff;
-          border: 1px solid #515151 !important;
-          border-radius: 4px;
-          text-indent: 10px;
-          box-shadow: none;
-        }
+            width: 100%;
+            height: 40px;
+            outline: none;
+            color: #515151 !important;
+            background: #ffffff;
+            border: 1px solid #515151 !important;
+            border-radius: 4px;
+            text-indent: 10px;
+            box-shadow: none;
+          }
         }
         .mr-32 {
           margin-right: 32px;
@@ -514,9 +514,9 @@
   margin-top: 24px;
   background-color: $fun-blue-1 !important;
   color: $white !important;
-  width: 99px;
+  width: auto;
   height: 36px;
-  padding: 8px 0px 8px 0px;
+  padding: 8px 15px;
   display: flex;
   justify-content: center;
   align-items: center;
