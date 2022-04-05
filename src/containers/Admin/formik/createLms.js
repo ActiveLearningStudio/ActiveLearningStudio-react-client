@@ -11,6 +11,7 @@ import Switch from 'react-switch';
 import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 export default function CreateUser(prop) {
   const { editMode, clone } = prop;
@@ -31,6 +32,7 @@ export default function CreateUser(prop) {
       setCheckedProject(activeEdit?.project_visibility);
     }
   }, [activeEdit, editMode]);
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -263,8 +265,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Activity</h3>
@@ -288,8 +290,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Playlist</h3>
@@ -306,8 +308,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Project</h3>

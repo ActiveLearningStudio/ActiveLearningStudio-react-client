@@ -33,6 +33,14 @@
 9.Auth
 */
 
+.project-loading {
+  background: var(--main-primary-color) !important;
+  color: #fff !important;
+}
+.project-loading.Toastify__progress-bar {
+  background: var(--main-paragraph-text-color) !important;
+}
+
 /* sidebar branding */
 
 .sidebar-all .sidebar-headings {
@@ -82,6 +90,20 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.account-page .title,
+.account-page .panel-title {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.account-page .account-panel-header-row {
+  border-left-color: var(--main-primary-color) !important;
+}
+
+.account-page .submit {
+  background: var(--main-secondary-color) !important;
+  border-color: var(--main-secondary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 /*  Notifications dropdown branding */
 
 .top-header .notification-bar .user-dropdown .scroll-notification .header-data h2 {
@@ -103,12 +125,21 @@ p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-
-.top-header .notification-bar .user-dropdown .btn-all-notification .all-notification {
+.notification-area .user-detail p a {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
+.top-header .notification-bar .user-dropdown .btn-all-notification .all-notification,
+.top-header .notification-bar .user-dropdown .scroll-notification p a {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
+.modal-dialog .modal-content .modal-body .container .row.mt-4 .remove-primary {
+  background-color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 /* My Profile branding */
 
 .user-dropdown-item-name .name {
@@ -123,6 +154,11 @@ p {
 
 .user-dropdown-item {
   color: var(--main-primary-color) !important;
+}
+
+.noovo-group-title label {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 
 /* footer branding */
@@ -184,6 +220,19 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+
+.curriki-theme-secondary-button {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+
+  border-color: var(--main-primary-color) !important;
+}
+
+.curriki-utility-uploadfile .uploadfile-box button {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
 .curriki-theme-secondary-button:hover {
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
@@ -300,6 +349,11 @@ p {
   font-family: var(--main-heading-font) !important;
   border-color: var(--main-primary-color) !important;
 }
+.team-project-btns.whiteboard button:first-child {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+  border-color: var(--main-primary-color) !important;
+}
 
 .board-custom .list .playlist-header-name .playlist-title-wrapper span {
   color: var(--main-primary-color) !important;
@@ -311,6 +365,10 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.team-modal .modal-body .satelliteteaminfo {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 .playlist-dropdown.check .dropdown-menu a,
 .activity-options-wrapper.check .dropdown-menu a,
 .inner-form-content-box .activity-layout-form .layout-cards-process-btn .layout-process-btn .nav .nav-item {
@@ -323,12 +381,17 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.activity-layout-form .layout-cards-process-btn .activity-layout-cards .activity-layoutCard-active {
+.dropdown .btn-primary {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
   border-bottom-color: var(--main-primary-color) !important;
+}
+.activity-layout-form .layout-cards-process-btn .activity-layout-cards .activity-layoutCard-active {
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 
 .activity-layout-form .layout-cards-process-btn .activity-layout-cards .curriki-utility-layoutcard:hover {
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 
 .activity-layout-form .layout-cards-process-btn .activity-layout-cards .curriki-utility-layoutcard p {
@@ -404,7 +467,7 @@ p {
 }
 
 .playlist-div .playlist-title-div .title-md:before {
-  background: var(--main-primary-color) !important;
+  background: var(--main-secondary-color) !important;
 }
 
 .all-playlist.check-custom .playlist-accordion .plydet {
@@ -479,7 +542,9 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
-
+.playlist-add-res-button .add-resource-to-playlist-btn {
+  color: var(--main-primary-color) !important;
+}
 .h5p-iframe .h5p-actions > .h5p-button {
   color: var(--main-paragraph-text-color) !important;
 }
@@ -521,6 +586,10 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.admin-panel .controller .role-dropdown {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font);
+}
 .admin-panel .main-heading .secand-heading h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font);
@@ -627,8 +696,7 @@ p {
   color: var(--main-primary-color) !important;
 }
 
-.admin-panel .controller .role-dropdown,
-button {
+.admin-panel .controller .role-dropdown button {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
@@ -755,7 +823,7 @@ button {
   font-family: var(--main-text-font) !important;
   color: var(--main-update-permissions-color) !important;
 }
-/* MQ */
+
 .admin-panel nav .nav-link {
   font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
@@ -772,9 +840,13 @@ button {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.tab-section .tab-inner-section .tab-middle-optional-title h3 {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 .tab_inner_header h1 {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .tab_inner_color_section .tab_inner_color > div input[type='text'] {
   color: var(--main-black-color) !important;
@@ -806,10 +878,10 @@ button {
 .curriki-utility-headingTwo h2 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 .create-user-modal-header .modal-title {
-  text-decoration: underline var(--main-primary-color) !important;
+  text-decoration: underline var(--main-secondary-color) !important;
 }
 
 .admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create h3,
@@ -901,6 +973,10 @@ textarea,
 .curriki-utility-uploadimageV2 .uploadimage-option button {
   border-color: var(--main-paragraph-text-color) !important;
   color: var(--main-paragraph-text-color) !important;
+}
+.tab-section .edit-org-save-btn {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
 }
 
 /* My Interactive videos branding */
@@ -1042,7 +1118,8 @@ textarea,
   opacity: 0.7 !important;
   color: var(--main-white-color) !important;
 }
-.swal2-popup .swal2-actions button.swal2-cancel:hover {
+.swal2-popup .swal2-actions button.swal2-cancel:hover,
+.swal2-actions button.swal2-deny:hover {
   background-color: var(--main-primary-color) !important;
   opacity: 0.7 !important;
   color: var(--main-white-color) !important;
@@ -1066,7 +1143,8 @@ textarea,
   font-family: var(--main-heading-font) !important;
 }
 
-.swal2-popup .swal2-actions button.swal2-cancel {
+.swal2-popup .swal2-actions button.swal2-cancel,
+.swal2-actions button.swal2-deny {
   border-color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
   color: var(--main-primary-color) !important;
@@ -1080,8 +1158,8 @@ textarea,
 }
 
 .swal2-popup .swal2-icon.swal2-warning {
-  border-color: var(--main-heading-border) !important;
-  color: var(--main-heading-border) !important;
+  border-color: var(--main-secondary-color) !important;
+  color: var(--main-secondary-color) !important;
 }
 /*  */
 
@@ -1252,7 +1330,7 @@ textarea,
 .team-modal h1 span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
-  border-bottom: 2px solid var(--main-primary-color) !important;
+  border-bottom: 2px solid var(--main-secondary-color) !important;
 }
 .team-modal .modal-footer .add-team-btn {
   color: var(--main-white-color) !important;
@@ -1379,4 +1457,35 @@ textarea,
 .search-result-main .right-search .results_search .box .search-content ul li span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
+}
+.search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:after {
+  border: 2px solid var(--main-primary-color) !important;
+}
+.search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:checked:after {
+  background-color: var(--main-primary-color) !important;
+  border: 2px solid var(--main-primary-color) !important;
+}
+
+/* Button Icons */
+.project-headline button .fa-plus {
+  color: var(--main-secondary-color) !important;
+}
+.teams-page .btn-top-page svg {
+  color: var(--main-secondary-color) !important;
+}
+.admin-panel .controller .btn-text button svg {
+  color: var(--main-secondary-color) !important;
+}
+.admin-panel .controller .import-user svg {
+  color: var(--main-secondary-color) !important;
+}
+.team-modal .modal-footer .add-team-btn svg {
+  color: var(--main-secondary-color) !important;
+}
+
+.project-headline-section .project-share-previews .dropdown-item svg {
+  color: var(--main-secondary-color) !important;
+}
+.search-result-main .search-library .card-body .src-btn svg {
+  color: var(--main-secondary-color) !important;
 }

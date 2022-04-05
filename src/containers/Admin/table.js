@@ -58,6 +58,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
     { indexing: 1, indexing_text: 'REQUESTED' },
@@ -347,7 +348,7 @@ function Table(props) {
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: row.image?.includes('pexels.com') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
+                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',
@@ -719,6 +720,7 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => {
+                    console.log(row);
                     return (
                       <tr key={counter} className="org-rows">
                         <td>{row.project}</td>
@@ -751,42 +753,54 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'Activities' &&
+              {type === 'Activities' &&
               subType === 'Activity Types' &&
-              (data ? (
-                data?.map((type1, counter) => (
-                  <tr key={counter} className="admin-panel-rows">
-                    <td>
-                      <div className="admin-name-img">
-                        <div
-                          style={{
-                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'contain',
-                          }}
-                          className="image-size"
-                        ></div>
-                        <Link className="admin-name">{type1.title}</Link>
-                      </div>
-                    </td>
-                    <td>{type1.order}</td>
-                    <td>
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-type-' + row.id} className="admin-panel-rows">
+                      <td>
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+                          <Link className="admin-name">{row.title}</Link>
+                        </div>
+                      </td>
+                      <td>{row.order}</td>
+                      <td>
                       <div className="admin-panel-dropdown">
                         <div className="admin-description2 ">
-                          {type1.activityItems.map((item) => (
+                          {row.activityItems.map((item) => (
                             <div>{item.title + ','}</div>
                           ))}
                         </div>
                         <div>
-                          <AdminDropdown type={type} type1={type1} subType={subType} />
+                          <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
                         </div>
                       </div>
                     </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No activity type found.</Alert>
+                    </td>
                   </tr>
-                ))
+                )
               ) : (
-                <Alert variant="warning">No activity type found</Alert>
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
               ))}
             {type === 'Activities' &&
               subType === 'Activity Items' &&
@@ -902,9 +916,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'subject-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Subjects" row={row} activePage={activePage} />
                           </div>
@@ -934,9 +948,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Education Level" row={row} activePage={activePage} />
                           </div>
@@ -964,11 +978,11 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
+                    <tr key={'auth-tag-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Author Tags" row={row} activePage={activePage} />
                           </div>
@@ -980,6 +994,39 @@ function Table(props) {
                   <tr>
                     <td colSpan="11">
                       <Alert variant="warning">No Author tag found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+            
+            {type === 'Activities' &&
+              subType === 'Activity Layouts' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-lay-' + row.id} className="admin-panel-rows">
+                      <td>{row.title}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          --
+                          <div>
+                            <AdminDropdown type={type} subType="Activity Layouts" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Activity layout found.</Alert>
                     </td>
                   </tr>
                 )

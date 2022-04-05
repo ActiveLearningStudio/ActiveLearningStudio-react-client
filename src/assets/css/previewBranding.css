@@ -77,11 +77,23 @@
   color: var(--main-preview-primary-color) !important;
 }
 
-.branding-preview .search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:checked:after {
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:checked:after {
   background-color: var(--main-preview-primary-color) !important;
   border: 2px solid var(--main-preview-primary-color) !important;
 }
-.branding-preview .search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:after {
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:after {
   border: 2px solid var(--main-preview-primary-color) !important;
 }
 .branding-preview .search-div h4 {
@@ -107,6 +119,14 @@
   color: var(--main-preview-paragraph-text-color) !important;
   font-family: var(--main-preview-text-font) !important;
 }
-.branding-preview .project-headline .search-main-relaced .search-block .fa-chevron-down {
+.branding-preview
+  .project-headline
+  .search-main-relaced
+  .search-block
+  .fa-chevron-down {
   color: var(--main-preview-primary-color) !important;
+}
+
+.branding-preview .project-headline button .fa-plus {
+  color: var(--main-preview-secondary-color) !important;
 }

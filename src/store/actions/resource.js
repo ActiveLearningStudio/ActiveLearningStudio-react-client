@@ -18,15 +18,15 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const { activityTypes } = await resourceService.getTypes();
+    const result = await resourceService.getTypes();
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
-      payload: { activityTypes },
+      payload: result,
     });
     dispatch({
       type: actionTypes.GET_ACTIVITY_TYPES,
-      payload: { activityTypes },
+      payload: result,
     });
   } catch (e) {
     dispatch({
@@ -98,8 +98,8 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const getActivityItems = (query, page) => async (dispatch) => {
-  const allActivityItems = await resourceService.getActivityItems(query, page);
+export const getActivityItems = (query, page, column, orderBy) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(query, page, column, orderBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
     payload: allActivityItems.data,
@@ -243,6 +243,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       content: 'place_holder',
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
+      author_tag_id: metadata?.author_tag_id,
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
@@ -345,6 +346,15 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   const { image } = await resourceService.uploadActivityItemThumb(formData);
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
+export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityLayoutThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_LAYOUT_THUMBNAIL,
     payload: { image },
   });
   return image;
@@ -463,6 +473,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
           title: response.activity.title,
           subjectId: response.activity.subject_id,
           educationLevelId: response.activity.education_level_id,
+          authorTagId: response.activity.author_tag_id,
           thumb_url: response.activity.thumb_url,
           type: response.activity.type,
         };
@@ -511,6 +522,7 @@ export const createResourceByH5PUploadAction = (
         content: 'place_holder',
         subject_id: metadata.subject_id,
         education_level_id: metadata.education_level_id,
+        author_tag_id: metadata.author_tag_id,
         description: metadata?.description || undefined,
       };
 
@@ -573,6 +585,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     subject_id: metadata.subject_id,
     description: metadata?.description || undefined,
     education_level_id: metadata.education_level_id,
+    author_tag_id: metadata.author_tag_id,
     source_type: metadata?.source_type || undefined,
     source_url: metadata?.source_url || undefined,
   };
@@ -642,8 +655,9 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     title: metadata?.title,
     type: 'h5p',
     content: 'place_holder',
-    subject_id: metadata.subject_id,
-    education_level_id: metadata.education_level_id,
+    subject_id: formatSelectBoxData(metadata.subject_id),
+    education_level_id: formatSelectBoxData(metadata.education_level_id),
+    author_tag_id: formatSelectBoxData(metadata.author_tag_id),
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
@@ -762,7 +776,11 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 // };
 
 export const getLayoutActivities = () => async (dispatch) => {
-  const { data } = await resourceService.getAllLayout();
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const { data } = await resourceService.getAllLayout(activeOrganization?.id);
   if (data) {
     dispatch({
       type: actionTypes.SET_LAYOUT_ACTIVITY,
@@ -793,3 +811,11 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   });
   return result;
 };
+
+export const formatSelectBoxData = (data) => {
+  let ids = [];
+  data?.map(datum=>{
+    ids.push(datum.value);
+  });
+  return ids;
+}

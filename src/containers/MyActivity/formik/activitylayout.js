@@ -44,14 +44,14 @@ const ActivityLayout = (props) => {
     });
     dispatch(getLayoutActivities());
   }, []);
-  const allActivity = useSelector((state) => state.myactivities.layout);
+  const activityLayouts = useSelector((state) => state.myactivities.layout);
 
   useMemo(() => {
-    setLayout(allActivity?.[0] || null);
-    if (allActivity) {
+    setLayout(activityLayouts?.[0] || null);
+    if (activityLayouts) {
       toast.dismiss();
     }
-  }, [allActivity]);
+  }, [activityLayouts]);
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="activity-layout-form">
@@ -95,8 +95,8 @@ const ActivityLayout = (props) => {
       <div className="layout-cards-process-btn">
         <div>
           <div className="activity-layout-cards">
-            {!!allActivity &&
-              allActivity.map((data) => {
+            {!!activityLayouts &&
+              activityLayouts.map((data) => {
                 return (
                   <LayoutCard
                     image={data.image}
@@ -149,16 +149,16 @@ const ActivityLayout = (props) => {
                 <path
                   d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
                   stroke={primaryColor}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M21.0004 21.0004L16.6504 16.6504"
                   stroke={primaryColor}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
 
@@ -186,23 +186,23 @@ const ActivityLayout = (props) => {
                 <path
                   d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M10.1499 3.39999L7.5249 1L4.8999 3.39999"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M7.5 1V8.79997"
                   stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
 
