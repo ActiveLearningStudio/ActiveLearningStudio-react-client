@@ -155,6 +155,7 @@ export default function CreateOrg(prop) {
     }
   }, [activeEdit, editMode]);
   const secondaryColorIcon = getGlobalColor('--main-secondary-color');
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="create-form">
       <Formik
@@ -427,8 +428,8 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor="#ffca70"
-                                    onHandleColor="#e89e21"
+                                    onColor={primaryColor}
+                                    onHandleColor={primaryColor}
                                     offHandleColor="#666"
                                   />
                                   <h3>Activity</h3>
@@ -453,8 +454,8 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor="#ffca70"
-                                    onHandleColor="#e89e21"
+                                    onColor={primaryColor}
+                                    onHandleColor={primaryColor}
                                     offHandleColor="#666"
                                   />
                                   <h3>Playlist</h3>
@@ -471,8 +472,8 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor="#ffca70"
-                                    onHandleColor="#e89e21"
+                                    onColor={primaryColor}
+                                    onHandleColor={primaryColor}
                                     offHandleColor="#666"
                                   />
                                   <h3>Project</h3>
@@ -491,8 +492,8 @@ export default function CreateOrg(prop) {
                                 className="react-switch"
                                 handleDiameter={30}
                                 offColor="#888"
-                                onColor="#ffca70"
-                                onHandleColor="#e89e21"
+                                onColor={primaryColor}
+                                onHandleColor={primaryColor}
                                 offHandleColor="#666"
                               />
                             </div>
