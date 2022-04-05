@@ -7,10 +7,12 @@ import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store
 import './style.scss';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import linkIcon from 'assets/images/project-link.svg';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const ProjectSharing = (props) => {
   const { activeShared, selectedProject, setActiveShared } = props;
   const dispatch = useDispatch();
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="share-button">
       <Switch
@@ -48,8 +50,8 @@ const ProjectSharing = (props) => {
         uncheckedIcon={false}
         checkedIcon={false}
         offColor="#888"
-        onColor="#ffca70"
-        onHandleColor="#e89e21"
+        onColor={primaryColor}
+        onHandleColor={primaryColor}
         offHandleColor="#666"
       />
       &nbsp;

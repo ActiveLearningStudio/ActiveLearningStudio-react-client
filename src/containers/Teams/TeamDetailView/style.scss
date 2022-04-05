@@ -528,6 +528,9 @@
     height: calc(100vh - 80px);
   }
 }
+.customModalSize::-webkit-scrollbar {
+  width: 20px;
+}
 .team-project-btns.whiteboard button {
   &:hover {
     color: #fff !important;
