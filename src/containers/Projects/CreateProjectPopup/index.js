@@ -32,7 +32,6 @@ const onSubmit = async (values, dispatch, props) => {
     selectedTeam,
     handleCloseProjectModal,
   } = props;
-  console.log(fromTeam);
   const { name, description, vType } = values;
   const result = await dispatch(
     project?.thumbUrl
