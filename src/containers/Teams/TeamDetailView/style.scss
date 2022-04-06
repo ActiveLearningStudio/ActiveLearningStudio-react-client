@@ -108,6 +108,9 @@
   .noovo-group-title {
     display: flex;
     color: black;
+    label {
+      margin-right: 16px;
+    }
     textarea.noovo-title {
       font-size: 14px;
       padding: 10px;
@@ -140,7 +143,7 @@
       height: 64px;
       background: #f7faff;
       border-radius: 4px;
-      // margin-bottom: 16px;
+      // margin-bottom: 16p132pxx;
       .search-and-filters {
         display: flex;
         justify-content: space-between;
