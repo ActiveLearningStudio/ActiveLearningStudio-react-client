@@ -284,7 +284,7 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems('', activePage));
+      dispatch(getActivityItems('', activePage, size));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
@@ -313,7 +313,7 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        await dispatch(getActivityItems(encodeQuery, ''));
+        await dispatch(getActivityItems(encodeQuery, '', size));
       } else if (query === '') {
         await dispatch(getActivityItems());
       }
@@ -455,18 +455,18 @@ export default function Pills(props) {
 
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size));
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size));
     }
     if (type === 'Activities') {
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size));
     }
-  }, [type, subTypeState, activePage, activeOrganization?.id]);
+  }, [type, subTypeState, activePage, activeOrganization?.id, size]);
 
   useEffect(() => {
     if (dataRedux.admin.subjects) {
@@ -510,17 +510,17 @@ export default function Pills(props) {
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityItems(encodeQuery, activePage || 1));
+    dispatch(getActivityItems(encodeQuery, activePage || 1, size));
   };
  
   const filterActivityItems = (type) => {
-    dispatch(getActivityItems('', activePage || 1, '', '', type));
+    dispatch(getActivityItems('', activePage || 1, size,'', '', type));
   };
   
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityLayout(activePage || 1, 10, encodeQuery));
+    dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, encodeQuery));
   };
 
   //Default SSO ***************************************
@@ -545,6 +545,33 @@ export default function Pills(props) {
     const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, activePage || 1);
     result.then((data) => {
       setLtiTool(data);
+    });
+  };
+  
+  const searchQueryChangeHandlerSubjects = (search) => {
+    setSubjects(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getSubjects(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setSubjects(data);
+    });
+  };
+  
+  const searchQueryChangeHandlerEducationLevel = (search) => {
+    setEducationLevel(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getEducationLevel(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setEducationLevel(data);
+    });
+  };
+  
+  const searchQueryChangeHandlerAuthorTag = (search) => {
+    setAuthorTag(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getAuthorTag(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setAuthorTag(data);
     });
   };
   
@@ -680,7 +707,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems('', activePage || 1, col, orderBy,));
+      dispatch(getActivityItems('', activePage || 1, size, col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Layouts') {
@@ -1127,7 +1154,7 @@ export default function Pills(props) {
 
               {type === 'Activities' && subTypeState === 'Subjects' && (
                 <Starter
-                  search={false}
+                  search={true}
                   tableHead={columnData.subjects}
                   sortCol={columnData.subjectsSortCol}
                   handleSort={handleSort}
@@ -1141,15 +1168,16 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerSubjects}
                 />
               )}
 
               {type === 'Activities' && subTypeState === 'Education Level' && (
                 <Starter
-                  search={false}
+                  search={true}
                   tableHead={columnData.educationLevel}
                   sortCol={columnData.educationLevelSortCol}
                   handleSort={handleSort}
@@ -1163,15 +1191,16 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerEducationLevel}
                 />
               )}
 
               {type === 'Activities' && subTypeState === 'Author Tags' && (
                 <Starter
-                  search={false}
+                  search={true}
                   tableHead={columnData.authorTags}
                   sortCol={columnData.authorTagsSortCol}
                   handleSort={handleSort}
@@ -1185,9 +1214,10 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerAuthorTag}
                 />
               )}
               
@@ -1207,7 +1237,7 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}

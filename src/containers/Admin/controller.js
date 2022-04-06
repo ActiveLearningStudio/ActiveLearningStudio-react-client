@@ -96,7 +96,7 @@ function Controller(props) {
   }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
-      console.log(roles, 'roles');
+      // console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
@@ -116,7 +116,7 @@ function Controller(props) {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
-      console.log(result?.data, 'result');
+      // console.log(result?.data, 'result');
       if (result?.data?.length > 0) {
         setLoaderImgUser(false);
         setAuthorsArray(result?.data);
@@ -391,7 +391,68 @@ function Controller(props) {
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
             <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler}/>
-            <img src={searchimg} alt="search" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        
+        {!!search && type === 'Activities' && subType === 'Subjects' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+        
+        {!!search && type === 'Activities' && subType === 'Education Level' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+        
+        {!!search && type === 'Activities' && subType === 'Author Tags' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
 
@@ -735,7 +796,7 @@ function Controller(props) {
             Filter by activity type
             <span>
               <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() =>{
