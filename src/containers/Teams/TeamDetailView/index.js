@@ -573,7 +573,7 @@ const TeamDetail = ({
                         icon={faPlus}
                         text="Create Project"
                         primary
-                        width="130px"
+                        width="140px"
                         height="32px"
                         hover
                         className="mr-16"

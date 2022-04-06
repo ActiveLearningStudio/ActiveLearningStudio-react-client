@@ -173,7 +173,7 @@ const AddTeamProjects = (props) => {
                                       title: result?.message,
                                     });
                                     loadTeam(team?.id);
-                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
+                                    history.push(`/org/${organization?.domain}/teams/${team?.id}`);
                                   }).catch((err) => {
                                     Swal.fire({
                                       icon: 'error',

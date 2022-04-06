@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import PropTypes from "prop-types";
 import { Link, withRouter } from "react-router-dom";
@@ -23,7 +23,8 @@ const CHANNEL = "channel";
 
 function Sidebar(props) {
   const { location } = props;
-
+  console.log(location)
+  const active = useMemo(() => location.pathname, [location]);
   const dispatch = useDispatch();
 
   const allState = useSelector((state) => state);
@@ -85,7 +86,9 @@ function Sidebar(props) {
               dispatch(clearTeamPermissions());
             }}
           >
-            <div className="row-sidebar">
+            <div
+              className={active === `/org/${allState.organization.currentOrganization?.domain}` ? "row-sidebar activeLink" : "row-sidebar"}
+            >
               {/* <img src={foldericon} alt="" /> */}
 
               <svg
@@ -135,7 +138,9 @@ function Sidebar(props) {
               dispatch(clearTeamPermissions());
             }}
           >
-            <div className="row-sidebar">
+            <div
+              className={active === `/org/${allState.organization.currentOrganization?.domain}/video` ? "row-sidebar activeLink" : "row-sidebar"}
+            >
               {/* <img src={interactiveVideo} alt="" /> */}
               <svg
                 width="22"
@@ -185,8 +190,11 @@ function Sidebar(props) {
           <Link
             to={`/org/${allState.organization.currentOrganization?.domain}/teams`}
             onClick={() => clearStatesOnSidebarClick()}
+            className={active.includes(`/org/${allState.organization.currentOrganization?.domain}/teams`) ? "activeLink" : ""}
           >
-            <div className="row-sidebar">
+            <div
+              className={active.includes(`/org/${allState.organization.currentOrganization?.domain}/teams`) ? "row-sidebar activeLink" : "row-sidebar"}
+            >
               {/* <img src={teamicon} alt="" /> */}
               <svg
                 width="24"
@@ -238,7 +246,9 @@ function Sidebar(props) {
               dispatch(clearTeamPermissions());
             }}
           >
-            <div className="row-sidebar">
+            <div
+              className={active === `/org/${allState.organization.currentOrganization?.domain}/admin` ? " row-sidebar activeLink" : "row-sidebar"}
+            >
               {/* <img src={administrate} alt="" /> */}
               <svg
                 width="20"
@@ -277,7 +287,9 @@ function Sidebar(props) {
                 dispatch(clearTeamPermissions());
               }}
             >
-              <div className="row-sidebar">
+              <div
+                className={active === `/org/${allState.organization.currentOrganization?.domain}/instance-admin` ? "row-sidebar activeLink" : "row-sidebar"}
+              >
                 {/* <img src={instanceadmin} alt="" /> */}
                 <svg
                   width="24"
