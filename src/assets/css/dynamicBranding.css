@@ -760,7 +760,7 @@ p {
 }
 
 .tab-content .module-content .nav-tabs .nav-link.active {
-  border-bottom-color: var(--main-primary-color) !important;
+  border-bottom: 4px solid var(--main-primary-color) !important;
 }
 
 .admin-panel .pagination > .active > a,
@@ -779,7 +779,17 @@ p {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
+.pagination > li > a {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+  border: 1px solid var(--main-primary-color) !important;
+}
 
+ul.pagination .page-item.active .page-link {
+  background-color: var(--main-primary-color) !important;
+  border-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
 .admin-panel .table-data table .filter-dropdown-table .dropdown-menu .dropdown-item {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
@@ -841,6 +851,10 @@ p {
   font-family: var(--main-text-font) !important;
 }
 .tab-section .tab-inner-section .tab-middle-optional-title h3 {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .interactive-video-heading-two {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
