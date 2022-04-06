@@ -35,12 +35,23 @@
 
 .project-loading {
   background: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
   color: #fff !important;
 }
 .project-loading.Toastify__progress-bar {
   background: var(--main-paragraph-text-color) !important;
 }
 
+.alert.alert-primary,
+.alert.alert-info,
+.alert.alert-danger,
+.alert.alert-warning {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+.admin-panel .form-new-popup-admin .cross-all-pop {
+  color: var(--main-paragraph-text-color) !important;
+}
 /* sidebar branding */
 
 .sidebar-all .sidebar-headings {
@@ -76,6 +87,11 @@
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.search-div .overlay-search-form .form-group .keywords-de {
+  color: var(--main-white-color) !important;
+  background-color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 
 /* help dropdown branding */
 
@@ -90,6 +106,19 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.add-team-projects .organization-name {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
+.add-team-projects .team-projects-top-section .back-to-section span,
+.add-team-projects .title-image .title {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.add-team-projects .team-projects-top-section .back-to-section svg {
+  color: var(--main-primary-color) !important;
+}
 .account-page .title,
 .account-page .panel-title {
   color: var(--main-primary-color) !important;
@@ -242,7 +271,9 @@ p {
 .form-new-popup-myvideo .add-video-form .add-video-form-tabs .nav-tabs .nav-link:hover {
   border-bottom-color: var(--main-primary-color) !important;
 }
-
+.form-new-popup-myvideo svg {
+  color: var(--main-paragraph-text-color) !important;
+}
 /* My Projects Search Library branding */
 
 .search-div h4 {
@@ -251,7 +282,7 @@ p {
 }
 
 .search-div .overlay-search-form .form-group .radio-btns label {
-  color: var(--main-paragraph-text-color);
+  color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font);
 }
 
@@ -840,6 +871,9 @@ ul.pagination .page-item.active .page-link {
   background-color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
 }
+.admin-panel .form-new-popup-admin .inner-form-content .create-form .nav .nav-link {
+  border-color: var(--main-primary-color) !important;
+}
 .admin-panel nav .nav-link.active {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
@@ -880,6 +914,26 @@ ul.pagination .page-item.active .page-link {
   color: var(--main-paragraph-text-color) !important;
 }
 
+.tab_inner_header button span {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+
+.tab-section .tab-inner-section .tab-theming-section .button-group-favicon button.favicon {
+  color: var(--main-primary-color) !important;
+  background: var(--main-white-color) !important;
+  border-color: var(--main-primary-color) !important;
+}
+
+.tab-section .tab-inner-section .organization-own-select-radio .form-check .form-check-label.radio-custom-label {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.tab_inner_color_section .tab_inner_color h4,
+.tab_inner_font_section .tab_inner_font_primary h4 {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
 /* Edit organization */
 
 .admin-panel .form-new-popup-admin .inner-form-content .create-form h2,
@@ -897,7 +951,9 @@ ul.pagination .page-item.active .page-link {
 .create-user-modal-header .modal-title {
   text-decoration: underline var(--main-secondary-color) !important;
 }
-
+.create-user-modal-header .close {
+  color: var(--main-paragraph-text-color) !important;
+}
 .admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create h3,
 .tos-pp .radio-custom-label,
 .email-check-form label,
@@ -948,7 +1004,12 @@ textarea,
   color: var(--main-primary-color) !important;
   border-bottom-color: var(--main-primary-color) !important;
 }
-
+.admin-panel .controller .filter-dropdown-activityItems button {
+  border-color: var(--main-primary-color) !important;
+}
+/* .admin-panel .form-new-popup-admin .inner-form-content .create-form .button-group button svg {
+  color: var(--main-white-color) !important;
+} */
 .admin-panel .form-new-popup-admin .inner-form-content .create-form .button-group button,
 .email-check-form .addButton,
 .curriki-theme-primary-button,
@@ -1220,6 +1281,34 @@ textarea,
   color: var(--main-primary-color) !important;
 }
 
+.add-team-projects .project-tabs .main-tabs.nav.nav-tabs {
+  border-bottom: 1px solid var(--main-primary-color) !important;
+}
+
+.inner-content .add-team-projects .project-tabs .main-tabs .nav-item {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+  font-family: var(--main-heading-font) !important;
+  border-color: var(--main-primary-color) !important;
+}
+
+.inner-content .add-team-projects .project-tabs .main-tabs .nav-item.active {
+  background-color: var(--main-white-color) !important;
+  color: var(--main-primary-color) !important;
+  border-bottom: var(--main-white-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+
+.add-team-projects .flex-button-top .team-controller .search-and-filters .search-bar input {
+  border-bottom: 1px solid var(--main-primary-color) !important;
+}
+
+.curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio {
+  border-color: var(--main-primary-color) !important;
+}
+.curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio .checkmark {
+  background-color: var(--main-primary-color) !important;
+}
 .teams-page .btn-top-page {
   background-color: var(--main-primary-color) !important;
   color: var(--main-white-color) !important;
@@ -1361,7 +1450,41 @@ textarea,
 .add-team-page .flex-button-top .team-controller .search-and-filters .search-bar input {
   border-bottom: 2px solid var(--main-primary-color) !important;
 }
+.invite-wrapper .invite-dialog > div .email-input .non-invitee-members .invite-member-item:hover {
+  background-color: var(--main-primary-color) !important;
+}
+.invite-wrapper .invite-dialog > div button:not(:disabled) {
+  background: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+  font-family: var(--main-heading-font) !important;
+  border-color: var(--main-primary-color) !important;
+}
+.add-team-page .right .right_label .filter-dropdown-role-team .dropdown-menu .dropdown-item {
+  color: var(--main-primary-color) !important;
+}
 
+.invite-wrapper .invite-dialog > div .email-input {
+  border-color: var(--main-paragraph-text-color) !important;
+}
+.invite-wrapper .invite-btn,
+.invite-wrapper .invite-dialog select {
+  border-color: var(--main-paragraph-text-color) !important;
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.invite-wrapper .invite-dialog h2 {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.invite-wrapper .invite-dialog .selected-option,
+.add-team-page .right .right_info h6 {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.invite-wrapper .invite-dialog > div .email-input,
+.invite-wrapper .invite-btn svg {
+  color: var(--main-primary-color) !important;
+}
 /* Auth */
 .auth-page .auth-container nav .nav-link {
   color: var(--main-white-color) !important;
