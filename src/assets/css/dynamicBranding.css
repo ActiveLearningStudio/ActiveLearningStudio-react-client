@@ -673,6 +673,8 @@ p {
 }
 #dropdown-basic {
   font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+  border-color: var(--main-primary-color) !important;
 }
 .admin-panel .controller .drop-counter .dropdown-menu .dropdown-item,
 .filter-dropdown-activityItems .dropdown-menu .dropdown-item {
@@ -779,6 +781,9 @@ p {
 .admin-panel .controller .role-dropdown .dropdown-menu .dropdown-item {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
+}
+.admin-panel .controller .role-dropdown {
+  color: var(--main-primary-color) !important;
 }
 
 .admin-panel .parent-organization-detail button {

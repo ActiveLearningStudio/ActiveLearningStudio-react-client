@@ -587,10 +587,36 @@ function Controller(props) {
           </div>
         )}
 
-        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+        {!!search && type === "Activities" && subType === "Activity Layouts" && (
           <div className="search-bar">
-            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input
+              type="text"
+              placeholder="Search by activity layout name"
+              onChange={searchQueryChangeHandler}
+            />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M21 20.9984L16.65 16.6484"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
         )}
         {paginationCounter && (
@@ -981,9 +1007,19 @@ function Controller(props) {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
+                  {selectedActivityType && (
+                    <Dropdown.Item
+                      onClick={() => setSelectedActivityType(null)}
+                    >
+                      Select
+                    </Dropdown.Item>
+                  )}
                   {activityTypes?.data.map((item) => (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => setSelectedActivityType(item)}
+                    >
+                      {item.title}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -1348,36 +1384,40 @@ function Controller(props) {
             </div>
           )}
 
-        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-          <div className="btn-text">
-            <button
-              type="button"
-              onClick={() => {
-                if (btnAction === 'add_author_tag') {
-                  dispatch(setActiveAdminForm('add_author_tag'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon="plus" />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */&& (
-          <div className="btn-text">
-            <button
-              type="button"
-              onClick={() => {
-                if (btnAction === 'add_activity_layout') {
-                  dispatch(setActiveAdminForm('add_activity_layout'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon="plus" />
-              {btnText}
-            </button>
-          </div>
-        )}
+        {!!btnText &&
+          subType ===
+            "Author Tags" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className="btn-text">
+              <button
+                type="button"
+                onClick={() => {
+                  if (btnAction === "add_author_tag") {
+                    dispatch(setActiveAdminForm("add_author_tag"));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {btnText}
+              </button>
+            </div>
+          )}
+        {!!btnText &&
+          subType ===
+            "Activity Layouts" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className="btn-text">
+              <button
+                type="button"
+                onClick={() => {
+                  if (btnAction === "add_activity_layout") {
+                    dispatch(setActiveAdminForm("add_activity_layout"));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {btnText}
+              </button>
+            </div>
+          )}
 
         {!!btnText &&
           subType === "Manage Roles" &&
@@ -1616,11 +1656,11 @@ Controller.defaultProps = {
   setActiveRole: {},
   setActivePage: {},
   filteredItems: {},
-  type: '',
+  type: "",
   // searchQueryActivities: '',
   // setSearchQueryActivities: {},
-  searchQuery: '',
-  searchQueryProject: '',
+  searchQuery: "",
+  searchQueryProject: "",
   setSearchQueryProject: {},
   setSearchQueryTeam: {},
   // searchQueryStats: PropTypes.string,
