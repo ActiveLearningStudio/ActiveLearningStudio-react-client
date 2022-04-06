@@ -1,13 +1,11 @@
+/* eslint-disable  */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Buttons from 'utils/Buttons/buttons';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
+// import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import './style.scss';
-import {
-  faAngleLeft,
-  faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
 // import Project1 from 'assets/images/teamprojects/project1.png';
@@ -17,23 +15,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchInterface from 'containers/Search';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { loadMyProjectsAction } from 'store/actions/project';
-import {
-  createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction,
-} from 'store/actions/team';
+import { createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction } from 'store/actions/team';
 import Swal from 'sweetalert2';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const AddTeamProjects = (props) => {
-  const {
-    location,
-    organization,
-    team,
-    newTeam,
-    newTeamData,
-    createTeam,
-    loadTeam,
-    loadTeams,
-    addProjectToTeam,
-  } = props;
+  const { location, organization, team, newTeam, newTeamData, createTeam, loadTeam, loadTeams, addProjectToTeam } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
@@ -63,9 +50,7 @@ const AddTeamProjects = (props) => {
   useEffect(() => {
     // Edit mode
     if (team?.id && projectReduxState?.projects?.length > 0) {
-      const allProjects = projectReduxState?.projects.filter(
-        (project) => !team?.projects.includes(project.id),
-      );
+      const allProjects = projectReduxState?.projects.filter((project) => !team?.projects.includes(project.id));
       setAllPersonalProjects(allProjects);
       setLoading(false);
     } else if (team?.id && projectReduxState?.projects?.length === 0 && organization?.id) {
@@ -85,15 +70,14 @@ const AddTeamProjects = (props) => {
       const filteredProjects = allPersonalProjects.filter((project) => project.name.toLowerCase().includes(value.toLowerCase()));
       setAllPersonalProjects(filteredProjects);
     } else if (team?.id) {
-      const allProjects = projectReduxState?.projects.filter(
-        (project) => !team?.projects.includes(project.id),
-      );
+      const allProjects = projectReduxState?.projects.filter((project) => !team?.projects.includes(project.id));
       setAllPersonalProjects(allProjects);
     } else if (!team?.id) {
       setAllPersonalProjects(projectReduxState?.projects);
       setLoading(false);
     }
   };
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="team-project-page">
       <div className="content">
@@ -124,78 +108,74 @@ const AddTeamProjects = (props) => {
             </div>
 
             <div className="project-tabs">
-              <Tabs
-                className="main-tabs"
-                defaultActiveKey="Projects"
-                id="uncontrolled-tab-example"
-              >
+              <Tabs className="main-tabs" defaultActiveKey="Projects" id="uncontrolled-tab-example">
                 <Tab eventKey="Projects" title="Projects">
                   <div className="flex-button-top">
                     <div className="team-controller">
                       {team?.id && (
                         <div className="search-and-filters">
                           <div className="search-bar">
-                            <input
-                              type="text"
-                              className="search-input"
-                              placeholder="Search project"
-                              onChange={searchProjects}
-                            />
-                            <img src={searchimg} alt="search" />
+                            <input type="text" className="search-input" placeholder="Search project" onChange={searchProjects} />
+                            {/* <img src={searchimg} alt="search" /> */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" css-inspector-installed="true">
+                              <path
+                                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
                           </div>
                         </div>
                       )}
 
                       <div className="team-project-btns">
                         <div className="project-selection">
-                          <p>
-                            {selectProject?.length}
-                            {' '}
-                            projects have been selected.
-                            {' '}
-                          </p>
+                          <p>{selectProject?.length} projects have been selected. </p>
                         </div>
-                        {teamPermission?.Team?.includes('team:add-project') && team?.id
-                          && (
-                            <Buttons
-                              icon={faPlus}
-                              type="button"
-                              text="Add projects to team"
-                              primary
-                              width="188px"
-                              height="32px"
-                              hover
-                              onClick={() => {
-                                if (selectProject.length > 0) {
-                                  addProjectToTeam(team?.id, selectProject).then((result) => {
+                        {teamPermission?.Team?.includes('team:add-project') && team?.id && (
+                          <Buttons
+                            icon={faPlus}
+                            type="button"
+                            text="Add projects to team"
+                            primary
+                            width="188px"
+                            height="32px"
+                            hover
+                            onClick={() => {
+                              if (selectProject.length > 0) {
+                                addProjectToTeam(team?.id, selectProject)
+                                  .then((result) => {
                                     Swal.fire({
                                       icon: 'success',
                                       title: result?.message,
                                     });
                                     loadTeam(team?.id);
-                                    history.push(`/org/${organization.activeOrganization?.domain}/teams/${team?.id}`);
+                                    history.push(`/org/${organization?.domain}/teams/${team?.id}`);
                                   }).catch((err) => {
                                     Swal.fire({
                                       icon: 'error',
                                       title: err?.message,
                                     });
                                   });
-                                }
-                              }}
-                            />
-                          )}
-                        {newTeam?.name
-                          && (
-                            <Buttons
-                              type="button"
-                              text="Finish"
-                              primary
-                              width="100px"
-                              height="32px"
-                              hover
-                              onClick={() => {
-                                Swal.showLoading();
-                                createTeam({ ...newTeam, organization_id: organization?.id }).then(() => {
+                              }
+                            }}
+                          />
+                        )}
+                        {newTeam?.name && (
+                          <Buttons
+                            type="button"
+                            text="Finish"
+                            primary
+                            width="100px"
+                            height="32px"
+                            hover
+                            onClick={() => {
+                              Swal.showLoading();
+                              createTeam({ ...newTeam, organization_id: organization?.id })
+                                .then(() => {
                                   Swal.fire({
                                     icon: 'success',
                                     title: 'Team added successfully.',
@@ -203,32 +183,42 @@ const AddTeamProjects = (props) => {
                                   loadTeams();
                                   history.push(`/org/${organization?.domain}/teams`);
                                 })
-                                  .catch((err) => {
-                                    console.log(err);
-                                    Swal.fire({
-                                      icon: 'error',
-                                      title: 'Error',
-                                      text: 'Create Team failed, kindly try again.',
-                                    });
+                                .catch((err) => {
+                                  console.log(err);
+                                  Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Create Team failed, kindly try again.',
                                   });
-                              }}
-                            />
-                          )}
+                                });
+                            }}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
                   <div className="list-of-team-projects">
-                    {loading ? <Alert variant="primary" className="alert">Loading...</Alert> : allPersonalProjects.length > 0 ? allPersonalProjects?.map((project) => (
-                      <TeamProjectCard
-                        backgroundImg={project?.thumb_url}
-                        title={project?.name}
-                        className="mrt"
-                        key={project?.id}
-                        selectProject={selectProject}
-                        setSelectProject={setSelectProject}
-                        project={project}
-                      />
-                    )) : <Alert variant="danger" className="alert">No project found.</Alert>}
+                    {loading ? (
+                      <Alert variant="primary" className="alert">
+                        Loading...
+                      </Alert>
+                    ) : allPersonalProjects.length > 0 ? (
+                      allPersonalProjects?.map((project) => (
+                        <TeamProjectCard
+                          backgroundImg={project?.thumb_url}
+                          title={project?.name}
+                          className="mrt"
+                          key={project?.id}
+                          selectProject={selectProject}
+                          setSelectProject={setSelectProject}
+                          project={project}
+                        />
+                      ))
+                    ) : (
+                      <Alert variant="danger" className="alert">
+                        No project found.
+                      </Alert>
+                    )}
                   </div>
                 </Tab>
                 <Tab eventKey="Search" title="Search">
@@ -236,23 +226,9 @@ const AddTeamProjects = (props) => {
                     <div className="team-controller">
                       <div className="team-project-btns">
                         <div className="project-selection">
-                          <p>
-                            {selectProject?.length}
-                            {' '}
-                            projects have been selected.
-                            {' '}
-                          </p>
+                          <p>{selectProject?.length} projects have been selected. </p>
                         </div>
-                        <Buttons
-                          icon={faPlus}
-                          text="Add projects to team"
-                          type="button"
-                          primary
-                          width="188px"
-                          height="32px"
-                          hover
-                          disabled={selectProject?.length === 0}
-                        />
+                        <Buttons icon={faPlus} text="Add projects to team" type="button" primary width="188px" height="32px" hover disabled={selectProject?.length === 0} />
                       </div>
                     </div>
                   </div>
