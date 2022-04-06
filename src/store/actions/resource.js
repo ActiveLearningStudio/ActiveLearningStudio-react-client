@@ -98,8 +98,8 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const getActivityItems = (query, page, column, orderBy) => async (dispatch) => {
-  const allActivityItems = await resourceService.getActivityItems(query, page, column, orderBy);
+export const getActivityItems = (query, page, column, orderBy, filterBy) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(query, page, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
     payload: allActivityItems.data,

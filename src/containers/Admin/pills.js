@@ -51,7 +51,6 @@ export default function Pills(props) {
     indexing: null,
     shared: null,
   });
-  const [selectedActivityType, setSelectedActivityType] = useState(null);
   const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
@@ -512,6 +511,10 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
     dispatch(getActivityItems(encodeQuery, activePage || 1));
+  };
+ 
+  const filterActivityItems = (type) => {
+    dispatch(getActivityItems('', activePage || 1, '', '', type));
   };
   
   const searchQueryChangeHandlerActivityLayouts = (search) => {
@@ -1117,8 +1120,7 @@ export default function Pills(props) {
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
+                  filteredItems={filterActivityItems}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
                 />
               )}
@@ -1142,8 +1144,6 @@ export default function Pills(props) {
                   paginationCounter={false}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
                 />
               )}
 
@@ -1166,8 +1166,6 @@ export default function Pills(props) {
                   paginationCounter={false}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
                 />
               )}
 
@@ -1190,8 +1188,6 @@ export default function Pills(props) {
                   paginationCounter={false}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
                 />
               )}
               
@@ -1215,8 +1211,6 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
-                  // selectedActivityType={selectedActivityType}
-                  // setSelectedActivityType={setSelectedActivityType}
                 />
               )}
               {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
