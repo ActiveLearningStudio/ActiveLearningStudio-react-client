@@ -38,7 +38,7 @@ const onSubmit = async (values, dispatch, props) => {
       ? createProjectAction({
         name,
         description,
-        thumb_url: thumbUrl,
+        thumb_url: project?.thumbUrl,
         is_public: projectShare,
         organization_visibility_type_id: 1,
         team_id: fromTeam && selectedTeam ? selectedTeam?.id : null

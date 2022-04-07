@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
@@ -5,37 +6,40 @@ import { useHistory } from 'react-router-dom';
 import { slideInRight } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
 import { Formik } from 'formik';
-import close from 'assets/images/grayclose.png';
+import close from 'assets/images/Tclose.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTeamAction } from 'store/actions/team';
 import Swal from 'sweetalert2';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
   animation: 0.5s ${bounceAnimation};
 `;
 function CreateTeamPopup(props) {
-  const {
-    setShowCreateTeamModal,
-  } = props;
+  const { setShowCreateTeamModal } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const { activeOrganization } = useSelector((state) => state.organization);
   // remove popup when escape is pressed
-  const escFunction = useCallback((event) => {
-    if (event.keyCode === 27) {
-      setShowCreateTeamModal(false);
-    }
-  }, [setShowCreateTeamModal]);
+  const escFunction = useCallback(
+    (event) => {
+      if (event.keyCode === 27) {
+        setShowCreateTeamModal(false);
+      }
+    },
+    [setShowCreateTeamModal]
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
+
     return () => {
       document.removeEventListener('keydown', escFunction, false);
     };
   }, [escFunction]);
-
+  const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   return (
     <div className="team-modal">
       <div className="modal fade right" role="dialog" aria-hidden="true">
@@ -43,19 +47,18 @@ function CreateTeamPopup(props) {
           <BouncyDiv className="modal-content">
             <div className="row-team">
               <div className="col-md-12">
-                <button
-                  type="button"
-                  className="close-team-btn"
-                  data-dismiss="modal"
-                  onClick={() => setShowCreateTeamModal(false)}
-                >
-                  <img
+                <button type="button" className="close-team-btn" data-dismiss="modal" onClick={() => setShowCreateTeamModal(false)}>
+                  {/*<img
                     style={{
                       cursor: 'pointer',
                     }}
                     src={close}
                     alt="close"
-                  />
+                  />*/}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 1L1 15" stroke={paragraphColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M1 1L15 15" stroke={paragraphColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -95,13 +98,7 @@ function CreateTeamPopup(props) {
                   // handleCreatePlaylistSubmit();
                 }}
               >
-                {({
-                  values,
-                  errors,
-                  touched,
-                  handleSubmit,
-                  handleChange,
-                }) => (
+                {({ values, errors, touched, handleSubmit, handleChange }) => (
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <p className="label-title">Title</p>
@@ -115,24 +112,12 @@ function CreateTeamPopup(props) {
                         placeholder="e.g Team name"
                         onChange={handleChange}
                       />
-                      <div className="error">
-                        {errors.teamName && touched.teamName && errors.teamName}
-                      </div>
+                      <div className="error">{errors.teamName && touched.teamName && errors.teamName}</div>
                     </div>
                     <div className="form-group">
                       <p className="label-title">Description</p>
-                      <textarea
-                        type="text"
-                        name="description"
-                        className="form-control"
-                        autoFocus="on"
-                        autoComplete="off"
-                        value={values.description}
-                        onChange={handleChange}
-                      />
-                      <div className="error">
-                        {errors.description && touched.description && errors.description}
-                      </div>
+                      <textarea type="text" name="description" className="form-control" autoFocus="on" autoComplete="off" value={values.description} onChange={handleChange} />
+                      <div className="error">{errors.description && touched.description && errors.description}</div>
                     </div>
                     <div className="form-group">
                       <h6 className="satelliteteaminfo"> Satellite Team Information (Optional)</h6>
@@ -159,12 +144,14 @@ function CreateTeamPopup(props) {
                               allowOutsideClick: false,
                               showConfirmButton: false,
                             });
-                            const result = await dispatch(createTeamAction({
-                              name: values.teamName,
-                              description: values.description,
-                              noovo_group_title: values.noovo_group_title,
-                              organization_id: activeOrganization?.id,
-                            }));
+                            const result = await dispatch(
+                              createTeamAction({
+                                name: values.teamName,
+                                description: values.description,
+                                noovo_group_title: values.noovo_group_title,
+                                organization_id: activeOrganization?.id,
+                              })
+                            );
                             Swal.close();
                             setShowCreateTeamModal(false);
                             history.push(`/org/${activeOrganization?.domain}/teams/${result.id}`);
@@ -185,7 +172,6 @@ function CreateTeamPopup(props) {
         </div>
       </div>
     </div>
-
   );
 }
 
