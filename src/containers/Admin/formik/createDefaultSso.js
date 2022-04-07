@@ -160,7 +160,7 @@ export default function CreateDefaultSso(prop) {
           <form onSubmit={handleSubmit}>
             <h2>
               {editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}
-              SSO Integration
+              SSO settings
             </h2>
 
             <div className="create-form-inputs-group">
@@ -173,25 +173,25 @@ export default function CreateDefaultSso(prop) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>LMS Access Token</h3>
+                  <h3>LMS access token</h3>
                   <input type="text" name="lms_access_token" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_token} />
                   <div className="error">{errors.lms_access_token && touched.lms_access_token && errors.lms_access_token}</div>
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Site Name</h3>
+                  <h3>Site name</h3>
                   <input type="site_name" name="site_name" onChange={handleChange} onBlur={handleBlur} value={values.site_name} />
                   <div className="error">{errors.site_name && touched.site_name && errors.site_name}</div>
                 </div>
 
                 <div className="form-group-create">
-                  <h3>LTI Client ID</h3>
+                  <h3>LTI client ID</h3>
                   <input type="lti_client_id" name="lti_client_id" onChange={handleChange} onBlur={handleBlur} value={values.lti_client_id} />
                   <div className="error">{errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}</div>
                 </div>
 
                 <div className="form-group-create">
-                  <h3>LMS Name</h3>
+                  <h3>LMS name</h3>
                   {/* <input
                           type="text"
                           name="role"
@@ -210,13 +210,13 @@ export default function CreateDefaultSso(prop) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Access Key</h3>
+                  <h3>Access key</h3>
                   <input type="text" name="lms_access_key" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_key} />
                   <div className="error">{errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}</div>
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Secret Key</h3>
+                  <h3>Secret key</h3>
                   <input type="text" name="lms_access_secret" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_secret} />
                   <div className="error">{errors.lms_access_secret && touched.lms_access_secret && errors.lms_access_secret}</div>
                 </div>
@@ -240,8 +240,8 @@ export default function CreateDefaultSso(prop) {
 
                 <div className="form-group-create">
                   <h3>
-                    Organization &nbsp;
-                    <small>(search organization from dropdown list only)</small>
+                    Organization
+                    <div><small>Search org from dropdown list only</small></div>
                   </h3>
                   <input
                     type="text"

@@ -300,7 +300,7 @@ export default function CreateActivityItem(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit' : 'Add'} activity item</button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 className="cancel"
