@@ -452,7 +452,7 @@ const BrightcoveModel = (props) => {
                                               name="video"
                                               onChange={() => {
                                                 props.setSelectedVideoIdVimeo(
-                                                  data.link
+                                                  data.player_embed_url
                                                 );
                                               }}
                                               type="radio"
