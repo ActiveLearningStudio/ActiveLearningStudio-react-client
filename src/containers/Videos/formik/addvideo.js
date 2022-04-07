@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
 import AddVideoTube from 'assets/images/svg/youtube.svg';
 import AddKaltura from 'assets/images/kaltura.jpg';
+import AddVemeo from 'assets/images/vemeo.PNG';
 import BackButton from '../../../assets/images/left-arrow.svg';
 import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,6 +26,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('Mydevice');
@@ -46,6 +48,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
         }}
         setSelectedVideoId={setSelectedVideoId}
         setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
+        setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
         showSidebar={showSidebar}
         platform={platform}
       />
@@ -279,7 +282,6 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   >
                     <FormikVideo
                       Input
-                      editVideo={editVideo?.brightcoveData?.videoId || ''}
                       platform={platform}
                       showback={showback}
                       changeScreenHandler={changeScreenHandler}
@@ -332,6 +334,57 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       type={AddKaltura}
                       setScreenStatus={setScreenStatus}
                       selectedVideoId={selectedVideoIdKaltura}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video url'}
+                    />
+                  </Tab>
+                )
+              )}
+
+              {/* Vemo Video */}
+
+              {!editVideo ? (
+                <Tab
+                  eventKey="Vimeo"
+                  title="Vimeo"
+                  onClick={() => {
+                    setplatform('Vimeo');
+                    setShowSidebar(false);
+                  }}
+                >
+                  <FormikVideo
+                    Input
+                    showBrowse
+                    setModalShow={setModalShow}
+                    showback={showback}
+                    changeScreenHandler={changeScreenHandler}
+                    type={AddVemeo}
+                    setScreenStatus={setScreenStatus}
+                    selectedVideoId={selectedVideoIdVimeo}
+                    platform={platform}
+                    placeholder={'Enter a video url'}
+                  />
+                </Tab>
+              ) : (
+                editVideo.source_type === 'Vimeo' && (
+                  <Tab
+                    eventKey="Vimeo"
+                    title="Vimeo"
+                    onClick={() => {
+                      setplatform('Vimeo');
+                      setShowSidebar(false);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showBrowse
+                      setModalShow={setModalShow}
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      type={AddVemeo}
+                      setScreenStatus={setScreenStatus}
+                      selectedVideoId={selectedVideoIdVimeo}
                       platform={platform}
                       editVideo={editVideo?.source_url}
                       placeholder={'Enter a video url'}

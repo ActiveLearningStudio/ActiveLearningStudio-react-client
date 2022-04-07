@@ -655,6 +655,8 @@ p {
 }
 #dropdown-basic {
   font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+  border-color: var(--main-primary-color) !important;
 }
 .admin-panel .controller .drop-counter .dropdown-menu .dropdown-item,
 .filter-dropdown-activityItems .dropdown-menu .dropdown-item {
@@ -736,6 +738,9 @@ p {
 .admin-panel .controller .role-dropdown .dropdown-menu .dropdown-item {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
+}
+.admin-panel .controller .role-dropdown {
+  color: var(--main-primary-color) !important;
 }
 
 .admin-panel .parent-organization-detail button {
@@ -883,6 +888,12 @@ ul.pagination .page-item.active .page-link {
 .tab-section .tab-tospp-section .tab-inner-tospp-section .tab_inner-tossp_header h1 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
+}
+.tab-section .tab-tospp-section .Border-bottom {
+  border-bottom-color: var(--main-secondary-color) !important;
+}
+.tab-section .tab-tossp-detail {
+  border-bottom-color: var(--main-secondary-color) !important;
 }
 .tab-section .tab-inner-section .tab-middle-optional-title h3 {
   color: var(--main-primary-color) !important;

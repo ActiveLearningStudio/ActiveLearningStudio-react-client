@@ -2151,6 +2151,7 @@
     padding: 20px 16px;
     border-radius: 8px;
     margin-top: 22px;
+    border-bottom: 4px solid #f8af2c;
   }
   .edit-org-save-btn {
     background-color: $curriki-main-blue;
@@ -2161,6 +2162,9 @@
     flex-direction: row;
     .mr-16 {
       margin-right: 16px;
+    }
+    .Border-bottom {
+      border-bottom: 4px solid #f8af2c;
     }
     .tab-inner-tospp-section {
       // flex: 1;
