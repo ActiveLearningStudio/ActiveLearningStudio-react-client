@@ -201,6 +201,12 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                 const errors = {};
                 if (!values.title) {
                   errors.title = 'Required';
+                } if (!values.subject_id || values.subject_id.length < 1) {
+                  errors.subject_id = "Required"
+                } if (!values.education_level_id || values.education_level_id.length < 1) {
+                  errors.education_level_id = "Required"
+                } if (!values.author_tag_id || values.author_tag_id.length < 1) {
+                  errors.author_tag_id = "Required"
                 }
                 return errors;
               }}
@@ -267,6 +273,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           onChange={handleSubjSelect}
                           value={values.subject_id}
                         />
+                        <div style={{ color: "red" }}>
+                          {errors.subject_id && touched.subject_id && errors.subject_id}
+                        </div>
                       </div>
 
                       <div className="formik-select mr-16">
@@ -278,6 +287,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           onChange={handleEduLvlSelect}
                           value={values.education_level_id}
                         />
+                        <div style={{ color: "red" }}>
+                          {errors.education_level_id && touched.education_level_id && errors.education_level_id}
+                        </div>
                       </div>
 
                       <div className="formik-select">
@@ -289,6 +301,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           onChange={handleAuthTagSelect}
                           value={values.author_tag_id}
                         />
+                        <div style={{ color: "red" }}>
+                          {errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}
+                        </div>
                       </div>
                     </div>
 
