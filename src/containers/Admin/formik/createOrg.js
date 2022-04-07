@@ -508,7 +508,7 @@ export default function CreateOrg(prop) {
               <Tab eventKey="ToS & PP" title="ToS & PP">
                 <div className="tab-section">
                   <div className="tab-tospp-section">
-                    <div className="tab-inner-tospp-section mr-16">
+                    <div className={checkedTosContent ? 'Border-bottom tab-inner-tospp-section mr-16' : 'tab-inner-tospp-section mr-16'}>
                       {/* Terms of service*/}
                       <div className="tab_inner-tossp_header">
                         <h1>Terms of service</h1>
@@ -566,6 +566,7 @@ export default function CreateOrg(prop) {
                               className="form-check-input radio-custom"
                               onClick={() => {
                                 setCheckedTosContent(true);
+                                setCheckedPpContent(false);
                                 setCheckedTosUrl(false);
                                 setCheckedTosParent(false);
                                 setFieldValue('tos_type', 'Content');
@@ -584,7 +585,7 @@ export default function CreateOrg(prop) {
                       </div>
                     </div>
                     {/* privacy_policy_type */}
-                    <div className="tab-inner-tospp-section">
+                    <div className={checkedPpContent ? 'Border-bottom tab-inner-tospp-section' : 'tab-inner-tospp-section'}>
                       <div className="tab_inner-tossp_header">
                         <h1>Privacy policy</h1>
                       </div>
@@ -642,6 +643,7 @@ export default function CreateOrg(prop) {
                                 setCheckedPpContent(true);
                                 setCheckedPpUrl(false);
                                 setCheckedPpParent(false);
+                                setCheckedTosContent(false);
                                 setFieldValue('privacy_policy_type', 'Content');
                                 // ppHandleShow();
                               }}
