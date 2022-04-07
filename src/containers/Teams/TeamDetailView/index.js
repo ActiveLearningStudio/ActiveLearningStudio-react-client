@@ -20,6 +20,8 @@ import UserIcon from "assets/images/svg/user.svg";
 import InviteDialog from "components/InviteDialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ProjectCard from "containers/Projects/ProjectCard";
+import NewProjectPage from "containers/Projects/NewProjectPage";
+
 import {
   changeUserRole,
   getTeamPermission,
@@ -42,6 +44,7 @@ import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 const TeamDetail = ({
   location,
   team,
+  project,
   organization,
   user,
   inviteMembers,
@@ -87,7 +90,6 @@ const TeamDetail = ({
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
-  console.log(createProject);
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
   useEffect(() => {
     if (team?.projects) {
@@ -528,46 +530,57 @@ const TeamDetail = ({
                       />
                       {(teamPermission?.Team?.includes("team:add-project") ||
                         newTeam?.name) && (
-                        <Buttons
-                          icon={faPlus}
-                          text="Add project"
-                          iconColor={secondaryColor}
-                          primary
-                          width="128px"
-                          height="32px"
-                          hover
-                          onClick={() => {
-                            if (team?.id) {
-                              history.push(
-                                `/org/${organization?.domain}/teams/${team?.id}/add-projects`
-                              );
-                            } else if (newTeam?.name) {
-                              if (newTeam?.users) {
-                                newTeamData({
-                                  ...newTeam,
-                                  users: [
-                                    ...newTeam?.users,
-                                    ...selectedUsersNewTeam,
-                                  ],
-                                });
-                              } else {
-                                newTeamData({
-                                  ...newTeam,
-                                  users: [...selectedUsersNewTeam],
-                                });
-                              }
-                              if (selectedUsersNewTeam.length > 0) {
-                                setMinimumUserFlag(false);
+                          <Buttons
+                            text="Add project"
+                            secondary
+                            width="128px"
+                            height="32px"
+                            className="mr-16"
+                            hover
+                            onClick={() => {
+                              if (team?.id) {
                                 history.push(
-                                  `/org/${organization?.domain}/teams/add-projects`
+                                  `/org/${organization?.domain}/teams/${team?.id}/add-projects`
                                 );
-                              } else {
-                                setMinimumUserFlag(true);
+                              } else if (newTeam?.name) {
+                                if (newTeam?.users) {
+                                  newTeamData({
+                                    ...newTeam,
+                                    users: [
+                                      ...newTeam?.users,
+                                      ...selectedUsersNewTeam,
+                                    ],
+                                  });
+                                } else {
+                                  newTeamData({
+                                    ...newTeam,
+                                    users: [...selectedUsersNewTeam],
+                                  });
+                                }
+                                if (selectedUsersNewTeam.length > 0) {
+                                  setMinimumUserFlag(false);
+                                  history.push(
+                                    `/org/${organization?.domain}/teams/add-projects`
+                                  );
+                                } else {
+                                  setMinimumUserFlag(true);
+                                }
                               }
-                            }
-                          }}
-                        />
-                      )}
+                            }}
+                          />
+                        )}
+                      {teamPermission?.Team?.includes("team:add-project") && (<Buttons
+                        icon={faPlus}
+                        text="Create Project"
+                        primary
+                        width="130px"
+                        height="32px"
+                        hover
+                        className="mr-16"
+                        onClick={() => {
+                          setCreateProject(true);
+                        }}
+                      />)}
                     </div>
                   )}
                 </div>
@@ -720,6 +733,7 @@ const TeamDetail = ({
         show={showGoogleModal}
         onHide={() => setShowGoogleModal(false)}
       />
+      {createProject && <NewProjectPage project={project} handleCloseProjectModal={setCreateProject} fromTeam />}
     </div>
   );
 };
@@ -731,6 +745,7 @@ TeamDetail.propTypes = {
   organization: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   newTeam: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
   teamPermission: PropTypes.object.isRequired,
   newTeamData: PropTypes.func.isRequired,
   inviteMembers: PropTypes.func.isRequired,
@@ -749,6 +764,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
   newTeam: state.team.newTeam,
   team: state.team.selectedTeam,
+  project: state.project,
   teamPermission: state.team.teamPermission,
   organization: state.organization.activeOrganization,
 });

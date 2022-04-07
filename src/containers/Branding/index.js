@@ -384,7 +384,7 @@ const BrandingPage = ({ getShow }) => {
                 <div className="search-main-relaced">
                   <FontAwesomeIcon icon="add" style={{ marginRight: '16px' }} color={secondaryColorIcon} />
 
-                  <Buttons primary text="Create a project" icon={faPlus} width="165px" height="35px" hover />
+                  <Buttons primary text="Create a project" icon={faPlus} width="auto" height="35px" hover />
                 </div>
               </div>
               <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" />

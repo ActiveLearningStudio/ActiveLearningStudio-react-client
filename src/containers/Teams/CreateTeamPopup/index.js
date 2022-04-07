@@ -8,7 +8,8 @@ import { Formik } from 'formik';
 import close from 'assets/images/grayclose.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNewTeamData } from 'store/actions/team';
+import { createTeamAction } from 'store/actions/team';
+import Swal from 'sweetalert2';
 
 const bounceAnimation = keyframes`${slideInRight}`;
 const BouncyDiv = styled.div`
@@ -151,15 +152,22 @@ function CreateTeamPopup(props) {
                         type="submit"
                         className="add-team-btn"
                         // to={`/org/${activeOrganization?.domain}/teams/team-detail`}
-                        onClick={() => {
+                        onClick={async () => {
                           if (values.description && values.teamName) {
-                            dispatch(setNewTeamData({
+                            Swal.fire({
+                              title: 'Creating team...',
+                              allowOutsideClick: false,
+                              showConfirmButton: false,
+                            });
+                            const result = await dispatch(createTeamAction({
                               name: values.teamName,
                               description: values.description,
                               noovo_group_title: values.noovo_group_title,
+                              organization_id: activeOrganization?.id,
                             }));
+                            Swal.close();
                             setShowCreateTeamModal(false);
-                            history.push(`/org/${activeOrganization?.domain}/teams/team-detail`);
+                            history.push(`/org/${activeOrganization?.domain}/teams/${result.id}`);
                           }
                         }}
                       >

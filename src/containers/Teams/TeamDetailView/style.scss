@@ -171,6 +171,8 @@
     }
     .team-project-btns {
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
       .mr-16 {
         margin-right: 16px;
@@ -527,6 +529,9 @@
   iframe {
     height: calc(100vh - 80px);
   }
+}
+.customModalSize::-webkit-scrollbar {
+  width: 20px;
 }
 .team-project-btns.whiteboard button {
   &:hover {
