@@ -889,6 +889,12 @@ ul.pagination .page-item.active .page-link {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.tab-section .tab-tospp-section .Border-bottom {
+  border-bottom-color: var(--main-secondary-color) !important;
+}
+.tab-section .tab-tossp-detail {
+  border-bottom-color: var(--main-secondary-color) !important;
+}
 .tab-section .tab-inner-section .tab-middle-optional-title h3 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
