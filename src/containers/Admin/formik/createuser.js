@@ -282,14 +282,18 @@ export default function CreateUser(prop) {
                     {errors.job_title && touched.job_title && errors.job_title}
                   </div>
                 </div>
-                <div className="form-group-create">
-                  <h3>Message</h3>
-                  <textarea name="message" onChange={handleChange} onBlur={handleBlur} value={values.message} />
-                </div>
-                <div className="form-group-create row-checkbox">
-                  <input type="checkbox" value={values.send_email} onChange={handleChange} name="send_email" />
-                  <div>Send email to user</div>
-                </div>
+                {!editMode && (
+                  <>
+                    <div className="form-group-create">
+                      <h3>Message</h3>
+                      <textarea name="message" onChange={handleChange} onBlur={handleBlur} value={values.message} />
+                    </div>
+                    <div className="form-group-create row-checkbox">
+                      <input type="checkbox" value={values.send_email} onChange={handleChange} name="send_email" />
+                      <div>Send email to user</div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             <div className="button-group">
