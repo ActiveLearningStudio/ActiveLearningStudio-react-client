@@ -116,7 +116,7 @@ export default function CreateDefaultSso(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id));
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -145,7 +145,7 @@ export default function CreateDefaultSso(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id));
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,

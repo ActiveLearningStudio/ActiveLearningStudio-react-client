@@ -526,9 +526,9 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size));
     }
-  }, [type, activePage, activeOrganization?.id]);
+  }, [type, activePage, activeOrganization?.id, size]);
 
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
@@ -586,7 +586,7 @@ export default function Pills(props) {
   
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
-    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
+    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, size, '', '', '', filterBy);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -785,7 +785,7 @@ export default function Pills(props) {
         default:
           col = 'site_name';
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size, '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'LMS settings') {
