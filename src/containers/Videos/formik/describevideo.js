@@ -186,7 +186,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               innerRef={formRef}
               enableReinitialize
               initialValues={{
-                title: editVideo ? editVideo.title : '',
+                title: editVideo ? editVideo.title : values.title,
                 description: editVideo ? editVideo.description || undefined : undefined,
                 author_tag_id: selecteAuthorTags,
                 education_level_id: selectedEducationLevel,

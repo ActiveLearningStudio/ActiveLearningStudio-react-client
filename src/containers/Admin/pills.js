@@ -526,9 +526,9 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size));
     }
-  }, [type, activePage, activeOrganization?.id]);
+  }, [type, activePage, activeOrganization?.id, size]);
 
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
@@ -586,7 +586,7 @@ export default function Pills(props) {
   
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
-    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
+    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, size, '', '', '', filterBy);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -785,10 +785,10 @@ export default function Pills(props) {
         default:
           col = 'site_name';
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size, '', col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
-    } else if (subType == 'All settings') {
+    } else if (subType == 'LMS settings') {
       //mapping column with db column for making it dynamic
       let col = '';
       switch (column) {
@@ -976,12 +976,12 @@ export default function Pills(props) {
                 />
               )}
 
-              {type === 'LMS' && subTypeState === 'All settings' && (
+              {type === 'LMS' && subTypeState === 'LMS settings' && (
                 <Starter
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  subType={'All settings'}
+                  subType={'LMS settings'}
                   search={true}
                   print={false}
                   btnText="Add LMS settings"
@@ -1243,7 +1243,7 @@ export default function Pills(props) {
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
                 />
               )}
-              {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
+              {type === 'Settings' && subTypeState === 'LMS settings' && <Starter type={type} subType={'LMS settings'} subTypeState={subTypeState} />}
               {type === 'DefaultSso' && (
                 <Starter
                   paginationCounter={true}

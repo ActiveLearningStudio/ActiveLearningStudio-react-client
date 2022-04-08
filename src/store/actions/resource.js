@@ -520,9 +520,9 @@ export const createResourceByH5PUploadAction = (
         title: metadata.title,
         type: 'h5p',
         content: 'place_holder',
-        subject_id: metadata.subject_id,
-        education_level_id: metadata.education_level_id,
-        author_tag_id: metadata.author_tag_id,
+        subject_id: formatSelectBoxData(metadata.subject_id),
+        education_level_id: formatSelectBoxData(metadata.education_level_id),
+        author_tag_id: formatSelectBoxData(metadata.author_tag_id),
         description: metadata?.description || undefined,
       };
 

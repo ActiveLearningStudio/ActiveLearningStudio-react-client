@@ -447,6 +447,7 @@
         margin-top: 16px;
         display: flex;
         .formik-select {
+          max-width: 168px;
           flex: 1;
           .formik-select-title {
             margin: 0;
