@@ -222,7 +222,7 @@ function Table(props) {
           </thead>
           <tbody>
             {type === 'LMS' &&
-              subType === 'All settings' &&
+              subType === 'LMS settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => (
@@ -238,7 +238,7 @@ function Table(props) {
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="All settings"
+                              subType="LMS settings"
                               row={row}
                               activePage={activePage}
                               localStateData={localStateData}

@@ -1369,7 +1369,7 @@ const AdminDropdown = (props) => {
                 )}
             </>
           )}
-          {type === "LMS" && subType === "All settings" && (
+          {type === "LMS" && subType === "LMS settings" && (
             <>
               {permission?.Organization.includes(
                 "organization:edit-lms-setting"

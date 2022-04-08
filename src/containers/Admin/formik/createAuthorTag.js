@@ -119,7 +119,7 @@ export default function CreateAuthorTag(props) {
 
                   <div className="form-group-create">
                     <h3>Order</h3>
-                    <input type="number" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
+                    <input type="number" min="0" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
                     <div className="error">{errors.order && touched.order && errors.order}</div>
                   </div>
                 </div>
