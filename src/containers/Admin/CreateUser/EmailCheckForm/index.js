@@ -46,10 +46,10 @@ const EmailCheckForm = (props) => {
 
   return (
     <div className="container email-check-form">
+      <label>Email</label>
       <div className="row">
         <div className="col">
           <div className="form-group-create">
-            <label>Email</label>
             <input className="form-control" type="email" name="email" onChange={(e) => setEmail(e.target.value)} />
             {error && (
               <div className="error">
@@ -60,7 +60,7 @@ const EmailCheckForm = (props) => {
         </div>
         <div className="col text-right">
           <button type="button" className="btn btn-primary addButton" onClick={doCheck}>
-            Check Email
+            Add User
           </button>
         </div>
       </div>
@@ -71,13 +71,14 @@ const EmailCheckForm = (props) => {
               <div className="row">
                 <div className="col button-group">
                   <h1 className="mb-2">
-                    <FontAwesomeIcon icon="exclamation" className="mr-2" />
+                    <FontAwesomeIcon icon="exclamation-circle" className="mr-2" />
                     Do you want to add the user to this org? Select a role:
                   </h1>
                   <select className="form-control" name="role" onChange={(e) => setSelectedRole(e.target.value)} defaultValue={selectedRole}>
                     {roles.map((role) => <option value={role.id} key={role.id}>{role.display_name}</option>)}
                   </select>
                 </div>
+
                 <div className="col text-right">
                   <button type="button" className="btn btn-primary m-2" onClick={doAddToOrg}>
                     <FontAwesomeIcon icon="check-circle" className="mr-2" />
