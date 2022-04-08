@@ -1,9 +1,10 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .myvideomain {
   .inner-content {
     background: $white;
-    padding: 32px 30px 30px;
+    // padding: 32px 30px 30px;
+    padding: 16px 24px;
     // margin: 13px 39px 81px 29px;
     border-radius: 3px;
     min-height: 764px;
@@ -20,7 +21,7 @@
         align-items: flex-end;
       }
       .top-video-detail {
-        margin-top: 15px;
+        margin-top: 16px;
         .video-title-btn {
           display: flex;
           align-items: center;
@@ -184,8 +185,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .add-video-title {
-      // margin-top: 50px;
+      margin-top: 30px;
       width: max-content;
       h2 {
         font-weight: 500;
@@ -223,7 +225,7 @@
         color: $curriki-main-blue !important;
         // width: 160px;
         height: 36px;
-        padding: 8px 0px 8px 0px;
+        // padding: 8px 32px 8px 0px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -266,7 +268,7 @@
     .layout-title-formik-textField {
       display: flex;
       align-items: center;
-      margin-top: 16px;
+      margin-top: 24px;
       img {
         width: 76px;
         height: 32px;
@@ -480,7 +482,7 @@
       }
 
       .formik-uploadimage {
-        margin-top: 33px;
+        margin-top: 32px;
       }
     }
     .describe-video-upload-section {
