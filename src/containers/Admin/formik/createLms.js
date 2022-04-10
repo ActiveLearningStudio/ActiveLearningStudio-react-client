@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,8 +8,10 @@ import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
+import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 export default function CreateUser(prop) {
   const { editMode, clone } = prop;
@@ -29,6 +32,7 @@ export default function CreateUser(prop) {
       setCheckedProject(activeEdit?.project_visibility);
     }
   }, [activeEdit, editMode]);
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -117,7 +121,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+              // dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -146,7 +150,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLmsProject(organization?.activeOrganization?.id));
+              // dispatch(getLmsProject(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -210,14 +214,11 @@ export default function CreateUser(prop) {
                   value={values.role}
                 /> */}
                     <select className="lms-option" name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                      <option selected value="moodle">
-                        Moodle
-                      </option>
-                      <option value="canvas">Canvas</option>
-                      <option value="safarimontage">Safari Montage</option>
-                      <option value="schoology">Schoology</option>
-                      <option value="d2l">D2L</option>
-                      <option value="sakai">Sakai</option>
+                      {integratedLMS.map((data) => (
+                        <option key={data.value} value={data.value}>
+                          {data.name}
+                        </option>
+                      ))}
                     </select>
                     <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
                   </div>
@@ -227,7 +228,6 @@ export default function CreateUser(prop) {
                     <input type="text" name="lms_access_key" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_key} />
                     <div className="error">{errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}</div>
                   </div>
-
                 </div>
 
                 {/* Right Container */}
@@ -265,8 +265,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Activity</h3>
@@ -290,8 +290,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Playlist</h3>
@@ -308,8 +308,8 @@ export default function CreateUser(prop) {
                           uncheckedIcon={false}
                           checkedIcon={false}
                           offColor="#888"
-                          onColor="#ffca70"
-                          onHandleColor="#e89e21"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
                         <h3>Project</h3>

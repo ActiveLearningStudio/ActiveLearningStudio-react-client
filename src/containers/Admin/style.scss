@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -44,7 +44,8 @@
       padding-top: 4px;
     }
     button {
-      width: 167px;
+      width: auto;
+      padding: 0 15px;
       height: 32px;
       border-radius: 16px;
       box-shadow: 0px 2px 8px 1px #c9c9c9;
@@ -444,7 +445,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -472,7 +473,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -533,7 +534,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -557,7 +558,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -701,8 +702,9 @@
       font-size: 14px;
       color: $white;
       margin-right: 16px;
-      width: 150px;
+      width: auto;
       min-height: 32px;
+      padding: 0 15px;
       svg {
         color: #f8af2c;
         margin-right: 7px;
@@ -888,7 +890,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
         span {
           display: flex;
         }
@@ -930,7 +932,7 @@
             flex-shrink: 0;
           }
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -952,7 +954,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1020,7 +1022,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: "";
+            content: '';
             border: none;
           }
         }
@@ -1128,7 +1130,9 @@
   }
   .form-new-popup-admin {
     position: fixed;
-    background: #0848928f;
+    // background: #0848928f;
+    background: rgba(8, 72, 146, 0.8);
+    // opacity: 80%;
     top: 0;
     width: 100%;
     z-index: 1060;
@@ -1297,11 +1301,15 @@
             text-align: center;
             color: #ffffff;
             border: none;
-            padding: 10px 24px;
-            border: 1px solid$fun-blue-1;
+            padding: 10px 11px;
+            border: 1px solid $fun-blue-1;
           }
           button.cancel {
             color: $fun-blue-1;
+            background: #fff;
+          }
+          button.favicon {
+            color: black;
             background: #fff;
           }
         }
@@ -1557,6 +1565,10 @@
 .create-form-inputs-toggles {
   display: flex;
   margin-right: 0 !important;
+
+  .react-switch h3 {
+    padding-left: 5px;
+  }
 }
 
 .custom-toggle-button {
@@ -1621,7 +1633,7 @@
     position: relative;
 
     &::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1647,7 +1659,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1659,7 +1671,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1674,7 +1686,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1687,7 +1699,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1786,7 +1798,7 @@
     background-size: 17px 9px;
     background-position: 2px;
     display: inline-block;
-    margin-right: 10px;
+    // margin-right: 10px;
     height: 23px;
     width: 23px;
     border-radius: 3px;
@@ -1808,7 +1820,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url("../../assets/images/svg/VectorAngleRight.svg");
+      content: url('../../assets/images/svg/VectorAngleRight.svg');
     }
   }
 }
@@ -1835,7 +1847,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url("../../assets/images/svg/angledown.svg");
+    content: url('../../assets/images/svg/angledown.svg');
   }
 }
 .checkbox_section_custom {
@@ -2050,7 +2062,7 @@
     border-bottom: 4px solid #084892 !important;
   }
   input:radio {
-    content: "\f00c";
+    content: '\f00c';
     position: absolute;
     display: none;
   }
@@ -2078,7 +2090,7 @@
 
   .checkbox-custom + .checkbox-custom-label:before,
   .radio-custom + .radio-custom-label:before {
-    content: "";
+    content: '';
     background: #fff;
     border: 2px solid #084892;
     display: inline-block;
@@ -2093,7 +2105,7 @@
   }
 
   .checkbox-custom:checked + .checkbox-custom-label:before {
-    content: "\f00c";
+    content: '\f00c';
     font-family: $fontawesome;
     background: #084892;
     color: #fff;
@@ -2105,7 +2117,7 @@
   }
 
   .radio-custom:checked + .radio-custom-label:before {
-    content: "\f00c";
+    content: '\f00c';
     font-family: $fontawesome;
     color: #fff;
     background: #084892;
@@ -2114,7 +2126,7 @@
 }
 
 .sorting-icon:after {
-  content: "\f0dc";
+  content: '\f0dc';
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
@@ -2129,7 +2141,7 @@
 // Update Tabs in Edit Orgainzation----MQ-Start
 .tab-section {
   // width: 100%;
-  max-width: 840px;
+  width: 840px;
   margin-top: 16px;
   background-color: #f1f1f1;
   border-radius: 8px;
@@ -2139,12 +2151,20 @@
     padding: 20px 16px;
     border-radius: 8px;
     margin-top: 22px;
+    border-bottom: 4px solid #f8af2c;
+  }
+  .edit-org-save-btn {
+    background-color: $curriki-main-blue;
+    color: $white;
   }
   .tab-tospp-section {
     display: flex;
     flex-direction: row;
     .mr-16 {
       margin-right: 16px;
+    }
+    .Border-bottom {
+      border-bottom: 4px solid #f8af2c;
     }
     .tab-inner-tospp-section {
       // flex: 1;
@@ -2173,14 +2193,49 @@
   .mb-16 {
     margin-bottom: 16px;
   }
+  .tab-inner-section-preview {
+    overflow-y: scroll;
+  }
   .tab-inner-section {
     background-color: #ffffff;
     padding: 20px 16px;
     border-radius: 8px;
     .tab-theming-section {
       display: flex;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
+      .mr-100 {
+        margin-left: 100px;
+      }
+      .dimensions-detail {
+        margin-top: 8px;
+      }
+
+      .button-group-favicon {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        padding-bottom: 40px;
+
+        button {
+          background: $fun-blue-1;
+          border-radius: 50px;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          text-align: center;
+          color: #ffffff;
+          border: none;
+          padding: 10px 24px;
+          border: 1px solid $fun-blue-1;
+        }
+        button.favicon {
+          color: #515151;
+          background: #fff;
+          border-color: #515151;
+        }
+      }
     }
     .tab-theming-btn-icon {
       justify-content: flex-start !important;
@@ -2212,6 +2267,14 @@
         line-height: 28px;
         font-size: 24px;
         font-weight: 500;
+      }
+    }
+    .organization-own-select-radio {
+      margin-bottom: 22px;
+      display: flex;
+
+      .mr-43 {
+        margin-right: 43px;
       }
     }
   }
@@ -2280,7 +2343,7 @@
       width: 100% !important;
       align-items: center;
       display: flex;
-      input[type="color"] {
+      input[type='color'] {
         background-color: transparent;
         border: none !important;
         width: 60px;
@@ -2289,8 +2352,9 @@
         overflow: hidden;
         outline: none;
       }
-      input[type="text"] {
-        flex: 1;
+      input[type='text'] {
+        // flex: 1;
+        width: 161px;
         text-indent: 15px;
         margin-left: 15px;
         height: 36px;

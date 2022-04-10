@@ -619,7 +619,7 @@ export const ProjectsPage = (props) => {
           </div>
         </div>
       </div>
-      {createProject && <NewProjectPage {...props} handleCloseProjectModal={setCreateProject} />}
+      {createProject && <NewProjectPage project={props?.project} handleCloseProjectModal={setCreateProject} />}
 
       {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 

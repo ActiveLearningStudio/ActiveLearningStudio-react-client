@@ -753,3 +753,14 @@ export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
     payload: project,
   });
 };
+
+export const exportProjectsToNoovo = (projectId, teamId) => async () => {
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  try {
+    const result = await projectService.exportProjectsToNoovo(activeOrganization?.id, projectId, teamId);
+    return result.message;
+  } catch (err) {
+    return err.message;
+  }
+};

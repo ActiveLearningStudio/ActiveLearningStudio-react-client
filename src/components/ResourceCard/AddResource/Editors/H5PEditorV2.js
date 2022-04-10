@@ -61,9 +61,20 @@ const H5PEditor = (props) => {
     setSubmitAction(e.currentTarget.value);
   };
 
+  const formatSelectBoxData = (data) => {
+    let ids = [];
+    data?.map(datum=>{
+      ids.push(datum.value);
+    });
+    return ids;
+  }
+
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
     console.log('formData', formData);
+    formData.subject_id = formatSelectBoxData(formData.subject_id);
+    formData.education_level_id = formatSelectBoxData(formData.education_level_id);
+    formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {

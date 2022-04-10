@@ -25,6 +25,7 @@ import adminService from 'services/admin.service';
 import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
 
 function Controller(props) {
   const {
@@ -44,8 +45,8 @@ function Controller(props) {
     setActiveRole,
     setActivePage,
     type,
-    searchQueryActivities,
-    setSearchQueryActivities,
+    // searchQueryActivities,
+    // setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     setSearchQueryProject,
@@ -54,7 +55,7 @@ function Controller(props) {
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
-    searchActivitiesQueryHandler,
+    // searchActivitiesQueryHandler,
     setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
@@ -65,7 +66,6 @@ function Controller(props) {
     subType,
     setChangeIndexValue,
     selectedActivityType,
-    setSelectedActivityType,
     libraryReqSelected,
     setLibraryReqSelected,
     // setSubTypeState,
@@ -96,7 +96,7 @@ function Controller(props) {
   }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
-      console.log(roles, 'roles');
+      // console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
@@ -116,7 +116,7 @@ function Controller(props) {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
-      console.log(result?.data, 'result');
+      // console.log(result?.data, 'result');
       if (result?.data?.length > 0) {
         setLoaderImgUser(false);
         setAuthorsArray(result?.data);
@@ -132,6 +132,7 @@ function Controller(props) {
     setSelectedIndexValueid(id);
   };
   const primaryColor = getGlobalColor('--main-primary-color');
+  const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
@@ -188,11 +189,11 @@ function Controller(props) {
                 <path
                   d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                   stroke={primaryColor}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
-                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
                 <label className="flex" style={{ color: 'red' }}>
@@ -210,11 +211,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -227,11 +228,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -243,11 +244,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -260,11 +261,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -276,11 +277,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -345,11 +346,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -373,11 +374,11 @@ function Controller(props) {
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -389,41 +390,85 @@ function Controller(props) {
       )} */}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={(e) => {
-                if (e.target.value) {
-                  setSearchQueryActivities(e.target.value);
-                } else if (e.target.value === '') {
-                  setSearchQueryActivities('');
-                  searchActivitiesQueryHandler('', subType);
-                }
-              }}
-            />
-            {/* <img
-              src={searchimg}
-              alt="search"
-              onClick={() =>
-                searchActivitiesQueryHandler(searchQueryActivities, subType)
-              }
-            /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)}
-            >
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler}/>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        
+        {!!search && type === 'Activities' && subType === 'Subjects' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+        
+        {!!search && type === 'Activities' && subType === 'Education Level' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+        
+        {!!search && type === 'Activities' && subType === 'Author Tags' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -478,9 +523,9 @@ function Controller(props) {
                   <path
                     d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
                     stroke={primaryColor}
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 Filter
@@ -694,9 +739,9 @@ function Controller(props) {
                     <path
                       d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
                       stroke={primaryColor}
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                   Apply Filters
@@ -730,16 +775,16 @@ function Controller(props) {
               <path
                 d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
                 stroke={primaryColor}
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
                 stroke={primaryColor}
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             Library request to review
@@ -751,12 +796,24 @@ function Controller(props) {
             Filter by activity type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
-                  {activityTypes?.map((item) => (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
+                  <Dropdown.Item onClick={() =>{
+                    filteredItems(null);
+                    setSelectedFilterItem(null);
+                  }}
+                  >
+                    Select
+                  </Dropdown.Item>
+                  {activityTypes?.data.map((item) => (
+                    <Dropdown.Item onClick={() => {
+                      filteredItems(item.id);
+                      setSelectedFilterItem(item);
+                      }}
+                    >
+                      {item.title}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -863,6 +920,38 @@ function Controller(props) {
                       }}
                     >
                       {t.value}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
+
+        {(type === 'DefaultSso' || subType === 'All settings') && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'All'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    All
+                  </Dropdown.Item>
+                  {integratedLMS?.map((data) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(data.value);
+                        setSelectedFilterItem(data);
+                      }}
+                    >
+                      {data.name}
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -1066,6 +1155,21 @@ function Controller(props) {
             </button>
           </div>
         )}
+        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
 
         {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
@@ -1239,8 +1343,8 @@ Controller.propTypes = {
   setActiveRole: PropTypes.func,
   setActivePage: PropTypes.func,
   type: PropTypes.string,
-  searchQueryActivities: PropTypes.string,
-  setSearchQueryActivities: PropTypes.func,
+  // searchQueryActivities: PropTypes.string,
+  // setSearchQueryActivities: PropTypes.func,
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
@@ -1249,7 +1353,7 @@ Controller.propTypes = {
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
   searchProjectQueryChangeHandler: PropTypes.func,
-  searchActivitiesQueryHandler: PropTypes.func,
+  // searchActivitiesQueryHandler: PropTypes.func,
   // searchUserReportQueryHandler: PropTypes.func,
   size: PropTypes.number,
   setSize: PropTypes.func,
@@ -1257,7 +1361,6 @@ Controller.propTypes = {
   subType: PropTypes.string,
   setChangeIndexValue: PropTypes.func,
   selectedActivityType: PropTypes.string,
-  setSelectedActivityType: PropTypes.func,
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
   // setSubTypeState: PropTypes.func,
@@ -1284,8 +1387,8 @@ Controller.defaultProps = {
   setActivePage: {},
   filteredItems: {},
   type: '',
-  searchQueryActivities: '',
-  setSearchQueryActivities: {},
+  // searchQueryActivities: '',
+  // setSearchQueryActivities: {},
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
@@ -1295,7 +1398,7 @@ Controller.defaultProps = {
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  searchActivitiesQueryHandler: {},
+  // searchActivitiesQueryHandler: {},
   // searchUserReportQueryHandler: PropTypes.func,
   size: 10,
   setSize: {},
@@ -1303,7 +1406,6 @@ Controller.defaultProps = {
   subType: '',
   setChangeIndexValue: {},
   selectedActivityType: '',
-  setSelectedActivityType: {},
   libraryReqSelected: false,
   setLibraryReqSelected: {},
   // setSubTypeState: {},

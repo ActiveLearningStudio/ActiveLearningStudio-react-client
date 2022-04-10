@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .inner-content {
   background: $white;
@@ -75,7 +75,7 @@
   }
 
   .organization-name {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -156,7 +156,7 @@
               color: $fun-blue-1;
             }
           }
-          img {
+          svg {
             position: absolute;
             right: 40px;
             bottom: 4px;

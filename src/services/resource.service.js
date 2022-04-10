@@ -13,9 +13,9 @@ const getAll = () =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getAllLayout = () =>
+const getAllLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/activity-layouts`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-layouts`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -106,6 +106,17 @@ const uploadActivityItemThumb = (formData) =>
       Promise.reject(err.response.data);
     });
 
+const uploadActivityLayoutThumb = (formData) =>
+  httpService
+    .post(`/${apiVersion}/activity-layouts/upload-thumb`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const getTypes = () =>
   httpService
     .get(`/${apiVersion}/activity-types`)
@@ -144,11 +155,19 @@ const getItems = (activityTypeId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityItems = (query, page) =>
-  httpService.get(`${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, '%23')}` : ''}${page ? `?page=${page}` : ''}`).catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
+const getActivityItems = (query, page, size, column, orderBy, filterBy) =>
+  httpService
+    .get(
+      `${apiVersion}/get-activity-items${page ? `?page=${page}` : ""}${query ? `&query=${query.replace(/#/, "%23")}` : ""}
+      ${size ? `&size=${size}` : ""}
+      ${column ? `&order_by_column=${column}` : ""}
+      ${orderBy ? `&order_by_type=${orderBy}` : ""}
+      ${filterBy ? `&filter=${filterBy}` : ""}`
+    )
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
 
 const createActivityItem = (body) =>
   httpService
@@ -296,6 +315,7 @@ export default {
   deleteActivityItem,
   uploadActivityTypeThumb,
   uploadActivityItemThumb,
+  uploadActivityLayoutThumb,
   getActivityCss,
   h5pToken,
   h5pSettings,

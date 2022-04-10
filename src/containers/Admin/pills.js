@@ -19,6 +19,8 @@ import {
   getSubjects,
   getEducationLevel,
   getAuthorTag,
+  getActivityTypes,
+  getActivityLayout,
   teamsActionAdminPanel,
 } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
@@ -49,7 +51,6 @@ export default function Pills(props) {
     indexing: null,
     shared: null,
   });
-  const [selectedActivityType, setSelectedActivityType] = useState(null);
   const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
@@ -74,11 +75,12 @@ export default function Pills(props) {
   const [logs, setLogs] = useState(null);
   const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
   const [changeIndexValue, setChangeIndexValue] = useState('0');
-  const [orderBy, setOrderBy] = useState('ASC');
+  const [orderBy, setOrderBy] = useState('asc');
   const dataRedux = useSelector((state) => state);
   const [subjects, setSubjects] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
   const [authorTag, setAuthorTag] = useState(null);
+  const [activityLayout, setActivityLayout] = useState(null);
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -282,7 +284,7 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems('', activePage));
+      dispatch(getActivityItems('', activePage, size));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
@@ -291,9 +293,9 @@ export default function Pills(props) {
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Types' && activePage !== organization?.activePage) {
+    if (type === 'Activities' && activePage) {
       //pagination
-      dispatch(loadResourceTypesAction('', activePage));
+      dispatch(getActivityTypes(activePage));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
@@ -311,7 +313,7 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        await dispatch(getActivityItems(encodeQuery, ''));
+        await dispatch(getActivityItems(encodeQuery, '', size));
       } else if (query === '') {
         await dispatch(getActivityItems());
       }
@@ -453,15 +455,18 @@ export default function Pills(props) {
 
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activePage || 1));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activePage || 1));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size));
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activePage || 1));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size));
     }
-  }, [type, subTypeState, activePage, activeOrganization?.id]);
+    if (type === 'Activities') {
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size));
+    }
+  }, [type, subTypeState, activePage, activeOrganization?.id, size]);
 
   useEffect(() => {
     if (dataRedux.admin.subjects) {
@@ -480,6 +485,12 @@ export default function Pills(props) {
       setAuthorTag(dataRedux.admin.author_tags);
     }
   }, [dataRedux.admin.author_tags]);
+  
+  useEffect(() => {
+    if (dataRedux.admin.activity_layouts) {
+      setActivityLayout(dataRedux.admin.activity_layouts);
+    }
+  }, [dataRedux.admin.activity_layouts]);
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
@@ -494,6 +505,22 @@ export default function Pills(props) {
     setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
     dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
+  };
+
+  const searchQueryChangeHandlerActivityItems = (search) => {
+    // setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(getActivityItems(encodeQuery, activePage || 1, size));
+  };
+ 
+  const filterActivityItems = (type) => {
+    dispatch(getActivityItems('', activePage || 1, size,'', '', type));
+  };
+  
+  const searchQueryChangeHandlerActivityLayouts = (search) => {
+    // setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, encodeQuery));
   };
 
   //Default SSO ***************************************
@@ -521,6 +548,33 @@ export default function Pills(props) {
     });
   };
   
+  const searchQueryChangeHandlerSubjects = (search) => {
+    setSubjects(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getSubjects(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setSubjects(data);
+    });
+  };
+  
+  const searchQueryChangeHandlerEducationLevel = (search) => {
+    setEducationLevel(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getEducationLevel(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setEducationLevel(data);
+    });
+  };
+  
+  const searchQueryChangeHandlerAuthorTag = (search) => {
+    setAuthorTag(null);
+    const encodeQuery = encodeURI(search.target.value);
+    const result = adminService.getAuthorTag(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    result.then((data) => {
+      setAuthorTag(data);
+    });
+  };
+  
   const filterLtiTool = (item) => {
     setLtiTool(null);
     const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
@@ -528,6 +582,25 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+
+  
+  const filterDefaultSso = (filterBy) => {
+    setDefaultSso(null);
+    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
+    result.then((data) => {
+      setDefaultSso(data);
+    });
+  };
+ 
+  const filterLmsSetting = (filterBy) => {
+    setLmsProject(null);
+    const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
+    result.then((data) => {
+      setLmsProject(data);
+    });
+  };
+
+
   useEffect(() => {
     // if (subTypeState === 'Library requests') {
     //   setActivePage(1);
@@ -597,7 +670,7 @@ export default function Pills(props) {
     }
   }, [projectFilterObj]);
 
-  const handleSort = (column, subType) => {
+  const handleSort = async (column, subType) => {
     if (subType == 'LTI Tools') {
       //mapping column with db column for making it dynamic
       let col = '';
@@ -609,7 +682,7 @@ export default function Pills(props) {
           col = 'tool_name';
       }
       dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Types') {
       //mapping column with db column for making it dynamic
@@ -621,8 +694,154 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      dispatch(getActivityTypes(activePage || 1, col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Activity Items') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getActivityItems('', activePage || 1, size, col, orderBy,));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Activity Layouts') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Subjects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, '', '', col, orderBy,));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Education Level') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Author Tags') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Order':
+          col = 'order';
+          break;
+        default:
+          col = 'order';
+      }
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Organization') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Name':
+          col = 'name';
+          break;
+        default:
+          col = 'name';
+      }
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'DefaultSso') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Site Name':
+          col = 'site_name';
+          break;
+        default:
+          col = 'site_name';
+      }
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'All settings') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Type':
+          col = 'lms_name';
+          break;
+        default:
+          col = 'lms_name';
+      }
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'All Users') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'First Name':
+          col = 'first_name';
+          break;
+        default:
+          col = 'first_name';
+      }
+      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, 10, '', col, orderBy));
+      setUsers(result)
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'All Projects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Created':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, '', 10, col, orderBy);
+      setAllProjectTab(result);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+    } else if (subType == 'Exported Projects') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+      switch (column) {
+        case 'Created Date':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      const result = await adminService.getAllExportedProject(activePage || 1, 10, '', col, orderBy);
+      setAllProjectUserTab(result);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'All teams') {
       dispatch(teamsActionAdminPanel(activeOrganization?.id, '', activePage, size, 'created_at', orderBy));
@@ -694,7 +913,7 @@ export default function Pills(props) {
                   importUser={true}
                   filter={false}
                   tableHead={columnData.userall}
-                  sortCol={[]}
+                  sortCol={columnData.userallSortCol}
                   handleSort={handleSort}
                   data={users}
                   activePage={activePage}
@@ -745,7 +964,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.organization}
-                  sortCol={[]}
+                  sortCol={columnData.organizationSortCol}
                   handleSort={handleSort}
                   paginationCounter={true}
                   size={size}
@@ -770,13 +989,14 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.lmssettings}
-                  sortCol={[]}
+                  sortCol={columnData.lmssettingsSortCol}
                   handleSort={handleSort}
                   data={lmsProject}
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+                  filteredItems={filterLmsSetting}
                 />
               )}
               {type === 'LMS' && subTypeState === 'BrightCove' && (
@@ -810,7 +1030,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   tableHead={columnData.projectAll}
-                  sortCol={[]}
+                  sortCol={columnData.projectAllSortCol}
                   handleSort={handleSort}
                   data={allProjectTab}
                   searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
@@ -842,7 +1062,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={false}
                   tableHead={columnData.projectUser}
-                  sortCol={[]}
+                  sortCol={columnData.projectUserSortCol}
                   search={true}
                   handleSort={handleSort}
                   data={allProjectUserTab}
@@ -912,7 +1132,7 @@ export default function Pills(props) {
                 <Starter
                   search={true}
                   tableHead={columnData.ActivityItems}
-                  sortCol={[]}
+                  sortCol={columnData.ActivityItemsSortCol}
                   handleSort={handleSort}
                   subType={'Activity Items'}
                   searchQueryActivities={searchQueryActivities}
@@ -927,16 +1147,16 @@ export default function Pills(props) {
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
+                  filteredItems={filterActivityItems}
+                  searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
                 />
               )}
 
               {type === 'Activities' && subTypeState === 'Subjects' && (
                 <Starter
-                  search={false}
+                  search={true}
                   tableHead={columnData.subjects}
-                  sortCol={[]}
+                  sortCol={columnData.subjectsSortCol}
                   handleSort={handleSort}
                   subType={'Subjects'}
                   searchQueryActivities={searchQueryActivities}
@@ -948,19 +1168,18 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
+                  searchQueryChangeHandler={searchQueryChangeHandlerSubjects}
                 />
               )}
 
               {type === 'Activities' && subTypeState === 'Education Level' && (
                 <Starter
-                  search={false}
-                  tableHead={columnData.subjects}
-                  sortCol={[]}
+                  search={true}
+                  tableHead={columnData.educationLevel}
+                  sortCol={columnData.educationLevelSortCol}
                   handleSort={handleSort}
                   subType={'Education Level'}
                   searchQueryActivities={searchQueryActivities}
@@ -972,19 +1191,18 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
+                  searchQueryChangeHandler={searchQueryChangeHandlerEducationLevel}
                 />
               )}
 
               {type === 'Activities' && subTypeState === 'Author Tags' && (
                 <Starter
-                  search={false}
-                  tableHead={columnData.subjects}
-                  sortCol={[]}
+                  search={true}
+                  tableHead={columnData.authorTags}
+                  sortCol={columnData.authorTagsSortCol}
                   handleSort={handleSort}
                   subType={'Author Tags'}
                   searchQueryActivities={searchQueryActivities}
@@ -996,11 +1214,33 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  paginationCounter={false}
+                  paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  selectedActivityType={selectedActivityType}
-                  setSelectedActivityType={setSelectedActivityType}
+                  searchQueryChangeHandler={searchQueryChangeHandlerAuthorTag}
+                />
+              )}
+              
+              {type === 'Activities' && subTypeState === 'Activity Layouts' && (
+                <Starter
+                  search={true}
+                  tableHead={columnData.activityLayouts}
+                  sortCol={columnData.activityLayoutsSortCol}
+                  handleSort={handleSort}
+                  subType={'Activity Layouts'}
+                  // searchQueryActivities={searchQueryActivities}
+                  // setSearchQueryActivities={setSearchQueryActivities}
+                  // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                  btnText="Add activity layout"
+                  btnAction="add_activity_layout"
+                  data={activityLayout}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
                 />
               )}
               {type === 'Settings' && subTypeState === 'All settings' && <Starter type={type} subType={'All settings'} subTypeState={subTypeState} />}
@@ -1011,18 +1251,19 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   print={false}
-                  btnText="Create New Default SSO"
+                  btnText="Add Default SSO settings"
                   btnAction="add_default_sso"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.defaultsso}
-                  sortCol={[]}
+                  sortCol={columnData.defaultssoSortCol}
                   handleSort={handleSort}
                   data={defaultSso}
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+                  filteredItems={filterDefaultSso}
                 />
               )}
               {type === 'LMS' && subTypeState === 'LTI Tools' && (
@@ -1039,7 +1280,6 @@ export default function Pills(props) {
                   filter={false}
                   tableHead={columnData.ltitool}
                   sortCol={columnData.ltitoolSortCol}
-                  handleSort={handleSort}
                   handleSort={handleSort}
                   data={ltiTool}
                   type={type}
