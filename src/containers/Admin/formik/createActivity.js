@@ -162,7 +162,25 @@ export default function CreateActivity(props) {
                     {errors.title && touched.title && errors.title}
                   </div>
                 </div>
-
+                <div className="form-group-create">
+                  <h3>Order</h3>
+                  <input
+                    type="number"
+                    name="order"
+                    min="0"
+                    onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onBlur={handleBlur}
+                    value={values.order}
+                  />
+                  <div className="error">
+                    {errors.order && touched.order && errors.order}
+                  </div>
+                </div>
                 <div className="form-group-create">
                   <h3>Upload an image</h3>
                   <div className="" onClick={() => imgUpload.current.click()}>
@@ -317,26 +335,6 @@ export default function CreateActivity(props) {
                         <p>Upload File</p>
                       </div>
                     )}
-                  </div>
-                </div>
-
-                <div className="form-group-create">
-                  <h3>Order</h3>
-                  <input
-                    type="number"
-                    name="order"
-                    min="0"
-                    onChange={handleChange}
-                    onKeyDown={(e) => {
-                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    onBlur={handleBlur}
-                    value={values.order}
-                  />
-                  <div className="error">
-                    {errors.order && touched.order && errors.order}
                   </div>
                 </div>
               </div>
