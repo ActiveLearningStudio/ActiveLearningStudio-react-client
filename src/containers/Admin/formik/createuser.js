@@ -298,7 +298,7 @@ export default function CreateUser(prop) {
                 {existingUser && (
                   <div className="form-group-create">
                     <Alert variant="warning">
-                      <img src={warningSVG} alt="warning" />
+                      <img className="warning-img" src={warningSVG} alt="warning" />
                       This user already exists in another organization.
                       <br />
                       Do you want to add the user to this org?
