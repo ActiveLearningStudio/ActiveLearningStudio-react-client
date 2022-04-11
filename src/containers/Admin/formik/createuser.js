@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { addUserInOrganization, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { loadOrganizationTypesAction } from 'store/actions/auth';
 import { getOrgUsers } from 'store/actions/organization';
 import checkImg from 'assets/images/svg/check.svg';
+import warningSVG from 'assets/images/svg/warning.svg';
 import './createuser.scss';
 
 export default function CreateUser(prop) {
-  const { editMode, checkedEmail } = prop;
+  const { editMode, checkedEmail, existingUser } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const organizationTypes = useSelector((state) => state.auth.organizationTypes);
@@ -293,6 +294,16 @@ export default function CreateUser(prop) {
                       <div>Send email to user</div>
                     </div>
                   </>
+                )}
+                {existingUser && (
+                  <div className="form-group-create">
+                    <Alert variant="warning">
+                      <img src={warningSVG} alt="warning" />
+                      This user already exists in another organization.
+                      <br />
+                      Do you want to add the user to this org?
+                    </Alert>
+                  </div>
                 )}
               </div>
             </div>

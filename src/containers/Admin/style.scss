@@ -1208,6 +1208,11 @@
         }
         .form-group-create {
           margin-bottom: 16px;
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
 
           input,
           textarea {
