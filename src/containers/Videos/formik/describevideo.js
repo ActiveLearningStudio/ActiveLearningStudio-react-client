@@ -9,12 +9,12 @@ import Buttons from 'utils/Buttons/buttons';
 import { useSelector, useDispatch } from 'react-redux';
 import UploadImage from 'utils/uploadimagev2/uploadimagev2';
 import HeadingText from 'utils/HeadingText/headingtext';
-import HeadingThree from "utils/HeadingThree/headingthree";
+import HeadingThree from 'utils/HeadingThree/headingthree';
 import DefaultUpload from 'assets/images/defaultUpload.png';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
-import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
-import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -43,33 +43,33 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
 
   const formatApiData = (data) => {
     let ids = [];
-    data.map(datum=>{
+    data.map((datum) => {
       ids.push(datum.id);
     });
     return ids;
-  }
-  
-  useEffect(()=> {
-    if(!subjects) {
+  };
+
+  useEffect(() => {
+    if (!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
       result_sub.then((data) => {
         let subj_array = [];
-        data?.data.map((subject)=> {
-          let sub = {value: subject.id, label: subject.name};
+        data?.data.map((subject) => {
+          let sub = { value: subject.id, label: subject.name };
           subj_array.push(sub);
-        })
+        });
         setSubjects(subj_array);
       });
     }
   }, [subjects]);
-  
-  useEffect(()=> {
-    if(!educationLevels) {
+
+  useEffect(() => {
+    if (!educationLevels) {
       const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
       result_edu.then((data) => {
         let edu_array = [];
-        data?.data.map((edu_lvl)=> {
-          let edu = {value: edu_lvl.id, label: edu_lvl.name};
+        data?.data.map((edu_lvl) => {
+          let edu = { value: edu_lvl.id, label: edu_lvl.name };
           edu_array.push(edu);
         });
         setEducationLevels(edu_array);
@@ -77,13 +77,13 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
     }
   }, [educationLevels]);
 
-  useEffect(()=> {    
-    if(!authorTags) {
+  useEffect(() => {
+    if (!authorTags) {
       const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
       result_tag.then((data) => {
         let tag_array = [];
-        data?.data.map((tag)=> {
-          let auth_tag = {value: tag.id, label: tag.name};
+        data?.data.map((tag) => {
+          let auth_tag = { value: tag.id, label: tag.name };
           tag_array.push(auth_tag);
         });
         setAuthorTags(tag_array);
@@ -91,23 +91,23 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
     }
   }, [authorTags]);
 
-  useEffect(()=>{
-    if(editVideo?.subjects && !selectedSubjects){
+  useEffect(() => {
+    if (editVideo?.subjects && !selectedSubjects) {
       let output = subjects?.filter((obj) => formatApiData(editVideo?.subjects).indexOf(obj.value) !== -1);
       setSelectedSubjects(output);
     }
-    if(editVideo?.author_tags && !selecteAuthorTags){
+    if (editVideo?.author_tags && !selecteAuthorTags) {
       let output = authorTags?.filter((obj) => formatApiData(editVideo?.author_tags).indexOf(obj.value) !== -1);
       setSelecteAuthorTags(output);
     }
-    
-    if(editVideo?.education_levels && !selectedEducationLevel){
+
+    if (editVideo?.education_levels && !selectedEducationLevel) {
       let output = educationLevels?.filter((obj) => formatApiData(editVideo?.education_levels).indexOf(obj.value) !== -1);
       setSelectedEducationLevel(output);
     }
-  })
+  });
 
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   const formRef = useRef();
   return (
     <>
@@ -137,41 +137,22 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
             <HeadingTwo text="Interactive Video" color="#084892" />
           </div>
           <div
-              className="back-button"
-              id="back-button-none-bg"
-              onClick={() => {
-                if (showback) {
-                  changeScreenHandler('addvideo');
-                } else {
-                  setScreenStatus('AddVideo');
-                }
-              }}
-            >
-              {/* <img src={BackButton} alt="back button " /> */}
-              <svg
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: "8px", marginTop: "4px" }}
-              >
-                <path
-                  d="M13 5L1 5"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 1L1 5L5 9"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <p className="">Back to options</p>
+            className="back-button"
+            id="back-button-none-bg"
+            onClick={() => {
+              if (showback) {
+                changeScreenHandler('addvideo');
+              } else {
+                setScreenStatus('AddVideo');
+              }
+            }}
+          >
+            {/* <img src={BackButton} alt="back button " /> */}
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+              <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p className="">Back to options</p>
           </div>
           {/* <div className="add-describevideo-tour">
             <span>
@@ -186,7 +167,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               innerRef={formRef}
               enableReinitialize
               initialValues={{
-                title: editVideo ? editVideo.title : values.title,
+                title: editVideo ? editVideo.title : '',
                 description: editVideo ? editVideo.description || undefined : undefined,
                 author_tag_id: selecteAuthorTags,
                 education_level_id: selectedEducationLevel,
@@ -201,12 +182,15 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                 const errors = {};
                 if (!values.title) {
                   errors.title = 'Required';
-                } if (!values.subject_id || values.subject_id.length < 1) {
-                  errors.subject_id = "Required"
-                } if (!values.education_level_id || values.education_level_id.length < 1) {
-                  errors.education_level_id = "Required"
-                } if (!values.author_tag_id || values.author_tag_id.length < 1) {
-                  errors.author_tag_id = "Required"
+                }
+                if (!values.subject_id || values.subject_id.length < 1) {
+                  errors.subject_id = 'Required';
+                }
+                if (!values.education_level_id || values.education_level_id.length < 1) {
+                  errors.education_level_id = 'Required';
+                }
+                if (!values.author_tag_id || values.author_tag_id.length < 1) {
+                  errors.author_tag_id = 'Required';
                 }
                 return errors;
               }}
@@ -221,21 +205,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">
-                    Describe layout
-                  </h4>
+                  <h4 className="interactive-video-heading-two">Describe layout</h4>
                   <div>
                     <div className="dec-title-formik-textField">
-                      <HeadingThree
-                        text="Title"
-                        color="#515151"
-                        className="textField-title"
-                      />
-                      <HeadingText
-                        text="Used for searching, reports and copyright information"
-                        color="#515151"
-                        className="textField-detailText"
-                      />
+                      <HeadingThree text="Title" color="#515151" className="textField-title" />
+                      <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
                       <input
                         type="text"
                         name="title"
@@ -266,16 +240,8 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     <div className="layout-formik-select">
                       <div className="formik-select mr-16">
                         <HeadingText text="Subject" className="formik-select-title" />
-                        <ReactMultiSelectCheckboxes
-                          name="subject_id"
-                          hideSearch
-                          options={subjects}
-                          onChange={handleSubjSelect}
-                          value={values.subject_id}
-                        />
-                        <div style={{ color: "red" }}>
-                          {errors.subject_id && touched.subject_id && errors.subject_id}
-                        </div>
+                        <ReactMultiSelectCheckboxes name="subject_id" hideSearch options={subjects} onChange={handleSubjSelect} value={values.subject_id} />
+                        <div style={{ color: 'red' }}>{errors.subject_id && touched.subject_id && errors.subject_id}</div>
                       </div>
 
                       <div className="formik-select mr-16">
@@ -287,23 +253,13 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           onChange={handleEduLvlSelect}
                           value={values.education_level_id}
                         />
-                        <div style={{ color: "red" }}>
-                          {errors.education_level_id && touched.education_level_id && errors.education_level_id}
-                        </div>
+                        <div style={{ color: 'red' }}>{errors.education_level_id && touched.education_level_id && errors.education_level_id}</div>
                       </div>
 
                       <div className="formik-select">
                         <HeadingText text="Author Tags" className="formik-select-title" />
-                        <ReactMultiSelectCheckboxes
-                          name="author_tag_id"
-                          hideSearch
-                          options={authorTags}
-                          onChange={handleAuthTagSelect}
-                          value={values.author_tag_id}
-                        />
-                        <div style={{ color: "red" }}>
-                          {errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}
-                        </div>
+                        <ReactMultiSelectCheckboxes name="author_tag_id" hideSearch options={authorTags} onChange={handleAuthTagSelect} value={values.author_tag_id} />
+                        <div style={{ color: 'red' }}>{errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}</div>
                       </div>
                     </div>
 
@@ -319,17 +275,14 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     </div>
                   </div>
                   <div className="describe-video">
-                  <h4 className="interactive-video-heading-two">
-                    Add Interactions
-                  </h4>
-                  <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
-                  <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                    <h4 className="interactive-video-heading-two">Add Interactions</h4>
+                    <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
+                    <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>
               )}
             </Formik>
           </div>
-          
         </div>
       </div>
     </>
