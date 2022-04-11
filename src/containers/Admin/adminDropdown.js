@@ -675,7 +675,7 @@ const AdminDropdown = (props) => {
                         var resultDel;
                         if (subType === "Activity Items") {
                           resultDel = await dispatch(
-                            deleteActivityItem(type1.id)
+                            deleteActivityItem(activeOrganization?.id, type1.id)
                           );
                           dispatch(loadResourceItemAction(type1.id));
                         } else {
@@ -809,7 +809,7 @@ const AdminDropdown = (props) => {
                         Swal.showLoading();
                         var resultDel;
                         if (subType === 'Activity Items') {
-                          resultDel = await dispatch(deleteActivityItem(row.id));
+                          resultDel = await dispatch(deleteActivityItem(activeOrganization?.id, row.id));
                           dispatch(loadResourceItemAction(row.id));
                         } else {
                           resultDel = await dispatch(deleteActivityType(activeOrganization?.id, row.id));
