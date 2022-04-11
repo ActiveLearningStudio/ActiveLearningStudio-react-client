@@ -117,32 +117,32 @@ const uploadActivityLayoutThumb = (formData) =>
       Promise.reject(err.response.data);
     });
 
-const getTypes = () =>
+const getTypes = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/activity-types`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const createActivityType = (body) =>
+const createActivityType = (subOrgId, body) =>
   httpService
-    .post(`/${apiVersion}/activity-types`, body)
+    .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`, body)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
-const editActivityType = (body, typeId) =>
+const editActivityType = (subOrgId, body, typeId) =>
   httpService
-    .put(`/${apiVersion}/activity-types/${typeId}`, body)
+    .put(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`, body)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
 
-const deleteActivityType = (typeId) =>
+const deleteActivityType = (subOrgId, typeId) =>
   httpService
-    .remove(`/${apiVersion}/activity-types/${typeId}`)
+    .remove(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);

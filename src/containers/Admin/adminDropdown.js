@@ -680,7 +680,7 @@ const AdminDropdown = (props) => {
                           dispatch(loadResourceItemAction(type1.id));
                         } else {
                           resultDel = await dispatch(
-                            deleteActivityType(type1.id)
+                            deleteActivityType(activeOrganization?.id, type1.id)
                           );
 
                           if (resultDel) {
@@ -812,7 +812,7 @@ const AdminDropdown = (props) => {
                           resultDel = await dispatch(deleteActivityItem(row.id));
                           dispatch(loadResourceItemAction(row.id));
                         } else {
-                          resultDel = await dispatch(deleteActivityType(row.id));
+                          resultDel = await dispatch(deleteActivityType(activeOrganization?.id, row.id));
 
                           if (resultDel) {
                             Swal.fire({
@@ -1635,7 +1635,7 @@ const AdminDropdown = (props) => {
                               dispatch(
                                 getDefaultSso(
                                   activeOrganization?.id,
-                                  activePage || 1
+                                  activePage || 1,
                                 )
                               );
                             })

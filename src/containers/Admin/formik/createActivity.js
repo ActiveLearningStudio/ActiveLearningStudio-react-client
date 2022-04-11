@@ -24,7 +24,8 @@ export default function CreateActivity(props) {
   const fileUpload = useRef();
   const dispatch = useDispatch();
   const selectedType = useSelector((state) => state.resource.selectedType);
-  const { activePage } = useSelector((state) => state.organization);
+  const organization = useSelector((state) => state.organization);
+  const { activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
@@ -42,6 +43,7 @@ export default function CreateActivity(props) {
           image: editMode ? selectedType.image : '',
           order: editMode ? selectedType.order : '',
           file: editMode ? selectedType.css_path : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -73,7 +75,7 @@ export default function CreateActivity(props) {
               button: false,
             });
             const response = await dispatch(
-              editActivityType(values, selectedType.id),
+              editActivityType(organization?.activeOrganization?.id, values, selectedType.id),
             );
             if (response) {
               Swal.fire({
@@ -102,7 +104,7 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            const response = await dispatch(createActivityType(values));
+            const response = await dispatch(createActivityType(organization?.activeOrganization?.id, values));
             if (response) {
               Swal.fire({
                 text: 'Activity type added successfully',

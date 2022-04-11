@@ -295,7 +295,7 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activePage));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
@@ -694,7 +694,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activePage || 1, col, orderBy));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Items') {

@@ -18,7 +18,11 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const result = await resourceService.getTypes();
+    const centralizedState = store.getState();
+    const {
+      organization: { activeOrganization },
+    } = centralizedState;
+    const result = await resourceService.getTypes(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
@@ -49,8 +53,8 @@ export const selectActivityType = (type) => (dispatch) => {
   });
 };
 
-export const createActivityType = (data) => async (dispatch) => {
-  const result = await resourceService.createActivityType(data);
+export const createActivityType = (subOrgId, data) => async (dispatch) => {
+  const result = await resourceService.createActivityType(subOrgId, data);
   dispatch({
     type: actionTypes.ADD_ACTIVITY_TYPE,
     payload: result,
@@ -58,8 +62,8 @@ export const createActivityType = (data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityType = (data, typeId) => async (dispatch) => {
-  const result = await resourceService.editActivityType(data, typeId);
+export const editActivityType = (subOrgId, data, typeId) => async (dispatch) => {
+  const result = await resourceService.editActivityType(subOrgId, data, typeId);
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_TYPE,
     payload: result,
@@ -67,8 +71,8 @@ export const editActivityType = (data, typeId) => async (dispatch) => {
   return result;
 };
 
-export const deleteActivityType = (typeId) => async (dispatch) => {
-  const result = resourceService.deleteActivityType(typeId);
+export const deleteActivityType = (subOrgId, typeId) => async (dispatch) => {
+  const result = resourceService.deleteActivityType(subOrgId, typeId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_TYPE,
   });
