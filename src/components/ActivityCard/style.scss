@@ -1,8 +1,11 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .preview-list-update {
   width: 256px;
   border: none !important;
+  @media (max-width: 800px) {
+    width: 100% !important;
+  }
 }
 
 .activity-preview-card {
@@ -24,9 +27,13 @@
   height: 156px !important;
   border-radius: 8px;
   &:before {
-    background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(81, 81, 81, 0.2) 0%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
     border-radius: 8px;
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     width: 250px !important;
@@ -37,4 +44,33 @@
   background: none !important;
   border: none !important;
   box-shadow: none !important;
+}
+
+.playimage-update-mobile {
+  @media (max-width: 800px) {
+    width: 100% !important;
+    height: 48px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 8px;
+    .playimage-update {
+      position: static !important;
+      width: 32px !important;
+      height: 32px !important;
+      &:before {
+        content: none;
+      }
+    }
+    #plydet-update-id {
+      position: static !important;
+      font-size: 10px !important;
+      line-height: 16px !important;
+      color: #767676 !important;
+    }
+  }
 }

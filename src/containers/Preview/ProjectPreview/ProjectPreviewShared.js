@@ -13,7 +13,7 @@ import {
 } from "store/actions/project";
 import ActivityCard from "components/ActivityCard";
 import Unauthorized from "components/Unauthorized";
-
+import HeaderLogo from "assets/images/GCLogo.png";
 import "./style.scss";
 
 function ProjectPreviewShared(props) {
@@ -77,6 +77,21 @@ function ProjectPreviewShared(props) {
     localStorage.setItem("lti_activity", true);
   }, []);
 
+  const [windowDimenion, setWindowDimenion] = useState(window.innerWidth);
+
+  const detectSize = () => {
+    setWindowDimenion(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", detectSize);
+    console.log("Logo:", windowDimenion);
+
+    return () => {
+      window.removeEventListener("resize", detectSize);
+    };
+  }, [windowDimenion]);
+
   let playlists;
 
   if (currentProject) {
@@ -108,27 +123,68 @@ function ProjectPreviewShared(props) {
         }
 
         return (
-          <div className="check-each" key={playlist.id}>
-            <button
-              type="button"
-              ref={(el) => {
-                accordion.current[counter] = el;
-              }}
-              className={counter === 0 ? "active accordion" : " accordion"}
-              onClick={() => {
-                accordion.current[counter].classList.toggle("active");
-              }}
-            >
-              <FontAwesomeIcon icon="plus" />
-              {playlist.title}
-            </button>
+          <>
+            {/* <div className="check-each" key={playlist.id}>
+              <button
+                type="button"
+                ref={(el) => {
+                  accordion.current[counter] = el;
+                }}
+                className={
+                  counter === 0
+                    ? "active accordion"
+                    : " accordion "
+                }
+                onClick={() => {
+                  accordion.current[counter].classList.toggle("active");
+                }}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {playlist.title}
+              </button>
 
-            <div className="panel ">
-              <ul>
-                <Slider {...settings}>{activities}</Slider>
-              </ul>
+              <div className="panel ">
+                <ul>
+                  <Slider {...settings}>{activities}</Slider>
+                </ul>
+              </div>
+            </div> */}
+
+            <div className="check-each" key={playlist.id}>
+              <button
+                type="button"
+                ref={(el) => {
+                  accordion.current[counter] = el;
+                }}
+                className={
+                  counter === 0
+                    ? "active accordion preview-dropdown-style"
+                    : " accordion preview-dropdown-style"
+                }
+                onClick={() => {
+                  accordion.current[counter].classList.toggle("active");
+                }}
+              >
+                {playlist.title}
+                <FontAwesomeIcon
+                  icon={counter === 0 ? "chevron-down" : "chevron-up"}
+                  style={{ fontSize: "12px" }}
+                />
+              </button>
+
+              <div className="panel preview-activity-style">
+                <ul>
+                  {windowDimenion > 768 ? (
+                    <Slider {...settings}>{activities}</Slider>
+                  ) : (
+                    activities
+                  )}
+
+                  {/* <Slider {...settings}>{activities}</Slider> */}
+                </ul>
+              </div>
             </div>
-          </div>
+          </>
         );
       });
   } else {
@@ -150,6 +206,12 @@ function ProjectPreviewShared(props) {
           {currentProject ? (
             <div>
               <div className="container">
+                <div className="project-preview-logo">
+                  <img
+                    src={HeaderLogo}
+                    className="project-preview-logo-image"
+                  />
+                </div>
                 <div className="scene flex-wrap shared-preview-custom">
                   <div className="scene-img">
                     {!!currentProject.thumb_url &&

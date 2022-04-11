@@ -1,22 +1,23 @@
 /* eslint-disable max-len */
-import React, { Suspense, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
+/* eslint-disable */
+import React, { Suspense, useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter, Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dropdown } from "react-bootstrap";
 
-import projectIcon from 'assets/images/project_icon.svg';
-import { loadSharedPlaylistAction } from 'store/actions/playlist';
-import Unauthorized from 'components/Unauthorized';
-import PreviousLink from './components/PreviousLink';
-import NextLink from './components/NextLink';
-import ActivitiesDropdown from './components/ActivitiesDropdown';
-import ActivitiesList from './components/ActivitiesList';
+import projectIcon from "assets/images/project_icon.svg";
+import { loadSharedPlaylistAction } from "store/actions/playlist";
+import Unauthorized from "components/Unauthorized";
+import PreviousLink from "./components/PreviousLink";
+import NextLink from "./components/NextLink";
+import ActivitiesDropdown from "./components/ActivitiesDropdown";
+import ActivitiesList from "./components/ActivitiesList";
 
-import './style.scss';
+import "./style.scss";
 
-const H5PPreview = React.lazy(() => import('../../H5PPreview'));
+const H5PPreview = React.lazy(() => import("../../H5PPreview"));
 
 function LtiPlaylistPreviewShared(props) {
   const {
@@ -36,7 +37,7 @@ function LtiPlaylistPreviewShared(props) {
   }, [projectId, playlistId, activityId, loadSharedPlaylist]);
 
   let { selectedPlaylist } = playlist;
-  if (selectedPlaylist === 'error') {
+  if (selectedPlaylist === "error") {
     return <Unauthorized text="Project is not public." />;
   }
 
@@ -64,10 +65,14 @@ function LtiPlaylistPreviewShared(props) {
       currentActivityId = selectedPlaylist.activities[0].id;
     }
 
-    currentActivity = selectedPlaylist.activities.find((f) => f.id === currentActivityId);
+    currentActivity = selectedPlaylist.activities.find(
+      (f) => f.id === currentActivityId
+    );
 
     if (currentActivity) {
-      const index = selectedPlaylist.activities.findIndex((act) => act.id === currentActivity.id);
+      const index = selectedPlaylist.activities.findIndex(
+        (act) => act.id === currentActivity.id
+      );
       if (index > 0) {
         previousResource = selectedPlaylist.activities[index - 1];
       }
@@ -83,10 +88,13 @@ function LtiPlaylistPreviewShared(props) {
     <>
       {loading ? (
         <div className="loading-phf-data">
-          {loading === 'loading...' ? (
+          {loading === "loading..." ? (
             <Unauthorized text={loading.toUpperCase()} />
           ) : (
-            <Unauthorized showButton text="You are unauthorized to access this!" />
+            <Unauthorized
+              showButton
+              text="You are unauthorized to access this!"
+            />
           )}
         </div>
       ) : (
@@ -152,7 +160,10 @@ function LtiPlaylistPreviewShared(props) {
                   {/* <img src="/images/video-thumbnail.jpg" alt="video-thumbnail" /> */}
                   {currentActivity && (
                     <Suspense fallback={<div>Loading</div>}>
-                      <H5PPreview showLtiPreview activityId={currentActivity.id} />
+                      <H5PPreview
+                        showLtiPreview
+                        activityId={currentActivity.id}
+                      />
                     </Suspense>
                   )}
                   {/*
@@ -196,11 +207,7 @@ function LtiPlaylistPreviewShared(props) {
 
               <div className="scrollDiv long">
                 <div className="watcher">
-                  You are watching from
-                  {' '}
-                  <span>
-                    {selectedPlaylist.title}
-                  </span>
+                  You are watching from <span>{selectedPlaylist.title}</span>
                 </div>
                 <ul className="slider-scroll-auto">
                   <ActivitiesList
@@ -230,11 +237,12 @@ LtiPlaylistPreviewShared.propTypes = {
 };
 
 LtiPlaylistPreviewShared.defaultProps = {
-  loading: '',
+  loading: "",
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadSharedPlaylist: (projectId, playlistId) => dispatch(loadSharedPlaylistAction(projectId, playlistId)),
+  loadSharedPlaylist: (projectId, playlistId) =>
+    dispatch(loadSharedPlaylistAction(projectId, playlistId)),
 });
 
 const mapStateToProps = (state) => ({
@@ -242,5 +250,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LtiPlaylistPreviewShared),
+  connect(mapStateToProps, mapDispatchToProps)(LtiPlaylistPreviewShared)
 );
