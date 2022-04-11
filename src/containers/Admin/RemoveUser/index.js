@@ -118,6 +118,7 @@ const RemoveUser = (props) => {
                   <strong>Organization: </strong>
                   {currentOrg.name}
                 </p>
+                <h1>User’s projects added to your library</h1>
                 {outcome === 'success' && mode === 'remove-projects' && <h1>User&apos;s projects removed</h1>}
               </div>
             </div>
