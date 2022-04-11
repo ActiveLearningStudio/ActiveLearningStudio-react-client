@@ -18,7 +18,11 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const result = await resourceService.getTypes();
+    const centralizedState = store.getState();
+    const {
+      organization: { activeOrganization },
+    } = centralizedState;
+    const result = await resourceService.getTypes(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
@@ -49,8 +53,8 @@ export const selectActivityType = (type) => (dispatch) => {
   });
 };
 
-export const createActivityType = (data) => async (dispatch) => {
-  const result = await resourceService.createActivityType(data);
+export const createActivityType = (subOrgId, data) => async (dispatch) => {
+  const result = await resourceService.createActivityType(subOrgId, data);
   dispatch({
     type: actionTypes.ADD_ACTIVITY_TYPE,
     payload: result,
@@ -58,8 +62,8 @@ export const createActivityType = (data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityType = (data, typeId) => async (dispatch) => {
-  const result = await resourceService.editActivityType(data, typeId);
+export const editActivityType = (subOrgId, data, typeId) => async (dispatch) => {
+  const result = await resourceService.editActivityType(subOrgId, data, typeId);
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_TYPE,
     payload: result,
@@ -67,8 +71,8 @@ export const editActivityType = (data, typeId) => async (dispatch) => {
   return result;
 };
 
-export const deleteActivityType = (typeId) => async (dispatch) => {
-  const result = resourceService.deleteActivityType(typeId);
+export const deleteActivityType = (subOrgId, typeId) => async (dispatch) => {
+  const result = resourceService.deleteActivityType(subOrgId, typeId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_TYPE,
   });
@@ -98,8 +102,8 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const getActivityItems = (query, page, size, column, orderBy, filterBy) => async (dispatch) => {
-  const allActivityItems = await resourceService.getActivityItems(query, page, size, column, orderBy, filterBy);
+export const getActivityItems = (subOrgId, query, page, size, column, orderBy, filterBy) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(subOrgId, query, page, size, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
     payload: allActivityItems.data,
@@ -114,8 +118,8 @@ export const selectActivityItem = (type) => (dispatch) => {
   });
 };
 
-export const createActivityItem = (data) => async (dispatch) => {
-  const result = await resourceService.createActivityItem(data);
+export const createActivityItem = (subOrgId, data) => async (dispatch) => {
+  const result = await resourceService.createActivityItem(subOrgId, data);
   dispatch({
     type: actionTypes.ADD_ACTIVITY_ITEM,
     payload: result,
@@ -123,8 +127,8 @@ export const createActivityItem = (data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityItem = (data, itemId) => async (dispatch) => {
-  const result = await resourceService.editActivityItem(data, itemId);
+export const editActivityItem = (subOrgId, data, itemId) => async (dispatch) => {
+  const result = await resourceService.editActivityItem(subOrgId, data, itemId);
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_ITEM,
     payload: result,
@@ -132,8 +136,8 @@ export const editActivityItem = (data, itemId) => async (dispatch) => {
   return result;
 };
 
-export const deleteActivityItem = (itemId) => async (dispatch) => {
-  const result = resourceService.deleteActivityItem(itemId);
+export const deleteActivityItem = (subOrgId, itemId) => async (dispatch) => {
+  const result = resourceService.deleteActivityItem(subOrgId, itemId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_ITEM,
   });
@@ -789,8 +793,8 @@ export const getLayoutActivities = () => async (dispatch) => {
   }
 };
 
-export const getSingleLayoutActivities = () => async (dispatch) => {
-  const { data } = await resourceService.getSingleLayout();
+export const getSingleLayoutActivities = (subOrgId) => async (dispatch) => {
+  const { data } = await resourceService.getSingleLayout(subOrgId);
   if (data) {
     dispatch({
       type: actionTypes.SET_SINGLE_ACTIVITY,

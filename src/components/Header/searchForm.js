@@ -30,14 +30,14 @@ function SearchForm() {
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
   const auth = useSelector((state) => state.auth);
-  const { currentOrganization, permission } = useSelector(
+  const { currentOrganization, permission, activeOrganization } = useSelector(
     (state) => state.organization
   );
 
   useEffect(() => {
     if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
-      dispatcher(getActivityItems());
+      dispatcher(getActivityItems(activeOrganization?.id));
       dispatcher(getUserReport("all"));
     }
   }, []);

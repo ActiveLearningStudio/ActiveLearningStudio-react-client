@@ -17,7 +17,8 @@ export default function CreateActivityItem(props) {
   const dispatch = useDispatch();
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activePage } = useSelector((state) => state.organization);
+  const organization = useSelector((state) => state.organization);
+  const { activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedItem?.image);
@@ -38,6 +39,7 @@ export default function CreateActivityItem(props) {
           demo_video_id: editMode ? selectedItem?.demo_video_id : '',
           image: editMode ? selectedItem?.image : '',
           order: editMode ? selectedItem?.order : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -83,7 +85,7 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(editActivityItem(values, selectedItem.id));
+            const response = await dispatch(editActivityItem(organization?.activeOrganization?.id, values, selectedItem.id));
             if (response) {
               Swal.fire({
                 text: 'Activity item edited successfully',
@@ -96,7 +98,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }
@@ -111,7 +113,7 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(createActivityItem(values));
+            const response = await dispatch(createActivityItem(organization?.activeOrganization?.id, values));
             if (response) {
               Swal.fire({
                 text: 'Activity item added successfully',
@@ -124,7 +126,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }

@@ -284,18 +284,18 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems('', activePage, size));
+      dispatch(getActivityItems(activeOrganization?.id, '', activePage, size));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
-      dispatch(getActivityItems());
+      dispatch(getActivityItems(activeOrganization?.id));
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
     if (type === 'Activities' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activePage));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
@@ -313,9 +313,9 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        await dispatch(getActivityItems(encodeQuery, '', size));
+        await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, '', size));
       } else if (query === '') {
-        await dispatch(getActivityItems());
+        await dispatch(getActivityItems(activeOrganization?.id));
       }
     }
   };
@@ -510,11 +510,11 @@ export default function Pills(props) {
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityItems(encodeQuery, activePage || 1, size));
+    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage || 1, size));
   };
  
   const filterActivityItems = (type) => {
-    dispatch(getActivityItems('', activePage || 1, size,'', '', type));
+    dispatch(getActivityItems(activeOrganization?.id, '', activePage || 1, size,'', '', type));
   };
   
   const searchQueryChangeHandlerActivityLayouts = (search) => {
@@ -694,7 +694,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activePage || 1, col, orderBy));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Items') {
@@ -707,7 +707,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems('', activePage || 1, size, col, orderBy,));
+      dispatch(getActivityItems(activeOrganization?.id, '', activePage || 1, size, col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Layouts') {
