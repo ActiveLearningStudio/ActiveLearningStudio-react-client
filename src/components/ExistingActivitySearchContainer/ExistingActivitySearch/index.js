@@ -165,10 +165,8 @@ function ExistingActivitySearch(props) {
   };
 
   useEffect(() => {
-    if (!activityTypesState || activityTypesState.length === 0) return;
-
     const allItems = [];
-    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.data?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
   
