@@ -19,6 +19,7 @@ function ProjectPreviewShared(props) {
   const project = useSelector((state) => state.project);
   const { activeOrganization } = useSelector((state) => state.organization);
   const accordion = useRef([]);
+  const [activeAccordion, setActiveAccordion] = useState();
 
   const [currentProject, setCurrentProject] = useState(null);
   useEffect(() => {
@@ -106,11 +107,16 @@ function ProjectPreviewShared(props) {
               className={counter === 0 ? 'active activity-slider-button' : 'activity-slider-button'}
               onClick={() => {
                 accordion.current[counter].classList.toggle('active');
+                if (playlist.id === activeAccordion) {
+                  setActiveAccordion();
+                } else {
+                  setActiveAccordion(playlist.id);
+                }
               }}
             >
-              <FontAwesomeIcon icon={'chevron-down'} style={{ fontSize: '12px' }} />
+              <FontAwesomeIcon icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} style={{ fontSize: '12px' }} />
               {playlist.title}
-              <FontAwesomeIcon className="mobile" icon={'chevron-down'} style={{ fontSize: '12px' }} />
+              <FontAwesomeIcon className="mobile" icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} />
             </button>
 
             <div className="panel preview-activity-style">
