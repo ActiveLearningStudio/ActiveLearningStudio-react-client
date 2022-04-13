@@ -122,16 +122,19 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
   });
 };
 
-export const loadH5pResourceSettings =
-  (activityId, studentId = null, submissionId = null) =>
-  async (dispatch) => {
-    const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
-    dispatch({
-      type: GET_H5P_SETTINGS,
-      h5pSettings,
-    });
-    window.brightcoveAccountId = h5pSettings?.h5p?.brightcoveData?.accountId;
-  };
+export const loadH5pResourceSettings = (activityId, studentId = null, submissionId = null) => async (dispatch) => {
+  const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
+  try {
+    localStorage.setItem('brightcoveAccountId', h5pSettings?.h5p?.brightcoveData?.accountId);
+  } catch (e) {
+    console.log(e);
+  }
+  dispatch({
+    type: GET_H5P_SETTINGS,
+    h5pSettings,
+  });
+  window.brightcoveAccountId = h5pSettings?.h5p?.brightcoveData?.accountId;
+};
 
 export const getSubmissionAction = (classworkId, courseId, auth) => async (dispatch) => {
   const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj)).catch((err) => err);
