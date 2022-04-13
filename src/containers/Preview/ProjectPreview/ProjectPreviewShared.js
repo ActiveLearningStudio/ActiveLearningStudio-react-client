@@ -136,7 +136,7 @@ function ProjectPreviewShared(props) {
   }
 
   return (
-    <>
+    <div className="white-backgroud">
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
@@ -179,7 +179,7 @@ function ProjectPreviewShared(props) {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1203,9 +1203,17 @@
           width: fit-content;
           margin-bottom: 36px;
         }
-
+        .row-checkbox {
+          display: flex;
+          flex-wrap: wrap;
+        }
         .form-group-create {
           margin-bottom: 16px;
+          .warning-img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
 
           input,
           textarea {
@@ -1216,7 +1224,15 @@
             border-radius: 3px;
             padding: 0 10px;
           }
-
+          input[type='checkbox'] {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #888888;
+            margin-right: 16px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            padding: 0 10px;
+          }
           .api_setting {
             width: 100%;
           }

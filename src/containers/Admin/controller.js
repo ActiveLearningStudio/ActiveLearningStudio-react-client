@@ -203,7 +203,7 @@ function Controller(props) {
             </div>
           </>
         )}
-        {!!search && type === 'LMS' && subType === 'All settings' && (
+        {!!search && type === 'LMS' && subType === 'LMS settings' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
@@ -928,7 +928,7 @@ function Controller(props) {
           </div>
         )}
 
-        {(type === 'DefaultSso' || subType === 'All settings') && (
+        {(type === 'DefaultSso' || subType === 'LMS settings') && (
           <div className="filter-dropdown-activityItems">
             Filter by type
             <span>
@@ -1216,7 +1216,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && permission?.Organization.includes('organization:create-lms-setting') && (
+        {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"

@@ -30,6 +30,7 @@ const ActivityLayout = (props) => {
   const history = useHistory();
   const [layout, setLayout] = useState({ title: "Interactive Book" });
   const [filterData, setFilterData] = useState([]);
+  const organization = useSelector((state) => state.organization);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -43,7 +44,7 @@ const ActivityLayout = (props) => {
       icon: "",
     });
     dispatch(loadResourceTypesAction());
-    dispatch(getSingleLayoutActivities());
+    dispatch(getSingleLayoutActivities(organization?.activeOrganization?.id));
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
   const allActivitytypes = useSelector((state) => state.resource.types);

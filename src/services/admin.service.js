@@ -142,8 +142,8 @@ const getLmsProjectSearch = (subOrgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getActivityTypes = (page, column, orderBy, search) => httpService
-  .get(`/${apiVersion}/activity-types?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search}`)
+const getActivityTypes = (subOrgId, page, column, orderBy, search) => httpService
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-types?page=${page}&order_by_column=${column}&order_by_type=${orderBy}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
     errorCatcher(err.response.data);
@@ -206,7 +206,7 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (orgId, page, query, size, column, orderBy, filterBy = '') => httpService
+const getDefaultSso = (orgId, page, size, query, column, orderBy, filterBy = '') => httpService
   .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
   ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
