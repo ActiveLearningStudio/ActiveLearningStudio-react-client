@@ -42,9 +42,9 @@ function ProjectPreviewShared(props) {
   const settings = {
     dots: false,
     arrows: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
     variableWidth: true,
   };
 

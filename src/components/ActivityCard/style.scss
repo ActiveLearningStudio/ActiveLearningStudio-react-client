@@ -3,7 +3,7 @@
 .preview-list-update {
   width: 256px;
   border: none !important;
-  @media (max-width: 800px) {
+  @media (max-width: 767px) {
     width: 100% !important;
   }
 }
@@ -30,6 +30,9 @@
   width: 250px !important;
   height: 156px !important;
   border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+
   &:before {
     background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
     border-radius: 8px;
@@ -47,7 +50,7 @@
 }
 
 .playimage-update-mobile {
-  @media (max-width: 800px) {
+  @media (max-width: 767px) {
     width: 100% !important;
     height: 48px !important;
     display: flex !important;

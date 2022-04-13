@@ -115,6 +115,10 @@
     }
 
     .accoridion-playlist {
+      .slick-prev::before,
+      .slick-next::before {
+        color: #f8af2c;
+      }
       .activity-slider-button {
         font-family: 'rubic';
         font-style: normal;
@@ -169,7 +173,7 @@
       }
       .activity-slider-button.active {
         + .preview-activity-style {
-          display: flex;
+          display: block;
         }
       }
 
