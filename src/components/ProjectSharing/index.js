@@ -1,39 +1,48 @@
 /* eslint-disable max-len */
-import React from 'react';
-import Swal from 'sweetalert2';
-import PropTypes from 'prop-types';
-import Switch from 'react-switch';
-import { useDispatch } from 'react-redux';
-import { toggleProjectShareAction, toggleProjectShareRemovedAction } from 'store/actions/project';
-import './style.scss';
-import SharePreviewPopup from 'components/SharePreviewPopup';
+/* eslint-disable */
+import React from "react";
+import Swal from "sweetalert2";
+import PropTypes from "prop-types";
+import Switch from "react-switch";
+import { useDispatch } from "react-redux";
+import {
+  toggleProjectShareAction,
+  toggleProjectShareRemovedAction,
+} from "store/actions/project";
+import "./style.scss";
+import SharePreviewPopup from "components/SharePreviewPopup";
 // import linkIcon from 'assets/images/project-link.svg';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const ProjectSharing = (props) => {
   const { activeShared, selectedProject, setActiveShared } = props;
   const dispatch = useDispatch();
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="share-button">
       <Switch
         onChange={() => {
           if (activeShared) {
             Swal.fire({
-              icon: 'warning',
+              icon: "warning",
               title: `You are about to stop sharing <strong>"${selectedProject.name}"</strong>`,
               html: `Please remember that anyone you have shared this project
                                     with will no longer have access its contents. Do you want to continue?`,
               showCloseButton: true,
               showCancelButton: true,
               focusConfirm: false,
-              confirmButtonText: 'Stop Sharing!',
-              confirmButtonAriaLabel: 'Stop Sharing!',
-              cancelButtonText: 'Cancel',
-              cancelButtonAriaLabel: 'Cancel',
+              confirmButtonText: "Stop Sharing!",
+              confirmButtonAriaLabel: "Stop Sharing!",
+              cancelButtonText: "Cancel",
+              cancelButtonAriaLabel: "Cancel",
             }).then((resp) => {
               if (resp.isConfirmed) {
-                dispatch(toggleProjectShareRemovedAction(selectedProject.id, selectedProject.name));
+                dispatch(
+                  toggleProjectShareRemovedAction(
+                    selectedProject.id,
+                    selectedProject.name
+                  )
+                );
                 setActiveShared(false);
               } else if (resp.isDismissed || resp.dismiss) {
                 setActiveShared(false);
@@ -41,7 +50,9 @@ const ProjectSharing = (props) => {
               }
             });
           } else {
-            dispatch(toggleProjectShareAction(selectedProject.id, selectedProject.name));
+            dispatch(
+              toggleProjectShareAction(selectedProject.id, selectedProject.name)
+            );
             setActiveShared(true);
           }
         }}
@@ -56,23 +67,35 @@ const ProjectSharing = (props) => {
         offHandleColor="#666"
       />
       &nbsp;
-      {activeShared ? 'Disable Sharing' : 'Enable Sharing'}
+      <span style={{ marginLeft: "18px" }}>
+        {activeShared ? "Disable Sharing" : "Enable Sharing"}
+      </span>
       {activeShared && (
         <button
           type="button"
           className="link-btn"
           onClick={() => {
             if (window.gapi && window.gapi.sharetoclassroom) {
-              window.gapi.sharetoclassroom.go('croom');
+              window.gapi.sharetoclassroom.go("croom");
             }
-            const protocol = `${window.location.href.split('/')[0]}//`;
+            const protocol = `${window.location.href.split("/")[0]}//`;
             const url = `${protocol}${window.location.host}/project/${selectedProject.id}/shared`;
             return SharePreviewPopup(url, selectedProject.name);
           }}
         >
           <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32" fill="none" css-inspector-installed="true">
-              <path d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z" fill="white" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="32"
+              viewBox="0 0 24 32"
+              fill="none"
+              css-inspector-installed="true"
+            >
+              <path
+                d="M0 4C0 1.79086 1.79086 0 4 0H20C22.2091 0 24 1.79086 24 4V28C24 30.2091 22.2091 32 20 32H4C1.79086 32 0 30.2091 0 28V4Z"
+                fill="white"
+              />
               <path
                 d="M10.1899 16.906C10.5786 17.4262 11.0746 17.8566 11.644 18.168C12.2135 18.4795 12.8433 18.6647 13.4905 18.7111C14.1378 18.7575 14.7875 18.664 15.3955 18.437C16.0035 18.21 16.5557 17.8547 17.0144 17.3953L19.7298 14.6772C20.5541 13.8228 21.0103 12.6785 21 11.4907C20.9897 10.303 20.5137 9.16675 19.6746 8.32683C18.8356 7.48692 17.7005 7.01049 16.5139 7.00017C15.3273 6.98985 14.1842 7.44646 13.3307 8.27165L11.7739 9.82094"
                 stroke={primaryColor}

@@ -1,22 +1,26 @@
-import React, { Suspense, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
-import { Tab, Tabs } from 'react-bootstrap';
+/* eslint-disable */
+import React, { Suspense, useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
+import { Tab, Tabs } from "react-bootstrap";
 
-import { collapsedSideBar } from 'store/actions/ui';
-import projectIcon from 'assets/images/project_icon.svg';
+import { collapsedSideBar } from "store/actions/ui";
+import projectIcon from "assets/images/project_icon.svg";
 import {
-  loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist, searchPreviewPlaylistAction,
-} from 'store/actions/playlist';
-import PreviousLink from './components/PreviousLink';
-import NextLink from './components/NextLink';
-import ActivitiesDropdown from './components/ActivitiesDropdown';
+  loadLtiPlaylistAction,
+  loadProjectPlaylistsAction,
+  loadSingleSharedPlaylist,
+  searchPreviewPlaylistAction,
+} from "store/actions/playlist";
+import PreviousLink from "./components/PreviousLink";
+import NextLink from "./components/NextLink";
+import ActivitiesDropdown from "./components/ActivitiesDropdown";
 
-import './style.scss';
+import "./style.scss";
 
-const H5PPreview = React.lazy(() => import('../../H5PPreview'));
+const H5PPreview = React.lazy(() => import("../../H5PPreview"));
 
 function LtiPlaylistPreview(props) {
   const {
@@ -35,14 +39,33 @@ function LtiPlaylistPreview(props) {
   const { activeOrganization } = useSelector((state) => state.organization);
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (window.location.pathname.includes('/shared') && playlistId && projectId) {
+    if (
+      window.location.pathname.includes("/shared") &&
+      playlistId &&
+      projectId
+    ) {
       loadSharedPlaylist(projectId, playlistId);
-    } else if (window.location.pathname.includes('/preview/lti') && playlistId) {
+    } else if (
+      window.location.pathname.includes("/preview/lti") &&
+      playlistId
+    ) {
       loadLtiPlaylist(playlistId);
-    } else if (window.location.pathname.includes('/preview') && playlistId && activeOrganization?.id) {
+    } else if (
+      window.location.pathname.includes("/preview") &&
+      playlistId &&
+      activeOrganization?.id
+    ) {
       searchPreviewPlaylist(playlistId);
     }
-  }, [playlistId, activityId, loadLtiPlaylist, loadSharedPlaylist, projectId, activeOrganization?.id, searchPreviewPlaylist]);
+  }, [
+    playlistId,
+    activityId,
+    loadLtiPlaylist,
+    loadSharedPlaylist,
+    projectId,
+    activeOrganization?.id,
+    searchPreviewPlaylist,
+  ]);
 
   let { selectedPlaylist } = playlist;
   useEffect(() => {
@@ -59,7 +82,7 @@ function LtiPlaylistPreview(props) {
       <div
         className="alert alert-danger"
         role="alert"
-        style={{ fontSize: '1.5em' }}
+        style={{ fontSize: "1.5em" }}
       >
         Playlist is not available.
       </div>
@@ -86,10 +109,14 @@ function LtiPlaylistPreview(props) {
       currentActivityId = selectedPlaylist.activities[0].id;
     }
 
-    currentActivity = selectedPlaylist.activities.find((f) => f.id === currentActivityId);
+    currentActivity = selectedPlaylist.activities.find(
+      (f) => f.id === currentActivityId
+    );
 
     if (currentActivity) {
-      const index = selectedPlaylist.activities.findIndex((act) => act.id === currentActivity.id);
+      const index = selectedPlaylist.activities.findIndex(
+        (act) => act.id === currentActivity.id
+      );
       if (index > 0) {
         previousResource = selectedPlaylist.activities[index - 1];
       }
@@ -116,25 +143,22 @@ function LtiPlaylistPreview(props) {
             </div>
           </Link>
         </div>
-        {localStorage.getItem('lti_activity') === 'false' && (
+        {localStorage.getItem("lti_activity") === "false" && (
           <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
             <FontAwesomeIcon icon="times" />
           </Link>
         )}
       </div>
       <div className="flex-container previews">
-        <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>
+        <div className={`activity-bg left-vdo${collapsed ? " collapsed" : ""}`}>
           <div className="flex-container-preview">
             <div className="act-top-header">
               <div className="heading-wrapper">
                 <div className="main-heading">
                   {currentActivity && (
                     <h3>
-                      Activity:
-                      &nbsp;
-                      <span>
-                        {currentActivity.title}
-                      </span>
+                      Activity: &nbsp;
+                      <span>{currentActivity.title}</span>
                     </h3>
                   )}
                 </div>
@@ -161,7 +185,7 @@ function LtiPlaylistPreview(props) {
             </div>
             <a
               onClick={() => setCollapsed()}
-              className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}
+              className={`btn-expand-collapse${collapsed ? " collapsed" : ""}`}
             >
               <FontAwesomeIcon icon="align-right" />
             </a>
@@ -177,7 +201,7 @@ function LtiPlaylistPreview(props) {
             </div>
           </div>
         </div>
-        <div className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`}>
+        <div className={`right-sidegolf-info${collapsed ? " collapsed" : ""}`}>
           <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
             <Tab eventKey="home" title="Activities">
               <div className="all-laylist-oracle">
@@ -228,9 +252,12 @@ LtiPlaylistPreview.defaultProps = {
 
 const mapDispatchToProps = (dispatch) => ({
   loadLtiPlaylist: (playlistId) => dispatch(loadLtiPlaylistAction(playlistId)),
-  loadSharedPlaylist: (projectId, playlistId) => dispatch(loadSingleSharedPlaylist(projectId, playlistId)),
-  loadProjectPlaylists: (projectId) => dispatch(loadProjectPlaylistsAction(projectId)),
-  searchPreviewPlaylist: (playlistId) => dispatch(searchPreviewPlaylistAction(playlistId)),
+  loadSharedPlaylist: (projectId, playlistId) =>
+    dispatch(loadSingleSharedPlaylist(projectId, playlistId)),
+  loadProjectPlaylists: (projectId) =>
+    dispatch(loadProjectPlaylistsAction(projectId)),
+  searchPreviewPlaylist: (playlistId) =>
+    dispatch(searchPreviewPlaylistAction(playlistId)),
   setCollapsed: () => dispatch(collapsedSideBar()),
 });
 

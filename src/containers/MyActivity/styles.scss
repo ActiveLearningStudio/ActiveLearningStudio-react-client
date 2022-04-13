@@ -362,7 +362,7 @@
     }
   }
   .activity-layout-title {
-    margin-top: 50px;
+    margin-top: 36px;
     width: 480px;
     h2 {
       font-size: 32px;
@@ -373,7 +373,7 @@
     margin: 17px 0 50px;
   }
   .activity-layout-detail {
-    margin-top: 25px;
+    margin-top: 24px;
     // margin-right: 100px;
     // width: 970px;
   }
@@ -418,7 +418,7 @@
   // Update new Task
   .layout-cards-process-btn {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     .activity-layout-cards {
       // @media screen and (max-width: 1024px) {
       //   flex: 0.9;
@@ -426,7 +426,7 @@
       // flex: 0.3;
       width: 1000px;
       width: 350px;
-      margin-top: 40px;
+      margin-top: 32px;
       display: flex;
       flex-wrap: wrap;
 
@@ -512,7 +512,8 @@
     .layout-process-btn {
       // flex: 0.7;
       width: 583px;
-      margin-top: 40px;
+      margin-top: 32px;
+      margin-left: 80px;
 
       .nav {
         margin: 0;
@@ -913,8 +914,8 @@
       .layout-add-activity-title {
         h3 {
           font-weight: 500;
-        font-size: 18px;
-        line-height: 24px;
+          font-size: 18px;
+          line-height: 24px;
         }
         margin-top: 34px;
         h2 {

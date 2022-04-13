@@ -93,8 +93,8 @@ export default function CreateActivityItem(props) {
                 showCancelButton: false,
                 confirmButtonText: 'Close',
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -121,8 +121,8 @@ export default function CreateActivityItem(props) {
                 showCancelButton: false,
                 confirmButtonText: 'Close',
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',               
-                }
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
@@ -151,7 +151,7 @@ export default function CreateActivityItem(props) {
 
             <div className="create-form-inputs-group">
               {/* Left container */}
-              <div style={{marginRight:"64px"}}>
+              <div style={{ marginRight: '64px' }}>
                 <div className="form-group-create">
                   <h3>Title</h3>
                   <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
@@ -163,7 +163,7 @@ export default function CreateActivityItem(props) {
                   <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
                   <div className="error">{errors.description && touched.description && errors.description}</div>
                 </div>
-                
+
                 <div className="form-group-create">
                   <h3>Order</h3>
                   <input
@@ -220,84 +220,84 @@ export default function CreateActivityItem(props) {
                   <div className="error">{errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}</div>
                 </div>
               </div>
-              
+
               {/* Right container */}
               <div>
                 <div className="form-group-create">
-                    <h3>Upload an image</h3>
-                    <div className="" onClick={() => imgUpload.current.click()}>
-                      <input
-                        type="file"
-                        name="image"
-                        onChange={(e) => {
-                          if (
-                            !(
-                              e.target.files[0].type.includes('png') ||
-                              e.target.files[0].type.includes('jpg') ||
-                              e.target.files[0].type.includes('gif') ||
-                              e.target.files[0].type.includes('jpeg') ||
-                              e.target.files[0].type.includes('svg')
-                            )
-                          ) {
+                  <h3>Upload an image</h3>
+                  <div className="" onClick={() => imgUpload.current.click()}>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={(e) => {
+                        if (
+                          !(
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
+                          )
+                        ) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid file selected.',
+                          });
+                        } else if (e.target.files[0].size > 100000000) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
+                          });
+                        } else {
+                          const formData = new FormData();
+                          try {
+                            formData.append('image', e.target.files[0]);
+                            const imgurl = dispatch(uploadActivityItemThumbAction(formData));
+                            imgurl.then((img) => {
+                              setImgActive(img);
+                              setFieldValue('image', img);
+                            });
+                          } catch (err) {
                             Swal.fire({
                               icon: 'error',
                               title: 'Error',
-                              text: 'Invalid file selected.',
+                              text: 'Image upload failed, kindly try again.',
                             });
-                          } else if (e.target.files[0].size > 100000000) {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Error',
-                              text: 'Selected file size should be less then 100MB.',
-                            });
-                          } else {
-                            const formData = new FormData();
-                            try {
-                              formData.append('image', e.target.files[0]);
-                              const imgurl = dispatch(uploadActivityItemThumbAction(formData));
-                              imgurl.then((img) => {
-                                setImgActive(img);
-                                setFieldValue('image', img);
-                              });
-                            } catch (err) {
-                              Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Image upload failed, kindly try again.',
-                              });
-                            }
                           }
-                        }}
-                        onBlur={handleBlur}
-                        ref={imgUpload}
-                        style={{ display: 'none' }}
-                      />
-                      {imageActive ? (
-                           <>
-                            <img
-                            src={`${global.config.resourceUrl}${imageActive}`}
-                            style={{
-                              width: '360px',
-                              height: '215px',
-                              borderRadius: '8px',
-                            }}
-                            />
-                            <span className="upload-btn">
-                              <img src={pcIcon} alt="" />
-                              My device
-                            </span>
-                          </>
-                      ) : (
-                        <>
-                          <img src={imgAvatar} alt="" />
-                          <span className="upload-btn">
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      ref={imgUpload}
+                      style={{ display: 'none' }}
+                    />
+                    {imageActive ? (
+                      <>
+                        <img
+                          src={`${global.config.resourceUrl}${imageActive}`}
+                          style={{
+                            width: '360px',
+                            height: '215px',
+                            borderRadius: '8px',
+                          }}
+                        />
+                        <span className="upload-btn">
                           <img src={pcIcon} alt="" />
-                            My device
-                          </span>
-                        </>
-                      )}
-                      <div className="error">{errors.image && touched.image && errors.image}</div>
-                    </div>
+                          My device
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <img src={imgAvatar} alt="" />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                          My device
+                        </span>
+                      </>
+                    )}
+                    <div className="error">{errors.image && touched.image && errors.image}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -305,6 +305,7 @@ export default function CreateActivityItem(props) {
               <button type="submit">Save</button>
               <button
                 type="button"
+                style={{ width: '95px' }}
                 className="cancel"
                 onClick={() => {
                   dispatch(removeActiveAdminForm());

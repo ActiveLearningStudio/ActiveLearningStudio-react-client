@@ -53,63 +53,64 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
   return result;
 };
 
-export const getKalturaVideos =
-  (searchText = "", page = 0, size = 6) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    var result;
-    try {
-      result = await videoServices.getKalturaVideos({
-        organization_id: activeOrganization.id,
-        searchText: searchText,
-        pageIndex: page,
-        pageSize: size,
-      });
-    } catch (e) {
-      result = e;
-    }
-
-    return result;
-  };
-
-export const getVimeoVideos =
-  (searchText = "", page = 1, size = 6) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    var result;
-    try {
-      result = await videoServices.getVimeoVideos({
-        organization_id: activeOrganization.id,
-        query: searchText,
-        page: page,
-        per_page: size,
-      });
-    } catch (e) {
-      result = e;
-    }
-
-    return result;
-  };
-
-export const getBrightVideosSearch =
-  (brightId, videoID) => async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    const result = await videoServices.brightCMSVideo({
+export const getKalturaVideos = (searchText = "", page = 0, size = 6) => async (
+  dispatch
+) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  var result;
+  try {
+    result = await videoServices.getKalturaVideos({
       organization_id: activeOrganization.id,
-      id: brightId,
-      query_param: `query=-tags:curriki ${videoID}`,
+      searchText: searchText,
+      pageIndex: page,
+      pageSize: size,
     });
-    return result;
-  };
+  } catch (e) {
+    result = e;
+  }
+
+  return result;
+};
+
+export const getVimeoVideos = (searchText = "", page = 1, size = 6) => async (
+  dispatch
+) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  var result;
+  try {
+    result = await videoServices.getVimeoVideos({
+      organization_id: activeOrganization.id,
+      query: searchText,
+      page: page,
+      per_page: size,
+    });
+  } catch (e) {
+    result = e;
+  }
+
+  return result;
+};
+
+export const getBrightVideosSearch = (brightId, videoID) => async (
+  dispatch
+) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await videoServices.brightCMSVideo({
+    organization_id: activeOrganization.id,
+    id: brightId,
+    query_param: `query=-tags:curriki ${videoID}`,
+  });
+  return result;
+};
 
 export const getSearchVideoCard = (orgId, searchQuery) => async (dispatch) => {
   const result = await videoServices.getSearchVideoCard(orgId, searchQuery);
@@ -189,19 +190,20 @@ export const allBrightCove = (orgId, size, page) => async (dispatch) => {
     payload: result,
   });
 };
-export const allBrightCoveSearch =
-  (orgId, search, size, page) => async (dispatch) => {
-    const result = await videoServices.allBrightCoveSearch(
-      orgId,
-      search,
-      size,
-      page
-    );
-    dispatch({
-      type: actionTypes.UP_ALL_BRIGHTCOVE,
-      payload: result,
-    });
-  };
+export const allBrightCoveSearch = (orgId, search, size, page) => async (
+  dispatch
+) => {
+  const result = await videoServices.allBrightCoveSearch(
+    orgId,
+    search,
+    size,
+    page
+  );
+  dispatch({
+    type: actionTypes.UP_ALL_BRIGHTCOVE,
+    payload: result,
+  });
+};
 export const addBrightCove = (orgId, data) => async (dispatch) => {
   const result = await videoServices.addBrightCove(orgId, data);
   dispatch({

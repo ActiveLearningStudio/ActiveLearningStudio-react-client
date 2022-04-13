@@ -494,12 +494,12 @@ const BrightcoveModel = (props) => {
                               </tbody>
                             </table>
 
-                            {vimeo?.objects?.length > 0 && (
+                            {vimeo?.data?.length > 0 && (
                               <Pagination
                                 activePage={paginationCounter}
                                 pageRangeDisplayed={7}
                                 itemsCountPerPage={6}
-                                totalItemsCount={vimeo?.totalCount}
+                                totalItemsCount={vimeo?.total}
                                 onChange={async (e) => {
                                   setPaginationCounter(e);
                                   const result = await dispatch(

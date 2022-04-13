@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .inner-content {
   background: $white;
@@ -35,7 +35,7 @@
 }
 .add-team-page {
   .organization-name {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -50,7 +50,7 @@
     display: flex;
     // align-items: center;
     .title {
-      // margin-bottom: 8px;
+      // margin-bottom: 16px !important;
       font-family: $rubik;
       font-style: normal;
       font-weight: 500;
@@ -79,7 +79,7 @@
     .team-detail {
       max-width: 800px;
       p {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 14px;
@@ -352,7 +352,7 @@
       position: absolute;
       background: #fff;
       height: 50px;
-      content: '';
+      content: "";
       width: 50px;
       left: -24px;
       z-index: -9;
@@ -382,7 +382,7 @@
     .right_card {
       border-bottom: 1px solid #dddddd;
       justify-content: space-between;
-      padding: 18px 0;
+      padding: 28px 0 12px 0;
       display: flex;
     }
     .right_info {
@@ -434,7 +434,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: '';
+            content: "";
             border: none;
           }
           &:hover {

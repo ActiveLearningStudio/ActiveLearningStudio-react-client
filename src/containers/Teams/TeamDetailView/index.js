@@ -530,57 +530,60 @@ const TeamDetail = ({
                       />
                       {(teamPermission?.Team?.includes("team:add-project") ||
                         newTeam?.name) && (
-                          <Buttons
-                            text="Add project"
-                            secondary
-                            width="128px"
-                            height="32px"
-                            className="mr-16"
-                            hover
-                            onClick={() => {
-                              if (team?.id) {
-                                history.push(
-                                  `/org/${organization?.domain}/teams/${team?.id}/add-projects`
-                                );
-                              } else if (newTeam?.name) {
-                                if (newTeam?.users) {
-                                  newTeamData({
-                                    ...newTeam,
-                                    users: [
-                                      ...newTeam?.users,
-                                      ...selectedUsersNewTeam,
-                                    ],
-                                  });
-                                } else {
-                                  newTeamData({
-                                    ...newTeam,
-                                    users: [...selectedUsersNewTeam],
-                                  });
-                                }
-                                if (selectedUsersNewTeam.length > 0) {
-                                  setMinimumUserFlag(false);
-                                  history.push(
-                                    `/org/${organization?.domain}/teams/add-projects`
-                                  );
-                                } else {
-                                  setMinimumUserFlag(true);
-                                }
+                        <Buttons
+                          text="Add project"
+                          secondary
+                          width="128px"
+                          height="32px"
+                          className="mr-16"
+                          hover
+                          onClick={() => {
+                            if (team?.id) {
+                              history.push(
+                                `/org/${organization?.domain}/teams/${team?.id}/add-projects`
+                              );
+                            } else if (newTeam?.name) {
+                              if (newTeam?.users) {
+                                newTeamData({
+                                  ...newTeam,
+                                  users: [
+                                    ...newTeam?.users,
+                                    ...selectedUsersNewTeam,
+                                  ],
+                                });
+                              } else {
+                                newTeamData({
+                                  ...newTeam,
+                                  users: [...selectedUsersNewTeam],
+                                });
                               }
-                            }}
-                          />
-                        )}
-                      {teamPermission?.Team?.includes("team:add-project") && (<Buttons
-                        icon={faPlus}
-                        text="Create Project"
-                        primary
-                        width="140px"
-                        height="32px"
-                        hover
-                        className="mr-16"
-                        onClick={() => {
-                          setCreateProject(true);
-                        }}
-                      />)}
+                              if (selectedUsersNewTeam.length > 0) {
+                                setMinimumUserFlag(false);
+                                history.push(
+                                  `/org/${organization?.domain}/teams/add-projects`
+                                );
+                              } else {
+                                setMinimumUserFlag(true);
+                              }
+                            }
+                          }}
+                        />
+                      )}
+                      {teamPermission?.Team?.includes("team:add-project") && (
+                        <Buttons
+                          icon={faPlus}
+                          iconColor={secondaryColor}
+                          text="Create Project"
+                          primary
+                          width="148px"
+                          height="32px"
+                          hover
+                          // className="mr-16"
+                          onClick={() => {
+                            setCreateProject(true);
+                          }}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -733,7 +736,13 @@ const TeamDetail = ({
         show={showGoogleModal}
         onHide={() => setShowGoogleModal(false)}
       />
-      {createProject && <NewProjectPage project={project} handleCloseProjectModal={setCreateProject} fromTeam />}
+      {createProject && (
+        <NewProjectPage
+          project={project}
+          handleCloseProjectModal={setCreateProject}
+          fromTeam
+        />
+      )}
     </div>
   );
 };
