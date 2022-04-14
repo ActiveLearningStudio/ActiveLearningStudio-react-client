@@ -357,9 +357,7 @@ export default function CreateActivityLayout(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">
-                {editMode ? "Edit" : "Add"} activity layout
-              </button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 style={{ width: "95px" }}

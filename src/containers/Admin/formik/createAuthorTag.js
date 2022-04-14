@@ -126,7 +126,7 @@ export default function CreateAuthorTag(props) {
               </div>
               
               <div className="button-group">
-                <button type="submit">{editMode ? 'Edit ' : 'Add '}Author tag</button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

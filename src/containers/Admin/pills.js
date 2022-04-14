@@ -293,7 +293,7 @@ export default function Pills(props) {
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
-    if (type === 'Activities' && activePage) {
+    if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
       dispatch(getActivityTypes(activeOrganization?.id, activePage));
       dispatch(updatePageNumber(activePage));
@@ -507,6 +507,12 @@ export default function Pills(props) {
     dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
   };
 
+  const searchQueryChangeHandlerActivityTypes = (search) => {
+    // setlmsBrightCove(null);
+    const encodeQuery = encodeURI(search.target.value);
+    dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, '', '', encodeQuery));
+  };
+  
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
     const encodeQuery = encodeURI(search.target.value);
@@ -1126,6 +1132,10 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  searchQueryChangeHandler={searchQueryChangeHandlerActivityTypes}
                 />
               )}
               {type === 'Activities' && subTypeState === 'Activity Items' && (

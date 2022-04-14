@@ -777,9 +777,7 @@ function Table(props) {
                       <td>
                       <div className="admin-panel-dropdown">
                         <div className="admin-description2 ">
-                          {row.activityItems.map((item) => (
-                            <div>{item.title + ','}</div>
-                          ))}
+                          <div>{Array.prototype.map.call(row.activityItems, item => item.title).toString()}</div>
                         </div>
                         <div>
                           <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
