@@ -818,8 +818,10 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
 
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  data?.map(datum=>{
-    ids.push(datum.value);
-  });
+  if(data.length > 0){
+    data?.map(datum=>{
+      ids.push(datum.value);
+    });
+  }
   return ids;
 }
