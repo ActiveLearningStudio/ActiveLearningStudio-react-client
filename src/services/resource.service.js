@@ -158,11 +158,11 @@ const getItems = (activityTypeId) =>
 const getActivityItems = (subOrgId, query, page, size, column, orderBy, filterBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${page ? `?page=${page}` : ""}${query ? `&query=${query.replace(/#/, "%23")}` : ""}
-      ${size ? `&size=${size}` : ""}
-      ${column ? `&order_by_column=${column}` : ""}
-      ${orderBy ? `&order_by_type=${orderBy}` : ""}
-      ${filterBy ? `&filter=${filterBy}` : ""}`
+      `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${page ? `?page=${page}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+      ${size ? `&size=${size}` : ''}
+      ${column ? `&order_by_column=${column}` : ''}
+      ${orderBy ? `&order_by_type=${orderBy}` : ''}
+      ${filterBy ? `&filter=${filterBy}` : ''}`
     )
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -272,9 +272,9 @@ const activityH5p = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const shareActivity = (activityId) =>
+const shareActivity = (activityId, orgId) =>
   httpService
-    .get(`/${apiVersion}/activities/${activityId}/share`)
+    .get(`/${apiVersion}/activities/${activityId}/share?publisher_org=${orgId}`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
