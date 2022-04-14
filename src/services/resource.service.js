@@ -274,7 +274,7 @@ const activityH5p = (activityId) =>
 
 const shareActivity = (activityId, orgId) =>
   httpService
-    .get(`/${apiVersion}/activities/${activityId}/share?publisher_org=${orgId}`)
+    .get(`/${apiVersion}/activities/${activityId}/share`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
