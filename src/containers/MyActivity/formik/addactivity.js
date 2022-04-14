@@ -301,12 +301,6 @@ const AddActivity = (props) => {
                   errors.title = "Required";
                 } else if (values.title.length > 255) {
                   errors.title = "Length should be less then 255";
-                } if (!values.subject_id || values.subject_id.length < 1) {
-                  errors.subject_id = "Required"
-                } if (!values.education_level_id || values.education_level_id.length < 1) {
-                  errors.education_level_id = "Required"
-                } if (!values.author_tag_id || values.author_tag_id.length < 1) {
-                  errors.author_tag_id = "Required"
                 }
 
                 return errors;
@@ -371,9 +365,6 @@ const AddActivity = (props) => {
                           }}
                         value={values.subject_id}
                       />
-                      <div style={{ color: "red" }}>
-                        {errors.subject_id && touched.subject_id && errors.subject_id}
-                      </div>
                     </div>
 
                     <div className="formik-select mr-16">
@@ -387,9 +378,6 @@ const AddActivity = (props) => {
                           }}
                         value={values.education_level_id}
                       />
-                       <div style={{ color: "red" }}>
-                        {errors.education_level_id && touched.education_level_id && errors.education_level_id}
-                      </div>
                     </div>
 
                     <div className="formik-select">
@@ -403,9 +391,6 @@ const AddActivity = (props) => {
                           }}
                         value={values.author_tag_id}
                       />
-                       <div style={{ color: "red" }}>
-                        {errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}
-                      </div>
                     </div>
                   </div>
                   <div className="formik-uploadimage">
@@ -454,9 +439,6 @@ const AddActivity = (props) => {
                       formRef.current.handleSubmit();
                       if (
                         formRef.current.values.title &&
-                        formRef.current.values.subject_id.length > 0 &&
-                        formRef.current.values.education_level_id.length > 0 &&
-                        formRef.current.values.author_tag_id.length > 0 &&
                         formRef.current.values.title.length < 255
                       ) {
                         setModalShow(true);
@@ -478,9 +460,6 @@ const AddActivity = (props) => {
                       await formRef.current.handleSubmit();
                       if (
                         formRef.current.values.title &&
-                        formRef.current.values.subject_id.length > 0 &&
-                        formRef.current.values.education_level_id.length > 0 &&
-                        formRef.current.values.author_tag_id.length > 0 &&
                         formRef.current.values.title.length < 255
                       ) {
                         dispatch(
