@@ -684,7 +684,11 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
 };
 
 export const shareActivity = async (activityId) => {
-  resourceService.shareActivity(activityId);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  resourceService.shareActivity(activityId, activeOrganization.id);
 
   // if (result.activity.id) {
   //   const protocol = `${window.location.href.split('/')[0]}//`;
@@ -818,8 +822,8 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
 
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  data?.map(datum=>{
+  data?.map((datum) => {
     ids.push(datum.value);
   });
   return ids;
-}
+};
