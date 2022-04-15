@@ -494,8 +494,9 @@ export default function Pills(props) {
 
   const searchQueryChangeHandlerLMS = (search) => {
     setLmsProject(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery, activePage || 1);
+    const result = adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery, 1);
     result.then((data) => {
       setLmsProject(data);
     });
@@ -503,43 +504,49 @@ export default function Pills(props) {
 
   const searchQueryChangeHandlerLMSBrightCove = (search) => {
     setlmsBrightCove(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, activePage || 1));
+    dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, 1));
   };
 
   const searchQueryChangeHandlerActivityTypes = (search) => {
     // setlmsBrightCove(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, '', '', encodeQuery));
+    dispatch(getActivityTypes(activeOrganization?.id, 1, '', '', encodeQuery));
   };
   
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage || 1, size));
+    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, 1, size));
   };
  
   const filterActivityItems = (type) => {
-    dispatch(getActivityItems(activeOrganization?.id, '', activePage || 1, size,'', '', type));
+    setActivePage(1);
+    dispatch(getActivityItems(activeOrganization?.id, '', 1, size,'', '', type));
   };
   
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, encodeQuery));
+    dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery));
   };
 
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size));
+      dispatch(getDefaultSso(activeOrganization?.id, 1, size));
     }
   }, [type, activePage, activeOrganization?.id, size]);
 
   const searchQueryChangeHandlerDefautSso = (search) => {
     setDefaultSso(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, activePage || 1);
+    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, 1);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -547,8 +554,9 @@ export default function Pills(props) {
 
   const searchQueryChangeHandlerLtiTool = (search) => {
     setLtiTool(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, activePage || 1);
+    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, 1);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -556,8 +564,9 @@ export default function Pills(props) {
   
   const searchQueryChangeHandlerSubjects = (search) => {
     setSubjects(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getSubjects(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    const result = adminService.getSubjects(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setSubjects(data);
     });
@@ -565,8 +574,9 @@ export default function Pills(props) {
   
   const searchQueryChangeHandlerEducationLevel = (search) => {
     setEducationLevel(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getEducationLevel(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    const result = adminService.getEducationLevel(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setEducationLevel(data);
     });
@@ -574,8 +584,9 @@ export default function Pills(props) {
   
   const searchQueryChangeHandlerAuthorTag = (search) => {
     setAuthorTag(null);
+    setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getAuthorTag(activeOrganization?.id, activePage || 1, size, encodeQuery);
+    const result = adminService.getAuthorTag(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setAuthorTag(data);
     });
@@ -583,7 +594,8 @@ export default function Pills(props) {
   
   const filterLtiTool = (item) => {
     setLtiTool(null);
-    const result = adminService.searchLtiTool(activeOrganization?.id, item, activePage || 1);
+    setActivePage(1);
+    const result = adminService.searchLtiTool(activeOrganization?.id, item, 1);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -592,7 +604,8 @@ export default function Pills(props) {
   
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
-    const result = adminService.getDefaultSso(activeOrganization?.id, activePage || 1, size, '', '', '', filterBy);
+    setActivePage(1);
+    const result = adminService.getDefaultSso(activeOrganization?.id, 1, size, '', '', '', filterBy);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -600,7 +613,8 @@ export default function Pills(props) {
  
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
-    const result = adminService.getLmsProject(activeOrganization?.id, activePage || 1, '', '', '', '', filterBy);
+    setActivePage(1);
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, '', '', '', '', filterBy);
     result.then((data) => {
       setLmsProject(data);
     });

@@ -19,7 +19,7 @@ export default function CreateActivityLayout(props) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(activeEdit?.image);
@@ -99,7 +99,7 @@ export default function CreateActivityLayout(props) {
                 },
               });
               dispatch(
-                getActivityLayout(organization?.activeOrganization?.id, 1)
+                getActivityLayout(organization?.activeOrganization?.id, activePage)
               );
               dispatch(removeActiveAdminForm());
               dispatch({

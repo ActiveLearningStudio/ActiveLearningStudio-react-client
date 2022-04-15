@@ -2147,7 +2147,8 @@
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
-  float: right;
+  // float: right;
+  margin-left: 10px;
   cursor: pointer;
 }
 
