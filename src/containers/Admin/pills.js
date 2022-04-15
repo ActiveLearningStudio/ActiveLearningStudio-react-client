@@ -945,7 +945,6 @@ export default function Pills(props) {
                   subType={'All Users'}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
-                  searchQueryChangeHanddler={searchQueryChangeHandler}
                   searchQueryChangeHandler={searchQueryChangeHandler}
                   searchAlertToggler={searchAlertToggler}
                   setActivePage={setActivePage}
