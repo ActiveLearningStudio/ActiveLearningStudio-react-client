@@ -456,12 +456,17 @@ export default function Pills(props) {
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
       dispatch(getSubjects(activeOrganization?.id, activePage || 1, size));
+      dispatch(updatePageNumber(activePage));
     }
     if (subTypeState === 'Education Level') {
       dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size));
+      dispatch(updatePageNumber(activePage));
+
     }
     if (subTypeState === 'Author Tags') {
       dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size));
+      dispatch(updatePageNumber(activePage));
+
     }
     if (type === 'Activities') {
       dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size));
