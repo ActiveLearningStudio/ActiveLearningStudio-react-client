@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import adminService from 'services/admin.service';
-import { setCurrentUser } from 'store/actions/admin';
+import { setCurrentUser, removeActiveAdminForm } from 'store/actions/admin';
 import PropTypes from 'prop-types';
 import './style.scss';
 
@@ -49,9 +49,13 @@ const EmailCheckForm = (props) => {
           </div>
         </div>
         <div className="col text-right">
-          <button type="button" className="btn btn-primary addButton" onClick={doCheck}>
-            Add User
-          </button>
+          {error ? (
+            <button type="button" className="btn btn-primary addButton" onClick={() => dispatch(removeActiveAdminForm())}>Ok</button>
+          ) : (
+            <button type="button" className="btn btn-primary addButton" onClick={doCheck}>
+              Add User
+            </button>
+          )}
         </div>
       </div>
     </div>
