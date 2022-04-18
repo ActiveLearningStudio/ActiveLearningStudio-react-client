@@ -23,7 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
-  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.pathname.includes('/shared') && playlistId && projectId) {
@@ -139,8 +139,8 @@ function LtiPlaylistPreview(props) {
               </div>
             </div>
           </div>
-          {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
-          <div className="all-activities-of-playlist">
+
+          <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
             <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
               {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
             </div>
