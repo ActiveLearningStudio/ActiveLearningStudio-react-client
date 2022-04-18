@@ -131,6 +131,31 @@
       height: 100%;
     }
 
+    .relative-white-bg-collapsed {
+      width: 92px;
+      position: relative;
+      background: #ffffff;
+      /* Gray elevation/12px */
+      padding: 0px 5px;
+      box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
+      height: 100%;
+      .each-activity {
+        display: flex;
+        justify-content: center;
+        background: #ffffff;
+
+        margin-bottom: 8px;
+        box-shadow: 0px 2px 8px 1px #fff;
+        border-radius: 0px;
+        border-bottom: 1px solid #dddddd;
+        padding: 12px 0px;
+        margin: 0;
+        .thumbnail {
+          margin: 0;
+        }
+      }
+    }
+
     .nav-tabs {
       margin: 0;
       border-bottom: 1px solid #084892;
