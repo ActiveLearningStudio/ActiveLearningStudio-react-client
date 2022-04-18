@@ -142,7 +142,7 @@
 
   .left-activity-view {
     width: 100%;
-    padding: 24px 32px;
+    padding: 24px 70px 32px 24px;
     @media (max-width: 1020px) {
       padding: 12px 22px 12px 12px;
     }
@@ -166,7 +166,9 @@
   }
 
   .all-activities-of-playlist {
-    position: relative;
+    position: absolute;
+    right: 0;
+    height: 100%;
     @media (max-width: 1020px) {
       position: absolute;
       right: 0;
@@ -214,9 +216,9 @@
       .resource-dropdown {
         margin-left: auto !important;
 
-        .resource-dropdown-btn {
-          width: max-content;
-        }
+        // .resource-dropdown-btn {
+        //   width: max-content;
+        // }
       }
     }
     .thumbnail {
@@ -226,7 +228,7 @@
       background-position: center;
       border-radius: 50%;
       margin-right: 12px;
-      flex-shrink: 0;
+      // flex-shrink: 0;
     }
 
     .relative-white-bg {
