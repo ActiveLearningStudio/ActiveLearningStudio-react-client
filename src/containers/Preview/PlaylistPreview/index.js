@@ -243,10 +243,9 @@ function PlaylistPreview(props) {
             </div>
           </div>
           {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
-          <div className="all-activities-of-playlist">
-            <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
-              {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
-            </div>
+          <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
+            <div className="list-button">{openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}</div>
+
             {openPlaylistMenu ? (
               <div className="relative-white-bg">
                 <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
