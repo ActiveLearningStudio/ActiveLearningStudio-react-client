@@ -145,13 +145,6 @@
       border-radius: 50%;
       text-align: center;
       cursor: pointer;
-
-      // & img {
-      //   position: absolute;
-      //   left: -17px;
-      //   top: 41px;
-      //   z-index: 2;
-      // }
     }
 
     .all-activities {
@@ -193,10 +186,10 @@
       width: 392px;
       background: #ffffff;
       padding: 32px;
-
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       position: relative;
       height: 100%;
+      transition: 0.7s ease-in-out;
     }
 
     .relative-white-bg-collapsed {
@@ -222,6 +215,7 @@
           margin: 0;
         }
       }
+      transition: 0.7s ease-in-out;
     }
 
     .nav-tabs {
