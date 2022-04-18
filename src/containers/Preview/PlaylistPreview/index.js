@@ -198,6 +198,7 @@ function PlaylistPreview(props) {
                 Playlist:{selectedPlaylist.title}
               </Link>
               <Link
+                className="close-icon"
                 to={
                   projectPreview === 'true'
                     ? // eslint-disable-next-line no-restricted-globals
@@ -242,7 +243,7 @@ function PlaylistPreview(props) {
           </div>
           {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
           <div className="all-activities-of-playlist">
-            <div className="collpase-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
+            <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
               {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
             </div>
             {openPlaylistMenu ? (
@@ -260,7 +261,7 @@ function PlaylistPreview(props) {
                             }}
                           />
                           <p>{data.title}</p>
-                          <DropdownActivity resource={data} playlist={playlist} teamPermission={teamPermission || {}} />
+                          <DropdownActivity className="Dropdown-Activity" resource={data} playlist={playlist} teamPermission={teamPermission || {}} />
                         </div>
                       ))}
                     </div>

@@ -33,6 +33,7 @@
     align-self: center;
     align-items: center;
     margin-bottom: 22px;
+    padding-right: 15px;
     a {
       font-family: 'rubic';
       font-style: normal;
@@ -60,6 +61,9 @@
       font-size: 14px;
       line-height: 20px;
       color: #084892;
+    }
+    .close-icon {
+      margin-left: auto;
     }
   }
 
@@ -111,8 +115,44 @@
   }
   //all-activities-of-playlist
 
+  .all-activities-of-playlist::before {
+    box-shadow: -4px 5px 3px 0px #43434333;
+    border-radius: 0 45px 0 18px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    background: #fff;
+    height: 50px;
+    content: '';
+    width: 50px;
+    left: -24px;
+    z-index: 1;
+    top: 27px;
+  }
+
   .all-activities-of-playlist {
     position: relative;
+
+    .list-button {
+      position: absolute;
+      left: -17px;
+      top: 41px;
+      z-index: 2;
+      background-color: #dddddd;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #dddddd;
+      border-radius: 50%;
+      text-align: center;
+      cursor: pointer;
+
+      // & img {
+      //   position: absolute;
+      //   left: -17px;
+      //   top: 41px;
+      //   z-index: 2;
+      // }
+    }
 
     .all-activities {
       padding-top: 24px;
@@ -135,6 +175,10 @@
         margin: 0;
         color: #084892;
       }
+
+      .resource-dropdown {
+        margin-left: auto !important;
+      }
     }
     .thumbnail {
       width: 48px;
@@ -153,30 +197,6 @@
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       position: relative;
       height: 100%;
-
-      & ::before {
-        box-shadow: -4px 5px 3px 0px #43434303;
-        border-radius: 0 18px 0 18px;
-        -webkit-transform: rotate(45deg);
-        transform: rotate(45deg);
-        position: absolute;
-        background: #fff;
-        height: 50px;
-        content: '';
-        width: 50px;
-        left: -24px;
-        z-index: 1;
-        top: 27px;
-      }
-
-      .list-button {
-        & img {
-          position: absolute;
-          left: -17px;
-          top: 41px;
-          z-index: 2;
-        }
-      }
     }
 
     .relative-white-bg-collapsed {
