@@ -1,16 +1,11 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 
 function ActivitiesDropdown(props) {
-  const {
-    showLti,
-    shared,
-    projectId,
-    playlistId,
-    activities,
-  } = props;
+  const { showLti, shared, projectId, playlistId, activities } = props;
 
   if (activities.length === 0) {
     return (
@@ -23,14 +18,7 @@ function ActivitiesDropdown(props) {
   }
 
   return activities.map((activity) => (
-    <ActivityPreviewCardDropdown
-      key={activity.id}
-      showLti={showLti}
-      shared={shared}
-      projectId={projectId}
-      playlistId={playlistId}
-      activity={activity}
-    />
+    <ActivityPreviewCardDropdown key={activity.id} showLti={showLti} shared={shared} projectId={projectId} playlistId={playlistId} activity={activity} />
   ));
 }
 

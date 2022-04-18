@@ -1,0 +1,150 @@
+.curriki-playlist-preview-container {
+  max-width: 1440px;
+  margin: 24px auto;
+  background-color: #fff;
+
+  .activity-preview-with-playlist-container {
+    display: flex;
+  }
+  // activity meta data
+  .activity-metadata {
+    display: flex;
+    align-self: center;
+    margin-bottom: 22px;
+    a {
+      font-family: 'rubic';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      background: #f7faff;
+      border-radius: 4px;
+      padding: 6px;
+
+      text-align: center;
+      color: #084892;
+    }
+    svg {
+      margin: 10px;
+
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+
+      color: #084892;
+    }
+  }
+
+  // activity controller
+  .activity-controller {
+    padding: 16px 32px;
+    background: #f7faff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: #084892;
+      margin: 0;
+    }
+
+    .controller {
+      display: flex;
+      align-items: center;
+
+      .slider-hover-section {
+        padding: 0;
+      }
+    }
+  }
+
+  .left-activity-view {
+    width: 100%;
+    padding: 24px 32px;
+  }
+  //all-activities-of-playlist
+
+  .all-activities-of-playlist {
+    position: relative;
+
+    .all-activities {
+      padding-top: 24px;
+    }
+
+    .each-activity {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 12px 20px;
+      margin-bottom: 8px;
+      box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
+      border-radius: 4px;
+
+      p {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        margin: 0;
+        color: #084892;
+      }
+    }
+    .thumbnail {
+      width: 48px;
+      height: 48px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .collpase-button {
+      position: absolute;
+      top: 15px;
+      left: -20px;
+      box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
+
+      transform: rotate(-45deg);
+      width: 60px;
+      height: 60px;
+      border-top-left-radius: 10px;
+      padding: 9px;
+
+      svg {
+        transform: rotate(45deg);
+      }
+    }
+    .relative-white-bg {
+      width: 392px;
+      background: #ffffff;
+      padding: 32px;
+
+      box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
+      position: relative;
+      height: 100%;
+    }
+
+    .nav-tabs {
+      margin: 0;
+      border-bottom: 1px solid #084892;
+      a {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 8px 45px;
+        text-align: center;
+
+        color: #084892;
+        border-color: #084892 #084892 #fff;
+      }
+    }
+  }
+}
