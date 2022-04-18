@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.pathname.includes('/shared') && playlistId && projectId) {
@@ -140,29 +141,48 @@ function LtiPlaylistPreview(props) {
           </div>
           {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
           <div className="all-activities-of-playlist">
-            <div className="relative-white-bg">
-              <div className="list-button">
-                <img src={rightIcon} alt="" />
-              </div>
-              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
-                <Tab eventKey="home" title="Activities">
-                  <div className="all-activities">
-                    {selectedPlaylist.activities?.map((data) => (
-                      <div className="each-activity">
-                        <div
-                          className="thumbnail"
-                          style={{
-                            backgroundImage:
-                              !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
-                          }}
-                        />
-                        <p>{data.title}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Tab>
-              </Tabs>
+            <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
+              {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
             </div>
+
+            {openPlaylistMenu ? (
+              <div className="relative-white-bg">
+                <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+                  <Tab eventKey="home" title="Activities">
+                    <div className="all-activities">
+                      {selectedPlaylist.activities?.map((data) => (
+                        <div className="each-activity">
+                          <div
+                            className="thumbnail"
+                            style={{
+                              backgroundImage:
+                                !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                            }}
+                          />
+                          <p>{data.title}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </Tab>
+                </Tabs>
+              </div>
+            ) : (
+              <div className="relative-white-bg-collapsed">
+                <div className="all-activities">
+                  {selectedPlaylist.activities?.map((data) => (
+                    <div className="each-activity">
+                      <div
+                        className="thumbnail"
+                        style={{
+                          backgroundImage:
+                            !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

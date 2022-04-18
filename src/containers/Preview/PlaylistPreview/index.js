@@ -9,7 +9,8 @@ import DropdownActivity from 'components/ResourceCard/dropdown';
 import { confirmAlert } from 'react-confirm-alert';
 import { Tab, Tabs } from 'react-bootstrap';
 
-import projectIcon from 'assets/images/project_icon.svg';
+import projectIcon from 'assets/images/svg/projectFolder.svg';
+import listIcon from 'assets/images/svg/miscellaneous-list.svg';
 import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
 import { collapsedSideBar } from 'store/actions/ui';
@@ -194,7 +195,7 @@ function PlaylistPreview(props) {
               </Link>
               <FontAwesomeIcon icon="chevron-right" />
               <Link>
-                <img src={projectIcon} alt="" />
+                <img src={listIcon} alt="" />
                 Playlist:{selectedPlaylist.title}
               </Link>
               <Link
