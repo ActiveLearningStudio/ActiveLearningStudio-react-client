@@ -23,7 +23,8 @@ const ActivityCard = (props) => {
   const organization = useSelector((state) => state.organization);
 
   return (
-    <li className="preview-list-update">
+    <>
+      {/* <li className="preview-list-update">
       {sampleID ? (
         <a
           onClick={() => {
@@ -69,7 +70,60 @@ const ActivityCard = (props) => {
               {activity.metadata ? activity.metadata.title : activity.title}
             </div>
           </Link>
-          {/* {!lti && (
+        
+        </>
+      )}
+    </li> */}
+
+      <li className="preview-list-update">
+        {sampleID ? (
+          <a
+            onClick={() => {
+              setCurrentActivity(activity.id);
+              setModalShow(true);
+            }}
+          >
+            <div
+              className="playimg"
+              style={{
+                backgroundImage:
+                  !!activity.thumb_url &&
+                  activity.thumb_url.includes("pexels.com")
+                    ? `url(${activity.thumb_url})`
+                    : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+              }}
+            />
+            <div className="plydet">
+              {activity.metadata ? activity.metadata.title : activity.title}
+            </div>
+          </a>
+        ) : (
+          <>
+            <Link
+              to={
+                lti
+                  ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti`
+                  : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview`
+              }
+              onClick={() => localStorage.setItem("projectPreview", true)}
+            >
+              <div className="playimage-update-mobile">
+                <div
+                  className="playimg playimage-update"
+                  style={{
+                    backgroundImage:
+                      !!activity.thumb_url &&
+                      activity.thumb_url.includes("pexels.com")
+                        ? `url(${activity.thumb_url})`
+                        : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                  }}
+                />
+                <div className="plydet plydet-update" id="plydet-update-id">
+                  {activity.metadata ? activity.metadata.title : activity.title}
+                </div>
+              </div>
+            </Link>
+            {/* {!lti && (
             <div className="activity-options-wrapper check">
               <ResourceCardDropdown
                 playlist={playlist}
@@ -79,9 +133,10 @@ const ActivityCard = (props) => {
               />
             </div>
           )} */}
-        </>
-      )}
-    </li>
+          </>
+        )}
+      </li>
+    </>
   );
 };
 

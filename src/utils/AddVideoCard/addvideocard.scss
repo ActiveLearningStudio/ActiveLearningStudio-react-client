@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .curriki-utility-addvideo-card {
   margin-right: 30px;
@@ -14,11 +14,15 @@
     position: relative;
     height: 156px;
     &:before {
-      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      background: linear-gradient(
+        180deg,
+        rgba(81, 81, 81, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       //   background-color: rgba(113, 117, 119, 0.7);
-      content: '';
+      content: "";
       display: block;
       height: 100%;
       position: absolute;
@@ -32,7 +36,7 @@
     }
     .addvideo-card-title {
       position: absolute;
-      bottom: 10px;
+      bottom: 0px;
       left: 15px;
       h2 {
         font-family: $rubik;
@@ -45,9 +49,9 @@
     }
   }
   .addvideo-card-detail {
-    padding: 16px;
+    padding: 24px 16px 16px 16px;
     p {
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -63,7 +67,7 @@
     margin-left: 16px;
     .share-text {
       span {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 12px;
@@ -82,7 +86,7 @@
     text-align: right;
     span {
       margin-left: 8px;
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;

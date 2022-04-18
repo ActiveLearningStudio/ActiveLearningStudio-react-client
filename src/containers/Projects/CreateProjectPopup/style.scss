@@ -20,7 +20,7 @@
   }
   .close-btn {
     margin-left: auto;
-    margin-bottom: 45px;
+    // margin-bottom: 45px;
     background: none;
     border: 0;
   }
@@ -136,6 +136,7 @@
 
     .create-project-template-wrapper {
       float: right;
+      margin-top: 48px;
       .create-project-submit-btn {
         padding: 10px 15px;
         // background: #2ecf43;
@@ -263,6 +264,6 @@
   top: 1px;
 }
 .disclaimer {
-  margin-top: 32px;
+  margin-top: 16px;
   margin-bottom: 0px !important;
 }

@@ -1,25 +1,28 @@
 /* eslint-disable */
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
-import Switch from 'react-switch';
+import DropdownActivity from 'components/ResourceCard/dropdown';
 import { confirmAlert } from 'react-confirm-alert';
 import { Tab, Tabs } from 'react-bootstrap';
 
-import projectIcon from 'assets/images/project_icon.svg';
+import projectIcon from 'assets/images/svg/projectFolder.svg';
+import listIcon from 'assets/images/svg/miscellaneous-list.svg';
 import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
 import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
 import { collapsedSideBar } from 'store/actions/ui';
-import Unauthorized from 'components/Unauthorized';
+
 import { getTeamPermission } from 'store/actions/team';
-import MyActivity from 'containers/MyActivity';
+
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
 import ActivitiesList from './components/ActivitiesList';
-import './style.scss';
+import HeaderLogo from 'assets/images/GCLogo.png';
+
+import './playlistPreview.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
 const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
@@ -28,6 +31,7 @@ function PlaylistPreview(props) {
   const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists, collapsed, setCollapsed } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
   const { permission } = organization;
   const projectPreview = localStorage.getItem('projectPreview');
   // const history = useHistory();
@@ -175,108 +179,116 @@ function PlaylistPreview(props) {
   //   history.goBack();
   // };
   return (
-    <>
-      {loading ? (
-        <div className="loading-phf-data">
-          {loading === 'loading...' ? <Unauthorized text={loading.toUpperCase()} /> : <Unauthorized showbutton text="You are unauthorized to access this!" />}
-        </div>
-      ) : (
-        <section className="main-page-content preview iframe-height-resource">
-          <div className="container-flex-upper">
-            <div className="both-p">
-              <Link to={`/project/${selectedPlaylist.project.id}/preview`}>
-                <div className="project-title">
-                  <img src={projectIcon} alt="" />
-                  {`Project: ${selectedPlaylist.project.name}`}
-                </div>
-              </Link>
+    <section className="curriki-playlist-preview">
+      <div className="project-share-preview-nav">
+        <img src={HeaderLogo} />
+      </div>
+      <div className="curriki-playlist-preview-container">
+        <div className="activity-preview-with-playlist-container">
+          {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
+
+          <div className="left-activity-view">
+            <div className="activity-metadata">
               <Link>
-                <div className="project-title">
-                  <img src={projectIcon} alt="" />
-                  {`Playlist: ${selectedPlaylist.title}`}
-                </div>
+                <img src={projectIcon} alt="" />
+                Project: {selectedPlaylist.project.name}
+              </Link>
+              <FontAwesomeIcon icon="chevron-right" />
+              <Link>
+                <img src={listIcon} alt="" />
+                Playlist:{selectedPlaylist.title}
+              </Link>
+              <Link
+                className="close-icon"
+                to={
+                  projectPreview === 'true'
+                    ? // eslint-disable-next-line no-restricted-globals
+                      { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
+                    : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
+                }
+              >
+                <FontAwesomeIcon icon="times" />
               </Link>
             </div>
+            {localStorage.getItem('lti_activity') === 'false' && (
+              <Link to={`/project/${selectedPlaylist.project.id}/shared`}>
+                <FontAwesomeIcon icon="times" />
+              </Link>
+            )}
+            <div className="activity-controller">
+              {currentActivity && (
+                <h1>
+                  Activity: &nbsp;
+                  <span>{currentActivity.title}</span>
+                </h1>
+              )}
+              <div className="controller">
+                <PreviousLink projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
+                <NextLink projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
 
-            <Link
-              to={
-                projectPreview === 'true'
-                  ? // eslint-disable-next-line no-restricted-globals
-                  { pathname: `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/preview`, state: { from: location.pathname } }
-                  : `/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`
-              }
-            >
-              <FontAwesomeIcon icon="times" />
-            </Link>
-          </div>
-
-          <div className="flex-container previews">
-            <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}>
-              <div className="flex-container-preview">
-                <div className="act-top-header">
-                  <div className="heading-wrapper">
-                    <div className="main-heading">
-                      {currentActivity && (
-                        <h3>
-                          Activity: &nbsp;
-                          <span>{currentActivity.title}</span>
-                        </h3>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="back-header align-items-center justify-content-between">
-                  <div className="right-control vd-controls">
-                    <div className="slider-btn">
-                      <PreviousLink projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
-                      <NextLink projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
-                    </div>
-                  </div>
-                  {/* <div>
-                    <Link
-                      className="go-back-"
-                      to={`/project/${selectedPlaylist.project.id}/preview`}
-                    >
-                      <FontAwesomeIcon icon="undo" className="mr-2" />
-                    </Link>
-                  </div> */}
-                  <a onClick={() => setCollapsed()} className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}>
-                    <FontAwesomeIcon icon="align-right" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="main-item-wrapper">
-                <div className="item-container">
-                  {currentActivity && (
-                    <Suspense fallback={<div>Loading</div>}>
-                      {currentActivity.type === 'h5p' ? <H5PPreview activityId={currentActivity.id} /> : <ImmersiveReaderPreview activity={currentActivity} />}
-                    </Suspense>
-                  )}
-                </div>
+                {/* <a onClick={() => setCollapsed()} className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}>
+              <FontAwesomeIcon icon="align-right" />
+            </a> */}
               </div>
             </div>
 
-            <div className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`}>
-              <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
-                <Tab eventKey="home" title="Activities">
-                  <div className="all-laylist-oracle">
-                    <ActivitiesList
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      activities={selectedPlaylist.activities}
-                      playlist={playlist.selectedPlaylist}
-                      teamPermission={teamPermission || {}}
-                    />
-                  </div>
-                </Tab>
-              </Tabs>
+            <div className="main-item-wrapper">
+              <div className="item-container">
+                {currentActivity && (
+                  <Suspense fallback={<div>Loading</div>}>
+                    <H5PPreview showLtiPreview activityId={currentActivity.id} />
+                  </Suspense>
+                )}
+              </div>
             </div>
           </div>
-          <MyActivity playlistPreview />
-        </section>
-      )}
-    </>
+          {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
+          <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
+            <div className="list-button">{openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}</div>
+
+            {openPlaylistMenu ? (
+              <div className="relative-white-bg">
+                <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+                  <Tab eventKey="home" title="Activities">
+                    <div className="all-activities">
+                      {selectedPlaylist.activities?.map((data) => (
+                        <div className="each-activity">
+                          <div
+                            className="thumbnail"
+                            style={{
+                              backgroundImage:
+                                !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                            }}
+                          />
+                          <p>{data.title}</p>
+                          <DropdownActivity className="Dropdown-Activity" resource={data} playlist={playlist} teamPermission={teamPermission || {}} />
+                        </div>
+                      ))}
+                    </div>
+                  </Tab>
+                </Tabs>
+              </div>
+            ) : (
+              <div className="relative-white-bg-collapsed">
+                <div className="all-activities">
+                  {selectedPlaylist.activities?.map((data) => (
+                    <div className="each-activity">
+                      <div
+                        className="thumbnail"
+                        style={{
+                          backgroundImage:
+                            !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

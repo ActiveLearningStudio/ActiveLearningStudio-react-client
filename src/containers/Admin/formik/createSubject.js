@@ -12,7 +12,7 @@ export default function CreateSubject(props) {
   const { editMode } = props;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
 
   return (
     <div className="create-form lms-admin-form">
@@ -55,7 +55,7 @@ export default function CreateSubject(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getSubjects(organization?.activeOrganization?.id, 1));
+            dispatch(getSubjects(organization?.activeOrganization?.id, activePage));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -126,7 +126,7 @@ export default function CreateSubject(props) {
               </div>
               
               <div className="button-group">
-                <button type="submit">{editMode ? 'Edit ' : 'Add '}Subject</button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

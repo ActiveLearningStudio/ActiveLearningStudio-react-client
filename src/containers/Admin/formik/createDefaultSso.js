@@ -17,7 +17,7 @@ export default function CreateDefaultSso(prop) {
   const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgSearch, setStateOrgSearch] = useState([]);
   const [organizationRole, setOrganizationRole] = useState([]);
@@ -116,7 +116,7 @@ export default function CreateDefaultSso(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id, 1));
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, activePage));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,

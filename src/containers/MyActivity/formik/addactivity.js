@@ -49,18 +49,6 @@ const AddActivity = (props) => {
   const formRef = useRef();
   var counter;
 
-  const handleSubjSelect = (selectSub) => {
-    setSelectedSubjects(selectSub);
-  };
-
-  const handleAuthTagSelect = (selectTag) => {
-    setSelecteAuthorTags(selectTag);
-  };
-
-  const handleEduLvlSelect = (selectEduLvl) => {
-    setSelectedEducationLevel(selectEduLvl);
-  };
-
   const formatApiData = (data) => {
     let ids = [];
     data.map(datum=>{
@@ -298,9 +286,9 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                author_tag_id: selecteAuthorTags,
-                education_level_id: selectedEducationLevel,
-                subject_id: selectedSubjects,
+                author_tag_id: selecteAuthorTags || "",
+                education_level_id: selectedEducationLevel || "",
+                subject_id: selectedSubjects || "",
                 thumb_url: activity?.thumb_url || 
                 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
                 title: activity?.title || "",
@@ -313,12 +301,6 @@ const AddActivity = (props) => {
                   errors.title = "Required";
                 } else if (values.title.length > 255) {
                   errors.title = "Length should be less then 255";
-                } if (!values.subject_id || values.subject_id.length < 1) {
-                  errors.subject_id = "Required"
-                } if (!values.education_level_id || values.education_level_id.length < 1) {
-                  errors.education_level_id = "Required"
-                } if (!values.author_tag_id || values.author_tag_id.length < 1) {
-                  errors.author_tag_id = "Required"
                 }
 
                 return errors;
@@ -335,6 +317,7 @@ const AddActivity = (props) => {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
+                setFieldValue,
                 /* and other goodies */
               }) => (
                 <form
@@ -377,12 +360,11 @@ const AddActivity = (props) => {
                         name="subject_id"
                         hideSearch
                         options={subjects}
-                        onChange={handleSubjSelect}
+                        onChange={(e)=>{
+                          setFieldValue("subject_id", e)
+                          }}
                         value={values.subject_id}
                       />
-                      <div style={{ color: "red" }}>
-                        {errors.subject_id && touched.subject_id && errors.subject_id}
-                      </div>
                     </div>
 
                     <div className="formik-select mr-16">
@@ -391,12 +373,11 @@ const AddActivity = (props) => {
                         name="education_level_id"
                         hideSearch
                         options={educationLevels}
-                        onChange={handleEduLvlSelect}
+                        onChange={(e)=>{
+                          setFieldValue("education_level_id", e)
+                          }}
                         value={values.education_level_id}
                       />
-                       <div style={{ color: "red" }}>
-                        {errors.education_level_id && touched.education_level_id && errors.education_level_id}
-                      </div>
                     </div>
 
                     <div className="formik-select">
@@ -405,12 +386,11 @@ const AddActivity = (props) => {
                         name="author_tag_id"
                         hideSearch
                         options={authorTags}
-                        onChange={handleAuthTagSelect}
+                        onChange={(e)=>{
+                          setFieldValue("author_tag_id", e)
+                          }}
                         value={values.author_tag_id}
                       />
-                       <div style={{ color: "red" }}>
-                        {errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}
-                      </div>
                     </div>
                   </div>
                   <div className="formik-uploadimage">
@@ -459,9 +439,6 @@ const AddActivity = (props) => {
                       formRef.current.handleSubmit();
                       if (
                         formRef.current.values.title &&
-                        formRef.current.values.subject_id.length > 0 &&
-                        formRef.current.values.education_level_id.length > 0 &&
-                        formRef.current.values.author_tag_id.length > 0 &&
                         formRef.current.values.title.length < 255
                       ) {
                         setModalShow(true);
@@ -483,9 +460,6 @@ const AddActivity = (props) => {
                       await formRef.current.handleSubmit();
                       if (
                         formRef.current.values.title &&
-                        formRef.current.values.subject_id.length > 0 &&
-                        formRef.current.values.education_level_id.length > 0 &&
-                        formRef.current.values.author_tag_id.length > 0 &&
                         formRef.current.values.title.length < 255
                       ) {
                         dispatch(

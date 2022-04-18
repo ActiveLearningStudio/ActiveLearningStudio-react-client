@@ -29,18 +29,6 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
 
-  const handleSubjSelect = (selectSub) => {
-    setSelectedSubjects(selectSub);
-  };
-
-  const handleAuthTagSelect = (selectTag) => {
-    setSelecteAuthorTags(selectTag);
-  };
-
-  const handleEduLvlSelect = (selectEduLvl) => {
-    setSelectedEducationLevel(selectEduLvl);
-  };
-
   const formatApiData = (data) => {
     let ids = [];
     data.map((datum) => {
@@ -169,9 +157,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               initialValues={{
                 title: editVideo ? editVideo.title : '',
                 description: editVideo ? editVideo.description || undefined : undefined,
-                author_tag_id: selecteAuthorTags,
-                education_level_id: selectedEducationLevel,
-                subject_id: selectedSubjects,
+                author_tag_id: selecteAuthorTags || "",
+                education_level_id: selectedEducationLevel ||"",
+                subject_id: selectedSubjects || "",
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -182,15 +170,6 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                 const errors = {};
                 if (!values.title) {
                   errors.title = 'Required';
-                }
-                if (!values.subject_id || values.subject_id.length < 1) {
-                  errors.subject_id = 'Required';
-                }
-                if (!values.education_level_id || values.education_level_id.length < 1) {
-                  errors.education_level_id = 'Required';
-                }
-                if (!values.author_tag_id || values.author_tag_id.length < 1) {
-                  errors.author_tag_id = 'Required';
                 }
                 return errors;
               }}
@@ -240,8 +219,15 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                     <div className="layout-formik-select">
                       <div className="formik-select mr-16">
                         <HeadingText text="Subject" className="formik-select-title" />
-                        <ReactMultiSelectCheckboxes name="subject_id" hideSearch options={subjects} onChange={handleSubjSelect} value={values.subject_id} />
-                        <div style={{ color: 'red' }}>{errors.subject_id && touched.subject_id && errors.subject_id}</div>
+                        <ReactMultiSelectCheckboxes
+                          name="subject_id"
+                          hideSearch
+                          options={subjects}
+                          onChange={(e)=>{
+                            setFieldValue("subject_id", e)
+                          }}
+                          value={values.subject_id}
+                          />
                       </div>
 
                       <div className="formik-select mr-16">
@@ -250,16 +236,24 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
-                          onChange={handleEduLvlSelect}
+                          onChange={(e)=>{
+                            setFieldValue("education_level_id", e)
+                            }}
                           value={values.education_level_id}
                         />
-                        <div style={{ color: 'red' }}>{errors.education_level_id && touched.education_level_id && errors.education_level_id}</div>
                       </div>
 
                       <div className="formik-select">
                         <HeadingText text="Author Tags" className="formik-select-title" />
-                        <ReactMultiSelectCheckboxes name="author_tag_id" hideSearch options={authorTags} onChange={handleAuthTagSelect} value={values.author_tag_id} />
-                        <div style={{ color: 'red' }}>{errors.author_tag_id && touched.author_tag_id && errors.author_tag_id}</div>
+                        <ReactMultiSelectCheckboxes
+                          name="author_tag_id"
+                          hideSearch
+                          options={authorTags}
+                          onChange={(e)=>{
+                            setFieldValue("author_tag_id", e)
+                            }}
+                          value={values.author_tag_id}
+                          />
                       </div>
                     </div>
 

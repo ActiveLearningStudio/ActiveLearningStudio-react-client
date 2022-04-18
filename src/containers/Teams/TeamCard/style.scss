@@ -3,7 +3,7 @@
 .team-card-content {
   width: 290px;
   margin: 0 16px 16px 0;
-  padding: 16px 24px;
+  padding: 16px 16px;
   background: #ffffff;
   box-shadow: 0px 4px 12px 2px rgba(81, 81, 81, 0.16);
   border-radius: 8px;
@@ -108,7 +108,7 @@
   }
 
   & > .sub-title {
-    padding: 20px 0;
+    padding: 16px 0;
   }
   .edit-button {
     float: right;
@@ -171,7 +171,7 @@
     line-height: 16px;
     color: #767676;
     max-height: 36px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     word-break: break-all;
     text-overflow: ellipsis;
     overflow: hidden;

@@ -1,7 +1,8 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .inner-content {
   background: $white;
-  padding: 32px 30px 30px;
+  // padding: 32px 30px 30px;
+  padding: 16px 24px;
   margin-top: 0px;
   // margin: 13px 39px 81px 29px;
   border-radius: 3px;
@@ -135,7 +136,7 @@
 }
 .paragraph {
   display: flex;
-  margin: 8px 20px 16px 0px;
+  margin: 18px 20px 16px 0px;
   padding: 0 14px 0 0;
   align-items: center;
   max-width: 800px;
@@ -156,7 +157,7 @@
     border-radius: 5px;
   }
   p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #515151;
@@ -251,7 +252,7 @@
     border-color: #084892 !important;
   }
   .dropdown-toggle::after {
-    background-image: url('../../assets/images/navigation - down.svg') !important;
+    background-image: url("../../assets/images/navigation - down.svg") !important;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -321,7 +322,7 @@ hr {
 
     .share-button {
       margin: 0;
-      margin-top: 25px;
+      margin-top: 36px;
       text-transform: capitalize;
       white-space: nowrap;
     }
@@ -431,7 +432,7 @@ hr {
         width: 50px;
         height: 50px;
         border-radius: 2px;
-        margin-right: 10px;
+        margin-right: 8px;
         position: relative;
       }
       &:hover {
