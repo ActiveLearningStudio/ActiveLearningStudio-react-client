@@ -171,6 +171,10 @@
 
       .resource-dropdown {
         margin-left: auto !important;
+
+        .resource-dropdown-btn {
+          width: max-content;
+        }
       }
     }
     .thumbnail {
@@ -180,6 +184,7 @@
       background-position: center;
       border-radius: 50%;
       margin-right: 12px;
+      flex-shrink: 0;
     }
 
     .relative-white-bg {
