@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 
 import { collapsedSideBar } from 'store/actions/ui';
-import projectIcon from 'assets/images/project_icon.svg';
+import projectIcon from 'assets/images/svg/projectFolder.svg';
+import listIcon from 'assets/images/svg/miscellaneous-list.svg';
+import rightIcon from 'assets/images/svg/right.svg';
 import { loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist, searchPreviewPlaylistAction } from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
@@ -100,7 +102,7 @@ function LtiPlaylistPreview(props) {
               </Link>
               <FontAwesomeIcon icon="chevron-right" />
               <Link>
-                <img src={projectIcon} alt="" />
+                <img src={listIcon} alt="" />
                 Playlist:{selectedPlaylist.title}
               </Link>
             </div>
@@ -138,10 +140,10 @@ function LtiPlaylistPreview(props) {
           </div>
           {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
           <div className="all-activities-of-playlist">
-            <div className="collpase-button">
-              <FontAwesomeIcon icon="chevron-right" />
-            </div>
             <div className="relative-white-bg">
+              <div className="list-button">
+                <img src={rightIcon} alt="" />
+              </div>
               <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
                 <Tab eventKey="home" title="Activities">
                   <div className="all-activities">

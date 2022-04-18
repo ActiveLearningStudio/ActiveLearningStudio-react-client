@@ -1,3 +1,24 @@
+.project-share-preview-nav {
+  height: 64px;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0px 4px 12px 2px rgba(81, 81, 81, 0.16);
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+
+  @media (max-width: 767px) {
+    height: 48px;
+  }
+
+  img {
+    width: 105.63px;
+
+    @media (max-width: 767px) {
+      width: 54.63px;
+    }
+  }
+}
 .curriki-playlist-preview-container {
   max-width: 1440px;
   margin: 24px auto;
@@ -10,6 +31,7 @@
   .activity-metadata {
     display: flex;
     align-self: center;
+    align-items: center;
     margin-bottom: 22px;
     a {
       font-family: 'rubic';
@@ -19,19 +41,24 @@
       line-height: 20px;
       background: #f7faff;
       border-radius: 4px;
-      padding: 6px;
-
+      padding: 6px 8px;
       text-align: center;
       color: #084892;
+      display: flex;
+      align-items: center;
+
+      & img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
     }
     svg {
-      margin: 10px;
-
+      margin: 8px;
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-
       color: #084892;
     }
   }
@@ -61,6 +88,19 @@
 
       .slider-hover-section {
         padding: 0;
+
+        & a {
+          font-family: 'rubic';
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          color: #084892;
+
+          & svg {
+            margin: 0 8px -1px;
+          }
+        }
       }
     }
   }
@@ -87,7 +127,7 @@
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
       border-radius: 4px;
 
-      p {
+      & p {
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
@@ -105,22 +145,6 @@
       margin-right: 12px;
     }
 
-    .collpase-button {
-      position: absolute;
-      top: 15px;
-      left: -20px;
-      box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
-
-      transform: rotate(-45deg);
-      width: 60px;
-      height: 60px;
-      border-top-left-radius: 10px;
-      padding: 9px;
-
-      svg {
-        transform: rotate(45deg);
-      }
-    }
     .relative-white-bg {
       width: 392px;
       background: #ffffff;
@@ -129,6 +153,30 @@
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       position: relative;
       height: 100%;
+
+      & ::before {
+        box-shadow: -4px 5px 3px 0px #43434303;
+        border-radius: 0 18px 0 18px;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        position: absolute;
+        background: #fff;
+        height: 50px;
+        content: '';
+        width: 50px;
+        left: -24px;
+        z-index: 1;
+        top: 27px;
+      }
+
+      .list-button {
+        & img {
+          position: absolute;
+          left: -17px;
+          top: 41px;
+          z-index: 2;
+        }
+      }
     }
 
     .nav-tabs {
