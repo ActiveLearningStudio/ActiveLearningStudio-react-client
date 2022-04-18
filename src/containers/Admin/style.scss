@@ -976,13 +976,35 @@
         // .dropdown {
         //   margin: auto;
         // }
-
-        .admin-description2 {
-          width: 655px;
-          overflow: hidden;
-          display: flex;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        .admin-description-main {
+          .admin-description2 {
+            width: 655px;
+            overflow: hidden;
+            display: flex;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            &:hover {
+              
+            }
+          }
+          .admin-description2-hover {
+            width: 655px;
+            display: none;
+            
+          } 
+          &:hover {
+            .admin-description2 {
+              display: none;
+            }
+            .admin-description2-hover {
+              transition-delay: 0.5ms;
+              display: flex;
+              padding: 20px;
+              margin-right: 10px;
+              background-color: #FFFFFF;
+              box-shadow:0px 4px 8px 2px rgba(82, 82, 82, 0.16);
+            }    
+          }
         }
 
         .admin-mata-heading {

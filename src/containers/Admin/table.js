@@ -753,7 +753,7 @@ function Table(props) {
                 </tr>
               ))}
 
-              {type === 'Activities' &&
+            {type === 'Activities' &&
               subType === 'Activity Types' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
@@ -775,17 +775,25 @@ function Table(props) {
                       </td>
                       <td>{row.order}</td>
                       <td>
-                      <div className="admin-panel-dropdown">
-                        <div className="admin-description2 ">
-                          {row.activityItems.map((item) => (
-                            <div>{item.title + ','}</div>
-                          ))}
+                        <div className="admin-panel-dropdown">
+                          <div className="admin-description-main">
+
+                            <div className="admin-description2">
+                              {row.activityItems.map((item, i) => (
+                                <div>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</div>
+                              ))}
+                            </div>
+                            <div className="admin-description2-hover">
+                              {row.activityItems.map((item, i) => (
+                                <>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
+                          </div>
                         </div>
-                        <div>
-                          <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
-                        </div>
-                      </div>
-                    </td>
+                      </td>
                     </tr>
                   ))
                 ) : (
@@ -1004,7 +1012,7 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            
+
             {type === 'Activities' &&
               subType === 'Activity Layouts' &&
               (localStateData ? (
