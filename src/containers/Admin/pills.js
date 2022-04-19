@@ -284,25 +284,26 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems(activeOrganization?.id, '', activePage, size));
+      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
-      dispatch(getActivityItems(activeOrganization?.id));
+      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage]);
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, '', '', searchQuery));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
-      dispatch(loadResourceTypesAction());
+      // dispatch(loadResourceTypesAction());
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, '', '', searchQuery))
       dispatch(updatePageNumber(activePage));
     }
-  }, [activePage, subTypeState, type]);
+  }, [activePage, subTypeState, type, size]);
   const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === 'Activity Types') {
       if (query) {
@@ -313,9 +314,9 @@ export default function Pills(props) {
     } else if (subTypeRecieved === 'Activity Items') {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, '', size));
+        await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
       } else if (query === '') {
-        await dispatch(getActivityItems(activeOrganization?.id));
+        await dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
       }
     }
   };
@@ -455,21 +456,21 @@ export default function Pills(props) {
 
   useMemo(async () => {
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery));
       dispatch(updatePageNumber(activePage));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery));
       dispatch(updatePageNumber(activePage));
 
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery));
       dispatch(updatePageNumber(activePage));
 
     }
     if (type === 'Activities') {
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
   }, [type, subTypeState, activePage, activeOrganization?.id, size]);
 
@@ -518,25 +519,28 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityTypes(activeOrganization?.id, 1, '', '', encodeQuery));
+    setSearchQuery(encodeQuery);
+    dispatch(getActivityTypes(activeOrganization?.id, 1, size, '', '', encodeQuery));
   };
   
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, 1, size));
+    setSearchQuery(encodeQuery);
+    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
   };
  
   const filterActivityItems = (type) => {
     setActivePage(1);
-    dispatch(getActivityItems(activeOrganization?.id, '', 1, size,'', '', type));
+    dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, '', '', type));
   };
   
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
     dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery));
   };
 
@@ -571,6 +575,7 @@ export default function Pills(props) {
     setSubjects(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
     const result = adminService.getSubjects(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setSubjects(data);
@@ -581,6 +586,7 @@ export default function Pills(props) {
     setEducationLevel(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
     const result = adminService.getEducationLevel(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setEducationLevel(data);
@@ -591,6 +597,7 @@ export default function Pills(props) {
     setAuthorTag(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
     const result = adminService.getAuthorTag(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setAuthorTag(data);
@@ -719,7 +726,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, col, orderBy));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchQuery));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Items') {
@@ -732,7 +739,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems(activeOrganization?.id, '', activePage || 1, size, col, orderBy,));
+      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage || 1, size, col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Layouts') {
@@ -745,7 +752,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Subjects') {
@@ -758,7 +765,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, '', '', col, orderBy,));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy,));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Education Level') {
@@ -771,7 +778,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Author Tags') {
@@ -784,7 +791,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, '', '', col, orderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Organization') {
