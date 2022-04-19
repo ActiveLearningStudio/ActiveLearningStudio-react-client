@@ -4,28 +4,27 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2';
+
 import DropdownActivity from 'components/ResourceCard/dropdown';
-import { confirmAlert } from 'react-confirm-alert';
+
 import { Tab, Tabs } from 'react-bootstrap';
 
 import projectIcon from 'assets/images/svg/projectFolder.svg';
 import listIcon from 'assets/images/svg/miscellaneous-list.svg';
 import { loadPlaylistAction, loadProjectPlaylistsAction, LoadHP } from 'store/actions/playlist';
-import { shareActivity, removeShareActivity, loadH5pResourceSettings } from 'store/actions/resource';
+import { loadH5pResourceSettings } from 'store/actions/resource';
 import { collapsedSideBar } from 'store/actions/ui';
 
 import { getTeamPermission } from 'store/actions/team';
 
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
-import ActivitiesList from './components/ActivitiesList';
+
 import HeaderLogo from 'assets/images/GCLogo.png';
 
 import './playlistPreview.scss';
 
 const H5PPreview = lazy(() => import('../../H5PPreview'));
-const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
 
 function PlaylistPreview(props) {
   const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists } = props;
@@ -146,10 +145,6 @@ function PlaylistPreview(props) {
               <div className="controller">
                 <PreviousLink projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
                 <NextLink projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
-
-                {/* <a onClick={() => setCollapsed()} className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}>
-              <FontAwesomeIcon icon="align-right" />
-            </a> */}
               </div>
             </div>
 

@@ -70,8 +70,6 @@ function LtiPlaylistPreviewShared(props) {
     }
   }
 
-  console.log(selectedPlaylist);
-
   return (
     <>
       {loading ? (

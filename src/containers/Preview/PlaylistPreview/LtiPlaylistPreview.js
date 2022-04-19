@@ -122,10 +122,6 @@ function LtiPlaylistPreview(props) {
               <div className="controller">
                 <PreviousLink showLti={showLti} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} projectId={selectedPlaylist.project_id} />
                 <NextLink showLti={showLti} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} projectId={selectedPlaylist.project_id} />
-
-                {/* <a onClick={() => setCollapsed()} className={`btn-expand-collapse${collapsed ? ' collapsed' : ''}`}>
-              <FontAwesomeIcon icon="align-right" />
-            </a> */}
               </div>
             </div>
 
