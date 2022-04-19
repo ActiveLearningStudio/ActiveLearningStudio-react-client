@@ -9,11 +9,11 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { collapsedSideBar } from 'store/actions/ui';
 import projectIcon from 'assets/images/svg/projectFolder.svg';
 import listIcon from 'assets/images/svg/miscellaneous-list.svg';
-import rightIcon from 'assets/images/svg/right.svg';
+
 import { loadLtiPlaylistAction, loadProjectPlaylistsAction, loadSingleSharedPlaylist, searchPreviewPlaylistAction } from 'store/actions/playlist';
 import PreviousLink from './components/PreviousLink';
 import NextLink from './components/NextLink';
-import ActivitiesDropdown from './components/ActivitiesDropdown';
+
 import HeaderLogo from 'assets/images/GCLogo.png';
 
 import './playlistPreview.scss';
@@ -152,14 +152,16 @@ function LtiPlaylistPreview(props) {
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
                         <div className="each-activity">
-                          <div
-                            className="thumbnail"
-                            style={{
-                              backgroundImage:
-                                !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
-                            }}
-                          />
-                          <p>{data.title}</p>
+                          <Link to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
+                            <div
+                              className="thumbnail"
+                              style={{
+                                backgroundImage:
+                                  !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                              }}
+                            />
+                            <p>{data.title}</p>
+                          </Link>
                         </div>
                       ))}
                     </div>
@@ -170,7 +172,7 @@ function LtiPlaylistPreview(props) {
               <div className="relative-white-bg-collapsed">
                 <div className="all-activities">
                   {selectedPlaylist.activities?.map((data) => (
-                    <div className="each-activity">
+                    <Link title={data.title} to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`} className="each-activity">
                       <div
                         className="thumbnail"
                         style={{
@@ -178,7 +180,7 @@ function LtiPlaylistPreview(props) {
                             !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                         }}
                       />
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

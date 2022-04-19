@@ -28,11 +28,11 @@ const H5PPreview = lazy(() => import('../../H5PPreview'));
 const ImmersiveReaderPreview = lazy(() => import('../../../components/Microsoft/ImmersiveReaderPreview'));
 
 function PlaylistPreview(props) {
-  const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists, collapsed, setCollapsed } = props;
+  const { loading, projectId, playlistId, activityId, playlist, loadHP, loadPlaylist, loadProjectPlaylists } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
   const [openPlaylistMenu, setPlaylistMenu] = useState(true);
-  const { permission } = organization;
+
   const projectPreview = localStorage.getItem('projectPreview');
   // const history = useHistory();
   const dispatch = useDispatch();
@@ -97,87 +97,8 @@ function PlaylistPreview(props) {
     );
   }
 
-  // const allPlaylists = selectedPlaylist.project.playlists;
   const allPlaylists = playlist.playlists;
-  const activityShared = currentActivity && currentActivity.shared;
 
-  const share = async () => {
-    const nameActivity = currentActivity && currentActivity.title;
-    if (activityShared) {
-      Swal.fire({
-        icon: 'warning',
-        title: `You are about to stop sharing <strong>${nameActivity}</strong>.
-          Please remember that anyone you have shared this activity with will no longer have access its contents.
-          Do you want to continue?`,
-        showCloseButton: true,
-        showCancelButton: true,
-        focusConfirm: false,
-        confirmButtonText: 'Stop Sharing!',
-        confirmButtonAriaLabel: 'Stop Sharing!',
-        cancelButtonText: 'Cancel',
-        cancelButtonAriaLabel: 'Cancel',
-      }).then(async (resp) => {
-        if (resp.isConfirmed) {
-          await removeShareActivity(currentActivityId, nameActivity);
-          loadPlaylist(projectId, playlistId);
-        }
-      });
-    } else {
-      await shareActivity(currentActivityId);
-      loadPlaylist(projectId, playlistId);
-    }
-  };
-
-  const viewSharedLink = () => {
-    const protocol = `${window.location.href.split('/')[0]}//`;
-    confirmAlert({
-      // eslint-disable-next-line react/prop-types
-      customUI: ({ onClose }) => (
-        <div className="share-project-preview-url project-share-check">
-          <div className="mt-3 mb-2 d-flex align-items-center">
-            <a href={`/activity/${currentActivityId}/shared`} target="_blank" rel="noreferrer" style={{ flex: 1 }}>
-              <input id="urllink_clip" style={{ width: '100%' }} value={`${protocol}${window.location.host}/activity/${currentActivityId}/shared`} />
-            </a>
-
-            <FontAwesomeIcon
-              title="Copy to clipboard"
-              icon="clipboard"
-              onClick={() => {
-                /* Get the text field */
-                const copyText = document.getElementById('urllink_clip');
-
-                /* Select the text field */
-                copyText.focus();
-                copyText.select();
-                // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-
-                /* Copy the text inside the text field */
-                document.execCommand('copy');
-
-                /* Alert the copied text */
-                Swal.fire({
-                  title: 'Link Copied',
-                  showCancelButton: false,
-                  showConfirmButton: false,
-                  timer: 1500,
-                  allowOutsideClick: false,
-                });
-              }}
-            />
-          </div>
-
-          <div className="close-btn flex-center">
-            <button type="button" className="curriki-btn-extra" onClick={onClose}>
-              Ok
-            </button>
-          </div>
-        </div>
-      ),
-    });
-  };
-  // const goBack = () => {
-  //   history.goBack();
-  // };
   return (
     <section className="curriki-playlist-preview">
       <div className="project-share-preview-nav">
@@ -189,7 +110,7 @@ function PlaylistPreview(props) {
 
           <div className="left-activity-view">
             <div className="activity-metadata">
-              <Link>
+              <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
                 <img src={projectIcon} alt="" />
                 Project: {selectedPlaylist.project.name}
               </Link>
@@ -244,7 +165,9 @@ function PlaylistPreview(props) {
           </div>
           {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
           <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
-            <div className="list-button">{openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}</div>
+            <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
+              {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
+            </div>
 
             {openPlaylistMenu ? (
               <div className="relative-white-bg">
@@ -253,15 +176,19 @@ function PlaylistPreview(props) {
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
                         <div className="each-activity">
-                          <div
-                            className="thumbnail"
-                            style={{
-                              backgroundImage:
-                                !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
-                            }}
-                          />
-                          <p>{data.title}</p>
-                          <DropdownActivity className="Dropdown-Activity" resource={data} playlist={playlist} teamPermission={teamPermission || {}} />
+                          <Link
+                            to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
+                          >
+                            <div
+                              className="thumbnail"
+                              style={{
+                                backgroundImage:
+                                  !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                              }}
+                            />
+                            <p>{data.title}</p>
+                          </Link>
+                          <DropdownActivity className="Dropdown-Activity" resource={data} playlist={selectedPlaylist} teamPermission={teamPermission || {}} />
                         </div>
                       ))}
                     </div>
@@ -272,7 +199,11 @@ function PlaylistPreview(props) {
               <div className="relative-white-bg-collapsed">
                 <div className="all-activities">
                   {selectedPlaylist.activities?.map((data) => (
-                    <div className="each-activity">
+                    <Link
+                      title={data.title}
+                      className="each-activity"
+                      to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
+                    >
                       <div
                         className="thumbnail"
                         style={{
@@ -280,7 +211,7 @@ function PlaylistPreview(props) {
                             !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                         }}
                       />
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

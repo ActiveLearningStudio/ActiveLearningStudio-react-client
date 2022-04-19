@@ -272,7 +272,9 @@ img {
   line-height: 1.2;
   color: #000;
 }
-
+.hover-control-caption.no-data {
+  left: -163px;
+}
 .hover-control-caption {
   position: absolute;
   left: 0;
@@ -295,6 +297,7 @@ img {
   transform: translate3d(0, 20px, 0);
   cursor: pointer;
   top: 3px !important;
+  left: -125px;
 
   .img-in-hover {
     width: 100%;

@@ -34,6 +34,7 @@
 
   .activity-preview-with-playlist-container {
     display: flex;
+    position: relative;
   }
   // activity meta data
   .activity-metadata {
@@ -142,7 +143,7 @@
 
   .left-activity-view {
     width: 100%;
-    padding: 24px 32px;
+    padding: 24px 100px 32px 24px;
     @media (max-width: 1020px) {
       padding: 12px 22px 12px 12px;
     }
@@ -166,7 +167,9 @@
   }
 
   .all-activities-of-playlist {
-    position: relative;
+    position: absolute;
+    right: 0;
+    height: 100%;
     @media (max-width: 1020px) {
       position: absolute;
       right: 0;
@@ -201,6 +204,10 @@
       margin-bottom: 8px;
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
       border-radius: 4px;
+      a {
+        display: flex;
+        align-items: center;
+      }
 
       & p {
         font-style: normal;
@@ -213,6 +220,10 @@
 
       .resource-dropdown {
         margin-left: auto !important;
+
+        // .resource-dropdown-btn {
+        //   width: max-content;
+        // }
       }
     }
     .thumbnail {
@@ -222,6 +233,7 @@
       background-position: center;
       border-radius: 50%;
       margin-right: 12px;
+      // flex-shrink: 0;
     }
 
     .relative-white-bg {
@@ -230,12 +242,12 @@
       padding: 32px;
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       position: relative;
-      height: 100%;
+
       @media (max-width: 1020px) {
         height: 100vh;
         padding: 16px;
       }
-      transition: 0.7s ease-in-out;
+      // transition: 0.7s ease-in-out;
     }
 
     .relative-white-bg-collapsed {
@@ -245,7 +257,7 @@
       /* Gray elevation/12px */
       padding: 0px 12px;
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
-      height: 100%;
+
       .each-activity {
         display: flex;
         justify-content: center;
@@ -268,7 +280,7 @@
         max-width: 10px;
         padding: 0px 5px;
       }
-      transition: 0.7s ease-in-out;
+      //  transition: 0.7s ease-in-out;
     }
 
     .nav-tabs {
