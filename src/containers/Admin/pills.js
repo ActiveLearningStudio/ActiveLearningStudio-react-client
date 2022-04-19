@@ -291,7 +291,7 @@ export default function Pills(props) {
       dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
       dispatch(updatePageNumber(activePage));
     }
-  }, [type, subTypeState, activePage]);
+  }, [type, subTypeState, activePage, size]);
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
