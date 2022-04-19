@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
@@ -7,20 +7,10 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function NextLink(props) {
-  const {
-    history,
-    showLti,
-    shared,
-    projectId,
-    playlistId,
-    nextResource,
-    allPlaylists,
-  } = props;
+  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists } = props;
 
-  const currentPlaylistIndex = allPlaylists.findIndex((p) => (p.id === playlistId));
-  const nextPlaylist = currentPlaylistIndex < allPlaylists.length - 1
-    ? allPlaylists[currentPlaylistIndex + 1]
-    : null;
+  const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
+  const nextPlaylist = currentPlaylistIndex < allPlaylists.length - 1 ? allPlaylists[currentPlaylistIndex + 1] : null;
   const organization = useSelector((state) => state.organization);
   let nextLink = '#';
   if (nextResource) {
@@ -44,6 +34,7 @@ function NextLink(props) {
     <div className="slider-hover-section">
       <Link to={nextLink}>
         <FontAwesomeIcon icon="chevron-right" />
+        Next
       </Link>
 
       <div className={`hover-control-caption pointer-cursor${nextResource ? '' : ' no-data'}`}>
@@ -75,16 +66,15 @@ function NextLink(props) {
                     cancelButtonColor: '#d33',
                     cancelButtonText: 'No',
                     confirmButtonText: 'Yes',
-                  })
-                    .then((result) => {
-                      if (result.value) {
-                        if (showLti) {
-                          history.push(`/project/${projectId}/shared`);
-                        } else {
-                          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
-                        }
+                  }).then((result) => {
+                    if (result.value) {
+                      if (showLti) {
+                        history.push(`/project/${projectId}/shared`);
+                      } else {
+                        history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
                       }
-                    });
+                    }
+                  });
                 }
               }}
             >

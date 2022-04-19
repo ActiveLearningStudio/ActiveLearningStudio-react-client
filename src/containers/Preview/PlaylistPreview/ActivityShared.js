@@ -7,10 +7,10 @@ import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 import { Alert } from 'react-bootstrap';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction } from 'store/actions/resource';
-
+import HeaderLogo from 'assets/images/GCLogo.png';
 import * as xAPIHelper from 'helpers/xapi';
 
-import './style.scss';
+import './activity-share.scss';
 
 let counter = 1;
 let lrs = null;
@@ -175,13 +175,18 @@ const ActivityShared = (props) => {
 
   return (
     <>
-      {authorized ? (
-        <Alert variant="danger"> Activity not found.</Alert>
-      ) : (
-        <div id="curriki-h5p-wrapper">
-          <Alert variant="primary"> Loading Activity</Alert>
-        </div>
-      )}
+      <div className="project-share-preview-nav">
+        <img src={HeaderLogo} />
+      </div>
+      <div className="curriki-activity-share">
+        {authorized ? (
+          <Alert variant="danger"> Activity not found.</Alert>
+        ) : (
+          <div id="curriki-h5p-wrapper">
+            <Alert variant="primary"> Loading Activity</Alert>
+          </div>
+        )}
+      </div>
     </>
   );
 };
