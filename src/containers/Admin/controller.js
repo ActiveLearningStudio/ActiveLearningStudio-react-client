@@ -492,6 +492,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(10);
+                      setActivePage(1);
                     }}
                   >
                     10
@@ -499,6 +500,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(25);
+                      setActivePage(1);
                     }}
                   >
                     25
@@ -506,6 +508,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(50);
+                      setActivePage(1);
                     }}
                   >
                     50
@@ -513,6 +516,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(100);
+                      setActivePage(1);
                     }}
                   >
                     100
