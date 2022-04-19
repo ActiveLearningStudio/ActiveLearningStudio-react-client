@@ -295,14 +295,15 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, '', '', searchQuery));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types' && activePage === 1) {
       //on page 1
-      dispatch(loadResourceTypesAction());
+      // dispatch(loadResourceTypesAction());
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, '', '', searchQuery))
       dispatch(updatePageNumber(activePage));
     }
-  }, [activePage, subTypeState, type]);
+  }, [activePage, subTypeState, type, size]);
   const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === 'Activity Types') {
       if (query) {
@@ -518,7 +519,8 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(getActivityTypes(activeOrganization?.id, 1, '', '', encodeQuery));
+    setSearchQuery(encodeQuery);
+    dispatch(getActivityTypes(activeOrganization?.id, 1, size, '', '', encodeQuery));
   };
   
   const searchQueryChangeHandlerActivityItems = (search) => {
@@ -724,7 +726,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, col, orderBy));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchQuery));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Items') {
