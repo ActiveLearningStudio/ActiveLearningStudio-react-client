@@ -1,6 +1,6 @@
 /*eslint-disable */
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import { errorCatcher } from './errors';
 import config from 'config';
 import httpService from './http.service';
 
@@ -103,7 +103,10 @@ const googleClassShare = (projectId, courseId, token, OrgId) =>
   httpService
     .post(`/${apiVersion}/google-classroom/projects/${projectId}/copy`, { course_id: courseId, access_token: token, publisher_org: OrgId })
     .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
 
 const googleShareToken = (accessToken) =>
   httpService
@@ -134,7 +137,10 @@ const googleClassPublishPlaylist = (projectId, courseId, topicId, playlistId, to
       publisher_org: OrgId,
     })
     .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
 
 const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, activityId, token, OrgId) =>
   httpService
@@ -145,7 +151,10 @@ const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, ac
       publisher_org: OrgId,
     })
     .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
 
 export default {
   searchResult,
