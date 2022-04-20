@@ -185,7 +185,7 @@ export default function CreateActivityItem(props) {
                 <div className="form-group-create">
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
-                    <option value=""> </option>
+                    {/* <option value=""> </option> */}
                     {activityTypes?.data.length > 0 &&
                       activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
