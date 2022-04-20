@@ -533,10 +533,6 @@ img {
     align-items: flex-start;
     flex-direction: column;
   }
-
-  .main-item-wrapper {
-    margin-bottom: 50px;
-  }
 }
 
 @media (max-width: 992px) {
@@ -571,8 +567,7 @@ img {
     top: 10px;
   }
 
-  .act-top-header,
-  .main-item-wrapper {
+  .act-top-header {
     margin-bottom: 30px;
   }
 }
@@ -817,17 +812,17 @@ img {
 .main-item-wrapper {
   .h5p-iframe-wrapper {
     // position: fixed;
-    padding-bottom: 50px;
-    height: 90%;
-    // width: 100%;
-    overflow-y: auto;
-    background: #fff;
+    // padding-bottom: 50px;
+    // height: 90%;
+    // // width: 100%;
+    // overflow-y: auto;
+    // background: #fff;
   }
 }
 .activity-bg.left-vdo.collapsed {
   .main-item-wrapper {
     .h5p-iframe-wrapper {
-      width: 100%;
+      // width: 100%;
     }
   }
 }

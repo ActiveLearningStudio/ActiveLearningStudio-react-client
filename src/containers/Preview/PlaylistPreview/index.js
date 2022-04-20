@@ -170,7 +170,7 @@ function PlaylistPreview(props) {
                   <Tab eventKey="home" title="Activities">
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
-                        <div className="each-activity">
+                        <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
                           <Link
                             to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
                           >

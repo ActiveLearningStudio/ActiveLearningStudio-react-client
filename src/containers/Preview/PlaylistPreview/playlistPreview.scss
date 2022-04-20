@@ -144,9 +144,19 @@
   .left-activity-view {
     width: 100%;
     padding: 24px 100px 32px 24px;
-    min-height: 400px;
+
     @media (max-width: 1020px) {
       padding: 12px 22px 12px 12px;
+    }
+
+    #curriki-h5p-wrapper {
+      min-height: calc(100vh - 300px);
+      @media (max-width: 1020px) {
+        min-height: calc(100vh - 25px);
+        @media (orientation: portrait) {
+          min-height: calc(100vh - 55px);
+        }
+      }
     }
   }
   //all-activities-of-playlist
@@ -172,6 +182,7 @@
     right: 0;
     height: 100%;
     overflow-y: auto;
+
     @media (max-width: 1020px) {
       position: absolute;
       right: 0;
@@ -331,6 +342,7 @@
   .all-activities-of-playlist.active {
     @media (max-width: 1020px) {
       overflow-y: auto;
+      overflow-x: hidden;
     }
     .each-activity {
       border: 1px solid #dddddd;
