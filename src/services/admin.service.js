@@ -247,15 +247,11 @@ const searchDefaultSso = (orgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLtiTools = (subOrgId, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}`)
-  .then(({ data }) => data)
-  .catch((err) => {
-    Promise.reject(err.response.data);
-  });
-
-const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&order_by_column=${column}&order_by_type=${orderBy}`)
+const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}
+  ${query ? `&query=${query}` : ''}${size ? `&size=${size}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}
+  ${filterBy ? `&filter=${filterBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     Promise.reject(err.response.data);
@@ -492,7 +488,6 @@ export default {
   searchDefaultSso,
   getAllExportedProject,
   getLtiTools,
-  getLtiToolsOrderBy,
   createLtiTool,
   updateLtiTool,
   deleteLtiTool,

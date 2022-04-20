@@ -12,7 +12,6 @@ import {
   getJobListing,
   getLogsListing,
   getLtiTools,
-  getLtiToolsOrderBy,
   getUserReport,
   getDefaultSso,
   getLmsProject,
@@ -429,7 +428,7 @@ export default function Pills(props) {
       dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
     if (type === 'LMS') {
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
     if (type === 'LMS') {
       dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
@@ -573,7 +572,8 @@ export default function Pills(props) {
     setLtiTool(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, 1);
+    setSearchQuery(encodeQuery);
+    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -615,7 +615,7 @@ export default function Pills(props) {
   const filterLtiTool = (item) => {
     setLtiTool(null);
     setActivePage(1);
-    const result = adminService.searchLtiTool(activeOrganization?.id, item, 1);
+    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, '', '', item);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -721,7 +721,7 @@ export default function Pills(props) {
         default:
           col = 'tool_name';
       }
-      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Types') {
