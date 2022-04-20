@@ -146,17 +146,8 @@ export const setCurrentProject = (project) => (dispatch) => {
   });
 };
 
-export const getLtiTools = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getLtiTools(subOrgId, page);
-  dispatch({
-    type: actionTypes.GET_LTI_TOOLS,
-    payload: result,
-  });
-  return result;
-};
-
-export const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => async (dispatch) => {
-  const result = await adminService.getLtiToolsOrderBy(subOrgId, column, orderBy, page);
+export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) => async (dispatch) => {
+  const result = await adminService.getLtiTools(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,

@@ -12,7 +12,6 @@ import {
   getJobListing,
   getLogsListing,
   getLtiTools,
-  getLtiToolsOrderBy,
   getUserReport,
   getDefaultSso,
   getLmsProject,
@@ -136,7 +135,7 @@ export default function Pills(props) {
     if (type === 'All Projects') {
       if (!!query) {
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, 1, query, size);
         allproject
           .then((data) => {
             setAllProjectTab(data);
@@ -144,7 +143,7 @@ export default function Pills(props) {
           .catch((e) => setAllProjectTab([]));
       } else {
         setActivePage(1);
-        const allproject = adminService.getAllProject(activeOrganization?.id, 1);
+        const allproject = adminService.getAllProject(activeOrganization?.id, 1, size);
         allproject.then((data) => {
           setAllProjectTab(data);
         });
@@ -185,7 +184,7 @@ export default function Pills(props) {
       }
     }
     if (type === 'Organization') {
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage, searchQuery));
     }
   }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
   // All Users Business Logic End
@@ -426,10 +425,10 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
     if (type === 'LMS') {
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
     if (type === 'LMS') {
       dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
@@ -502,7 +501,8 @@ export default function Pills(props) {
     setLmsProject(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery, 1);
+    setSearchQuery(encodeQuery);
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, encodeQuery, '', '', '');
     result.then((data) => {
       setLmsProject(data);
     });
@@ -543,6 +543,13 @@ export default function Pills(props) {
     setSearchQuery(encodeQuery);
     dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery));
   };
+  
+  const searchQueryChangeHandlerOrg = (search) => {
+    setActivePage(1);
+    const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
+    dispatch(getsubOrgList(activeOrganization?.id, size, 1, encodeQuery));
+  };
 
   //Default SSO ***************************************
   useMemo(async () => {
@@ -565,7 +572,8 @@ export default function Pills(props) {
     setLtiTool(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchLtiTool(activeOrganization?.id, encodeQuery, 1);
+    setSearchQuery(encodeQuery);
+    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -607,7 +615,7 @@ export default function Pills(props) {
   const filterLtiTool = (item) => {
     setLtiTool(null);
     setActivePage(1);
-    const result = adminService.searchLtiTool(activeOrganization?.id, item, 1);
+    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, '', '', item);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -626,7 +634,7 @@ export default function Pills(props) {
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
     setActivePage(1);
-    const result = adminService.getLmsProject(activeOrganization?.id, 1, '', '', '', '', filterBy);
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, searchQuery, '', '', filterBy);
     result.then((data) => {
       setLmsProject(data);
     });
@@ -713,7 +721,7 @@ export default function Pills(props) {
         default:
           col = 'tool_name';
       }
-      dispatch(getLtiToolsOrderBy(activeOrganization?.id, col, orderBy, activePage || 1));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'Activity Types') {
@@ -804,7 +812,7 @@ export default function Pills(props) {
         default:
           col = 'name';
       }
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'DefaultSso') {
@@ -830,7 +838,7 @@ export default function Pills(props) {
         default:
           col = 'lms_name';
       }
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'All Users') {
@@ -857,7 +865,7 @@ export default function Pills(props) {
         default:
           col = 'created_at';
       }
-      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, '', 10, col, orderBy);
+      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size, col, orderBy);
       setAllProjectTab(result);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -1005,6 +1013,7 @@ export default function Pills(props) {
                   type={type}
                   activePage={activePage}
                   setActivePage={setActivePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerOrg}
                 />
               )}
 
