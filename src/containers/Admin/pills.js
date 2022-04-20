@@ -136,7 +136,7 @@ export default function Pills(props) {
     if (type === 'All Projects') {
       if (!!query) {
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, query);
+        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, 1, query, size);
         allproject
           .then((data) => {
             setAllProjectTab(data);
@@ -144,7 +144,7 @@ export default function Pills(props) {
           .catch((e) => setAllProjectTab([]));
       } else {
         setActivePage(1);
-        const allproject = adminService.getAllProject(activeOrganization?.id, 1);
+        const allproject = adminService.getAllProject(activeOrganization?.id, 1, size);
         allproject.then((data) => {
           setAllProjectTab(data);
         });
@@ -426,7 +426,7 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery));
     }
     if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1));
@@ -502,7 +502,8 @@ export default function Pills(props) {
     setLmsProject(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.getLmsProjectSearch(activeOrganization?.id, encodeQuery, 1);
+    setSearchQuery(encodeQuery);
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, encodeQuery, '', '', '');
     result.then((data) => {
       setLmsProject(data);
     });
@@ -633,7 +634,7 @@ export default function Pills(props) {
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
     setActivePage(1);
-    const result = adminService.getLmsProject(activeOrganization?.id, 1, '', '', '', '', filterBy);
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, searchQuery, '', '', filterBy);
     result.then((data) => {
       setLmsProject(data);
     });
@@ -837,7 +838,7 @@ export default function Pills(props) {
         default:
           col = 'lms_name';
       }
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, 10, '', col, orderBy));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'All Users') {
@@ -864,7 +865,7 @@ export default function Pills(props) {
         default:
           col = 'created_at';
       }
-      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, '', 10, col, orderBy);
+      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size, col, orderBy);
       setAllProjectTab(result);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
