@@ -147,7 +147,7 @@ function LtiPlaylistPreview(props) {
                   <Tab eventKey="home" title="Activities">
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
-                        <div className="each-activity">
+                        <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
                           <Link to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
                             <div
                               className="thumbnail"
