@@ -296,12 +296,12 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types') {
       //on page 1
       // dispatch(loadResourceTypesAction());
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy))
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery))
       dispatch(updatePageNumber(activePage));
     }
   }, [activePage, subTypeState, type, size]);
