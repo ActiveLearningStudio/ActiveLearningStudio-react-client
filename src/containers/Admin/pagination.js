@@ -37,6 +37,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Stats' && subTypeState === 'Queues: Logs' && (

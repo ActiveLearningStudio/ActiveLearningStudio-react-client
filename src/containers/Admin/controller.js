@@ -939,7 +939,7 @@ function Controller(props) {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
-                      filteredItems(null);
+                      filteredItems("");
                       setSelectedFilterItem(null);
                     }}
                   >
