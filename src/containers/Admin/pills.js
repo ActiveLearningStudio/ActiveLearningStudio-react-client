@@ -185,7 +185,7 @@ export default function Pills(props) {
       }
     }
     if (type === 'Organization') {
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage, searchQuery));
     }
   }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
   // All Users Business Logic End
@@ -543,6 +543,13 @@ export default function Pills(props) {
     setSearchQuery(encodeQuery);
     dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery));
   };
+  
+  const searchQueryChangeHandlerOrg = (search) => {
+    setActivePage(1);
+    const encodeQuery = encodeURI(search.target.value);
+    setSearchQuery(encodeQuery);
+    dispatch(getsubOrgList(activeOrganization?.id, size, 1, encodeQuery));
+  };
 
   //Default SSO ***************************************
   useMemo(async () => {
@@ -804,7 +811,7 @@ export default function Pills(props) {
         default:
           col = 'name';
       }
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, '', col, orderBy));
+      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, searchQuery, col, orderBy));
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
     } else if (subType == 'DefaultSso') {
@@ -1005,6 +1012,7 @@ export default function Pills(props) {
                   type={type}
                   activePage={activePage}
                   setActivePage={setActivePage}
+                  searchQueryChangeHandler={searchQueryChangeHandlerOrg}
                 />
               )}
 
