@@ -68,6 +68,7 @@ export default function Pills(props) {
   const [lmsProject, setLmsProject] = useState(null);
   const [lmsBrightCove, setlmsBrightCove] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
+  const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState('');
   const [ltiTool, setLtiTool] = useState(null);
   const [ltiToolFilterBy, setLtiToolFilterBy] = useState('');
   const [jobs, setJobs] = useState(null);
@@ -83,6 +84,7 @@ export default function Pills(props) {
   const [educationLevel, setEducationLevel] = useState(null);
   const [authorTag, setAuthorTag] = useState(null);
   const [activityLayout, setActivityLayout] = useState(null);
+  const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState('');
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -428,7 +430,7 @@ export default function Pills(props) {
   //LMS project ***************************************
   useMemo(async () => {
     if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, lmsProjectFilterBy));
     }
     if (type === 'LMS') {
       dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, ltiToolFilterBy));
@@ -506,7 +508,7 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchQuery(encodeQuery);
-    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, '');
+    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, lmsProjectFilterBy);
     result.then((data) => {
       setLmsProject(data);
     });
@@ -558,7 +560,7 @@ export default function Pills(props) {
   //Default SSO ***************************************
   useMemo(async () => {
     if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, 1, size));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage, size, searchQuery, orderByColumn, currentOrderBy, defaultSsoFilterBy));
     }
   }, [type, activePage, activeOrganization?.id, size]);
 
@@ -566,7 +568,8 @@ export default function Pills(props) {
     setDefaultSso(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    const result = adminService.searchDefaultSso(activeOrganization?.id, encodeQuery, 1);
+    setSearchQuery(encodeQuery);
+    const result = adminService.getDefaultSso(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, defaultSsoFilterBy);
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -630,6 +633,7 @@ export default function Pills(props) {
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
     setActivePage(1);
+    setDefaultSsoFilterBy(filterBy);
     const result = adminService.getDefaultSso(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, filterBy);
     result.then((data) => {
       setDefaultSso(data);
@@ -639,6 +643,7 @@ export default function Pills(props) {
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
     setActivePage(1);
+    setLmsProjectFilterBy(filterBy);
     const result = adminService.getLmsProject(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, filterBy);
     result.then((data) => {
       setLmsProject(data);
@@ -846,7 +851,7 @@ export default function Pills(props) {
         default:
           col = 'site_name';
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size, '', col, orderBy));
+      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, defaultSsoFilterBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -861,7 +866,7 @@ export default function Pills(props) {
         default:
           col = 'lms_name';
       }
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, lmsProjectFilterBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
