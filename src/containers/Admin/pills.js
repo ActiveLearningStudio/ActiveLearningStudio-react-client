@@ -69,6 +69,7 @@ export default function Pills(props) {
   const [lmsBrightCove, setlmsBrightCove] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
   const [ltiTool, setLtiTool] = useState(null);
+  const [ltiToolFilterBy, setLtiToolFilterBy] = useState('');
   const [jobs, setJobs] = useState(null);
   const [jobType, SetJobType] = useState({ value: 1, display_name: 'Pending' });
   const [logs, setLogs] = useState(null);
@@ -430,7 +431,7 @@ export default function Pills(props) {
       dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
     }
     if (type === 'LMS') {
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, ltiToolFilterBy));
     }
     if (type === 'LMS') {
       dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
@@ -576,7 +577,7 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchQuery(encodeQuery);
-    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
+    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, ltiToolFilterBy);
     result.then((data) => {
       setLtiTool(data);
     });
@@ -618,6 +619,7 @@ export default function Pills(props) {
   const filterLtiTool = (item) => {
     setLtiTool(null);
     setActivePage(1);
+    setLtiToolFilterBy(item);
     const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
     result.then((data) => {
       setLtiTool(data);
@@ -724,7 +726,7 @@ export default function Pills(props) {
         default:
           col = 'tool_name';
       }
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, ltiToolFilterBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
