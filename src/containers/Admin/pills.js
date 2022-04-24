@@ -93,7 +93,7 @@ export default function Pills(props) {
   }, [allbrightCove]);
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
-      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole));
+      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole, size, orderByColumn, currentOrderBy));
       if (result?.data?.length > 0) {
         setUsers(result);
         setSearchAlertToggler(1);
@@ -114,7 +114,7 @@ export default function Pills(props) {
       dispatch(clearSearchUserInOrganization());
       setActivePage(1);
       setSearchQuery('');
-      const result = await dispatch(getOrgUsers(activeOrganization?.id, 1, activeRole));
+      const result = await dispatch(getOrgUsers(activeOrganization?.id, 1, activeRole, size, searchQuery, orderByColumn, currentOrderBy));
       setUsers(result);
     }
   };
@@ -179,12 +179,13 @@ export default function Pills(props) {
   useMemo(async () => {
     if (activeOrganization && type === 'Users' && subTypeState === 'All Users') {
       if (searchQuery.length > 1) {
-        const result = await dispatch(searchUserInOrganization(activeOrganization?.id, searchQuery, activePage, activeRole));
+        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, orderByColumn, currentOrderBy));
+        setSearchQuery(searchQuery);
         setUsers(result);
       } else if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && !activeRole) {
         setUsers(organization?.users);
       } else if (activeRole) {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size));
+        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, orderByColumn, currentOrderBy));
         setUsers(result);
       }
     }
@@ -224,7 +225,7 @@ export default function Pills(props) {
         }
       } else {
         if (searchQueryProject) {
-          const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size);
+          const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size, orderByColumn, currentOrderBy);
           allproject
             .then((data) => {
               setAllProjectTab(data);
@@ -675,7 +676,7 @@ export default function Pills(props) {
 
   useEffect(() => {
     if (activeOrganization && type === 'Teams') {
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, undefined, undefined))
+      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy))
     }
   }, [size, activePage, activeOrganization, searchQueryTeam]);
 
@@ -881,7 +882,7 @@ export default function Pills(props) {
         default:
           col = 'first_name';
       }
-      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, 10, '', col, orderBy));
+      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, col, orderBy));
       setUsers(result)
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
@@ -913,14 +914,23 @@ export default function Pills(props) {
         default:
           col = 'created_at';
       }
-      const result = await adminService.getAllExportedProject(activePage || 1, 10, '', col, orderBy);
+      const result = await adminService.getAllExportedProject(activePage || 1, size, '', col, orderBy);
       setAllProjectUserTab(result);
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
       setOrderByColumn(col);
     } else if (subType == 'All teams') {
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, '', activePage, size, 'created_at', orderBy));
+      let col = '';
+      switch (column) {
+        case 'Created':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, col, orderBy));
+      setCurrentOrderBy(orderBy);
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);
       setOrderByColumn(col);
