@@ -10,8 +10,6 @@ import ExistingActivitySearch from 'components/ExistingActivitySearchContainer/E
 import { existingActivitySearchGetAction, existingActivitySearchResetAction } from 'store/actions/search';
 
 const ExistingActivitySearchContainer = (props) => {
-  console.log('ExistingActivitySearchContainer instantiated!');
-  console.log(props);
   const {
     closeModal,
     insertActivityCallback,
@@ -21,9 +19,6 @@ const ExistingActivitySearchContainer = (props) => {
   } = props;
 
   const handleAddActivity = (activity) => {
-    console.log('handleAddActivity');
-    console.log(activity);
-    console.log('getting activity data');
     getActivityData(activity.id);
   };
 
@@ -41,9 +36,6 @@ const ExistingActivitySearchContainer = (props) => {
       },
       generic: 'action',
     };
-    console.log('got selected activity');
-    console.log(selectedActivity);
-    console.log(data);
     insertActivityCallback(data);
     resetActivityData();
     closeModal();
@@ -51,26 +43,15 @@ const ExistingActivitySearchContainer = (props) => {
 
   return (
     <Modal {...props} show backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="existing-activity-search-modal">
-      <Modal.Header style={{ display: 'block !important' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            cursor: 'pointer',
-            width: '100%',
-          }}
-        >
+      <Modal.Header>
+          <h2 className="curriki-utility-headings">Add existing activities</h2>
           <img
-            style={{ width: '15px' }}
             src={cross}
             alt="cross"
             onClick={closeModal}
           />
-        </div>
       </Modal.Header>
-
-      <Modal.Body style={{ display: 'block !important' }}>
+      <Modal.Body>
           <ExistingActivitySearch addActivity={handleAddActivity} />
       </Modal.Body>
     </Modal>
