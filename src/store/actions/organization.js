@@ -377,12 +377,15 @@ export const removeUserFromOrganization =
   };
 
 export const searchUserInOrganization =
-  (id, query, page, role) => async (dispatch) => {
+  (id, query, page, role, size, column, orderBy) => async (dispatch) => {
     const result = await organization.searchUserInOrganization(
       id,
       query,
       page,
-      role
+      role,
+      size,
+      column,
+      orderBy
     );
     dispatch({
       type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
