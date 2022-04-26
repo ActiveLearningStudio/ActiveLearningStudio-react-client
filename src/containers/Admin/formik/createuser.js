@@ -18,28 +18,26 @@ export default function CreateUser(prop) {
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
   const { currentUser } = adminState;
-
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, []);
   const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
-    console.log(regex.test(pwd));
     return regex.test(pwd);
   };
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          first_name: editMode ? currentUser?.first_name : '',
-          last_name: editMode ? currentUser?.last_name : '',
-          user_id: editMode ? currentUser?.id : '',
-          organization_type: editMode ? currentUser?.organization_type : '',
-          organization_name: editMode ? currentUser?.organization_name : '',
-          job_title: editMode ? currentUser?.job_title : '',
-          role_id: editMode ? currentUser?.organization_role_id : '',
-          email: editMode ? currentUser?.email : checkedEmail,
+          first_name: (editMode || existingUser) ? currentUser?.first_name : '',
+          last_name: (editMode || existingUser) ? currentUser?.last_name : '',
+          user_id: (editMode || existingUser) ? currentUser?.id : '',
+          organization_type: (editMode || existingUser) ? currentUser?.organization_type : '',
+          organization_name: (editMode || existingUser) ? currentUser?.organization_name : '',
+          job_title: (editMode || existingUser) ? currentUser?.job_title : '',
+          role_id: (editMode || existingUser) ? currentUser?.organization_role_id : '',
+          email: (editMode || existingUser) ? currentUser?.email : checkedEmail,
           send_email: false,
           message: '',
           password: '',
