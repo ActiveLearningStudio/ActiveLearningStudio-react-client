@@ -95,7 +95,7 @@ function LtiPlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className="left-activity-view">
+          <div className={openPlaylistMenu ? 'hideInMobile left-activity-view' : 'left-activity-view'}>
             <div className="activity-metadata">
               <Link>
                 <img src={projectIcon} alt="" />
@@ -148,7 +148,7 @@ function LtiPlaylistPreview(props) {
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
                         <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
-                          <Link to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
+                          <Link onClick={() => setPlaylistMenu(!openPlaylistMenu)} to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
                             <div
                               className="thumbnail"
                               style={{
