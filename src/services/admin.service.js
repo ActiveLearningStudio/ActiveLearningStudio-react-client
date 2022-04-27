@@ -23,9 +23,10 @@ const editUserInOrganization = (user, subOrgId) => httpService
   });
 
 // project
-const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) => httpService
+const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index, query = '', column = '', orderBy = '') => httpService
   // eslint-disable-next-line max-len
-  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}`)
+  .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
+  ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''}${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
     // errorCatcher(err.response.data);

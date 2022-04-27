@@ -242,7 +242,10 @@ export default function Pills(props) {
             projectFilterObj.updated_from || null,
             projectFilterObj.updated_to || null,
             projectFilterObj.shared,
-            projectFilterObj.indexing
+            projectFilterObj.indexing,
+            searchQuery,
+            orderByColumn,
+            currentOrderBy
           );
           setAllProjectTab(result);
         }
