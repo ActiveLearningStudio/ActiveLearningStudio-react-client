@@ -1,11 +1,12 @@
 /* eslint-disable */
-import React, { useState } from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
+import PropTypes from "prop-types";
 
-import Controller from './controller';
-import TableData from './table';
-import Userroles from './userroles';
+import Controller from "./controller";
+import TableData from "./table";
+import Userroles from "./userroles";
+// import Media from "./media";
 // import Settings from './settings';
 function Starter(props) {
   const {
@@ -123,7 +124,8 @@ function Starter(props) {
         filteredItems={filteredItems}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
-      {subTypeState === 'Manage Roles' ? (
+      {/* {subTypeState === "Media" && <Media />} */}
+      {subTypeState === "Manage Roles" ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
