@@ -189,7 +189,10 @@ const H5PPreview = (props) => {
       const aspectRatio = 1.778; // standard aspect ratio of video width and height
       const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
       const adjustedWidthVal = currentHeight * aspectRatio;
-      currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
+      if (adjustedWidthVal < parentWidth) {
+        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      }
     }
   }, [currikiH5PWrapper]);
 
