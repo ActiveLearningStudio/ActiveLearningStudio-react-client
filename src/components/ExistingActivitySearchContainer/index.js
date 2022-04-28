@@ -13,6 +13,7 @@ const ExistingActivitySearchContainer = (props) => {
   const {
     closeModal,
     insertActivityCallback,
+    libraries,
     getActivityData,
     selectedActivity,
     resetActivityData,
@@ -52,7 +53,7 @@ const ExistingActivitySearchContainer = (props) => {
           />
       </Modal.Header>
       <Modal.Body>
-          <ExistingActivitySearch addActivity={handleAddActivity} />
+          <ExistingActivitySearch addActivity={handleAddActivity} libraries={libraries} />
       </Modal.Body>
     </Modal>
   );
