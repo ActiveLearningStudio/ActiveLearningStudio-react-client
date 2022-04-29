@@ -31,26 +31,20 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   // }
   const activeGrades = [];
   if (values.gradeArray) {
-    values.gradeArray.forEach((grade) => {
-      let temp;
-      if (grade.includes('and')) {
-        temp = grade.replace('and', '&');
-        activeGrades.push(temp);
-      } else {
+      values.gradeArray.forEach((grade) => {
         activeGrades.push(grade);
-      }
     });
   }
   const activeSubjects = [];
   if (values.subjectArray) {
-    values.subjectArray.forEach((subject) => {
-      let temp;
-      if (subject.includes('and')) {
-        temp = subject.replace('and', '&');
-        activeSubjects.push(temp);
-      } else {
+      values.subjectArray.forEach((subject) => {
         activeSubjects.push(subject);
-      }
+    });
+  }
+  const activeAuthTags = [];
+  if (values.authorTagsArray) {
+      values.authorTagsArray.forEach((tag) => {
+        activeAuthTags.push(tag);
     });
   }
   let sendData;
@@ -66,6 +60,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
+        authorTagIds: activeAuthTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -82,6 +77,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         subjectIds: activeSubjects,
         author: values.author || undefined,
         educationLevelIds: activeGrades,
+        authorTagIds: activeAuthTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -101,6 +97,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
+        authorTagIds: activeAuthTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -117,6 +114,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
         negativeQuery: values.no_words || undefined,
         subjectIds: activeSubjects,
         educationLevelIds: activeGrades,
+        authorTagIds: activeAuthTags,
         startDate: values.fromDate || undefined,
         endDate: values.toDate || undefined,
         organization_id: activeOrganization?.id,
@@ -131,12 +129,12 @@ export const simpleSearchAction = (values) => async (dispatch) => {
     response = await searchService.advancedSearch(sendData);
   }
 
-  if (response.errors) {
-    if (response.errors.query) {
+  if (response?.errors) {
+    if (response?.errors.query) {
       Swal.fire(response.errors.query[0]);
     }
   } else {
-    dispatch(searchRedux(response.data, values.phrase, response.meta));
+    dispatch(searchRedux(response?.data, values.phrase, response?.meta));
   }
 
   return response;
