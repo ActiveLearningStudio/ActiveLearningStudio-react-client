@@ -24,9 +24,18 @@
   }
 }
 .curriki-activity-share {
-  max-width: 1020px;
+  max-width: 100%;
   margin: 20px auto;
-  @media (max-width: 991px) {
+
+  @media (max-width: 1020px) {
     margin: 0px auto;
+  }
+  #curriki-h5p-wrapper {
+    height: calc(100vh - 107px);
+    margin: 0 auto;
+
+    @media (max-width: 1020px) {
+      min-height: calc(100vh - 0px);
+    }
   }
 }
