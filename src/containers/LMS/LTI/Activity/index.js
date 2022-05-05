@@ -194,7 +194,7 @@ const Activity = (props) => {
             confirmButtonText: 'OK',
           }).then(() => {
             const score = xapiData.result.score.scaled;
-            gradePassBack(session, 1, score, isLearner);
+            gradePassBack(session, 1, score);
             Swal.fire('Saved!', '', 'success');
           });
         } else {
@@ -256,7 +256,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   passCourseDetails: (params) => dispatch(passLtiCourseDetails(params)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
+  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score)),
   activityInit: () => dispatch(activityInitAction()),
   sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });

@@ -111,11 +111,11 @@ export const getH5pSettingsAction = (activityId) => async (dispatch) => {
   });
 };
 
-export const gradePassBackAction = (session, gpb, score, isLearner) => async (dispatch) => {
+export const gradePassBackAction = (session, gpb, score) => async (dispatch) => {
   dispatch({
     type: GRADE_PASS_BACK,
   });
-  if (isLearner) await canvasService.tsugiGradePassback(session, gpb, score);
+  await canvasService.tsugiGradePassback(session, gpb, score);
 };
 
 export const activityInitAction = () => async (dispatch) => {
