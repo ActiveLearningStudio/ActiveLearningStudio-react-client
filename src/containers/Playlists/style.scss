@@ -1,7 +1,8 @@
 @import "assets/css/index";
 .inner-content {
   background: $white;
-  padding: 32px 30px 30px;
+  // padding: 32px 30px 30px;
+  padding: 16px 24px;
   margin-top: 0px;
   // margin: 13px 39px 81px 29px;
   border-radius: 3px;
@@ -135,7 +136,7 @@
 }
 .paragraph {
   display: flex;
-  margin: 8px 20px 16px 0px;
+  margin: 18px 20px 16px 0px;
   padding: 0 14px 0 0;
   align-items: center;
   max-width: 800px;
@@ -321,7 +322,7 @@ hr {
 
     .share-button {
       margin: 0;
-      margin-top: 25px;
+      margin-top: 36px;
       text-transform: capitalize;
       white-space: nowrap;
     }
@@ -331,7 +332,8 @@ hr {
       justify-content: center;
       align-items: center;
       height: 32px;
-      width: 153px;
+      width: auto;
+      padding: 0 15px;
       background: #084892;
       border: 1px solid #084892;
       box-sizing: border-box;
@@ -339,9 +341,9 @@ hr {
       color: #fff;
       font-size: 14px;
 
-      svg {
-        color: #f8af2c;
-      }
+      // svg {
+      //   color: #f8af2c;
+      // }
 
       &:hover {
         background-color: #2e68bf;
@@ -430,7 +432,7 @@ hr {
         width: 50px;
         height: 50px;
         border-radius: 2px;
-        margin-right: 10px;
+        margin-right: 8px;
         position: relative;
       }
       &:hover {

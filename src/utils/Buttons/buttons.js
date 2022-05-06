@@ -15,13 +15,15 @@ const Buttons = ({
   defaultgrey,
   defaultwhite,
   icon,
+  iconColor,
   width,
   height,
   radius,
   disabled,
   hover,
   margin,
-  onClick = () => { },
+
+  onClick = () => {},
 }) => {
   const btnCurriki = classNames(
     "curriki-utility",
@@ -49,7 +51,11 @@ const Buttons = ({
       disabled={disabled}
     >
       {icon && (
-        <FontAwesomeIcon icon={icon} className="curriki_btn-mr-2 btn-icon" />
+        <FontAwesomeIcon
+          icon={icon}
+          className="curriki_btn-mr-2 btn-icon"
+          color={iconColor && iconColor}
+        />
       )}
       {text}
     </button>
@@ -65,6 +71,7 @@ Buttons.propTypes = {
   defaultgrey: PropTypes.bool,
   defaultwhite: PropTypes.bool,
   icon: PropTypes.string,
+  iconColor: PropTypes.string,
   width: PropTypes.string,
   height: PropTypes.string,
   radius: PropTypes.string,

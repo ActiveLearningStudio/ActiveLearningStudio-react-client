@@ -8,7 +8,7 @@ import updateImg from '../../assets/images/update.svg';
 
 function UserRoles() {
   const dispatch = useDispatch();
-  const { permission, activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
+  const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
   const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
 
   // organization all projects
@@ -139,9 +139,7 @@ function UserRoles() {
 
   useEffect(() => {
     dispatch(getAllPermissionId(activeOrganization?.id));
-    if (!!roles) {
-      if (roles?.length !== 0) dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
-    }
+    dispatch(roleDetail(activeOrganization.id, roles[0]?.id));
   }, [activeOrganization]);
 
   useEffect(() => {
@@ -266,7 +264,7 @@ function UserRoles() {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              dispatch(updateRole(activeOrganization.id, values));
+              dispatch(updateRole(activeOrganization.id, values, currentOrganization.id));
             }}
           >
             {({
@@ -281,7 +279,7 @@ function UserRoles() {
             }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group-create dynamic-roles">
-                  {permission?.Organization?.includes('organization:edit-role') && (
+                  {true && (
                     <div className="dynamic-roles-title-btn">
                       <div>
                         <h2>Edit “{activePermission && activePermission[0]?.display_name}” permissions</h2>

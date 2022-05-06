@@ -18,7 +18,7 @@ const WhiteBoardModal = ({ show, onHide, url, loading }) => {
         <div className="modal-header"></div>
         <div className="model-body">
           {loading && <p className="loading-classes">Loading White Board....</p>}
-          <iframe src={url} height="650px" width="100%" title="White Board"></iframe>
+          <iframe src={url} width="100%" title="White Board"></iframe>
         </div>
       </div>
     </Modal>

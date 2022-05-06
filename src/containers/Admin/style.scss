@@ -4,7 +4,7 @@
   .main-heading {
     margin: 0;
     border-bottom: none !important;
-    padding: 20px 0px 16px;
+    padding: 22px 0px 12px 0px;
     p {
       color: #084892;
       font-size: 22px;
@@ -44,7 +44,8 @@
       padding-top: 4px;
     }
     button {
-      width: 167px;
+      width: auto;
+      padding: 0 15px;
       height: 32px;
       border-radius: 16px;
       box-shadow: 0px 2px 8px 1px #c9c9c9;
@@ -94,7 +95,8 @@
 
   .inner-content {
     background: $white;
-    padding: 24px;
+
+    padding: 16px 24px !important;
   }
   nav {
     margin: 0;
@@ -701,8 +703,9 @@
       font-size: 14px;
       color: $white;
       margin-right: 16px;
-      width: 150px;
+      width: auto;
       min-height: 32px;
+      padding: 0 15px;
       svg {
         color: #f8af2c;
         margin-right: 7px;
@@ -974,13 +977,35 @@
         // .dropdown {
         //   margin: auto;
         // }
-
-        .admin-description2 {
-          width: 655px;
-          overflow: hidden;
-          display: flex;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+        .admin-description-main {
+          .admin-description2 {
+            width: 655px;
+            overflow: hidden;
+            display: flex;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            &:hover {
+              
+            }
+          }
+          .admin-description2-hover {
+            width: 655px;
+            display: none;
+            
+          } 
+          &:hover {
+            .admin-description2 {
+              display: none;
+            }
+            .admin-description2-hover {
+              transition-delay: 0.5ms;
+              display: flex;
+              padding: 20px;
+              margin-right: 10px;
+              background-color: #FFFFFF;
+              box-shadow:0px 4px 8px 2px rgba(82, 82, 82, 0.16);
+            }    
+          }
         }
 
         .admin-mata-heading {
@@ -1128,7 +1153,9 @@
   }
   .form-new-popup-admin {
     position: fixed;
-    background: #0848928f;
+    // background: #0848928f;
+    background: rgba(8, 72, 146, 0.8);
+    // opacity: 80%;
     top: 0;
     width: 100%;
     z-index: 1060;
@@ -1198,9 +1225,17 @@
           width: fit-content;
           margin-bottom: 36px;
         }
-
+        .row-checkbox {
+          display: flex;
+          flex-wrap: wrap;
+        }
         .form-group-create {
           margin-bottom: 16px;
+          .warning-img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
 
           input,
           textarea {
@@ -1211,7 +1246,15 @@
             border-radius: 3px;
             padding: 0 10px;
           }
-
+          input[type='checkbox'] {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #888888;
+            margin-right: 16px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            padding: 0 10px;
+          }
           .api_setting {
             width: 100%;
           }
@@ -1297,11 +1340,15 @@
             text-align: center;
             color: #ffffff;
             border: none;
-            padding: 10px 24px;
-            border: 1px solid$fun-blue-1;
+            padding: 10px 11px;
+            border: 1px solid $fun-blue-1;
           }
           button.cancel {
             color: $fun-blue-1;
+            background: #fff;
+          }
+          button.favicon {
+            color: black;
             background: #fff;
           }
         }
@@ -1557,6 +1604,10 @@
 .create-form-inputs-toggles {
   display: flex;
   margin-right: 0 !important;
+
+  .react-switch h3 {
+    padding-left: 5px;
+  }
 }
 
 .custom-toggle-button {
@@ -1786,7 +1837,7 @@
     background-size: 17px 9px;
     background-position: 2px;
     display: inline-block;
-    margin-right: 10px;
+    // margin-right: 10px;
     height: 23px;
     width: 23px;
     border-radius: 3px;
@@ -2118,7 +2169,8 @@
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
-  float: right;
+  // float: right;
+  margin-left: 10px;
   cursor: pointer;
 }
 
@@ -2129,7 +2181,7 @@
 // Update Tabs in Edit Orgainzation----MQ-Start
 .tab-section {
   // width: 100%;
-  max-width: 840px;
+  width: 840px;
   margin-top: 16px;
   background-color: #f1f1f1;
   border-radius: 8px;
@@ -2139,12 +2191,20 @@
     padding: 20px 16px;
     border-radius: 8px;
     margin-top: 22px;
+    border-bottom: 4px solid #f8af2c;
+  }
+  .edit-org-save-btn {
+    background-color: $curriki-main-blue;
+    color: $white;
   }
   .tab-tospp-section {
     display: flex;
     flex-direction: row;
     .mr-16 {
       margin-right: 16px;
+    }
+    .Border-bottom {
+      border-bottom: 4px solid #f8af2c;
     }
     .tab-inner-tospp-section {
       // flex: 1;
@@ -2173,14 +2233,49 @@
   .mb-16 {
     margin-bottom: 16px;
   }
+  .tab-inner-section-preview {
+    overflow-y: scroll;
+  }
   .tab-inner-section {
     background-color: #ffffff;
     padding: 20px 16px;
     border-radius: 8px;
     .tab-theming-section {
       display: flex;
-      justify-content: center;
+      // justify-content: center;
       align-items: center;
+      .mr-100 {
+        margin-left: 100px;
+      }
+      .dimensions-detail {
+        margin-top: 8px;
+      }
+
+      .button-group-favicon {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 40px;
+        padding-bottom: 40px;
+
+        button {
+          background: $fun-blue-1;
+          border-radius: 50px;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 17px;
+          text-align: center;
+          color: #ffffff;
+          border: none;
+          padding: 10px 24px;
+          border: 1px solid $fun-blue-1;
+        }
+        button.favicon {
+          color: #515151;
+          background: #fff;
+          border-color: #515151;
+        }
+      }
     }
     .tab-theming-btn-icon {
       justify-content: flex-start !important;
@@ -2212,6 +2307,14 @@
         line-height: 28px;
         font-size: 24px;
         font-weight: 500;
+      }
+    }
+    .organization-own-select-radio {
+      margin-bottom: 22px;
+      display: flex;
+
+      .mr-43 {
+        margin-right: 43px;
       }
     }
   }
@@ -2290,7 +2393,8 @@
         outline: none;
       }
       input[type="text"] {
-        flex: 1;
+        // flex: 1;
+        width: 161px;
         text-indent: 15px;
         margin-left: 15px;
         height: 36px;

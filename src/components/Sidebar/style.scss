@@ -366,6 +366,9 @@ aside {
     text-align: left;
     opacity: 1;
   }
+  .activeLink {
+    background-color: #F1F1F1;
+  }
   a:first-child .row-sidebar:first-child {
     border-top: none !important;
   }

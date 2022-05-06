@@ -58,6 +58,7 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
     { indexing: 1, indexing_text: 'REQUESTED' },
@@ -221,11 +222,11 @@ function Table(props) {
           </thead>
           <tbody>
             {type === 'LMS' &&
-              subType === 'All settings' &&
+              subType === 'LMS settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
@@ -235,7 +236,14 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All settings" row={row} activePage={activePage} />
+                            <AdminDropdown
+                              type={type}
+                              subType="LMS settings"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
                           </div>
                         </div>
                       </td>
@@ -259,8 +267,8 @@ function Table(props) {
               subType === 'BrightCove' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={(row, counter)} className="admin-panel-rows">
                       <td>{row.organization?.id}</td>
                       <td>{row.account_id}</td>
                       <td>{row.account_email}</td>
@@ -300,8 +308,8 @@ function Table(props) {
               ))}
             {type === 'Users' &&
               (data?.data?.length > 0 ? (
-                data?.data.map((user) => (
-                  <tr key={user} className="admin-panel-rows">
+                data?.data.map((user, counter) => (
+                  <tr key={(user, counter)} className="admin-panel-rows">
                     <td>{user.organization_joined_at ? user.organization_joined_at : 'NA'}</td>
                     <td>{user.first_name ? user.first_name : 'NA'}</td>
                     <td>{user.last_name ? user.last_name : 'NA'}</td>
@@ -334,13 +342,13 @@ function Table(props) {
             {type === 'Organization' &&
               (localOrganizationList ? (
                 localOrganizationList?.data?.length > 0 ? (
-                  localOrganizationList?.data?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localOrganizationList?.data?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',
@@ -522,11 +530,11 @@ function Table(props) {
               subType === 'All Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData.map((row) => {
+                  localStateData.map((row, counter) => {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr key={row} className="admin-panel-rows">
+                      <tr key={counter} className="admin-panel-rows">
                         <td>
                           <div className="admin-name-img">
                             <div
@@ -711,9 +719,10 @@ function Table(props) {
               subType === 'Exported Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => {
+                  localStateData?.map((row, counter) => {
+                    // console.log(row);
                     return (
-                      <tr key={row} className="org-rows">
+                      <tr key={counter} className="org-rows">
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
@@ -746,47 +755,67 @@ function Table(props) {
 
             {type === 'Activities' &&
               subType === 'Activity Types' &&
-              (data ? (
-                data?.map((type1) => (
-                  <tr key={type1} className="admin-panel-rows">
-                    <td>
-                      <div className="admin-name-img">
-                        <div
-                          style={{
-                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'contain',
-                          }}
-                          className="image-size"
-                        ></div>
-                        <Link className="admin-name">{type1.title}</Link>
-                      </div>
-                    </td>
-                    <td>{type1.order}</td>
-                    <td>
-                      <div className="admin-panel-dropdown">
-                        <div className="admin-description2 ">
-                          {type1.activityItems.map((item) => (
-                            <div>{item.title + ','}</div>
-                          ))}
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-type-' + row.id} className="admin-panel-rows">
+                      <td>
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+                          <Link className="admin-name">{row.title}</Link>
                         </div>
-                        <div>
-                          <AdminDropdown type={type} type1={type1} subType={subType} />
+                      </td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div className="admin-description-main">
+
+                            <div className="admin-description2">
+                              {row.activityItems.map((item, i) => (
+                                <div>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</div>
+                              ))}
+                            </div>
+                            <div className="admin-description2-hover">
+                              {row.activityItems.map((item, i) => (
+                                <>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
+                          </div>
                         </div>
-                      </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No activity type found.</Alert>
                     </td>
                   </tr>
-                ))
+                )
               ) : (
-                <Alert variant="warning">No activity type found</Alert>
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
               ))}
             {type === 'Activities' &&
               subType === 'Activity Items' &&
               (data?.data ? (
                 data?.data?.length > 0 ? (
-                  data?.data.map((item) => (
-                    <tr key={item} className="admin-panel-rows">
+                  data?.data.map((item, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
                           <div
@@ -895,9 +924,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'subject-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Subjects" row={row} activePage={activePage} />
                           </div>
@@ -927,9 +956,9 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Education Level" row={row} activePage={activePage} />
                           </div>
@@ -957,11 +986,11 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
+                    <tr key={'auth-tag-' + row.id} className="admin-panel-rows">
                       <td>{row.name}</td>
+                      <td>{row.order}</td>
                       <td>
                         <div className="admin-panel-dropdown">
-                          {row.order}
                           <div>
                             <AdminDropdown type={type} subType="Author Tags" row={row} activePage={activePage} />
                           </div>
@@ -984,11 +1013,44 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'DefaultSso' &&
+            {type === 'Activities' &&
+              subType === 'Activity Layouts' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                    <tr key={'act-lay-' + row.id} className="admin-panel-rows">
+                      <td>{row.title}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          --
+                          <div>
+                            <AdminDropdown type={type} subType="Activity Layouts" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Activity layout found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {type === 'DefaultSso' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row?.site_name}</td>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
@@ -1021,8 +1083,8 @@ function Table(props) {
               subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
@@ -1032,7 +1094,14 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row.lti_version}
                           <div>
-                            <AdminDropdown type={type} subType="LTI Tools" row={row} activePage={activePage} />
+                            <AdminDropdown
+                              type={type}
+                              subType="LTI Tools"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
                           </div>
                         </div>
                       </td>
@@ -1052,11 +1121,11 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
-            {type === 'Teams' && (
-              Object.keys(data).length > 0 ? (
+            {type === 'Teams' &&
+              (Object.keys(data).length > 0 ? (
                 data?.data?.length > 0 ? (
-                  data?.data.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  data?.data.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row.name.length > 30 ? row.name.substring(0, 30).concat('...') : row.name}</td>
                       <td>{row.created_at?.split('T')[0]}</td>
                       <td>{row.description.length > 30 ? row.description.substring(0, 30).concat('...') : row.description}</td>

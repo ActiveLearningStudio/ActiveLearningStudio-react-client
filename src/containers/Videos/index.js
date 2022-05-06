@@ -47,6 +47,7 @@ const Index = () => {
     }
   }, [activeOrganization]);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
     <>
       {openMyVideo && (
@@ -116,13 +117,13 @@ const Index = () => {
                             height="12"
                             rx="2"
                             stroke={primaryColor}
-                            stroke-width="2"
+                            strokeWidth="2"
                           />
                           <path
                             d="M1 18.5H21"
                             stroke={primaryColor}
-                            stroke-width="2"
-                            stroke-linecap="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
                           />
                           <circle
                             cx="15"
@@ -130,13 +131,13 @@ const Index = () => {
                             r="2"
                             fill="white"
                             stroke={primaryColor}
-                            stroke-width="2"
+                            strokeWidth="2"
                           />
                           <path
                             d="M9 9.66667V5.43426C9 5.03491 9.44507 4.79672 9.77735 5.01823L13.3044 7.36957C13.619 7.5793 13.5959 8.04885 13.2623 8.22677L9.73529 10.1078C9.40224 10.2855 9 10.0441 9 9.66667Z"
                             stroke={primaryColor}
-                            stroke-width="2"
-                            stroke-linecap="round"
+                            strokeWidth="2"
+                            strokeLinecap="round"
                           />
                         </svg>
                       }
@@ -147,6 +148,7 @@ const Index = () => {
                       primary={true}
                       text="Create a video"
                       icon={faPlus}
+                      iconColor={secondaryColor}
                       width="163px"
                       height="35px"
                       onClick={() => {
@@ -235,16 +237,16 @@ const Index = () => {
                             <path
                               d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                               stroke={primaryColor}
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                             <path
                               d="M21 20.9984L16.65 16.6484"
                               stroke={primaryColor}
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
                             />
                           </svg>
                         </div>

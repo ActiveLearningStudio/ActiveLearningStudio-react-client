@@ -13,7 +13,8 @@ import {
   getAllPermission,
   getRoles,
 } from "store/actions/organization";
-import menu from "assets/images/menu.svg";
+import { DynamicBrandingApply } from "containers/App/DynamicBrandingApply";
+
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 export default function MultitenancyDropdown() {
@@ -69,22 +70,22 @@ export default function MultitenancyDropdown() {
           <path
             d="M9.28366 3H4.31782C3.59167 3 3.00098 3.59076 3.00098 4.31699V9.28336C3.00098 10.0096 3.59167 10.6003 4.31782 10.6003H9.28366C10.0098 10.6003 10.6005 10.0096 10.6005 9.28336V4.31699C10.6004 3.59076 10.0098 3 9.28366 3Z"
             stroke={primaryColor}
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M19.6831 3H14.7172C13.9911 3 13.4004 3.59076 13.4004 4.31699V9.28336C13.4004 10.0096 13.9911 10.6003 14.7172 10.6003H19.6831C20.4092 10.6003 20.9999 10.0096 20.9999 9.28336V4.31699C20.9999 3.59076 20.4092 3 19.6831 3Z"
             stroke={primaryColor}
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M9.28269 13.3994H4.31685C3.59069 13.3994 3 13.9901 3 14.7163V19.6827C3 20.4089 3.59069 20.9997 4.31685 20.9997H9.28269C10.0088 20.9997 10.5995 20.4089 10.5995 19.6827V14.7163C10.5994 13.9901 10.0088 13.3994 9.28269 13.3994Z"
             stroke={primaryColor}
-            stroke-width="2"
+            strokeWidth="2"
           />
           <path
             d="M19.6821 13.3994H14.7163C13.9901 13.3994 13.3994 13.9902 13.3994 14.7164V19.6828C13.3994 20.409 13.9901 20.9998 14.7163 20.9998H19.6821C20.4083 20.9997 20.999 20.409 20.999 19.6827V14.7163C20.999 13.9901 20.4083 13.3994 19.6821 13.3994Z"
             stroke={primaryColor}
-            stroke-width="2"
+            strokeWidth="2"
           />
         </svg>
         <div className="text" title={selectOrg}>
@@ -98,30 +99,13 @@ export default function MultitenancyDropdown() {
             <div key={key} className="all-tg-lister">
               <Dropdown.Item
                 onClick={async () => {
+                  DynamicBrandingApply(org);
                   setSelectOrg(org.name);
                   await dispatch(setCurrentOrganization(org));
                   await dispatch(setActiveOrganization(org));
                   await dispatch(getAllPermission(org.id));
                   await dispatch(getRoles());
                   storageService.setItem(CURRENT_ORG, org.domain);
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-primary-color",
-                      org?.branding["primary_color"]
-                    );
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-secondary-color",
-                      org?.branding["secondary_color"]
-                    );
-                  document
-                    .querySelector(":root")
-                    .style.setProperty(
-                      "--main-paragraph-text-color",
-                      org?.branding["secondary_color"]
-                    );
                   history.push(`/org/${org.domain}`);
                 }}
               >
