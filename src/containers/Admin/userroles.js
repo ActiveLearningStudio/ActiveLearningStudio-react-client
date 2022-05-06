@@ -1,130 +1,215 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization';
-import updateImg from '../../assets/images/update.svg';
+import React, { useEffect, useState } from "react";
+import { Card, Alert, Tab, Row, Col, Nav } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { Formik } from "formik";
+import {
+  updateRole,
+  getAllPermissionId,
+  roleDetail,
+} from "store/actions/organization";
+import updateImg from "../../assets/images/update.svg";
 
 function UserRoles() {
   const dispatch = useDispatch();
-  const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
+  const {
+    permission,
+    activeOrganization,
+    activePermission,
+    permissionsId,
+    roles,
+    currentOrganization,
+  } = useSelector((state) => state.organization);
+  const AdminList = [
+    "Organization",
+    "Projects",
+    "Activities",
+    "Integrations",
+    "Users",
+    "Ind. activities",
+  ];
 
   // organization all projects
   const projectEditName = [
-    'organization:upload-thumb',
-    'organization:edit-project',
-    'organization:delete-project',
-    'organization:view-library-request-project',
-    'organization:review-library-request-project',
+    "organization:upload-thumb",
+    "organization:edit-project",
+    "organization:delete-project",
+    "organization:view-library-request-project",
+    "organization:review-library-request-project",
   ];
-  const projectViewName = ['organization:view-all-project'];
+  const projectViewName = ["organization:view-all-project"];
   const [projectEdit, setProjectEdit] = useState([12, 309, 310, 314, 315]);
   const [projectView, setProjectView] = useState([371]);
 
   // organization import/export project
-  const projectexportEditName = ['organization:export-project', 'organization:import-project', 'organization:download-project'];
-  const projectexportViewName = ['organization:view-exported-project'];
+  const projectexportEditName = [
+    "organization:export-project",
+    "organization:import-project",
+    "organization:download-project",
+  ];
+  const projectexportViewName = ["organization:view-exported-project"];
   const [projectExportEdit, setProjectExportEdit] = useState([]);
   const [projectExportView, setProjectExportView] = useState([]);
 
   // organization user
   const userEditName = [
-    'organization:add-user',
-    'organization:invite-members',
-    'organization:update-user',
-    'organization:delete-user',
-    'organization:add-admin',
-    'organization:delete-admin',
-    'organization:remove-user',
+    "organization:add-user",
+    "organization:invite-members",
+    "organization:update-user",
+    "organization:delete-user",
+    "organization:add-admin",
+    "organization:delete-admin",
+    "organization:remove-user",
   ];
-  const userViewName = ['organization:view-user'];
+  const userViewName = ["organization:view-user"];
   const [userEdit, setUserEdit] = useState([]);
   const [userView, setUserView] = useState([]);
 
   // organization manage roles
-  const userRoleEditName = ['organization:add-role', 'organization:edit-role'];
-  const userRoleViewName = ['organization:view-role'];
+  const userRoleEditName = ["organization:add-role", "organization:edit-role"];
+  const userRoleViewName = ["organization:view-role"];
   const [userRolesEdit, setUserRolesEdit] = useState([]);
   const [userRoleView, setUserRoleView] = useState([]);
 
   // org org
-  const orgEditName = ['organization:edit', 'organization:delete', 'organization:create'];
-  const orgViewName = ['organization:view'];
+  const orgEditName = [
+    "organization:edit",
+    "organization:delete",
+    "organization:create",
+  ];
+  const orgViewName = ["organization:view"];
   const [orgEdit, setOrgEdit] = useState([]);
   const [orgView, setOrgView] = useState([]);
 
   // org activity item
-  const orgActivityItemEditName = ['organization:create-activity-item', 'organization:delete-activity-item', 'organization:edit-activity-item'];
-  const orgActivityItemViewName = ['organization:view-activity-item'];
+  const orgActivityItemEditName = [
+    "organization:create-activity-item",
+    "organization:delete-activity-item",
+    "organization:edit-activity-item",
+  ];
+  const orgActivityItemViewName = ["organization:view-activity-item"];
   const [activityItemEdit, setActivityItemEdit] = useState([]);
   const [activityItemView, setActivityItemView] = useState([]);
 
   // org activity type
-  const orgActivityTypeEditName = ['organization:create-activity-type', 'organization:delete-activity-type', 'organization:edit-activity-type'];
-  const orgActivityTypeViewName = ['organization:view-activity-type'];
+  const orgActivityTypeEditName = [
+    "organization:create-activity-type",
+    "organization:delete-activity-type",
+    "organization:edit-activity-type",
+  ];
+  const orgActivityTypeViewName = ["organization:view-activity-type"];
   const [activityTypeEdit, setActivityTypeEdit] = useState([]);
   const [activityTypeView, setActivityTypeView] = useState([]);
 
   // org  lms type
-  const orglmsEditName = ['organization:create-lms-setting', 'organization:delete-lms-setting', 'organization:edit-lms-setting'];
-  const orglmsViewName = ['organization:view-lms-setting'];
+  const orglmsEditName = [
+    "organization:create-lms-setting",
+    "organization:delete-lms-setting",
+    "organization:edit-lms-setting",
+  ];
+  const orglmsViewName = ["organization:view-lms-setting"];
   const [lmsSettingEdit, setlmsSettingEdit] = useState([]);
   const [lmsSettingView, setLmsSettingView] = useState([]);
 
   // org all lti type
-  const orgltiEditName = ['organization:create-all-setting', 'organization:delete-all-setting', 'organization:edit-all-setting'];
-  const orgltiViewName = ['organization:view-all-setting'];
+  const orgltiEditName = [
+    "organization:create-all-setting",
+    "organization:delete-all-setting",
+    "organization:edit-all-setting",
+  ];
+  const orgltiViewName = ["organization:view-all-setting"];
   const [ltiSettingEdit, setltiSettingEdit] = useState([]);
   const [ltiSettingView, setLtiSettingView] = useState([]);
 
   // org brightcove
-  const orgBrightCoveEditName = ['organization:create-brightcove-setting', 'organization:delete-brightcove-setting', 'organization:edit-brightcove-setting'];
-  const orgBrightCoveViewName = ['organization:view-brightcove-setting'];
+  const orgBrightCoveEditName = [
+    "organization:create-brightcove-setting",
+    "organization:delete-brightcove-setting",
+    "organization:edit-brightcove-setting",
+  ];
+  const orgBrightCoveViewName = ["organization:view-brightcove-setting"];
   const [orgBrightCoveEdit, setOrgBrightCoveEdit] = useState([]);
   const [orgBrightCoveView, setOrgBrightCoveView] = useState([]);
 
   // author team
-  const authorteamEditName = ['team:create', 'team:edit', 'team:delete'];
-  const authorteamViewName = ['team:view'];
+  const authorteamEditName = ["team:create", "team:edit", "team:delete"];
+  const authorteamViewName = ["team:view"];
   const [teamEdit, setTeamEdit] = useState([]);
   const [teamView, setTeamView] = useState([]);
 
   // author project
   const authorProjectEditName = [
-    'project:edit',
-    'project:delete',
-    'project:create',
-    'project:request-indexing',
-    'project:favorite',
-    'project:publish',
-    'project:upload-thumb',
-    'project:recent',
+    "project:edit",
+    "project:delete",
+    "project:create",
+    "project:request-indexing",
+    "project:favorite",
+    "project:publish",
+    "project:upload-thumb",
+    "project:recent",
   ];
-  const authorProjectViewName = ['project:view', 'project:share', 'project:clone'];
+  const authorProjectViewName = [
+    "project:view",
+    "project:share",
+    "project:clone",
+  ];
   const [AuthorProjectEdit, setAuthorProjectEdit] = useState([]);
   const [AuthorProjectView, setAuthorProjectView] = useState([]);
 
   // author playlist
-  const authorPlaylistEditName = ['playlist:edit', 'playlist:delete', 'playlist:create'];
-  const authorPlaylistViewName = ['playlist:view', 'playlist:publish', 'playlist:duplicate'];
+  const authorPlaylistEditName = [
+    "playlist:edit",
+    "playlist:delete",
+    "playlist:create",
+  ];
+  const authorPlaylistViewName = [
+    "playlist:view",
+    "playlist:publish",
+    "playlist:duplicate",
+  ];
   const [AuthorplayListEdit, setAuthorPlayListEdit] = useState([]);
   const [AuthorplayListView, setAuthorplayListView] = useState([]);
 
   // author activity
-  const authorActivityEditName = ['activity:edit', 'activity:delete', 'activity:create', 'activity:upload'];
-  const authorActivityViewName = ['activity:view', 'activity:share', 'activity:duplicate'];
+  const authorActivityEditName = [
+    "activity:edit",
+    "activity:delete",
+    "activity:create",
+    "activity:upload",
+  ];
+  const authorActivityViewName = [
+    "activity:view",
+    "activity:share",
+    "activity:duplicate",
+  ];
   const [authorActivityEdit, setAuthorActivityEdit] = useState([]);
   const [authorActivityView, setAuthorActivityView] = useState([]);
 
   // author video
   const authorVideoEditName = [];
-  const authorVideoViewName = ['video:view'];
+  const authorVideoViewName = ["video:view"];
   const [authorVideoEdit, setauthorVideoEdit] = useState([]);
   const [authorVideoView, setauthorVideoView] = useState([]);
 
-  const [checkRoles, setCheckRoles] = useState('');
+  // organization Independent activities
+  const independentactivitiesEditName = [
+    "independent-activity:create",
+    "independent-activity:edit",
+    "independent-activity:delete",
+  ];
+  const independentactivitiesViewName = [
+    "independent-activity:view",
+    "independent-activity:share",
+    "independent-activity:duplicate",
+  ];
+  const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState(
+    []
+  );
+  const [independentactivitiesView, setIndependentactivitiesView] = useState(
+    []
+  );
+
+  const [checkRoles, setCheckRoles] = useState("");
 
   useEffect(() => {
     const extractPermission = [];
@@ -134,6 +219,7 @@ function UserRoles() {
         extractPermission.push(String(data.id));
       });
     }
+    console.log("extractPermission:", extractPermission);
     setCheckRoles(extractPermission);
   }, [activePermission]);
 
@@ -144,110 +230,215 @@ function UserRoles() {
 
   useEffect(() => {
     var permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => projectEditName.includes(data.name) && permissionIdArray.push(data.id));
+    console.log("permissionsId?.Organization:", permissionsId?.Organization);
+    permissionsId?.Organization.filter(
+      (data) =>
+        projectEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setProjectEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => projectViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        projectViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setProjectView(permissionIdArray);
     permissionIdArray = [];
 
-    permissionsId?.Organization.filter((data) => projectexportEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        projectexportEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setProjectExportEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => projectexportViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        projectexportViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setProjectExportView(permissionIdArray);
     permissionIdArray = [];
 
     // organization user project
-    permissionsId?.Organization.filter((data) => userEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        userEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setUserEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => userViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        userViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setUserView(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => userRoleEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        userRoleEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setUserRolesEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => userRoleViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        userRoleViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setUserRoleView(permissionIdArray);
     permissionIdArray = [];
 
     // org org
-    permissionsId?.Organization.filter((data) => orgEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setOrgEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setOrgView(permissionIdArray);
     permissionIdArray = [];
 
     // organization activity
-    permissionsId?.Organization.filter((data) => orgActivityTypeEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgActivityTypeEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setActivityTypeEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgActivityTypeViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgActivityTypeViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setActivityTypeView(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgActivityItemEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgActivityItemEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setActivityItemEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgActivityItemViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgActivityItemViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setActivityItemView(permissionIdArray);
     permissionIdArray = [];
 
     // org lms
-    permissionsId?.Organization.filter((data) => orglmsEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orglmsEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setlmsSettingEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orglmsViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orglmsViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setLmsSettingView(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgltiEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgltiEditName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setltiSettingEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgltiViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgltiViewName.includes(data.name) && permissionIdArray.push(data.id)
+    );
     setLtiSettingView(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgBrightCoveEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgBrightCoveEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setOrgBrightCoveEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Organization.filter((data) => orgBrightCoveViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Organization.filter(
+      (data) =>
+        orgBrightCoveViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setOrgBrightCoveView(permissionIdArray);
     permissionIdArray = [];
 
     // author project
-    permissionsId?.Project.filter((data) => authorProjectEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Project.filter(
+      (data) =>
+        authorProjectEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorProjectEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Project.filter((data) => authorProjectViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Project.filter(
+      (data) =>
+        authorProjectViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorProjectView(permissionIdArray);
     permissionIdArray = [];
 
     // author Playlist
-    permissionsId?.Playlist.filter((data) => authorPlaylistEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Playlist.filter(
+      (data) =>
+        authorPlaylistEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorPlayListEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Playlist.filter((data) => authorPlaylistViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Playlist.filter(
+      (data) =>
+        authorPlaylistViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorplayListView(permissionIdArray);
     permissionIdArray = [];
 
     // author activity
-    permissionsId?.Activity.filter((data) => authorActivityEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Activity.filter(
+      (data) =>
+        authorActivityEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorActivityEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Activity.filter((data) => authorActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Activity.filter(
+      (data) =>
+        authorActivityViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setAuthorActivityView(permissionIdArray);
     permissionIdArray = [];
 
     // author team
-    permissionsId?.Team.filter((data) => authorteamEditName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Team.filter(
+      (data) =>
+        authorteamEditName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setTeamEdit(permissionIdArray);
     permissionIdArray = [];
-    permissionsId?.Team.filter((data) => authorteamViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Team.filter(
+      (data) =>
+        authorteamViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setTeamView(permissionIdArray);
     permissionIdArray = [];
 
     // video team
-    permissionsId?.Video.filter((data) => authorVideoViewName.includes(data.name) && permissionIdArray.push(data.id));
+    permissionsId?.Video.filter(
+      (data) =>
+        authorVideoViewName.includes(data.name) &&
+        permissionIdArray.push(data.id)
+    );
     setauthorVideoView(permissionIdArray);
     permissionIdArray = [];
   }, [permissionsId]);
@@ -264,7 +455,13 @@ function UserRoles() {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              dispatch(updateRole(activeOrganization.id, values, currentOrganization.id));
+              dispatch(
+                updateRole(
+                  activeOrganization.id,
+                  values,
+                  currentOrganization.id
+                )
+              );
             }}
           >
             {({
@@ -282,7 +479,12 @@ function UserRoles() {
                   {true && (
                     <div className="dynamic-roles-title-btn">
                       <div>
-                        <h2>Edit “{activePermission && activePermission[0]?.display_name}” permissions</h2>
+                        <h2>
+                          Edit “
+                          {activePermission &&
+                            activePermission[0]?.display_name}
+                          ” permissions
+                        </h2>
                       </div>
                       <div
                         className="button-group"
@@ -297,11 +499,17 @@ function UserRoles() {
                     </div>
                   )}
 
-                  <Tab.Container id="left-tabs-example" defaultActiveKey="manual-3">
+                  <Tab.Container
+                    id="left-tabs-example"
+                    defaultActiveKey="manual-3"
+                  >
                     <Row className="roles-permission-tab-row">
                       <Col className="roles-permission-tab" sm={2}>
                         <Nav variant="pills" className="flex-column">
-                          <div className="role-permission-tab-name" id="role-permission-tab-id">
+                          <div
+                            className="role-permission-tab-name"
+                            id="role-permission-tab-id"
+                          >
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-3">
@@ -314,7 +522,10 @@ function UserRoles() {
                           {!!permissionsId &&
                             AdminList.map((data, counter) => {
                               return (
-                                <div className="role-permission-tab-name" id="role-permission-tab-id">
+                                <div
+                                  className="role-permission-tab-name"
+                                  id="role-permission-tab-id"
+                                >
                                   <Nav.Item>
                                     <Nav.Link eventKey={String(counter)}>
                                       {data}
@@ -326,7 +537,10 @@ function UserRoles() {
                               );
                             })}
 
-                          <div className="role-permission-tab-name" id="role-permission-tab-id">
+                          <div
+                            className="role-permission-tab-name"
+                            id="role-permission-tab-id"
+                          >
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-2">
@@ -349,28 +563,33 @@ function UserRoles() {
                               className="flex-column"
                               style={{
                                 // background: '#f7faff',
-                                margin: '8px 32px 32px 10px',
+                                margin: "8px 32px 32px 10px",
                               }}
                             >
                               <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organiziation'}
+                                  type={"Organiziation"}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
                                   bold
                                 />
                               </div>
+                              {/* Independent activities Start */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Projects'}
+                                      type={"Independent activities"}
                                       permissions={values.permissions}
-                                      currentFeatureView={[...projectView, ...projectExportView]}
-                                      currentFeatureEdit={[...projectEdit, ...projectExportEdit]}
+                                      currentFeatureView={[
+                                        independentactivitiesView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        independentactivitiesEdit,
+                                      ]}
                                       bold
                                     />
                                   </div>
@@ -379,14 +598,60 @@ function UserRoles() {
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'All Project'}
+                                    type={"All independent activities"}
+                                    permissions={values.permissions}
+                                    currentFeatureView={
+                                      independentactivitiesView
+                                    }
+                                    currentFeatureEdit={
+                                      independentactivitiesEdit
+                                    }
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={"Exported activities"}
+                                    permissions={values.permissions}
+                                    currentFeatureView={
+                                      independentactivitiesView
+                                    }
+                                    currentFeatureEdit={
+                                      independentactivitiesEdit
+                                    }
+                                  />
+                                </div>
+                              </div>
+                              {/* Independent activities End */}
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={"Projects"}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[
+                                        ...projectView,
+                                        ...projectExportView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        ...projectEdit,
+                                        ...projectExportEdit,
+                                      ]}
+                                      bold
+                                    />
+                                  </div>
+                                </div>
+                                {/* <h6>Project</h6> */}
+                                <div className="permission-about">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={"All Project"}
                                     permissions={values.permissions}
                                     currentFeatureView={projectView}
                                     currentFeatureEdit={projectEdit}
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'import/export Projects'}
+                                    type={"import/export Projects"}
                                     permissions={values.permissions}
                                     currentFeatureView={projectExportView}
                                     currentFeatureEdit={projectExportEdit}
@@ -398,10 +663,16 @@ function UserRoles() {
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Activities'}
+                                      type={"Activities"}
                                       permissions={values.permissions}
-                                      currentFeatureView={[...activityTypeView, ...activityItemView]}
-                                      currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
+                                      currentFeatureView={[
+                                        ...activityTypeView,
+                                        ...activityItemView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        ...activityTypeEdit,
+                                        ...activityItemEdit,
+                                      ]}
                                       bold
                                     />
                                   </div>
@@ -409,7 +680,7 @@ function UserRoles() {
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activity types'}
+                                    type={"Activity types"}
                                     permissions={values.permissions}
                                     currentFeatureView={activityTypeView}
                                     currentFeatureEdit={activityTypeEdit}
@@ -417,7 +688,7 @@ function UserRoles() {
 
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activity Items'}
+                                    type={"Activity Items"}
                                     permissions={values.permissions}
                                     currentFeatureView={activityItemView}
                                     currentFeatureEdit={activityItemEdit}
@@ -430,10 +701,16 @@ function UserRoles() {
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Users'}
+                                      type={"Users"}
                                       permissions={values.permissions}
-                                      currentFeatureView={[...userView, ...userRoleView]}
-                                      currentFeatureEdit={[...userEdit, ...userRolesEdit]}
+                                      currentFeatureView={[
+                                        ...userView,
+                                        ...userRoleView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        ...userEdit,
+                                        ...userRolesEdit,
+                                      ]}
                                       bold
                                     />
                                   </div>
@@ -442,14 +719,14 @@ function UserRoles() {
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Users'}
+                                    type={"Users"}
                                     permissions={values.permissions}
                                     currentFeatureView={userView}
                                     currentFeatureEdit={userEdit}
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Manage Roles'}
+                                    type={"Manage Roles"}
                                     permissions={values.permissions}
                                     currentFeatureView={userRoleView}
                                     currentFeatureEdit={userRolesEdit}
@@ -462,10 +739,18 @@ function UserRoles() {
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Integrations'}
+                                      type={"Integrations"}
                                       permissions={values.permissions}
-                                      currentFeatureView={[...lmsSettingView, ...ltiSettingView, ...orgBrightCoveView]}
-                                      currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit, ...orgBrightCoveEdit]}
+                                      currentFeatureView={[
+                                        ...lmsSettingView,
+                                        ...ltiSettingView,
+                                        ...orgBrightCoveView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        ...lmsSettingEdit,
+                                        ...ltiSettingEdit,
+                                        ...orgBrightCoveEdit,
+                                      ]}
                                       bold
                                     />
                                   </div>
@@ -474,21 +759,21 @@ function UserRoles() {
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'LMS Settings'}
+                                    type={"LMS Settings"}
                                     permissions={values.permissions}
                                     currentFeatureView={lmsSettingView}
                                     currentFeatureEdit={lmsSettingEdit}
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'LTI Tools'}
+                                    type={"LTI Tools"}
                                     permissions={values.permissions}
                                     currentFeatureView={ltiSettingView}
                                     currentFeatureEdit={ltiSettingEdit}
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'BrightCove'}
+                                    type={"BrightCove"}
                                     permissions={values.permissions}
                                     currentFeatureView={orgBrightCoveView}
                                     currentFeatureEdit={orgBrightCoveEdit}
@@ -500,18 +785,28 @@ function UserRoles() {
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Authoring'}
+                                      type={"Authoring"}
                                       bold
                                       permissions={values.permissions}
-                                      currentFeatureView={[...AuthorProjectView, ...AuthorplayListView, ...authorActivityView, ...teamView]}
-                                      currentFeatureEdit={[...AuthorProjectEdit, ...AuthorplayListEdit, ...authorActivityEdit, ...teamEdit]}
+                                      currentFeatureView={[
+                                        ...AuthorProjectView,
+                                        ...AuthorplayListView,
+                                        ...authorActivityView,
+                                        ...teamView,
+                                      ]}
+                                      currentFeatureEdit={[
+                                        ...AuthorProjectEdit,
+                                        ...AuthorplayListEdit,
+                                        ...authorActivityEdit,
+                                        ...teamEdit,
+                                      ]}
                                     />
                                   </div>
                                 </div>
                                 <div className="for-authoring">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Project'}
+                                    type={"Project"}
                                     permissions={values.permissions}
                                     currentFeatureView={AuthorProjectView}
                                     currentFeatureEdit={AuthorProjectEdit}
@@ -520,7 +815,7 @@ function UserRoles() {
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Playlist'}
+                                    type={"Playlist"}
                                     permissions={values.permissions}
                                     currentFeatureView={AuthorplayListView}
                                     currentFeatureEdit={AuthorplayListEdit}
@@ -528,7 +823,7 @@ function UserRoles() {
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activities'}
+                                    type={"Activities"}
                                     permissions={values.permissions}
                                     currentFeatureView={authorActivityView}
                                     currentFeatureEdit={authorActivityEdit}
@@ -536,7 +831,7 @@ function UserRoles() {
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Teams'}
+                                    type={"Teams"}
                                     permissions={values.permissions}
                                     currentFeatureView={teamView}
                                     currentFeatureEdit={teamEdit}
@@ -544,7 +839,7 @@ function UserRoles() {
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'My interactive video'}
+                                    type={"My interactive video"}
                                     permissions={values.permissions}
                                     currentFeatureView={authorVideoView}
                                     currentFeatureEdit={authorVideoEdit}
@@ -558,26 +853,36 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Authoring'}
+                                    type={"Authoring"}
                                     bold
                                     permissions={values.permissions}
-                                    currentFeatureView={[...AuthorProjectView, ...AuthorplayListView, ...authorActivityView, ...teamView]}
-                                    currentFeatureEdit={[...AuthorProjectEdit, ...AuthorplayListEdit, ...authorActivityEdit, ...teamEdit]}
+                                    currentFeatureView={[
+                                      ...AuthorProjectView,
+                                      ...AuthorplayListView,
+                                      ...authorActivityView,
+                                      ...teamView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      ...AuthorProjectEdit,
+                                      ...AuthorplayListEdit,
+                                      ...authorActivityEdit,
+                                      ...teamEdit,
+                                    ]}
                                   />
                                 </div>
                               </div>
                               <div className="for-authoring">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Project'}
+                                  type={"Project"}
                                   permissions={values.permissions}
                                   currentFeatureView={AuthorProjectView}
                                   currentFeatureEdit={AuthorProjectEdit}
@@ -585,7 +890,7 @@ function UserRoles() {
                                 <br />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Playlist'}
+                                  type={"Playlist"}
                                   permissions={values.permissions}
                                   currentFeatureView={AuthorplayListView}
                                   currentFeatureEdit={AuthorplayListEdit}
@@ -593,7 +898,7 @@ function UserRoles() {
                                 <br />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Activities'}
+                                  type={"Activities"}
                                   permissions={values.permissions}
                                   currentFeatureView={authorActivityView}
                                   currentFeatureEdit={authorActivityEdit}
@@ -601,7 +906,7 @@ function UserRoles() {
                                 <br />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Teams'}
+                                  type={"Teams"}
                                   permissions={values.permissions}
                                   currentFeatureView={teamView}
                                   currentFeatureEdit={teamEdit}
@@ -609,7 +914,7 @@ function UserRoles() {
                                 <br />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'My interactive video'}
+                                  type={"My interactive video"}
                                   permissions={values.permissions}
                                   currentFeatureView={authorVideoView}
                                   currentFeatureEdit={authorVideoEdit}
@@ -623,13 +928,13 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Organiziation'}
+                                type={"Organiziation"}
                                 permissions={values.permissions}
                                 currentFeatureView={orgView}
                                 currentFeatureEdit={orgEdit}
@@ -641,18 +946,24 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Projects'}
+                                    type={"Projects"}
                                     permissions={values.permissions}
-                                    currentFeatureView={[...projectView, ...projectExportView]}
-                                    currentFeatureEdit={[...projectEdit, ...projectExportEdit]}
+                                    currentFeatureView={[
+                                      ...projectView,
+                                      ...projectExportView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      ...projectEdit,
+                                      ...projectExportEdit,
+                                    ]}
                                     bold
                                   />
                                 </div>
@@ -661,14 +972,14 @@ function UserRoles() {
                               <div className="permission-about d-flex">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'All Project'}
+                                  type={"All Project"}
                                   permissions={values.permissions}
                                   currentFeatureView={projectView}
                                   currentFeatureEdit={projectEdit}
                                 />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'import/export Projects'}
+                                  type={"import/export Projects"}
                                   permissions={values.permissions}
                                   currentFeatureView={projectExportView}
                                   currentFeatureEdit={projectExportEdit}
@@ -680,18 +991,24 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activities'}
+                                    type={"Activities"}
                                     permissions={values.permissions}
-                                    currentFeatureView={[...activityTypeView, ...activityItemView]}
-                                    currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
+                                    currentFeatureView={[
+                                      ...activityTypeView,
+                                      ...activityItemView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      ...activityTypeEdit,
+                                      ...activityItemEdit,
+                                    ]}
                                     bold
                                   />
                                 </div>
@@ -699,7 +1016,7 @@ function UserRoles() {
                               <div className="permission-about d-flex">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Activity types'}
+                                  type={"Activity types"}
                                   permissions={values.permissions}
                                   currentFeatureView={activityTypeView}
                                   currentFeatureEdit={activityTypeEdit}
@@ -707,7 +1024,7 @@ function UserRoles() {
 
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Activity Items'}
+                                  type={"Activity Items"}
                                   permissions={values.permissions}
                                   currentFeatureView={activityItemView}
                                   currentFeatureEdit={activityItemEdit}
@@ -719,18 +1036,26 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Integrations'}
+                                    type={"Integrations"}
                                     permissions={values.permissions}
-                                    currentFeatureView={[...lmsSettingView, ...ltiSettingView, ...orgBrightCoveView]}
-                                    currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit, ...orgBrightCoveEdit]}
+                                    currentFeatureView={[
+                                      ...lmsSettingView,
+                                      ...ltiSettingView,
+                                      ...orgBrightCoveView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      ...lmsSettingEdit,
+                                      ...ltiSettingEdit,
+                                      ...orgBrightCoveEdit,
+                                    ]}
                                     bold
                                   />
                                 </div>
@@ -739,21 +1064,21 @@ function UserRoles() {
                               <div className="permission-about d-flex">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'LMS Settings'}
+                                  type={"LMS Settings"}
                                   permissions={values.permissions}
                                   currentFeatureView={lmsSettingView}
                                   currentFeatureEdit={lmsSettingEdit}
                                 />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'LTI Tools'}
+                                  type={"LTI Tools"}
                                   permissions={values.permissions}
                                   currentFeatureView={ltiSettingView}
                                   currentFeatureEdit={ltiSettingEdit}
                                 />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'BrightCove'}
+                                  type={"BrightCove"}
                                   permissions={values.permissions}
                                   currentFeatureView={orgBrightCoveView}
                                   currentFeatureEdit={orgBrightCoveEdit}
@@ -765,18 +1090,24 @@ function UserRoles() {
                             <Card.Body
                               className="flex-column"
                               style={{
-                                background: '#f7faff',
-                                margin: '32px',
+                                background: "#f7faff",
+                                margin: "32px",
                               }}
                             >
                               <div className="selection-tab-custom">
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Users'}
+                                    type={"Users"}
                                     permissions={values.permissions}
-                                    currentFeatureView={[...userView, ...userRoleView]}
-                                    currentFeatureEdit={[...userEdit, ...userRolesEdit]}
+                                    currentFeatureView={[
+                                      ...userView,
+                                      ...userRoleView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      ...userEdit,
+                                      ...userRolesEdit,
+                                    ]}
                                     bold
                                   />
                                 </div>
@@ -785,14 +1116,14 @@ function UserRoles() {
                               <div className="permission-about d-flex">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Users'}
+                                  type={"Users"}
                                   permissions={values.permissions}
                                   currentFeatureView={userView}
                                   currentFeatureEdit={userEdit}
                                 />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Manage Roles'}
+                                  type={"Manage Roles"}
                                   permissions={values.permissions}
                                   currentFeatureView={userRoleView}
                                   currentFeatureEdit={userRolesEdit}
@@ -800,12 +1131,59 @@ function UserRoles() {
                               </div>
                             </Card.Body>
                           </Tab.Pane>
+                          {/* Independent activities start */}
+                          <Tab.Pane eventKey="5">
+                            <Card.Body
+                              className="flex-column"
+                              style={{
+                                background: "#f7faff",
+                                margin: "32px",
+                              }}
+                            >
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={"Independent activities"}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[
+                                      independentactivitiesView,
+                                    ]}
+                                    currentFeatureEdit={[
+                                      independentactivitiesEdit,
+                                    ]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+                              {/* <h6>User</h6> */}
+                              <div className="permission-about d-flex">
+                                {/* <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={"Users"}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userView}
+                                  currentFeatureEdit={userEdit}
+                                />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={"Manage Roles"}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userRoleView}
+                                  currentFeatureEdit={userRolesEdit}
+                                /> */}
+                              </div>
+                            </Card.Body>
+                          </Tab.Pane>
+                          {/* Independent activities end */}
                         </Tab.Content>
                       </Col>
                     </Row>
                   </Tab.Container>
                   {/*  */}
-                  <div className="error">{errors.title && touched.title && errors.title}</div>
+                  <div className="error">
+                    {errors.title && touched.title && errors.title}
+                  </div>
                 </div>
               </form>
             )}
@@ -821,7 +1199,15 @@ function UserRoles() {
   );
 }
 
-export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit }) => {
+export const NewEdit = ({
+  type,
+  permissions,
+  setFieldValue,
+  currentFeatureEdit,
+  currentFeatureView,
+  bold,
+  hideEdit,
+}) => {
   // const [viewOption, setViewOption] = useState(false);
   // const [editOption, setEditOption] = useState(false);
   // const [noneOption, setnoneOption] = useState(false);
@@ -839,8 +1225,8 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
     <div className="form-group custom-select-style-for-sub">
       <select
         onChange={(e) => {
-          if (e.target.value == 'view') {
-            setFieldValue('permissions', [
+          if (e.target.value == "view") {
+            setFieldValue("permissions", [
               ...permissions.filter((data) => {
                 if (currentFeatureEdit.includes(parseInt(data))) {
                   return false;
@@ -850,7 +1236,7 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
               }),
               ...currentFeatureView.map((e) => String(e)),
             ]);
-          } else if (e.target.value == 'none') {
+          } else if (e.target.value == "none") {
             const specialView = [...currentFeatureView, ...currentFeatureEdit];
 
             if (specialView?.length) {
@@ -861,15 +1247,23 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
                   return true;
                 }
               });
-              setFieldValue('permissions', newViewArray);
+              setFieldValue("permissions", newViewArray);
             }
           } else {
-            setFieldValue('permissions', [...permissions, ...currentFeatureEdit.map((e) => String(e)), ...currentFeatureView.map((e) => String(e))]);
+            setFieldValue("permissions", [
+              ...permissions,
+              ...currentFeatureEdit.map((e) => String(e)),
+              ...currentFeatureView.map((e) => String(e)),
+            ]);
           }
 
           if (!bold) {
-            const parentControler = e.target.parentNode.parentElement.previousElementSibling.getElementsByTagName('select')[0];
-            const sibling = e.target.parentNode.parentElement.getElementsByTagName('select');
+            const parentControler = e.target.parentNode.parentElement.previousElementSibling.getElementsByTagName(
+              "select"
+            )[0];
+            const sibling = e.target.parentNode.parentElement.getElementsByTagName(
+              "select"
+            );
             const checkAllValuesInSibling = [];
             for (var i = 0; i < sibling.length; i++) {
               checkAllValuesInSibling.push(sibling[i]?.value);
@@ -877,17 +1271,19 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
             const removeDuplicate = new Set(checkAllValuesInSibling);
             if (removeDuplicate.size > 1) {
               setTimeout(() => {
-                parentControler.value = '---';
+                parentControler.value = "---";
               }, 200);
 
-              console.log('values are not same', parentControler.value);
+              console.log("values are not same", parentControler.value);
             } else {
-              console.log('values are same', parentControler.value);
+              console.log("values are same", parentControler.value);
               console.log(Array.from(removeDuplicate)[0]);
               parentControler.value = Array.from(removeDuplicate)[0];
             }
           } else {
-            const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName('select');
+            const sibling = e.target.parentElement.parentElement.parentElement.nextElementSibling?.getElementsByTagName(
+              "select"
+            );
 
             for (var i = 0; i < sibling?.length; i++) {
               console.log(sibling[i].value, e.target.value);
@@ -896,16 +1292,32 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
           }
         }}
       >
-        <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
+        <option
+          value="view"
+          selected={currentFeatureView.some((i) =>
+            permissions.includes(String(i))
+          )}
+        >
           View
         </option>
         {!hideEdit && (
-          <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
+          <option
+            selected={currentFeatureEdit.some((i) =>
+              permissions.includes(String(i))
+            )}
+            value="edit"
+          >
             Edit
           </option>
         )}
 
-        <option value="none" selected={!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i)))}>
+        <option
+          value="none"
+          selected={
+            !currentFeatureEdit.some((i) => permissions.includes(String(i))) &&
+            !currentFeatureView.some((i) => permissions.includes(String(i)))
+          }
+        >
           none
         </option>
       </select>

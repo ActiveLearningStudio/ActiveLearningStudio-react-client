@@ -192,18 +192,18 @@ const ActivityShared = (props) => {
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
-      <div
-        className="curriki-activity-share"
-        ref={(el) => {
-          if (el) {
-            currikiH5PWrapper.current = el;
-          }
-        }}
-      >
+      <div className="curriki-activity-share">
         {authorized ? (
           <Alert variant="danger"> Activity not found.</Alert>
         ) : (
-          <div id="curriki-h5p-wrapper">
+          <div
+            id="curriki-h5p-wrapper"
+            ref={(el) => {
+              if (el) {
+                currikiH5PWrapper.current = el;
+              }
+            }}
+          >
             <Alert variant="primary"> Loading Activity</Alert>
           </div>
         )}

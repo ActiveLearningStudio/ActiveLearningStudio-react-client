@@ -1,17 +1,28 @@
 @import 'assets/css/index';
 .added-middle-height-width {
-	max-width: 65% !important;
-	margin:0 auto;
-	padding: 20px;
-    .h5p-iframe-wrapper{
-      display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  height: 100%;
-	}
-    @media (max-width:767px) {
-		max-width: 95% !important;
-		padding: 0px;
-	  }
+  max-width: 65% !important;
+  margin: 0 auto;
+  padding: 20px;
+  .h5p-iframe-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
-  
+  @media (max-width: 767px) {
+    max-width: 95% !important;
+    padding: 0px;
+  }
+}
+
+.curriki-activity-lti-share {
+  max-width: 100%;
+
+  @media (max-width: 1020px) {
+    margin: 0px auto;
+  }
+  #curriki-h5p-wrapper {
+    height: calc(100vh - 0px);
+    margin: 0 auto;
+  }
+}
