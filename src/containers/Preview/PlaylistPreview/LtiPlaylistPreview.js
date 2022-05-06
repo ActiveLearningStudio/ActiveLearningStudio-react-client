@@ -23,7 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
-  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.pathname.includes('/shared') && playlistId && projectId) {

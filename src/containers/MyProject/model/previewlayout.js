@@ -33,6 +33,7 @@ const PreviewLayoutModel = (props) => {
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
   const [showActivitySearch, setShowActivitySearch] = useState(false);
   const [insertActivityCallback, setInsertActivityCallback] = useState(null);
+  const [insertActivityLibraries, setInsertActivityLibraries] = useState(null);
 
   // useEffect(() => {
   //   if (type === "videoModal" && props.show) {
@@ -127,18 +128,15 @@ const PreviewLayoutModel = (props) => {
   const handleExistingActivitySearchEvent = (e) => {
     if (e === 'close') return setShowActivitySearch(false);
 
-    console.log('Event received');
-    console.log(e);
     setInsertActivityCallback(() => (data) => e.detail.callback(data));
+    setInsertActivityLibraries(e.detail.libraries);
     setShowActivitySearch(true);
   };
 
   useEffect(() => {
-    console.log('Listening for event');
     window.addEventListener('launchExistingActivitySearch', handleExistingActivitySearchEvent);
     return () => {
       window.removeEventListener('launchExistingActivitySearch', handleExistingActivitySearchEvent);
-      console.log('event listener removed');
     };
   }, []);
 
@@ -416,7 +414,7 @@ const PreviewLayoutModel = (props) => {
           </div>
         </Modal.Body>
       </Modal>
-      {showActivitySearch && <ExistingActivitySearchContainer insertActivityCallback={insertActivityCallback} closeModal={() => handleExistingActivitySearchEvent('close') }/>}
+      {showActivitySearch && <ExistingActivitySearchContainer insertActivityCallback={insertActivityCallback} libraries={insertActivityLibraries} closeModal={() => handleExistingActivitySearchEvent('close') }/>}
     </>
   );
 };

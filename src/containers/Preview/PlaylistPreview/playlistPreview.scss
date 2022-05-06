@@ -159,6 +159,7 @@
 
     #curriki-h5p-wrapper {
       min-height: calc(100vh - 300px);
+      margin: 0 auto;
       @media (max-width: 1020px) {
         min-height: calc(100vh - 25px);
         @media (orientation: portrait) {

@@ -15,7 +15,7 @@ import './styles.scss';
 let paginationStarter = true;
 
 function ExistingActivitySearch(props) {
-  const { fromTeam, addActivity } = props;
+  const { fromTeam, addActivity, libraries } = props;
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
     subject: true,
@@ -57,6 +57,7 @@ function ExistingActivitySearch(props) {
           from: 0,
           size: 20,
           model: 'activities',
+          standardArray: libraries,
         };
       } else {
         dataSend = {
@@ -69,6 +70,7 @@ function ExistingActivitySearch(props) {
           from: 0,
           size: 20,
           model: 'activities',
+          standardArray: libraries,
         };
       }
       let result;
@@ -252,6 +254,7 @@ function ExistingActivitySearch(props) {
                                             from: 0,
                                             size: 20,
                                             model: 'activities',
+                                            standardArray: libraries,
                                           };
                                         } else {
                                           dataSend = {
@@ -264,6 +267,7 @@ function ExistingActivitySearch(props) {
                                             from: 0,
                                             size: 20,
                                             model: 'activities',
+                                            standardArray: libraries,
                                           };
                                         }
                                         const result = await dispatch(simpleSearchAction(dataSend));
@@ -400,6 +404,7 @@ function ExistingActivitySearch(props) {
                                           from: 0,
                                           size: 20,
                                           model: 'activities',
+                                          standardArray: libraries,
                                         };
                                       } else {
                                         dataSend = {
@@ -414,6 +419,7 @@ function ExistingActivitySearch(props) {
                                           from: 0,
                                           size: 20,
                                           model: 'activities',
+                                          standardArray: libraries,
                                         };
                                       }
                                       const result = await dispatch(simpleSearchAction(dataSend));
@@ -694,6 +700,7 @@ function ExistingActivitySearch(props) {
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
                                 standardArray: activeType,
+                                standardArray: libraries,
                               };
                             } else {
                               searchData = {
@@ -708,6 +715,7 @@ function ExistingActivitySearch(props) {
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
                                 standardArray: activeType,
+                                standardArray: libraries,
                               };
                             }
                             Swal.fire({
@@ -836,6 +844,7 @@ function ExistingActivitySearch(props) {
                               gradeArray: activeEducation || undefined,
                               standardArray: activeType || undefined,
                               author: authorName || undefined,
+                              standardArray: libraries,
                             };
                             Swal.fire({
                               title: 'Loading...',

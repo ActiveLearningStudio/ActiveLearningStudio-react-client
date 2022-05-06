@@ -12,10 +12,7 @@ import {
   getActivityItems,
   loadResourceTypesAction,
 } from "store/actions/resource";
-import {
-  educationLevels,
-  subjects,
-} from "components/ResourceCard/AddResource/dropdownData";
+import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
 import { getUserReport } from "store/actions/admin";
 import searchIcon from "assets/images/Search.svg";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -26,21 +23,39 @@ function SearchForm() {
 
   const [simpleSearch, setSimpleSearch] = useState("");
   const [activityTypes, setActivityTypes] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [authorTags, setAuthorTags] = useState([]);
+  const [educationLevels, setEducationLevels] = useState([])
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
   const auth = useSelector((state) => state.auth);
-  const { currentOrganization, permission, activeOrganization } = useSelector(
-    (state) => state.organization
-  );
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
     if (activityTypesState.length === 0 && auth?.user) {
       dispatcher(loadResourceTypesAction());
-      dispatcher(getActivityItems(activeOrganization?.id));
+      dispatcher(getActivityItems(currentOrganization?.id));
       dispatcher(getUserReport("all"));
     }
   }, []);
+
+  useEffect (() => {
+    if(currentOrganization?.id) {
+      if(subjects.length == 0) {
+        const result_sub = dispatcher(getSubjects(currentOrganization?.id || 1));
+        result_sub.then((data)=>setSubjects(data));
+      }
+      if(authorTags.length == 0) {
+        const result_auth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+        result_auth.then((data)=>setAuthorTags(data));
+      }
+      if(educationLevels.length == 0) {
+        const result_edu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+        result_edu.then((data)=>setEducationLevels(data));
+      }
+    }    
+  }, currentOrganization);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
@@ -239,6 +254,7 @@ function SearchForm() {
               subject: "",
               grade: "",
               gradeArray: [],
+              authorTagsArray: [],
               standard: "",
               standardArray: [],
               email: "",
@@ -273,7 +289,7 @@ function SearchForm() {
 
               // eslint-disable-next-line max-len
               history.push(
-                `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`
+                `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&authorTag=${values.authorTagsArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`
               );
               localStorage.setItem("refreshPage", false);
 
@@ -373,23 +389,22 @@ function SearchForm() {
                     onBlur={handleBlur}
                     value={values.subject}
                   >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled defaultValue hidden>
                       {" "}
                       Subject + Subject Area
                     </option>
-                    {subjects.map((data) => (
-                      <option key={data.value} value={data.subject}>
-                        {data.subject}
+                    {subjects?.data.map((data) => (
+                      <option key={data.id} value={data.id}>
+                        {data.name}
                       </option>
                     ))}
                   </select>
                 </div>
-
                 {values.subjectArray.length > 0 && (
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.subjectArray.map((data) => (
                       <div className="keywords-de">
-                        {data}
+                        {subjects?.data?.filter(subj => subj.id == data)[0].name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -425,11 +440,11 @@ function SearchForm() {
                     }}
                     value={values.grade}
                   >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled defaultValue hidden>
                       Education Level
                     </option>
-                    {educationLevels.map((data) => (
-                      <option key={data.value} value={data.name}>
+                    {educationLevels?.data.map((data) => (
+                      <option key={data.id} value={data.id}>
                         {data.name}
                       </option>
                     ))}
@@ -440,7 +455,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword">
                     {values.gradeArray.map((data) => (
                       <div className="keywords-de" data-name={value}>
-                        {data}
+                        {educationLevels?.data?.filter(eduLvl => eduLvl.id == data)[0].name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -457,6 +472,58 @@ function SearchForm() {
                     ))}
                   </div>
                 )}
+
+                <div className="form-group">
+                  <select
+                    name="author_tags"
+                    placeholder="Author Tags"
+                    onChange={(e) => {
+                      handleChange(e);
+                      let updatedValue = e.target.value;
+                      if (updatedValue.includes("&")) {
+                        updatedValue = e.target.value.replace("&", "and");
+                        if (!values.authorTagsArray.includes(updatedValue)) {
+                          values.authorTagsArray.push(updatedValue);
+                        }
+                      } else if (!values.authorTagsArray.includes(e.target.value)) {
+                        values.authorTagsArray.push(e.target.value);
+                      }
+                    }}
+                    value={values.author_tags}
+                  >
+                    <option value="" disabled defaultValue hidden>
+                      Author Tags
+                    </option>
+                    {authorTags?.data.map((data) => (
+                      <option key={data.id} value={data.id}>
+                        {data.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {values.authorTagsArray.length > 0 && (
+                  <div className="form-group wrap-keyword">
+                    {values.authorTagsArray.map((data) => (
+                      <div className="keywords-de" data-name={value}>
+                        {authorTags?.data?.filter(authId => authId.id == data)[0].name}
+                        <div
+                          className="iocns"
+                          onClick={() => {
+                            // eslint-disable-next-line no-param-reassign
+                            values.authorTagsArray = values.authorTagsArray.filter(
+                              (index) => index !== data
+                            );
+                            setValue(value + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon icon="times" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
 
                 <div className="form-group">
                   <select
@@ -479,7 +546,7 @@ function SearchForm() {
                     }}
                     value={values.standard}
                   >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled defaultValue hidden>
                       Type of Activity
                     </option>
                     {activityTypes?.map((data) => (
