@@ -48,6 +48,7 @@ const AddActivity = (props) => {
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
   const formRef = useRef();
   var counter;
+  const parser = new DOMParser()
 
   const formatApiData = (data) => {
     let ids = [];
@@ -347,7 +348,7 @@ const AddActivity = (props) => {
                       placeholder="Give your layout a name..."
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.title}
+                      value={parser.parseFromString(values.title, 'text/html').body.textContent}
                     />
                     <div style={{ color: "red" }}>
                       {errors.title && touched.title && errors.title}
