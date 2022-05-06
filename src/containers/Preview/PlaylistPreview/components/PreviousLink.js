@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function PreviousLink(props) {
-  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists } = props;
+  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType } = props;
   const organization = useSelector((state) => state.organization);
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const prevPlaylist = currentPlaylistIndex > 0 ? allPlaylists[currentPlaylistIndex - 1] : null;
@@ -16,17 +16,28 @@ function PreviousLink(props) {
   if (previousResource) {
     prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/playlist/${prevPlaylist.id}/preview`;
+    prevLink = `/playlist/${prevPlaylist.id}/activity/${prevPlaylist.activities[0]?.id}/preview`;
   }
   if (prevLink !== '#') {
     if (showLti) {
-      prevLink += '/lti';
+      if (viewType === 'activity') {
+        prevLink += '/lti?view=activity';
+      } else {
+        prevLink += '/lti';
+      }
     } else {
       prevLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${prevLink}`;
 
       if (shared) {
         prevLink += '/shared';
       }
+      if (viewType === 'activity') {
+        prevLink += '?view=activity';
+      }
+    }
+  } else {
+    if (viewType === 'activity') {
+      prevLink += '?view=activity';
     }
   }
 
