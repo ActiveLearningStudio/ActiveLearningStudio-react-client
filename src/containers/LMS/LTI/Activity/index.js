@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -75,6 +75,7 @@ const Activity = (props) => {
   const issuerClient = searchParams.get('issuer_client');
   const customPersonNameGiven = searchParams.get('custom_person_name_given');
   const customPersonNameFamily = searchParams.get('custom_person_name_family');
+  const currikiH5PWrapper = useRef(null);
 
   /* eslint-disable-next-line no-unused-vars */
   const [activityState, dispatch] = useReducer(reducer, {
@@ -141,7 +142,6 @@ const Activity = (props) => {
       dispatch({ type: 'CHECK_ASSETS' });
     }, 500);
     dispatch({ type: 'SET_INTERVAL', intervalId });
-
   }, [h5pSettings]);
 
   // Patch into xAPI events
@@ -210,6 +210,18 @@ const Activity = (props) => {
     activityState.h5pObject.init();
   }, [activityState.h5pObject]);
 
+  useEffect(() => {
+    if (currikiH5PWrapper && currikiH5PWrapper.current) {
+      const aspectRatio = 1.778; // standard aspect ratio of video width and height
+      const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
+      const adjustedWidthVal = currentHeight * aspectRatio;
+      const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
+      if (adjustedWidthVal < parentWidth) {
+        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      }
+    }
+  }, [currikiH5PWrapper]);
+
   return (
     <div>
       {ltiFinished && (
@@ -220,8 +232,17 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper" z>
-          <Alert variant="primary">Loading Activity</Alert>
+        <div className="curriki-activity-lti-share">
+          <div
+            id="curriki-h5p-wrapper"
+            ref={(el) => {
+              if (el) {
+                currikiH5PWrapper.current = el;
+              }
+            }}
+          >
+            <Alert variant="primary">Loading Activity</Alert>
+          </div>
         </div>
       )}
     </div>

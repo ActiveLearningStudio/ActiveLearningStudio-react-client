@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import QueryString from 'query-string';
 import DropdownActivity from 'components/ResourceCard/dropdown';
 
 import { Tab, Tabs } from 'react-bootstrap';
@@ -31,6 +31,7 @@ function PlaylistPreview(props) {
   const organization = useSelector((state) => state.organization);
   const { teamPermission } = useSelector((state) => state.team);
   const [openPlaylistMenu, setPlaylistMenu] = useState(true);
+  const query = QueryString.parse(window.location.search);
 
   const projectPreview = localStorage.getItem('projectPreview');
   // const history = useHistory();
@@ -107,7 +108,7 @@ function PlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className="left-activity-view">
+          <div className={query.view !== 'activity' ? 'left-activity-view' : 'left-activity-view extra-padding'}>
             <div className="activity-metadata">
               <Link to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}`}>
                 <img src={projectIcon} alt="" />
@@ -143,8 +144,8 @@ function PlaylistPreview(props) {
                 </h1>
               )}
               <div className="controller">
-                <PreviousLink projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
-                <NextLink projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
+                <PreviousLink viewType={query.view} projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
+                <NextLink viewType={query.view} projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
               </div>
             </div>
 
@@ -158,60 +159,61 @@ function PlaylistPreview(props) {
               </div>
             </div>
           </div>
-          {/* className={`right-sidegolf-info${collapsed ? ' collapsed' : ''}`} */}
-          <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
-            <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
-              {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
-            </div>
+          {query.view !== 'activity' && (
+            <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
+              <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
+                {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
+              </div>
 
-            {openPlaylistMenu ? (
-              <div className="relative-white-bg">
-                <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
-                  <Tab eventKey="home" title="Activities">
-                    <div className="all-activities">
-                      {selectedPlaylist.activities?.map((data) => (
-                        <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
-                          <Link
-                            to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
-                          >
-                            <div
-                              className="thumbnail"
-                              style={{
-                                backgroundImage:
-                                  !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
-                              }}
-                            />
-                            <p>{data.title}</p>
-                          </Link>
-                          <DropdownActivity className="Dropdown-Activity" resource={data} playlist={selectedPlaylist} teamPermission={teamPermission || {}} />
-                        </div>
-                      ))}
-                    </div>
-                  </Tab>
-                </Tabs>
-              </div>
-            ) : (
-              <div className="relative-white-bg-collapsed">
-                <div className="all-activities">
-                  {selectedPlaylist.activities?.map((data) => (
-                    <Link
-                      title={data.title}
-                      className="each-activity"
-                      to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
-                    >
-                      <div
-                        className="thumbnail"
-                        style={{
-                          backgroundImage:
-                            !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
-                        }}
-                      />
-                    </Link>
-                  ))}
+              {openPlaylistMenu ? (
+                <div className="relative-white-bg">
+                  <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+                    <Tab eventKey="home" title="Activities">
+                      <div className="all-activities">
+                        {selectedPlaylist.activities?.map((data) => (
+                          <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
+                            <Link
+                              to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
+                            >
+                              <div
+                                className="thumbnail"
+                                style={{
+                                  backgroundImage:
+                                    !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                }}
+                              />
+                              <p>{data.title}</p>
+                            </Link>
+                            <DropdownActivity className="Dropdown-Activity" resource={data} playlist={selectedPlaylist} teamPermission={teamPermission || {}} />
+                          </div>
+                        ))}
+                      </div>
+                    </Tab>
+                  </Tabs>
                 </div>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="relative-white-bg-collapsed">
+                  <div className="all-activities">
+                    {selectedPlaylist.activities?.map((data) => (
+                      <Link
+                        title={data.title}
+                        className="each-activity"
+                        to={`/org/${organization.currentOrganization?.domain}/project/${selectedPlaylist.project.id}/playlist/${selectedPlaylist.id}/activity/${data.id}/preview`}
+                      >
+                        <div
+                          className="thumbnail"
+                          style={{
+                            backgroundImage:
+                              !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                          }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>
