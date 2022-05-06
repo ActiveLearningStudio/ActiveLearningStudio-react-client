@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   author_tags: null,
   activity_layouts: null,
   allMediaSources: {},
+  orgMediaSources: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -216,6 +217,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         allMediaSources: action.payload,
+      };
+    case actionTypes.GET_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
       };
     default:
       return state;

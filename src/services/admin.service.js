@@ -731,6 +731,14 @@ const getAllMediaSources = () =>
     .catch((err) => {
       Promise.reject(err.response.data);
     });
+//get  org media source
+const getOrgMediaSource = (orgId) =>
+  httpService
+    .get(`${apiVersion}/suborganizations/${orgId}/media-sources`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+    });
 
 export default {
   addUserInOrganization,
@@ -790,4 +798,5 @@ export default {
   deleteActivityLayout,
   teamsActionAdminPanel,
   getAllMediaSources,
+  getOrgMediaSource,
 };

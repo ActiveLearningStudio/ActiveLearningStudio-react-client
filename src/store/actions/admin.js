@@ -355,3 +355,11 @@ export const getAllMediaSources = () => async (dispatch) => {
   });
   return result;
 };
+export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
+  const result = await adminService.getOrgMediaSource(orgId);
+  dispatch({
+    type: actionTypes.GET_ORG_MEDIA_SOURCE,
+    payload: result,
+  });
+  return result;
+};

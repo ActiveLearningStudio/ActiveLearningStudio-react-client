@@ -3,11 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Field, Formik } from "formik";
 import { Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMediaSources } from "store/actions/admin";
+import {
+  getAllMediaSources,
+  getOrganizationMedaiSource,
+} from "store/actions/admin";
 
 const Media = () => {
   const dispatch = useDispatch();
   const { allMediaSources } = useSelector((state) => state.admin);
+  const organization = useSelector((state) => state.organization);
+  const { permission, activeOrganization } = organization;
   const MyCustomFieldTick = ({ field }) => {
     return (
       <>
@@ -31,6 +36,7 @@ const Media = () => {
   useEffect(() => {
     (async () => {
       await dispatch(getAllMediaSources());
+      await dispatch(getOrganizationMedaiSource(activeOrganization?.id));
     })();
   }, []);
   console.log("all", allMediaSources);
