@@ -321,7 +321,7 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
 const getSubjects = (subOrgId, page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  .get(`${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
@@ -353,7 +353,7 @@ const deleteSubject = (subOrgId, id) => httpService
   });
 
 const getEducationLevel = (subOrgId, page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  .get(`${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {
@@ -385,7 +385,7 @@ const deleteEducationLevel = (subOrgId, id) => httpService
   });
 
 const getAuthorTag = (subOrgId, page, size, query, column, orderBy) => httpService
-  .get(`${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  .get(`${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => {

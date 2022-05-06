@@ -36,6 +36,7 @@ function PlaylistPreview(props) {
   const projectPreview = localStorage.getItem('projectPreview');
   // const history = useHistory();
   const dispatch = useDispatch();
+  const parser = new DOMParser();
   useEffect(() => {
     window.scrollTo(0, 0);
     loadPlaylist(projectId, playlistId);
@@ -140,7 +141,7 @@ function PlaylistPreview(props) {
               {currentActivity && (
                 <h1>
                   Activity: &nbsp;
-                  <span>{currentActivity.title}</span>
+                  <span>{parser.parseFromString(currentActivity.title, 'text/html').body.textContent}</span>
                 </h1>
               )}
               <div className="controller">
@@ -182,7 +183,7 @@ function PlaylistPreview(props) {
                                     !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
-                              <p>{data.title}</p>
+                              <p>{parser.parseFromString(data.title, 'text/html').body.textContent}</p>
                             </Link>
                             <DropdownActivity className="Dropdown-Activity" resource={data} playlist={selectedPlaylist} teamPermission={teamPermission || {}} />
                           </div>
