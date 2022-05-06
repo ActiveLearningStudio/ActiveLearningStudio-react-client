@@ -12,7 +12,7 @@ import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav, loadLmsAction, getProjectCourseFromLMS } from 'store/actions/project';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import GoogleModel from 'components/models/GoogleLoginModal';
-import { educationLevels, subjects } from 'components/ResourceCard/AddResource/dropdownData';
+import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
 import ShareLink from 'components/ResourceCard/ShareLink';
 import { lmsPlaylist } from 'store/actions/playlist';
 import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
@@ -57,11 +57,13 @@ function SearchInterface(props) {
     searchLibrary: true,
     subject: true,
     education: false,
+    authorTag: false,
     type: false,
   });
   const allState = useSelector((state) => state.search);
-  const activityTypesState = useSelector((state) => state.resource.activityTypes);
+  const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const dispatcher = useDispatch();
   const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
   const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
@@ -81,11 +83,15 @@ function SearchInterface(props) {
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
+  const [activeAuthorTag, setActiveAuthorTag] = useState([]);
   const [searchType, setSearchType] = useState(null);
   const [authorName, SetAuthor] = useState('');
   const [activetab, setActiveTab] = useState(fromTeam ? 'projects' : 'total');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
+  const [subjects, setSubjects] = useState([]);
+  const [authorTags, setAuthorTags] = useState([]);
+  const [educationLevels, setEducationLevels] = useState([])
   // const [selectedAuthor, setSelectedAuthor] = useState([]);
   // const [authors, setAuthors] = useState([]);
   // var activeSubject1;
@@ -128,10 +134,10 @@ function SearchInterface(props) {
   useMemo(() => {
     setActiveEducation([]);
     setActiveSubject([]);
+    setActiveAuthorTag([]);
     setActiveType([]);
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
-    // console.log(query);
     if (query.type) {
       if (query.type === 'private') {
         setSearchType('private');
@@ -148,13 +154,16 @@ function SearchInterface(props) {
       // if (query.grade.includes('and')) {
       //   query.grade = query.grade.replace('and', '&');
       // }
-      setActiveSubject(query?.grade?.replace('and', '&')?.split(','));
+      setActiveSubject(query?.grade?.split(',').map(Number));
     }
     if (query.education) {
       // if (query.education.includes('and')) {
       //   query.education = query.education.replace('and', '&');
       // }
-      setActiveEducation(query?.education?.replace('and', '&')?.split(','));
+      setActiveEducation(query?.education?.split(',').map(Number));
+    }
+    if (query.authorTag) {
+      setActiveAuthorTag(query?.authorTag?.split(',').map(Number));
     }
     if (query.author) {
       SetAuthor(query.author);
@@ -185,6 +194,7 @@ function SearchInterface(props) {
           phrase: searchInput.trim(),
           subjectArray: activeSubject,
           gradeArray: activeEducation,
+          authorTagsArray: activeAuthorTag,
           standardArray: activeType,
           author: authorName || undefined,
           type: searchType,
@@ -196,6 +206,7 @@ function SearchInterface(props) {
           phrase: searchInput.trim(),
           subjectArray: activeSubject,
           gradeArray: activeEducation,
+          authorTagsArray: activeAuthorTag,
           standardArray: activeType,
           author: authorName || undefined,
           type: searchType,
@@ -210,6 +221,7 @@ function SearchInterface(props) {
       setTotalCount(result?.meta?.total);
       const tempEducation = [];
       const tempSubject = [];
+      const tempTag = [];
       if (activeEducation) {
         activeEducation.forEach((edu) => {
           if (String(edu).includes('&')) {
@@ -232,13 +244,24 @@ function SearchInterface(props) {
         });
         setActiveSubject(tempSubject);
       }
+      if (activeAuthorTag) {
+        activeAuthorTag.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempTag.push(temp);
+          } else {
+            tempTag.push(sub);
+          }
+        });
+        setActiveAuthorTag(tempTag);
+      }
       // eslint-disable-next-line max-len
       if (!fromTeam) {
         // eslint-disable-next-line max-len
         history.push(
           `/org/${
             currentOrganization?.domain
-          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
+          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
         );
       }
     }
@@ -313,10 +336,26 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.data?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
-  // console.log(activeSubject, activeEducation);
+
+  useEffect (() => {
+    if(currentOrganization?.id) {
+      if(subjects.length == 0) {
+        const result_sub = dispatcher(getSubjects(currentOrganization?.id || 1));
+        result_sub.then((data)=>setSubjects(data));
+      }
+      if(authorTags.length == 0) {
+        const result_auth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+        result_auth.then((data)=>setAuthorTags(data));
+      }
+      if(educationLevels.length == 0) {
+        const result_edu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+        result_edu.then((data)=>setEducationLevels(data));
+      }
+    }    
+  }, currentOrganization);
   return (
     <>
       <div>
@@ -395,6 +434,7 @@ function SearchInterface(props) {
                                             phrase: searchInput.trim(),
                                             subjectArray: activeSubject,
                                             gradeArray: activeEducation,
+                                            authorTagsArray: activeAuthorTag,
                                             authors: authorName || undefined,
                                             standardArray: activeType,
                                             type: searchType,
@@ -406,6 +446,7 @@ function SearchInterface(props) {
                                             phrase: searchInput.trim(),
                                             subjectArray: activeSubject,
                                             gradeArray: activeEducation,
+                                            authorTagsArray: activeAuthorTag,
                                             authors: authorName || undefined,
                                             standardArray: activeType,
                                             type: searchType,
@@ -417,6 +458,7 @@ function SearchInterface(props) {
                                         setTotalCount(result.meta?.total);
                                         const tempEducation = [];
                                         const tempSubject = [];
+                                        const tempTag = [];
                                         if (activeEducation) {
                                           activeEducation.forEach((edu) => {
                                             if (String(edu).includes('&')) {
@@ -439,13 +481,24 @@ function SearchInterface(props) {
                                           });
                                           setActiveSubject(tempSubject);
                                         }
+                                        if (activeAuthorTag) {
+                                          activeAuthorTag.forEach((sub) => {
+                                            if (String(sub).includes('&')) {
+                                              const temp = String(sub).replace('&', 'and');
+                                              tempTag.push(temp);
+                                            } else {
+                                              tempTag.push(sub);
+                                            }
+                                          });
+                                          setActiveAuthorTag(tempTag);
+                                        }
                                         // eslint-disable-next-line max-len
                                         if (!fromTeam) {
                                           // eslint-disable-next-line max-len
                                           history.push(
                                             `/org/${
                                               currentOrganization?.domain
-                                            }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
+                                            }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
                                           );
                                         }
                                       }
@@ -548,6 +601,7 @@ function SearchInterface(props) {
                                           phrase: searchInput.trim(),
                                           subjectArray: activeSubject,
                                           gradeArray: activeEducation,
+                                          authorTagsArray: activeAuthorTag,
                                           standardArray: activeType,
                                           author: authorName || undefined,
                                           fromDate: fromdate || undefined,
@@ -564,6 +618,7 @@ function SearchInterface(props) {
                                           fromDate: fromdate || undefined,
                                           toDate: todate || undefined,
                                           gradeArray: activeEducation,
+                                          authorTagsArray: activeAuthorTag,
                                           standardArray: activeType,
                                           type: searchType,
                                           from: 0,
@@ -574,6 +629,7 @@ function SearchInterface(props) {
                                       setTotalCount(result.meta?.total);
                                       const tempEducation = [];
                                       const tempSubject = [];
+                                      const tempTag = [];
                                       if (activeEducation) {
                                         activeEducation.forEach((edu) => {
                                           if (String(edu).includes('&')) {
@@ -596,12 +652,23 @@ function SearchInterface(props) {
                                         });
                                         setActiveSubject(tempSubject);
                                       }
+                                      if (activeAuthorTag) {
+                                        activeAuthorTag.forEach((sub) => {
+                                          if (String(sub).includes('&')) {
+                                            const temp = String(sub).replace('&', 'and');
+                                            tempTag.push(temp);
+                                          } else {
+                                            tempTag.push(sub);
+                                          }
+                                        });
+                                        setActiveAuthorTag(tempSubject);
+                                      }
                                       if (!fromTeam) {
                                         // eslint-disable-next-line max-len
                                         history.push(
                                           `/org/${
                                             currentOrganization?.domain
-                                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&h5p=${activeType}&author=${authorName}`
+                                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
                                         );
                                       }
                                     }
@@ -631,6 +698,7 @@ function SearchInterface(props) {
                                 ...toggleStates,
                                 type: false,
                                 education: false,
+                                authorTag: false,
                                 subject: !toggleStates.subject,
                               })
                             }
@@ -640,13 +708,13 @@ function SearchInterface(props) {
                           </Accordion.Toggle>
                           <Accordion.Collapse eventKey="0">
                             <Card.Body>
-                              {subjects.map((data) => (
+                              {subjects.length !== 0 && subjects?.data.map((data) => (
                                 <div
                                   className="list-item-keys"
-                                  key={data.value}
-                                  value={data.subject}
+                                  key={data.id}
+                                  value={data.id}
                                   onClick={() => {
-                                    if (activeSubject.includes(data.subject)) {
+                                    if (activeSubject.includes(data.id)) {
                                       if (data.subject === 'Career & Technical Education') {
                                         setActiveSubject(
                                           activeSubject.filter((index) => {
@@ -657,25 +725,19 @@ function SearchInterface(props) {
                                           })
                                         );
                                       } else {
-                                        setActiveSubject(activeSubject.filter((index) => index !== data.subject));
+                                        setActiveSubject(activeSubject.filter((index) => index !== data.id));
                                       }
                                     } else {
-                                      setActiveSubject([...activeSubject, data.subject]);
+                                      setActiveSubject([...activeSubject, data.id]);
                                     }
                                   }}
                                 >
-                                  {data.subject === 'Career & Technical Education' ? (
-                                    activeSubject.includes('Career & Technical Education') || activeSubject.includes('Career and Technical Education') ? (
-                                      <FontAwesomeIcon icon="check-square" />
-                                    ) : (
-                                      <FontAwesomeIcon icon="square" />
-                                    )
-                                  ) : activeSubject.includes(data.subject) ? (
+                                  {activeSubject.includes(data.id) ? (
                                     <FontAwesomeIcon icon="check-square" />
                                   ) : (
                                     <FontAwesomeIcon icon="square" />
                                   )}
-                                  <span>{data.subject}</span>
+                                  <span>{data.name}</span>
                                 </div>
                               ))}
                             </Card.Body>
@@ -691,6 +753,7 @@ function SearchInterface(props) {
                                 ...toggleStates,
                                 type: false,
                                 subject: false,
+                                authorTag: false,
                                 education: !toggleStates.education,
                               })
                             }
@@ -701,14 +764,14 @@ function SearchInterface(props) {
 
                           <Accordion.Collapse eventKey="1">
                             <Card.Body>
-                              {educationLevels.map((data) => (
+                              {educationLevels.length !== 0 && educationLevels.data.map((data) => (
                                 <div
                                   className="list-item-keys"
-                                  key={data.value}
-                                  value={data.name}
+                                  key={data.id}
+                                  value={data.id}
                                   onClick={() => {
-                                    if (activeEducation.includes(data.name)) {
-                                      if (data.name === 'College & Beyond') {
+                                    if (activeEducation.includes(data.id)) {
+                                      if (data.id === 'College & Beyond') {
                                         setActiveEducation(
                                           activeEducation.filter((index) => {
                                             if (index === 'College & Beyond' || index === 'College and Beyond') {
@@ -718,20 +781,71 @@ function SearchInterface(props) {
                                           })
                                         );
                                       } else {
-                                        setActiveEducation(activeEducation.filter((index) => index !== data.name));
+                                        setActiveEducation(activeEducation.filter((index) => index !== data.id));
                                       }
                                     } else {
-                                      setActiveEducation([...activeEducation, data.name]);
+                                      setActiveEducation([...activeEducation, data.id]);
                                     }
                                   }}
                                 >
-                                  {data.name === 'College & Beyond' ? (
-                                    activeEducation.includes('College & Beyond') || activeEducation.includes('College and Beyond') ? (
-                                      <FontAwesomeIcon icon="check-square" />
-                                    ) : (
-                                      <FontAwesomeIcon icon="square" />
-                                    )
-                                  ) : activeEducation.includes(data.name) ? (
+                                  {activeEducation.includes(data.id) ? (
+                                    <FontAwesomeIcon icon="check-square" />
+                                  ) : (
+                                    <FontAwesomeIcon icon="square" />
+                                  )}
+
+                                  <span>{data.name}</span>
+                                </div>
+                              ))}
+                            </Card.Body>
+                          </Accordion.Collapse>
+                        </Card>
+
+                        <Card>
+                          <Accordion.Toggle
+                            as={Card.Header}
+                            eventKey="2"
+                            onClick={() =>
+                              setToggleStates({
+                                ...toggleStates,
+                                type: false,
+                                subject: false,
+                                education: false,
+                                authorTag: !toggleStates.authorTag,
+                              })
+                            }
+                          >
+                            Author Tags
+                            <FontAwesomeIcon className="ml-2" icon={toggleStates.authorTag ? 'chevron-up' : 'chevron-down'} />
+                          </Accordion.Toggle>
+
+                          <Accordion.Collapse eventKey="2">
+                            <Card.Body>
+                              {authorTags.length !== 0 && authorTags.data.map((data) => (
+                                <div
+                                  className="list-item-keys"
+                                  key={data.id}
+                                  value={data.id}
+                                  onClick={() => {
+                                    if (activeAuthorTag.includes(data.id)) {
+                                      if (data.name === 'College & Beyond') {
+                                        setActiveAuthorTag(
+                                          activeAuthorTag.filter((index) => {
+                                            if (index === 'College & Beyond' || index === 'College and Beyond') {
+                                              return false;
+                                            }
+                                            return true;
+                                          })
+                                        );
+                                      } else {
+                                        setActiveAuthorTag(activeAuthorTag.filter((index) => index !== data.id));
+                                      }
+                                    } else {
+                                      setActiveAuthorTag([...activeAuthorTag, data.id]);
+                                    }
+                                  }}
+                                >
+                                  {activeAuthorTag.includes(data.id) ? (
                                     <FontAwesomeIcon icon="check-square" />
                                   ) : (
                                     <FontAwesomeIcon icon="square" />
@@ -753,6 +867,7 @@ function SearchInterface(props) {
                                 ...toggleStates,
                                 subject: false,
                                 education: false,
+                                authorTag: false,
                                 type: !toggleStates.type,
                               })
                             }
@@ -767,7 +882,7 @@ function SearchInterface(props) {
                                 'overflow-y': 'auto',
                               }}
                             >
-                              {activityTypes.map((data) => (
+                              {activityTypes.length !== 0 && activityTypes?.map((data) => (
                                 <div
                                   className="list-item-keys"
                                   key={data.id}
@@ -814,6 +929,7 @@ function SearchInterface(props) {
                                 toDate: todate || undefined,
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
+                                authorTagsArray: activeAuthorTag,
                                 standardArray: activeType,
                               };
                             } else {
@@ -827,6 +943,7 @@ function SearchInterface(props) {
                                 type: searchType,
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
+                                authorTagsArray: activeAuthorTag,
                                 standardArray: activeType,
                               };
                             }
@@ -856,6 +973,7 @@ function SearchInterface(props) {
                                 type: searchType,
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
+                                authorTagsArray: activeAuthorTag,
                                 standardArray: activeType,
                               };
                             } else {
@@ -870,6 +988,7 @@ function SearchInterface(props) {
                                 type: searchType,
                                 subjectArray: activeSubject,
                                 gradeArray: activeEducation,
+                                authorTagsArray: activeAuthorTag,
                                 standardArray: activeType,
                               };
                             }
@@ -1585,6 +1704,7 @@ function SearchInterface(props) {
                               type: searchType,
                               subjectArray: activeSubject || undefined,
                               gradeArray: activeEducation || undefined,
+                              authorTagsArray: activeAuthorTag || undefined,
                               standardArray: activeType || undefined,
                               author: authorName || undefined,
                             };
@@ -1606,6 +1726,7 @@ function SearchInterface(props) {
                               model: activeModel,
                               subjectArray: activeSubject || undefined,
                               gradeArray: activeEducation || undefined,
+                              authorTagsArray: activeAuthorTag || undefined,
                               standardArray: activeType || undefined,
                               author: authorName || undefined,
                             };

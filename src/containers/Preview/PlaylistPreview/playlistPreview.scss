@@ -35,6 +35,14 @@
   .activity-preview-with-playlist-container {
     display: flex;
     position: relative;
+    @media (max-width: 1020px) {
+      width: 100%;
+    }
+    .hideInMobile {
+      @media (max-width: 1020px) {
+        display: none;
+      }
+    }
   }
   // activity meta data
   .activity-metadata {
@@ -151,6 +159,7 @@
 
     #curriki-h5p-wrapper {
       min-height: calc(100vh - 300px);
+      margin: 0 auto;
       @media (max-width: 1020px) {
         min-height: calc(100vh - 25px);
         @media (orientation: portrait) {
@@ -275,9 +284,9 @@
       margin-left: 40px;
       min-height: 100%;
       @media (max-width: 1020px) {
-        height: 100vh;
+        min-height: 100vh;
         padding: 8px;
-        max-width: 216px;
+        max-width: 100%;
       }
       // transition: 0.7s ease-in-out;
     }
@@ -347,6 +356,7 @@
     @media (max-width: 1020px) {
       overflow-y: auto;
       overflow-x: hidden;
+      width: 100%;
     }
     .each-activity {
       border: 1px solid #dddddd;

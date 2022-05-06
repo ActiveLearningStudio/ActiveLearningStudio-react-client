@@ -23,7 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
-  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (window.location.pathname.includes('/shared') && playlistId && projectId) {
@@ -95,7 +95,7 @@ function LtiPlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className="left-activity-view">
+          <div className={openPlaylistMenu ? 'hideInMobile left-activity-view' : 'left-activity-view'}>
             <div className="activity-metadata">
               <Link>
                 <img src={projectIcon} alt="" />
@@ -148,7 +148,7 @@ function LtiPlaylistPreview(props) {
                     <div className="all-activities">
                       {selectedPlaylist.activities?.map((data) => (
                         <div className={currentActivity.title === data.title ? 'each-activity active' : 'each-activity'}>
-                          <Link to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
+                          <Link onClick={() => setPlaylistMenu(!openPlaylistMenu)} to={`/playlist/${selectedPlaylist.id}/activity/${data.id}/preview/lti`}>
                             <div
                               className="thumbnail"
                               style={{

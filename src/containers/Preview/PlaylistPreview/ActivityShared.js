@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,8 @@ let counter = 1;
 let lrs = null;
 
 const ActivityShared = (props) => {
+  const currikiH5PWrapper = useRef(null);
+
   const { match, embed } = props;
   const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
   const lrsAuth = new URLSearchParams(window.location.search).get('auth');
@@ -63,6 +65,18 @@ const ActivityShared = (props) => {
       allowFail: true,
     });
   }, [lrsEndpoint, lrsAuth]);
+
+  useEffect(() => {
+    if (currikiH5PWrapper && currikiH5PWrapper.current) {
+      const aspectRatio = 1.778; // standard aspect ratio of video width and height
+      const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
+      const adjustedWidthVal = currentHeight * aspectRatio;
+      const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
+      if (adjustedWidthVal < parentWidth) {
+        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      }
+    }
+  }, [currikiH5PWrapper]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -178,7 +192,14 @@ const ActivityShared = (props) => {
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
-      <div className="curriki-activity-share">
+      <div
+        className="curriki-activity-share"
+        ref={(el) => {
+          if (el) {
+            currikiH5PWrapper.current = el;
+          }
+        }}
+      >
         {authorized ? (
           <Alert variant="danger"> Activity not found.</Alert>
         ) : (
