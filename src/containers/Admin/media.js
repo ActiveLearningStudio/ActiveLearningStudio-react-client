@@ -1,8 +1,13 @@
 /* eslint-disable */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Field, Formik } from "formik";
+import { Alert } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllMediaSources } from "store/actions/admin";
 
 const Media = () => {
+  const dispatch = useDispatch();
+  const { allMediaSources } = useSelector((state) => state.admin);
   const MyCustomFieldTick = ({ field }) => {
     return (
       <>
@@ -23,6 +28,12 @@ const Media = () => {
       </>
     );
   };
+  useEffect(() => {
+    (async () => {
+      await dispatch(getAllMediaSources());
+    })();
+  }, []);
+  console.log("all", allMediaSources);
   return (
     <>
       <div className="media-section">
@@ -60,181 +71,93 @@ const Media = () => {
               <form onSubmit={handleSubmit}>
                 <div className="sources-section">
                   <h3>Video sources</h3>
-                  <div className="sources-options">
-                    <div className="sources-options-all">
-                      <div className="media-field-checkbox">
-                        <Field
-                          name="videoall"
-                          type="checkbox"
-                          label="Selectall"
-                          component={MyCustomFieldMinus}
-                        />
-                        <span className="span-heading">Select all</span>
-                      </div>
-                    </div>
-                    {/* Option video sources */}
-                    <div className="sources-sub">
-                      <div>
+                  {allMediaSources?.mediaSources?.Video ? (
+                    <div className="sources-options">
+                      <div className="sources-options-all">
                         <div className="media-field-checkbox">
                           <Field
-                            name="mydivice"
+                            name="videoall"
                             type="checkbox"
-                            component={MyCustomFieldTick}
+                            label="Selectall"
+                            component={MyCustomFieldMinus}
                           />
-                          <span
-                            id={values.mydivice && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            My device
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="YouTube"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.YouTube && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            YouTube
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="Kaltura"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.Kaltura && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Kaltura
-                          </span>
+                          <span className="span-heading">Select all</span>
                         </div>
                       </div>
-                      <div className="ml-106">
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="SafariMontage"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.SafariMontage && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Safari Montage
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="BrightCove"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.BrightCove && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            BrightCove
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="Vimeo"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.Vimeo && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Vimeo
-                          </span>
+                      {/* Option video sources */}
+                      <div className="sources-sub">
+                        <div>
+                          {allMediaSources?.mediaSources?.Video?.map(
+                            (source) => {
+                              return (
+                                <div className="media-field-checkbox">
+                                  <Field
+                                    name={source.name}
+                                    type="checkbox"
+                                    component={MyCustomFieldTick}
+                                  />
+                                  <span
+                                    id={source.name && "span-sub-selected"}
+                                    className="span-sub"
+                                  >
+                                    {source.name}
+                                  </span>
+                                </div>
+                              );
+                            }
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <Alert variant="warning">No media Source Found</Alert>
+                  )}
                 </div>
 
                 {/* Image sources */}
                 <div className="sources-section">
                   <h3>Image sources</h3>
-                  <div className="sources-options">
-                    <div className="sources-options-all">
-                      <div className="media-field-checkbox">
-                        <Field
-                          name="imageall"
-                          type="checkbox"
-                          label="Selectall"
-                          component={MyCustomFieldMinus}
-                        />
-                        <span className="span-heading">Select all</span>
-                      </div>
-                    </div>
-                    {/* Option video sources */}
-                    <div className="sources-sub">
-                      <div>
+                  {allMediaSources.mediaSources?.Image ? (
+                    <div className="sources-options">
+                      <div className="sources-options-all">
                         <div className="media-field-checkbox">
                           <Field
-                            name="mydivice_image"
+                            name="imageall"
                             type="checkbox"
-                            component={MyCustomFieldTick}
+                            label="Selectall"
+                            component={MyCustomFieldMinus}
                           />
-                          <span
-                            id={values.mydivice_image && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            My device
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="Pexels"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.Pexels && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Pexels
-                          </span>
-                        </div>
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="SafariMontage_i"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.SafariMontage_i && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Safari Montage
-                          </span>
+                          <span className="span-heading">Select all</span>
                         </div>
                       </div>
-                      <div className="ml-106">
-                        <div className="media-field-checkbox">
-                          <Field
-                            name="others"
-                            type="checkbox"
-                            component={MyCustomFieldTick}
-                          />
-                          <span
-                            id={values.others && "span-sub-selected"}
-                            className="span-sub"
-                          >
-                            Others
-                          </span>
+                      {/* Option video sources */}
+                      <div className="sources-sub">
+                        <div>
+                          {allMediaSources?.mediaSources?.Image?.map(
+                            (source) => {
+                              return (
+                                <div className="media-field-checkbox">
+                                  <Field
+                                    name={source.name}
+                                    type="checkbox"
+                                    component={MyCustomFieldTick}
+                                  />
+                                  <span
+                                    id={source.name && "span-sub-selected"}
+                                    className="span-sub"
+                                  >
+                                    {source.name}
+                                  </span>
+                                </div>
+                              );
+                            }
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <Alert variant="warning">No Image Source Found</Alert>
+                  )}
                 </div>
               </form>
             )}

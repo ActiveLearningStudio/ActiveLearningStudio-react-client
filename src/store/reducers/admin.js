@@ -1,9 +1,9 @@
-import * as actionTypes from '../actionTypes';
-
+/* eslint-disable */
+import * as actionTypes from "../actionTypes";
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
-  activeTab: 'Organization',
+  activeTab: "Organization",
   activityTypes: [],
   activityItems: [],
   usersReport: [],
@@ -27,6 +27,7 @@ const INITIAL_STATE = {
   education_level: null,
   author_tags: null,
   activity_layouts: null,
+  allMediaSources: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -72,7 +73,9 @@ export default (state = INITIAL_STATE, action) => {
         editUser: action.payload,
       };
     case actionTypes.LOAD_RESOURCE_ITEMS_REQUEST:
-      const refreshActivityItems = state.activityItems.data.filter((data) => data.id !== action.payload);
+      const refreshActivityItems = state.activityItems.data.filter(
+        (data) => data.id !== action.payload
+      );
       return {
         ...state,
         activityItems: { ...state.activityItems, data: refreshActivityItems },
@@ -180,10 +183,15 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: [...state.allbrightCove.data, action.payload],
+        },
       };
     case actionTypes.DEL_BRIGHTCOVE:
-      const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
+      const newBrigthList = state.allbrightCove?.data.filter(
+        (data) => data.id !== action.payload
+      );
       return {
         ...state,
         allbrightCove: { ...state.allbrightCove, data: newBrigthList },
@@ -203,6 +211,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload,
+      };
+    case actionTypes.GET_ALL_MEDIA_SOURCE:
+      return {
+        ...state,
+        allMediaSources: action.payload,
       };
     default:
       return state;
