@@ -28,7 +28,7 @@ export default function useH5PPreviewResizer(currikiH5PWrapper) {
           if (adjustedWidthVal < parentWidth) {
             currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
           } else {
-            currikiH5PWrapper.current.style.width = `${parentWidth + h5pVideoContentHeightDiff}px`; // eslint-disable-line no-param-reassign
+            currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
           }
           H5P.jQuery('#curriki-h5p-wrapper .h5p-iframe')[0].contentWindow.H5P.instances[0].trigger('resize'); // eslint-disable-line no-undef
           setAdjustedWidth(adjustedWidthVal);
@@ -39,6 +39,8 @@ export default function useH5PPreviewResizer(currikiH5PWrapper) {
           const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
           if (adjustedWidthVal < parentWidth) {
             currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+          } else {
+            currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
           }
           H5P.instances[0].trigger('resize'); // eslint-disable-line no-undef
           setAdjustedWidth(adjustedWidthVal);
