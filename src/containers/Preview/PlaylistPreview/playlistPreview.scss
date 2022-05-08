@@ -35,6 +35,14 @@
   .activity-preview-with-playlist-container {
     display: flex;
     position: relative;
+    @media (max-width: 1020px) {
+      width: 100%;
+    }
+    .hideInMobile {
+      @media (max-width: 1020px) {
+        display: none;
+      }
+    }
   }
   // activity meta data
   .activity-metadata {
@@ -143,14 +151,15 @@
 
   .left-activity-view {
     width: 100%;
-    padding: 24px 100px 32px 24px;
+    padding: 24px 0px 32px 24px;
 
     @media (max-width: 1020px) {
-      padding: 12px 22px 12px 12px;
+      padding: 12px 0px 12px 12px;
     }
 
     #curriki-h5p-wrapper {
       min-height: calc(100vh - 300px);
+      margin: 0 auto;
       @media (max-width: 1020px) {
         min-height: calc(100vh - 25px);
         @media (orientation: portrait) {
@@ -173,18 +182,18 @@
     top: 27px;
     border-radius: 50px 0px 0px 50px;
     @media (max-width: 1020px) {
-      left: -36px;
+      left: 13px;
     }
   }
 
   .all-activities-of-playlist {
-    position: absolute;
+    position: relative;
     right: 0;
-    height: 100%;
-    overflow-y: auto;
+    //  height: 100%;
+    // overflow-y: auto;
 
     @media (max-width: 1020px) {
-      position: absolute;
+      position: relative;
       right: 0;
       overflow-y: initial;
     }
@@ -202,7 +211,7 @@
       text-align: center;
       cursor: pointer;
       @media (max-width: 1020px) {
-        left: -27px;
+        left: 20px;
       }
     }
 
@@ -258,6 +267,8 @@
       background-position: center;
       border-radius: 50%;
       margin-right: 12px;
+      display: flex;
+      flex-shrink: 0;
       @media (max-width: 1020px) {
         width: 32px;
         height: 32px;
@@ -271,10 +282,11 @@
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       position: relative;
       margin-left: 40px;
+      min-height: 100%;
       @media (max-width: 1020px) {
-        height: 100vh;
+        min-height: 100vh;
         padding: 8px;
-        max-width: 216px;
+        max-width: 100%;
       }
       // transition: 0.7s ease-in-out;
     }
@@ -287,7 +299,7 @@
       padding: 0px 12px;
       box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
       margin-left: 40px;
-
+      height: 100%;
       .each-activity {
         display: flex;
         justify-content: center;
@@ -301,11 +313,12 @@
         margin: 0;
         .thumbnail {
           margin: 0;
+          flex-shrink: inherit;
         }
       }
       @media (max-width: 1020px) {
         height: 100vh;
-        position: absolute;
+        position: relative;
         right: 0;
         max-width: 10px;
         padding: 0px 5px;
@@ -343,6 +356,7 @@
     @media (max-width: 1020px) {
       overflow-y: auto;
       overflow-x: hidden;
+      width: 100%;
     }
     .each-activity {
       border: 1px solid #dddddd;

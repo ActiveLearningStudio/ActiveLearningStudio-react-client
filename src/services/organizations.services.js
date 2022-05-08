@@ -120,8 +120,9 @@ const removeUserFromOrganization = (subOrgId, body) => httpService
     Promise.reject(err.response.data);
   });
 
-const searchUserInOrganization = (id, query, page, role) => httpService
-  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}${page ? `&page=${page}` : ''}${role ? `&role=${role}` : ''}`)
+const searchUserInOrganization = (id, query, page, role, size, column, orderBy) => httpService
+  .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}${page ? `&page=${page}` : ''}${role ? `&role=${role}` : ''}
+  ${size ? `&size=${size}` : ''}${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
