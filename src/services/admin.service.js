@@ -522,7 +522,7 @@ const getSubjects = (subOrgId, page, size, query, column, orderBy) =>
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/subjects${
         page ? `?page=${page}` : ""
-      }${size ? `&size=${size}` : ""}${
+      }${size ? `&size=${size}` : `?skipPagination=${true}`}${
         query ? `&query=${query.replace(/#/, "%23")}` : ""
       }
   ${column ? `&order_by_column=${column}` : ""}${
@@ -566,7 +566,7 @@ const getEducationLevel = (subOrgId, page, size, query, column, orderBy) =>
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/education-levels${
         page ? `?page=${page}` : ""
-      }${size ? `&size=${size}` : ""}${
+      }${size ? `&size=${size}` : `?skipPagination=${true}`}${
         query ? `&query=${query.replace(/#/, "%23")}` : ""
       }
   ${column ? `&order_by_column=${column}` : ""}${
@@ -613,7 +613,7 @@ const getAuthorTag = (subOrgId, page, size, query, column, orderBy) =>
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/author-tags${
         page ? `?page=${page}` : ""
-      }${size ? `&size=${size}` : ""}${
+      }${size ? `&size=${size}` : `?skipPagination=${true}`}${
         query ? `&query=${query.replace(/#/, "%23")}` : ""
       }
   ${column ? `&order_by_column=${column}` : ""}${
@@ -739,7 +739,17 @@ const getOrgMediaSource = (orgId) =>
     .catch((err) => {
       Promise.reject(err.response.data);
     });
-
+//update  org media source
+const updateOrgMediaSource = (subOrgId, media_source_ids) =>
+  httpService
+    .put(`${apiVersion}/suborganizations/${subOrgId}/update-media-sources`, {
+      media_source_ids: media_source_ids,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject();
+    });
 export default {
   addUserInOrganization,
   editUserInOrganization,
@@ -799,4 +809,5 @@ export default {
   teamsActionAdminPanel,
   getAllMediaSources,
   getOrgMediaSource,
+  updateOrgMediaSource,
 };

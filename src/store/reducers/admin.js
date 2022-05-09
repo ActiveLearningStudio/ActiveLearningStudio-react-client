@@ -223,6 +223,25 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         orgMediaSources: action.payload,
       };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: state.allMediaSources?.media?.Video?.map(
+          (source, counter) => {
+            if (source.id === action.payload[counter]) {
+              return source;
+            }
+          }
+        ),
+        orgMediaSources: [
+          ...orgMediaSources,
+          state.allMediaSources?.media?.Image?.map((source, counter) => {
+            if (source.id === action.payload[counter]) {
+              return source;
+            }
+          }),
+        ],
+      };
     default:
       return state;
   }

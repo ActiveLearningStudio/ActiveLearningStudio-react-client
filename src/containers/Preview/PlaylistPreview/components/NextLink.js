@@ -7,26 +7,38 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function NextLink(props) {
-  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists } = props;
+  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists, viewType } = props;
 
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const nextPlaylist = currentPlaylistIndex < allPlaylists.length - 1 ? allPlaylists[currentPlaylistIndex + 1] : null;
   const organization = useSelector((state) => state.organization);
+  console.log('nextPlaylist', nextPlaylist);
   let nextLink = '#';
   if (nextResource) {
     nextLink = `/playlist/${playlistId}/activity/${nextResource.id}/preview`;
   } else if (nextPlaylist) {
-    nextLink = `/playlist/${nextPlaylist.id}/preview`;
+    nextLink = `/playlist/${nextPlaylist.id}/activity/${nextPlaylist.activities[0]?.id}/preview`;
   }
   if (nextLink !== '#') {
     if (showLti) {
-      nextLink += '/lti';
+      if (viewType === 'activity') {
+        nextLink += '/lti?view=activity';
+      } else {
+        nextLink += '/lti';
+      }
     } else {
       nextLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${nextLink}`;
 
       if (shared) {
         nextLink += '/shared';
       }
+      if (viewType === 'activity') {
+        nextLink += '?view=activity';
+      }
+    }
+  } else {
+    if (viewType === 'activity') {
+      nextLink += '?view=activity';
     }
   }
 

@@ -168,7 +168,9 @@
       }
     }
   }
-  //all-activities-of-playlist
+  .left-activity-view.extra-padding {
+    padding: 24px 24px 32px 24px;
+  } //all-activities-of-playlist
 
   .all-activities-of-playlist::before {
     box-shadow: -4px 5px 3px 0px #43434333;

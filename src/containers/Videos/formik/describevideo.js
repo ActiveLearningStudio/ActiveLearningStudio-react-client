@@ -28,6 +28,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const parser = new DOMParser()
 
   const formatApiData = (data) => {
     let ids = [];
@@ -198,7 +199,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           setVideoTitle(e.target.value);
                         }}
                         onBlur={handleBlur}
-                        value={values.title}
+                        value={parser.parseFromString(values.title, 'text/html').body.textContent}
                       />
                     </div>
                     <div className="error" style={{ color: 'red' }}>
