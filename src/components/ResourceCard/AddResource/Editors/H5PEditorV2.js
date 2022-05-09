@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
+import { createIndResourceAction } from 'store/actions/indActivities';
 import { edith5pVideoActivity } from 'store/actions/videos';
 import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
@@ -30,6 +31,7 @@ const H5PEditor = (props) => {
     settingId,
     reverseType,
     submitForm,
+    activityPreview,
   } = props;
 
   const uploadFile = useRef();
@@ -63,13 +65,13 @@ const H5PEditor = (props) => {
 
   const formatSelectBoxData = (data) => {
     let ids = [];
-    if(data.length > 0){
-      data?.map(datum=>{
+    if (data.length > 0) {
+      data?.map((datum) => {
         ids.push(datum.value);
       });
     }
     return ids;
-  }
+  };
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
@@ -90,7 +92,11 @@ const H5PEditor = (props) => {
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        if (activityPreview) {
+          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide));
+        } else {
+          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        }
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }

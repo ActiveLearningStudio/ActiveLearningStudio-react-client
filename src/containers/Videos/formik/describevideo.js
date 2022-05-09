@@ -16,7 +16,7 @@ import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admi
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
+const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview, activityPreview }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
   const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
@@ -28,7 +28,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
-  const parser = new DOMParser()
+  const parser = new DOMParser();
 
   const formatApiData = (data) => {
     let ids = [];
@@ -106,6 +106,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
           setModalShow(false);
         }}
         type={playlistPreview ? '' : 'videoModal'}
+        activityPreview={activityPreview}
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}
@@ -158,9 +159,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               initialValues={{
                 title: editVideo ? editVideo.title : '',
                 description: editVideo ? editVideo.description || undefined : undefined,
-                author_tag_id: selecteAuthorTags || "",
-                education_level_id: selectedEducationLevel ||"",
-                subject_id: selectedSubjects || "",
+                author_tag_id: selecteAuthorTags || '',
+                education_level_id: selectedEducationLevel || '',
+                subject_id: selectedSubjects || '',
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -224,11 +225,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="subject_id"
                           hideSearch
                           options={subjects}
-                          onChange={(e)=>{
-                            setFieldValue("subject_id", e)
+                          onChange={(e) => {
+                            setFieldValue('subject_id', e);
                           }}
                           value={values.subject_id}
-                          />
+                        />
                       </div>
 
                       <div className="formik-select mr-16">
@@ -237,9 +238,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
-                          onChange={(e)=>{
-                            setFieldValue("education_level_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('education_level_id', e);
+                          }}
                           value={values.education_level_id}
                         />
                       </div>
@@ -250,11 +251,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="author_tag_id"
                           hideSearch
                           options={authorTags}
-                          onChange={(e)=>{
-                            setFieldValue("author_tag_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('author_tag_id', e);
+                          }}
                           value={values.author_tag_id}
-                          />
+                        />
                       </div>
                     </div>
 
