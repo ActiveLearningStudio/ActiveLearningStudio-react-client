@@ -23,7 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
-  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
   const query = QueryString.parse(window.location.search);
 
   useEffect(() => {

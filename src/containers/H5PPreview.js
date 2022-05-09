@@ -192,6 +192,8 @@ const H5PPreview = (props) => {
       const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
       if (adjustedWidthVal < parentWidth) {
         currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      } else {
+        currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
       }
     }
   }, [currikiH5PWrapper]);
