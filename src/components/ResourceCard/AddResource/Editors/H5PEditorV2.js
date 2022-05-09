@@ -49,9 +49,11 @@ const H5PEditor = (props) => {
   }, [formData]);
 
   useEffect(() => {
+
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
       let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, settingId);
+      let apiSettingId = settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null;
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, apiSettingId);
     } else {
       loadH5pSettings();
     }
@@ -63,8 +65,8 @@ const H5PEditor = (props) => {
 
   const formatSelectBoxData = (data) => {
     let ids = [];
-    if(data.length > 0){
-      data?.map(datum=>{
+    if (data.length > 0) {
+      data?.map(datum => {
         ids.push(datum.value);
       });
     }
@@ -118,7 +120,7 @@ const H5PEditor = (props) => {
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}></div>
         </div>
 
-        <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
+        <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
 
@@ -145,7 +147,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                    // style={{ display: 'none' }}
+                  // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
