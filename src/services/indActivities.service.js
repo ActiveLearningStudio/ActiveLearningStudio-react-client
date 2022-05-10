@@ -23,7 +23,17 @@ const allIndActivity = (subOrgId) =>
       return Promise.reject(err.response.data);
     });
 
+const deleteIndActivity = (subOrgId, id) =>
+  httpService
+    .remove(`/${apiVersion}/suborganizations/${subOrgId}/independent-activities/${id}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
   create,
   allIndActivity,
+  deleteIndActivity,
 };

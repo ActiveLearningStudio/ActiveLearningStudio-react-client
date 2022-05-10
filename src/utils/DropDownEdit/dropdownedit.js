@@ -10,7 +10,7 @@ import { deleteVideo, cloneh5pvideo } from 'store/actions/videos';
 
 import './dropdownedit.scss';
 
-const DropDownEdit = ({ iconColor, data }) => {
+const DropDownEdit = ({ iconColor, data, activities }) => {
   const IconColor = iconColor ? iconColor : '#084892';
   const dispatch = useDispatch();
   return (

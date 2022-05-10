@@ -265,6 +265,7 @@ const Index = ({ activities }) => {
                                           title={activityData.title}
                                           data={activityData}
                                           className="card-spacing"
+                                          activities={activities}
                                         />
                                       </>
                                     );

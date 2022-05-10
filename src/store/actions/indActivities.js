@@ -76,3 +76,18 @@ export const allIndActivity = (orgId) => async (dispatch) => {
     });
   }
 };
+
+export const deleteIndActivity = (activityId) => async (dispatch) => {
+  const allActivities = await indResourceService.deleteIndActivity(activityId);
+  // if (allActivities['independent-activities']) {
+  //   dispatch({
+  //     type: actionTypes.ALL_IND_ACTIVITIES,
+  //     payload: allActivities['independent-activities'],
+  //   });
+  // } else {
+  //   dispatch({
+  //     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+  //     payload: [],
+  //   });
+  // }
+};

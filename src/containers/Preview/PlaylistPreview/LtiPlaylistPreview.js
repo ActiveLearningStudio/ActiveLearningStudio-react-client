@@ -23,7 +23,7 @@ const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 function LtiPlaylistPreview(props) {
   const { playlist, playlistId, activityId, projectId, showLti, loadLtiPlaylist, loadSharedPlaylist, loadProjectPlaylists, searchPreviewPlaylist, setCollapsed, collapsed } = props;
   const { activeOrganization } = useSelector((state) => state.organization);
-  const [openPlaylistMenu, setPlaylistMenu] = useState(true);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
   const query = QueryString.parse(window.location.search);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ function LtiPlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className={openPlaylistMenu ? (query.view === 'activity' ? 'left-activity-view extra-padding' : 'hideInMobile left-activity-view') : 'left-activity-view'}>
+          <div className={!openPlaylistMenu ? (query.view === 'activity' ? 'left-activity-view extra-padding' : 'hideInMobile left-activity-view') : 'left-activity-view'}>
             <div className="activity-metadata">
               <Link>
                 <img src={projectIcon} alt="" />
