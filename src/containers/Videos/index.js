@@ -22,6 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DescribeVideo from './formik/describevideo';
 import { useEffect } from 'react';
 import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
+import { allIndActivity } from 'store/actions/indActivities';
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
@@ -34,6 +35,7 @@ const Index = ({ activities }) => {
 
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { allActivities } = useSelector((state) => state.activities);
   const { allVideos } = videos;
   const [searchQuery, setSearchQuery] = useState('');
   const [ActivePage, setActivePage] = useState(1);
@@ -44,7 +46,11 @@ const Index = ({ activities }) => {
     if (activeOrganization) {
       dispatch(getAllVideos(activeOrganization.id));
     }
+    if (activeOrganization && activities) {
+      dispatch(allIndActivity(activeOrganization.id));
+    }
   }, [activeOrganization]);
+
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
@@ -154,7 +160,7 @@ const Index = ({ activities }) => {
                 </div>
                 <div className="my-interactive-videos">
                   <Tabs className="main-tabs top-tabs" defaultActiveKey="default" id="uncontrolled-tab-example">
-                    <Tab eventKey="default" title="My videos">
+                    <Tab eventKey="default" title={activities ? 'My Activities' : 'My videos'}>
                       <div className="video-cards-top-search-filter">
                         <div className="search-bar">
                           <input
@@ -247,21 +253,37 @@ const Index = ({ activities }) => {
                         <>
                           <div className="video-cards-contianer">
                             <div className="video-cards-detail">
-                              {allVideos?.data?.map((video) => {
-                                return (
-                                  <>
-                                    <AddVideoCard
-                                      setModalShow={setModalShow}
-                                      setCurrentActivity={setCurrentActivity}
-                                      setScreenStatus={setScreenStatus}
-                                      setOpenVideo={setOpenVideo}
-                                      title={video.title}
-                                      data={video}
-                                      className="card-spacing"
-                                    />
-                                  </>
-                                );
-                              })}
+                              {activities
+                                ? allActivities?.map((activityData) => {
+                                    return (
+                                      <>
+                                        <AddVideoCard
+                                          setModalShow={setModalShow}
+                                          setCurrentActivity={setCurrentActivity}
+                                          setScreenStatus={setScreenStatus}
+                                          setOpenVideo={setOpenVideo}
+                                          title={activityData.title}
+                                          data={activityData}
+                                          className="card-spacing"
+                                        />
+                                      </>
+                                    );
+                                  })
+                                : allVideos?.data?.map((video) => {
+                                    return (
+                                      <>
+                                        <AddVideoCard
+                                          setModalShow={setModalShow}
+                                          setCurrentActivity={setCurrentActivity}
+                                          setScreenStatus={setScreenStatus}
+                                          setOpenVideo={setOpenVideo}
+                                          title={video.title}
+                                          data={video}
+                                          className="card-spacing"
+                                        />
+                                      </>
+                                    );
+                                  })}
                             </div>
                             {allVideos?.data && (
                               <div style={{}} className="admin-panel ">

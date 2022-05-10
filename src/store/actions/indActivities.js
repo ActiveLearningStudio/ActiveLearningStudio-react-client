@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
 import indResourceService from 'services/indActivities.service';
 import store from '../index';
-// import * as actionTypes from '../actionTypes';
+import * as actionTypes from '../actionTypes';
 
 export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -41,19 +41,38 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
+      organization_visibility_type_id: 1,
     };
 
-    await indResourceService.create(activeOrganization.id, activity);
+    const result = await indResourceService.create(activeOrganization.id, activity);
     toast.dismiss();
     toast.success('Activity Created', {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-
+    dispatch({
+      type: actionTypes.ADD_IND_ACTIVITIES,
+      payload: result['independent-activity'],
+    });
     hide();
     dispatch({
-      type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
       payload: '',
+    });
+  }
+};
+
+export const allIndActivity = (orgId) => async (dispatch) => {
+  const allActivities = await indResourceService.allIndActivity(orgId);
+  if (allActivities['independent-activities']) {
+    dispatch({
+      type: actionTypes.ALL_IND_ACTIVITIES,
+      payload: allActivities['independent-activities'],
+    });
+  } else {
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: [],
     });
   }
 };
