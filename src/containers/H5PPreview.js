@@ -8,7 +8,7 @@ import gifLoader from 'assets/images/276.gif';
 import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
 import videoServices from 'services/videos.services';
 import * as xAPIHelper from 'helpers/xapi';
-import useH5PPreviewResizer from "../helpers/useH5PPreviewResizer";
+import useH5PPreviewResizer from '../helpers/useH5PPreviewResizer';
 
 let counter = 0;
 
@@ -206,17 +206,28 @@ const H5PPreview = (props) => {
   return (
     <>
       {!loading ? (
-        <div id="curriki-h5p-wrapper">
+        <div
+          id="curriki-h5p-wrapper"
+          ref={(el) => {
+            if (el) {
+              currikiH5PWrapper.current = el;
+            }
+          }}
+          className="interactivevideoreferce"
+        >
           <div className="loader_gif" style={{ color: 'black' }}>
             Unable to Load Activity
           </div>
         </div>
       ) : (
-        <div id="curriki-h5p-wrapper" ref={(el) => {
-          if (el) {
-            currikiH5PWrapper.current = el;
-          }
-        }}>
+        <div
+          id="curriki-h5p-wrapper"
+          ref={(el) => {
+            if (el) {
+              currikiH5PWrapper.current = el;
+            }
+          }}
+        >
           <div className="loader_gif">
             <img src={gifLoader} alt="" />
           </div>
