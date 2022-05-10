@@ -3,8 +3,8 @@ import httpService from './http.service';
 
 const { apiVersion } = config;
 
-const getAll = (projectId, skipContent) => httpService
-  .get(`/${apiVersion}/projects/${projectId}/playlists`, {}, { skipContent })
+const getAll = (projectId, skipContent, signal) => httpService
+  .get(`/${apiVersion}/projects/${projectId}/playlists`, {}, { skipContent }, signal)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
