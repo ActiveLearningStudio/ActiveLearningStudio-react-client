@@ -6,7 +6,12 @@ export default function useH5PPreviewResizer(currikiH5PWrapper) {
   useEffect(() => {
     function calculateWidth() {
       var H5P; // eslint-disable-line no-var
-      if (currikiH5PWrapper && currikiH5PWrapper.current && H5P !== undefined) { // eslint-disable-line no-undef
+      const h5pLibData = window.H5PIntegration ? Object.values(window.H5PIntegration.contents) : null;
+      const h5pLib = Array.isArray(h5pLibData) && h5pLibData.length > 0 ? h5pLibData[0].library.split(' ')[0] : null;
+      const resizeFor = ['H5P.InteractiveVideo', 'H5P.CurrikiInteractiveVideo', 'H5P.BrightcoveInteractiveVideo'];
+      const isActvityResizeable = resizeFor.find((lib) => lib === h5pLib) ? true : false; // eslint-disable-line no-unneeded-ternary
+
+      if (isActvityResizeable && currikiH5PWrapper && currikiH5PWrapper.current && H5P !== undefined) { // eslint-disable-line no-undef
         const aspectRatio = 1.778; // standard aspect ratio of video width and height
 
         // if activity is iframe based

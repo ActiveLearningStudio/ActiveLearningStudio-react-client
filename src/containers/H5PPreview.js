@@ -185,7 +185,12 @@ const H5PPreview = (props) => {
   }, [activityState.h5pObject]);
 
   useEffect(() => {
-    if (currikiH5PWrapper && currikiH5PWrapper.current) {
+    const h5pLibData = activityState.h5pObject && window.H5PIntegration ? Object.values(window.H5PIntegration.contents) : null;
+    const h5pLib = Array.isArray(h5pLibData) && h5pLibData.length > 0 ? h5pLibData[0].library.split(' ')[0] : null;
+    const resizeFor = ['H5P.InteractiveVideo', 'H5P.CurrikiInteractiveVideo', 'H5P.BrightcoveInteractiveVideo'];
+    const isActvityResizeable = resizeFor.find(lib => lib === h5pLib) ? true : false;
+
+    if (currikiH5PWrapper && currikiH5PWrapper.current && isActvityResizeable) {
       const aspectRatio = 1.778; // standard aspect ratio of video width and height
       const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
       const adjustedWidthVal = currentHeight * aspectRatio;
@@ -196,7 +201,7 @@ const H5PPreview = (props) => {
         currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
       }
     }
-  }, [currikiH5PWrapper]);
+  }, [currikiH5PWrapper, activityState.h5pObject]);
 
   return (
     <>
