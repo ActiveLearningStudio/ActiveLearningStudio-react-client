@@ -25,8 +25,8 @@ const create = (project, subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const get = (id, subOrgId) => httpService
-  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`)
+const get = (id, subOrgId, signal) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`, {}, {}, signal)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
