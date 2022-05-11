@@ -1,0 +1,48 @@
+.team-selector {
+  background-color: #F7FAFF;
+  padding: 1em;
+}
+
+.team-selector .form-group {
+  margin-bottom: auto;
+}
+
+.team-selector .form-group label {
+  padding-right: 2em;
+  color: #084892;
+  font-size: medium;
+}
+
+.team-selector .form-group select {
+  width: auto;
+  display: inline;
+  border-color: #084892 !important;
+  color: #084892 !important;
+}
+
+.team-container {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-bottom: solid 1px #DDDDDD;
+}
+
+.team-container h1 {
+  color: #084892;
+  font-size: larger;
+}
+
+.team-container p {
+  color: #767676 !important;
+  overflow: hidden;
+}
+
+.team-container button {
+  background-color: #F7FAFF;
+  color: #2E68BF;
+}
+
+.projects-container {
+  border: solid 1px #DDDDDD;
+  border-radius: 8px;
+  padding: 1em;
+}

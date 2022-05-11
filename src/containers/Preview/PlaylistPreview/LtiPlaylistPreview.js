@@ -97,7 +97,7 @@ function LtiPlaylistPreview(props) {
         <div className="activity-preview-with-playlist-container">
           {/* <div className={`activity-bg left-vdo${collapsed ? ' collapsed' : ''}`}> */}
 
-          <div className={openPlaylistMenu ? (query.view === 'activity' ? 'left-activity-view extra-padding' : 'hideInMobile left-activity-view') : 'left-activity-view'}>
+          <div className={!openPlaylistMenu ? (query.view === 'activity' ? 'left-activity-view extra-padding' : ' left-activity-view') : ' hideInMobile left-activity-view'}>
             <div className="activity-metadata">
               <Link>
                 <img src={projectIcon} alt="" />
