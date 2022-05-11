@@ -162,7 +162,7 @@ class PlaylistCardDropdown extends React.Component {
                 to="#"
                 onClick={() => {
                   const protocol = `${window.location.href.split('/')[0]}//`;
-                  const url = `${protocol + window.location.host}/project/${playlist?.project?.id}/playlist/${playlist.id}/shared`;
+                  const url = `${protocol + window.location.host}/playlist/${playlist.id}/activity/${playlist.activities[0]?.id}/preview/lti`;
                   if (!playlist.shared) {
                     Swal.showLoading();
                     enablePlaylistShared(playlist?.project.id, playlist.id);

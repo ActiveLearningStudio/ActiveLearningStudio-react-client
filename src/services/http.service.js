@@ -16,9 +16,10 @@ function getAuthHeader() {
   return authHeader;
 }
 
-function get(url, headers = {}, params = {}) {
+function get(url, headers = {}, params = {}, signal = null) {
   return http.get(url, {
     params,
+    signal,
     headers: { ...getAuthHeader(), ...headers },
   });
 }
