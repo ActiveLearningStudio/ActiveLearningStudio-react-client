@@ -8,6 +8,7 @@ import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
 import videoServices from 'services/videos.services';
+import intActivityServices from 'services/indActivities.service';
 
 import './addvideocard.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
@@ -67,27 +68,40 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
                   autoClose: 10000,
                   icon: '',
                 });
-                const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
-                if (result.activity?.brightcoveData) {
+                if (activities) {
+                  const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
+                  if (result?.['independent-activity']) {
+                    toast.dismiss();
+                    dispatch({
+                      type: 'SET_ACTIVE_VIDEO_SCREEN',
+                      payload: result['independent-activity'],
+                    });
+                    setOpenVideo(true);
+                    setScreenStatus('DescribeVideo');
+                  }
+                } else {
+                  const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                  if (result.activity?.brightcoveData) {
+                    dispatch({
+                      type: 'EDIT_CMS_SCREEN',
+                      payload: result.activity?.brightcoveData.accountId,
+                    });
+                    window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                  }
+
+                  toast.dismiss();
                   dispatch({
-                    type: 'EDIT_CMS_SCREEN',
-                    payload: result.activity?.brightcoveData.accountId,
+                    type: 'ADD_VIDEO_URL',
+                    platform: '',
                   });
-                  window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                  dispatch({
+                    type: 'SET_ACTIVE_VIDEO_SCREEN',
+                    payload: result.activity,
+                  });
+
+                  setOpenVideo(true);
+                  setScreenStatus('AddVideo');
                 }
-
-                toast.dismiss();
-                dispatch({
-                  type: 'ADD_VIDEO_URL',
-                  platform: '',
-                });
-                dispatch({
-                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                  payload: result.activity,
-                });
-
-                setOpenVideo(true);
-                setScreenStatus('AddVideo');
               }}
             >
               <FontAwesomeIcon icon={faEdit} style={{ marginRight: '6px' }} color={primaryColor} />

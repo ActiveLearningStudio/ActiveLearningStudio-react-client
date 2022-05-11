@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { faEllipsisV, faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { deleteVideo, cloneh5pvideo } from 'store/actions/videos';
+import { deleteIndActivity } from 'store/actions/indActivities';
 
 import './dropdownedit.scss';
 
@@ -48,13 +49,17 @@ const DropDownEdit = ({ iconColor, data, activities }) => {
             onClick={() => {
               Swal.fire({
                 title: 'Are you sure you want to delete this activity?',
-                showDenyButton: true,
+
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 denyButtonText: 'No',
               }).then((result) => {
                 if (result.isConfirmed) {
-                  dispatch(deleteVideo(data.id));
+                  if (activities) {
+                    dispatch(deleteIndActivity(data.id));
+                  } else {
+                    dispatch(deleteVideo(data.id));
+                  }
                 }
               });
             }}

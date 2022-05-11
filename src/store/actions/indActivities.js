@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
 import resourceService from 'services/resource.service';
 import indResourceService from 'services/indActivities.service';
 import store from '../index';
@@ -78,16 +80,42 @@ export const allIndActivity = (orgId) => async (dispatch) => {
 };
 
 export const deleteIndActivity = (activityId) => async (dispatch) => {
-  const allActivities = await indResourceService.deleteIndActivity(activityId);
-  // if (allActivities['independent-activities']) {
-  //   dispatch({
-  //     type: actionTypes.ALL_IND_ACTIVITIES,
-  //     payload: allActivities['independent-activities'],
-  //   });
-  // } else {
-  //   dispatch({
-  //     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-  //     payload: [],
-  //   });
-  // }
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const allActivities = await indResourceService.deleteIndActivity(activeOrganization.id, activityId);
+  if (allActivities.message) {
+    Swal.fire({
+      icon: 'success',
+      html: allActivities.message,
+    });
+    dispatch({
+      type: actionTypes.DEL_IND_ACTIVITIES,
+      payload: activityId,
+    });
+  }
+};
+
+export const editIndActivityItem = (activityId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
+  const editActivities = await indResourceService.editIndActivityItem(activeOrganization.id, data, activityId);
+  toast.dismiss();
+  if (editActivities) {
+    dispatch({
+      type: actionTypes.EDIT_IND_ACTIVITIES,
+      payload: editActivities['independent-activity'],
+    });
+  }
 };

@@ -12,6 +12,22 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allActivities: action.payload,
       };
+    case actionTypes.DEL_IND_ACTIVITIES:
+      return {
+        ...state,
+        allActivities: state.allActivities.filter((data) => data.id !== action.payload),
+      };
+    case actionTypes.EDIT_IND_ACTIVITIES:
+      return {
+        ...state,
+        allActivities: state.allActivities.map((data) => {
+          if (data.id === action.payload.id) {
+            return action.payload;
+          } else {
+            return data;
+          }
+        }),
+      };
     case actionTypes.ADD_IND_ACTIVITIES:
       if (state.allActivities?.length) {
         return {

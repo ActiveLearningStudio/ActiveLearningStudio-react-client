@@ -25,15 +25,33 @@ const allIndActivity = (subOrgId) =>
 
 const deleteIndActivity = (subOrgId, id) =>
   httpService
-    .remove(`/${apiVersion}/suborganizations/${subOrgId}/independent-activities/${id}`)
+    .remove(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
 
+const editIndActivityItem = (subOrgId, body, id) =>
+  httpService
+    .put(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`, body)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const intActivityDetail = (subOrgId, id) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${id}/detail`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
 export default {
   create,
   allIndActivity,
   deleteIndActivity,
+  editIndActivityItem,
+  intActivityDetail,
 };

@@ -43,7 +43,7 @@ const Index = ({ activities }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (activeOrganization) {
+    if (activeOrganization && !activities) {
       dispatch(getAllVideos(activeOrganization.id));
     }
     if (activeOrganization && activities) {
@@ -79,7 +79,9 @@ const Index = ({ activities }) => {
           />
           <div className="inner-form-content">
             {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
-            {screenStatus == 'DescribeVideo' && <DescribeVideo setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />}
+            {screenStatus == 'DescribeVideo' && (
+              <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />
+            )}
           </div>
         </div>
       )}
@@ -222,7 +224,7 @@ const Index = ({ activities }) => {
                             <span>Filter</span>
                           </div> */}
                       </div>
-                      {!allVideos?.data?.length ? (
+                      {!allVideos?.data?.length && false ? (
                         <>
                           <div className="video-default-contianer">
                             <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
