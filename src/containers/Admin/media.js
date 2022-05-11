@@ -81,14 +81,29 @@ const Media = () => {
                             name="videoall"
                             type="checkbox"
                             label="Selectall"
+                            checked={
+                              orgVideoSource?.length === 6 ? true : false
+                            }
                             onChange={(e) => {
                               console.log("e", e.target.checked);
                               if (e.target.checked) {
-                                setorgVideoSource([]);
+                                // setorgVideoSource([]);
                                 setorgVideoSource(allVideoSource);
+                                console.log("e", orgVideoSource);
                               } else {
                                 setorgVideoSource([]);
+                                console.log("e", orgVideoSource);
                               }
+                              let media_ids = [];
+                              orgVideoSource?.map((orgSource) => {
+                                return media_ids.push(orgSource.id);
+                              });
+                              dispatch(
+                                updateOrganizationMedaiSource(
+                                  activeOrganization?.id,
+                                  media_ids
+                                )
+                              );
                             }}
                           />
                           <span className="span-heading">Select all</span>
