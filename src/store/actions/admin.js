@@ -230,3 +230,12 @@ export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_colu
   });
   return result;
 };
+
+export const getMediaSources = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getMediaSources(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_MEDIA_SOURCES,
+    payload: result,
+  });
+  return result;
+};

@@ -4,7 +4,7 @@ import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import TabsHeading from 'utils/Tabs/tabs';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
 import AddVideoTube from 'assets/images/svg/youtube.svg';
 import AddKaltura from 'assets/images/kaltura.jpg';
@@ -15,13 +15,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import videoService from 'services/videos.services';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
-import { useSelector } from 'react-redux';
 import UploadImg from 'assets/images/upload1.png';
 import Uploadicon from 'assets/images/uploadBtnIcon.png';
 import Swal from 'sweetalert2';
 import 'utils/uploadselectfile/uploadfile.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { getMediaSources } from 'store/actions/admin';
+
 const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
+  const dispatch = useDispatch();
+  const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
   const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
@@ -30,6 +33,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('Mydevice');
+  const [mediaSources, setMediaSources] = useState([]);
 
   const { editVideo } = useSelector((state) => state.videos);
 
@@ -38,6 +42,15 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
       setActiveKey(editVideo?.source_type);
     }
   }, [editVideo]);
+
+  useEffect(()=>{
+    if(mediaSources.length==0){
+      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
+      result.then((data)=>{
+        setMediaSources(data.mediaSources);
+      });
+    }
+  }, [mediaSources]);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
@@ -163,7 +176,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
               }}
               id="controlled-tab-example"
             >
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj)=>obj.name==="My device") ? (
                 <Tab
                   eventKey="Mydevice"
                   title="My device"
@@ -204,7 +217,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   </Tab>
                 )
               )}
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj)=>obj.name==="BrightCove") ? (
                 <Tab
                   eventKey="Brightcove"
                   title="BrightCove"
@@ -252,7 +265,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   </Tab>
                 )
               )}
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj)=>obj.name==="YouTube") ? (
                 <Tab
                   eventKey="Youtube"
                   title="YouTube"
@@ -293,7 +306,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   </Tab>
                 )
               )}
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj)=>obj.name==="Kaltura") ? (
                 <Tab
                   eventKey="Kaltura"
                   title="Kaltura"
@@ -344,7 +357,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
 
               {/* Vemo Video */}
 
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj)=>obj.name=="Vimeo") ? (
                 <Tab
                   eventKey="Vimeo"
                   title="Vimeo"

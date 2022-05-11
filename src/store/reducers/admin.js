@@ -204,6 +204,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         teams: action.payload,
       };
+
+    case actionTypes.GET_MEDIA_SOURCES:
+      return {
+        ...state,
+        mediaSources: action.payload,
+      };
     default:
       return state;
   }
