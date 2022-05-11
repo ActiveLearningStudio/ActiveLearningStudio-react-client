@@ -32,6 +32,10 @@ import CreateAuthorTag from "./formik/createAuthorTag";
 import CreateActivityLayout from "./formik/createActivityLayout";
 import EditTeamModel from "./model/EditTeamModel";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import {
+  getAllMediaSources,
+  // getOrganizationMedaiSource,
+} from "store/actions/admin";
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -74,6 +78,10 @@ function AdminPanel({ showSSO }) {
         payload: [currentOrganization || []],
       });
     }
+    dispatch(getAllMediaSources());
+    // if (currentOrganization?.id) {
+    //   dispatch(getOrganizationMedaiSource(currentOrganization?.id));
+    // }
   }, [currentOrganization]);
 
   const paragraphColor = getGlobalColor("--main-paragraph-text-color");

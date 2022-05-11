@@ -2510,6 +2510,13 @@
         //   width
         // }
       }
+      input[type="checkbox"] {
+        transform: scale(1.6);
+        -ms-transform: scale(1.6);
+        -webkit-transform: scale(1.6);
+        padding: 10px;
+        accent-color: $curriki-main-blue;
+      }
     }
   }
 }

@@ -1,10 +1,9 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import { Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllMediaSources,
   getOrganizationMedaiSource,
   updateOrganizationMedaiSource,
 } from "store/actions/admin";
@@ -19,13 +18,13 @@ const Media = () => {
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
-  const { activeOrganization, currentOrganization } = organization;
+  let media_ids = [];
+  const { currentOrganization } = organization;
   useEffect(() => {
-    if (activeOrganization?.id) {
-      dispatch(getAllMediaSources());
-      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    if (currentOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(currentOrganization?.id));
     }
-  }, [activeOrganization]);
+  }, [currentOrganization]);
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(
@@ -60,16 +59,7 @@ const Media = () => {
               alert(values.mydivice);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              setFieldValue,
-              /* and other goodies */
-            }) => (
+            {({ handleSubmit }) => (
               <form onSubmit={handleSubmit}>
                 <div className="sources-section">
                   <h3>Video sources</h3>
@@ -85,22 +75,24 @@ const Media = () => {
                               orgVideoSource?.length === 6 ? true : false
                             }
                             onChange={(e) => {
-                              console.log("e", e.target.checked);
+                              media_ids = [];
                               if (e.target.checked) {
-                                // setorgVideoSource([]);
                                 setorgVideoSource(allVideoSource);
-                                console.log("e", orgVideoSource);
+                                allVideoSource?.map((source) => {
+                                  return media_ids.push(source.id);
+                                });
+                                orgImageSource?.map((imageSource) => {
+                                  return media_ids.push(imageSource.id);
+                                });
                               } else {
                                 setorgVideoSource([]);
-                                console.log("e", orgVideoSource);
+                                orgImageSource?.map((imageSource) => {
+                                  return media_ids.push(imageSource.id);
+                                });
                               }
-                              let media_ids = [];
-                              orgVideoSource?.map((orgSource) => {
-                                return media_ids.push(orgSource.id);
-                              });
                               dispatch(
                                 updateOrganizationMedaiSource(
-                                  activeOrganization?.id,
+                                  currentOrganization?.id,
                                   media_ids
                                 )
                               );
@@ -109,43 +101,31 @@ const Media = () => {
                           <span className="span-heading">Select all</span>
                         </div>
                       </div>
-                      {/* Option video sources */}
                       <div className="sources-sub">
                         <div>
                           {allMediaSources?.mediaSources?.Video?.map(
-                            (source) => {
+                            (source, counter) => {
                               const isVideoSource = orgVideoSource?.filter(
                                 (orgVideo) => orgVideo.name === source.name
                               );
                               return (
-                                <div className="media-field-checkbox">
+                                <div
+                                  className="media-field-checkbox"
+                                  key={counter}
+                                >
                                   <input
                                     name={source.name}
                                     type="checkbox"
-                                    className="media-sources-checkboxes"
+                                    className="media-sources-checkboxes "
                                     checked={
                                       isVideoSource?.length > 0 ? true : false
                                     }
                                     onChange={(e) => {
-                                      console.log("e", e.target.checked);
-                                      const media_ids = orgVideoSource?.map(
-                                        (orgSource) => {
-                                          return orgSource.id;
-                                        }
-                                      );
-                                      console.log("ids", media_ids);
                                       if (e.target.checked) {
                                         setorgVideoSource([
                                           ...orgVideoSource,
                                           source,
                                         ]);
-
-                                        dispatch(
-                                          updateOrganizationMedaiSource(
-                                            activeOrganization?.id,
-                                            media_ids
-                                          )
-                                        );
                                       } else {
                                         setorgVideoSource(
                                           orgVideoSource?.filter(
@@ -153,17 +133,29 @@ const Media = () => {
                                               videoSource.name !== source.name
                                           )
                                         );
-                                        dispatch(
-                                          updateOrganizationMedaiSource(
-                                            activeOrganization?.id,
-                                            media_ids
-                                          )
-                                        );
                                       }
+                                    }}
+                                    onBlur={(e) => {
+                                      orgVideoSource?.map((videoSource) => {
+                                        return media_ids.push(videoSource.id);
+                                      });
+                                      orgImageSource?.map((imgSource) => {
+                                        console.log("ids", media_ids);
+                                        return media_ids.push(imgSource.id);
+                                      });
+                                      dispatch(
+                                        updateOrganizationMedaiSource(
+                                          currentOrganization?.id,
+                                          media_ids
+                                        )
+                                      );
                                     }}
                                   />
                                   <span
-                                    id={source.name && "span-sub-selected"}
+                                    id={
+                                      isVideoSource.length > 0 &&
+                                      "span-sub-selected"
+                                    }
                                     className="span-sub"
                                   >
                                     {source.name}
@@ -179,8 +171,6 @@ const Media = () => {
                     <Alert variant="warning">Loading...</Alert>
                   )}
                 </div>
-
-                {/* Image sources */}
                 <div className="sources-section">
                   <h3>Image sources</h3>
                   {allMediaSources.mediaSources?.Image ? (
@@ -191,45 +181,48 @@ const Media = () => {
                             name="imageall"
                             type="checkbox"
                             label="Selectall"
+                            checked={
+                              orgImageSource?.length === 3 ? true : false
+                            }
                             onChange={(e) => {
-                              const media_ids = orgImageSource?.map(
-                                (orgSource) => {
-                                  return orgSource.id;
-                                }
-                              );
+                              media_ids = [];
                               if (e.target.checked) {
-                                setorgImageSource([]);
                                 setorgImageSource(allImageSource);
-                                dispatch(
-                                  updateOrganizationMedaiSource(
-                                    activeOrganization?.id,
-                                    media_ids
-                                  )
-                                );
+                                allImageSource?.map((source) => {
+                                  return media_ids.push(source.id);
+                                });
+                                orgVideoSource?.map((videoSource) => {
+                                  return media_ids.push(videoSource.id);
+                                });
                               } else {
                                 setorgImageSource([]);
-                                dispatch(
-                                  updateOrganizationMedaiSource(
-                                    activeOrganization?.id,
-                                    media_ids
-                                  )
-                                );
+                                orgVideoSource?.map((videoSource) => {
+                                  return media_ids.push(videoSource.id);
+                                });
                               }
+                              dispatch(
+                                updateOrganizationMedaiSource(
+                                  currentOrganization?.id,
+                                  media_ids
+                                )
+                              );
                             }}
                           />
                           <span className="span-heading">Select all</span>
                         </div>
                       </div>
-                      {/* Option video sources */}
                       <div className="sources-sub">
                         <div>
                           {allMediaSources?.mediaSources?.Image?.map(
-                            (source) => {
+                            (source, counter) => {
                               const isImageSource = orgImageSource?.filter(
                                 (orgVideo) => orgVideo.name === source.name
                               );
                               return (
-                                <div className="media-field-checkbox">
+                                <div
+                                  className="media-field-checkbox"
+                                  key={counter}
+                                >
                                   <input
                                     name={source.name}
                                     type="checkbox"
@@ -237,7 +230,6 @@ const Media = () => {
                                       isImageSource?.length > 0 ? true : false
                                     }
                                     onChange={(e) => {
-                                      console.log("e", e.target.checked);
                                       if (e.target.checked) {
                                         setorgImageSource([
                                           ...orgImageSource,
@@ -246,15 +238,39 @@ const Media = () => {
                                       } else {
                                         setorgImageSource(
                                           orgImageSource?.filter(
-                                            (videoSource) =>
-                                              videoSource.name !== source.name
+                                            (imageSource) =>
+                                              imageSource.name !== source.name
                                           )
                                         );
                                       }
+
+                                      dispatch(
+                                        updateOrganizationMedaiSource(
+                                          currentOrganization?.id,
+                                          media_ids
+                                        )
+                                      );
+                                    }}
+                                    onBlur={(e) => {
+                                      orgImageSource?.map((imgSource) => {
+                                        return media_ids.push(imgSource.id);
+                                      });
+                                      orgVideoSource?.map((videoSource) => {
+                                        return media_ids.push(videoSource.id);
+                                      });
+                                      dispatch(
+                                        updateOrganizationMedaiSource(
+                                          currentOrganization?.id,
+                                          media_ids
+                                        )
+                                      );
                                     }}
                                   />
                                   <span
-                                    id={source.name && "span-sub-selected"}
+                                    id={
+                                      isImageSource.length > 0 &&
+                                      "span-sub-selected"
+                                    }
                                     className="span-sub"
                                   >
                                     {source.name}
