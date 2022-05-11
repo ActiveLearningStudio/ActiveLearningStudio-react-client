@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,32 +32,38 @@ const NotificationArea = (props) => {
     }
   }, [content.data]);
 
-  console.log(notificationText);
-
   return (
     <>
       {content.data?.message && (
         <div className="notification-area">
-          <div className="user-detail">
-            {/* <img src={flashCards} alt="" /> */}
-            <div className="user-icons">{userNameImg.toUpperCase()}</div>
-            <p>
-              Project &nbsp;
-              <b>{content.data.project}</b>
-              &nbsp; has been exported successfully.
-              <br />
-              Please&nbsp;
-              <a
-                target="_blank"
-                // eslint-disable-next-line max-len
-                href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
-                rel="noreferrer"
-              >
-                Click here
-              </a>
-              &nbsp; to download the exported file
-            </p>
-          </div>
+          {content.type.includes('ProjectExportNotification') ? (
+            <div className="user-detail">
+              {/* <img src={flashCards} alt="" /> */}
+              <div className="user-icons">{userNameImg.toUpperCase()}</div>
+              <p>
+                Project &nbsp;
+                <b>{content.data.project}</b>
+                &nbsp; has been exported successfully.
+                <br />
+                Please&nbsp;
+                <a
+                  target="_blank"
+                  // eslint-disable-next-line max-len
+                  href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
+                  rel="noreferrer"
+                >
+                  Click here
+                </a>
+                &nbsp; to download the exported file
+              </p>
+            </div>
+          ) : (
+            <div className="user-detail">
+              {/* <img src={flashCards} alt="" /> */}
+              <div className="user-icons">{userNameImg.toUpperCase()}</div>
+              <p>{content.data?.message}</p>
+            </div>
+          )}
 
           <div className="settings-notification">
             {type === 'header' && (

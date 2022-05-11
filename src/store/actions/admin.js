@@ -1,8 +1,8 @@
 /* eslint-disable */
-import adminService from "services/admin.service";
-import * as actionTypes from "../actionTypes";
-import store from "../index";
-import { getUserAction } from "./auth";
+import adminService from 'services/admin.service';
+import * as actionTypes from '../actionTypes';
+import store from '../index';
+import { getUserAction } from './auth';
 
 export const setActiveAdminForm = (type) => async (dispatch) => {
   dispatch({
@@ -36,10 +36,7 @@ export const addUserInOrganization = (user) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await adminService.addUserInOrganization(
-    user,
-    activeOrganization?.id
-  );
+  const result = await adminService.addUserInOrganization(user, activeOrganization?.id);
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,
   });
@@ -57,17 +54,11 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   } = centralizedState;
   let result;
   if (user.password) {
-    result = await adminService.editUserInOrganization(
-      user,
-      activeOrganization?.id
-    );
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
   } else {
     // eslint-disable-next-line no-param-reassign
     delete user.password;
-    result = await adminService.editUserInOrganization(
-      user,
-      activeOrganization?.id
-    );
+    result = await adminService.editUserInOrganization(user, activeOrganization?.id);
   }
   if (result) {
     dispatch(getUserAction());
@@ -82,22 +73,8 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   return result;
 };
 
-export const getActivityTypes = (
-  subOrgId,
-  page,
-  size = "",
-  column = "",
-  orderBy = "",
-  search = ""
-) => async (dispatch) => {
-  const result = await adminService.getActivityTypes(
-    subOrgId,
-    page,
-    size,
-    column,
-    orderBy,
-    search
-  );
+export const getActivityTypes = (subOrgId, page, size = '', column = '', orderBy = '', search = '') => async (dispatch) => {
+  const result = await adminService.getActivityTypes(subOrgId, page, size, column, orderBy, search);
   dispatch({
     type: actionTypes.GET_ACTIVITY_TYPES,
     payload: result,
@@ -113,9 +90,7 @@ export const getUserReport = (mode, size, page, query) => async (dispatch) => {
   return result;
 };
 
-export const getJobListing = (filter, size, page, query) => async (
-  dispatch
-) => {
+export const getJobListing = (filter, size, page, query) => async (dispatch) => {
   const result = await adminService.getJobListing(filter, size, page, query);
   dispatch({
     type: actionTypes.GET_JOBS_LISTING,
@@ -160,9 +135,7 @@ export const forgetSpecificFailedJob = (job) => async (dispatch) => {
   return result;
 };
 
-export const getLogsListing = (filter, size, page, query) => async (
-  dispatch
-) => {
+export const getLogsListing = (filter, size, page, query) => async (dispatch) => {
   const result = await adminService.getLogsListing(filter, size, page, query);
   dispatch({
     type: actionTypes.GET_LOGS_LISTING,
@@ -178,24 +151,8 @@ export const setCurrentProject = (project) => (dispatch) => {
   });
 };
 
-export const getLtiTools = (
-  subOrgId,
-  page,
-  size,
-  query,
-  column,
-  orderBy,
-  filterBy
-) => async (dispatch) => {
-  const result = await adminService.getLtiTools(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy,
-    filterBy
-  );
+export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) => async (dispatch) => {
+  const result = await adminService.getLtiTools(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,
@@ -203,24 +160,8 @@ export const getLtiTools = (
   return result;
 };
 
-export const getDefaultSso = (
-  subOrgId,
-  page,
-  size = 10,
-  query = "",
-  column = "",
-  orderBy = "",
-  filterBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getDefaultSso(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy,
-    filterBy
-  );
+export const getDefaultSso = (subOrgId, page, size = 10, query = '', column = '', orderBy = '', filterBy = '') => async (dispatch) => {
+  const result = await adminService.getDefaultSso(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_DEFAULT_SSO,
     payload: result,
@@ -228,24 +169,8 @@ export const getDefaultSso = (
   return result;
 };
 
-export const getLmsProject = (
-  subOrgId,
-  page,
-  size = 10,
-  query = "",
-  column = "",
-  orderBy = "",
-  filterBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getLmsProject(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy,
-    filterBy
-  );
+export const getLmsProject = (subOrgId, page, size = 10, query = '', column = '', orderBy = '', filterBy = '') => async (dispatch) => {
+  const result = await adminService.getLmsProject(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_LMS_INTEGRATION,
     payload: result,
@@ -266,22 +191,8 @@ export const cancelRemoveUser = () => (dispatch) => {
   });
 };
 
-export const getSubjects = (
-  subOrgId,
-  page = "",
-  size = "",
-  query = "",
-  column = "",
-  orderBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getSubjects(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy
-  );
+export const getSubjects = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getSubjects(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_SUBECTS,
     payload: result,
@@ -289,22 +200,8 @@ export const getSubjects = (
   return result;
 };
 
-export const getEducationLevel = (
-  subOrgId,
-  page = "",
-  size = "",
-  query = "",
-  column = "",
-  orderBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getEducationLevel(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy
-  );
+export const getEducationLevel = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getEducationLevel(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_EDUCATION_LEVEL,
     payload: result,
@@ -312,22 +209,8 @@ export const getEducationLevel = (
   return result;
 };
 
-export const getAuthorTag = (
-  subOrgId,
-  page = "",
-  size = "",
-  query = "",
-  column = "",
-  orderBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getAuthorTag(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy
-  );
+export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getAuthorTag(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_AUTHOR_TAGS,
     payload: result,
@@ -335,22 +218,8 @@ export const getAuthorTag = (
   return result;
 };
 
-export const getActivityLayout = (
-  subOrgId,
-  page = "",
-  size = "",
-  query = "",
-  column = "",
-  orderBy = ""
-) => async (dispatch) => {
-  const result = await adminService.getActivityLayout(
-    subOrgId,
-    page,
-    size,
-    query,
-    column,
-    orderBy
-  );
+export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_LAYOUTS,
     payload: result,
@@ -358,22 +227,8 @@ export const getActivityLayout = (
   return result;
 };
 
-export const teamsActionAdminPanel = (
-  subOrgId,
-  query,
-  page,
-  size,
-  order_by_column = "",
-  order_by_type = ""
-) => async (dispatch) => {
-  const result = await adminService.teamsActionAdminPanel(
-    subOrgId,
-    query,
-    page,
-    size,
-    order_by_column,
-    order_by_type.toLowerCase()
-  );
+export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') => async (dispatch) => {
+  const result = await adminService.teamsActionAdminPanel(subOrgId, query, page, size, order_by_column, order_by_type.toLowerCase());
   dispatch({
     type: actionTypes.GET_TEAMS_ADMIN,
     payload: result,
@@ -398,13 +253,11 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
   return result;
 };
 
-export const updateOrganizationMedaiSource = (subOrgId, media_ids) => async (
-  dispatch
-) => {
+export const updateOrganizationMedaiSource = (subOrgId, media_ids) => async (dispatch) => {
   const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
-  // dispatch({
-  //   type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
-  //   payload: media_ids,
-  // });
+  dispatch({
+    type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
+    payload: media_ids,
+  });
   return result;
 };

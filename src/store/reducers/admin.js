@@ -1,9 +1,9 @@
 /* eslint-disable */
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
-  activeTab: "Organization",
+  activeTab: 'Organization',
   activityTypes: [],
   activityItems: [],
   usersReport: [],
@@ -74,9 +74,7 @@ export default (state = INITIAL_STATE, action) => {
         editUser: action.payload,
       };
     case actionTypes.LOAD_RESOURCE_ITEMS_REQUEST:
-      const refreshActivityItems = state.activityItems.data.filter(
-        (data) => data.id !== action.payload
-      );
+      const refreshActivityItems = state.activityItems.data.filter((data) => data.id !== action.payload);
       return {
         ...state,
         activityItems: { ...state.activityItems, data: refreshActivityItems },
@@ -190,9 +188,7 @@ export default (state = INITIAL_STATE, action) => {
         },
       };
     case actionTypes.DEL_BRIGHTCOVE:
-      const newBrigthList = state.allbrightCove?.data.filter(
-        (data) => data.id !== action.payload
-      );
+      const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
       return {
         ...state,
         allbrightCove: { ...state.allbrightCove, data: newBrigthList },
@@ -223,7 +219,23 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         orgMediaSources: action.payload,
       };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      const filterVideoSource = state.allMediaSources.mediaSources?.Video?.filter((source, counter) => {
+        action.payload?.map((payload, counter) => {
+          if (source.id === payload[counter]) {
+            return source;
+          }
+        });
+      });
 
+      console.log('filter', filterVideoSource);
+      return {
+        ...state,
+        // orgMediaSources: {
+        //   ...state.orgMediaSources,
+        //   // mediaSources: [...state.orgMediaSources.mediaSources],
+        // },
+      };
     default:
       return state;
   }

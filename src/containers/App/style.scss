@@ -3278,6 +3278,10 @@ a:hover {
 }
 
 .video_activity.modal {
+  .modal-xl {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
   nav {
     margin: 0;
     padding: 0 0 0 0;
@@ -4047,4 +4051,9 @@ body.collapsed {
   width: 177px;
   height: 32px;
   padding: 0 !important;
+}
+
+.video_activity .interactivevideoreferce {
+  margin: 0 auto;
+  height: calc(100vh - 200px);
 }
