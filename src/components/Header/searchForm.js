@@ -1,31 +1,30 @@
-/* eslint-disable */
-import React, { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { Dropdown } from "react-bootstrap";
-import { Formik } from "formik";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Buttons from "utils/Buttons/buttons";
-import { simpleSearchAction } from "store/actions/search";
+import React, { useState, useEffect, useRef } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { Dropdown } from 'react-bootstrap';
+import { Formik } from 'formik';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Buttons from 'utils/Buttons/buttons';
+import { simpleSearchAction } from 'store/actions/search';
 import {
   getActivityItems,
   loadResourceTypesAction,
-} from "store/actions/resource";
-import { getSubjects, getEducationLevel, getAuthorTag } from "store/actions/admin";
-import { getUserReport } from "store/actions/admin";
-import searchIcon from "assets/images/Search.svg";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+} from 'store/actions/resource';
+import {
+  getSubjects, getEducationLevel, getAuthorTag, getUserReport,
+} from 'store/actions/admin';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 function SearchForm() {
   const history = useHistory();
   const dispatcher = useDispatch();
 
-  const [simpleSearch, setSimpleSearch] = useState("");
+  const [simpleSearch, setSimpleSearch] = useState('');
   const [activityTypes, setActivityTypes] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [authorTags, setAuthorTags] = useState([]);
-  const [educationLevels, setEducationLevels] = useState([])
+  const [educationLevels, setEducationLevels] = useState([]);
   const [value, setValue] = useState(0);
   const activityTypesState = useSelector((state) => state.resource.types);
   const searchState = useSelector((state) => state.search);
@@ -33,29 +32,29 @@ function SearchForm() {
   const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if (activityTypesState.length === 0 && auth?.user) {
+    if ((activityTypesState?.length === 0) && auth?.user && currentOrganization?.id) {
       dispatcher(loadResourceTypesAction());
       dispatcher(getActivityItems(currentOrganization?.id));
-      dispatcher(getUserReport("all"));
+      dispatcher(getUserReport('all'));
     }
-  }, []);
+  }, [currentOrganization?.id, activityTypesState.length, auth?.user, dispatcher]);
 
-  useEffect (() => {
-    if(currentOrganization?.id) {
-      if(subjects.length == 0) {
-        const result_sub = dispatcher(getSubjects(currentOrganization?.id || 1));
-        result_sub.then((data)=>setSubjects(data));
+  useEffect(() => {
+    if (currentOrganization?.id) {
+      if (subjects.length === 0) {
+        const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
+        resultSub.then((data) => setSubjects(data));
       }
-      if(authorTags.length == 0) {
-        const result_auth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
-        result_auth.then((data)=>setAuthorTags(data));
+      if (authorTags.length === 0) {
+        const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+        resultAuth.then((data) => setAuthorTags(data));
       }
-      if(educationLevels.length == 0) {
-        const result_edu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
-        result_edu.then((data)=>setEducationLevels(data));
+      if (educationLevels.length === 0) {
+        const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+        resultEdu.then((data) => setEducationLevels(data));
       }
-    }    
-  }, currentOrganization);
+    }
+  }, [currentOrganization?.id, authorTags.length, dispatcher, educationLevels.length, subjects.length]);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
@@ -76,12 +75,12 @@ function SearchForm() {
     activityTypesState?.data?.map((data) => data?.activityItems?.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
     if (searchState?.searchQuery !== simpleSearch) {
-      setSimpleSearch("");
+      setSimpleSearch('');
     }
   }, [activityTypesState, searchState.searchQuery]);
 
   const closeModel = useRef();
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
 
   return (
     <Dropdown>
@@ -94,131 +93,56 @@ function SearchForm() {
           }}
           ref={closeModel}
           onKeyPress={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
               if (!simpleSearch.trim()) {
-                Swal.fire("Search field is required");
+                Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
-                Swal.fire("Character limit should be less than 255 ");
-              } else if (true) {
+                Swal.fire('Character limit should be less than 255 ');
+              } else {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
                   size: 20,
-                  type: "public",
+                  type: 'public',
                 };
                 dispatcher(simpleSearchAction(searchData));
-                localStorage.setItem("loading", "true");
+                localStorage.setItem('loading', 'true');
                 history.push(
-                  `/org/${
-                    currentOrganization?.domain
-                  }/search?q=${simpleSearch.trim()}&type=public`
+                  `/org/${currentOrganization?.domain
+                  }/search?q=${simpleSearch.trim()}&type=public`,
                 );
-                localStorage.setItem("refreshPage", false);
-              } else if (permission?.Search?.includes("search:dashboard")) {
-                const searchData = {
-                  phrase: simpleSearch.trim(),
-                  from: 0,
-                  size: 20,
-                  type: "private",
-                };
-                dispatcher(simpleSearchAction(searchData));
-                localStorage.setItem("loading", "true");
-                history.push(
-                  `/org/${
-                    currentOrganization?.domain
-                  }/search?q=${simpleSearch.trim()}&type=private`
-                );
-                localStorage.setItem("refreshPage", false);
+                localStorage.setItem('refreshPage', false);
               }
             }
-            return true;
           }}
         />
-        {/* <img
-          onClick={(e) => {
-            if (!simpleSearch.trim()) {
-              Swal.fire("Search field is required");
-            } else if (simpleSearch.length > 255) {
-              Swal.fire("Character limit should be less than 255 ");
-            } else if (true) {
-              const searchData = {
-                phrase: simpleSearch.trim(),
-                from: 0,
-                size: 20,
-                type: "public",
-              };
-              dispatcher(simpleSearchAction(searchData));
-              localStorage.setItem("loading", "true");
-              history.push(
-                `/org/${
-                  currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=public`
-              );
-              localStorage.setItem("refreshPage", false);
-            } else if (permission?.Search?.includes("search:dashboard")) {
-              const searchData = {
-                phrase: simpleSearch.trim(),
-                from: 0,
-                size: 20,
-                type: "private",
-              };
-              dispatcher(simpleSearchAction(searchData));
-              localStorage.setItem("loading", "true");
-              history.push(
-                `/org/${
-                  currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=private`
-              );
-              localStorage.setItem("refreshPage", false);
-            }
-          }}
-          alt=""
-          className="searchicon"
-          src={searchIcon}
-        /> */}
         <svg
           width="24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          style={{ top: "4px" }}
+          style={{ top: '4px' }}
           className="searchicon"
-          onClick={(e) => {
+          onClick={() => {
             if (!simpleSearch.trim()) {
-              Swal.fire("Search field is required");
+              Swal.fire('Search field is required');
             } else if (simpleSearch.length > 255) {
-              Swal.fire("Character limit should be less than 255 ");
-            } else if (true) {
+              Swal.fire('Character limit should be less than 255 ');
+            } else {
               const searchData = {
                 phrase: simpleSearch.trim(),
                 from: 0,
                 size: 20,
-                type: "public",
+                type: 'public',
               };
               dispatcher(simpleSearchAction(searchData));
-              localStorage.setItem("loading", "true");
+              localStorage.setItem('loading', 'true');
               history.push(
-                `/org/${
-                  currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=public`
+                `/org/${currentOrganization?.domain
+                }/search?q=${simpleSearch.trim()}&type=public`,
               );
-              localStorage.setItem("refreshPage", false);
-            } else if (permission?.Search?.includes("search:dashboard")) {
-              const searchData = {
-                phrase: simpleSearch.trim(),
-                from: 0,
-                size: 20,
-                type: "private",
-              };
-              dispatcher(simpleSearchAction(searchData));
-              localStorage.setItem("loading", "true");
-              history.push(
-                `/org/${
-                  currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=private`
-              );
-              localStorage.setItem("refreshPage", false);
+              localStorage.setItem('refreshPage', false);
             }
           }}
         >
@@ -248,19 +172,19 @@ function SearchForm() {
           <h4>Advanced Search</h4>
           <Formik
             initialValues={{
-              phrase: "",
+              phrase: '',
               subjectArray: [],
               author: [],
-              subject: "",
-              grade: "",
+              subject: '',
+              grade: '',
               gradeArray: [],
               authorTagsArray: [],
-              standard: "",
+              standard: '',
               standardArray: [],
-              email: "",
-              words: "",
+              email: '',
+              words: '',
               no_words: undefined,
-              type: "public",
+              type: 'public',
               toDate: undefined,
               fromDate: undefined,
               from: 0,
@@ -269,17 +193,17 @@ function SearchForm() {
             }}
             validate={(values) => {
               const errors = {};
-              if (!values.phrase && values.type !== "orgSearch") {
-                errors.phrase = "required";
+              if (!values.phrase && values.type !== 'orgSearch') {
+                errors.phrase = 'required';
               }
               if (values.fromDate && values.toDate) {
                 if (values.fromDate > values.toDate) {
-                  errors.dateError = "Invalid Date Format";
+                  errors.dateError = 'Invalid Date Format';
                 }
               }
               if (values.fromDate) {
                 if (!values.toDate) {
-                  errors.toDate = "To Date required";
+                  errors.toDate = 'To Date required';
                 }
               }
               return errors;
@@ -287,11 +211,11 @@ function SearchForm() {
             onSubmit={(values) => {
               closeModel.current.click();
 
-              // eslint-disable-next-line max-len
               history.push(
-                `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&authorTag=${values.authorTagsArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`
+                // eslint-disable-next-line max-len
+                `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&authorTag=${values.authorTagsArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`,
               );
-              localStorage.setItem("refreshPage", false);
+              localStorage.setItem('refreshPage', false);
 
               Swal.showLoading();
               dispatcher(simpleSearchAction(values));
@@ -308,53 +232,47 @@ function SearchForm() {
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
-                    {true && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="private"
-                          checked={values.type === "private"}
-                          type="radio"
-                        />
-                        <span>Search My Projects</span>
-                      </label>
-                    )}
-                    {true && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="public"
-                          checked={values.type === "public"}
-                          type="radio"
-                        />
-                        <span>Search All Shared Projects</span>
-                      </label>
-                    )}
-                    {true && (
-                      <label>
-                        <input
-                          name="type"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value="orgSearch"
-                          checked={values.type === "orgSearch"}
-                          type="radio"
-                        />
-                        <span>Search All Shared Projects In My Org</span>
-                      </label>
-                    )}
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="private"
+                        checked={values.type === 'private'}
+                        type="radio"
+                      />
+                      <span>Search My Projects</span>
+                    </label>
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="public"
+                        checked={values.type === 'public'}
+                        type="radio"
+                      />
+                      <span>Search All Shared Projects</span>
+                    </label>
+                    <label>
+                      <input
+                        name="type"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value="orgSearch"
+                        checked={values.type === 'orgSearch'}
+                        type="radio"
+                      />
+                      <span>Search All Shared Projects In My Org</span>
+                    </label>
                   </div>
                 </div>
 
                 <div
                   className="form-group"
-                  // style={{
-                  //   display: values.type === 'orgSearch' ? 'none' : 'block',
-                  // }}
+                // style={{
+                //   display: values.type === 'orgSearch' ? 'none' : 'block',
+                // }}
                 >
                   <input
                     name="phrase"
@@ -375,8 +293,8 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       let updatedValue = e.target.value;
-                      if (updatedValue.includes("&")) {
-                        updatedValue = e.target.value.replace("&", "and");
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
                         if (!values.subjectArray.includes(updatedValue)) {
                           values.subjectArray.push(updatedValue);
                         }
@@ -390,7 +308,7 @@ function SearchForm() {
                     value={values.subject}
                   >
                     <option value="" disabled defaultValue hidden>
-                      {" "}
+                      {' '}
                       Subject + Subject Area
                     </option>
                     {subjects?.data.map((data) => (
@@ -404,13 +322,13 @@ function SearchForm() {
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.subjectArray.map((data) => (
                       <div className="keywords-de">
-                        {subjects?.data?.filter(subj => subj.id == data)[0].name}
+                        {subjects?.data?.filter((subj) => subj.id === data)[0].name}
                         <div
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
                             values.subjectArray = values.subjectArray.filter(
-                              (index) => index !== data
+                              (index) => index !== data,
                             );
                             setValue(value + 1);
                           }}
@@ -429,8 +347,8 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       let updatedValue = e.target.value;
-                      if (updatedValue.includes("&")) {
-                        updatedValue = e.target.value.replace("&", "and");
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
                         if (!values.gradeArray.includes(updatedValue)) {
                           values.gradeArray.push(updatedValue);
                         }
@@ -455,13 +373,13 @@ function SearchForm() {
                   <div className="form-group wrap-keyword">
                     {values.gradeArray.map((data) => (
                       <div className="keywords-de" data-name={value}>
-                        {educationLevels?.data?.filter(eduLvl => eduLvl.id == data)[0].name}
+                        {educationLevels?.data?.filter((eduLvl) => eduLvl.id === data)[0].name}
                         <div
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
                             values.gradeArray = values.gradeArray.filter(
-                              (index) => index !== data
+                              (index) => index !== data,
                             );
                             setValue(value + 1);
                           }}
@@ -480,8 +398,8 @@ function SearchForm() {
                     onChange={(e) => {
                       handleChange(e);
                       let updatedValue = e.target.value;
-                      if (updatedValue.includes("&")) {
-                        updatedValue = e.target.value.replace("&", "and");
+                      if (updatedValue.includes('&')) {
+                        updatedValue = e.target.value.replace('&', 'and');
                         if (!values.authorTagsArray.includes(updatedValue)) {
                           values.authorTagsArray.push(updatedValue);
                         }
@@ -506,13 +424,13 @@ function SearchForm() {
                   <div className="form-group wrap-keyword">
                     {values.authorTagsArray.map((data) => (
                       <div className="keywords-de" data-name={value}>
-                        {authorTags?.data?.filter(authId => authId.id == data)[0].name}
+                        {authorTags?.data?.filter((authId) => authId.id === data)[0].name}
                         <div
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
                             values.authorTagsArray = values.authorTagsArray.filter(
-                              (index) => index !== data
+                              (index) => index !== data,
                             );
                             setValue(value + 1);
                           }}
@@ -524,17 +442,15 @@ function SearchForm() {
                   </div>
                 )}
 
-
                 <div className="form-group">
                   <select
                     name="standard"
                     placeholder="Standard"
                     onChange={(e) => {
                       handleChange(e);
-
                       let updateValue = e.target.value;
-                      if (updateValue.includes("&")) {
-                        updateValue = e.target.value.replace("&", "and");
+                      if (updateValue.includes('&')) {
+                        updateValue = e.target.value.replace('&', 'and');
                         if (!values.standardArray.includes(updateValue)) {
                           values.standardArray.push(updateValue);
                         }
@@ -567,7 +483,7 @@ function SearchForm() {
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
                             values.standardArray = values.standardArray.filter(
-                              (index) => index !== data
+                              (index) => index !== data,
                             );
                             setValue(value + 1);
                           }}
@@ -589,7 +505,7 @@ function SearchForm() {
                     max="2050-12-31"
                     value={values.fromDate}
                     onFocus={(e) => {
-                      e.target.type = "date";
+                      e.target.type = 'date';
                     }}
                   />
                   <input
@@ -601,13 +517,13 @@ function SearchForm() {
                     min="2005-01-01"
                     max="2050-12-31"
                     onFocus={(e) => {
-                      e.target.type = "date";
+                      e.target.type = 'date';
                     }}
                   />
                 </div>
                 <div
                   className="error"
-                  style={{ color: "red", marginTop: "-15px" }}
+                  style={{ color: 'red', marginTop: '-15px' }}
                 >
                   {errors.toDate && errors.toDate && errors.toDate}
                   {errors.dateError}
@@ -618,10 +534,10 @@ function SearchForm() {
                   style={{
                     display:
                       permission?.Organization?.includes(
-                        "organization:view-user"
-                      ) && values.type !== "private"
-                        ? "block"
-                        : "none",
+                        'organization:view-user',
+                      ) && values.type !== 'private'
+                        ? 'block'
+                        : 'none',
                   }}
                 >
                   <input
