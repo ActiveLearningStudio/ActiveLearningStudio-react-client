@@ -73,13 +73,13 @@ export const deletePlaylistAction = (projectId, id) => async (dispatch) => {
   }
 };
 
-export const loadProjectPlaylistsAction = (projectId, skipContent = false) => async (dispatch) => {
+export const loadProjectPlaylistsAction = (projectId, skipContent = false, signal) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { playlists } = await playlistService.getAll(projectId, skipContent);
+    const { playlists } = await playlistService.getAll(projectId, skipContent, signal);
 
     dispatch({
       type: actionTypes.LOAD_PROJECT_PLAYLISTS,
@@ -95,11 +95,12 @@ export const loadProjectPlaylistsAction = (projectId, skipContent = false) => as
     //   icon: 'error',
     //   html: e.message || 'Something went wrong! We are unable to load activity.',
     // });
+    if (e === 'AbortError') {
+      console.log('Call aborted');
+    }
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
-
-    throw e;
   }
 };
 

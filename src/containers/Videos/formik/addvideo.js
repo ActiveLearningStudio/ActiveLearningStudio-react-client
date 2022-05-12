@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
 import AddVideoTube from 'assets/images/svg/youtube.svg';
 import AddKaltura from 'assets/images/kaltura.jpg';
+import AddVemeo from 'assets/images/vemeo.PNG';
 import BackButton from '../../../assets/images/left-arrow.svg';
 import Buttons from 'utils/Buttons/buttons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,13 +17,16 @@ import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import BrightcoveModel from '../model/brightmodel';
 import { useSelector } from 'react-redux';
 import UploadImg from 'assets/images/upload1.png';
+import Uploadicon from 'assets/images/uploadBtnIcon.png';
 import Swal from 'sweetalert2';
 import 'utils/uploadselectfile/uploadfile.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
   const [modalShow, setModalShow] = useState(false);
   const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('Mydevice');
@@ -34,7 +38,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
       setActiveKey(editVideo?.source_type);
     }
   }, [editVideo]);
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <BrightcoveModel
@@ -44,6 +48,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
         }}
         setSelectedVideoId={setSelectedVideoId}
         setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
+        setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
         showSidebar={showSidebar}
         platform={platform}
       />
@@ -64,8 +69,26 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
             </span>
           </div> */}
           {showback && !editVideo && (
-            <div className="back-button" style={{ display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => changeScreenHandler('layout')}>
-              <img style={{ marginRight: '8px' }} src={BackButton} alt="back button " />
+            <div
+              className=" back-button "
+              id="back-button-none-bg"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={() => changeScreenHandler('layout')}
+            >
+              {/* <img
+                style={{ marginRight: "8px" }}
+                src={BackButton}
+                alt="back button "
+              /> */}
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+
               <p style={{ margin: 0 }} className="">
                 Back to options
               </p>
@@ -259,7 +282,6 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   >
                     <FormikVideo
                       Input
-                      editVideo={editVideo?.brightcoveData?.videoId || ''}
                       platform={platform}
                       showback={showback}
                       changeScreenHandler={changeScreenHandler}
@@ -319,6 +341,57 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                   </Tab>
                 )
               )}
+
+              {/* Vemo Video */}
+
+              {!editVideo ? (
+                <Tab
+                  eventKey="Vimeo"
+                  title="Vimeo"
+                  onClick={() => {
+                    setplatform('Vimeo');
+                    setShowSidebar(false);
+                  }}
+                >
+                  <FormikVideo
+                    Input
+                    showBrowse
+                    setModalShow={setModalShow}
+                    showback={showback}
+                    changeScreenHandler={changeScreenHandler}
+                    type={AddVemeo}
+                    setScreenStatus={setScreenStatus}
+                    selectedVideoId={selectedVideoIdVimeo}
+                    platform={platform}
+                    placeholder={'Enter a video url'}
+                  />
+                </Tab>
+              ) : (
+                editVideo.source_type === 'Vimeo' && (
+                  <Tab
+                    eventKey="Vimeo"
+                    title="Vimeo"
+                    onClick={() => {
+                      setplatform('Vimeo');
+                      setShowSidebar(false);
+                    }}
+                  >
+                    <FormikVideo
+                      Input
+                      showBrowse
+                      setModalShow={setModalShow}
+                      showback={showback}
+                      changeScreenHandler={changeScreenHandler}
+                      type={AddVemeo}
+                      setScreenStatus={setScreenStatus}
+                      selectedVideoId={selectedVideoIdVimeo}
+                      platform={platform}
+                      editVideo={editVideo?.source_url}
+                      placeholder={'Enter a video url'}
+                    />
+                  </Tab>
+                )
+              )}
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
@@ -357,7 +430,7 @@ const FormikVideo = ({
       setUploadedFile(editVideo);
     }
   }, [editVideo, platform]);
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="add-video-layout-formik">
       <Formik
@@ -435,7 +508,18 @@ const FormikVideo = ({
                       }}
                       type="reset"
                     >
-                      <FontAwesomeIcon icon={faUpload} className="curriki_btn-mr-2" />
+                      {/*<img style={{ cursor: 'pointer', marginTop: '-2px' }} src={Uploadicon} alt="upload" className="mr-2" />*/}
+                      <svg width="15" height="12" className="mr-2" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
+                          stroke={primaryColor}
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path d="M10.1499 3.39999L7.5249 1L4.8999 3.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M7.5 1V8.79997" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                       Select File
                     </button>
                     <input
@@ -485,9 +569,10 @@ const FormikVideo = ({
                       ref={imgUpload}
                       style={{
                         cursor: 'pointer',
-                        background: 'transparent',
-                        padding: '125px 41px 0px 41px',
-                        border: '3px dashed #ddd',
+                        background: '#F1F1F1',
+                        padding: '160px 41px 0px 41px',
+                        borderRadius: '8px',
+                        border: 'none',
                       }}
                       onClick={(e) => {
                         e.target.value = '';
@@ -502,7 +587,9 @@ const FormikVideo = ({
                       style={{ cursor: 'pointer' }}
                     >
                       <img style={{ cursor: 'pointer' }} src={UploadImg} alt="upload" className="mr-2" />
-                      <p> click to upload</p>
+                      <p>
+                        Drag & drop file or <span style={{ color: '#2e8df5' }}>browse</span> to upload
+                      </p>
                     </div>
                   </div>
                   {uploadedFile && (

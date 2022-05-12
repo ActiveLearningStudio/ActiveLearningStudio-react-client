@@ -8,19 +8,20 @@ import help3 from 'assets/images/help/help3.png';
 import help4 from 'assets/images/help/help4.png';
 import help5 from 'assets/images/help/help5.png';
 import { HIDE_HELP } from 'store/actionTypes';
-import cross from 'assets/images/help/cross.png';
-
+// import cross from 'assets/images/help/cross.png';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import './style.scss';
 
 function Help() {
   const dispatch = useDispatch();
+  const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   return (
     <div>
       <div className="helpcenter">
         <div className="content">
           <div className="heading-info">
             <h2>Explore Help center </h2>
-            <img
+            {/* <img
               src={cross}
               alt=""
               onClick={() => {
@@ -29,7 +30,26 @@ function Help() {
                   payload: false,
                 });
               }}
-            />
+            /> */}
+            <svg
+              onClick={() => {
+                dispatch({
+                  type: HIDE_HELP,
+                  payload: false,
+                });
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M15 1L1 15" stroke={paragraphColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M1 1L15 15" stroke={paragraphColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
           <div className="all-help">
             <a rel="noreferrer" href="https://support.curriki.org/getting-started" target="_blank">

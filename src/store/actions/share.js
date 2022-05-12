@@ -1,5 +1,6 @@
+/* eslint-disable */
 import Swal from 'sweetalert2';
-
+import store from '../index';
 import searchService from 'services/search.service';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -10,7 +11,11 @@ export const copyProject = async (projectId, courseId, token) => {
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  const result = await searchService.googleClassShare(projectId, courseId, token);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await searchService.googleClassShare(projectId, courseId, token, activeOrganization?.id);
   if (result.course) {
     Swal.fire({
       icon: 'success',
@@ -35,7 +40,11 @@ export const publishPlaylist = async (projectId, courseId, topicId, playlistId, 
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  const result = await searchService.googleClassPublishPlaylist(projectId, courseId, topicId, playlistId, token);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await searchService.googleClassPublishPlaylist(projectId, courseId, topicId, playlistId, token, activeOrganization?.id);
   if (result.course) {
     Swal.fire({
       icon: 'success',
@@ -60,7 +69,11 @@ export const publistActivity = async (projectId, courseId, topicId, playlistId, 
     showConfirmButton: false,
     allowOutsideClick: false,
   });
-  const result = await searchService.googleClassPublishActivity(projectId, courseId, topicId, playlistId, activityId, token);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await searchService.googleClassPublishActivity(projectId, courseId, topicId, playlistId, activityId, token, activeOrganization?.id);
   if (result.course) {
     Swal.fire({
       icon: 'success',

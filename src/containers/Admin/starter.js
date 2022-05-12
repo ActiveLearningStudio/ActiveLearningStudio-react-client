@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
-import Settings from './settings';
+// import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -122,7 +122,7 @@ function Starter(props) {
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
       />
-      {subTypeState === 'All settings' && <Settings />}
+      {/* {subTypeState === 'All settings' && <Settings />} */}
       {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (

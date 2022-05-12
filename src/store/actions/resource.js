@@ -18,15 +18,19 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_REQUEST,
     });
-    const { activityTypes } = await resourceService.getTypes();
+    const centralizedState = store.getState();
+    const {
+      organization: { activeOrganization },
+    } = centralizedState;
+    const result = await resourceService.getTypes(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
-      payload: { activityTypes },
+      payload: result,
     });
     dispatch({
       type: actionTypes.GET_ACTIVITY_TYPES,
-      payload: { activityTypes },
+      payload: result,
     });
   } catch (e) {
     dispatch({
@@ -49,8 +53,8 @@ export const selectActivityType = (type) => (dispatch) => {
   });
 };
 
-export const createActivityType = (data) => async (dispatch) => {
-  const result = await resourceService.createActivityType(data);
+export const createActivityType = (subOrgId, data) => async (dispatch) => {
+  const result = await resourceService.createActivityType(subOrgId, data);
   dispatch({
     type: actionTypes.ADD_ACTIVITY_TYPE,
     payload: result,
@@ -58,8 +62,8 @@ export const createActivityType = (data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityType = (data, typeId) => async (dispatch) => {
-  const result = await resourceService.editActivityType(data, typeId);
+export const editActivityType = (subOrgId, data, typeId) => async (dispatch) => {
+  const result = await resourceService.editActivityType(subOrgId, data, typeId);
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_TYPE,
     payload: result,
@@ -67,8 +71,8 @@ export const editActivityType = (data, typeId) => async (dispatch) => {
   return result;
 };
 
-export const deleteActivityType = (typeId) => async (dispatch) => {
-  const result = resourceService.deleteActivityType(typeId);
+export const deleteActivityType = (subOrgId, typeId) => async (dispatch) => {
+  const result = resourceService.deleteActivityType(subOrgId, typeId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_TYPE,
   });
@@ -98,8 +102,8 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const getActivityItems = (query, page) => async (dispatch) => {
-  const allActivityItems = await resourceService.getActivityItems(query, page);
+export const getActivityItems = (subOrgId, query, page, size, column, orderBy, filterBy) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(subOrgId, query, page, size, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
     payload: allActivityItems.data,
@@ -114,8 +118,8 @@ export const selectActivityItem = (type) => (dispatch) => {
   });
 };
 
-export const createActivityItem = (data) => async (dispatch) => {
-  const result = await resourceService.createActivityItem(data);
+export const createActivityItem = (subOrgId, data) => async (dispatch) => {
+  const result = await resourceService.createActivityItem(subOrgId, data);
   dispatch({
     type: actionTypes.ADD_ACTIVITY_ITEM,
     payload: result,
@@ -123,8 +127,8 @@ export const createActivityItem = (data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityItem = (data, itemId) => async (dispatch) => {
-  const result = await resourceService.editActivityItem(data, itemId);
+export const editActivityItem = (subOrgId, data, itemId) => async (dispatch) => {
+  const result = await resourceService.editActivityItem(subOrgId, data, itemId);
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_ITEM,
     payload: result,
@@ -132,8 +136,8 @@ export const editActivityItem = (data, itemId) => async (dispatch) => {
   return result;
 };
 
-export const deleteActivityItem = (itemId) => async (dispatch) => {
-  const result = resourceService.deleteActivityItem(itemId);
+export const deleteActivityItem = (subOrgId, itemId) => async (dispatch) => {
+  const result = resourceService.deleteActivityItem(subOrgId, itemId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_ITEM,
   });
@@ -243,6 +247,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       content: 'place_holder',
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
+      author_tag_id: metadata?.author_tag_id,
       description: metadata?.description || undefined,
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
@@ -345,6 +350,15 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   const { image } = await resourceService.uploadActivityItemThumb(formData);
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL,
+    payload: { image },
+  });
+  return image;
+};
+
+export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
+  const { image } = await resourceService.uploadActivityLayoutThumb(formData);
+  dispatch({
+    type: actionTypes.UPLOAD_ACTIVITY_LAYOUT_THUMBNAIL,
     payload: { image },
   });
   return image;
@@ -463,6 +477,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
           title: response.activity.title,
           subjectId: response.activity.subject_id,
           educationLevelId: response.activity.education_level_id,
+          authorTagId: response.activity.author_tag_id,
           thumb_url: response.activity.thumb_url,
           type: response.activity.type,
         };
@@ -509,8 +524,9 @@ export const createResourceByH5PUploadAction = (
         title: metadata.title,
         type: 'h5p',
         content: 'place_holder',
-        subject_id: metadata.subject_id,
-        education_level_id: metadata.education_level_id,
+        subject_id: formatSelectBoxData(metadata.subject_id),
+        education_level_id: formatSelectBoxData(metadata.education_level_id),
+        author_tag_id: formatSelectBoxData(metadata.author_tag_id),
         description: metadata?.description || undefined,
       };
 
@@ -573,6 +589,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     subject_id: metadata.subject_id,
     description: metadata?.description || undefined,
     education_level_id: metadata.education_level_id,
+    author_tag_id: metadata.author_tag_id,
     source_type: metadata?.source_type || undefined,
     source_url: metadata?.source_url || undefined,
   };
@@ -642,8 +659,9 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     title: metadata?.title,
     type: 'h5p',
     content: 'place_holder',
-    subject_id: metadata.subject_id,
-    education_level_id: metadata.education_level_id,
+    subject_id: formatSelectBoxData(metadata.subject_id),
+    education_level_id: formatSelectBoxData(metadata.education_level_id),
+    author_tag_id: formatSelectBoxData(metadata.author_tag_id),
   };
   const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
@@ -666,7 +684,11 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
 };
 
 export const shareActivity = async (activityId) => {
-  resourceService.shareActivity(activityId);
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  resourceService.shareActivity(activityId, activeOrganization.id);
 
   // if (result.activity.id) {
   //   const protocol = `${window.location.href.split('/')[0]}//`;
@@ -762,7 +784,11 @@ export const saveFormDataInCreation = (formData) => async (dispatch) => {
 // };
 
 export const getLayoutActivities = () => async (dispatch) => {
-  const { data } = await resourceService.getAllLayout();
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const { data } = await resourceService.getAllLayout(activeOrganization?.id);
   if (data) {
     dispatch({
       type: actionTypes.SET_LAYOUT_ACTIVITY,
@@ -771,8 +797,8 @@ export const getLayoutActivities = () => async (dispatch) => {
   }
 };
 
-export const getSingleLayoutActivities = () => async (dispatch) => {
-  const { data } = await resourceService.getSingleLayout();
+export const getSingleLayoutActivities = (subOrgId) => async (dispatch) => {
+  const { data } = await resourceService.getSingleLayout(subOrgId);
   if (data) {
     dispatch({
       type: actionTypes.SET_SINGLE_ACTIVITY,
@@ -792,4 +818,14 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
     payload: result,
   });
   return result;
+};
+
+export const formatSelectBoxData = (data) => {
+  let ids = [];
+  if(data.length > 0){
+    data?.map(datum=>{
+      ids.push(datum.value);
+    });
+  }
+  return ids;
 };

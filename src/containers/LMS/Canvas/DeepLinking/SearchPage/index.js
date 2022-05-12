@@ -7,6 +7,7 @@ import Browse from 'containers/LMS/Canvas/DeepLinking/Browse';
 import SearchForm from 'containers/LMS/Canvas/DeepLinking/SearchForm';
 import SearchResults from 'containers/LMS/Canvas/DeepLinking/SearchResults';
 import PreviewActivity from 'containers/LMS/Canvas/DeepLinking/PreviewActivity';
+import Teams from 'containers/LMS/Canvas/DeepLinking/Teams';
 import logo from 'assets/images/login_logo.svg';
 import Closelogo from 'assets/images/navigation-close.svg';
 import './style.scss';
@@ -44,6 +45,11 @@ const SearchPage = (props) => {
                   </a>
                 </li>
                 <li className="nav-item">
+                  <a className={section === 'teams' ? 'nav-link active' : 'nav-link'} href="#" onClick={() => setSection('teams')}>
+                    Teams
+                  </a>
+                </li>
+                <li className="nav-item">
                   <a className={section === 'search' ? 'nav-link active' : 'nav-link'} href="#" onClick={() => setSection('search')}>
                     Search
                   </a>
@@ -55,6 +61,7 @@ const SearchPage = (props) => {
         <div className="row">
           <div className="col">
             {searchPreviewActivity === null && section === 'browse' && <Browse />}
+            {searchPreviewActivity === null && section === 'teams' && <Teams />}
             {searchPreviewActivity === null && section === 'search' && (
               <>
                 {currentPage === 'search' && <SearchForm />}

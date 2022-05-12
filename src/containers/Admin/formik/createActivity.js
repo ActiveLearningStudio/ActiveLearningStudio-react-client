@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import imgAvatar from 'assets/images/default-upload-img.png';
-import docAvatar from 'assets/images/document-avatar.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import {
@@ -11,7 +10,6 @@ import {
   editActivityType,
   loadResourceTypesAction,
   uploadActivityTypeThumbAction,
-  uploadActivityTypeFileAction,
 } from 'store/actions/resource';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import pcIcon from 'assets/images/pc-icon.png';
@@ -19,19 +17,16 @@ import pcIcon from 'assets/images/pc-icon.png';
 export default function CreateActivity(props) {
   const { editMode } = props;
   const [imageActive, setImgActive] = useState(null);
-  const [fileActive, setFileActive] = useState(null);
   const imgUpload = useRef();
-  const fileUpload = useRef();
   const dispatch = useDispatch();
   const selectedType = useSelector((state) => state.resource.selectedType);
-  const { activePage } = useSelector((state) => state.organization);
+  const organization = useSelector((state) => state.organization);
+  const { activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedType?.image);
-      setFileActive(selectedType?.css_path);
     } else {
       setImgActive(null);
-      setFileActive(null);
     }
   }, [editMode]);
   return (
@@ -42,6 +37,7 @@ export default function CreateActivity(props) {
           image: editMode ? selectedType.image : '',
           order: editMode ? selectedType.order : '',
           file: editMode ? selectedType.css_path : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -73,7 +69,7 @@ export default function CreateActivity(props) {
               button: false,
             });
             const response = await dispatch(
-              editActivityType(values, selectedType.id),
+              editActivityType(organization?.activeOrganization?.id, values, selectedType.id),
             );
             if (response) {
               Swal.fire({
@@ -102,7 +98,7 @@ export default function CreateActivity(props) {
               },
               button: false,
             });
-            const response = await dispatch(createActivityType(values));
+            const response = await dispatch(createActivityType(organization?.activeOrganization?.id, values));
             if (response) {
               Swal.fire({
                 text: 'Activity type added successfully',
@@ -160,7 +156,25 @@ export default function CreateActivity(props) {
                     {errors.title && touched.title && errors.title}
                   </div>
                 </div>
-
+                <div className="form-group-create">
+                  <h3>Order</h3>
+                  <input
+                    type="number"
+                    name="order"
+                    min="0"
+                    onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onBlur={handleBlur}
+                    value={values.order}
+                  />
+                  <div className="error">
+                    {errors.order && touched.order && errors.order}
+                  </div>
+                </div>
                 <div className="form-group-create">
                   <h3>Upload an image</h3>
                   <div className="" onClick={() => imgUpload.current.click()}>
@@ -240,101 +254,6 @@ export default function CreateActivity(props) {
                     <div className="error">
                       {errors.image && touched.image && errors.image}
                     </div>
-                  </div>
-                </div>
-
-                <div className="form-group-create">
-                  <h3>CSS File</h3>
-                  <div className="img-upload-form">
-                    <input
-                      type="file"
-                      name="file"
-                      accept=".css"
-                      onChange={(e) => {
-                        if (
-                          !(
-                            e.target.files[0].type.includes('css')
-                            || e.target.files[0].type.includes('scss')
-                          )
-                        ) {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Invalid file selected.',
-                          });
-                        } else if (e.target.files[0].size > 100000000) {
-                          Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Selected file size should be less then 100MB.',
-                          });
-                        } else {
-                          const formData = new FormData();
-                          try {
-                            formData.append('file', e.target.files[0]);
-                            formData.append('fileName', e.target.files[0].name);
-                            formData.append('typeName', values.title);
-                            const fileurl = dispatch(
-                              uploadActivityTypeFileAction(formData),
-                            );
-                            fileurl.then((file) => {
-                              setFileActive(file);
-                              setFieldValue('css_path', file);
-                            });
-                          } catch (err) {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Error',
-                              text: 'File upload failed, kindly try again.',
-                            });
-                          }
-                        }
-                      }}
-                      onBlur={handleBlur}
-                      ref={fileUpload}
-                      style={{ display: 'none' }}
-                    />
-                    {fileActive ? (
-                      <>
-                        <div>
-                          <img src={docAvatar} alt="" height="85" />
-                          <p className="text-center">
-                            {fileActive.replace(/^.*[\\/]/, '')}
-                          </p>
-                        </div>
-                        <div
-                          className="update-img"
-                          onClick={() => fileUpload.current.click()}
-                        >
-                          Update File
-                        </div>
-                      </>
-                    ) : (
-                      <div onClick={() => fileUpload.current.click()}>
-                        <img src={docAvatar} alt="" height="85" />
-                        <p>Upload File</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="form-group-create">
-                  <h3>Order</h3>
-                  <input
-                    type="number"
-                    name="order"
-                    min="0"
-                    onChange={handleChange}
-                    onKeyDown={(e) => {
-                      if (['-', '+', 'e', 'E', '.'].includes(e.key)) {
-                        e.preventDefault();
-                      }
-                    }}
-                    onBlur={handleBlur}
-                    value={values.order}
-                  />
-                  <div className="error">
-                    {errors.order && touched.order && errors.order}
                   </div>
                 </div>
               </div>

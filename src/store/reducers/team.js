@@ -103,6 +103,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
         teams: [...teams, action.payload.team],
+        selectedTeam: action.payload.team,
       };
     case actionTypes.CREATE_TEAM_FAIL:
       return {

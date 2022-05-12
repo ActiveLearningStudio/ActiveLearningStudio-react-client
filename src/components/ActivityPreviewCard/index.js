@@ -1,15 +1,24 @@
 /*eslint-disable*/
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import DropdownActivity from 'components/ResourceCard/dropdown';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import DropdownActivity from "components/ResourceCard/dropdown";
 
-import './style.scss';
-import { useSelector } from 'react-redux';
+import "./style.scss";
+import { useSelector } from "react-redux";
 
 const ActivityPreviewCard = (props) => {
-  const { showLti, shared, activity, projectId, playlistId, playlist, teamPermission } = props;
+  const {
+    showLti,
+    shared,
+    activity,
+    projectId,
+    playlistId,
+    playlist,
+    teamPermission,
+  } = props;
   const organization = useSelector((state) => state.organization);
+
   return (
     <div className="preview-activity-dropdown">
       <Link
@@ -26,16 +35,24 @@ const ActivityPreviewCard = (props) => {
             <div
               className="bg-thumbnail"
               style={{
-                backgroundImage: activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                backgroundImage: activity.thumb_url.includes("pexels.com")
+                  ? `url(${activity.thumb_url})`
+                  : `url(${global.config.resourceUrl}${activity.thumb_url})`,
               }}
             />
           )}
-          <div style={{ maxWidth: '253px' }}>
+          <div style={{ maxWidth: "253px" }}>
             <div className="title">{activity.title}</div>
           </div>
         </li>
       </Link>
-      {!showLti && <DropdownActivity resource={activity} playlist={playlist} teamPermission={teamPermission || {}} />}
+      {!showLti && (
+        <DropdownActivity
+          resource={activity}
+          playlist={playlist}
+          teamPermission={teamPermission || {}}
+        />
+      )}
     </div>
   );
 };
