@@ -81,7 +81,6 @@ function SearchForm() {
 
   const closeModel = useRef();
   const primaryColor = getGlobalColor('--main-primary-color');
-
   return (
     <Dropdown>
       <div className="search-block navbtn">
@@ -295,13 +294,9 @@ function SearchForm() {
                       let updatedValue = e.target.value;
                       if (updatedValue.includes('&')) {
                         updatedValue = e.target.value.replace('&', 'and');
-                        if (!values.subjectArray.includes(updatedValue)) {
-                          values.subjectArray.push(updatedValue);
-                        }
-                      } else if (
-                        !values.subjectArray.includes(e.target.value)
-                      ) {
-                        values.subjectArray.push(e.target.value);
+                      }
+                      if (!values.subjectArray.includes(updatedValue)) {
+                        values.subjectArray.push(Number(updatedValue));
                       }
                     }}
                     onBlur={handleBlur}
@@ -322,7 +317,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword" data-name={value}>
                     {values.subjectArray.map((data) => (
                       <div className="keywords-de">
-                        {subjects?.data?.filter((subj) => subj.id === data)[0].name}
+                        {subjects?.data?.filter((subj) => subj.id === data)[0]?.name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -349,11 +344,9 @@ function SearchForm() {
                       let updatedValue = e.target.value;
                       if (updatedValue.includes('&')) {
                         updatedValue = e.target.value.replace('&', 'and');
-                        if (!values.gradeArray.includes(updatedValue)) {
-                          values.gradeArray.push(updatedValue);
-                        }
-                      } else if (!values.gradeArray.includes(e.target.value)) {
-                        values.gradeArray.push(e.target.value);
+                      }
+                      if (!values.gradeArray.includes(e.target.value)) {
+                        values.gradeArray.push(Number(updatedValue));
                       }
                     }}
                     value={values.grade}
@@ -373,7 +366,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword">
                     {values.gradeArray.map((data) => (
                       <div className="keywords-de" data-name={value}>
-                        {educationLevels?.data?.filter((eduLvl) => eduLvl.id === data)[0].name}
+                        {educationLevels?.data?.filter((eduLvl) => eduLvl.id === data)[0]?.name}
                         <div
                           className="iocns"
                           onClick={() => {
@@ -400,11 +393,9 @@ function SearchForm() {
                       let updatedValue = e.target.value;
                       if (updatedValue.includes('&')) {
                         updatedValue = e.target.value.replace('&', 'and');
-                        if (!values.authorTagsArray.includes(updatedValue)) {
-                          values.authorTagsArray.push(updatedValue);
-                        }
-                      } else if (!values.authorTagsArray.includes(e.target.value)) {
-                        values.authorTagsArray.push(e.target.value);
+                      }
+                      if (!values.authorTagsArray.includes(e.target.value)) {
+                        values.authorTagsArray.push(Number(updatedValue));
                       }
                     }}
                     value={values.author_tags}
@@ -424,7 +415,7 @@ function SearchForm() {
                   <div className="form-group wrap-keyword">
                     {values.authorTagsArray.map((data) => (
                       <div className="keywords-de" data-name={value}>
-                        {authorTags?.data?.filter((authId) => authId.id === data)[0].name}
+                        {authorTags?.data?.filter((authId) => authId.id === data)[0]?.name}
                         <div
                           className="iocns"
                           onClick={() => {
