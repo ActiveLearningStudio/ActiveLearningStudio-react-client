@@ -10,6 +10,7 @@ import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
 import { createIndResourceAction } from 'store/actions/indActivities';
 import { edith5pVideoActivity } from 'store/actions/videos';
+import { editIndActivityItem } from 'store/actions/indActivities';
 import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
   const {
@@ -85,8 +86,27 @@ const H5PEditor = (props) => {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
       } else if (editVideo) {
-        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
-        setOpenVideo(false);
+        if (activityPreview) {
+          const h5pdata = {
+            library: window.h5peditorCopy.getLibrary(),
+            parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+            action: 'create',
+          };
+          await dispatch(
+            editIndActivityItem(editVideo.id, {
+              ...formData,
+              organization_visibility_type_id: editVideo.organization_visibility_type_id || 1,
+              data: h5pdata,
+              type: 'h5p',
+              content: 'place_holder',
+              title: metadata?.title || formData.title,
+            })
+          );
+          setOpenVideo(false);
+        } else {
+          await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
+          setOpenVideo(false);
+        }
       } else {
         const payload = {
           event,

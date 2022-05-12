@@ -96,7 +96,7 @@ export const clearSelectedProject = () => (dispatch) => {
   });
 };
 
-export const loadProjectAction = (projectId) => async (dispatch) => {
+export const loadProjectAction = (projectId, signal) => async (dispatch) => {
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
   try {
@@ -104,13 +104,16 @@ export const loadProjectAction = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_REQUEST,
     });
 
-    const { project } = await projectService.get(projectId, activeOrganization?.id);
+    const { project } = await projectService.get(projectId, activeOrganization?.id, signal);
     Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
       payload: { project },
     });
   } catch (e) {
+    if (e === 'AbortError') {
+      console.log('Call aborted');
+    }
     dispatch({
       type: actionTypes.LOAD_PROJECT_FAIL,
     });

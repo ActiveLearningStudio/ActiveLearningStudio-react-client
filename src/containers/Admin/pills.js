@@ -477,7 +477,7 @@ export default function Pills(props) {
       );
       dispatch(updatePageNumber(activePage));
     }
-  }, [type, subTypeState, activePage, size]);
+  }, [type, subTypeState, activePage, size, activeOrganization]);
   useEffect(() => {
     if (
       type === "Activities" &&
@@ -511,7 +511,7 @@ export default function Pills(props) {
       );
       dispatch(updatePageNumber(activePage));
     }
-  }, [activePage, subTypeState, type, size]);
+  }, [activePage, subTypeState, type, size, activeOrganization]);
   const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === "Activity Types") {
       if (query) {
