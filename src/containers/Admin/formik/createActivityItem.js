@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -6,10 +8,7 @@ import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import {
-  createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction,
-}
-  from 'store/actions/resource';
+import { createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction } from 'store/actions/resource';
 
 export default function CreateActivityItem(props) {
   const { editMode } = props;
@@ -18,7 +17,8 @@ export default function CreateActivityItem(props) {
   const dispatch = useDispatch();
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activePage } = useSelector((state) => state.organization);
+  const organization = useSelector((state) => state.organization);
+  const { activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedItem?.image);
@@ -39,6 +39,7 @@ export default function CreateActivityItem(props) {
           demo_video_id: editMode ? selectedItem?.demo_video_id : '',
           image: editMode ? selectedItem?.image : '',
           order: editMode ? selectedItem?.order : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -84,7 +85,7 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(editActivityItem(values, selectedItem.id));
+            const response = await dispatch(editActivityItem(organization?.activeOrganization?.id, values, selectedItem.id));
             if (response) {
               Swal.fire({
                 text: 'Activity item edited successfully',
@@ -97,7 +98,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }
@@ -112,7 +113,7 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(createActivityItem(values));
+            const response = await dispatch(createActivityItem(organization?.activeOrganization?.id, values));
             if (response) {
               Swal.fire({
                 text: 'Activity item added successfully',
@@ -125,7 +126,7 @@ export default function CreateActivityItem(props) {
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }
@@ -144,7 +145,7 @@ export default function CreateActivityItem(props) {
         }) => (
           <form onSubmit={handleSubmit}>
             <h2>
-              {editMode ? 'Edit' : 'Add'}
+              {editMode ? 'Edit ' : 'Add '}
               activity item
             </h2>
 
@@ -184,9 +185,9 @@ export default function CreateActivityItem(props) {
                 <div className="form-group-create">
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
-                    <option value=""> </option>
-                    {activityTypes?.length > 0
-                      && activityTypes?.map((type) => (
+                    {/* <option value=""> </option> */}
+                    {activityTypes?.data.length > 0 &&
+                      activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
                           {type?.title}
                         </option>
@@ -231,11 +232,11 @@ export default function CreateActivityItem(props) {
                       onChange={(e) => {
                         if (
                           !(
-                            e.target.files[0].type.includes('png')
-                            || e.target.files[0].type.includes('jpg')
-                            || e.target.files[0].type.includes('gif')
-                            || e.target.files[0].type.includes('jpeg')
-                            || e.target.files[0].type.includes('svg')
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
                           )
                         ) {
                           Swal.fire({
@@ -274,7 +275,6 @@ export default function CreateActivityItem(props) {
                     {imageActive ? (
                       <>
                         <img
-                          alt="activity item"
                           src={`${global.config.resourceUrl}${imageActive}`}
                           style={{
                             width: '360px',
@@ -302,11 +302,10 @@ export default function CreateActivityItem(props) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">
-                Save
-              </button>
+              <button type="submit">Save</button>
               <button
                 type="button"
+                style={{ width: '95px' }}
                 className="cancel"
                 onClick={() => {
                   dispatch(removeActiveAdminForm());

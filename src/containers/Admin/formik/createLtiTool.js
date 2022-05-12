@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 import { Dropdown } from 'react-bootstrap';
-import { getLtiTools, removeActiveAdminForm } from 'store/actions/admin';
+import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
 import { toolTypeArray } from 'utils';
@@ -74,7 +74,7 @@ export default function CreateLtiTool(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLtiTools(organization?.activeOrganization?.id));
+              // dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -103,7 +103,7 @@ export default function CreateLtiTool(prop) {
                   confirmButton: 'confirmation-close-btn',
                 },
               });
-              dispatch(getLtiTools(organization?.activeOrganization?.id));
+              // dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -155,9 +155,7 @@ export default function CreateLtiTool(prop) {
                     <h3>Tool type</h3>
                     <div className="filter-dropdown-tooltype">
                       <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">
-                          {toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}
-                        </Dropdown.Toggle>
+                        <Dropdown.Toggle id="dropdown-basic">{toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}</Dropdown.Toggle>
                         <Dropdown.Menu>
                           {toolTypeArray.map((type) => (
                             <Dropdown.Item
@@ -172,13 +170,14 @@ export default function CreateLtiTool(prop) {
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
-
                   </div>
 
                   <div className="form-group-create">
                     <h3>LTI version</h3>
                     <select name="lti_version" onChange={handleChange} onBlur={handleBlur} value={values.lti_version}>
-                      <option defaultValue="LTI-1p0" value="LTI-1p0">LTI-1p0</option>
+                      <option defaultValue="LTI-1p0" value="LTI-1p0">
+                        LTI-1p0
+                      </option>
                       <option value="LTI-1p3">LTI-1p3</option>
                     </select>
                     <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
@@ -255,14 +254,11 @@ export default function CreateLtiTool(prop) {
                     )}
                     <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
                   </div>
-
                 </div>
               </div>
 
               <div className="button-group">
-                <button type="submit">
-                  Save
-                </button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

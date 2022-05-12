@@ -523,7 +523,7 @@
 .main-tabs {
   width: 100%;
   margin-top: 0px;
-  margin-bottom: 10px !important;
+  margin-bottom: 16px !important;
 
   .nav-item {
     position: relative;
@@ -1235,7 +1235,7 @@ header {
   clear: both;
   background: #fff;
   position: relative;
-  z-index: 1001;
+  z-index: 1000;
   .flex-div {
     flex-wrap: nowrap;
   }
@@ -1445,12 +1445,12 @@ header.head_mobile {
     max-width: 100%;
     margin: 0 auto;
     background: #ffffff;
-    padding: 32px;
+    padding: 24px 32px;
     .project-details {
       display: flex;
       .project-title-desc {
         // width: 700px;
-        margin-left: 32px;
+        margin-left: 16px;
         margin-right: 24px;
         @media (max-width: 1024px) {
           width: 400px;
@@ -1945,7 +1945,7 @@ a:hover {
   }
 
   .panel {
-    padding: 10px 20px 40px 20px;
+    padding: 8px 20px 30px 0;
     display: none;
     background-color: white;
     overflow-x: hidden;
@@ -2009,13 +2009,13 @@ a:hover {
     opacity: 1;
     border: none;
     text-transform: capitalize;
-    padding: 0 0 14px;
+    padding: 0 0 18px;
     display: flex;
     width: 100%;
     cursor: pointer;
     align-items: center;
     border-bottom: 2px solid #f1f1f1;
-    margin: 30px 0 32px;
+    // margin: 30px 0 32px;
 
     .svg-inline--fa {
       margin-right: 16px !important;
@@ -3274,6 +3274,10 @@ a:hover {
 }
 
 .video_activity.modal {
+  .modal-xl {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
   nav {
     margin: 0;
     padding: 0 0 0 0;
@@ -4043,4 +4047,9 @@ body.collapsed {
   width: 177px;
   height: 32px;
   padding: 0 !important;
+}
+
+.video_activity .interactivevideoreferce {
+  margin: 0 auto;
+  height: calc(100vh - 200px);
 }

@@ -16,11 +16,15 @@ const Browse = (props) => {
     window.scrollTo(0, 0);
     const url = new URL(window.location.href);
     const email = url.searchParams.get('user_email');
+    const domainName = url.searchParams.get('api_domain_url');
+    const courseId = url.searchParams.get('course_id');
     browse({
       lms_url: match.params.lmsUrl,
       lti_client_id: match.params.ltiClientId,
       user_email: email,
       mode: 'browse',
+      course_id: courseId,
+      api_domain_url: domainName,
     });
   }, [match]);
 

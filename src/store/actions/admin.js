@@ -73,8 +73,8 @@ export const editUserInOrganization = (user) => async (dispatch) => {
   return result;
 };
 
-export const getActivityTypes = (query) => async (dispatch) => {
-  const result = await adminService.getActivityTypes(query);
+export const getActivityTypes = (subOrgId, page, size = '', column = '', orderBy = '', search = '') => async (dispatch) => {
+  const result = await adminService.getActivityTypes(subOrgId, page, size, column, orderBy, search);
   dispatch({
     type: actionTypes.GET_ACTIVITY_TYPES,
     payload: result,
@@ -151,8 +151,8 @@ export const setCurrentProject = (project) => (dispatch) => {
   });
 };
 
-export const getLtiTools = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getLtiTools(subOrgId, page);
+export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) => async (dispatch) => {
+  const result = await adminService.getLtiTools(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,
@@ -160,17 +160,8 @@ export const getLtiTools = (subOrgId, page) => async (dispatch) => {
   return result;
 };
 
-export const getLtiToolsOrderBy = (subOrgId, column, orderBy, page) => async (dispatch) => {
-  const result = await adminService.getLtiToolsOrderBy(subOrgId, column, orderBy, page);
-  dispatch({
-    type: actionTypes.GET_LTI_TOOLS,
-    payload: result,
-  });
-  return result;
-};
-
-export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getDefaultSso(subOrgId, page);
+export const getDefaultSso = (subOrgId, page, size = 10, query = '', column = '', orderBy = '', filterBy = '') => async (dispatch) => {
+  const result = await adminService.getDefaultSso(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_DEFAULT_SSO,
     payload: result,
@@ -178,8 +169,8 @@ export const getDefaultSso = (subOrgId, page) => async (dispatch) => {
   return result;
 };
 
-export const getLmsProject = (subOrgId, page) => async (dispatch) => {
-  const result = await adminService.getLmsProject(subOrgId, page);
+export const getLmsProject = (subOrgId, page, size = 10, query = '', column = '', orderBy = '', filterBy = '') => async (dispatch) => {
+  const result = await adminService.getLmsProject(subOrgId, page, size, query, column, orderBy, filterBy);
   dispatch({
     type: actionTypes.GET_LMS_INTEGRATION,
     payload: result,
@@ -200,46 +191,47 @@ export const cancelRemoveUser = () => (dispatch) => {
   });
 };
 
-export const getSubjects =
-  (page, column = '', orderBy = '') =>
-  async (dispatch) => {
-    const result = await adminService.getSubjects(page, column, orderBy);
-    dispatch({
-      type: actionTypes.GET_SUBECTS,
-      payload: result,
-    });
-    return result;
-  };
+export const getSubjects = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getSubjects(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_SUBECTS,
+    payload: result,
+  });
+  return result;
+};
 
-export const getEducationLevel =
-  (page, column = '', orderBy = '') =>
-  async (dispatch) => {
-    const result = await adminService.getEducationLevel(page, column, orderBy);
-    dispatch({
-      type: actionTypes.GET_EDUCATION_LEVEL,
-      payload: result,
-    });
-    return result;
-  };
+export const getEducationLevel = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getEducationLevel(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_EDUCATION_LEVEL,
+    payload: result,
+  });
+  return result;
+};
 
-export const getAuthorTag =
-  (page, column = '', orderBy = '') =>
-  async (dispatch) => {
-    const result = await adminService.getAuthorTag(page, column, orderBy);
-    dispatch({
-      type: actionTypes.GET_AUTHOR_TAGS,
-      payload: result,
-    });
-    return result;
-  };
+export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getAuthorTag(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_AUTHOR_TAGS,
+    payload: result,
+  });
+  return result;
+};
 
-export const teamsActionAdminPanel =
-  (subOrgId, query, page, size, order_by_column = '', order_by_type = '') =>
-  async (dispatch) => {
-    const result = await adminService.teamsActionAdminPanel(subOrgId, query, page, size, order_by_column, order_by_type.toLowerCase());
-    dispatch({
-      type: actionTypes.GET_TEAMS_ADMIN,
-      payload: result,
-    });
-    return result;
-  };
+export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
+  const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
+  dispatch({
+    type: actionTypes.GET_ACTIVITY_LAYOUTS,
+    payload: result,
+  });
+  return result;
+};
+
+export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') => async (dispatch) => {
+  const result = await adminService.teamsActionAdminPanel(subOrgId, query, page, size, order_by_column, order_by_type.toLowerCase());
+  dispatch({
+    type: actionTypes.GET_TEAMS_ADMIN,
+    payload: result,
+  });
+  return result;
+};

@@ -14,10 +14,16 @@ const CreateUser = (props) => {
   const dispatch = useDispatch();
   const [step, setStep] = useState('emailCheck');
   const [checkedEmail, setCheckedEmail] = useState(null);
-
+  const [existingUser, setExistingUser] = useState(false);
   const handleEmailChecked = (result, email) => {
     if (result === 'new-user') {
       setCheckedEmail(email);
+      setStep('createUser');
+      return;
+    }
+    if (result === 'existing-user') {
+      setCheckedEmail(email);
+      setExistingUser(true);
       setStep('createUser');
       return;
     }
@@ -40,7 +46,7 @@ const CreateUser = (props) => {
       {mode === 'create_user' && step === 'createUser' && checkedEmail && (
         <div className="form-new-popup-admin">
           <div className="inner-form-content">
-            <CreateUserForm checkedEmail={checkedEmail} />
+            <CreateUserForm checkedEmail={checkedEmail} existingUser={existingUser} />
           </div>
         </div>
       )}

@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+/* eslint-disable */
 import React, { Suspense, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,15 +20,7 @@ import './style.scss';
 const H5PPreview = React.lazy(() => import('../../H5PPreview'));
 
 function LtiPlaylistPreviewShared(props) {
-  const {
-    history,
-    playlist,
-    projectId,
-    playlistId,
-    activityId,
-    loading,
-    loadSharedPlaylist,
-  } = props;
+  const { history, playlist, projectId, playlistId, activityId, loading, loadSharedPlaylist } = props;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -77,17 +70,11 @@ function LtiPlaylistPreviewShared(props) {
     }
   }
 
-  console.log(selectedPlaylist);
-
   return (
     <>
       {loading ? (
         <div className="loading-phf-data">
-          {loading === 'loading...' ? (
-            <Unauthorized text={loading.toUpperCase()} />
-          ) : (
-            <Unauthorized showButton text="You are unauthorized to access this!" />
-          )}
+          {loading === 'loading...' ? <Unauthorized text={loading.toUpperCase()} /> : <Unauthorized showButton text="You are unauthorized to access this!" />}
         </div>
       ) : (
         <section className="main-page-content preview">
@@ -129,20 +116,8 @@ function LtiPlaylistPreviewShared(props) {
 
                 <div className="right-control vd-controls">
                   <div className="slider-btn">
-                    <PreviousLink
-                      shared
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      previousResource={previousResource}
-                      allPlaylists={allPlaylists}
-                    />
-                    <NextLink
-                      shared
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      nextResource={nextResource}
-                      allPlaylists={allPlaylists}
-                    />
+                    <PreviousLink shared projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
+                    <NextLink shared projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
                   </div>
                 </div>
               </div>
@@ -169,11 +144,7 @@ function LtiPlaylistPreviewShared(props) {
             <div className="right-sidegolf-info">
               <div className="back-header">
                 <div>
-                  <Link
-                    to="#"
-                    className="go-back-button-preview"
-                    onClick={history.goBack}
-                  >
+                  <Link to="#" className="go-back-button-preview" onClick={history.goBack}>
                     <FontAwesomeIcon icon="undo" className="mr-2" />
                     Back to Project
                   </Link>
@@ -184,31 +155,17 @@ function LtiPlaylistPreviewShared(props) {
                     <FontAwesomeIcon icon="ellipsis-v" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <ActivitiesDropdown
-                      shared
-                      projectId={projectId}
-                      playlistId={playlistId}
-                      activities={selectedPlaylist.activities}
-                    />
+                    <ActivitiesDropdown shared projectId={projectId} playlistId={playlistId} activities={selectedPlaylist.activities} />
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
 
               <div className="scrollDiv long">
                 <div className="watcher">
-                  You are watching from
-                  {' '}
-                  <span>
-                    {selectedPlaylist.title}
-                  </span>
+                  You are watching from <span>{selectedPlaylist.title}</span>
                 </div>
                 <ul className="slider-scroll-auto">
-                  <ActivitiesList
-                    shared
-                    projectId={projectId}
-                    playlistId={playlistId}
-                    activities={selectedPlaylist.activities}
-                  />
+                  <ActivitiesList shared projectId={projectId} playlistId={playlistId} activities={selectedPlaylist.activities} />
                 </ul>
               </div>
             </div>
@@ -241,6 +198,4 @@ const mapStateToProps = (state) => ({
   playlist: state.playlist,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LtiPlaylistPreviewShared),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LtiPlaylistPreviewShared));

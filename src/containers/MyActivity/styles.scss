@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 * {
   padding: 0;
   margin: 0;
@@ -91,7 +91,7 @@
             width: 100%;
             border: none;
             outline: none;
-            font-family: 'Open Sans', sans-serif;
+            font-family: "Open Sans", sans-serif;
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -362,7 +362,7 @@
     }
   }
   .activity-layout-title {
-    margin-top: 50px;
+    margin-top: 36px;
     width: 480px;
     h2 {
       font-size: 32px;
@@ -373,7 +373,7 @@
     margin: 17px 0 50px;
   }
   .activity-layout-detail {
-    margin-top: 25px;
+    margin-top: 24px;
     // margin-right: 100px;
     // width: 970px;
   }
@@ -418,7 +418,7 @@
   // Update new Task
   .layout-cards-process-btn {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     .activity-layout-cards {
       // @media screen and (max-width: 1024px) {
       //   flex: 0.9;
@@ -426,7 +426,7 @@
       // flex: 0.3;
       width: 1000px;
       width: 350px;
-      margin-top: 40px;
+      margin-top: 32px;
       display: flex;
       flex-wrap: wrap;
 
@@ -495,6 +495,11 @@
           height: 16px;
           margin-right: 8px;
         }
+        svg {
+          width: 16px;
+          height: 16px;
+          margin-right: 8px;
+        }
 
         & p {
           margin: 0;
@@ -507,7 +512,8 @@
     .layout-process-btn {
       // flex: 0.7;
       width: 583px;
-      margin-top: 40px;
+      margin-top: 32px;
+      margin-left: 80px;
 
       .nav {
         margin: 0;
@@ -585,7 +591,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type='radio'] {
+      input[type="radio"] {
         width: 20px;
         height: 20px;
       }
@@ -675,7 +681,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type='radio'] {
+      input[type="radio"] {
         width: 20px;
         height: 20px;
       }
@@ -709,7 +715,7 @@
       select {
         border: none;
 
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -779,8 +785,9 @@
       @media screen and (max-width: 1024px) {
         width: 280px;
       }
-      max-width: 500px;
+      max-width: 536px;
       margin-top: 32px;
+      width: 70%;
       .layout-description-title {
         h2 {
           border: none;
@@ -852,6 +859,7 @@
         margin-top: 33px;
         display: flex;
         .formik-select {
+          max-width: 168px;
           flex: 1;
           .formik-select-title {
             margin: 0;
@@ -864,8 +872,22 @@
             border-radius: 4px;
           }
         }
+        button {
+          width: 100%;
+          height: 40px;
+          outline: none;
+          color: #515151 !important;
+          background: #ffffff;
+          border: 1px solid #515151 !important;
+          border-radius: 4px;
+          text-indent: 10px;
+          box-shadow: none;
+        }
         .mr-32 {
           margin-right: 32px;
+        }
+        .mr-16 {
+          margin-right: 16px;
         }
       }
       .formik-uploadimage {
@@ -877,6 +899,10 @@
         line-height: 24px;
         color: #084892;
       }
+      .css-1qprcsu-option {
+        color: #084892;
+        font-weight: 400;
+      }
     }
 
     .add-activity-layout-videoTag {
@@ -884,8 +910,13 @@
         margin-left: 30px;
       }
 
-      margin-left: 60px;
+      margin-left: 80px;
       .layout-add-activity-title {
+        h3 {
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 24px;
+        }
         margin-top: 34px;
         h2 {
           border: none;
@@ -970,7 +1001,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -1057,7 +1088,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;

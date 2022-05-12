@@ -1,13 +1,10 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import {
-  showCreateProjectModalAction,
-  createProjectAction,
-  loadMyProjectsAction,
-} from 'store/actions/project';
+import { showCreateProjectModalAction, createProjectAction, loadMyProjectsAction } from 'store/actions/project';
 import { logActivityViewAction, logPlaylistViewAction } from 'store/actions/metrics';
 import Header from 'components/Header';
 import ActivityShared from 'containers/Preview/PlaylistPreview/ActivityShared';
@@ -18,14 +15,15 @@ class LtiPreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
     window.scrollTo(0, 0);
+    // window.brightcoveAccountId = '111111';
     // Logging the view for metrics
-    const {
-      match, previewType, logActivityView, logPlaylistView,
-    } = this.props;
+    const { match, previewType, logActivityView, logPlaylistView } = this.props;
     const { playlistId, activityId } = match.params;
     console.log(match.params);
 
-    if (previewType === 'activityShared') { logActivityView(activityId); } else if (previewType === 'playlistShared') {
+    if (previewType === 'activityShared') {
+      logActivityView(activityId);
+    } else if (previewType === 'playlistShared') {
       logPlaylistView(playlistId);
       logActivityView(activityId);
     }
@@ -36,38 +34,21 @@ class LtiPreviewPage extends React.Component {
 
     const { projectId, playlistId, activityId } = match.params;
 
-    const projId = (projectId !== null && projectId !== undefined) ? parseInt(projectId, 10) : null;
+    const projId = projectId !== null && projectId !== undefined ? parseInt(projectId, 10) : null;
     const plyId = parseInt(playlistId, 10);
-    const actId = (activityId !== null && activityId !== undefined) ? parseInt(activityId, 10) : null;
+    const actId = activityId !== null && activityId !== undefined ? parseInt(activityId, 10) : null;
 
     let content;
     if (previewType === 'playlistShared') {
-      content = (
-        <LtiPlaylistPreviewShared
-          projectId={projId}
-          playlistId={plyId}
-          activityId={actId}
-        />
-      );
+      content = <LtiPlaylistPreviewShared projectId={projId} playlistId={plyId} activityId={actId} />;
     } else if (previewType === 'activityShared') {
       logActivityView(match.params.activityId);
-      content = (
-        <ActivityShared />
-      );
+      content = <ActivityShared />;
     } else if (previewType === 'activitySharedEmbed') {
       logActivityView(match.params.activityId);
-      content = (
-        <ActivityShared embed />
-      );
+      content = <ActivityShared embed />;
     } else {
-      content = (
-        <LtiPlaylistPreview
-          showLti
-          playlistId={plyId}
-          activityId={actId}
-          projectId={projId}
-        />
-      );
+      content = <LtiPlaylistPreview showLti playlistId={plyId} activityId={actId} projectId={projId} />;
     }
 
     return (
@@ -102,6 +83,4 @@ const mapDispatchToProps = (dispatch) => ({
   logPlaylistView: (playlistId) => dispatch(logPlaylistViewAction(playlistId)),
 });
 
-export default withRouter(
-  connect(null, mapDispatchToProps)(LtiPreviewPage),
-);
+export default withRouter(connect(null, mapDispatchToProps)(LtiPreviewPage));

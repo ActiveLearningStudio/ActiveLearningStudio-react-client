@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   activityTypeThumbUrl: null,
   newActivityItem: null,
   activityItemThumbUrl: null,
+  activityLayoutThumbUrl: null,
   resources: [],
   showCreateResourcePopup: false,
   newResource: {
@@ -53,7 +54,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        types: action.payload.activityTypes,
+        types: action.payload,
       };
     case actionTypes.LOAD_RESOURCE_TYPES_FAIL:
       return {
@@ -108,6 +109,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activityItemThumbUrl: action.payload.image,
+      };
+    case actionTypes.UPLOAD_ACTIVITY_LAYOUT_THUMBNAIL:
+      return {
+        ...state,
+        activityLayoutThumbUrl: action.payload.image,
       };
     // TODO: refactor bottom
     case actionTypes.SHOW_CREATE_RESOURCE_MODAL:

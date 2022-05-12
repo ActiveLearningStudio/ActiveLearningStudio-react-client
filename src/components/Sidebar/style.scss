@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 aside {
   // Toggle CSS styles
@@ -99,7 +99,8 @@ aside {
           margin-top: 20px;
           margin-bottom: 50px;
           padding: 5px 10px 5px 35px;
-          background: $silver-chalice url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
+          background: $silver-chalice
+            url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
           border: 1px solid $silver-chalice;
           border-radius: 2px;
           color: $dodger-blue;
@@ -128,7 +129,8 @@ aside {
   }
 
   .recent-resource-icon {
-    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0 7px;
+    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0
+      7px;
   }
 }
 
@@ -155,8 +157,7 @@ aside {
       padding: 12px 52px;
       padding-top: 19px;
       padding-bottom: 17px;
-      border-top: 1px solid $mercury
-      button {
+      border-top: 1px solid $mercury button {
         display: flex;
         padding: 0px !important;
         box-shadow: none;
@@ -192,14 +193,14 @@ aside {
       }
 
       a::before {
-        content: '-';
+        content: "-";
         color: $fun-blue-1;
         padding-right: 5px;
         margin: 0px;
         padding-left: 0px;
       }
       .active {
-        background: $mercury
+        background: $mercury;
       }
       .org-icon {
         width: 21px;
@@ -364,6 +365,9 @@ aside {
     color: $mine-shaft;
     text-align: left;
     opacity: 1;
+  }
+  .activeLink {
+    background-color: #F1F1F1;
   }
   a:first-child .row-sidebar:first-child {
     border-top: none !important;
