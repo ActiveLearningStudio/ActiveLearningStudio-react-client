@@ -220,22 +220,27 @@ export default (state = INITIAL_STATE, action) => {
         orgMediaSources: action.payload,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
-      const filterVideoSource = state.allMediaSources.mediaSources?.Video?.filter((source, counter) => {
-        action.payload?.map((payload, counter) => {
-          if (source.id === payload[counter]) {
-            return source;
-          }
-        });
-      });
-
-      console.log('filter', filterVideoSource);
       return {
         ...state,
-        // orgMediaSources: {
-        //   ...state.orgMediaSources,
-        //   // mediaSources: [...state.orgMediaSources.mediaSources],
-        // },
+        orgMediaSources: action.payload,
       };
+    // case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+    //   const filterVideoSource = state.allMediaSources.mediaSources?.Video?.filter((source, counter) => {
+    //     action.payload?.map((payload, counter) => {
+    //       if (source.id === payload[counter]) {
+    //         return source;
+    //       }
+    //     });
+    //   });
+
+    //   console.log('filter', filterVideoSource);
+    //   return {
+    //     ...state,
+    //     // orgMediaSources: {
+    //     //   ...state.orgMediaSources,
+    //     //   // mediaSources: [...state.orgMediaSources.mediaSources],
+    //     // },
+    //   };
     default:
       return state;
   }

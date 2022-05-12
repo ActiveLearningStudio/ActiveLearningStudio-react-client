@@ -14,6 +14,7 @@ const Media = () => {
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
   let media_ids = [];
+  var updatedMediasSource = [];
   const { currentOrganization } = organization;
 
   useEffect(() => {
@@ -61,25 +62,39 @@ const Media = () => {
                             label='Selectall'
                             checked={orgVideoSource?.length === 6 ? true : false}
                             onChange={(e) => {
+                              updatedMediasSource = [];
                               media_ids = [];
                               if (e.target.checked) {
                                 setorgVideoSource(allVideoSource);
-                                allVideoSource?.map((source) => {
-                                  return media_ids.push(source.id);
-                                });
-                                orgImageSource?.map((imageSource) => {
-                                  return media_ids.push(imageSource.id);
-                                });
                               } else {
                                 setorgVideoSource([]);
-                                orgImageSource?.map((imageSource) => {
-                                  return media_ids.push(imageSource.id);
-                                });
                               }
-                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids));
                             }}
                           />
                           <span className='span-heading'>Select all</span>
+                        </div>
+                        <div className='btn-text'>
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              let updatedMediasSource = [];
+                              let media_ids = [];
+                              orgVideoSource?.map((videoSource) => {
+                                return media_ids.push(videoSource.id);
+                              });
+                              orgImageSource?.map((imgSource) => {
+                                console.log('ids', media_ids);
+                                return media_ids.push(imgSource.id);
+                              });
+                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                              if (orgVideoSource.length === 0) {
+                                updatedMediasSource = orgImageSource;
+                              }
+                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                            }}
+                          >
+                            update
+                          </button>
                         </div>
                       </div>
                       <div className='sources-sub'>
@@ -99,16 +114,6 @@ const Media = () => {
                                     } else {
                                       setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
                                     }
-                                  }}
-                                  onBlur={(e) => {
-                                    orgVideoSource?.map((videoSource) => {
-                                      return media_ids.push(videoSource.id);
-                                    });
-                                    orgImageSource?.map((imgSource) => {
-                                      console.log('ids', media_ids);
-                                      return media_ids.push(imgSource.id);
-                                    });
-                                    dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids));
                                   }}
                                 />
                                 <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
@@ -137,24 +142,38 @@ const Media = () => {
                             checked={orgImageSource?.length === 3 ? true : false}
                             onChange={(e) => {
                               media_ids = [];
+                              updatedMediasSource = [];
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource);
-                                allImageSource?.map((source) => {
-                                  return media_ids.push(source.id);
-                                });
-                                orgVideoSource?.map((videoSource) => {
-                                  return media_ids.push(videoSource.id);
-                                });
                               } else {
                                 setorgImageSource([]);
-                                orgVideoSource?.map((videoSource) => {
-                                  return media_ids.push(videoSource.id);
-                                });
                               }
-                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids));
                             }}
                           />
                           <span className='span-heading'>Select all</span>
+                        </div>
+                        <div className='btn-text'>
+                          <button
+                            name='update'
+                            onClick={(e) => {
+                              e.preventDefault();
+                              var updatedMediasSource = [];
+                              var media_ids = [];
+                              orgImageSource?.map((imgSource) => {
+                                return media_ids.push(imgSource.id);
+                              });
+                              orgVideoSource?.map((videoSource) => {
+                                return media_ids.push(videoSource.id);
+                              });
+                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                              if (orgImageSource.length === 0) {
+                                updatedMediasSource = orgVideoSource;
+                              }
+                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                            }}
+                          >
+                            update
+                          </button>
                         </div>
                       </div>
                       <div className='sources-sub'>
@@ -173,17 +192,6 @@ const Media = () => {
                                     } else {
                                       setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
                                     }
-
-                                    dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids));
-                                  }}
-                                  onBlur={(e) => {
-                                    orgImageSource?.map((imgSource) => {
-                                      return media_ids.push(imgSource.id);
-                                    });
-                                    orgVideoSource?.map((videoSource) => {
-                                      return media_ids.push(videoSource.id);
-                                    });
-                                    dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids));
                                   }}
                                 />
                                 <span id={isImageSource.length > 0 && 'span-sub-selected'} className='span-sub'>

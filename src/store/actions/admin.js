@@ -253,11 +253,11 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
   return result;
 };
 
-export const updateOrganizationMedaiSource = (subOrgId, media_ids) => async (dispatch) => {
+export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
   const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
   dispatch({
     type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
-    payload: media_ids,
+    payload: updatedMediasSource,
   });
   return result;
 };
