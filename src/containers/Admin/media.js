@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrganizationMedaiSource, updateOrganizationMedaiSource } from 'store/actions/admin';
+import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
 const Media = () => {
   const dispatch = useDispatch();
@@ -13,8 +13,6 @@ const Media = () => {
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
-  let media_ids = [];
-  var updatedMediasSource = [];
   const { currentOrganization } = organization;
 
   useEffect(() => {
@@ -62,8 +60,6 @@ const Media = () => {
                             label='Selectall'
                             checked={orgVideoSource?.length === 6 ? true : false}
                             onChange={(e) => {
-                              updatedMediasSource = [];
-                              media_ids = [];
                               if (e.target.checked) {
                                 setorgVideoSource(allVideoSource);
                               } else {
@@ -141,8 +137,6 @@ const Media = () => {
                             label='Selectall'
                             checked={orgImageSource?.length === 3 ? true : false}
                             onChange={(e) => {
-                              media_ids = [];
-                              updatedMediasSource = [];
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource);
                               } else {

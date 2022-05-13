@@ -1,5 +1,6 @@
 /* eslint-disable */
 import adminService from 'services/admin.service';
+import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 import { getUserAction } from './auth';
@@ -255,9 +256,17 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
 
 export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
   const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
-  dispatch({
-    type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
-    payload: updatedMediasSource,
-  });
+  if (result) {
+    Swal.fire({
+      icon: 'success',
+      title: result.message,
+      allowOutsideClick: false,
+    });
+    dispatch({
+      type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
+      payload: updatedMediasSource,
+    });
+  }
+
   return result;
 };
