@@ -14,6 +14,9 @@
     .topHeading-video-detail {
       display: flex;
       flex-direction: column;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #dddddd;
+
       .topHeading {
         display: flex;
         justify-content: space-between;

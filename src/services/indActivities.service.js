@@ -1,14 +1,17 @@
 /* eslint-disable */
 
-import config from 'config';
-import httpService from './http.service';
-import { errorCatcher } from './errors';
+import config from "config";
+import httpService from "./http.service";
+import { errorCatcher } from "./errors";
 
 const { apiVersion } = config;
 
 const create = (subOrgId, activity) =>
   httpService
-    .post(`${apiVersion}/suborganization/${subOrgId}/independent-activities`, activity)
+    .post(
+      `${apiVersion}/suborganization/${subOrgId}/independent-activities`,
+      activity
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -25,7 +28,9 @@ const allIndActivity = (subOrgId) =>
 
 const deleteIndActivity = (subOrgId, id) =>
   httpService
-    .remove(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`)
+    .remove(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -34,7 +39,10 @@ const deleteIndActivity = (subOrgId, id) =>
 
 const editIndActivityItem = (subOrgId, body, id) =>
   httpService
-    .put(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`, body)
+    .put(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}`,
+      body
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -48,10 +56,43 @@ const intActivityDetail = (subOrgId, id) =>
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
+
+const shareEnable = (id) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${id}/share`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const shareDisable = (id) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${id}/remove-share`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const indActivityClone = (subOrgId, id) =>
+  httpService
+    .post(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}/clone`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
   create,
   allIndActivity,
   deleteIndActivity,
   editIndActivityItem,
   intActivityDetail,
+  shareEnable,
+  shareDisable,
+  indActivityClone,
 };
