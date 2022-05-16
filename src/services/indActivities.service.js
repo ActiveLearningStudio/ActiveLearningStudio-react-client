@@ -48,6 +48,7 @@ const editIndActivityItem = (subOrgId, body, id) =>
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
+
 const intActivityDetail = (subOrgId, id) =>
   httpService
     .get(`/${apiVersion}/independent-activities/${id}/detail`)

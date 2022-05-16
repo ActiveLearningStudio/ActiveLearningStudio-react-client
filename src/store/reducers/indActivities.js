@@ -1,8 +1,9 @@
 /* eslint-disable */
-import * as actionTypes from '../actionTypes';
+import * as actionTypes from "../actionTypes";
 
 const INITIAL_STATE = {
   allActivities: null,
+  isLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,7 +16,9 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.DEL_IND_ACTIVITIES:
       return {
         ...state,
-        allActivities: state.allActivities.filter((data) => data.id !== action.payload),
+        allActivities: state.allActivities.filter(
+          (data) => data.id !== action.payload
+        ),
       };
     case actionTypes.EDIT_IND_ACTIVITIES:
       return {
@@ -40,6 +43,23 @@ export default (state = INITIAL_STATE, action) => {
           allActivities: action.payload,
         };
       }
+
+    case actionTypes.UPDATE_IND_ACTIVITIES_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case actionTypes.UPDATE_IND_ACTIVITIES_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        allActivities: [...state.allActivities, action.payload],
+      };
+    case actionTypes.UPDATE_IND_ACTIVITIES_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+      };
 
     default:
       return state;

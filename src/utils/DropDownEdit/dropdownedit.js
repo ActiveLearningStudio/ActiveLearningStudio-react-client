@@ -22,6 +22,7 @@ import {
   deleteIndActivity,
   shareDisableLink,
   shareEnableLink,
+  updateIndActivityAction,
 } from "store/actions/indActivities";
 import intActivityServices from "services/indActivities.service";
 import "./dropdownedit.scss";
@@ -43,6 +44,23 @@ const DropDownEdit = ({
   const dispatch = useDispatch();
   console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const editIndActivityVisibility = async (type) => {
+    const h5pdata = {
+      library: window.h5peditorCopy.getLibrary(),
+      parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+      action: "create",
+    };
+    await dispatch(
+      updateIndActivityAction(data.id, {
+        ...data,
+        organization_visibility_type_id: type,
+        data: h5pdata,
+        type: "h5p",
+        content: "place_holder",
+        title: data.title,
+      })
+    );
+  };
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
@@ -203,7 +221,7 @@ const DropDownEdit = ({
                   <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
                 </div>
 
-                <ul className="dropdown-menu check ">
+                {/* <ul className="dropdown-menu check ">
                   <li
                     onClick={() => {
                       dispatch(shareEnableLink(data.id));
@@ -282,7 +300,7 @@ const DropDownEdit = ({
                   >
                     <a>Get shared link</a>
                   </li>
-                </ul>
+                </ul> */}
               </li>
 
               <li className="dropdown-submenu send">
@@ -322,17 +340,21 @@ const DropDownEdit = ({
                   <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
                 </div>
 
-                {/* <ul className="dropdown-menu check">
+                <ul className="dropdown-menu check">
                   <li>
                     <a>Private (Only me)</a>
                   </li>
-                  <li>
+                  <li
+                    onClick={() => {
+                      editIndActivityVisibility(3);
+                    }}
+                  >
                     <a>My organization </a>
                   </li>
                   <li>
                     <a>Public</a>
                   </li>
-                </ul> */}
+                </ul>
               </li>
 
               <li className="dropdown-submenu send">

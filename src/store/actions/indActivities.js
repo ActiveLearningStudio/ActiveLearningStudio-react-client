@@ -138,3 +138,53 @@ export const shareDisableLink = (id) => async () => {
   const result = await indResourceService.shareDisable(id);
   return result;
 };
+
+export const updateIndActivityAction = (indActId, data) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  try {
+    toast.info("Updating Ind Activity ...", {
+      position: "top-center",
+      hideProgressBar: true,
+      icon: "",
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 5000,
+    });
+    // dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_REQUEST });
+    dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_REQUEST });
+    const { indActivity } = await indResourceService.editIndActivityItem(
+      activeOrganization.id,
+      data,
+      indActId
+    );
+    toast.dismiss();
+    toast.success("Ind Activity Edited", {
+      position: "top-center",
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      autoClose: 2500,
+    });
+    dispatch({
+      type: actionTypes.UPDATE_IND_ACTIVITIES_SUCCESS,
+      payload: { indActivity },
+    });
+    // dispatch(allSidebarProjects());
+    return indActivity;
+  } catch (e) {
+    dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_FAIL });
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: e.message || "Something went wrong !",
+    });
+    return e.message;
+  }
+};
