@@ -1,7 +1,7 @@
-/*eslint-disable*/
-import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState, useMemo, useEffect, useRef, useCallback,
+} from 'react';
 
-import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,8 +12,6 @@ import {
   // retryAllFailedJobs,
   setActiveAdminForm,
 } from 'store/actions/admin';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import filterImg from 'assets/images/svg/filter.svg';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 import loader from 'assets/images/dotsloader.gif';
 // import csv from "assets/images/csv.png";
@@ -22,7 +20,7 @@ import loader from 'assets/images/dotsloader.gif';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
+import { getRoles, roleDetail, searchUserInOrganization } from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
@@ -65,7 +63,7 @@ function Controller(props) {
     // inviteUser,
     subType,
     setChangeIndexValue,
-    selectedActivityType,
+    // selectedActivityType,
     libraryReqSelected,
     setLibraryReqSelected,
     // setSubTypeState,
@@ -124,6 +122,9 @@ function Controller(props) {
         setLoaderImgUser(false);
         setAuthorsArray([]);
       }
+    } else if (authorName.length < 2) {
+      setLoaderImgUser(false);
+      setAuthorsArray([]);
     }
   }, [activeOrganization?.id, authorName, dispatch]);
   const updateIndexAction = (value, id) => {
@@ -132,7 +133,7 @@ function Controller(props) {
     setSelectedIndexValueid(id);
   };
   const primaryColor = getGlobalColor('--main-primary-color');
-  const secondaryColor = getGlobalColor('--main-secondary-color');
+  // const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
@@ -357,7 +358,7 @@ function Controller(props) {
 
         {!!search && type === 'Organization' && (
           <div className="search-bar">
-            <input type="text" placeholder="Search Organization" onChange={searchQueryChangeHandler}/>
+            <input type="text" placeholder="Search Organization" onChange={searchQueryChangeHandler} />
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -372,7 +373,7 @@ function Controller(props) {
         )}
         {!!search && type === 'Activities' && subType === 'Activity Types' && (
           <div className="search-bar">
-            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler}/>
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} />
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -387,7 +388,7 @@ function Controller(props) {
         )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler}/>
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} />
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -401,7 +402,6 @@ function Controller(props) {
           </div>
         )}
 
-        
         {!!search && type === 'Activities' && subType === 'Subjects' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
@@ -418,7 +418,7 @@ function Controller(props) {
             </svg>
           </div>
         )}
-        
+
         {!!search && type === 'Activities' && subType === 'Education Level' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
@@ -435,7 +435,7 @@ function Controller(props) {
             </svg>
           </div>
         )}
-        
+
         {!!search && type === 'Activities' && subType === 'Author Tags' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} />
@@ -540,24 +540,24 @@ function Controller(props) {
                     <div className="author-list">
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                            <div
-                              className="single-author"
-                              onClick={() => {
-                                setProjectFilterObj({
-                                  ...projectFilterObj,
-                                  author_id: author.id,
-                                });
-                                setAuthorName(`${author.first_name} ${author.last_name}`);
-                                setAuthorsArray([]);
-                              }}
-                            >
-                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
-                              <div>
-                                <div className="username-filter-project">{author.first_name}</div>
-                                <div className="email-filter-project">{author.email}</div>
-                              </div>
+                          <div
+                            className="single-author"
+                            onClick={() => {
+                              setProjectFilterObj({
+                                ...projectFilterObj,
+                                author_id: author.id,
+                              });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className="username-filter-project">{author.first_name}</div>
+                              <div className="email-filter-project">{author.email}</div>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : 'No user found.'}
                     </div>
                   )}
@@ -710,12 +710,10 @@ function Controller(props) {
                       <input
                         type="radio"
                         checked={projectFilterObj.shared === 1 && true}
-                        onChange={() =>
-                          setProjectFilterObj({
-                            ...projectFilterObj,
-                            shared: 1,
-                          })
-                        }
+                        onChange={() => setProjectFilterObj({
+                          ...projectFilterObj,
+                          shared: 1,
+                        })}
                       />
                       Enabled
                     </span>
@@ -723,12 +721,10 @@ function Controller(props) {
                       <input
                         type="radio"
                         checked={projectFilterObj.shared === 0 && true}
-                        onChange={() =>
-                          setProjectFilterObj({
-                            ...projectFilterObj,
-                            shared: 0,
-                          })
-                        }
+                        onChange={() => setProjectFilterObj({
+                          ...projectFilterObj,
+                          shared: 0,
+                        })}
                       />
                       Disabled
                     </span>
@@ -800,7 +796,7 @@ function Controller(props) {
                 <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() =>{
+                  <Dropdown.Item onClick={() => {
                     filteredItems(null);
                     setSelectedFilterItem(null);
                   }}
@@ -811,7 +807,7 @@ function Controller(props) {
                     <Dropdown.Item onClick={() => {
                       filteredItems(item.id);
                       setSelectedFilterItem(item);
-                      }}
+                    }}
                     >
                       {item.title}
                     </Dropdown.Item>
@@ -939,7 +935,7 @@ function Controller(props) {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
-                      filteredItems("");
+                      filteredItems('');
                       setSelectedFilterItem(null);
                     }}
                   >
@@ -1361,7 +1357,7 @@ Controller.propTypes = {
   roles: PropTypes.array,
   subType: PropTypes.string,
   setChangeIndexValue: PropTypes.func,
-  selectedActivityType: PropTypes.string,
+  // selectedActivityType: PropTypes.string,
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
   // setSubTypeState: PropTypes.func,
@@ -1406,7 +1402,7 @@ Controller.defaultProps = {
   roles: [],
   subType: '',
   setChangeIndexValue: {},
-  selectedActivityType: '',
+  // selectedActivityType: '',
   libraryReqSelected: false,
   setLibraryReqSelected: {},
   // setSubTypeState: {},
