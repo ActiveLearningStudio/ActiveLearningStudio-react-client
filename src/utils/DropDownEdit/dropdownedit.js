@@ -18,7 +18,11 @@ import {
   faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { deleteVideo, cloneh5pvideo } from "store/actions/videos";
-import { deleteIndActivity } from "store/actions/indActivities";
+import {
+  deleteIndActivity,
+  shareDisableLink,
+  shareEnableLink,
+} from "store/actions/indActivities";
 import intActivityServices from "services/indActivities.service";
 import "./dropdownedit.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -37,6 +41,7 @@ const DropDownEdit = ({
   const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
+  console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="curriki-utility-activity-dropdown">
@@ -199,24 +204,80 @@ const DropDownEdit = ({
                 </div>
 
                 <ul className="dropdown-menu check ">
-                  <li>
+                  <li
+                    onClick={() => {
+                      dispatch(shareEnableLink(data.id));
+                      if (data.shared) {
+                        if (window.gapi && window.gapi.sharetoclassroom) {
+                          window.gapi.sharetoclassroom.go("croom");
+                        }
+                        const protocol = `${
+                          window.location.href.split("/")[0]
+                        }//`;
+                        const url = `${protocol}${
+                          window.location.host
+                        }/project/${"Dummy"}/shared`;
+                        return SharePreviewPopup(url, "Dummy");
+                      }
+                    }}
+                  >
                     <a>Enable</a>
                   </li>
-                  <li>
+                  <li
+                    onClick={async () => {
+                      //  if (activeShared) {
+                      Swal.fire({
+                        icon: "warning",
+                        title: `You are about to stop sharing <strong>"${data.title}"</strong>`,
+                        html: `Please remember that anyone you have shared this project
+                                              with will no longer have access its contents. Do you want to continue?`,
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        confirmButtonText: "Stop Sharing!",
+                        confirmButtonAriaLabel: "Stop Sharing!",
+                        cancelButtonText: "Cancel",
+                        cancelButtonAriaLabel: "Cancel",
+                      }).then((resp) => {
+                        if (resp.isConfirmed) {
+                          dispatch(shareDisableLink(data.id));
+                        }
+                      });
+                    }}
+                    // }
+                  >
                     <a>Disable</a>
                   </li>
                   <li
                     onClick={() => {
-                      if (window.gapi && window.gapi.sharetoclassroom) {
-                        window.gapi.sharetoclassroom.go("croom");
+                      if (data.shared) {
+                        if (window.gapi && window.gapi.sharetoclassroom) {
+                          window.gapi.sharetoclassroom.go("croom");
+                        }
+                        const protocol = `${
+                          window.location.href.split("/")[0]
+                        }//`;
+                        const url = `${protocol}${
+                          window.location.host
+                        }/project/${"Dummy"}/shared`;
+                        return SharePreviewPopup(url, "Dummy");
+                      } else {
+                        Swal.fire({
+                          icon: "warning",
+                          title: `Link is Not in Shared  <strong>"${data.title}"</strong>`,
+                          html: `Please Share the link?`,
+                          showCloseButton: true,
+                          // showCancelButton: true,
+                          focusConfirm: false,
+                          // confirmButtonText: "Stop Sharing!",
+                          // confirmButtonAriaLabel: "Stop Sharing!",
+                          cancelButtonText: "Cancel",
+                          // cancelButtonAriaLabel: "Cancel",
+                        }).then((resp) => {
+                          if (resp.isConfirmed) {
+                          }
+                        });
                       }
-                      const protocol = `${
-                        window.location.href.split("/")[0]
-                      }//`;
-                      const url = `${protocol}${
-                        window.location.host
-                      }/project/${"Dummy"}/shared`;
-                      return SharePreviewPopup(url, "Dummy");
                     }}
                   >
                     <a>Get shared link</a>
