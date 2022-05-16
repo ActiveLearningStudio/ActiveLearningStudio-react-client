@@ -134,3 +134,11 @@ export const adminIntActivities = (orgId, page, size) => async (dispatch) => {
     });
   }
 };
+export const shareEnableLink = (id) => async () => {
+  const result = await indResourceService.shareEnable(id);
+  return result;
+};
+export const shareDisableLink = (id) => async () => {
+  const result = await indResourceService.shareDisable(id);
+  return result;
+};
