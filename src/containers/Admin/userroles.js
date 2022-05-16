@@ -132,8 +132,10 @@ function UserRoles() {
     'independent-activity:share',
     'independent-activity:duplicate',
   ];
+  const independentactivitiesExportEditName = ['independent-activity:export', 'independent-activity:import'];
   const independentactivitiesViewName = ['independent-activity:view'];
   const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState([]);
+  const [independentactivitiesExportEdit, setIndependentactivitiesExportEdit] = useState([]);
   const [independentactivitiesView, setIndependentactivitiesView] = useState([]);
 
   const [checkRoles, setCheckRoles] = useState('');
@@ -232,6 +234,9 @@ function UserRoles() {
     if (permissionsId) {
       permissionsId['Independent Activity']?.filter((data) => independentactivitiesEditName.includes(data.name) && permissionIdArray.push(data.id));
       setIndependentactivitiesEdit(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity']?.filter((data) => independentactivitiesExportEditName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesExportEdit(permissionIdArray);
       permissionIdArray = [];
       permissionsId['Independent Activity'].filter((data) => independentactivitiesViewName.includes(data.name) && permissionIdArray.push(data.id));
       setIndependentactivitiesView(permissionIdArray);
@@ -395,7 +400,7 @@ function UserRoles() {
                                       type={'Independent activities'}
                                       permissions={values.permissions}
                                       currentFeatureView={[independentactivitiesView]}
-                                      currentFeatureEdit={[independentactivitiesEdit]}
+                                      currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
                                       bold
                                     />
                                   </div>
@@ -409,13 +414,14 @@ function UserRoles() {
                                     currentFeatureView={independentactivitiesView}
                                     currentFeatureEdit={independentactivitiesEdit}
                                   />
-                                  {/* <NewEdit
+                                  <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Exported activities'}
+                                    type={'Export / Import activities'}
                                     permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesView}
-                                    currentFeatureEdit={independentactivitiesEdit}
-                                  /> */}
+                                    currentFeatureView={[]}
+                                    currentFeatureEdit={independentactivitiesExportEdit}
+                                    hideView
+                                  />
                                 </div>
                               </div>
                               {/* Independent activities End */}
@@ -919,7 +925,7 @@ function UserRoles() {
   );
 }
 
-export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit }) => {
+export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit, hideView }) => {
   // const [viewOption, setViewOption] = useState(false);
   // const [editOption, setEditOption] = useState(false);
   // const [noneOption, setnoneOption] = useState(false);
@@ -994,9 +1000,11 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
           }
         }}
       >
-        <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
-          View
-        </option>
+        {!hideView && (
+          <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
+            View
+          </option>
+        )}
         {!hideEdit && (
           <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
             Edit
