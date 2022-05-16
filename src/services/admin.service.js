@@ -448,7 +448,6 @@ const deleteActivityLayout = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-// eslint-disable-next-line camelcase
 const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') => httpService
   // eslint-disable-next-line camelcase
   .get(`${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${order_by_column ? `&order_by_column=${order_by_column}` : ''}${order_by_type ? `&order_by_type=${order_by_type}` : ''}`)
@@ -456,6 +455,14 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = ''
   .catch((err) => {
     errorCatcher(err.response.data);
     return Promise.reject();
+  });
+
+const getMediaSources = (subOrgId, page, size, query, column, orderBy) => httpService
+  .get(`${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
   });
 export default {
   addUserInOrganization,
@@ -514,4 +521,5 @@ export default {
   updateActivityLayout,
   deleteActivityLayout,
   teamsActionAdminPanel,
+  getMediaSources,
 };
