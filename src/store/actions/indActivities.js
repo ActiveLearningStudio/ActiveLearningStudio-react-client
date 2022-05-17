@@ -81,17 +81,20 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
 //     });
 //   }
 // };
-export const allIndActivity = (orgId, page, size) => async (dispatch) => {
-  const allActivities = await indResourceService.allIndActivity(
+export const allIndActivity = (orgId, page, size, search) => async (
+  dispatch
+) => {
+  const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
     page,
-    size
+    size,
+    search
   );
-  console.log("allActivities", allActivities);
-  if (allActivities["independent-activities"]) {
+  // console.log("allActivities", allActivities);
+  if (allActivities) {
     dispatch({
       type: actionTypes.ALL_IND_ACTIVITIES,
-      payload: allActivities["independent-activities"],
+      payload: allActivities,
     });
   } else {
     dispatch({
@@ -149,16 +152,22 @@ export const editIndActivityItem = (activityId, data) => async (dispatch) => {
   }
 };
 
-export const adminIntActivities = (orgId, page, size) => async (dispatch) => {
+export const adminIntActivities = (
+  orgId,
+  page,
+  size,
+  searchQueryProject
+) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
     page,
-    size
+    size,
+    searchQueryProject
   );
-  if (allActivities["independent-activities"]) {
+  if (allActivities) {
     dispatch({
       type: actionTypes.ALL_ADMIN_IND_ACTIVITIES,
-      payload: allActivities["independent-activities"],
+      payload: allActivities,
     });
   } else {
     dispatch({

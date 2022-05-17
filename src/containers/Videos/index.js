@@ -56,6 +56,8 @@ const Index = ({ activities }) => {
     }
   }, [activeOrganization]);
 
+  console.log("allActivities-allActivities", allActivities);
+
   const primaryColor = getGlobalColor("--main-primary-color");
   const secondaryColor = getGlobalColor("--main-secondary-color");
   return (
@@ -333,7 +335,7 @@ const Index = ({ activities }) => {
                       <div className="video-cards-contianer">
                         <div className="video-cards-detail">
                           {activities
-                            ? allActivities?.map((activityData) => {
+                            ? allActivities?.data.map((activityData) => {
                                 return (
                                   <>
                                     <AddVideoCard
