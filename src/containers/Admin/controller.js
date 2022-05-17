@@ -70,6 +70,7 @@ function Controller(props) {
     filterSearch,
     resetProjectFilter,
     filteredItems,
+    setSearchKey,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -370,9 +371,9 @@ function Controller(props) {
           </div>
         )}
         {!!search && type === 'Activities' && subType === 'Activity Types' && (
-          <div className='search-bar'>
-            <input type='text' placeholder='Search by activity name' onChange={searchQueryChangeHandler} />
-            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
                 stroke={primaryColor}
@@ -385,9 +386,9 @@ function Controller(props) {
           </div>
         )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
-          <div className='search-bar'>
-            <input type='text' placeholder='Search by activity name' onChange={searchQueryChangeHandler} />
-            <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
                 stroke={primaryColor}
@@ -401,8 +402,8 @@ function Controller(props) {
         )}
 
         {!!search && type === 'Activities' && subType === 'Subjects' && (
-          <div className='search-bar'>
-            <input className='' type='text' placeholder='Search by name' onChange={searchQueryChangeHandler} />
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
@@ -418,8 +419,8 @@ function Controller(props) {
         )}
 
         {!!search && type === 'Activities' && subType === 'Education Level' && (
-          <div className='search-bar'>
-            <input className='' type='text' placeholder='Search by name' onChange={searchQueryChangeHandler} />
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
@@ -435,8 +436,8 @@ function Controller(props) {
         )}
 
         {!!search && type === 'Activities' && subType === 'Author Tags' && (
-          <div className='search-bar'>
-            <input className='' type='text' placeholder='Search by name' onChange={searchQueryChangeHandler} />
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
@@ -452,8 +453,8 @@ function Controller(props) {
         )}
 
         {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
-          <div className='search-bar'>
-            <input type='text' placeholder='Search by activity layout name' onChange={searchQueryChangeHandler} />
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
