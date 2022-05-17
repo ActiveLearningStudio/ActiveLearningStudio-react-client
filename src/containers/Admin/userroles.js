@@ -363,7 +363,7 @@ function UserRoles() {
                               <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organiziation'}
+                                  type={'Organization'}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
@@ -639,7 +639,7 @@ function UserRoles() {
                             >
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Organiziation'}
+                                type={'Organization'}
                                 permissions={values.permissions}
                                 currentFeatureView={orgView}
                                 currentFeatureEdit={orgEdit}
