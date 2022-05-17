@@ -456,7 +456,22 @@ const AdminDropdown = (props) => {
           )}
           {type === 'IndActivities' && (
             <>
-              {permission?.Organization.includes('organization:export-project') && (
+              <Dropdown.Item>
+                {/* <img src={Export} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
+                    stroke={primaryColor}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Preview
+              </Dropdown.Item>
+              {permission?.['Independent Activity']?.includes('independent-activity:export') && (
                 <Dropdown.Item
                   onClick={() => {
                     Swal.fire({
@@ -492,110 +507,22 @@ const AdminDropdown = (props) => {
                   Export
                 </Dropdown.Item>
               )}
-              {row.shared ? (
-                <Dropdown.Item
-                  onClick={() => {
-                    const protocol = `${window.location.href.split('/')[0]}//`;
-                    const url = `${protocol + window.location.host}/project/${row.id}/shared`;
-                    SharePreviewPopup(url, row.name);
-                    // confirmAlert({
-                    //   customUI: ({ onClose }) => (
-                    //     <div className="share-project-preview-url project-share-check">
-                    //       <br />
-                    //       <h3>
-                    //         You can now share project <strong>{row.title}</strong>
-                    //         <br />
-                    //         Anyone with the link below can access your project:
-                    //       </h3>
-
-                    //       <a target="_blank" href={`/${row.id}/shared`} rel="noopener noreferrer">
-                    //         <input id="urllink_clip" value={`${protocol + window.location.host}/${row.id}/shared`} />
-                    //       </a>
-
-                    //       <span
-                    //         title="copy to clipboard"
-                    //         aria-hidden="true"
-                    //         onClick={() => {
-                    //           /* Get the text field */
-                    //           const copyText = document.getElementById('urllink_clip');
-
-                    //           /* Select the text field */
-                    //           copyText.focus();
-                    //           copyText.select();
-
-                    //           document.execCommand('copy');
-
-                    //           /* Alert the copied text */
-                    //           Swal.fire({
-                    //             title: 'Link Copied',
-                    //             showCancelButton: false,
-                    //             showConfirmButton: false,
-                    //             timer: 1500,
-                    //             allowOutsideClick: false,
-                    //           });
-                    //         }}
-                    //       >
-                    //         <FontAwesomeIcon icon="clipboard" />
-                    //       </span>
-                    //       <br />
-
-                    //       <div className="close-btn flex-center">
-                    //         <button className="curriki-btn-extra" type="button" onClick={onClose}>
-                    //           Ok
-                    //         </button>
-                    //       </div>
-                    //     </div>
-                    //   ),
-                    // });
-                  }}
-                >
-                  {/* <img src={Export} alt="Preview" className="menue-img" /> */}
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                    <path
-                      d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  Get shared link
-                </Dropdown.Item>
-              ) : null}
-              {permission?.Organization.includes('organization:edit-project') && (
-                <Dropdown.Item
-                  onClick={() => {
-                    // dispatch(setActiveAdminForm("edit_project"));
-                    // dispatch(setCurrentProject(row));
-                    setModalShow(true);
-                    setProjectID(row.id);
-                    setrowData(row);
-                    setActivePageNumber(activePage);
-                  }}
-                >
-                  {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                    <path
-                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Edit
-                </Dropdown.Item>
-              )}
-              {permission?.Organization.includes('organization:delete-project') && (
+              <Dropdown.Item>
+                {/* <img src={Export} alt="Preview" className="menue-img" /> */}
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M9.00037 1.17188H11.667C12.0207 1.17188 12.3598 1.31235 12.6098 1.5624C12.8599 1.81245 13.0004 2.15159 13.0004 2.50521V11.8385C13.0004 12.1922 12.8599 12.5313 12.6098 12.7814C12.3598 13.0314 12.0207 13.1719 11.667 13.1719H9.00037"
+                    stroke={primaryColor}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M5.66687 10.5065L9.0002 7.17318L5.66687 3.83984" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M8.99963 7.17188H0.999634" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Get Shared Link
+              </Dropdown.Item>
+              {permission?.['Independent Activity']?.includes('independent-activity:delete') && (
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
