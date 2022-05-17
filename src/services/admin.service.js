@@ -60,7 +60,7 @@ const importProject = (subOrgId, projectData) => httpService
     return Promise.reject(err.response.data);
   });
 
-const getAllProjectSearch = (subOrgId, page, search, size, column, orderBy) => httpService
+const getAllProjectSearch = (subOrgId, page, search, size, column = '', orderBy = '') => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${search ? `&query=${search.replace(/#/, '%23')}` : ''}
   ${size ? `&size=${size}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -104,7 +104,7 @@ const updateIndex = (projectId, index) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLmsProject = (subOrgId, page, size, query, column, orderBy, filterBy = '') => httpService
+const getLmsProject = (subOrgId, page, size, query, column = '', orderBy = '', filterBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
   ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
@@ -145,7 +145,7 @@ const getLmsProjectSearch = (subOrgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getActivityTypes = (subOrgId, page, size, column, orderBy, search) => httpService
+const getActivityTypes = (subOrgId, page, size, column = '', orderBy = '', search) => httpService
   .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-types?page=${page}&size=${size}&order_by_column=${column}&order_by_type=${orderBy}&query=${search}`)
   .then(({ data }) => data)
   .catch((err) => {
@@ -209,7 +209,7 @@ const getLogsListing = (filter, size, page, query) => httpService
     Promise.reject(err.response.data);
   });
 
-const getDefaultSso = (orgId, page, size, query, column, orderBy, filterBy = '') => httpService
+const getDefaultSso = (orgId, page, size, query, column = '', orderBy = '', filterBy = '') => httpService
   .get(`${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
   ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
@@ -250,7 +250,7 @@ const searchDefaultSso = (orgId, search, page) => httpService
     Promise.reject(err.response.data);
   });
 
-const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) => httpService
+const getLtiTools = (subOrgId, page, size, query, column = '', orderBy = '', filterBy) => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}
   ${query ? `&query=${query}` : ''}${size ? `&size=${size}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}
@@ -322,7 +322,7 @@ const removeUser = (subOrgId, userId, preserve) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubjects = (subOrgId, page, size, query, column, orderBy) => httpService
+const getSubjects = (subOrgId, page, size, query, column = '', orderBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -354,7 +354,7 @@ const deleteSubject = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const getEducationLevel = (subOrgId, page, size, query, column, orderBy) => httpService
+const getEducationLevel = (subOrgId, page, size, query, column = '', orderBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -386,7 +386,7 @@ const deleteEducationLevel = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const getAuthorTag = (subOrgId, page, size, query, column, orderBy) => httpService
+const getAuthorTag = (subOrgId, page, size, query, column = '', orderBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -418,7 +418,7 @@ const deleteAuthorTag = (subOrgId, id) => httpService
     return Promise.reject();
   });
 
-const getActivityLayout = (subOrgId, page, size, query, column, orderBy) => httpService
+const getActivityLayout = (subOrgId, page, size, query, column = '', orderBy = '') => httpService
   .get(`${apiVersion}/suborganizations/${subOrgId}/activity-layouts${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -451,7 +451,7 @@ const deleteActivityLayout = (subOrgId, id) => httpService
   });
 
 // eslint-disable-next-line camelcase
-const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, order_by_type) => httpService
+const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') => httpService
   // eslint-disable-next-line camelcase
   .get(`${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${order_by_column ? `&order_by_column=${order_by_column}` : ''}${order_by_type ? `&order_by_type=${order_by_type}` : ''}`)
   .then(({ data }) => data)

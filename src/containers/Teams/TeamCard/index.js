@@ -1,22 +1,18 @@
-/*eslint-disable*/
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import "./style.scss";
-import { useSelector, useDispatch } from "react-redux";
+/* eslint-disable max-len */
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import './style.scss';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteTeamAction,
   getTeamPermission,
   updateSelectedTeamAction,
-} from "store/actions/team";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown } from "react-bootstrap";
-import Delete from "assets/images/menu-dele.svg";
-import Edit from "assets/images/menu-edit.svg";
-import teamicon from "assets/images/sidebar/users-team.svg";
-import foldericon from "assets/images/svg/projectFolder.svg";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+} from 'store/actions/team';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 function TeamCard(props) {
   const {
@@ -33,13 +29,13 @@ function TeamCard(props) {
   const dispatch = useDispatch();
   const deleteTeam = () => {
     Swal.fire({
-      title: "Are you sure you want to delete this team?",
+      title: 'Are you sure you want to delete this team?',
       // eslint-disable-next-line max-len
-      html: "<strong>The projects associated with this team will no be longer available in Team projects. If you want to make a copy for that project then visit Team project page first to make a clone</strong>",
+      html: '<strong>The projects associated with this team will no be longer available in Team projects. If you want to make a copy for that project then visit Team project page first to make a clone</strong>',
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: "No",
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteTeamAction(id));
@@ -52,7 +48,7 @@ function TeamCard(props) {
   const { permission } = organization;
   // let projCnt = `00${projects.length}`;
   // projCnt = projCnt.slice(projCnt.length - 2, projCnt.length);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="team-card-content">
       <div className="team-title">
@@ -66,14 +62,14 @@ function TeamCard(props) {
                 users,
                 projects,
                 noovo_group_title,
-              })
+              }),
             );
             dispatch(
-              getTeamPermission(organization.currentOrganization.id, id)
+              getTeamPermission(organization.currentOrganization.id, id),
             );
           }}
           to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
-          // className="title m-0"
+        // className="title m-0"
         >
           {name}
         </Link>
@@ -86,13 +82,23 @@ function TeamCard(props) {
             />
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            {permission?.Team?.includes("team:edit") && (
+            {permission?.Team?.includes('team:edit') && (
               <Dropdown.Item
                 as={Link}
                 to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
                 onClick={() => {
                   dispatch(
-                    getTeamPermission(organization.currentOrganization.id, id)
+                    getTeamPermission(organization.currentOrganization.id, id),
+                  );
+                  dispatch(
+                    updateSelectedTeamAction({
+                      id,
+                      name,
+                      description,
+                      users,
+                      projects,
+                      noovo_group_title,
+                    }),
                   );
                 }}
               >
@@ -122,7 +128,7 @@ function TeamCard(props) {
                 Edit
               </Dropdown.Item>
             )}
-            {permission?.Team?.includes("team:delete") && (
+            {permission?.Team?.includes('team:delete') && (
               <Dropdown.Item onClick={() => deleteTeam()}>
                 {/* <img src={Delete} alt="Preview" /> */}
                 <svg
@@ -223,7 +229,11 @@ function TeamCard(props) {
             />
           </svg>
 
-          <span>{`${users?.length}`} Team Members</span>
+          <span>
+            {`${users?.length}`}
+            {' '}
+            Team Members
+          </span>
           {/* <span>{`(${users?.length})`}</span> */}
         </div>
 
@@ -231,11 +241,14 @@ function TeamCard(props) {
           {users.map((user, index) => (
             <div
               key={user.id}
-              className={`member-name-mark${index > 0 ? " over" : ""}`}
+              className={`member-name-mark${index > 0 ? ' over' : ''}`}
             >
-              <span>{`${user.first_name.charAt(0)}${user.last_name.charAt(
-                0
-              )}`}</span>
+              <span>
+                {`${user.first_name.charAt(0)}${user.last_name.charAt(
+                  0,
+                )}`}
+
+              </span>
             </div>
           ))}
         </div>
@@ -276,7 +289,11 @@ function TeamCard(props) {
           </defs>
         </svg>
 
-        <span>{`${projects?.length}`} Projects</span>
+        <span>
+          {`${projects?.length}`}
+          {' '}
+          Projects
+        </span>
         {/* <span>{`(${projects?.length})`}</span> */}
       </div>
       {/* {permission?.Team?.includes('team:delete') && (
