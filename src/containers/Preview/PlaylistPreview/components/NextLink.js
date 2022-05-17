@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function NextLink(props) {
-  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists, viewType } = props;
+  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists, viewType, setH5pCurrentActivity } = props;
 
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const nextPlaylist = currentPlaylistIndex < allPlaylists.length - 1 ? allPlaylists[currentPlaylistIndex + 1] : null;
@@ -44,14 +44,28 @@ function NextLink(props) {
 
   return (
     <div className="slider-hover-section">
-      <Link to={nextLink}>
+      <Link
+        onClick={() => {
+          if (setH5pCurrentActivity) {
+            setH5pCurrentActivity(nextResource);
+          }
+        }}
+        to={setH5pCurrentActivity ? void 0 : nextLink}
+      >
         <FontAwesomeIcon icon="chevron-right" />
         Next
       </Link>
 
       <div className={`hover-control-caption pointer-cursor${nextResource ? '' : ' no-data'}`}>
         {nextResource ? (
-          <Link to={nextLink}>
+          <Link
+            onClick={() => {
+              if (setH5pCurrentActivity) {
+                setH5pCurrentActivity(nextResource);
+              }
+            }}
+            to={setH5pCurrentActivity ? void 0 : nextLink}
+          >
             <div
               className="img-in-hover"
               style={{
@@ -67,32 +81,34 @@ function NextLink(props) {
         ) : (
           <div className="slider-end">
             <p>Hooray! You did it! There are no more activities in this playlist.</p>
-            <Link
-              to={nextLink}
-              onClick={() => {
-                if (!nextPlaylist) {
-                  Swal.fire({
-                    text: 'You are at the end of this project. Would you like to return to the project preview?',
-                    showCancelButton: true,
-                    confirmButtonColor: '#4646c4',
-                    cancelButtonColor: '#d33',
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                  }).then((result) => {
-                    if (result.value) {
-                      if (showLti) {
-                        history.push(`/project/${projectId}/shared`);
-                      } else {
-                        history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
+            {!setH5pCurrentActivity && (
+              <Link
+                to={nextLink}
+                onClick={() => {
+                  if (!nextPlaylist) {
+                    Swal.fire({
+                      text: 'You are at the end of this project. Would you like to return to the project preview?',
+                      showCancelButton: true,
+                      confirmButtonColor: '#4646c4',
+                      cancelButtonColor: '#d33',
+                      cancelButtonText: 'No',
+                      confirmButtonText: 'Yes',
+                    }).then((result) => {
+                      if (result.value) {
+                        if (showLti) {
+                          history.push(`/project/${projectId}/shared`);
+                        } else {
+                          history.push(`/org/${organization.currentOrganization?.domain}/project/${projectId}/preview`);
+                        }
                       }
-                    }
-                  });
-                }
-              }}
-            >
-              Switch to next playlist
-              <FontAwesomeIcon icon="chevron-right" className="ml-2" />
-            </Link>
+                    });
+                  }
+                }}
+              >
+                Switch to next playlist
+                <FontAwesomeIcon icon="chevron-right" className="ml-2" />
+              </Link>
+            )}
           </div>
         )}
       </div>
