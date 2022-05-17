@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Buttons from "utils/Buttons/buttons";
 import TopHeading from "utils/TopHeading/topheading";
-import { faFilter, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "store/actions/search";
 import Pagination from "react-js-pagination";
@@ -35,6 +35,7 @@ const Index = ({ activities }) => {
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState("");
   const [modalShow, setModalShow] = useState(false);
+  const [searchActivity, setSearchActivity] = useState("");
 
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector(
@@ -112,115 +113,144 @@ const Index = ({ activities }) => {
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
-                    <TopHeading
-                      description={activeOrganization.name}
-                      image={VideoImage}
-                      svgImage={
-                        activities ? (
-                          <>
+                    <div>
+                      <TopHeading
+                        description={activeOrganization.name}
+                        image={VideoImage}
+                        svgImage={
+                          activities ? (
+                            <>
+                              <svg
+                                width="36"
+                                height="32"
+                                viewBox="0 0 36 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M2 6.9375V28.6875C2 29.6885 2.81149 30.5 3.8125 30.5H32.8125C33.8136 30.5 34.625 29.6885 34.625 28.6875V9.44715C34.625 8.44614 33.8136 7.63465 32.8125 7.63465H19.9856"
+                                  stroke={primaryColor}
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M19.9856 7.63465L14.9529 1.76544C14.783 1.59548 14.5525 1.5 14.3121 1.5H2.90625C2.40575 1.5 2 1.90575 2 2.40625V6.9375"
+                                  stroke={primaryColor}
+                                  strokeWidth="2.5"
+                                  strokeLinecap="round"
+                                />
+                              </svg>
+                            </>
+                          ) : (
                             <svg
-                              width="36"
-                              height="32"
-                              viewBox="0 0 36 32"
+                              width="22"
+                              height="22"
+                              viewBox="0 0 22 22"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <path
-                                d="M2 6.9375V28.6875C2 29.6885 2.81149 30.5 3.8125 30.5H32.8125C33.8136 30.5 34.625 29.6885 34.625 28.6875V9.44715C34.625 8.44614 33.8136 7.63465 32.8125 7.63465H19.9856"
+                              <rect
+                                x="1"
+                                y="1.5"
+                                width="20"
+                                height="12"
+                                rx="2"
                                 stroke={primaryColor}
-                                strokeWidth="2.5"
-                                strokeLinecap="round"
+                                strokeWidth="2"
                               />
                               <path
-                                d="M19.9856 7.63465L14.9529 1.76544C14.783 1.59548 14.5525 1.5 14.3121 1.5H2.90625C2.40575 1.5 2 1.90575 2 2.40625V6.9375"
+                                d="M1 18.5H21"
                                 stroke={primaryColor}
-                                strokeWidth="2.5"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                              />
+                              <circle
+                                cx="15"
+                                cy="18.5"
+                                r="2"
+                                fill="white"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                              />
+                              <path
+                                d="M9 9.66667V5.43426C9 5.03491 9.44507 4.79672 9.77735 5.01823L13.3044 7.36957C13.619 7.5793 13.5959 8.04885 13.2623 8.22677L9.73529 10.1078C9.40224 10.2855 9 10.0441 9 9.66667Z"
+                                stroke={primaryColor}
+                                strokeWidth="2"
                                 strokeLinecap="round"
                               />
                             </svg>
-                          </>
-                        ) : (
-                          <svg
-                            width="22"
-                            height="22"
-                            viewBox="0 0 22 22"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="1"
-                              y="1.5"
-                              width="20"
-                              height="12"
-                              rx="2"
-                              stroke={primaryColor}
-                              strokeWidth="2"
-                            />
-                            <path
-                              d="M1 18.5H21"
-                              stroke={primaryColor}
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                            <circle
-                              cx="15"
-                              cy="18.5"
-                              r="2"
-                              fill="white"
-                              stroke={primaryColor}
-                              strokeWidth="2"
-                            />
-                            <path
-                              d="M9 9.66667V5.43426C9 5.03491 9.44507 4.79672 9.77735 5.01823L13.3044 7.36957C13.619 7.5793 13.5959 8.04885 13.2623 8.22677L9.73529 10.1078C9.40224 10.2855 9 10.0441 9 9.66667Z"
-                              stroke={primaryColor}
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        )
-                      }
-                      heading={
-                        activities ? "Activities" : "My interactive videos"
-                      }
-                      color="#084892"
-                    />
-                    <Buttons
-                      primary={true}
-                      text={
-                        activities ? "Create an activity" : "Create a video"
-                      }
-                      icon={faPlus}
-                      iconColor={secondaryColor}
-                      width="183px"
-                      height="35px"
-                      onClick={() => {
-                        if (activities) {
-                          dispatch({ type: actionTypes.CLEAR_STATE });
-
-                          dispatch({
-                            type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                            payload: "layout",
-                            playlist: {},
-                            project: {},
-                          });
-
-                          dispatch(clearSearch());
-
-                          dispatch({
-                            type: "SET_ACTIVE_VIDEO_SCREEN",
-                            payload: "",
-                          });
-                        } else {
-                          setOpenVideo(!openMyVideo);
-                          setScreenStatus("AddVideo");
-                          dispatch({
-                            type: "SET_ACTIVE_VIDEO_SCREEN",
-                            payload: "",
-                          });
+                          )
                         }
-                      }}
-                      hover={true}
-                    />
+                        heading={
+                          activities ? "Activities" : "My interactive videos"
+                        }
+                        color="#084892"
+                      />
+                    </div>
+                    <div className="search-bar-btn">
+                      {/* Search Start */}
+                      <div className="search-bar-activity">
+                        <input
+                          placeholder="Search library..."
+                          onChange={(e) => {
+                            setSearchActivity(e.target.value);
+                          }}
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                              dispatch(
+                                allIndActivity(
+                                  activeOrganization.id,
+                                  1,
+                                  10,
+                                  searchActivity
+                                )
+                              );
+                            }
+                          }}
+                        />
+                        <FontAwesomeIcon icon={faSearch} color={primaryColor} />
+                      </div>
+                      {/* Search End */}
+                      <div>
+                        <Buttons
+                          primary={true}
+                          text={
+                            activities ? "Create an activity" : "Create a video"
+                          }
+                          icon={faPlus}
+                          iconColor={secondaryColor}
+                          width="183px"
+                          height="35px"
+                          onClick={() => {
+                            if (activities) {
+                              dispatch({ type: actionTypes.CLEAR_STATE });
+
+                              dispatch({
+                                type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                payload: "layout",
+                                playlist: {},
+                                project: {},
+                              });
+
+                              dispatch(clearSearch());
+
+                              dispatch({
+                                type: "SET_ACTIVE_VIDEO_SCREEN",
+                                payload: "",
+                              });
+                            } else {
+                              setOpenVideo(!openMyVideo);
+                              setScreenStatus("AddVideo");
+                              dispatch({
+                                type: "SET_ACTIVE_VIDEO_SCREEN",
+                                payload: "",
+                              });
+                            }
+                          }}
+                          hover={true}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="top-video-detail">
                     <div className="video-detail">

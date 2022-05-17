@@ -558,3 +558,17 @@
     margin: 0;
   }
 }
+.search-bar-btn {
+  display: flex;
+
+  .search-bar-activity {
+    width: 240px;
+    margin-right: 32px;
+    border: 1px solid $curriki-main-blue;
+    border-radius: 20px;
+    padding: 8px 16px;
+    input {
+      border: none;
+    }
+  }
+}
