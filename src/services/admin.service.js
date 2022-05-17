@@ -387,7 +387,7 @@ const removeUser = (subOrgId, userId, preserve) =>
 const getSubjects = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${
+      `${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
@@ -427,7 +427,7 @@ const deleteSubject = (subOrgId, id) =>
 const getEducationLevel = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${
+      `${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
@@ -467,7 +467,7 @@ const deleteEducationLevel = (subOrgId, id) =>
 const getAuthorTag = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${
+      `${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
@@ -587,7 +587,7 @@ const updateOrgMediaSource = (subOrgId, media_source_ids) =>
 const getMediaSources = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : `?skipPagination=${true}`}${
+      `${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
