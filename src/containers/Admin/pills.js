@@ -1346,7 +1346,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
-                  setSearchSubjectsQuery={searchLayoutQuery}
+                  setSearchKey={searchLayoutQuery}
                 />
               )}
               {type === 'Settings' && subTypeState === 'LMS settings' && <Starter type={type} subType={'LMS settings'} subTypeState={subTypeState} />}
