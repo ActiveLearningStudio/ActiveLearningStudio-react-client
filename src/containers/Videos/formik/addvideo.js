@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+/* eslint-disable  */
 import React, { useEffect, useRef, useState } from 'react';
 import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import TabsHeading from 'utils/Tabs/tabs';
@@ -20,9 +20,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getMediaSources } from 'store/actions/admin';
 import BrightcoveModel from '../model/brightmodel';
 
-const AddVideo = ({
-  setScreenStatus, showback, changeScreenHandler, hideallothers,
-}) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
@@ -65,15 +63,15 @@ const AddVideo = ({
         showSidebar={showSidebar}
         platform={platform}
       />
-      <div className="add-video-form">
-        <div className="add-video-tabs">
-          <TabsHeading text="1. Add a video" tabActive />
-          <TabsHeading text="2. Describe video" className="ml-10" />
-          <TabsHeading text="3. Add interactions" className="ml-10" />
+      <div className='add-video-form'>
+        <div className='add-video-tabs'>
+          <TabsHeading text='1. Add a video' tabActive />
+          <TabsHeading text='2. Describe video' className='ml-10' />
+          <TabsHeading text='3. Add interactions' className='ml-10' />
         </div>
-        <div className="add-video-title-select upload-back-button">
-          <div className="add-video-title">
-            <HeadingTwo text="Add a video" color="#084892" />
+        <div className='add-video-title-select upload-back-button'>
+          <div className='add-video-title'>
+            <HeadingTwo text='Add a video' color='#084892' />
           </div>
           {/* <div className="add-video-tour">
             <span>
@@ -83,8 +81,8 @@ const AddVideo = ({
           </div> */}
           {showback && !editVideo && (
             <div
-              className=" back-button "
-              id="back-button-none-bg"
+              className=' back-button '
+              id='back-button-none-bg'
               style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -92,24 +90,24 @@ const AddVideo = ({
               }}
               onClick={() => changeScreenHandler('layout')}
             >
-              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg width='14' height='10' viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg' style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d='M13 5L1 5' stroke={primaryColor} strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+                <path d='M5 1L1 5L5 9' stroke={primaryColor} strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
               </svg>
 
-              <p style={{ margin: 0 }} className="">
+              <p style={{ margin: 0 }} className=''>
                 Back to options
               </p>
             </div>
           )}
         </div>
         {hideallothers && (
-          <div className="add-video-form-tabs">
-            <Tabs className="main-tabs" defaultActiveKey="Brightcove" id="uncontrolled-tab-example">
+          <div className='add-video-form-tabs'>
+            <Tabs className='main-tabs' defaultActiveKey='Brightcove' id='uncontrolled-tab-example'>
               {!editVideo ? (
                 <Tab
-                  eventKey="Brightcove"
-                  title="BrightCove"
+                  eventKey='Brightcove'
+                  title='BrightCove'
                   onClick={() => {
                     setplatform('Brightcove');
                     setShowSidebar(true);
@@ -125,14 +123,14 @@ const AddVideo = ({
                     showBrowse
                     setModalShow={setModalShow}
                     platform={platform}
-                    placeholder="Enter a video Id"
+                    placeholder='Enter a video Id'
                   />
                 </Tab>
               ) : (
                 editVideo.source_type === 'Brightcove' && (
                   <Tab
-                    eventKey="Brightcove"
-                    title="BrightCove"
+                    eventKey='Brightcove'
+                    title='BrightCove'
                     onClick={() => {
                       setplatform('Brightcove');
                       setShowSidebar(true);
@@ -149,7 +147,7 @@ const AddVideo = ({
                       setModalShow={setModalShow}
                       platform={platform}
                       editVideo={editVideo?.source_url}
-                      placeholder="Enter a video Id"
+                      placeholder='Enter a video Id'
                     />
                   </Tab>
                 )
@@ -158,23 +156,23 @@ const AddVideo = ({
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
     <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
-            {editVideo && editVideo.source_type !== 'Brightcove' && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
+            {editVideo && editVideo.source_type !== 'Brightcove' && <Alert variant='warning'>This activity is not editable in new release, Please create a new one</Alert>}
           </div>
         )}
         {!hideallothers && (
-          <div className="add-video-form-tabs">
+          <div className='add-video-form-tabs'>
             <Tabs
-              className="main-tabs"
+              className='main-tabs'
               activeKey={activeKey}
               onSelect={(k) => {
                 setActiveKey(k);
               }}
-              id="controlled-tab-example"
+              id='controlled-tab-example'
             >
               {!editVideo && mediaSources.some((obj) => obj.name === 'My device') ? (
                 <Tab
-                  eventKey="Mydevice"
-                  title="My device"
+                  eventKey='Mydevice'
+                  title='My device'
                   onClick={() => {
                     setplatform('Mydevice');
                   }}
@@ -192,8 +190,8 @@ const AddVideo = ({
               ) : (
                 editVideo.source_type === 'Mydevice' && (
                   <Tab
-                    eventKey="Mydevice"
-                    title="My device"
+                    eventKey='Mydevice'
+                    title='My device'
                     onClick={() => {
                       setplatform('Mydevice');
                     }}
@@ -214,8 +212,8 @@ const AddVideo = ({
               )}
               {!editVideo && mediaSources.some((obj) => obj.name === 'BrightCove') ? (
                 <Tab
-                  eventKey="Brightcove"
-                  title="BrightCove"
+                  eventKey='Brightcove'
+                  title='BrightCove'
                   onClick={() => {
                     setplatform('Brightcove');
                     setShowSidebar(true);
@@ -231,14 +229,14 @@ const AddVideo = ({
                     showBrowse
                     setModalShow={setModalShow}
                     platform={platform}
-                    placeholder="Enter a video Id"
+                    placeholder='Enter a video Id'
                   />
                 </Tab>
               ) : (
                 editVideo.source_type === 'Brightcove' && (
                   <Tab
-                    eventKey="Brightcove"
-                    title="BrightCove"
+                    eventKey='Brightcove'
+                    title='BrightCove'
                     onClick={() => {
                       setplatform('Brightcove');
                       setShowSidebar(true);
@@ -255,15 +253,15 @@ const AddVideo = ({
                       setModalShow={setModalShow}
                       platform={platform}
                       editVideo={editVideo?.source_url}
-                      placeholder="Enter a video Id"
+                      placeholder='Enter a video Id'
                     />
                   </Tab>
                 )
               )}
               {!editVideo && mediaSources.some((obj) => obj.name === 'YouTube') ? (
                 <Tab
-                  eventKey="Youtube"
-                  title="YouTube"
+                  eventKey='Youtube'
+                  title='YouTube'
                   onClick={() => {
                     setplatform('Youtube');
                   }}
@@ -276,14 +274,14 @@ const AddVideo = ({
                     changeScreenHandler={changeScreenHandler}
                     type={AddVideoTube}
                     setScreenStatus={setScreenStatus}
-                    placeholder="Enter a video url"
+                    placeholder='Enter a video url'
                   />
                 </Tab>
               ) : (
                 editVideo.source_type === 'Youtube' && (
                   <Tab
-                    eventKey="Youtube"
-                    title="YouTube"
+                    eventKey='Youtube'
+                    title='YouTube'
                     onClick={() => {
                       setplatform('Youtube');
                     }}
@@ -296,15 +294,15 @@ const AddVideo = ({
                       type={AddVideoTube}
                       setScreenStatus={setScreenStatus}
                       editVideo={editVideo?.source_url}
-                      placeholder="Enter a video url"
+                      placeholder='Enter a video url'
                     />
                   </Tab>
                 )
               )}
               {!editVideo && mediaSources.some((obj) => obj.name === 'Kaltura') ? (
                 <Tab
-                  eventKey="Kaltura"
-                  title="Kaltura"
+                  eventKey='Kaltura'
+                  title='Kaltura'
                   onClick={() => {
                     setplatform('Kaltura');
                     setShowSidebar(false);
@@ -320,14 +318,14 @@ const AddVideo = ({
                     setScreenStatus={setScreenStatus}
                     selectedVideoId={selectedVideoIdKaltura}
                     platform={platform}
-                    placeholder="Enter a video url"
+                    placeholder='Enter a video url'
                   />
                 </Tab>
               ) : (
                 editVideo.source_type === 'Kaltura' && (
                   <Tab
-                    eventKey="Kaltura"
-                    title="Kaltura"
+                    eventKey='Kaltura'
+                    title='Kaltura'
                     onClick={() => {
                       setplatform('Kaltura');
                       setShowSidebar(false);
@@ -344,7 +342,7 @@ const AddVideo = ({
                       selectedVideoId={selectedVideoIdKaltura}
                       platform={platform}
                       editVideo={editVideo?.source_url}
-                      placeholder="Enter a video url"
+                      placeholder='Enter a video url'
                     />
                   </Tab>
                 )
@@ -354,8 +352,8 @@ const AddVideo = ({
 
               {!editVideo && mediaSources.some((obj) => obj.name === 'Vimeo') ? (
                 <Tab
-                  eventKey="Vimeo"
-                  title="Vimeo"
+                  eventKey='Vimeo'
+                  title='Vimeo'
                   onClick={() => {
                     setplatform('Vimeo');
                     setShowSidebar(false);
@@ -371,14 +369,14 @@ const AddVideo = ({
                     setScreenStatus={setScreenStatus}
                     selectedVideoId={selectedVideoIdVimeo}
                     platform={platform}
-                    placeholder="Enter a video url"
+                    placeholder='Enter a video url'
                   />
                 </Tab>
               ) : (
                 editVideo.source_type === 'Vimeo' && (
                   <Tab
-                    eventKey="Vimeo"
-                    title="Vimeo"
+                    eventKey='Vimeo'
+                    title='Vimeo'
                     onClick={() => {
                       setplatform('Vimeo');
                       setShowSidebar(false);
@@ -395,7 +393,7 @@ const AddVideo = ({
                       selectedVideoId={selectedVideoIdVimeo}
                       platform={platform}
                       editVideo={editVideo?.source_url}
-                      placeholder="Enter a video url"
+                      placeholder='Enter a video url'
                     />
                   </Tab>
                 )
@@ -403,7 +401,7 @@ const AddVideo = ({
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
-            {editVideo && !editVideo.source_type && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
+            {editVideo && !editVideo.source_type && <Alert variant='warning'>This activity is not editable in new release, Please create a new one</Alert>}
           </div>
         )}
       </div>
@@ -440,7 +438,7 @@ const FormikVideo = ({
   }, [editVideo, platform]);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
-    <div className="add-video-layout-formik">
+    <div className='add-video-layout-formik'>
       <Formik
         initialValues={{
           videoUrl: selectedVideoId || editVideo,
@@ -483,22 +481,22 @@ const FormikVideo = ({
               handleSubmit();
             }}
           >
-            <div className="layout-title-formik-textField">
+            <div className='layout-title-formik-textField'>
               {Input && (
                 <>
-                  <img src={type} alt="video" />
-                  <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
+                  <img src={type} alt='video' />
+                  <input type='text' name='videoUrl' placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
                 </>
               )}
               {showBrowse && (
                 <Buttons
-                  type="button"
+                  type='button'
                   primary
-                  text="Browse videos"
-                  width="146px"
-                  height="35px"
+                  text='Browse videos'
+                  width='146px'
+                  height='35px'
                   hover
-                  className="ml-32"
+                  className='ml-32'
                   onClick={() => {
                     setModalShow(true);
                   }}
@@ -506,35 +504,35 @@ const FormikVideo = ({
               )}
             </div>
             {uploadFile && (
-              <div className="curriki-utility-uploadfile">
-                <div className="uploadfile-box">
-                  <div className="drop-area">
+              <div className='curriki-utility-uploadfile'>
+                <div className='uploadfile-box'>
+                  <div className='drop-area'>
                     <button
                       onClick={() => {
                         imgUpload.current.click();
                         setUploadedFile();
                       }}
-                      type="reset"
+                      type='reset'
                     >
-                      <svg width="15" height="12" className="mr-2" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <svg width='15' height='12' className='mr-2' viewBox='0 0 15 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
                         <path
                           // eslint-disable-next-line max-len
-                          d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
+                          d='M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7'
                           stroke={primaryColor}
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
                         />
-                        <path d="M10.1499 3.39999L7.5249 1L4.8999 3.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M7.5 1V8.79997" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d='M10.1499 3.39999L7.5249 1L4.8999 3.39999' stroke={primaryColor} strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+                        <path d='M7.5 1V8.79997' stroke={primaryColor} strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
                       </svg>
                       Select File
                     </button>
                     <input
-                      type="file"
-                      name="h5p_file"
-                      id="h5p-file"
-                      className="laravel-h5p-upload form-control"
+                      type='file'
+                      name='h5p_file'
+                      id='h5p-file'
+                      className='laravel-h5p-upload form-control'
                       onChange={async (e) => {
                         e.preventDefault();
 
@@ -544,7 +542,7 @@ const FormikVideo = ({
                         if (fileExtension !== 'mp4') {
                           Swal.fire('Invalid file selected, kindly select mp4 file.');
                           return true;
-                        // eslint-disable-next-line no-else-return
+                          // eslint-disable-next-line no-else-return
                         } else {
                           Swal.fire({
                             title: 'Please Wait !',
@@ -568,7 +566,7 @@ const FormikVideo = ({
                              You can add a video link or upload video files. It is possible to add several versions of the video with different qualities.
                               To ensure maximum support in browsers at least add a version in webm and mp4 formats.",
                             "extraAttributes":["metadata"],
-                            "enableCustomQualityLabel":true}`,
+                            "enableCustomQualityLabel":true}`
                           );
                           const result = await videoService.uploadvideoDirect(formData);
                           Swal.close();
@@ -600,10 +598,10 @@ const FormikVideo = ({
                         imgUpload.current.click();
                         setUploadedFile();
                       }}
-                      className="upload-holder"
+                      className='upload-holder'
                       style={{ cursor: 'pointer' }}
                     >
-                      <img style={{ cursor: 'pointer' }} src={UploadImg} alt="upload" className="mr-2" />
+                      <img style={{ cursor: 'pointer' }} src={UploadImg} alt='upload' className='mr-2' />
                       <p>
                         Drag & drop file or&nbsp;
                         <span style={{ color: '#2e8df5' }}>browse</span>
@@ -627,12 +625,12 @@ const FormikVideo = ({
                 </div>
               </div>
             )}
-            <div className="error" style={{ color: 'red' }}>
+            <div className='error' style={{ color: 'red' }}>
               {errors.videoUrl && touched.videoUrl && errors.videoUrl}
             </div>
 
-            <div className="describe-video">
-              <Buttons type="submit" primary text="Describe Video" width="149px" height="35px" hover />
+            <div className='describe-video'>
+              <Buttons type='submit' primary text='Describe Video' width='149px' height='35px' hover />
             </div>
           </form>
         )}

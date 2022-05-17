@@ -1,5 +1,5 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
-
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
@@ -27,6 +27,8 @@ const INITIAL_STATE = {
   education_level: null,
   author_tags: null,
   activity_layouts: null,
+  allMediaSources: {},
+  orgMediaSources: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -180,7 +182,10 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: [...state.allbrightCove.data, action.payload],
+        },
       };
     case actionTypes.DEL_BRIGHTCOVE:
       const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
@@ -203,6 +208,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload,
+      };
+    case actionTypes.GET_ALL_MEDIA_SOURCE:
+      return {
+        ...state,
+        allMediaSources: action.payload,
+      };
+    case actionTypes.GET_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
       };
 
     case actionTypes.GET_MEDIA_SOURCES:

@@ -1,4 +1,6 @@
+/* eslint-disable */
 import adminService from 'services/admin.service';
+import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 import { getUserAction } from './auth';
@@ -9,7 +11,6 @@ export const setActiveAdminForm = (type) => async (dispatch) => {
     payload: type,
   });
 };
-
 export const setActiveTab = (type) => async (dispatch) => {
   dispatch({
     type: actionTypes.SET_ACTIVE_TAB,
@@ -32,7 +33,9 @@ export const setCurrentUser = (user) => async (dispatch) => {
 
 export const addUserInOrganization = (user) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const result = await adminService.addUserInOrganization(user, activeOrganization?.id);
   dispatch({
     type: actionTypes.CLEAR_USERS_STATE,
@@ -46,7 +49,9 @@ export const addUserInOrganization = (user) => async (dispatch) => {
 
 export const editUserInOrganization = (user) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   let result;
   if (user.password) {
     result = await adminService.editUserInOrganization(user, activeOrganization?.id);
@@ -230,12 +235,44 @@ export const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_colu
   });
   return result;
 };
-
 export const getMediaSources = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getMediaSources(subOrgId, page, size, query, column, orderBy);
   dispatch({
     type: actionTypes.GET_MEDIA_SOURCES,
     payload: result,
   });
+  return result;
+};
+export const getAllMediaSources = () => async (dispatch) => {
+  const result = await adminService.getAllMediaSources();
+  dispatch({
+    type: actionTypes.GET_ALL_MEDIA_SOURCE,
+    payload: result,
+  });
+  return result;
+};
+export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
+  const result = await adminService.getOrgMediaSource(orgId);
+  dispatch({
+    type: actionTypes.GET_ORG_MEDIA_SOURCE,
+    payload: result,
+  });
+  return result;
+};
+
+export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
+  const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
+  if (result) {
+    Swal.fire({
+      icon: 'success',
+      title: result.message,
+      allowOutsideClick: false,
+    });
+    dispatch({
+      type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
+      payload: updatedMediasSource,
+    });
+  }
+
   return result;
 };
