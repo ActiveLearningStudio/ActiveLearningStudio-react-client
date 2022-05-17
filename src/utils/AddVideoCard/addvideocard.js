@@ -62,13 +62,25 @@ const AddVideoCard = ({
         <div className="addvideo-card-detail">
           <p>{data.description?.slice(0, 50)}</p>
         </div>
+        {isActivityCard && (
+          <>
+            <div className="activity-update-lib">
+              <div className="activity-update">
+                Updated: {data.updated_at.split("T")[0]}
+              </div>
+              <div className="activity-lib">
+                Library preference: <span>My organization</span>
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="addvideo-card-add-share">
           <div className="btn-box">
             {isActivityCard ? (
               <>
                 <div
-                  className="addvideo-card-add-share-options"
+                  className="addvideo-card-add-share-options hover-apply"
                   onClick={() => {}}
                 >
                   <FontAwesomeIcon
@@ -76,9 +88,10 @@ const AddVideoCard = ({
                     style={{ marginRight: "6px" }}
                     color={primaryColor}
                   />
+                  <span className="textinButton">Shared link</span>
                 </div>
                 <div
-                  className="addvideo-card-add-share-options"
+                  className="addvideo-card-add-share-options request-section-icon hover-apply "
                   onClick={() => {}}
                 >
                   {/* <FontAwesomeIcon
@@ -92,7 +105,8 @@ const AddVideoCard = ({
                     viewBox="0 0 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    style={{ marginLeft: "26px" }}
+                    style={{ marginRight: "6px" }}
+                    // style={{ marginLeft: "26px" }}
                   >
                     <path
                       d="M1.33398 2H5.33398C6.04123 2 6.71951 2.28095 7.2196 2.78105C7.7197 3.28115 8.00065 3.95942 8.00065 4.66667V14C8.00065 13.4696 7.78994 12.9609 7.41486 12.5858C7.03979 12.2107 6.53108 12 6.00065 12H1.33398V2Z"
@@ -109,6 +123,7 @@ const AddVideoCard = ({
                       strokeLinejoin="round"
                     />
                   </svg>
+                  <span className="textinButton">Requested</span>
                 </div>
               </>
             ) : (

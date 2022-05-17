@@ -1,30 +1,57 @@
 /*eslint-disable*/
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
-import Swal from 'sweetalert2';
-import { Dropdown } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { faEllipsisV, faCopy, faTrash, faEdit, faEye, faLink, faBook, faLockOpen, faLock, faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import { deleteVideo, cloneh5pvideo } from 'store/actions/videos';
-import { deleteIndActivity, shareDisableLink, shareEnableLink } from 'store/actions/indActivities';
-import intActivityServices from 'services/indActivities.service';
-import './dropdownedit.scss';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import SharePreviewPopup from 'components/SharePreviewPopup';
-import indActivityService from 'services/indActivities.service';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import Swal from "sweetalert2";
+import { Dropdown } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import {
+  faEllipsisV,
+  faCopy,
+  faTrash,
+  faEdit,
+  faEye,
+  faLink,
+  faBook,
+  faLockOpen,
+  faLock,
+  faAngleRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { deleteVideo, cloneh5pvideo } from "store/actions/videos";
+import {
+  deleteIndActivity,
+  shareDisableLink,
+  shareEnableLink,
+} from "store/actions/indActivities";
+import intActivityServices from "services/indActivities.service";
+import "./dropdownedit.scss";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import SharePreviewPopup from "components/SharePreviewPopup";
+import indActivityService from "services/indActivities.service";
 
-const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, setModalShow, setCurrentActivity, setOpenVideo, setScreenStatus }) => {
-  const IconColor = iconColor ? iconColor : '#084892';
+const DropDownEdit = ({
+  iconColor,
+  data,
+  activities,
+  isActivityCard = false,
+  setModalShow,
+  setCurrentActivity,
+  setOpenVideo,
+  setScreenStatus,
+}) => {
+  const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-  console.log('activities', data);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  // console.log("activities", data);
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
         <Dropdown.Toggle className="activity-dropdown-btn">
-          <FontAwesomeIcon icon={faEllipsisV} style={{ fontSize: '13px', color: IconColor, marginLeft: '5px' }} />
+          <FontAwesomeIcon
+            icon={faEllipsisV}
+            style={{ fontSize: "13px", color: IconColor, marginLeft: "5px" }}
+          />
           {/* <span>EditActivity</span> */}
         </Dropdown.Toggle>
 
@@ -45,47 +72,54 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                 className
                 onClick={async () => {
                   toast.dismiss();
-                  toast.info('Loading Activity ...', {
-                    className: 'project-loading',
+                  toast.info("Loading Activity ...", {
+                    className: "project-loading",
                     closeOnClick: false,
                     closeButton: false,
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 10000,
-                    icon: '',
+                    icon: "",
                   });
                   if (activities) {
-                    const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
-                    if (result?.['independent-activity']) {
+                    const result = await intActivityServices.intActivityDetail(
+                      activeOrganization.id,
+                      data.id
+                    );
+                    if (result?.["independent-activity"]) {
                       toast.dismiss();
                       dispatch({
-                        type: 'SET_ACTIVE_VIDEO_SCREEN',
-                        payload: result['independent-activity'],
+                        type: "SET_ACTIVE_VIDEO_SCREEN",
+                        payload: result["independent-activity"],
                       });
                       setOpenVideo(true);
-                      setScreenStatus('DescribeVideo');
+                      setScreenStatus("DescribeVideo");
                     }
                   } else {
-                    const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                    const result = await videoServices.videoh5pDetail(
+                      activeOrganization.id,
+                      data.id
+                    );
                     if (result.activity?.brightcoveData) {
                       dispatch({
-                        type: 'EDIT_CMS_SCREEN',
+                        type: "EDIT_CMS_SCREEN",
                         payload: result.activity?.brightcoveData.accountId,
                       });
-                      window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                      window.brightcoveAccountId =
+                        result.activity?.brightcoveData.accountId;
                     }
 
                     toast.dismiss();
                     dispatch({
-                      type: 'ADD_VIDEO_URL',
-                      platform: '',
+                      type: "ADD_VIDEO_URL",
+                      platform: "",
                     });
                     dispatch({
-                      type: 'SET_ACTIVE_VIDEO_SCREEN',
+                      type: "SET_ACTIVE_VIDEO_SCREEN",
                       payload: result.activity,
                     });
 
                     setOpenVideo(true);
-                    setScreenStatus('AddVideo');
+                    setScreenStatus("AddVideo");
                   }
                 }}
               >
@@ -98,19 +132,22 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
             <>
               <Dropdown.Item
                 onClick={async () => {
-                  toast.info('Duplicating project...', {
-                    className: 'project-loading',
+                  toast.info("Duplicating project...", {
+                    className: "project-loading",
                     closeOnClick: false,
                     closeButton: false,
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 10000,
-                    icon: '',
+                    icon: "",
                   });
-                  const result = await intActivityServices.indActivityClone(activeOrganization.id, data.id);
+                  const result = await intActivityServices.indActivityClone(
+                    activeOrganization.id,
+                    data.id
+                  );
                   toast.dismiss();
                   Swal.fire({
                     html: result.message,
-                    icon: 'success',
+                    icon: "success",
                   });
                 }}
               >
@@ -122,19 +159,19 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
             <>
               <Dropdown.Item
                 onClick={async () => {
-                  toast.info('Duplicating project...', {
-                    className: 'project-loading',
+                  toast.info("Duplicating project...", {
+                    className: "project-loading",
                     closeOnClick: false,
                     closeButton: false,
                     position: toast.POSITION.BOTTOM_RIGHT,
                     autoClose: 10000,
-                    icon: '',
+                    icon: "",
                   });
                   const result = await dispatch(cloneh5pvideo(data.id));
                   toast.dismiss();
                   Swal.fire({
                     html: result.message,
-                    icon: 'success',
+                    icon: "success",
                   });
                 }}
               >
@@ -173,11 +210,15 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                       dispatch(shareEnableLink(data.id));
                       if (data.shared) {
                         if (window.gapi && window.gapi.sharetoclassroom) {
-                          window.gapi.sharetoclassroom.go('croom');
+                          window.gapi.sharetoclassroom.go("croom");
                         }
-                        const protocol = `${window.location.href.split('/')[0]}//`;
-                        const url = `${protocol}${window.location.host}/project/${'Dummy'}/shared`;
-                        return SharePreviewPopup(url, 'Dummy');
+                        const protocol = `${
+                          window.location.href.split("/")[0]
+                        }//`;
+                        const url = `${protocol}${
+                          window.location.host
+                        }/project/${"Dummy"}/shared`;
+                        return SharePreviewPopup(url, "Dummy");
                       }
                     }}
                   >
@@ -187,17 +228,17 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                     onClick={async () => {
                       //  if (activeShared) {
                       Swal.fire({
-                        icon: 'warning',
+                        icon: "warning",
                         title: `You are about to stop sharing <strong>"${data.title}"</strong>`,
                         html: `Please remember that anyone you have shared this project
                                               with will no longer have access its contents. Do you want to continue?`,
                         showCloseButton: true,
                         showCancelButton: true,
                         focusConfirm: false,
-                        confirmButtonText: 'Stop Sharing!',
-                        confirmButtonAriaLabel: 'Stop Sharing!',
-                        cancelButtonText: 'Cancel',
-                        cancelButtonAriaLabel: 'Cancel',
+                        confirmButtonText: "Stop Sharing!",
+                        confirmButtonAriaLabel: "Stop Sharing!",
+                        cancelButtonText: "Cancel",
+                        cancelButtonAriaLabel: "Cancel",
                       }).then((resp) => {
                         if (resp.isConfirmed) {
                           dispatch(shareDisableLink(data.id));
@@ -212,14 +253,18 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                     onClick={() => {
                       if (data.shared) {
                         if (window.gapi && window.gapi.sharetoclassroom) {
-                          window.gapi.sharetoclassroom.go('croom');
+                          window.gapi.sharetoclassroom.go("croom");
                         }
-                        const protocol = `${window.location.href.split('/')[0]}//`;
-                        const url = `${protocol}${window.location.host}/project/${'Dummy'}/shared`;
-                        return SharePreviewPopup(url, 'Dummy');
+                        const protocol = `${
+                          window.location.href.split("/")[0]
+                        }//`;
+                        const url = `${protocol}${
+                          window.location.host
+                        }/project/${"Dummy"}/shared`;
+                        return SharePreviewPopup(url, "Dummy");
                       } else {
                         Swal.fire({
-                          icon: 'warning',
+                          icon: "warning",
                           title: `Link is Not in Shared  <strong>"${data.title}"</strong>`,
                           html: `Please Share the link?`,
                           showCloseButton: true,
@@ -227,7 +272,7 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                           focusConfirm: false,
                           // confirmButtonText: "Stop Sharing!",
                           // confirmButtonAriaLabel: "Stop Sharing!",
-                          cancelButtonText: 'Cancel',
+                          cancelButtonText: "Cancel",
                           // cancelButtonAriaLabel: "Cancel",
                         }).then((resp) => {
                           if (resp.isConfirmed) {
@@ -245,11 +290,18 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                 <a
                   tabIndex="-1"
                   style={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {/* <FontAwesomeIcon icon={faLink} className="mr-2" /> */}
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mr-2"
+                  >
                     <path
                       d="M1.33398 2H5.33398C6.04123 2 6.71951 2.28095 7.2196 2.78105C7.7197 3.28115 8.00065 3.95942 8.00065 4.66667V14C8.00065 13.4696 7.78994 12.9609 7.41486 12.5858C7.03979 12.2107 6.53108 12 6.00065 12H1.33398V2Z"
                       stroke="#084892"
@@ -287,7 +339,14 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
               <li className="dropdown-submenu send">
                 <a tabIndex="-1">
                   {/* <FontAwesomeIcon icon={faLink} className="mr-2" /> */}
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mr-2"
+                  >
                     <path
                       d="M5 13H2.33333C1.97971 13 1.64057 12.8595 1.39052 12.6095C1.14048 12.3594 1 12.0203 1 11.6667V2.33333C1 1.97971 1.14048 1.64057 1.39052 1.39052C1.64057 1.14048 1.97971 1 2.33333 1H5"
                       stroke="#084892"
@@ -295,8 +354,20 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                    <path d="M9.54492 10.4137L13.0018 6.95686L9.54492 3.5" stroke="#084892" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M12.0645 7H5.06445" stroke="#084892" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M9.54492 10.4137L13.0018 6.95686L9.54492 3.5"
+                      stroke="#084892"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M12.0645 7H5.06445"
+                      stroke="#084892"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                   Export
                 </a>
@@ -311,18 +382,21 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                   <li
                     onClick={() => {
                       Swal.fire({
-                        title: 'Please Wait !',
-                        html: 'Exporting Activity   ...',
+                        title: "Please Wait !",
+                        html: "Exporting Activity   ...",
                         allowOutsideClick: false,
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
                       });
-                      const result = indActivityService.exportIndAvtivity(activeOrganization.id, row.id);
+                      const result = indActivityService.exportIndAvtivity(
+                        activeOrganization.id,
+                        row.id
+                      );
                       result.then((data) => {
                         // console.log(data)
                         Swal.fire({
-                          icon: 'success',
+                          icon: "success",
                           html: data?.message,
                         });
                       });
@@ -362,11 +436,11 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
             className
             onClick={() => {
               Swal.fire({
-                title: 'Are you sure you want to delete this activity?',
+                title: "Are you sure you want to delete this activity?",
 
                 showCancelButton: true,
-                confirmButtonText: 'Yes',
-                denyButtonText: 'No',
+                confirmButtonText: "Yes",
+                denyButtonText: "No",
               }).then((result) => {
                 if (result.isConfirmed) {
                   if (activities) {
