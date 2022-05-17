@@ -87,6 +87,12 @@ export default function Pills(props) {
   const [authorTag, setAuthorTag] = useState(null);
   const [activityLayout, setActivityLayout] = useState(null);
   const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState('');
+  const [searchLayoutQuery, setSearchLayoutQuery] = useState('');
+  const [searchSubjectsQuery, setSearchSubjectsQuery] = useState('');
+  const [searchAuthorTagQuery, setSearchAuthorTagQuery] = useState('');
+  const [searchEducationLevelQuery, setSearchEducationLevelQuery] = useState('');
+  const [searchActivityTypesQuery, setSearchActivityTypesQuery] = useState('');
+  const [searchActivityItemsQuery, setSearchActivityItemsQuery] = useState('');
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -296,23 +302,23 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage, size, activeOrganization]);
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types') {
       //on page 1
       // dispatch(loadResourceTypesAction());
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery))
       dispatch(updatePageNumber(activePage));
     }
   }, [activePage, subTypeState, type, size, activeOrganization]);
@@ -328,7 +334,7 @@ export default function Pills(props) {
         const encodeQuery = encodeURI(searchQueryActivities);
         await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
       } else if (query === '') {
-        await dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
+        await dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size));
       }
     }
   };
@@ -467,21 +473,20 @@ export default function Pills(props) {
   }, [dataRedux.admin.lmsIntegration]);
 
   useMemo(async () => {
-    console.log('orderBy-', currentOrderBy);
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
     if (type === 'Activities') {
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, orderByColumn, currentOrderBy));
     }
   }, [type, subTypeState, activePage, activeOrganization?.id, size, currentOrderBy]);
 
@@ -531,7 +536,7 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchActivityTypesQuery(encodeQuery);
     dispatch(getActivityTypes(activeOrganization?.id, 1, size, '', '', encodeQuery));
   };
 
@@ -539,20 +544,20 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchActivityItemsQuery(encodeQuery);
     dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
   };
 
   const filterActivityItems = (type) => {
     setActivePage(1);
-    dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, '', '', type));
+    dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, '', '', type));
   };
 
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchLayoutQuery(encodeQuery);
     dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy));
   };
 
@@ -596,7 +601,7 @@ export default function Pills(props) {
     setSubjects(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchSubjectsQuery(encodeQuery);
     const result = adminService.getSubjects(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setSubjects(data);
@@ -607,7 +612,7 @@ export default function Pills(props) {
     setEducationLevel(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchEducationLevelQuery(encodeQuery);
     const result = adminService.getEducationLevel(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setEducationLevel(data);
@@ -618,7 +623,7 @@ export default function Pills(props) {
     setAuthorTag(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchAuthorTagQuery(encodeQuery);
     const result = adminService.getAuthorTag(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setAuthorTag(data);
@@ -750,7 +755,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchQuery));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchActivityTypesQuery));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -765,7 +770,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage || 1, size, col, orderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy,));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -780,7 +785,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -795,7 +800,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, col, orderBy,));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -810,7 +815,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -825,7 +830,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -1249,6 +1254,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityTypes}
+                  setSearchKey={searchActivityTypesQuery}
                 />
               )}
               {type === 'Activities' && subTypeState === 'Activity Items' && (
@@ -1272,6 +1278,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   filteredItems={filterActivityItems}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
+                  setSearchKey={searchActivityItemsQuery}
                 />
               )}
 
@@ -1295,6 +1302,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerSubjects}
+                  setSearchKey={searchSubjectsQuery}
                 />
               )}
 
@@ -1318,6 +1326,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerEducationLevel}
+                  setSearchKey={searchEducationLevelQuery}
                 />
               )}
 
@@ -1341,6 +1350,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerAuthorTag}
+                  setSearchKey={searchAuthorTagQuery}
                 />
               )}
 
@@ -1364,6 +1374,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
+                  setSearchSubjectsQuery={searchLayoutQuery}
                 />
               )}
               {type === 'Settings' && subTypeState === 'LMS settings' && <Starter type={type} subType={'LMS settings'} subTypeState={subTypeState} />}
