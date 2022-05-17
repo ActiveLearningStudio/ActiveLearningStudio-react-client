@@ -13,7 +13,7 @@ const Media = () => {
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
-  const { currentOrganization } = organization;
+  const { activeOrganization } = organization;
 
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
@@ -30,11 +30,7 @@ const Media = () => {
     setallVideoSource(allMediaSources?.mediaSources?.Video);
     setallImageSource(allMediaSources?.mediaSources?.Image);
   }, [orgMediaSources, allMediaSources]);
-  // useEffect(() => {
-  //   if (currentOrganization?.id) {
-  //     dispatch(getOrganizationMedaiSource(currentOrganization?.id));
-  //   }
-  // }, [currentOrganization]);
+
   return (
     <>
       <div className='media-section'>
@@ -86,7 +82,7 @@ const Media = () => {
                               if (orgVideoSource.length === 0) {
                                 updatedMediasSource = orgImageSource;
                               }
-                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
                             update
@@ -163,7 +159,7 @@ const Media = () => {
                               if (orgImageSource.length === 0) {
                                 updatedMediasSource = orgVideoSource;
                               }
-                              dispatch(updateOrganizationMedaiSource(currentOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
                             update

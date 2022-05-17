@@ -68,10 +68,10 @@ function AdminPanel({ showSSO }) {
       });
     }
     dispatch(getAllMediaSources());
-    if (currentOrganization?.id) {
-      dispatch(getOrganizationMedaiSource(currentOrganization?.id));
+    if (activeOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
     }
-  }, [currentOrganization]);
+  }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
 
