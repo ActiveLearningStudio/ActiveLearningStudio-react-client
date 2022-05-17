@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Swal from 'sweetalert2';
 
 import config from 'config';

@@ -29,11 +29,9 @@ const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, u
   httpService
     // eslint-disable-next-line max-len
     .get(
-      `/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${
-        createdFrom ? `&created_from=${createdFrom}` : ''
+      `/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''
       }${createdTo ? `&created_to=${createdTo}` : ''}
-  ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
-        index ? `&indexing=${index}` : ''
+  ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${index ? `&indexing=${index}` : ''
       }${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )
     .then(({ data }) => data)
@@ -103,10 +101,8 @@ const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, 
   httpService
     // eslint-disable-next-line max-len
     .get(
-      `/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${
-        createdFrom ? `&created_from=${createdFrom}` : ''
-      }${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${
-        shared || shared === 0 ? `&shared=${shared}` : ''
+      `/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}&indexing=${index}${size ? `&size=${size}` : ''}${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''
+      }${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''
       }`
     )
     .then(({ data }) => data)
@@ -387,8 +383,7 @@ const removeUser = (subOrgId, userId, preserve) =>
 const getSubjects = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
-        query ? `&query=${query.replace(/#/, '%23')}` : ''
+      `${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )
@@ -427,8 +422,7 @@ const deleteSubject = (subOrgId, id) =>
 const getEducationLevel = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
-        query ? `&query=${query.replace(/#/, '%23')}` : ''
+      `${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )
@@ -467,8 +461,7 @@ const deleteEducationLevel = (subOrgId, id) =>
 const getAuthorTag = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
-        query ? `&query=${query.replace(/#/, '%23')}` : ''
+      `${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )
@@ -547,8 +540,7 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, ord
   httpService
     // eslint-disable-next-line camelcase
     .get(
-      `${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${
-        order_by_column ? `&order_by_column=${order_by_column}` : ''
+      `${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${order_by_column ? `&order_by_column=${order_by_column}` : ''
       }${order_by_type ? `&order_by_type=${order_by_type}` : ''}`
     )
     .then(({ data }) => data)
@@ -587,8 +579,7 @@ const updateOrgMediaSource = (subOrgId, media_source_ids) =>
 const getMediaSources = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
-        query ? `&query=${query.replace(/#/, '%23')}` : ''
+      `${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )

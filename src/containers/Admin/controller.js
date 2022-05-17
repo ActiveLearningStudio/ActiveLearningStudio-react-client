@@ -372,7 +372,7 @@ function Controller(props) {
         )}
         {!!search && type === 'Activities' && subType === 'Activity Types' && (
           <div className="search-bar">
-            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
@@ -387,7 +387,7 @@ function Controller(props) {
         )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
@@ -420,7 +420,7 @@ function Controller(props) {
 
         {!!search && type === 'Activities' && subType === 'Education Level' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
@@ -437,7 +437,7 @@ function Controller(props) {
 
         {!!search && type === 'Activities' && subType === 'Author Tags' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey}/>
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
               <path
@@ -539,24 +539,24 @@ function Controller(props) {
                     <div className='author-list'>
                       {authorsArray?.length > 0
                         ? authorsArray?.map((author) => (
-                            <div
-                              className='single-author'
-                              onClick={() => {
-                                setProjectFilterObj({
-                                  ...projectFilterObj,
-                                  author_id: author.id,
-                                });
-                                setAuthorName(`${author.first_name} ${author.last_name}`);
-                                setAuthorsArray([]);
-                              }}
-                            >
-                              <div className='initial'>{author.first_name[0] + author.last_name[0]}</div>
-                              <div>
-                                <div className='username-filter-project'>{author.first_name}</div>
-                                <div className='email-filter-project'>{author.email}</div>
-                              </div>
+                          <div
+                            className='single-author'
+                            onClick={() => {
+                              setProjectFilterObj({
+                                ...projectFilterObj,
+                                author_id: author.id,
+                              });
+                              setAuthorName(`${author.first_name} ${author.last_name}`);
+                              setAuthorsArray([]);
+                            }}
+                          >
+                            <div className='initial'>{author.first_name[0] + author.last_name[0]}</div>
+                            <div>
+                              <div className='username-filter-project'>{author.first_name}</div>
+                              <div className='email-filter-project'>{author.email}</div>
                             </div>
-                          ))
+                          </div>
+                        ))
                         : 'No user found.'}
                     </div>
                   )}
@@ -1017,60 +1017,60 @@ function Controller(props) {
         )} */}
 
         {/* ROW PER PAGE */}
-      </div>
-      {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
-      <div className='controller-right-side'>
-        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
-          <div
-            className='import-user'
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              importProject.current.click();
-            }}
-          >
-            <FontAwesomeIcon icon='sign-in-alt' />
-            <div>Import Project</div>
-            <input
-              type='file'
-              ref={importProject}
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                if (e.target.files.length === 0) {
-                  return true;
-                }
-                if (!e.target.files[0].type.includes('zip')) {
-                  Swal.fire({
-                    title: 'Invalid File',
-                    icon: 'error',
-                    text: 'please select zip file',
-                  });
-                } else {
-                  Swal.fire({
-                    title: 'Importing Project',
-                    icon: 'info',
-                    text: 'please wait...',
-                    allowOutsideClick: false,
-                    onBeforeOpen: () => {
-                      Swal.showLoading();
-                    },
-                    button: false,
-                  });
-                  const formData = new FormData();
-                  formData.append('project', e.target.files[0]);
-                  const response = adminService.importProject(activeOrganization.id, formData);
-                  response.then((res) => {
-                    Swal.fire({
-                      icon: 'success',
-                      html: res?.message,
-                    });
-                  });
-                }
+        {/* </div> */}
+        {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
+        <div className='controller-right-side'>
+          {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
+            <div
+              className='import-user'
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                importProject.current.click();
               }}
-            />
-          </div>
-        )}
+            >
+              <FontAwesomeIcon icon='sign-in-alt' />
+              <div>Import Project</div>
+              <input
+                type='file'
+                ref={importProject}
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  if (e.target.files.length === 0) {
+                    return true;
+                  }
+                  if (!e.target.files[0].type.includes('zip')) {
+                    Swal.fire({
+                      title: 'Invalid File',
+                      icon: 'error',
+                      text: 'please select zip file',
+                    });
+                  } else {
+                    Swal.fire({
+                      title: 'Importing Project',
+                      icon: 'info',
+                      text: 'please wait...',
+                      allowOutsideClick: false,
+                      onBeforeOpen: () => {
+                        Swal.showLoading();
+                      },
+                      button: false,
+                    });
+                    const formData = new FormData();
+                    formData.append('project', e.target.files[0]);
+                    const response = adminService.importProject(activeOrganization.id, formData);
+                    response.then((res) => {
+                      Swal.fire({
+                        icon: 'success',
+                        html: res?.message,
+                      });
+                    });
+                  }
+                }}
+              />
+            </div>
+          )}
 
-        {/* {!!print && (
+          {/* {!!print && (
         <div className="print-info">
           <div>print</div>
           <div className="img-section">
@@ -1079,209 +1079,209 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_activity_type') {
-                  dispatch(setActiveAdminForm('add_activity_type'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_activity_item') {
-                  dispatch(setActiveAdminForm('add_activity_item'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_activity_type') {
+                    dispatch(setActiveAdminForm('add_activity_type'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_activity_item') {
+                    dispatch(setActiveAdminForm('add_activity_item'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_subject') {
-                  dispatch(setActiveAdminForm('add_subject'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_subject') {
+                    dispatch(setActiveAdminForm('add_subject'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_education_level') {
-                  dispatch(setActiveAdminForm('add_education_level'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_education_level') {
+                    dispatch(setActiveAdminForm('add_education_level'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_author_tag') {
-                  dispatch(setActiveAdminForm('add_author_tag'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_activity_layout') {
-                  dispatch(setActiveAdminForm('add_activity_layout'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_author_tag') {
+                    dispatch(setActiveAdminForm('add_author_tag'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_activity_layout') {
+                    dispatch(setActiveAdminForm('add_activity_layout'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_role') {
-                  dispatch(setActiveAdminForm('add_role'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'create_user') {
-                  dispatch(setActiveAdminForm('create_user'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_org') {
-                  dispatch(setActiveAdminForm('add_org'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_lms') {
-                  dispatch(setActiveAdminForm('add_lms'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_role') {
+                    dispatch(setActiveAdminForm('add_role'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'create_user') {
+                    dispatch(setActiveAdminForm('create_user'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_org') {
+                    dispatch(setActiveAdminForm('add_org'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_lms') {
+                    dispatch(setActiveAdminForm('add_lms'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_lti_tool') {
-                  dispatch(setActiveAdminForm('add_lti_tool'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_lti_tool') {
+                    dispatch(setActiveAdminForm('add_lti_tool'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_brightcove') {
-                  dispatch(setActiveAdminForm('add_brightcove'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
+          {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_brightcove') {
+                    dispatch(setActiveAdminForm('add_brightcove'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
 
-        {!!btnText && type === 'DefaultSso' && (
-          <div className='btn-text'>
-            <button
-              type='button'
-              onClick={() => {
-                if (btnAction === 'add_default_sso') {
-                  dispatch(setActiveAdminForm('add_default_sso'));
-                }
-              }}
-            >
-              <FontAwesomeIcon icon='plus' />
-              {btnText}
-            </button>
-          </div>
-        )}
-        {/* {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
+          {!!btnText && type === 'DefaultSso' && (
+            <div className='btn-text'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (btnAction === 'add_default_sso') {
+                    dispatch(setActiveAdminForm('add_default_sso'));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon='plus' />
+                {btnText}
+              </button>
+            </div>
+          )}
+          {/* {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
           <div className="btn-text">
             <div className="add-user-btn">
               <Dropdown drop="down" id="dropdown-button-drop-down">
@@ -1296,7 +1296,7 @@ function Controller(props) {
           </div>
         )} */}
 
-        {/* {permission?.Organization?.includes('organization:view-user') && type === 'Users' && subTypeState === 'All Users' && (
+          {/* {permission?.Organization?.includes('organization:view-user') && type === 'Users' && subTypeState === 'All Users' && (
           <div className="btn-text">
             <div className="add-user-btn">
               <Dropdown drop="down" id="dropdown-button-drop-down">
@@ -1310,9 +1310,9 @@ function Controller(props) {
             </div>
           </div>
         )} */}
-      </div>
+        </div>
 
-      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
+        {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
         <div className="btn-text">
           <button
             onClick={async () => {
@@ -1325,7 +1325,8 @@ function Controller(props) {
           </button>
         </div>
       )} */}
-    </div>
+      </div >
+    </div >
   );
 }
 Controller.propTypes = {
@@ -1390,7 +1391,7 @@ Controller.defaultProps = {
   filteredItems: {},
   type: '',
   // searchQueryActivities: '',
-  // setSearchQueryActivities: {},
+  // setSearchQueryActivities: { },
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
@@ -1400,7 +1401,7 @@ Controller.defaultProps = {
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  // searchActivitiesQueryHandler: {},
+  // searchActivitiesQueryHandler: { },
   // searchUserReportQueryHandler: PropTypes.func,
   size: 10,
   setSize: {},
@@ -1410,7 +1411,7 @@ Controller.defaultProps = {
   // selectedActivityType: '',
   libraryReqSelected: false,
   setLibraryReqSelected: {},
-  // setSubTypeState: {},
+  // setSubTypeState: { },
   projectFilterObj: {},
   setProjectFilterObj: {},
   filterSearch: {},
