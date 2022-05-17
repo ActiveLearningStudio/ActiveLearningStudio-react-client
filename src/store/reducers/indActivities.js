@@ -44,23 +44,6 @@ export default (state = INITIAL_STATE, action) => {
         };
       }
 
-    case actionTypes.UPDATE_IND_ACTIVITIES_REQUEST:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionTypes.UPDATE_IND_ACTIVITIES_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        allActivities: [...state.allActivities, action.payload],
-      };
-    case actionTypes.UPDATE_IND_ACTIVITIES_FAIL:
-      return {
-        ...state,
-        isLoading: false,
-      };
-
     default:
       return state;
   }

@@ -67,8 +67,27 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
   }
 };
 
-export const allIndActivity = (orgId) => async (dispatch) => {
-  const allActivities = await indResourceService.allIndActivity(orgId);
+// export const allIndActivity = (orgId) => async (dispatch) => {
+//   const allActivities = await indResourceService.allIndActivity(orgId);
+//   if (allActivities["independent-activities"]) {
+//     dispatch({
+//       type: actionTypes.ALL_IND_ACTIVITIES,
+//       payload: allActivities["independent-activities"],
+//     });
+//   } else {
+//     dispatch({
+//       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+//       payload: [],
+//     });
+//   }
+// };
+export const allIndActivity = (orgId, page, size) => async (dispatch) => {
+  const allActivities = await indResourceService.allIndActivity(
+    orgId,
+    page,
+    size
+  );
+  console.log("allActivities", allActivities);
   if (allActivities["independent-activities"]) {
     dispatch({
       type: actionTypes.ALL_IND_ACTIVITIES,
@@ -130,6 +149,24 @@ export const editIndActivityItem = (activityId, data) => async (dispatch) => {
   }
 };
 
+export const adminIntActivities = (orgId, page, size) => async (dispatch) => {
+  const allActivities = await indResourceService.allAdminIntActivities(
+    orgId,
+    page,
+    size
+  );
+  if (allActivities["independent-activities"]) {
+    dispatch({
+      type: actionTypes.ALL_ADMIN_IND_ACTIVITIES,
+      payload: allActivities["independent-activities"],
+    });
+  } else {
+    dispatch({
+      type: actionTypes.ALL_ADMIN_IND_ACTIVITIES,
+      payload: [],
+    });
+  }
+};
 export const shareEnableLink = (id) => async () => {
   const result = await indResourceService.shareEnable(id);
   return result;
@@ -137,54 +174,4 @@ export const shareEnableLink = (id) => async () => {
 export const shareDisableLink = (id) => async () => {
   const result = await indResourceService.shareDisable(id);
   return result;
-};
-
-export const updateIndActivityAction = (indActId, data) => async (dispatch) => {
-  const centralizedState = store.getState();
-  const {
-    organization: { activeOrganization },
-  } = centralizedState;
-  try {
-    toast.info("Updating Ind Activity ...", {
-      position: "top-center",
-      hideProgressBar: true,
-      icon: "",
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      autoClose: 5000,
-    });
-    // dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_REQUEST });
-    dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_REQUEST });
-    const { indActivity } = await indResourceService.editIndActivityItem(
-      activeOrganization.id,
-      data,
-      indActId
-    );
-    toast.dismiss();
-    toast.success("Ind Activity Edited", {
-      position: "top-center",
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      autoClose: 2500,
-    });
-    dispatch({
-      type: actionTypes.UPDATE_IND_ACTIVITIES_SUCCESS,
-      payload: { indActivity },
-    });
-    // dispatch(allSidebarProjects());
-    return indActivity;
-  } catch (e) {
-    dispatch({ type: actionTypes.UPDATE_IND_ACTIVITIES_FAIL });
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: e.message || "Something went wrong !",
-    });
-    return e.message;
-  }
 };

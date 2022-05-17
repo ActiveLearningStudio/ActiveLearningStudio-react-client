@@ -22,12 +22,12 @@ import {
   deleteIndActivity,
   shareDisableLink,
   shareEnableLink,
-  updateIndActivityAction,
 } from "store/actions/indActivities";
 import intActivityServices from "services/indActivities.service";
 import "./dropdownedit.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 import SharePreviewPopup from "components/SharePreviewPopup";
+import indActivityService from "services/indActivities.service";
 
 const DropDownEdit = ({
   iconColor,
@@ -42,25 +42,8 @@ const DropDownEdit = ({
   const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-  console.log("activities", data);
+  // console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
-  const editIndActivityVisibility = async (type) => {
-    const h5pdata = {
-      library: window.h5peditorCopy.getLibrary(),
-      parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-      action: "create",
-    };
-    await dispatch(
-      updateIndActivityAction(data.id, {
-        ...data,
-        organization_visibility_type_id: type,
-        data: h5pdata,
-        type: "h5p",
-        content: "place_holder",
-        title: data.title,
-      })
-    );
-  };
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
@@ -169,7 +152,7 @@ const DropDownEdit = ({
                 }}
               >
                 <FontAwesomeIcon icon={faCopy} className="mr-2" />
-                Duplicate-a
+                Duplicate
               </Dropdown.Item>
             </>
           ) : (
@@ -221,7 +204,7 @@ const DropDownEdit = ({
                   <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
                 </div>
 
-                {/* <ul className="dropdown-menu check ">
+                <ul className="dropdown-menu check ">
                   <li
                     onClick={() => {
                       dispatch(shareEnableLink(data.id));
@@ -300,7 +283,7 @@ const DropDownEdit = ({
                   >
                     <a>Get shared link</a>
                   </li>
-                </ul> */}
+                </ul>
               </li>
 
               <li className="dropdown-submenu send">
@@ -344,11 +327,7 @@ const DropDownEdit = ({
                   <li>
                     <a>Private (Only me)</a>
                   </li>
-                  <li
-                    onClick={() => {
-                      editIndActivityVisibility(3);
-                    }}
-                  >
+                  <li>
                     <a>My organization </a>
                   </li>
                   <li>
@@ -395,15 +374,37 @@ const DropDownEdit = ({
                 <div className="faAngleRight-dropdown">
                   <FontAwesomeIcon icon={faAngleRight} color={primaryColor} />
                 </div>
-                {/* 
+
                 <ul className="dropdown-menu check">
                   <li>
                     <a>xAPI Download</a>
                   </li>
-                  <li>
+                  <li
+                    onClick={() => {
+                      Swal.fire({
+                        title: "Please Wait !",
+                        html: "Exporting Activity   ...",
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                          Swal.showLoading();
+                        },
+                      });
+                      const result = indActivityService.exportIndAvtivity(
+                        activeOrganization.id,
+                        row.id
+                      );
+                      result.then((data) => {
+                        // console.log(data)
+                        Swal.fire({
+                          icon: "success",
+                          html: data?.message,
+                        });
+                      });
+                    }}
+                  >
                     <a>Independent Activity</a>
                   </li>
-                </ul> */}
+                </ul>
               </li>
 
               {/*  */}

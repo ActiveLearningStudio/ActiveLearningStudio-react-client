@@ -27,6 +27,7 @@ const INITIAL_STATE = {
   education_level: null,
   author_tags: null,
   activity_layouts: null,
+  indActivities: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -203,6 +204,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         teams: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: action.payload,
       };
     default:
       return state;

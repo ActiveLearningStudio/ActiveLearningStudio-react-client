@@ -22,7 +22,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DescribeVideo from "./formik/describevideo";
 import { useEffect } from "react";
 import { getAllVideos, getSearchVideoCard } from "store/actions/videos";
-import { allIndActivity } from "store/actions/indActivities";
+import {
+  allIndActivity,
+  adminIntActivities,
+} from "store/actions/indActivities";
 import AddVideoCard from "utils/AddVideoCard/addvideocard";
 import MyVerticallyCenteredModal from "components/models/videoH5pmodal";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
@@ -375,6 +378,23 @@ const Index = ({ activities }) => {
                                 setActivePage(e);
                                 dispatch(
                                   getAllVideos(activeOrganization.id, e)
+                                );
+                              }}
+                            />
+                          </div>
+                        )}
+                        {allActivities?.data && (
+                          <div style={{}} className="admin-panel ">
+                            <Pagination
+                              activePage={ActivePage}
+                              pageRangeDisplayed={5}
+                              itemsCountPerPage={allActivities?.meta?.per_page}
+                              totalItemsCount={allActivities?.meta?.total}
+                              onChange={(e) => {
+                                console.log(e);
+                                setActivePage(e);
+                                dispatch(
+                                  allIndActivity(activeOrganization.id, e)
                                 );
                               }}
                             />

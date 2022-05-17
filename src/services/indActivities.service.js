@@ -18,9 +18,28 @@ const create = (subOrgId, activity) =>
       Promise.reject(err.response.data);
     });
 
-const allIndActivity = (subOrgId) =>
+// const allIndActivity = (subOrgId) =>
+//   httpService
+//     .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities`)
+//     .then(({ data }) => data)
+//     .catch((err) => {
+//       return Promise.reject(err.response.data);
+//     });
+const allIndActivity = (subOrgId, page = 1, size = 10) =>
   httpService
-    .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities`)
+    .get(
+      `${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+
+const allAdminIntActivities = (subOrgId, page = 1, size = 10) =>
+  httpService
+    .get(
+      `${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
@@ -87,6 +106,29 @@ const indActivityClone = (subOrgId, id) =>
       Promise.reject(err.response.data);
     });
 
+const exportIndAvtivity = (subOrgId, id) =>
+  httpService
+    .post(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/${id}/export`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const importIndAvtivity = (subOrgId, activityData) =>
+  httpService
+    .post(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/import`,
+      activityData
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   create,
   allIndActivity,
@@ -95,5 +137,8 @@ export default {
   intActivityDetail,
   shareEnable,
   shareDisable,
+  allAdminIntActivities,
   indActivityClone,
+  exportIndAvtivity,
+  importIndAvtivity,
 };
