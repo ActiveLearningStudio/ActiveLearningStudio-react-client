@@ -88,7 +88,7 @@ const ActivityLayout = (props) => {
       </form> */}
       <div className="activity-layout-detail">
         <HeadingText
-          text="Create multiple activities into a layout or create a single activity."
+          text="Assemble multiple interactions into one of the layout activities below or select Explore all to tour the full library of activity types."
           color="#515151"
         />
       </div>
