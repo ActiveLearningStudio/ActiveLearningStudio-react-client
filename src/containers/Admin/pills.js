@@ -27,7 +27,21 @@ import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 
 export default function Pills(props) {
-  const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setModalShowTeam, setrowData, setActivePageNumber, users, setUsers } = props;
+  const {
+    setCurrentActivity,
+    setModalShowh5p,
+    modules,
+    type,
+    subType,
+    allProjectTab,
+    setAllProjectTab,
+    setModalShow,
+    setModalShowTeam,
+    setrowData,
+    setActivePageNumber,
+    users,
+    setUsers,
+  } = props;
 
   const [key, setKey] = useState(modules?.filter((data) => !!data)[0]);
 
@@ -1209,7 +1223,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   search={true}
-                  tableHead={columnData.projectAll}
+                  tableHead={columnData.indActivitiesCol}
                   sortCol={columnData.indActivitiesCol}
                   handleSort={handleSort}
                   data={indActivities}
@@ -1233,6 +1247,8 @@ export default function Pills(props) {
                   setModalShow={setModalShow}
                   setrowData={setrowData}
                   setActivePageNumber={setActivePageNumber}
+                  setCurrentActivity={setCurrentActivity}
+                  setModalShowh5p={setModalShowh5p}
                 />
               )}
               {type === 'IndActivities' && subTypeState === 'Exported activities' && (

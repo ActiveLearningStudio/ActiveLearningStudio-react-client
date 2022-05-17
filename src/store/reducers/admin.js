@@ -210,6 +210,24 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         indActivities: action.payload,
       };
+    case actionTypes.EDIT_ADMIN_IND_ACTIVITIES:
+      const newIndActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndActivityData },
+      };
+    case actionTypes.DEL_ADMIN_IND_ACTIVITIES:
+      const delIndActivityData = state.indActivities.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: delIndActivityData },
+      };
+
     default:
       return state;
   }

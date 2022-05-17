@@ -70,6 +70,8 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setCurrentActivity,
+    setModalShowh5p,
   } = props;
   return (
     <>
@@ -147,6 +149,8 @@ function Starter(props) {
           setModalShowTeam={setModalShowTeam}
           setrowData={setrowData}
           setActivePageNumber={setActivePageNumber}
+          setCurrentActivity={setCurrentActivity}
+          setModalShowh5p={setModalShowh5p}
         />
       )}
     </>

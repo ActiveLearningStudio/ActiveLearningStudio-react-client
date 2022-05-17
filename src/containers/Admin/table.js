@@ -19,6 +19,7 @@ import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { shareDisableLink, shareEnableLink, editIndActivityItem } from 'store/actions/indActivities';
 function Table(props) {
   const {
     tableHead,
@@ -44,6 +45,8 @@ function Table(props) {
     setModalShowTeam,
     setrowData,
     setActivePageNumber,
+    setCurrentActivity,
+    setModalShowh5p,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -785,10 +788,6 @@ function Table(props) {
                         </td>
                         <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
 
-                        <td>
-                          <div className="admin-description">{row.description}</div>
-                        </td>
-
                         <td>{row.id}</td>
                         <td>{row.author_tags[0]?.name}</td>
 
@@ -848,18 +847,13 @@ function Table(props) {
                                 <Dropdown.Menu>
                                   {visibilityTypeArray?.map((element) => (
                                     <Dropdown.Item
-                                      onClick={async () => {
-                                        Swal.showLoading();
-                                        const result = await dispatch(
-                                          updateProjectAction(row.id, {
+                                      onClick={() => {
+                                        dispatch(
+                                          editIndActivityItem(row.id, {
                                             ...row,
                                             organization_visibility_type_id: element.id,
                                           })
                                         );
-                                        if (result) {
-                                          setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
-                                        }
-                                        Swal.close();
                                       }}
                                     >
                                       {element.display_name}
@@ -883,24 +877,30 @@ function Table(props) {
                                 <Dropdown.Menu>
                                   <Dropdown.Item
                                     onClick={async () => {
-                                      if (!row.shared) {
-                                        const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
-                                        if (result) {
-                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
-                                        }
-                                      }
+                                      dispatch(shareEnableLink(row.id, 'admin'));
                                     }}
                                   >
                                     Enable
                                   </Dropdown.Item>
                                   <Dropdown.Item
-                                    onClick={async () => {
-                                      if (row.shared) {
-                                        const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
-                                        if (result) {
-                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                    onClick={() => {
+                                      Swal.fire({
+                                        icon: 'warning',
+                                        title: `You are about to stop sharing <strong>"${row.title}"</strong>`,
+                                        html: `Please remember that anyone you have shared this project
+                                                              with will no longer have access its contents. Do you want to continue?`,
+                                        showCloseButton: true,
+                                        showCancelButton: true,
+                                        focusConfirm: false,
+                                        confirmButtonText: 'Stop Sharing!',
+                                        confirmButtonAriaLabel: 'Stop Sharing!',
+                                        cancelButtonText: 'Cancel',
+                                        cancelButtonAriaLabel: 'Cancel',
+                                      }).then((resp) => {
+                                        if (resp.isConfirmed) {
+                                          dispatch(shareDisableLink(row.id, 'admin'));
                                         }
-                                      }
+                                      });
                                     }}
                                   >
                                     Disable
@@ -927,6 +927,8 @@ function Table(props) {
                                 setModalShow={setModalShow}
                                 setrowData={setrowData}
                                 setActivePageNumber={setActivePageNumber}
+                                setCurrentActivity={setCurrentActivity}
+                                setModalShowh5p={setModalShowh5p}
                               />
                             </div>
                           </div>

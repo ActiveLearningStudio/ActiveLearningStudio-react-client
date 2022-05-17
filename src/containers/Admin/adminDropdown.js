@@ -38,6 +38,7 @@ import * as actionTypes from 'store/actionTypes';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import { deleteTeamAction, getTeamPermission } from 'store/actions/team';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { deleteIndActivity } from 'store/actions/indActivities';
 
 const AdminDropdown = (props) => {
   const {
@@ -54,8 +55,8 @@ const AdminDropdown = (props) => {
     setModalShow,
     setModalShowTeam,
     setActivePageNumber,
-    // text,
-    // iconColor,
+    setCurrentActivity,
+    setModalShowh5p,
   } = props;
 
   // console.log("Type:" + type);
@@ -456,7 +457,11 @@ const AdminDropdown = (props) => {
           )}
           {type === 'IndActivities' && (
             <>
-              <Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  setCurrentActivity(row.id), setModalShowh5p(true);
+                }}
+              >
                 {/* <img src={Export} alt="Preview" className="menue-img" /> */}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
                   <path
@@ -538,30 +543,14 @@ const AdminDropdown = (props) => {
                       if (result.isConfirmed) {
                         Swal.fire({
                           icon: 'info',
-                          text: 'Deleting Project...',
+                          text: 'Deleting Activity...',
                           allowOutsideClick: false,
                           onBeforeOpen: () => {
                             Swal.showLoading();
                           },
                           button: false,
                         });
-                        const response = projectService.remove(row.id, activeOrganization.id);
-                        response
-                          .then((res) => {
-                            Swal.fire({
-                              icon: 'success',
-                              text: res?.message,
-                              confirmButtonText: 'Close',
-                              customClass: {
-                                confirmButton: 'confirmation-close-btn',
-                              },
-                            });
-
-                            const filterProject = localStateData.filter((each) => each.id != row.id);
-                            console.log(filterProject);
-                            setLocalStateData(filterProject);
-                          })
-                          .catch((err) => console.log(err));
+                        dispatch(deleteIndActivity(row.id, 'admin'));
                       }
                     });
                   }}
