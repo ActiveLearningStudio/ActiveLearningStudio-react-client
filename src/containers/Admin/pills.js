@@ -193,7 +193,7 @@ export default function Pills(props) {
       dispatch(getsubOrgList(activeOrganization?.id, size, activePage, searchQuery, orderByColumn, currentOrderBy));
     }
 
-    if (type === 'IndActivities') {
+    if (type === 'IndActivities' && activeOrganization?.id) {
       dispatch(adminIntActivities(activeOrganization?.id, activePage, size));
     }
   }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
@@ -266,6 +266,8 @@ export default function Pills(props) {
         const result = await adminService.getAllExportedProject(activePage || 1, size);
         setAllProjectUserTab(result);
       }
+    } else if (type === 'IndActivities') {
+      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject));
     }
     //  if (activeOrganization && type === 'Projects' && currentTab === 'Library requests') {
     //   if (searchQueryProject) {
@@ -1151,7 +1153,6 @@ export default function Pills(props) {
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  search={false}
                   tableHead={columnData.projectUser}
                   sortCol={columnData.projectUserSortCol}
                   search={true}

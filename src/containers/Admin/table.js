@@ -762,8 +762,8 @@ function Table(props) {
             {type === 'IndActivities' &&
               subType === 'All independent activities' &&
               (data ? (
-                data?.length > 0 ? (
-                  data.map((row, counter) => {
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (

@@ -23,9 +23,9 @@ const allIndActivity = (subOrgId) =>
       return Promise.reject(err.response.data);
     });
 
-const allAdminIntActivities = (subOrgId, page = 1, size = 10) =>
+const allAdminIntActivities = (subOrgId, page = 1, size = 10, search) =>
   httpService
-    .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}`)
+    .get(`${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search.replace(/#/, '%23')}` : ''}`)
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);

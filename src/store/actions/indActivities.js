@@ -120,12 +120,12 @@ export const editIndActivityItem = (activityId, data) => async (dispatch) => {
   }
 };
 
-export const adminIntActivities = (orgId, page, size) => async (dispatch) => {
-  const allActivities = await indResourceService.allAdminIntActivities(orgId, page, size);
-  if (allActivities['independent-activities']) {
+export const adminIntActivities = (orgId, page, size, searchQueryProject) => async (dispatch) => {
+  const allActivities = await indResourceService.allAdminIntActivities(orgId, page, size, searchQueryProject);
+  if (allActivities) {
     dispatch({
       type: actionTypes.ALL_ADMIN_IND_ACTIVITIES,
-      payload: allActivities['independent-activities'],
+      payload: allActivities,
     });
   } else {
     dispatch({
