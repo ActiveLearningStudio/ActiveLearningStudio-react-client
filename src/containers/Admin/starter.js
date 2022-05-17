@@ -70,6 +70,7 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setSearchKey,
   } = props;
   return (
     <>
@@ -121,6 +122,7 @@ function Starter(props) {
         resetProjectFilter={resetProjectFilter}
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
+        setSearchKey={setSearchKey}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
       {subTypeState === 'Manage Roles' ? (
