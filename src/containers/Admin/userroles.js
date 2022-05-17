@@ -370,7 +370,38 @@ function UserRoles() {
                                   bold
                                 />
                               </div>
-
+                              {/* Independent activities Start */}
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Independent activities'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[independentactivitiesView]}
+                                      currentFeatureEdit={[independentactivitiesEdit]}
+                                      bold
+                                    />
+                                  </div>
+                                </div>
+                                {/* <h6>Project</h6> */}
+                                <div className="permission-about">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'All independent activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesView}
+                                    currentFeatureEdit={independentactivitiesEdit}
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Exported activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesView}
+                                    currentFeatureEdit={independentactivitiesEdit}
+                                  />
+                                </div>
+                              </div>
                               {/* Independent activities End */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
