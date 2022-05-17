@@ -91,6 +91,8 @@ const SearchForm = (props) => {
               className="form-control"
               name="subjectIds"
               onChange={(e) => {
+                if (formValues.subjectIds.indexOf(e.target.value) !== -1) return;
+
                 setformValues({
                   ...formValues,
                   subjectIds: [...formValues.subjectIds, e.target.value],
@@ -138,6 +140,8 @@ const SearchForm = (props) => {
               className="form-control"
               name="educationLevelIds"
               onChange={(e) => {
+                if (formValues.educationLevelIds.indexOf(e.target.value) !== -1) return;
+
                 setformValues({
                   ...formValues,
                   educationLevelIds: [...formValues.educationLevelIds, e.target.value],
