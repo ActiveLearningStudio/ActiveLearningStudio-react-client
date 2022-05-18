@@ -45,7 +45,7 @@ const loadShared = (id) =>
     .get(`/${apiVersion}/playlists/${id}/load-shared`)
     .then(({ data }) => data)
     .catch((err) => {
-      errorCatcher(err.response.data);
+      // errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
 
