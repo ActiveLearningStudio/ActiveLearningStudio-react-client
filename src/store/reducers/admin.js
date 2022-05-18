@@ -1,5 +1,5 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
-
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
@@ -28,6 +28,8 @@ const INITIAL_STATE = {
   author_tags: null,
   activity_layouts: null,
   indActivities: null,
+  allMediaSources: {},
+  orgMediaSources: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -181,7 +183,10 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: [...state.allbrightCove.data, action.payload],
+        },
       };
     case actionTypes.DEL_BRIGHTCOVE:
       const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
@@ -221,6 +226,17 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         indActivities: { ...state.indActivities, data: newIndActivityData },
       };
+    case actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES:
+      const newIndIndexActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.activityId) {
+          return { ...data, indexing: action.payload.indexing, indexing_text: action.payload.indexing_text };
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndIndexActivityData },
+      };
     case actionTypes.DEL_ADMIN_IND_ACTIVITIES:
       const delIndActivityData = state.indActivities.data.filter((data) => data.id !== action.payload);
       return {
@@ -228,6 +244,27 @@ export default (state = INITIAL_STATE, action) => {
         indActivities: { ...state.indActivities, data: delIndActivityData },
       };
 
+    case actionTypes.GET_ALL_MEDIA_SOURCE:
+      return {
+        ...state,
+        allMediaSources: action.payload,
+      };
+    case actionTypes.GET_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+
+    case actionTypes.GET_MEDIA_SOURCES:
+      return {
+        ...state,
+        mediaSources: action.payload,
+      };
     default:
       return state;
   }

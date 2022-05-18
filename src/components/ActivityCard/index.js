@@ -9,7 +9,7 @@ import './style.scss';
 import { useSelector } from 'react-redux';
 
 const ActivityCard = (props) => {
-  const { activity, projectId, playlistId, lti, sampleID, setModalShow, setCurrentActivity, playlist, teamPermission } = props;
+  const { activity, projectId, playlistId, lti, sampleID, setModalShow, setCurrentActivity, playlist, shared } = props;
   const organization = useSelector((state) => state.organization);
 
   return (
@@ -86,7 +86,9 @@ const ActivityCard = (props) => {
           <>
             <Link
               to={
-                lti
+                shared
+                  ? `/project/${projectId}/playlist/${playlistId}/shared?view=activity`
+                  : lti
                   ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
                   : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
               }

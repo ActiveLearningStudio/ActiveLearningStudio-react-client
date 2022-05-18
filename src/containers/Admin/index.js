@@ -33,6 +33,8 @@ import CreateActivityLayout from './formik/createActivityLayout';
 import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
+import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
+
 function AdminPanel({ showSSO }) {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -68,7 +70,11 @@ function AdminPanel({ showSSO }) {
         payload: [currentOrganization || []],
       });
     }
-  }, [currentOrganization]);
+    dispatch(getAllMediaSources());
+    if (activeOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    }
+  }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
 
@@ -215,6 +221,7 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
+                            'Media',
                           ]}
                           type="LMS"
                         />

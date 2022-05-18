@@ -110,7 +110,7 @@ const ActivityLayout = (props) => {
         <Headings
           headingType="body2"
           color="#515151"
-          text="Within the five activity types, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
+          text="Preview each activity in the library by selecting Demo. Utilize the filter below to assist in choosing the best activity type for your content."
         />
       </div>
       <div className="search-card-singleActivity">

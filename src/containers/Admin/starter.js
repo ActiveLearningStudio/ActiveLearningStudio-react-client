@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
+// import Media from "./media";
 // import Settings from './settings';
 function Starter(props) {
   const {
@@ -72,6 +73,7 @@ function Starter(props) {
     filteredItems,
     setCurrentActivity,
     setModalShowh5p,
+    setSearchKey,
   } = props;
   return (
     <>
@@ -123,8 +125,10 @@ function Starter(props) {
         resetProjectFilter={resetProjectFilter}
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
+        setSearchKey={setSearchKey}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
+      {/* {subTypeState === "Media" && <Media />} */}
       {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (

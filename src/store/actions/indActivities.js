@@ -166,7 +166,20 @@ export const adminIntActivities = (orgId, page, size, searchQueryProject) => asy
   }
 };
 export const shareEnableLink = (id, admin) => async (dispatch) => {
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
   const result = await indResourceService.shareEnable(id);
+  toast.dismiss();
+  toast.success('Activity Updated', {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
   if (admin) {
     dispatch({
       type: actionTypes.EDIT_ADMIN_IND_ACTIVITIES,
@@ -176,7 +189,20 @@ export const shareEnableLink = (id, admin) => async (dispatch) => {
   return result;
 };
 export const shareDisableLink = (id, admin) => async (dispatch) => {
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
   const result = await indResourceService.shareDisable(id);
+  toast.dismiss();
+  toast.success('Activity Updated', {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
   if (admin) {
     dispatch({
       type: actionTypes.EDIT_ADMIN_IND_ACTIVITIES,
@@ -184,4 +210,31 @@ export const shareDisableLink = (id, admin) => async (dispatch) => {
     });
   }
   return result;
+};
+
+export const getIndex = (id, index, admin) => async (dispatch) => {
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
+  const result = await indResourceService.getIndex(id, index.indexing, admin);
+  toast.dismiss();
+
+  if (result.message) {
+    toast.success(result.message, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 4000,
+    });
+    if (admin) {
+      dispatch({
+        type: actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES,
+        payload: index,
+        activityId: id,
+      });
+    }
+  }
 };

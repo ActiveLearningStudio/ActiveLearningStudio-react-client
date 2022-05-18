@@ -19,7 +19,7 @@ import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
-import { shareDisableLink, shareEnableLink, editIndActivityItem } from 'store/actions/indActivities';
+import { shareDisableLink, shareEnableLink, editIndActivityItem, getIndex } from 'store/actions/indActivities';
 function Table(props) {
   const {
     tableHead,
@@ -568,7 +568,7 @@ function Table(props) {
                             <div className="filter-dropdown-table">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
-                                  {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
+                                  {row.indexing_text}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
@@ -800,35 +800,15 @@ function Table(props) {
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {indexingArray.map(
-                                    (element) =>
-                                      element.indexing_text !== 'NOT REQUESTED' && (
-                                        <Dropdown.Item
-                                          onClick={async () => {
-                                            const result = await adminService.updateIndex(row.id, element.indexing);
-                                            if (result?.message) {
-                                              const editRow = {
-                                                ...row,
-                                                indexing: element.indexing,
-                                                indexing_text: element.indexing_text,
-                                              };
-                                              setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                              Swal.fire({
-                                                icon: 'success',
-                                                text: result.message,
-                                              });
-                                            } else {
-                                              Swal.fire({
-                                                icon: 'error',
-                                                text: 'Error',
-                                              });
-                                            }
-                                          }}
-                                        >
-                                          {element.indexing_text}
-                                        </Dropdown.Item>
-                                      )
-                                  )}
+                                  {indexingArray.map((element) => (
+                                    <Dropdown.Item
+                                      onClick={() => {
+                                        dispatch(getIndex(row.id, element, 'admin'));
+                                      }}
+                                    >
+                                      {element.indexing_text}
+                                    </Dropdown.Item>
+                                  ))}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>
@@ -851,6 +831,7 @@ function Table(props) {
                                         dispatch(
                                           editIndActivityItem(row.id, {
                                             ...row,
+                                            data: '',
                                             organization_visibility_type_id: element.id,
                                           })
                                         );

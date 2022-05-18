@@ -23,7 +23,6 @@ const CHANNEL = 'channel';
 
 function Sidebar(props) {
   const { location } = props;
-  console.log(location);
   const active = useMemo(() => location.pathname, [location]);
   const dispatch = useDispatch();
 
