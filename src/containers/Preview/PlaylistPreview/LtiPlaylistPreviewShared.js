@@ -23,11 +23,14 @@ function LtiPlaylistPreviewShared(props) {
   const { history, playlist, projectId, playlistId, activityId, loading, loadSharedPlaylist } = props;
   const [openPlaylistMenu, setPlaylistMenu] = useState(false);
   const [h5pCurrentActivity, setH5pCurrentActivity] = useState(null);
+  const [errorType, setTypeError] = useState('');
   const query = QueryString.parse(window.location.search);
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    loadSharedPlaylist(projectId, playlistId);
+    loadSharedPlaylist(projectId, playlistId)
+      .then()
+      .catch((err) => setTypeError(err.errors?.[0]));
   }, [projectId, playlistId, activityId, loadSharedPlaylist]);
 
   let { selectedPlaylist } = playlist;
@@ -41,8 +44,8 @@ function LtiPlaylistPreviewShared(props) {
 
   if (!selectedPlaylist) {
     return (
-      <div className="alert alert-info" role="alert">
-        Loading...
+      <div className={errorType ? 'alert alert-danger' : 'alert alert-info'} role="alert">
+        {errorType ? errorType.replace('Project', 'Playlist') : 'Loading...'}
       </div>
     );
   }
