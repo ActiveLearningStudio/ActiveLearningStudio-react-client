@@ -18,15 +18,15 @@ export default (state = INITIAL_STATE, action) => {
         allActivities: { ...state.allActivities, data: state.allActivities.data.filter((data) => data.id !== action.payload) },
       };
     case actionTypes.EDIT_IND_ACTIVITIES:
+      const newEditData = state.allActivities.data.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
       return {
         ...state,
-        allActivities: state.allActivities.map((data) => {
-          if (data.id === action.payload.id) {
-            return action.payload;
-          } else {
-            return data;
-          }
-        }),
+        allActivities: { ...state.allActivities, data: newEditData },
       };
     case actionTypes.ADD_IND_ACTIVITIES:
       return {
