@@ -74,7 +74,7 @@ const ActivityCard = (props) => {
             }}
           >
             <div
-              className="playimg"
+              className="sharedActivityImage"
               style={{
                 backgroundImage:
                   !!activity.thumb_url && activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
@@ -89,8 +89,8 @@ const ActivityCard = (props) => {
                 shared
                   ? `/project/${projectId}/playlist/${playlistId}/shared?view=activity`
                   : lti
-                  ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
-                  : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
+                    ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
+                    : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
               }
               onClick={() => localStorage.setItem('projectPreview', true)}
             >
@@ -139,8 +139,8 @@ ActivityCard.propTypes = {
 ActivityCard.defaultProps = {
   lti: false,
   sampleID: null,
-  setModalShow: () => {},
-  setCurrentActivity: () => {},
+  setModalShow: () => { },
+  setCurrentActivity: () => { },
 };
 
 export default ActivityCard;

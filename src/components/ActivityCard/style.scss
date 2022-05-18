@@ -6,6 +6,14 @@
   @media (max-width: 767px) {
     width: 100% !important;
   }
+  .sharedActivityImage {
+    height: 100px;
+    width: 100%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
 }
 .white-backgroud {
   background: #fff;
