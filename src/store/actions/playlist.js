@@ -1,11 +1,11 @@
 /* eslint-disable */
-import axios from "axios";
-import Swal from "sweetalert2";
-import Echo from "laravel-echo";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import Echo from 'laravel-echo';
 import store from '../index';
-import socketConnection from "services/http.service";
-import playlistService from "services/playlist.service";
-import * as actionTypes from "../actionTypes";
+import socketConnection from 'services/http.service';
+import playlistService from 'services/playlist.service';
+import * as actionTypes from '../actionTypes';
 
 export const createPlaylistAction = (projectId, title) => async (dispatch) => {
   try {
@@ -187,11 +187,6 @@ export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispat
       payload: { playlist },
     });
   } catch (e) {
-    Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      html: e.message || 'Something went wrong! We are unable to load activity.',
-    });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
     });
@@ -273,11 +268,9 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) =>
 
 export const updatedPlaylist = (userId) => async () => {
   // const echo = new Echo(socketConnection.notificationSocket());
-
   // echo.private("playlist-update").listen("PlaylistUpdatedEvent", (msg) => {
   //   if (msg.userId !== userId) {
   //     const path = window.location.pathname;
-
   //     let message = "";
   //     if (path.includes(`playlist/${msg.playlistId}`)) {
   //       message =
@@ -286,7 +279,6 @@ export const updatedPlaylist = (userId) => async () => {
   //       message =
   //         "This project has been modified by other team member. Are you ok to refresh page to see what is updated?";
   //     }
-
   //     if (message) {
   //       Swal.fire({
   //         title: message,
@@ -308,7 +300,7 @@ export const enablePlaylistShare = (projectId, playlistId) => async (dispatch) =
   const { playlist } = await playlistService.enablePlaylistShare(projectId, playlistId);
   dispatch({
     type: actionTypes.ENABLE_PLAYLIST_SHARE,
-    isSharedPlaylist: playlist?.shared
+    isSharedPlaylist: playlist?.shared,
   });
   return playlist;
 };
@@ -317,7 +309,7 @@ export const disablePlaylistShare = (projectId, playlistId) => async (dispatch) 
   const { playlist } = await playlistService.disablePlaylistShare(projectId, playlistId);
   dispatch({
     type: actionTypes.DISABLE_PLAYLIST_SHARE,
-    isSharedPlaylist: playlist?.shared
+    isSharedPlaylist: playlist?.shared,
   });
   return playlist;
 };
@@ -340,10 +332,9 @@ export const loadSingleSharedPlaylist = (projectId, playlistId) => async (dispat
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message || "Something went wrong! We are unable to load shared playlist.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load shared playlist.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -367,10 +358,9 @@ export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message || "Something went wrong! We are unable to load shared playlist.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load shared playlist.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -382,7 +372,9 @@ export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
 
 export const searchPreviewPlaylistAction = (playlistId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const { playlist } = await playlistService.searchPreviewPlaylist(activeOrganization?.id, playlistId);
   dispatch({
     type: actionTypes.LOAD_PLAYLIST_SUCCESS,
