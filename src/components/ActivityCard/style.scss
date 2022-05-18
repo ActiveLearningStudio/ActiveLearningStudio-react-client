@@ -2,16 +2,19 @@
 
 .preview-list-update {
   width: 256px;
-  border: none !important;
+  border: 10px solid white;
   @media (max-width: 767px) {
     width: 100% !important;
   }
   .sharedActivityImage {
     height: 100px;
     width: 100%;
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .textSharedActivity {
+    padding: 10px;
   }
 
 }
