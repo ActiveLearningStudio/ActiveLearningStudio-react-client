@@ -80,7 +80,7 @@ const ActivityCard = (props) => {
                   !!activity.thumb_url && activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
               }}
             />
-            <div className="plydet">{activity.metadata ? activity.metadata.title : activity.title}</div>
+            <div className="textSharedActivity">{activity.metadata ? activity.metadata.title : activity.title}</div>
           </a>
         ) : (
           <>
