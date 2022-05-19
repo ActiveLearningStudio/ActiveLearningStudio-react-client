@@ -23,9 +23,40 @@ const allIndActivity = (subOrgId, page = 1, size = 10) =>
       return Promise.reject(err.response.data);
     });
 
-const allAdminIntActivities = (subOrgId, page = 1, size = 10, search) =>
+const allAdminExportActivity = (page = 1, size = 10, search) =>
   httpService
-    .get(`${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search.replace(/#/, '%23')}` : ''}`)
+    .get(`${apiVersion}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${search && `&query=${search?.replace(/#/, '%23')}`}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
+const allAdminIntActivities = (
+  subOrgId,
+  page = 1,
+  size = 10,
+  search,
+  authorId,
+  createdFrom,
+  createdTo,
+  updatedFrom,
+  updatedTo,
+  shared,
+  index,
+  query = '',
+  column = '',
+  orderBy = ''
+) =>
+  httpService
+    .get(
+      `${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}
+    ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
+${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
+        index ? `&indexing=${index}` : ''
+      }${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}
+
+
+    `
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
@@ -111,6 +142,13 @@ const getIndex = (activtyId, indexId) =>
       errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
+const h5pResourceSettingsSharedIndActivity = (activityId) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings-shared`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+    });
 export default {
   create,
   allIndActivity,
@@ -124,4 +162,6 @@ export default {
   exportIndAvtivity,
   importIndAvtivity,
   getIndex,
+  allAdminExportActivity,
+  h5pResourceSettingsSharedIndActivity,
 };

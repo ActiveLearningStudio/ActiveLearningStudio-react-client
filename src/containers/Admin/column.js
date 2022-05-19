@@ -64,4 +64,8 @@ export const columnData = {
   teamsSortCol: ['Created'],
 
   indActivitiesCol: ['Name', 'Created', 'ID', 'Author', 'Library', 'Library preference', 'Sharing', 'Updated'],
+  indActivitiesSortCol: ['Created'],
+
+  indActivitiesExportCol: ['Name', 'Created', 'Expired date', 'Download'],
+  indActivitiesExportSortCol: ['Created'],
 };

@@ -136,6 +136,7 @@ function UserRoles() {
   const independentactivitiesViewName = ['independent-activity:view'];
   const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState([]);
   const [independentactivitiesExportEdit, setIndependentactivitiesExportEdit] = useState([]);
+
   const [independentactivitiesView, setIndependentactivitiesView] = useState([]);
 
   const [checkRoles, setCheckRoles] = useState('');
@@ -399,7 +400,7 @@ function UserRoles() {
                                       setFieldValue={setFieldValue}
                                       type={'Independent activities'}
                                       permissions={values.permissions}
-                                      currentFeatureView={[independentactivitiesView]}
+                                      currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportEdit]}
                                       currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
                                       bold
                                     />

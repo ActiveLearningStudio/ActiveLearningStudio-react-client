@@ -158,13 +158,17 @@ function AdminPanel({ showSSO }) {
                     </Tab>
                   )}
                   {/* Ind.Activity Start */}
-                  {true && (
+                  {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
+                    permission?.['Independent Activity']?.includes('independent-activity:export')) && (
                     <Tab eventKey="IndActivities" title="Ind. activities">
                       <div className="module-content">
                         <Pills
                           setCurrentActivity={setCurrentActivity}
                           setModalShowh5p={setModalShowh5p}
-                          modules={['All independent activities', 'Exported activities']}
+                          modules={[
+                            permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
+                            permission?.['Independent Activity']?.includes('independent-activity:export') && 'Exported activities',
+                          ]}
                           type="IndActivities"
                         />
                       </div>

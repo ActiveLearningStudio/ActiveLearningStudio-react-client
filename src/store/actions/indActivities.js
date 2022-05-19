@@ -94,6 +94,22 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   }
 };
 
+export const allAdminExportActivity = (page, size, search) => async (dispatch) => {
+  const allActivities = await indResourceService.allAdminExportActivity(page, size, search);
+  // console.log("allActivities", allActivities);
+  if (allActivities) {
+    dispatch({
+      type: actionTypes.ALL_ADMIN_EXPORTED_ACTIVITIES,
+      payload: allActivities,
+    });
+  } else {
+    dispatch({
+      type: actionTypes.ALL_ADMIN_EXPORTED_ACTIVITIES,
+      payload: [],
+    });
+  }
+};
+
 export const deleteIndActivity = (activityId, admin) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
@@ -151,8 +167,38 @@ export const editIndActivityItem = (activityId, data, admin) => async (dispatch)
   }
 };
 
-export const adminIntActivities = (orgId, page, size, searchQueryProject) => async (dispatch) => {
-  const allActivities = await indResourceService.allAdminIntActivities(orgId, page, size, searchQueryProject);
+export const adminIntActivities = (
+  orgId,
+  page,
+  size,
+  searchQueryProject,
+  authorId,
+  createdFrom,
+  createdTo,
+  updatedFrom,
+  updatedTo,
+  shared,
+  index,
+  query = '',
+  column = '',
+  orderBy = ''
+) => async (dispatch) => {
+  const allActivities = await indResourceService.allAdminIntActivities(
+    orgId,
+    page,
+    size,
+    searchQueryProject,
+    authorId,
+    createdFrom,
+    createdTo,
+    updatedFrom,
+    updatedTo,
+    shared,
+    index,
+    (query = ''),
+    (column = ''),
+    (orderBy = '')
+  );
   if (allActivities) {
     dispatch({
       type: actionTypes.ALL_ADMIN_IND_ACTIVITIES,

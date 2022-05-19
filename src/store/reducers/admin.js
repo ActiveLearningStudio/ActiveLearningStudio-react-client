@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   author_tags: null,
   activity_layouts: null,
   indActivities: null,
+  exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
 };
@@ -215,6 +216,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         indActivities: action.payload,
       };
+    case actionTypes.CLEAR_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
     case actionTypes.EDIT_ADMIN_IND_ACTIVITIES:
       const newIndActivityData = state.indActivities.data.map((data) => {
         if (data.id === action.payload.id) {
@@ -249,6 +260,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allMediaSources: action.payload,
       };
+    case actionTypes.CLEAR_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: null,
+      };
+
     case actionTypes.GET_ORG_MEDIA_SOURCE:
       return {
         ...state,

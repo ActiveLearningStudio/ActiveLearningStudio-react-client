@@ -792,7 +792,7 @@ function Table(props) {
                         <td>{row.author_tags[0]?.name}</td>
 
                         <td>
-                          {true ? (
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
                             <div className="filter-dropdown-table">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -800,15 +800,18 @@ function Table(props) {
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {indexingArray.map((element) => (
-                                    <Dropdown.Item
-                                      onClick={() => {
-                                        dispatch(getIndex(row.id, element, 'admin'));
-                                      }}
-                                    >
-                                      {element.indexing_text}
-                                    </Dropdown.Item>
-                                  ))}
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            dispatch(getIndex(row.id, element, 'admin'));
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      )
+                                  )}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>
@@ -817,7 +820,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {true ? (
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
                             <div className="filter-dropdown-table">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -848,7 +851,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {true ? (
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
                             <div className="filter-dropdown-table">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -913,6 +916,44 @@ function Table(props) {
                               />
                             </div>
                           </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'IndActivities' &&
+              subType === 'Exported activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row.created_at);
+                    const expireNew = new Date(row.will_expire_on);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>
+                          <div className="admin-name-img">
+                            <Link className="admin-name">{row.project}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>{new Date(expireNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>
+                          <a href={row.link} target="_blank">
+                            Download
+                          </a>
                         </td>
                       </tr>
                     );
