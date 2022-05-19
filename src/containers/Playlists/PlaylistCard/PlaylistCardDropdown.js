@@ -79,31 +79,31 @@ class PlaylistCardDropdown extends React.Component {
           {(Object.keys(teamPermission).length
             ? teamPermission?.Team?.includes('team:view-playlist')
             : permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view')) && (
-            <Dropdown.Item
-              as={Link}
-              className="hidden"
-              to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
-            >
-              {/* <img src={Preview} alt="Preview" className="menue-img" /> */}
-              <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                <path
-                  d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Preview
-            </Dropdown.Item>
-          )}
+              <Dropdown.Item
+                as={Link}
+                className="hidden"
+                to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
+              >
+                {/* <img src={Preview} alt="Preview" className="menue-img" /> */}
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+                  <path
+                    d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
+                    stroke={primaryColor}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
+                    stroke={primaryColor}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Preview
+              </Dropdown.Item>
+            )}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item
               onClick={() => {
@@ -173,17 +173,10 @@ class PlaylistCardDropdown extends React.Component {
                   }
                 }}
               >
-                {playlist?.shared ? (
-                  <>
-                    <FontAwesomeIcon icon="link" className="mr-2" />
-                    Get link
-                  </>
-                ) : (
-                  <>
-                    <FontAwesomeIcon icon="share" className="mr-2" />
-                    Share
-                  </>
-                )}
+                <>
+                  <FontAwesomeIcon icon="link" className="mr-2" />
+                  Get link
+                </>
               </Dropdown.Item>
             )}
           <>
