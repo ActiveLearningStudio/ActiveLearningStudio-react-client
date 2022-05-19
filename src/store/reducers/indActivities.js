@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as actionTypes from '../actionTypes';
+import * as actionTypes from "../actionTypes";
 
 const INITIAL_STATE = {
   allActivities: null,
@@ -15,7 +15,12 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.DEL_IND_ACTIVITIES:
       return {
         ...state,
-        allActivities: { ...state.allActivities, data: state.allActivities.data.filter((data) => data.id !== action.payload) },
+        allActivities: {
+          ...state.allActivities,
+          data: state.allActivities.data.filter(
+            (data) => data.id !== action.payload
+          ),
+        },
       };
     case actionTypes.EDIT_IND_ACTIVITIES:
       const newEditData = state.allActivities.data.map((data) => {
@@ -28,10 +33,27 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allActivities: { ...state.allActivities, data: newEditData },
       };
+    // Update the index of the activity
+    case actionTypes.EDIT_IND_ACTIVITIES_INDEX:
+      const newEditDataIndex = state.allActivities.data.map((data) => {
+        if (data.id === action.payload) {
+          console.log("Matched");
+          data.indexing = 1;
+          data.indexing_text = "REQUESTED";
+        }
+        return data;
+      });
+      return {
+        ...state,
+        allActivities: { ...state.allActivities, data: newEditDataIndex },
+      };
     case actionTypes.ADD_IND_ACTIVITIES:
       return {
         ...state,
-        allActivities: { ...state.allActivities, data: [...state.allActivities.data, action.payload] },
+        allActivities: {
+          ...state.allActivities,
+          data: [...state.allActivities.data, action.payload],
+        },
       };
 
     default:

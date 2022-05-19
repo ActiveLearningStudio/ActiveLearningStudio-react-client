@@ -12,6 +12,7 @@ import intActivityServices from "services/indActivities.service";
 
 import "./addvideocard.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { getIndex } from "store/actions/indActivities";
 
 const AddVideoCard = ({
   setModalShow,
@@ -79,20 +80,28 @@ const AddVideoCard = ({
           <div className="btn-box">
             {isActivityCard ? (
               <>
-                <div
-                  className="addvideo-card-add-share-options hover-apply"
-                  onClick={() => {}}
-                >
-                  <FontAwesomeIcon
-                    icon={faLink}
-                    style={{ marginRight: "6px" }}
-                    color={primaryColor}
-                  />
-                  <span className="textinButton">Shared link</span>
-                </div>
+                {data.shared && (
+                  <>
+                    <div
+                      className="addvideo-card-add-share-options hover-apply"
+                      onClick={() => {}}
+                    >
+                      <FontAwesomeIcon
+                        icon={faLink}
+                        style={{ marginRight: "6px" }}
+                        color={primaryColor}
+                      />
+                      <span className="textinButton">Shared link</span>
+                    </div>
+                  </>
+                )}
                 <div
                   className="addvideo-card-add-share-options request-section-icon hover-apply "
-                  onClick={() => {}}
+                  onClick={() => {
+                    if (data.indexing_text == "NOT REQUESTED") {
+                      dispatch(getIndex(data.id, 1));
+                    }
+                  }}
                 >
                   {/* <FontAwesomeIcon
                     icon={faLink}
@@ -123,7 +132,11 @@ const AddVideoCard = ({
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <span className="textinButton">Requested</span>
+                  <span className="textinButton">
+                    {data.indexing_text == "NOT REQUESTED"
+                      ? "Requested"
+                      : "Already Requested Send"}
+                  </span>
                 </div>
               </>
             ) : (

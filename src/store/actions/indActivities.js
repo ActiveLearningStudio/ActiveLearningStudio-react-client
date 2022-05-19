@@ -1,12 +1,12 @@
 /* eslint-disable */
 
-import { toast } from 'react-toastify';
-import Swal from 'sweetalert2';
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
-import resourceService from 'services/resource.service';
-import indResourceService from 'services/indActivities.service';
-import store from '../index';
-import * as actionTypes from '../actionTypes';
+import resourceService from "services/resource.service";
+import indResourceService from "services/indActivities.service";
+import store from "../index";
+import * as actionTypes from "../actionTypes";
 
 export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -16,15 +16,15 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
   const data = {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
+    action: "create",
   };
-  toast.info('Creating new Activity ...', {
-    className: 'project-loading',
+  toast.info("Creating new Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
   const insertedH5pResource = await resourceService.h5pToken(data);
   if (!insertedH5pResource.fail) {
@@ -33,10 +33,10 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     const activity = {
       h5p_content_id: resource.id,
       thumb_url: metadata?.thumb_url,
-      action: 'create',
+      action: "create",
       title: metadata?.title,
-      type: 'h5p',
-      content: 'place_holder',
+      type: "h5p",
+      content: "place_holder",
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
       author_tag_id: metadata?.author_tag_id,
@@ -46,20 +46,23 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
       organization_visibility_type_id: 1,
     };
 
-    const result = await indResourceService.create(activeOrganization.id, activity);
+    const result = await indResourceService.create(
+      activeOrganization.id,
+      activity
+    );
     toast.dismiss();
-    toast.success('Activity Created', {
+    toast.success("Activity Created", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
     dispatch({
       type: actionTypes.ADD_IND_ACTIVITIES,
-      payload: result['independent-activity'],
+      payload: result["independent-activity"],
     });
     hide();
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: '',
+      payload: "",
     });
   }
 };
@@ -78,8 +81,15 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
 //     });
 //   }
 // };
-export const allIndActivity = (orgId, page, size, search) => async (dispatch) => {
-  const allActivities = await indResourceService.allAdminIntActivities(orgId, page, size, search);
+export const allIndActivity = (orgId, page, size, search) => async (
+  dispatch
+) => {
+  const allActivities = await indResourceService.allAdminIntActivities(
+    orgId,
+    page,
+    size,
+    search
+  );
   // console.log("allActivities", allActivities);
   if (allActivities) {
     dispatch({
@@ -94,8 +104,14 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   }
 };
 
-export const allAdminExportActivity = (page, size, search) => async (dispatch) => {
-  const allActivities = await indResourceService.allAdminExportActivity(page, size, search);
+export const allAdminExportActivity = (page, size, search) => async (
+  dispatch
+) => {
+  const allActivities = await indResourceService.allAdminExportActivity(
+    page,
+    size,
+    search
+  );
   // console.log("allActivities", allActivities);
   if (allActivities) {
     dispatch({
@@ -115,10 +131,13 @@ export const deleteIndActivity = (activityId, admin) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const allActivities = await indResourceService.deleteIndActivity(activeOrganization.id, activityId);
+  const allActivities = await indResourceService.deleteIndActivity(
+    activeOrganization.id,
+    activityId
+  );
   if (allActivities.message) {
     Swal.fire({
-      icon: 'success',
+      icon: "success",
       html: allActivities.message,
     });
     if (admin) {
@@ -135,33 +154,39 @@ export const deleteIndActivity = (activityId, admin) => async (dispatch) => {
   }
 };
 
-export const editIndActivityItem = (activityId, data, admin) => async (dispatch) => {
+export const editIndActivityItem = (activityId, data, admin) => async (
+  dispatch
+) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
 
-  const editActivities = await indResourceService.editIndActivityItem(activeOrganization.id, data, activityId);
+  const editActivities = await indResourceService.editIndActivityItem(
+    activeOrganization.id,
+    data,
+    activityId
+  );
   toast.dismiss();
 
   if (editActivities) {
     if (admin) {
       dispatch({
         type: actionTypes.EDIT_ADMIN_IND_ACTIVITIES,
-        payload: editActivities['independent-activity'],
+        payload: editActivities["independent-activity"],
       });
     } else {
       dispatch({
         type: actionTypes.EDIT_IND_ACTIVITIES,
-        payload: editActivities['independent-activity'],
+        payload: editActivities["independent-activity"],
       });
     }
   }
@@ -179,9 +204,9 @@ export const adminIntActivities = (
   updatedTo,
   shared,
   index,
-  query = '',
-  column = '',
-  orderBy = ''
+  query = "",
+  column = "",
+  orderBy = ""
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
@@ -195,9 +220,9 @@ export const adminIntActivities = (
     updatedTo,
     shared,
     index,
-    (query = ''),
-    (column = ''),
-    (orderBy = '')
+    (query = ""),
+    (column = ""),
+    (orderBy = "")
   );
   if (allActivities) {
     dispatch({
@@ -212,62 +237,78 @@ export const adminIntActivities = (
   }
 };
 export const shareEnableLink = (id, admin) => async (dispatch) => {
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
   const result = await indResourceService.shareEnable(id);
   toast.dismiss();
-  toast.success('Activity Updated', {
+  toast.success("Activity Updated", {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 4000,
   });
   if (admin) {
     dispatch({
       type: actionTypes.EDIT_ADMIN_IND_ACTIVITIES,
-      payload: result?.['independent-activity'],
+      payload: result?.["independent-activity"],
+    });
+  } else {
+    dispatch({
+      type: actionTypes.EDIT_IND_ACTIVITIES,
+      payload: result["independent-activity"],
     });
   }
   return result;
 };
 export const shareDisableLink = (id, admin) => async (dispatch) => {
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
   const result = await indResourceService.shareDisable(id);
   toast.dismiss();
-  toast.success('Activity Updated', {
+  toast.success("Activity Updated", {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 4000,
   });
   if (admin) {
     dispatch({
       type: actionTypes.EDIT_ADMIN_IND_ACTIVITIES,
-      payload: result?.['independent-activity'],
+      payload: result?.["independent-activity"],
+    });
+  } else {
+    dispatch({
+      type: actionTypes.EDIT_IND_ACTIVITIES,
+      payload: result["independent-activity"],
     });
   }
   return result;
 };
 
 export const getIndex = (id, index, admin) => async (dispatch) => {
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
-  const result = await indResourceService.getIndex(id, index.indexing, admin);
+  let result;
+  if (admin) {
+    result = await indResourceService.getIndex(id, index.indexing, admin);
+  } else {
+    result = await indResourceService.getIndex(id, index);
+  }
+  console.log("Reslt index", result);
   toast.dismiss();
 
   if (result.message) {
@@ -280,6 +321,11 @@ export const getIndex = (id, index, admin) => async (dispatch) => {
         type: actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES,
         payload: index,
         activityId: id,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.EDIT_IND_ACTIVITIES_INDEX,
+        payload: id,
       });
     }
   }

@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +20,7 @@ import {
 import { deleteVideo, cloneh5pvideo } from "store/actions/videos";
 import {
   deleteIndActivity,
+  editIndActivityItem,
   shareDisableLink,
   shareEnableLink,
 } from "store/actions/indActivities";
@@ -28,6 +29,7 @@ import "./dropdownedit.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 import SharePreviewPopup from "components/SharePreviewPopup";
 import indActivityService from "services/indActivities.service";
+import { visibilityTypes } from "store/actions/project";
 
 const DropDownEdit = ({
   iconColor,
@@ -41,9 +43,21 @@ const DropDownEdit = ({
 }) => {
   const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector((state) => state.organization);
+  const project = useSelector((state) => state.project);
+  const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   const dispatch = useDispatch();
   // console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
+  useEffect(() => {
+    (async () => {
+      if (project?.visibilityTypes.length === 0) {
+        const { data } = await dispatch(visibilityTypes());
+        setVisibilityTypeArray(data.data);
+      } else {
+        setVisibilityTypeArray(project?.visibilityTypes?.data);
+      }
+    })();
+  }, [project?.visibilityTypes]);
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
@@ -224,65 +238,49 @@ const DropDownEdit = ({
                   >
                     <a>Enable</a>
                   </li>
-                  <li
-                    onClick={async () => {
-                      //  if (activeShared) {
-                      Swal.fire({
-                        icon: "warning",
-                        title: `You are about to stop sharing <strong>"${data.title}"</strong>`,
-                        html: `Please remember that anyone you have shared this project
+                  {data.shared && (
+                    <>
+                      <li
+                        onClick={async () => {
+                          //  if (activeShared) {
+                          Swal.fire({
+                            icon: "warning",
+                            title: `You are about to stop sharing <strong>"${data.title}"</strong>`,
+                            html: `Please remember that anyone you have shared this project
                                               with will no longer have access its contents. Do you want to continue?`,
-                        showCloseButton: true,
-                        showCancelButton: true,
-                        focusConfirm: false,
-                        confirmButtonText: "Stop Sharing!",
-                        confirmButtonAriaLabel: "Stop Sharing!",
-                        cancelButtonText: "Cancel",
-                        cancelButtonAriaLabel: "Cancel",
-                      }).then((resp) => {
-                        if (resp.isConfirmed) {
-                          dispatch(shareDisableLink(data.id));
-                        }
-                      });
-                    }}
-                    // }
-                  >
-                    <a>Disable</a>
-                  </li>
-                  <li
-                    onClick={() => {
-                      if (data.shared) {
-                        if (window.gapi && window.gapi.sharetoclassroom) {
-                          window.gapi.sharetoclassroom.go("croom");
-                        }
-                        const protocol = `${
-                          window.location.href.split("/")[0]
-                        }//`;
-                        const url = `${protocol}${
-                          window.location.host
-                        }/project/${"Dummy"}/shared`;
-                        return SharePreviewPopup(url, "Dummy");
-                      } else {
-                        Swal.fire({
-                          icon: "warning",
-                          title: `Link is Not in Shared  <strong>"${data.title}"</strong>`,
-                          html: `Please Share the link?`,
-                          showCloseButton: true,
-                          // showCancelButton: true,
-                          focusConfirm: false,
-                          // confirmButtonText: "Stop Sharing!",
-                          // confirmButtonAriaLabel: "Stop Sharing!",
-                          cancelButtonText: "Cancel",
-                          // cancelButtonAriaLabel: "Cancel",
-                        }).then((resp) => {
-                          if (resp.isConfirmed) {
+                            showCloseButton: true,
+                            showCancelButton: true,
+                            focusConfirm: false,
+                            confirmButtonText: "Stop Sharing!",
+                            confirmButtonAriaLabel: "Stop Sharing!",
+                            cancelButtonText: "Cancel",
+                            cancelButtonAriaLabel: "Cancel",
+                          }).then((resp) => {
+                            if (resp.isConfirmed) {
+                              dispatch(shareDisableLink(data.id));
+                            }
+                          });
+                        }}
+                        // }
+                      >
+                        <a>Disable</a>
+                      </li>
+                      <li
+                        onClick={() => {
+                          if (window.gapi && window.gapi.sharetoclassroom) {
+                            window.gapi.sharetoclassroom.go("croom");
                           }
-                        });
-                      }
-                    }}
-                  >
-                    <a>Get shared link</a>
-                  </li>
+                          const protocol = `${
+                            window.location.href.split("/")[0]
+                          }//`;
+                          const url = `${protocol}${window.location.host}/activity/${data.id}/shared?type=ind`;
+                          return SharePreviewPopup(url, data.title);
+                        }}
+                      >
+                        <a>Get shared link</a>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </li>
 
@@ -324,7 +322,22 @@ const DropDownEdit = ({
                 </div>
 
                 <ul className="dropdown-menu check">
-                  <li>
+                  {visibilityTypeArray?.map((element) => (
+                    <li
+                      onClick={() => {
+                        dispatch(
+                          editIndActivityItem(data.id, {
+                            ...data,
+                            data: "",
+                            organization_visibility_type_id: element.id,
+                          })
+                        );
+                      }}
+                    >
+                      <a>{element.display_name}</a>
+                    </li>
+                  ))}
+                  {/* <li>
                     <a>Private (Only me)</a>
                   </li>
                   <li>
@@ -332,7 +345,7 @@ const DropDownEdit = ({
                   </li>
                   <li>
                     <a>Public</a>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
 
