@@ -8,11 +8,15 @@ node("currikidev") {
     
     stage('Build image') {         
       
-          docker {
-              args "-e DOMAIN_URL=dev.currikistudio.org"
-          }
+          
+          environment { 
+                    DOMAIN_URL=dev.currikistudio.org
+                }
       
         app = docker.build("quay.io/curriki/client")    
+        app.inside {
+            sh "echo $DOMAIN_URL"
+        }
         
     } 
     stage('Test image') {           
