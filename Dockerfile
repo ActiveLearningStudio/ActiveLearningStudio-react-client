@@ -3,7 +3,7 @@ FROM node:10 as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 ARG DOMAIN
-ENV DOMAIN_NAME=$DOMAIN
+ENV DOMAIN_URL=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
 COPY . .
