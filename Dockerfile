@@ -2,7 +2,8 @@ FROM node:10 as build
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-ARG DOMAIN_NAME
+ARG DOMAIN
+ENV DOMAIN_NAME=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
 COPY . .
