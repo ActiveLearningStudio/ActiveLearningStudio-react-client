@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
@@ -80,9 +81,16 @@ const Media = () => {
                               });
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgVideoSource.length === 0) {
-                                updatedMediasSource = orgImageSource;
+                                // updatedMediasSource = orgImageSource;
+                                Swal.fire({
+                                  icon: 'warning',
+                                  text: 'Please Select Atleast One Media Source to Continue...!!',
+                                  allowOutsideClick: false,
+                                });
+                                return false;
+                              } else {
+                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                               }
-                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
                             Update
@@ -107,6 +115,7 @@ const Media = () => {
                                       setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
                                     }
                                   }}
+                                  disabled={source.name === 'Safari Montage' ? true : false}
                                 />
                                 <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
                                   {source.name}
@@ -157,9 +166,15 @@ const Media = () => {
                               });
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgImageSource.length === 0) {
-                                updatedMediasSource = orgVideoSource;
+                                // updatedMediasSource = orgVideoSource;
+                                Swal.fire({
+                                  icon: 'warning',
+                                  text: 'Please Select Atleast One Media Source to Continue...!!',
+                                  allowOutsideClick: false,
+                                });
+                              } else {
+                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                               }
-                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
                             Update
@@ -183,6 +198,7 @@ const Media = () => {
                                       setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
                                     }
                                   }}
+                                  disabled={source.name === 'Safari Montage' ? true : false}
                                 />
                                 <span id={isImageSource.length > 0 && 'span-sub-selected'} className='span-sub'>
                                   {source.name}
