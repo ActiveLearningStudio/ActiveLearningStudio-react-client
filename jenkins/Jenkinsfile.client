@@ -9,13 +9,13 @@ node("currikidev") {
     stage('Build image') {         
       
           
-          environment { 
-                    DOMAIN_URL=dev.currikistudio.org
-                }
+          // environment { 
+          //           DOMAIN_URL=dev.currikistudio.org
+          //       }
       
         app = docker.build("quay.io/curriki/client")    
         app.inside {
-            sh "echo $DOMAIN_URL"
+            sh "DOMAIN_URL=dev.currikistudio.org"
         }
         
     } 
