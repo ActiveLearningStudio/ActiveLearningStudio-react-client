@@ -6,13 +6,7 @@ node("currikidev") {
         checkout scm    
     }  
     
-    stage('Build image') {         
-      
-          
-          // environment { 
-          //           DOMAIN_URL=dev.currikistudio.org
-          //       }
-      
+    stage('Build image') { 
         app = docker.build("quay.io/curriki/client", "--build-arg DOMAIN=$domain .")
         
     } 
