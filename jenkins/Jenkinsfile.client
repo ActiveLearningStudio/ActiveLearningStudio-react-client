@@ -13,10 +13,7 @@ node("currikidev") {
           //           DOMAIN_URL=dev.currikistudio.org
           //       }
       
-        app = docker.build("quay.io/curriki/client")    
-        app.inside {
-            sh "DOMAIN_URL=dev.currikistudio.org"
-        }
+        app = docker.build("quay.io/curriki/client", "--build-arg DOMAIN_NAME=dev.currikistudio.org")
         
     } 
     stage('Test image') {           
