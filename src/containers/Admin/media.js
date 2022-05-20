@@ -85,7 +85,7 @@ const Media = () => {
                               dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
-                            update
+                            Update
                           </button>
                         </div>
                       </div>
@@ -162,7 +162,7 @@ const Media = () => {
                               dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
-                            update
+                            Update
                           </button>
                         </div>
                       </div>
