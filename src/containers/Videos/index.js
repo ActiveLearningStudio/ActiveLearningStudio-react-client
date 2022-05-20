@@ -41,7 +41,8 @@ const Index = ({ activities }) => {
   const { activeOrganization, permission } = useSelector(
     (state) => state.organization
   );
-  const { allActivities } = useSelector((state) => state.activities);
+  const { allActivities, isLoading } = useSelector((state) => state.activities);
+  // const { isLoading } = useSelector((state) => state.isLoading);
   const { allVideos } = videos;
   const [searchQuery, setSearchQuery] = useState("");
   const [ActivePage, setActivePage] = useState(1);
@@ -185,6 +186,9 @@ const Index = ({ activities }) => {
                           activities ? "Activities" : "My interactive videos"
                         }
                         color="#084892"
+                        className={
+                          activeOrganization && "video-top-heading-custom"
+                        }
                       />
                     </div>
                     <div className="search-bar-btn">
@@ -193,20 +197,28 @@ const Index = ({ activities }) => {
                         <input
                           placeholder="Search library..."
                           onChange={(e) => {
-                            setSearchActivity(e.target.value);
+                            // setSearchActivity(e.target.value);
+                            dispatch(
+                              allIndActivity(
+                                activeOrganization.id,
+                                1,
+                                10,
+                                e.target.value
+                              )
+                            );
                           }}
-                          onKeyPress={(e) => {
-                            if (e.key === "Enter") {
-                              dispatch(
-                                allIndActivity(
-                                  activeOrganization.id,
-                                  1,
-                                  10,
-                                  searchActivity
-                                )
-                              );
-                            }
-                          }}
+                          // onKeyPress={(e) => {
+                          //   if (e.key === "Enter") {
+                          //     dispatch(
+                          //       allIndActivity(
+                          //         activeOrganization.id,
+                          //         1,
+                          //         10,
+                          //         searchActivity
+                          //       )
+                          //     );
+                          //   }
+                          // }}
                         />
                         <FontAwesomeIcon icon={faSearch} color={primaryColor} />
                       </div>
@@ -362,77 +374,89 @@ const Index = ({ activities }) => {
                     </>
                   ) : (
                     <>
-                      <div className="video-cards-contianer">
-                        <div className="video-cards-detail">
-                          {activities
-                            ? allActivities?.data.map((activityData) => {
-                                return (
-                                  <>
-                                    <AddVideoCard
-                                      setModalShow={setModalShow}
-                                      setCurrentActivity={setCurrentActivity}
-                                      setScreenStatus={setScreenStatus}
-                                      setOpenVideo={setOpenVideo}
-                                      title={activityData.title}
-                                      data={activityData}
-                                      className="card-spacing"
-                                      activities={activities}
-                                      isActivityCard={true}
-                                    />
-                                  </>
-                                );
-                              })
-                            : allVideos?.data?.map((video) => {
-                                return (
-                                  <>
-                                    <AddVideoCard
-                                      setModalShow={setModalShow}
-                                      setCurrentActivity={setCurrentActivity}
-                                      setScreenStatus={setScreenStatus}
-                                      setOpenVideo={setOpenVideo}
-                                      title={video.title}
-                                      data={video}
-                                      className="card-spacing"
-                                    />
-                                  </>
-                                );
-                              })}
-                        </div>
-                        {allVideos?.data && (
-                          <div style={{}} className="admin-panel ">
-                            <Pagination
-                              activePage={ActivePage}
-                              pageRangeDisplayed={5}
-                              itemsCountPerPage={allVideos?.meta?.per_page}
-                              totalItemsCount={allVideos?.meta?.total}
-                              onChange={(e) => {
-                                console.log(e);
-                                setActivePage(e);
-                                dispatch(
-                                  getAllVideos(activeOrganization.id, e)
-                                );
-                              }}
-                            />
+                      {isLoading ? (
+                        <Alert variant="primary">Loading data...</Alert>
+                      ) : (
+                        <>
+                          <div className="video-cards-contianer">
+                            <div className="video-cards-detail">
+                              {activities
+                                ? allActivities?.data.map((activityData) => {
+                                    return (
+                                      <>
+                                        <AddVideoCard
+                                          setModalShow={setModalShow}
+                                          setCurrentActivity={
+                                            setCurrentActivity
+                                          }
+                                          setScreenStatus={setScreenStatus}
+                                          setOpenVideo={setOpenVideo}
+                                          title={activityData.title}
+                                          data={activityData}
+                                          className="card-spacing"
+                                          activities={activities}
+                                          isActivityCard={true}
+                                        />
+                                      </>
+                                    );
+                                  })
+                                : allVideos?.data?.map((video) => {
+                                    return (
+                                      <>
+                                        <AddVideoCard
+                                          setModalShow={setModalShow}
+                                          setCurrentActivity={
+                                            setCurrentActivity
+                                          }
+                                          setScreenStatus={setScreenStatus}
+                                          setOpenVideo={setOpenVideo}
+                                          title={video.title}
+                                          data={video}
+                                          className="card-spacing"
+                                        />
+                                      </>
+                                    );
+                                  })}
+                            </div>
+                            {allVideos?.data && (
+                              <div style={{}} className="admin-panel ">
+                                <Pagination
+                                  activePage={ActivePage}
+                                  pageRangeDisplayed={5}
+                                  itemsCountPerPage={allVideos?.meta?.per_page}
+                                  totalItemsCount={allVideos?.meta?.total}
+                                  onChange={(e) => {
+                                    console.log(e);
+                                    setActivePage(e);
+                                    dispatch(
+                                      getAllVideos(activeOrganization.id, e)
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {allActivities?.data && (
+                              <div style={{}} className="admin-panel ">
+                                <Pagination
+                                  activePage={ActivePage}
+                                  pageRangeDisplayed={5}
+                                  itemsCountPerPage={
+                                    allActivities?.meta?.per_page
+                                  }
+                                  totalItemsCount={allActivities?.meta?.total}
+                                  onChange={(e) => {
+                                    console.log(e);
+                                    setActivePage(e);
+                                    dispatch(
+                                      allIndActivity(activeOrganization.id, e)
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
                           </div>
-                        )}
-                        {allActivities?.data && (
-                          <div style={{}} className="admin-panel ">
-                            <Pagination
-                              activePage={ActivePage}
-                              pageRangeDisplayed={5}
-                              itemsCountPerPage={allActivities?.meta?.per_page}
-                              totalItemsCount={allActivities?.meta?.total}
-                              onChange={(e) => {
-                                console.log(e);
-                                setActivePage(e);
-                                dispatch(
-                                  allIndActivity(activeOrganization.id, e)
-                                );
-                              }}
-                            />
-                          </div>
-                        )}
-                      </div>
+                        </>
+                      )}
                     </>
                   )}
                 </div>

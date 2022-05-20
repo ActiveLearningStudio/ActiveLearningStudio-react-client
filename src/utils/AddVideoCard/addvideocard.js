@@ -13,6 +13,7 @@ import intActivityServices from "services/indActivities.service";
 import "./addvideocard.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 import { getIndex } from "store/actions/indActivities";
+import SharePreviewPopup from "components/SharePreviewPopup";
 
 const AddVideoCard = ({
   setModalShow,
@@ -84,7 +85,16 @@ const AddVideoCard = ({
                   <>
                     <div
                       className="addvideo-card-add-share-options hover-apply"
-                      onClick={() => {}}
+                      onClick={() => {
+                        if (window.gapi && window.gapi.sharetoclassroom) {
+                          window.gapi.sharetoclassroom.go("croom");
+                        }
+                        const protocol = `${
+                          window.location.href.split("/")[0]
+                        }//`;
+                        const url = `${protocol}${window.location.host}/activity/${data.id}/shared?type=ind`;
+                        return SharePreviewPopup(url, data.title);
+                      }}
                     >
                       <FontAwesomeIcon
                         icon={faLink}
@@ -134,8 +144,8 @@ const AddVideoCard = ({
                   </svg>
                   <span className="textinButton">
                     {data.indexing_text == "NOT REQUESTED"
-                      ? "Requested"
-                      : "Already Requested Send"}
+                      ? "Not Requested"
+                      : "Requested"}
                   </span>
                 </div>
               </>

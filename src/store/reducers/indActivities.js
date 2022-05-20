@@ -3,13 +3,20 @@ import * as actionTypes from "../actionTypes";
 
 const INITIAL_STATE = {
   allActivities: null,
+  isLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case actionTypes.ALL_IND_ACTIVITIES_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case actionTypes.ALL_IND_ACTIVITIES:
       return {
         ...state,
+        isLoading: false,
         allActivities: action.payload,
       };
     case actionTypes.DEL_IND_ACTIVITIES:
