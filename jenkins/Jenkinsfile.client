@@ -1,15 +1,16 @@
 node("currikidev") {
     def app
     
-    
+    agent {
+          docker {
+              args "-e DOMAIN_URL=dev.currikistudio.org"
+          }
+      }
     stage('Clone repository') {               
         checkout scm    
     }  
     
     stage('Build image') {         
-        environment { 
-            DOMAIN_URL=${domain}
-        }
         app = docker.build("quay.io/curriki/client")    
         
     } 
