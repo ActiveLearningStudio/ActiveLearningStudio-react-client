@@ -7,6 +7,11 @@ node("currikidev") {
     }  
     
     stage('Build image') {         
+      agent {
+          docker {
+              args "-e DOMAIN_URL=dev.currikistudio.org"
+          }
+      }
         app = docker.build("quay.io/curriki/client")    
         
     } 
