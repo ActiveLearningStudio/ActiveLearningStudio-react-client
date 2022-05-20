@@ -107,6 +107,7 @@ const Media = () => {
                                       setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
                                     }
                                   }}
+                                  disabled={source.name === 'Safari Montage' ? true : false}
                                 />
                                 <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
                                   {source.name}
@@ -183,6 +184,7 @@ const Media = () => {
                                       setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
                                     }
                                   }}
+                                  disabled={source.name === 'Safari Montage' ? true : false}
                                 />
                                 <span id={isImageSource.length > 0 && 'span-sub-selected'} className='span-sub'>
                                   {source.name}
