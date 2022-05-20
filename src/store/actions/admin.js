@@ -261,27 +261,18 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
 };
 
 export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
-  if (media_ids.length) {
-    const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
-    if (result) {
-      Swal.fire({
-        icon: 'success',
-        title: result.message,
-        allowOutsideClick: false,
-      });
-      dispatch({
-        type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
-        payload: updatedMediasSource,
-      });
-    }
-
-    return result;
-  } else {
+  const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
+  if (result) {
     Swal.fire({
-      icon: 'warning',
-      title: 'Please set atleast one media source to continue..!!',
+      icon: 'success',
+      title: result.message,
       allowOutsideClick: false,
     });
-    return false;
+    dispatch({
+      type: actionTypes.UPDATE_ORG_MEDIA_SOURCE,
+      payload: updatedMediasSource,
+    });
   }
+
+  return result;
 };
