@@ -338,8 +338,8 @@ const ResourceCardDropdown = (props) => {
                   });
                 }}
               >
-                <FontAwesomeIcon icon="share" className="mr-2" />
-                Share
+                <FontAwesomeIcon icon="link" className="mr-2" />
+                Get link
               </Dropdown.Item>
             )}
           </>

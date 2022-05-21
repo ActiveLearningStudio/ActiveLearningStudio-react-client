@@ -186,6 +186,7 @@ export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispat
       type: actionTypes.LOAD_PLAYLIST_SUCCESS,
       payload: { playlist },
     });
+    return playlist;
   } catch (e) {
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
