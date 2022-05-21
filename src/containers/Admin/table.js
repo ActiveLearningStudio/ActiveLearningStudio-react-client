@@ -939,7 +939,7 @@ function Table(props) {
               (data ? (
                 data?.data?.length > 0 ? (
                   data.data.map((row, counter) => {
-                    const createNew = new Date(row.created_at);
+                    const createNew = new Date(row?.created_at);
                     const expireNew = new Date(row.will_expire_on);
                     return (
                       <tr key={counter} className="admin-panel-rows">

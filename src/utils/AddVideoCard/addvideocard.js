@@ -15,18 +15,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getIndex } from 'store/actions/indActivities';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 
-const AddVideoCard = ({
-  setModalShow,
-  setCurrentActivity,
-  setScreenStatus,
-  setOpenVideo,
-  className,
-  data,
-  selectionStatus = false,
-  setAddActivityPopUp,
-  activities,
-  isActivityCard,
-}) => {
+const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOpenVideo, className, data, selectionStatus = false, permission, activities, isActivityCard }) => {
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames('curriki-utility-addvideo-card', className);
   const dispatch = useDispatch();
@@ -51,6 +40,7 @@ const AddVideoCard = ({
               setCurrentActivity={setCurrentActivity}
               setOpenVideo={setOpenVideo}
               setScreenStatus={setScreenStatus}
+              permisison={permission}
             />
           </div>
           <div className="addvideo-card-title">
@@ -96,7 +86,7 @@ const AddVideoCard = ({
                 <div
                   className="addvideo-card-add-share-options request-section-icon hover-apply "
                   onClick={() => {
-                    if (data.indexing_text === 'NOT REQUESTED') {
+                    if (data.indexing_text === 'NOT REQUESTED' && permission?.['Independent Activity']?.includes('independent-activity:edit-author')) {
                       dispatch(getIndex(data.id, 1));
                     }
                   }}

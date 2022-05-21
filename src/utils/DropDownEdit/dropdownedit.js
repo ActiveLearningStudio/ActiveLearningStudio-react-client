@@ -14,8 +14,9 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import indActivityService from 'services/indActivities.service';
 import { visibilityTypes } from 'store/actions/project';
+import ActivityCard from 'components/ActivityCard';
 
-const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, setModalShow, setCurrentActivity, setOpenVideo, setScreenStatus }) => {
+const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, setModalShow, setCurrentActivity, setOpenVideo, setScreenStatus, permission }) => {
   const IconColor = iconColor ? iconColor : '#084892';
   const { activeOrganization } = useSelector((state) => state.organization);
   const project = useSelector((state) => state.project);
@@ -54,83 +55,87 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                 <FontAwesomeIcon icon={faEye} className="mr-2" />
                 Preview
               </Dropdown.Item>
-              <Dropdown.Item
-                className
-                onClick={async () => {
-                  toast.dismiss();
-                  toast.info('Loading Activity ...', {
-                    className: 'project-loading',
-                    closeOnClick: false,
-                    closeButton: false,
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 10000,
-                    icon: '',
-                  });
-                  if (activities) {
-                    const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
-                    if (result?.['independent-activity']) {
+              {permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                <Dropdown.Item
+                  className
+                  onClick={async () => {
+                    toast.dismiss();
+                    toast.info('Loading Activity ...', {
+                      className: 'project-loading',
+                      closeOnClick: false,
+                      closeButton: false,
+                      position: toast.POSITION.BOTTOM_RIGHT,
+                      autoClose: 10000,
+                      icon: '',
+                    });
+                    if (activities) {
+                      const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
+                      if (result?.['independent-activity']) {
+                        toast.dismiss();
+                        dispatch({
+                          type: 'SET_ACTIVE_VIDEO_SCREEN',
+                          payload: result['independent-activity'],
+                        });
+                        setOpenVideo(true);
+                        setScreenStatus('DescribeVideo');
+                      }
+                    } else {
+                      const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                      if (result.activity?.brightcoveData) {
+                        dispatch({
+                          type: 'EDIT_CMS_SCREEN',
+                          payload: result.activity?.brightcoveData.accountId,
+                        });
+                        window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                      }
+
                       toast.dismiss();
                       dispatch({
-                        type: 'SET_ACTIVE_VIDEO_SCREEN',
-                        payload: result['independent-activity'],
+                        type: 'ADD_VIDEO_URL',
+                        platform: '',
                       });
-                      setOpenVideo(true);
-                      setScreenStatus('DescribeVideo');
-                    }
-                  } else {
-                    const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
-                    if (result.activity?.brightcoveData) {
                       dispatch({
-                        type: 'EDIT_CMS_SCREEN',
-                        payload: result.activity?.brightcoveData.accountId,
+                        type: 'SET_ACTIVE_VIDEO_SCREEN',
+                        payload: result.activity,
                       });
-                      window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+
+                      setOpenVideo(true);
+                      setScreenStatus('AddVideo');
                     }
-
-                    toast.dismiss();
-                    dispatch({
-                      type: 'ADD_VIDEO_URL',
-                      platform: '',
-                    });
-                    dispatch({
-                      type: 'SET_ACTIVE_VIDEO_SCREEN',
-                      payload: result.activity,
-                    });
-
-                    setOpenVideo(true);
-                    setScreenStatus('AddVideo');
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon={faEdit} className="mr-2" />
-                Edit
-              </Dropdown.Item>
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEdit} className="mr-2" />
+                  Edit
+                </Dropdown.Item>
+              )}
             </>
           )}
           {isActivityCard ? (
-            <>
-              <Dropdown.Item
-                onClick={async () => {
-                  toast.info('Duplicating Activity...', {
-                    className: 'project-loading',
-                    closeOnClick: false,
-                    closeButton: false,
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    autoClose: 10000,
-                    icon: '',
-                  });
-                  const result = await intActivityServices.indActivityClone(activeOrganization.id, data.id);
-                  toast.dismiss();
-                  Swal.fire({
-                    html: result.message,
-                    icon: 'success',
-                  });
-                }}
-              >
-                <FontAwesomeIcon icon={faCopy} className="mr-2" />
-                Duplicate
-              </Dropdown.Item>
-            </>
+            permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+              <>
+                <Dropdown.Item
+                  onClick={async () => {
+                    toast.info('Duplicating Activity...', {
+                      className: 'project-loading',
+                      closeOnClick: false,
+                      closeButton: false,
+                      position: toast.POSITION.BOTTOM_RIGHT,
+                      autoClose: 10000,
+                      icon: '',
+                    });
+                    const result = await intActivityServices.indActivityClone(activeOrganization.id, data.id);
+                    toast.dismiss();
+                    Swal.fire({
+                      html: result.message,
+                      icon: 'success',
+                    });
+                  }}
+                >
+                  <FontAwesomeIcon icon={faCopy} className="mr-2" />
+                  Duplicate
+                </Dropdown.Item>
+              </>
+            )
           ) : (
             <>
               <Dropdown.Item
@@ -157,7 +162,7 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
             </>
           )}
           {/* For activity Card */}
-          {isActivityCard && (
+          {isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
             <>
               {/* <Dropdown.Item className onClick={() => {}}>
                 <div className="dropdown-right-angle">
@@ -373,29 +378,49 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
               </Dropdown.Item> */}
             </>
           )}
-          <Dropdown.Item
-            className
-            onClick={() => {
-              Swal.fire({
-                title: 'Are you sure you want to delete this activity?',
+          {ActivityCard ? (
+            permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+              <Dropdown.Item
+                className
+                onClick={() => {
+                  Swal.fire({
+                    title: 'Are you sure you want to delete this activity?',
 
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                denyButtonText: 'No',
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  if (activities) {
-                    dispatch(deleteIndActivity(data.id));
-                  } else {
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    denyButtonText: 'No',
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteIndActivity(data.id));
+                    }
+                  });
+                }}
+              >
+                <FontAwesomeIcon icon={faTrash} className="mr-2" />
+                Delete
+              </Dropdown.Item>
+            )
+          ) : (
+            <Dropdown.Item
+              className
+              onClick={() => {
+                Swal.fire({
+                  title: 'Are you sure you want to delete this activity?',
+
+                  showCancelButton: true,
+                  confirmButtonText: 'Yes',
+                  denyButtonText: 'No',
+                }).then((result) => {
+                  if (result.isConfirmed) {
                     dispatch(deleteVideo(data.id));
                   }
-                }
-              });
-            }}
-          >
-            <FontAwesomeIcon icon={faTrash} className="mr-2" />
-            Delete
-          </Dropdown.Item>
+                });
+              }}
+            >
+              <FontAwesomeIcon icon={faTrash} className="mr-2" />
+              Delete
+            </Dropdown.Item>
+          )}
         </Dropdown.Menu>
       </Dropdown>
     </div>

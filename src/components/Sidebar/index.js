@@ -114,7 +114,7 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {permission?.Project?.includes('project:view') && (
+      {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
         <>
           <Link
             to={`/org/${allState.organization.currentOrganization?.domain}/activities`}

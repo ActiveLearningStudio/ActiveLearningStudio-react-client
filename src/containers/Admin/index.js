@@ -167,7 +167,7 @@ function AdminPanel({ showSSO }) {
                           setModalShowh5p={setModalShowh5p}
                           modules={[
                             permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
-                            permission?.['Independent Activity']?.includes('independent-activity:export') && 'Exported activities',
+                            permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
                           ]}
                           type="IndActivities"
                         />

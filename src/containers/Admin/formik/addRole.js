@@ -9,7 +9,7 @@ import { Authoring, DropdownSelect } from '../userroles';
 export default function AddRole(props) {
   const dispatch = useDispatch();
   const { permissionsId, activeOrganization, roles } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
+  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users', 'Ind. activities'];
 
   // organization all projects
   const projectEditName = [
@@ -28,6 +28,24 @@ export default function AddRole(props) {
   const projectexportViewName = ['organization:view-exported-project'];
   const [projectExportEdit, setProjectExportEdit] = useState([311, 312, 313]);
   const [projectExportView, setProjectExportView] = useState([332]);
+
+  // organization Independent activities
+  const independentactivitiesEditName = [
+    'independent-activity:create',
+    'independent-activity:edit',
+    'independent-activity:delete',
+    'independent-activity:share',
+    'independent-activity:duplicate',
+  ];
+  const independentactivitiesViewName = ['independent-activity:view'];
+
+  const independentactivitiesExportEditName = ['independent-activity:export', 'independent-activity:import'];
+  const independentactivitiesExportViewName = ['independent-activity:view-export'];
+  const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState([]);
+  const [independentactivitiesView, setIndependentactivitiesView] = useState([]);
+
+  const [independentactivitiesExportEdit, setIndependentactivitiesExportEdit] = useState([]);
+  const [independentactivitiesExportView, setIndependentactivitiesExportView] = useState([]);
 
   // organization user
   const userEditName = [
@@ -84,6 +102,12 @@ export default function AddRole(props) {
   const orgBrightCoveViewName = ['organization:view-brightcove-setting'];
   const [orgBrightCoveEdit, setOrgBrightCoveEdit] = useState([]);
   const [orgBrightCoveView, setOrgBrightCoveView] = useState([]);
+
+  // author ind activity
+  const authorIndActivityEditName = ['independent-activity:edit-author'];
+  const authorIndActivityViewName = ['independent-activity:view-author'];
+  const [authorIndActivityEdit, setAuthorIndActivityEdit] = useState([]);
+  const [authorIndActivityView, setAuthorIndActivityView] = useState([]);
 
   // author team
   const authorteamEditName = ['team:create', 'team:edit', 'team:delete'];
@@ -180,6 +204,22 @@ export default function AddRole(props) {
     setActivityItemView(permissionIdArray);
     permissionIdArray = [];
 
+    // indpendent activtiies
+    if (permissionsId) {
+      permissionsId['Independent Activity']?.filter((data) => independentactivitiesEditName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesEdit(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity']?.filter((data) => independentactivitiesExportEditName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesExportEdit(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity'].filter((data) => independentactivitiesViewName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesView(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity'].filter((data) => independentactivitiesExportViewName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesExportView(permissionIdArray);
+      permissionIdArray = [];
+    }
+
     // org lms
     permissionsId?.Organization.filter((data) => orglmsEditName.includes(data.name) && permissionIdArray.push(data.id));
     setlmsSettingEdit(permissionIdArray);
@@ -208,6 +248,14 @@ export default function AddRole(props) {
     setAuthorProjectView(permissionIdArray);
     permissionIdArray = [];
 
+    // author ind activity
+    permissionsId?.['Independent Activity'].filter((data) => authorIndActivityEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.['Independent Activity'].filter((data) => authorIndActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityView(permissionIdArray);
+    permissionIdArray = [];
+
     // author Playlist
     permissionsId?.Playlist.filter((data) => authorPlaylistEditName.includes(data.name) && permissionIdArray.push(data.id));
     setAuthorPlayListEdit(permissionIdArray);
@@ -222,6 +270,13 @@ export default function AddRole(props) {
     permissionIdArray = [];
     permissionsId?.Activity.filter((data) => authorActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
     setAuthorActivityView(permissionIdArray);
+    permissionIdArray = [];
+    // author ind activity
+    permissionsId?.Team.filter((data) => authorIndActivityEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.Team.filter((data) => authorIndActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityView(permissionIdArray);
     permissionIdArray = [];
 
     // author team
@@ -438,6 +493,37 @@ export default function AddRole(props) {
                               />
                             </div>
                           </div>
+                          <div className="permission">
+                            <div className="selection-tab-custom">
+                              <div className="form-group custom-select-style-for-sub">
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={'Independent activities'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
+                                  currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
+                                  bold
+                                />
+                              </div>
+                            </div>
+                            {/* <h6>Project</h6> */}
+                            <div className="permission-about">
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'All independent activities'}
+                                permissions={values.permissions}
+                                currentFeatureView={independentactivitiesView}
+                                currentFeatureEdit={independentactivitiesEdit}
+                              />
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'Export / Import activities'}
+                                permissions={values.permissions}
+                                currentFeatureView={independentactivitiesExportView}
+                                currentFeatureEdit={independentactivitiesExportEdit}
+                              />
+                            </div>
+                          </div>
 
                           <div className="permission">
                             <div className="selection-tab-custom">
@@ -548,6 +634,14 @@ export default function AddRole(props) {
                               <br />
                               <NewEdit
                                 setFieldValue={setFieldValue}
+                                type={'Independent activities'}
+                                permissions={values.permissions}
+                                currentFeatureView={authorIndActivityView}
+                                currentFeatureEdit={authorIndActivityEdit}
+                              />
+                              <br />
+                              <NewEdit
+                                setFieldValue={setFieldValue}
                                 type={'My interactive video'}
                                 permissions={values.permissions}
                                 currentFeatureView={authorVideoView}
@@ -604,6 +698,14 @@ export default function AddRole(props) {
                             />
                             <br />
                             <NewEdit setFieldValue={setFieldValue} type={'Teams'} permissions={values.permissions} currentFeatureView={teamView} currentFeatureEdit={teamEdit} />
+                            <br />
+                            <NewEdit
+                              setFieldValue={setFieldValue}
+                              type={'Independent activities'}
+                              permissions={values.permissions}
+                              currentFeatureView={authorIndActivityView}
+                              currentFeatureEdit={authorIndActivityEdit}
+                            />
                             <br />
                             <NewEdit
                               setFieldValue={setFieldValue}
@@ -790,6 +892,47 @@ export default function AddRole(props) {
                           </div>
                         </Card.Body>
                       </Tab.Pane>
+                      {/* Independent activities start */}
+                      <Tab.Pane eventKey="5">
+                        <Card.Body
+                          className="flex-column"
+                          style={{
+                            background: '#f7faff',
+                            margin: '32px',
+                          }}
+                        >
+                          <div className="selection-tab-custom">
+                            <div className="form-group custom-select-style-for-sub">
+                              <NewEdit
+                                setFieldValue={setFieldValue}
+                                type={'Independent activities'}
+                                permissions={values.permissions}
+                                currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
+                                currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
+                                bold
+                              />
+                            </div>
+                          </div>
+                          {/* <h6>User</h6> */}
+                          <div className="permission-about d-flex">
+                            <NewEdit
+                              setFieldValue={setFieldValue}
+                              type={'All independent activities'}
+                              permissions={values.permissions}
+                              currentFeatureView={independentactivitiesView}
+                              currentFeatureEdit={independentactivitiesEdit}
+                            />
+                            <NewEdit
+                              setFieldValue={setFieldValue}
+                              type={'Export / Import activities'}
+                              permissions={values.permissions}
+                              currentFeatureView={independentactivitiesExportView}
+                              currentFeatureEdit={independentactivitiesExportEdit}
+                            />
+                          </div>
+                        </Card.Body>
+                      </Tab.Pane>
+                      {/* Independent activities end */}
                     </Tab.Content>
                   </Col>
                 </Row>
