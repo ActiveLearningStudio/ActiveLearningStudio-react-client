@@ -51,7 +51,7 @@ const Index = ({ activities }) => {
     if (activeOrganization && activities) {
       dispatch(allIndActivity(activeOrganization.id));
     }
-  }, [activeOrganization]);
+  }, [activeOrganization, activities]);
 
   console.log('allActivities-allActivities', allActivities);
 
@@ -298,7 +298,7 @@ const Index = ({ activities }) => {
                                     );
                                   })}
                             </div>
-                            {allVideos?.data && (
+                            {allVideos?.data && !activities && (
                               <div style={{}} className="admin-panel ">
                                 <Pagination
                                   activePage={ActivePage}
@@ -306,14 +306,13 @@ const Index = ({ activities }) => {
                                   itemsCountPerPage={allVideos?.meta?.per_page}
                                   totalItemsCount={allVideos?.meta?.total}
                                   onChange={(e) => {
-                                    console.log(e);
                                     setActivePage(e);
                                     dispatch(getAllVideos(activeOrganization.id, e));
                                   }}
                                 />
                               </div>
                             )}
-                            {allActivities?.data && (
+                            {allActivities?.data && activities && (
                               <div style={{}} className="admin-panel ">
                                 <Pagination
                                   activePage={ActivePage}
@@ -321,7 +320,6 @@ const Index = ({ activities }) => {
                                   itemsCountPerPage={allActivities?.meta?.per_page}
                                   totalItemsCount={allActivities?.meta?.total}
                                   onChange={(e) => {
-                                    console.log(e);
                                     setActivePage(e);
                                     dispatch(allIndActivity(activeOrganization.id, e));
                                   }}
@@ -342,7 +340,7 @@ const Index = ({ activities }) => {
         </div>
       </div>
       <MyActivity playlistPreview activityPreview />
-      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} />
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={activities} />
     </>
   );
 };

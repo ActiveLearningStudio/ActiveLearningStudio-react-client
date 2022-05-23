@@ -30,6 +30,14 @@ const allAdminExportActivity = (page = 1, size = 10, search) =>
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
+
+const renderh5pIndependent = (orgId, activityId) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    });
 const allAdminIntActivities = (
   subOrgId,
   page = 1,
@@ -163,5 +171,6 @@ export default {
   importIndAvtivity,
   getIndex,
   allAdminExportActivity,
+  renderh5pIndependent,
   h5pResourceSettingsSharedIndActivity,
 };

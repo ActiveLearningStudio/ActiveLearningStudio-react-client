@@ -9,7 +9,7 @@ import cross from 'assets/images/cross-icon.png';
 const H5PPreview = React.lazy(() => import('../../containers/H5PPreview'));
 
 function MyVerticallyCenteredModal(props) {
-  const { activity, onHide, showvideoH5p } = props;
+  const { activity, onHide, showvideoH5p, activities } = props;
 
   return (
     <Modal {...props} size="xl" className="video_activity" aria-labelledby="contained-modal-title-vcenter" centered backdrop="static" keyboard={false}>
@@ -60,7 +60,7 @@ function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <div id="activity-loader-alert" class="alert alert-primary" role="alert" style={{ display: 'none' }}></div>
         <Suspense fallback={<div>Loading</div>}>
-          <H5PPreview activityId={activity} tokenrequire={false} showvideoH5p={showvideoH5p} />
+          <H5PPreview activityId={activity} tokenrequire={false} showvideoH5p={showvideoH5p} activities={activities} />
         </Suspense>
       </Modal.Body>
     </Modal>
