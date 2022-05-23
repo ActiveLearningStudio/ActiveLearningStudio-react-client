@@ -45,6 +45,8 @@ const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePa
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
 
+const BrandingPage = loadable(() => import('../containers/Branding'));
+
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
 const PreviewPage = loadable(() => import('../containers/Preview'));
@@ -92,6 +94,7 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
+        <OpenRoute exact path="/branding" component={BrandingPage} />
         <OpenRoute
           exact
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
@@ -126,7 +129,7 @@ const AppRouter = (props) => {
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview/lti" exact component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview" exact component={LtiPreviewPage} previewType="playlist" />
         <PrivateRoute exact path="/playlist/:playlistId/preview" component={LtiPreviewPage} previewType="playlist" />
-        <OpenRoute exact path="/project/:projectId/playlist/:playlistId/shared" component={LtiPreviewPage} previewType="playlist" />
+        <OpenRoute exact path="/project/:projectId/playlist/:playlistId/shared" component={LtiPreviewPage} previewType="playlistShared" />
         <OpenRoute exact path="/playlist/:playlistId/preview/lti" component={LtiPreviewPage} previewType="playlist" />
         <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/preview" component={PreviewPage} previewType="playlist" />
 
@@ -199,6 +202,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/search" component={SearchResult} />
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
+
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
                 </Switch>
                 <Footer />

@@ -28,6 +28,8 @@ const ResourceCard = (props) => {
   } = props;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
+  const parser = new DOMParser()
+  let resourceTitle = parser.parseFromString(resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title, 'text/html').body.textContent;
   return (
     <Draggable key={resource.id} draggableId={`${resource.id}`} index={index}>
       {(provided) => (
@@ -76,9 +78,9 @@ const ResourceCard = (props) => {
                     });
                   }
                 }}
-                title={resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title}
+                title={resourceTitle}
               >
-                {resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title}
+                {resourceTitle}
               </Link>
             </div>
             {/* {resource.shared && (

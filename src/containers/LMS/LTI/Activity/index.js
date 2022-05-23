@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -75,6 +75,7 @@ const Activity = (props) => {
   const issuerClient = searchParams.get('issuer_client');
   const customPersonNameGiven = searchParams.get('custom_person_name_given');
   const customPersonNameFamily = searchParams.get('custom_person_name_family');
+  const currikiH5PWrapper = useRef(null);
 
   /* eslint-disable-next-line no-unused-vars */
   const [activityState, dispatch] = useReducer(reducer, {
@@ -141,7 +142,6 @@ const Activity = (props) => {
       dispatch({ type: 'CHECK_ASSETS' });
     }, 500);
     dispatch({ type: 'SET_INTERVAL', intervalId });
-
   }, [h5pSettings]);
 
   // Patch into xAPI events
@@ -194,7 +194,7 @@ const Activity = (props) => {
             confirmButtonText: 'OK',
           }).then(() => {
             const score = xapiData.result.score.scaled;
-            gradePassBack(session, 1, score, isLearner);
+            gradePassBack(session, 1, score);
             Swal.fire('Saved!', '', 'success');
           });
         } else {
@@ -210,6 +210,25 @@ const Activity = (props) => {
     activityState.h5pObject.init();
   }, [activityState.h5pObject]);
 
+  useEffect(() => {
+    const h5pLibData = activityState.h5pObject && window.H5PIntegration ? Object.values(window.H5PIntegration.contents) : null;
+    const h5pLib = Array.isArray(h5pLibData) && h5pLibData.length > 0 ? h5pLibData[0].library.split(' ')[0] : null;
+    const resizeFor = ['H5P.InteractiveVideo', 'H5P.CurrikiInteractiveVideo', 'H5P.BrightcoveInteractiveVideo'];
+    const isActvityResizeable = resizeFor.find((lib) => lib === h5pLib) ? true : false;
+
+    if (currikiH5PWrapper && currikiH5PWrapper.current && isActvityResizeable) {
+      const aspectRatio = 1.778; // standard aspect ratio of video width and height
+      const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
+      const adjustedWidthVal = currentHeight * aspectRatio;
+      const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
+      if (adjustedWidthVal < parentWidth) {
+        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+      } else {
+        currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
+      }
+    }
+  }, [currikiH5PWrapper, activityState.h5pObject]);
+
   return (
     <div>
       {ltiFinished && (
@@ -220,8 +239,17 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper" z>
-          <Alert variant="primary">Loading Activity</Alert>
+        <div className="curriki-activity-lti-share">
+          <div
+            id="curriki-h5p-wrapper"
+            ref={(el) => {
+              if (el) {
+                currikiH5PWrapper.current = el;
+              }
+            }}
+          >
+            <Alert variant="primary">Loading Activity</Alert>
+          </div>
         </div>
       )}
     </div>
@@ -256,7 +284,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   passCourseDetails: (params) => dispatch(passLtiCourseDetails(params)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
+  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score)),
   activityInit: () => dispatch(activityInitAction()),
   sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });

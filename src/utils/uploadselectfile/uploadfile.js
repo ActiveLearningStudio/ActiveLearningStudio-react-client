@@ -65,9 +65,10 @@ const UploadFile = ({ className, formRef }) => {
               ref={imgUpload}
               style={{
                 cursor: 'pointer',
-                background: 'transparent',
-                padding: '125px 41px 0px 41px',
-                border: '3px dashed #ddd',
+                background: '#F1F1F1',
+                padding: '160px 41px 0px 41px',
+                borderRadius: '8px',
+                border: 'none',
               }}
               onClick={(e) => {
                 e.target.value = '';
@@ -75,7 +76,11 @@ const UploadFile = ({ className, formRef }) => {
             />
             <div className="upload-holder">
               <img src={UploadImg} alt="upload" className="mr-2" />
-              <p>Drag & Drop File or click to upload</p>
+              <p>
+                Drag & drop file or &nbsp;
+                <span style={{ color: '#2e8df5' }}>browse</span>
+                &nbsp;to upload
+              </p>
             </div>
           </div>
         </div>

@@ -1,44 +1,45 @@
 import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { addUserInOrganization, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { loadOrganizationTypesAction } from 'store/actions/auth';
 import { getOrgUsers } from 'store/actions/organization';
 import checkImg from 'assets/images/svg/check.svg';
+import warningSVG from 'assets/images/svg/warning.svg';
 import './createuser.scss';
 
 export default function CreateUser(prop) {
-  const { editMode, checkedEmail } = prop;
+  const { editMode, checkedEmail, existingUser } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const organizationTypes = useSelector((state) => state.auth.organizationTypes);
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
   const { currentUser } = adminState;
-
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
   }, []);
   const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
-    console.log(regex.test(pwd));
     return regex.test(pwd);
   };
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          first_name: editMode ? currentUser?.first_name : '',
-          last_name: editMode ? currentUser?.last_name : '',
-          user_id: editMode ? currentUser?.id : '',
-          organization_type: editMode ? currentUser?.organization_type : '',
-          organization_name: editMode ? currentUser?.organization_name : '',
-          job_title: editMode ? currentUser?.job_title : '',
-          role_id: editMode ? currentUser?.organization_role_id : '',
-          email: editMode ? currentUser?.email : checkedEmail,
+          first_name: (editMode || existingUser) ? currentUser?.first_name : '',
+          last_name: (editMode || existingUser) ? currentUser?.last_name : '',
+          user_id: (editMode || existingUser) ? currentUser?.id : '',
+          organization_type: (editMode || existingUser) ? currentUser?.organization_type : '',
+          organization_name: (editMode || existingUser) ? currentUser?.organization_name : '',
+          job_title: (editMode || existingUser) ? currentUser?.job_title : '',
+          role_id: (editMode || existingUser) ? currentUser?.organization_role_id : '',
+          email: (editMode || existingUser) ? currentUser?.email : checkedEmail,
+          send_email: false,
+          message: '',
           password: '',
         }}
         validate={(values) => {
@@ -280,6 +281,28 @@ export default function CreateUser(prop) {
                     {errors.job_title && touched.job_title && errors.job_title}
                   </div>
                 </div>
+                {!editMode && (
+                  <>
+                    <div className="form-group-create">
+                      <h3>Message</h3>
+                      <textarea name="message" onChange={handleChange} onBlur={handleBlur} value={values.message} />
+                    </div>
+                    <div className="form-group-create row-checkbox">
+                      <input type="checkbox" value={values.send_email} onChange={handleChange} name="send_email" />
+                      <div>Send email to user</div>
+                    </div>
+                  </>
+                )}
+                {existingUser && (
+                  <div className="form-group-create">
+                    <Alert variant="warning">
+                      <img className="warning-img" src={warningSVG} alt="warning" />
+                      This user already exists in another organization.
+                      <br />
+                      Do you want to add the user to this org?
+                    </Alert>
+                  </div>
+                )}
               </div>
             </div>
             <div className="button-group">

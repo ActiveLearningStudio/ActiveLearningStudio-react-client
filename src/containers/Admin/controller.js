@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,8 +10,6 @@ import {
   // retryAllFailedJobs,
   setActiveAdminForm,
 } from 'store/actions/admin';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import filterImg from 'assets/images/svg/filter.svg';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 import loader from 'assets/images/dotsloader.gif';
 // import csv from "assets/images/csv.png";
@@ -21,8 +18,10 @@ import loader from 'assets/images/dotsloader.gif';
 // import InviteUser from 'containers/ManageOrganization/inviteAdmin';
 // import AddUser from 'containers/ManageOrganization/addUser';
 import adminService from 'services/admin.service';
-import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
+import { getRoles, roleDetail, searchUserInOrganization } from 'store/actions/organization';
 import { toolTypeArray } from 'utils';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
 
 function Controller(props) {
   const {
@@ -42,8 +41,8 @@ function Controller(props) {
     setActiveRole,
     setActivePage,
     type,
-    searchQueryActivities,
-    setSearchQueryActivities,
+    // searchQueryActivities,
+    // setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     setSearchQueryProject,
@@ -52,7 +51,7 @@ function Controller(props) {
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
-    searchActivitiesQueryHandler,
+    // searchActivitiesQueryHandler,
     setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
@@ -62,8 +61,7 @@ function Controller(props) {
     // inviteUser,
     subType,
     setChangeIndexValue,
-    selectedActivityType,
-    setSelectedActivityType,
+    // selectedActivityType,
     libraryReqSelected,
     setLibraryReqSelected,
     // setSubTypeState,
@@ -72,6 +70,7 @@ function Controller(props) {
     filterSearch,
     resetProjectFilter,
     filteredItems,
+    setSearchKey,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -94,7 +93,7 @@ function Controller(props) {
   }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
-      console.log(roles, 'roles');
+      // console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
@@ -114,7 +113,7 @@ function Controller(props) {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
-      console.log(result?.data, 'result');
+      // console.log(result?.data, 'result');
       if (result?.data?.length > 0) {
         setLoaderImgUser(false);
         setAuthorsArray(result?.data);
@@ -122,6 +121,9 @@ function Controller(props) {
         setLoaderImgUser(false);
         setAuthorsArray([]);
       }
+    } else if (authorName.length < 2) {
+      setLoaderImgUser(false);
+      setAuthorsArray([]);
     }
   }, [activeOrganization?.id, authorName, dispatch]);
   const updateIndexAction = (value, id) => {
@@ -129,6 +131,8 @@ function Controller(props) {
     setChangeIndexValue(id);
     setSelectedIndexValueid(id);
   };
+  const primaryColor = getGlobalColor('--main-primary-color');
+  // const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
@@ -180,7 +184,17 @@ function Controller(props) {
                 value={searchQuery}
                 onChange={searchQueryChangeHandler}
               />
-              <img src={searchimg} alt="search" />
+              {/* <img src={searchimg} alt="search" /> */}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                  stroke={primaryColor}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
               {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
                 <label className="flex" style={{ color: 'red' }}>
                   Enter at least 2 characters
@@ -189,36 +203,86 @@ function Controller(props) {
             </div>
           </>
         )}
-        {!!search && type === 'LMS' && subType === 'All settings' && (
+        {!!search && type === 'LMS' && subType === 'LMS settings' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by URL or User Email" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
         {!!search && type === 'LMS' && subType === 'BrightCove' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by ID or email" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
 
         {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Client Id" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input className="" type="text" placeholder="Search by Site name,URL or Client id" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
         {!!search && type === 'Teams' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
-            <img src={searchimg} alt="search" />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
         {/* {!!search && type === 'Stats' && (
@@ -260,48 +324,148 @@ function Controller(props) {
                 }
               }}
             />
-            <img src={searchimg} alt="search" onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
+            {/* <img
+              src={searchimg}
+              alt="search"
+              onClick={() =>
+                searchProjectQueryChangeHandler(
+                  searchQueryProject,
+                  selectedIndexValueid,
+                  subType
+                )
+              }
+            /> */}
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
+            >
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
 
         {!!search && type === 'Organization' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search Organization"
-              onChange={(e) => {
-                if (e.target.value?.trim()) {
-                  dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));
-                } else if (e.target.value === '') {
-                  dispatch(getsubOrgList(activeOrganization?.id));
-                }
-              }}
-            />
-            <img src={searchimg} alt="search" />
+            <input type="text" placeholder="Search Organization" onChange={searchQueryChangeHandler} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
-        {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (
-        <div className="search-bar">
-          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
-          <img src={searchimg} alt="search" />
-        </div>
-      )} */}
+        {!!search && type === 'Activities' && subType === 'Activity Types' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={(e) => {
-                if (e.target.value) {
-                  setSearchQueryActivities(e.target.value);
-                } else if (e.target.value === '') {
-                  setSearchQueryActivities('');
-                  searchActivitiesQueryHandler('', subType);
-                }
-              }}
-            />
-            <img src={searchimg} alt="search" onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)} />
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Subjects' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Education Level' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Author Tags' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search by name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                stroke={primaryColor}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         )}
         {paginationCounter && (
@@ -315,6 +479,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(10);
+                      setActivePage(1);
                     }}
                   >
                     10
@@ -322,6 +487,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(25);
+                      setActivePage(1);
                     }}
                   >
                     25
@@ -329,6 +495,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(50);
+                      setActivePage(1);
                     }}
                   >
                     50
@@ -336,6 +503,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(100);
+                      setActivePage(1);
                     }}
                   >
                     100
@@ -350,7 +518,16 @@ function Controller(props) {
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
-                <img src={filterImg} alt="filter" />
+                {/* <img src={filterImg} alt="filter" /> */}
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
+                    stroke={primaryColor}
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 Filter
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -365,7 +542,10 @@ function Controller(props) {
                             <div
                               className="single-author"
                               onClick={() => {
-                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                                setProjectFilterObj({
+                                  ...projectFilterObj,
+                                  author_id: author.id,
+                                });
                                 setAuthorName(`${author.first_name} ${author.last_name}`);
                                 setAuthorsArray([]);
                               }}
@@ -396,7 +576,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.created_from}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, created_from: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            created_from: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -410,7 +593,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.created_to}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, created_to: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            created_to: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -430,7 +616,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.updated_from}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, updated_from: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            updated_from: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -444,7 +633,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.updated_to}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, updated_to: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            updated_to: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -460,7 +652,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 1 && true}
                         onChange={() => {
                           setLibraryReqSelected(true);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 1 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 1,
+                          });
                         }}
                       />
                       Requested
@@ -471,7 +666,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 0 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 0 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 0,
+                          });
                         }}
                       />
                       Not Requested
@@ -482,7 +680,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 3 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 3 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 3,
+                          });
                         }}
                       />
                       Approved
@@ -493,7 +694,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 2 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 2 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 2,
+                          });
                         }}
                       />
                       Rejected
@@ -502,17 +706,44 @@ function Controller(props) {
                   <div className="shared-status">
                     <label>Shared status</label>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 1 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.shared === 1 && true}
+                        onChange={() =>
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            shared: 1,
+                          })
+                        }
+                      />
                       Enabled
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 0 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.shared === 0 && true}
+                        onChange={() =>
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            shared: 0,
+                          })
+                        }
+                      />
                       Disabled
                     </span>
                   </div>
                 </div>
                 <div className="filter-btn-project" onClick={() => filterSearch()}>
-                  <img src={filterImg} alt="filter" />
+                  {/* <img src={filterImg} alt="filter" /> */}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
+                      stroke={primaryColor}
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                   Apply Filters
                 </div>
                 <div
@@ -539,7 +770,23 @@ function Controller(props) {
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
-            <img src={eye} alt="eye" />
+            {/* <img src={eye} alt="eye" /> */}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+              <path
+                d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             Library request to review
           </button>
         )}
@@ -549,12 +796,26 @@ function Controller(props) {
             Filter by activity type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
-                  {activityTypes?.map((item) => (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    Select
+                  </Dropdown.Item>
+                  {activityTypes?.data.map((item) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(item.id);
+                        setSelectedFilterItem(item);
+                      }}
+                    >
+                      {item.title}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -661,6 +922,38 @@ function Controller(props) {
                       }}
                     >
                       {t.value}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
+
+        {(type === 'DefaultSso' || subType === 'LMS settings') && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'All'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems('');
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    All
+                  </Dropdown.Item>
+                  {integratedLMS?.map((data) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(data.value);
+                        setSelectedFilterItem(data);
+                      }}
+                    >
+                      {data.name}
                     </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
@@ -864,6 +1157,21 @@ function Controller(props) {
             </button>
           </div>
         )}
+        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
 
         {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
@@ -910,7 +1218,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && permission?.Organization.includes('organization:create-lms-setting') && (
+        {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -1037,8 +1345,8 @@ Controller.propTypes = {
   setActiveRole: PropTypes.func,
   setActivePage: PropTypes.func,
   type: PropTypes.string,
-  searchQueryActivities: PropTypes.string,
-  setSearchQueryActivities: PropTypes.func,
+  // searchQueryActivities: PropTypes.string,
+  // setSearchQueryActivities: PropTypes.func,
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
@@ -1047,15 +1355,14 @@ Controller.propTypes = {
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
   searchProjectQueryChangeHandler: PropTypes.func,
-  searchActivitiesQueryHandler: PropTypes.func,
+  // searchActivitiesQueryHandler: PropTypes.func,
   // searchUserReportQueryHandler: PropTypes.func,
   size: PropTypes.number,
   setSize: PropTypes.func,
   roles: PropTypes.array,
   subType: PropTypes.string,
   setChangeIndexValue: PropTypes.func,
-  selectedActivityType: PropTypes.string,
-  setSelectedActivityType: PropTypes.func,
+  // selectedActivityType: PropTypes.string,
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
   // setSubTypeState: PropTypes.func,
@@ -1082,8 +1389,8 @@ Controller.defaultProps = {
   setActivePage: {},
   filteredItems: {},
   type: '',
-  searchQueryActivities: '',
-  setSearchQueryActivities: {},
+  // searchQueryActivities: '',
+  // setSearchQueryActivities: {},
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
@@ -1093,15 +1400,14 @@ Controller.defaultProps = {
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  searchActivitiesQueryHandler: {},
+  // searchActivitiesQueryHandler: {},
   // searchUserReportQueryHandler: PropTypes.func,
   size: 10,
   setSize: {},
   roles: [],
   subType: '',
   setChangeIndexValue: {},
-  selectedActivityType: '',
-  setSelectedActivityType: {},
+  // selectedActivityType: '',
   libraryReqSelected: false,
   setLibraryReqSelected: {},
   // setSubTypeState: {},

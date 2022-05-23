@@ -22,3 +22,12 @@ export const educationLevels = [
   { name: 'Professional Development', value: '8' },
   { name: 'Special Education', value: '9' },
 ];
+
+export const integratedLMS = [
+  { name: 'Moodle', value: 'moodle' },
+  { name: 'Canvas', value: 'canvas' },
+  { name: 'Safari Montage', value: 'safarimontage' },
+  { name: 'Schoology', value: 'schoology' },
+  { name: 'D2L', value: 'd2l' },
+  { name: 'Sakai', value: 'sakai' },
+];

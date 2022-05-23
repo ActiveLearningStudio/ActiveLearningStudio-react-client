@@ -1,95 +1,98 @@
+/* eslint-disable */
 import React from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
-import PropTypes from 'prop-types';
+
 import { getEducationLevel, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import adminapi from '../../../services/admin.service';
 
-export default function CreateEducationLevel({ editMode }) {
+export default function CreateEducationLevel(props) {
+  const { editMode } = props;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
 
   return (
     <div className="create-form lms-admin-form">
       <Formik
-        initialValues={{
-          name: editMode ? activeEdit?.name : '',
-          order: editMode ? activeEdit?.order : '',
-        }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.name) {
-            errors.name = 'Name is required';
-          }
-          if (!values.order) {
-            errors.order = 'Order is required';
-          }
-          return errors;
-        }}
-        onSubmit={async (values) => {
-          if (editMode) {
-            Swal.fire({
-              title: 'Education Level',
-              icon: 'info',
-              text: 'Updating Education level ...',
-              allowOutsideClick: false,
-              onBeforeOpen: () => {
-                Swal.showLoading();
-              },
-              button: false,
-            });
+      initialValues={{
+        name: editMode ? activeEdit?.name : '',
+        order: editMode ? activeEdit?.order : '',
+        organization_id: organization?.activeOrganization?.id,
+      }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.name) {
+          errors.name = 'Name is required';
+        }
+        if (!values.order) {
+          errors.order = 'Order is required';
+        }
+        return errors;
+      }}
+      onSubmit={async (values) => {
+        if (editMode) {
+          Swal.fire({
+            title: 'Education Level',
+            icon: 'info',
+            text: 'Updating Education level ...',
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+            button: false,
+          });
 
-            const result = adminapi.updateEducationLevel(activeEdit?.id, values);
-            result.then((res) => {
-              Swal.fire({
-                icon: 'success',
-                text: 'Educaton level edited successfully',
-                confirmButtonText: 'Close',
-                customClass: {
-                  confirmButton: 'confirmation-close-btn',
-                },
-              });
-              dispatch(getEducationLevel(1));
-              dispatch(removeActiveAdminForm());
-              dispatch({
-                type: actionTypes.NEWLY_EDIT_RESOURCE,
-                payload: res?.data,
-              });
-            });
-          } else {
+          const result = adminapi.updateEducationLevel(organization?.activeOrganization?.id, activeEdit?.id, values);
+          result.then((res) => {
             Swal.fire({
-              title: 'Education Level',
-              icon: 'info',
-              text: 'Creating new education level...',
+              icon: 'success',
+              text: "Educaton level edited successfully",
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',               
+              }
+            });
+            dispatch(getEducationLevel(organization?.activeOrganization?.id, activePage));
+            dispatch(removeActiveAdminForm());
+            dispatch({
+              type: actionTypes.NEWLY_EDIT_RESOURCE,
+              payload: res?.data,
+            });
+          });
+        } else {
+          Swal.fire({
+            title: 'Education Level',
+            icon: 'info',
+            text: 'Creating new education level...',
 
-              allowOutsideClick: false,
-              onBeforeOpen: () => {
-                Swal.showLoading();
-              },
-              button: false,
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+              Swal.showLoading();
+            },
+            button: false,
+          });
+          const result = adminapi.createEducationLevel(organization?.activeOrganization?.id, values);
+          result.then((res) => {
+            Swal.fire({
+              icon: 'success',
+              text: 'Education level added successfully',
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',               
+              }
             });
-            const result = adminapi.createEducationLevel(values);
-            result.then((res) => {
-              Swal.fire({
-                icon: 'success',
-                text: 'Education level added successfully',
-                confirmButtonText: 'Close',
-                customClass: {
-                  confirmButton: 'confirmation-close-btn',
-                },
-              });
-              dispatch(getEducationLevel(1));
-              dispatch(removeActiveAdminForm());
-              dispatch({
-                type: actionTypes.NEWLY_CREATED_RESOURCE,
-                payload: res?.data,
-              });
+            dispatch(getEducationLevel(organization?.activeOrganization?.id, 1));
+            dispatch(removeActiveAdminForm());
+            dispatch({
+              type: actionTypes.NEWLY_CREATED_RESOURCE,
+              payload: res?.data,
             });
-          }
-        }}
+          });
+        }
+      }}
       >
         {({
           values,
@@ -98,14 +101,12 @@ export default function CreateEducationLevel({ editMode }) {
           handleChange,
           handleBlur,
           handleSubmit,
+          setFieldValue,
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2>
-                {editMode ? 'Edit ' : 'Add '}
-                Education level
-              </h2>
+              <h2>{editMode ? 'Edit ': 'Add '}Education level</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -118,16 +119,14 @@ export default function CreateEducationLevel({ editMode }) {
 
                   <div className="form-group-create">
                     <h3>Order</h3>
-                    <input type="number" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
+                    <input type="number" min="0" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
                     <div className="error">{errors.order && touched.order && errors.order}</div>
                   </div>
                 </div>
               </div>
-
+              
               <div className="button-group">
-                <button type="submit">
-                  Save
-                </button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"
@@ -145,10 +144,3 @@ export default function CreateEducationLevel({ editMode }) {
     </div>
   );
 }
-
-CreateEducationLevel.propTypes = {
-  editMode: PropTypes.bool,
-};
-CreateEducationLevel.defaultProps = {
-  editMode: false,
-};

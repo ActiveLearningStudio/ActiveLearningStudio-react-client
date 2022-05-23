@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import './uploadimagev2.scss';
 import PexelsAPI from '../../components/models/pexels';
 import PixelUpload from 'assets/images/svg/pixelupload.svg';
+import ActivityDefaultImg from 'assets/images/defaultActivityImg.png';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
@@ -18,9 +19,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
   const currikiUtility = classNames('curriki-utility-uploadimageV2', className);
   const dispatch = useDispatch();
   const openFile = useRef();
-  const [uploadImage, setUploadImage] = useState(
-    thumb_url || 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280'
-  );
+  const [uploadImage, setUploadImage] = useState(thumb_url);
 
   const uploadThumb = async (e) => {
     const formData = new FormData();
@@ -55,7 +54,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
         <div
           className="uploadimage-box"
           style={{
-            backgroundImage: uploadImage.includes('pexels.com') ? `url(${uploadImage})` : `url(${global.config.resourceUrl}${uploadImage})`,
+            backgroundImage: !uploadImage ? `url(${ActivityDefaultImg})` : uploadImage.includes('pexels.com') ? `url(${uploadImage})` : `url(${global.config.resourceUrl}${uploadImage})`,
           }}
         ></div>
         <div className="uploadimage-option">

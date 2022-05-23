@@ -13,15 +13,15 @@ const getAll = () =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getAllLayout = () =>
+const getAllLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/activity-layouts`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-layouts`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getSingleLayout = () =>
+const getSingleLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/get-activity-items?skipPagination=true`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/get-activity-items?skipPagination=true`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 const create = (activity, playlistId) =>
@@ -106,32 +106,43 @@ const uploadActivityItemThumb = (formData) =>
       Promise.reject(err.response.data);
     });
 
-const getTypes = () =>
+const uploadActivityLayoutThumb = (formData) =>
   httpService
-    .get(`/${apiVersion}/activity-types`)
+    .post(`/${apiVersion}/activity-layouts/upload-thumb`, formData, {
+      'Content-Type': 'multipart/form-data',
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const getTypes = (subOrgId) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const createActivityType = (body) =>
+const createActivityType = (subOrgId, body) =>
   httpService
-    .post(`/${apiVersion}/activity-types`, body)
+    .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`, body)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
-const editActivityType = (body, typeId) =>
+const editActivityType = (subOrgId, body, typeId) =>
   httpService
-    .put(`/${apiVersion}/activity-types/${typeId}`, body)
+    .put(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`, body)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
 
-const deleteActivityType = (typeId) =>
+const deleteActivityType = (subOrgId, typeId) =>
   httpService
-    .remove(`/${apiVersion}/activity-types/${typeId}`)
+    .remove(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -144,32 +155,40 @@ const getItems = (activityTypeId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityItems = (query, page) =>
-  httpService.get(`${apiVersion}/get-activity-items${query ? `?query=${query.replace(/#/, '%23')}` : ''}${page ? `?page=${page}` : ''}`).catch((err) => {
-    errorCatcher(err.response.data);
-    Promise.reject(err.response.data);
-  });
-
-const createActivityItem = (body) =>
+const getActivityItems = (subOrgId, query, page, size, column = '', orderBy = '', filterBy) =>
   httpService
-    .post(`/${apiVersion}/activity-items`, body)
-    .then(({ data }) => data)
-    .catch((err) => {
-      errorCatcher(err.response.data);
-      Promise.reject(err.response.data);
-    });
-const editActivityItem = (body, itemId) =>
-  httpService
-    .put(`/${apiVersion}/activity-items/${itemId}`, body)
-    .then(({ data }) => data)
+    .get(
+      `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${page ? `?page=${page}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
+      ${size ? `&size=${size}` : ''}
+      ${column ? `&order_by_column=${column}` : ''}
+      ${orderBy ? `&order_by_type=${orderBy}` : ''}
+      ${filterBy ? `&filter=${filterBy}` : ''}`
+    )
     .catch((err) => {
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
 
-const deleteActivityItem = (itemId) =>
+const createActivityItem = (subOrgId, body) =>
   httpService
-    .remove(`/${apiVersion}/activity-items/${itemId}`)
+    .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-items`, body)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const editActivityItem = (subOrgId, body, itemId) =>
+  httpService
+    .put(`/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`, body)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const deleteActivityItem = (subOrgId, itemId) =>
+  httpService
+    .remove(`/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -253,7 +272,7 @@ const activityH5p = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const shareActivity = (activityId) =>
+const shareActivity = (activityId, orgId) =>
   httpService
     .get(`/${apiVersion}/activities/${activityId}/share`)
     .then(({ data }) => data)
@@ -296,6 +315,7 @@ export default {
   deleteActivityItem,
   uploadActivityTypeThumb,
   uploadActivityItemThumb,
+  uploadActivityLayoutThumb,
   getActivityCss,
   h5pToken,
   h5pSettings,
