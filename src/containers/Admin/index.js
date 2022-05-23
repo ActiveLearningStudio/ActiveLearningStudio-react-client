@@ -501,7 +501,7 @@ function AdminPanel({ showSSO }) {
           <Alert variant="danger">You are not authorized to view this page.</Alert>
         </div>
       )}
-      <MyVerticallyCenteredModal show={modalShowh5p} onHide={() => setModalShowh5p(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} />
+      <MyVerticallyCenteredModal show={modalShowh5p} onHide={() => setModalShowh5p(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={true} />
     </div>
   );
 }

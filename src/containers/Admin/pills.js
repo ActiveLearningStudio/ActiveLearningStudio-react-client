@@ -280,7 +280,7 @@ export default function Pills(props) {
     if (subTypeState === 'All independent activities' && activeOrganization?.id) {
       dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject));
     } else if (subTypeState === 'Exported activities' && activeOrganization?.id) {
-      dispatch(allAdminExportActivity(activePage, size, searchQueryProject));
+      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject));
     }
   }, [activeOrganization?.id, type, activePage, subTypeState, size, searchQueryProject]);
 

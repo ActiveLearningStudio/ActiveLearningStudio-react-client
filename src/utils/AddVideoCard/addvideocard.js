@@ -21,6 +21,28 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
   const primaryColor = getGlobalColor('--main-primary-color');
+  const visibilityData = [
+    {
+      id: 1,
+      name: 'private',
+      display_name: 'Private (only Me)',
+    },
+    {
+      id: 2,
+      name: 'protected',
+      display_name: 'My Organization',
+    },
+    {
+      id: 3,
+      name: 'global',
+      display_name: 'My Org + Parent and Child Org',
+    },
+    {
+      id: 4,
+      name: 'public',
+      display_name: 'All',
+    },
+  ];
   return (
     <>
       <div className={currikiUtility}>
@@ -55,7 +77,7 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
             <div className="activity-update-lib">
               <div className="activity-update">Updated: {data.updated_at.split('T')[0]}</div>
               <div className="activity-lib">
-                Library preference: <span>My organization</span>
+                Library preference: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.display_name}</span>
               </div>
             </div>
           </>

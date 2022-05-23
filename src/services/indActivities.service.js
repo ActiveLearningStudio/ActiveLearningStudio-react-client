@@ -23,9 +23,13 @@ const allIndActivity = (subOrgId, page = 1, size = 10) =>
       return Promise.reject(err.response.data);
     });
 
-const allAdminExportActivity = (page = 1, size = 10, search) =>
+const allAdminExportActivity = (subOrgId, page = 1, size = 10, search) =>
   httpService
-    .get(`${apiVersion}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${search && `&query=${search?.replace(/#/, '%23')}`}`)
+    .get(
+      `${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${
+        search && `&query=${search?.replace(/#/, '%23')}`
+      }`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);

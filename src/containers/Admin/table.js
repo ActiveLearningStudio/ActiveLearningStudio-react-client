@@ -832,11 +832,15 @@ function Table(props) {
                                     <Dropdown.Item
                                       onClick={() => {
                                         dispatch(
-                                          editIndActivityItem(row.id, {
-                                            ...row,
-                                            data: '',
-                                            organization_visibility_type_id: element.id,
-                                          })
+                                          editIndActivityItem(
+                                            row.id,
+                                            {
+                                              ...row,
+                                              data: '',
+                                              organization_visibility_type_id: element.id,
+                                            },
+                                            'admin'
+                                          )
                                         );
                                       }}
                                     >
