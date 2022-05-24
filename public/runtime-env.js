@@ -3,7 +3,7 @@ window.__RUNTIME_CONFIG__ = {
 
   REACT_APP_API_URL: 'https://multitenancy.currikistudio.org/api/api',
 
-  REACT_DOMAIN_URL: 'https://dev.currikistudio.org/',
+  REACT_DOMAIN_URL: 'https://https://multitenancy.currikistudio.org/.currikistudio.org/',
 
   REACT_APP_RESOURCE_URL: 'https://multitenancy.currikistudio.org/api',
 

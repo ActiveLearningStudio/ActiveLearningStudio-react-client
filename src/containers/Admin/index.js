@@ -159,7 +159,7 @@ function AdminPanel({ showSSO }) {
                   )}
                   {/* Ind.Activity Start */}
                   {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
-                    permission?.['Independent Activity']?.includes('independent-activity:export')) && (
+                    permission?.['Independent Activity']?.includes('independent-activity:view-export')) && (
                     <Tab eventKey="IndActivities" title="Ind. activities">
                       <div className="module-content">
                         <Pills
