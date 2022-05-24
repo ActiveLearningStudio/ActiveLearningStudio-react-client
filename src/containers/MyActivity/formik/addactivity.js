@@ -402,7 +402,7 @@ const AddActivity = (props) => {
 
             {activtyMethod === 'upload' && (
               <div className="existing-activity-dialog">
-                <UploadFile metadata={formData} formRef={formRef} />
+                <UploadFile metadata={formData} formRef={formRef} activityPreview={activityPreview} />
               </div>
             )}
 

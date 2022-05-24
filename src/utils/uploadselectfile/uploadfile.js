@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -10,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import UploadImg from '../../assets/images/upload1.png';
 
-const UploadFile = ({ className, formRef }) => {
+const UploadFile = ({ className, formRef, activityPreview }) => {
   const { selectedLayout, playlist, project } = useSelector((state) => state.myactivities);
   const imgUpload = useRef();
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const UploadFile = ({ className, formRef }) => {
       h5pFile,
     };
     console.log(formRef.current.values, 'upload file');
-    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, project));
+    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, project, activityPreview));
   };
   return (
     <>

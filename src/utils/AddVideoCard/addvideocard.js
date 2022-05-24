@@ -62,7 +62,7 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
               setCurrentActivity={setCurrentActivity}
               setOpenVideo={setOpenVideo}
               setScreenStatus={setScreenStatus}
-              permisison={permission}
+              permission={permission}
             />
           </div>
           <div className="addvideo-card-title">

@@ -378,7 +378,7 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
               </Dropdown.Item> */}
             </>
           )}
-          {ActivityCard ? (
+          {isActivityCard ? (
             permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
               <Dropdown.Item
                 className
