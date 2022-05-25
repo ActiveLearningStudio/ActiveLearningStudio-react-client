@@ -77,7 +77,7 @@ const H5PEditor = (props) => {
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-    console.log('formData', formData);
+
     formData.subject_id = formatSelectBoxData(formData.subject_id);
     formData.education_level_id = formatSelectBoxData(formData.education_level_id);
     formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);

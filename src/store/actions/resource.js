@@ -520,6 +520,9 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
+    metadata.subject_id = formatSelectBoxData(metadata.subject_id);
+    metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
+    metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
 
     if (responseUpload.id) {
       if (activityPreview) {
