@@ -367,7 +367,7 @@ export default function AddRole(props) {
                               <div className="form-group custom-select-style-for-sub">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organiziation'}
+                                  type={'Organization'}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
@@ -626,7 +626,7 @@ export default function AddRole(props) {
                         >
                           <NewEdit
                             setFieldValue={setFieldValue}
-                            type={'Organiziation'}
+                            type={'Organization'}
                             permissions={values.permissions}
                             currentFeatureView={orgView}
                             currentFeatureEdit={orgEdit}

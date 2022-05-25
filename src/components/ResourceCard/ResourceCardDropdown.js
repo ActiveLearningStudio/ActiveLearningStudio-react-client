@@ -1,31 +1,31 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect, useSelector, useDispatch } from "react-redux";
-import { withRouter, Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import { confirmAlert } from "react-confirm-alert";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dropdown } from "react-bootstrap";
-import * as actionTypes from "store/actionTypes";
-import resourceService from "services/resource.service";
-import config from "config";
-import { shareActivity, deleteResourceAction } from "store/actions/resource";
-import { cloneActivity } from "store/actions/search";
-import { getUserLmsSettingsAction } from "store/actions/account";
-import { getProjectId, googleShare } from "store/actions/gapi";
-import { loadSafariMontagePublishToolAction } from "store/actions/LMS/genericLMS";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect, useSelector, useDispatch } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { confirmAlert } from 'react-confirm-alert';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Dropdown } from 'react-bootstrap';
+import * as actionTypes from 'store/actionTypes';
+import resourceService from 'services/resource.service';
+import config from 'config';
+import { shareActivity, deleteResourceAction } from 'store/actions/resource';
+import { cloneActivity } from 'store/actions/search';
+import { getUserLmsSettingsAction } from 'store/actions/account';
+import { getProjectId, googleShare } from 'store/actions/gapi';
+import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
-import Preview from "../../assets/images/menu-pre.svg";
-import Edit from "../../assets/images/menu-edit.svg";
-import Duplicate from "../../assets/images/menu-dupli.svg";
-import Delete from "../../assets/images/menu-dele.svg";
-import Publish from "../../assets/images/menu-publish.svg";
-import Xapi from "../../assets/images/menu-xapi.svg";
-import MenuLogo from "../../assets/images/menu-logo-2.svg";
-import { toast } from "react-toastify";
-import "./style.scss";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import Preview from '../../assets/images/menu-pre.svg';
+import Edit from '../../assets/images/menu-edit.svg';
+import Duplicate from '../../assets/images/menu-dupli.svg';
+import Delete from '../../assets/images/menu-dele.svg';
+import Publish from '../../assets/images/menu-publish.svg';
+import Xapi from '../../assets/images/menu-xapi.svg';
+import MenuLogo from '../../assets/images/menu-logo-2.svg';
+import { toast } from 'react-toastify';
+import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const ResourceCardDropdown = (props) => {
   const {
@@ -59,29 +59,23 @@ const ResourceCardDropdown = (props) => {
     e.preventDefault();
 
     Swal.fire({
-      title: "Are you sure you want to delete this activity?",
+      title: 'Are you sure you want to delete this activity?',
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: "No",
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
         deleteResource(resource.id, playlist.id);
       }
     });
   };
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
         {/* <img src={MenuLogo} alt="logo" /> */}
-        <svg
-          width="4"
-          height="14"
-          viewBox="0 0 4 14"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="4" height="14" viewBox="0 0 4 14" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M2 7.75001C2.41422 7.75001 2.75001 7.41422 2.75001 7C2.75001 6.58579 2.41422 6.25 2 6.25C1.58579 6.25 1.25 6.58579 1.25 7C1.25 7.41422 1.58579 7.75001 2 7.75001Z"
             fill="#767676"
@@ -110,29 +104,20 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {(Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:view-activity")
-          : permission?.Activity?.includes("activity:view")) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview?view=activity`}
             onClick={() => {
-              if (previewPage === "projectPreview") {
-                localStorage.setItem("projectPreview", true);
+              if (previewPage === 'projectPreview') {
+                localStorage.setItem('projectPreview', true);
               } else {
-                localStorage.setItem("projectPreview", false);
+                localStorage.setItem('projectPreview', false);
               }
             }}
           >
             {/* <img src={Preview} alt="Preview" className="menue-img" /> */}
-            <svg
-              width="16"
-              height="12"
-              viewBox="0 0 16 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="menue-img"
-            >
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
               <path
                 d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
                 stroke={primaryColor}
@@ -152,49 +137,38 @@ const ResourceCardDropdown = (props) => {
           </Dropdown.Item>
         )}
 
-        {(Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:edit-activity")
-          : permission?.Activity?.includes("activity:edit")) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
           <Dropdown.Item
             onClick={async () => {
               toast.dismiss();
-              toast.info("Loading Activity ...", {
-                className: "project-loading",
+              toast.info('Loading Activity ...', {
+                className: 'project-loading',
                 closeOnClick: false,
                 closeButton: false,
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 10000,
-                icon: "",
+                icon: '',
               });
               const result = await resourceService.activityH5p(resource.id);
               toast.dismiss();
 
               dispatch({
                 type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                payload: result.activity?.source_type
-                  ? "addvideo"
-                  : "addactivity",
+                payload: result.activity?.source_type ? 'addvideo' : 'addactivity',
                 playlist: playlist,
                 project: match.params.projectId,
                 activity: result.activity,
               });
               if (result.activity?.source_type) {
                 dispatch({
-                  type: "SET_ACTIVE_VIDEO_SCREEN",
+                  type: 'SET_ACTIVE_VIDEO_SCREEN',
                   payload: result.activity,
                 });
               }
             }}
           >
             {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="menue-img"
-            >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
               <path
                 d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
                 stroke={primaryColor}
@@ -213,7 +187,7 @@ const ResourceCardDropdown = (props) => {
             Edit
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes("activity:duplicate") && (
+        {permission?.Activity?.includes('activity:duplicate') && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -222,14 +196,7 @@ const ResourceCardDropdown = (props) => {
             }}
           >
             {/* <img src={Duplicate} alt="Preview" className="menue-img" /> */}
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="menue-img"
-            >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
               <path
                 d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
                 stroke={primaryColor}
@@ -237,39 +204,18 @@ const ResourceCardDropdown = (props) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M7 4.33325V9.66659"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4.33301 7H9.66634"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M7 4.33325V9.66659" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4.33301 7H9.66634" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Duplicate
           </Dropdown.Item>
         )}
-        {(Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:publish-activity")
-          : permission?.Activity?.includes("activity:share")) &&
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-activity') : permission?.Activity?.includes('activity:share')) &&
           lmsSettings.length !== 0 && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
                 {/* <img src={Publish} alt="Preview" className="menue-img" /> */}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="menue-img"
-                >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
                   <path
                     d="M10.583 4.52941C11.5495 4.52941 12.333 3.73933 12.333 2.76471C12.333 1.79009 11.5495 1 10.583 1C9.61651 1 8.83301 1.79009 8.83301 2.76471C8.83301 3.73933 9.61651 4.52941 10.583 4.52941Z"
                     stroke={primaryColor}
@@ -291,20 +237,8 @@ const ResourceCardDropdown = (props) => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  <path
-                    d="M5.27148 7.96411L9.06593 10.3722"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M9.06037 3.72876L5.27148 6.13683"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M5.27148 7.96411L9.06593 10.3722" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9.06037 3.72876L5.27148 6.13683" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 Publish
               </a>
@@ -325,17 +259,12 @@ const ResourceCardDropdown = (props) => {
                 )}
                 {lmsSettings.map((data) => {
                   return (
-                    data.lms_name === "safarimontage" &&
+                    data.lms_name === 'safarimontage' &&
                     data.activity_visibility && (
                       <li>
                         <a
                           onClick={() => {
-                            loadSafariMontagePublishTool(
-                              playlist.project.id,
-                              playlist.id,
-                              resource.id,
-                              data.id
-                            );
+                            loadSafariMontagePublishTool(playlist.project.id, playlist.id, resource.id, data.id);
                           }}
                         >
                           {data.site_name}
@@ -349,36 +278,24 @@ const ResourceCardDropdown = (props) => {
           )}
         {selectedProject.shared && (
           <>
-            {(Object.keys(teamPermission).length
-              ? teamPermission?.Team?.includes("team:share-activity")
-              : permission?.Activity?.includes("activity:share")) && (
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
               <Dropdown.Item
                 onClick={() => {
                   shareActivity(resource.id);
-                  const protocol = `${window.location.href.split("/")[0]}//`;
+                  const protocol = `${window.location.href.split('/')[0]}//`;
                   confirmAlert({
                     /* eslint-disable react/prop-types */
                     customUI: ({ onClose }) => (
                       <div className="share-project-preview-url project-share-check">
                         <br />
                         <h3>
-                          You can now share Activity{" "}
-                          <strong>{resource.title}</strong>
+                          You can now share Activity <strong>{resource.title}</strong>
                           <br />
                           Anyone with the link below can access your activity:
                         </h3>
 
-                        <a
-                          target="_blank"
-                          href={`/activity/${resource.id}/shared`}
-                          rel="noopener noreferrer"
-                        >
-                          <input
-                            id="urllink_clip"
-                            value={`${
-                              protocol + window.location.host
-                            }/activity/${resource.id}/shared`}
-                          />
+                        <a target="_blank" href={`/activity/${resource.id}/shared`} rel="noopener noreferrer">
+                          <input id="urllink_clip" value={`${protocol + window.location.host}/activity/${resource.id}/shared`} />
                         </a>
 
                         <span
@@ -386,8 +303,7 @@ const ResourceCardDropdown = (props) => {
                           aria-hidden="true"
                           onClick={() => {
                             /* Get the text field */
-                            const copyText =
-                              document.getElementById("urllink_clip");
+                            const copyText = document.getElementById('urllink_clip');
 
                             /* Select the text field */
                             copyText.focus();
@@ -395,11 +311,11 @@ const ResourceCardDropdown = (props) => {
                             // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
                             /* Copy the text inside the text field */
-                            document.execCommand("copy");
+                            document.execCommand('copy');
 
                             /* Alert the copied text */
                             Swal.fire({
-                              title: "Link Copied",
+                              title: 'Link Copied',
                               showCancelButton: false,
                               showConfirmButton: false,
                               timer: 1500,
@@ -412,11 +328,7 @@ const ResourceCardDropdown = (props) => {
                         <br />
 
                         <div className="close-btn flex-center">
-                          <button
-                            className="curriki-btn-extra"
-                            type="button"
-                            onClick={onClose}
-                          >
+                          <button className="curriki-btn-extra" type="button" onClick={onClose}>
                             Ok
                           </button>
                         </div>
@@ -426,26 +338,16 @@ const ResourceCardDropdown = (props) => {
                   });
                 }}
               >
-                <FontAwesomeIcon icon="share" className="mr-2" />
-                Share
+                <FontAwesomeIcon icon="link" className="mr-2" />
+                Get link
               </Dropdown.Item>
             )}
           </>
         )}
-        {permission?.Activity?.includes("activity:share") && (
-          <Dropdown.Item
-            href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}
-            onClick={() => shareActivity(resource.id)}
-          >
+        {permission?.Activity?.includes('activity:share') && (
+          <Dropdown.Item href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
             {/* <img src={Xapi} alt="Preview" className="menue-img" /> */}
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="menue-img"
-            >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
               <path
                 d="M13 9V11.6667C13 12.0203 12.8595 12.3594 12.6095 12.6095C12.3594 12.8595 12.0203 13 11.6667 13H2.33333C1.97971 13 1.64057 12.8595 1.39052 12.6095C1.14048 12.3594 1 12.0203 1 11.6667V9"
                 stroke={primaryColor}
@@ -453,44 +355,17 @@ const ResourceCardDropdown = (props) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M3.66699 5.66675L7.00033 9.00008L10.3337 5.66675"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M7 9V1"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M3.66699 5.66675L7.00033 9.00008L10.3337 5.66675" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 9V1" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             xAPI Download
           </Dropdown.Item>
         )}
-        {(Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:delete-activity")
-          : permission?.Activity?.includes("activity:delete")) && (
+        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
             {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
-            <svg
-              width="12"
-              height="14"
-              viewBox="0 0 12 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="menue-img"
-            >
-              <path
-                d="M0.75 3.39966H1.91667H11.25"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
+              <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               <path
                 d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
                 stroke={primaryColor}
@@ -498,20 +373,8 @@ const ResourceCardDropdown = (props) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M4.83301 6.39966V9.99966"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M7.16699 6.39966V9.99966"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             Delete
           </Dropdown.Item>
@@ -562,25 +425,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteResource: (activityId, playlistId) =>
-    dispatch(deleteResourceAction(activityId, playlistId)),
+  deleteResource: (activityId, playlistId) => dispatch(deleteResourceAction(activityId, playlistId)),
   getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
-  loadSafariMontagePublishTool: (
-    projectId,
-    playlistId,
-    activityId,
-    lmsSettingId
-  ) =>
-    dispatch(
-      loadSafariMontagePublishToolAction(
-        projectId,
-        playlistId,
-        activityId,
-        lmsSettingId
-      )
-    ),
+  loadSafariMontagePublishTool: (projectId, playlistId, activityId, lmsSettingId) => dispatch(loadSafariMontagePublishToolAction(projectId, playlistId, activityId, lmsSettingId)),
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceCardDropdown)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceCardDropdown));

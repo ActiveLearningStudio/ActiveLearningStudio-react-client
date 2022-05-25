@@ -9,7 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
+  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users', 'Ind. activities'];
 
   // organization all projects
   const projectEditName = [
@@ -124,6 +124,12 @@ function UserRoles() {
   const [authorVideoEdit, setauthorVideoEdit] = useState([]);
   const [authorVideoView, setauthorVideoView] = useState([]);
 
+  // organization Independent activities
+  const independentactivitiesEditName = ['independent-activity:create', 'independent-activity:edit', 'independent-activity:delete'];
+  const independentactivitiesViewName = ['independent-activity:view', 'independent-activity:share', 'independent-activity:duplicate'];
+  const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState([]);
+  const [independentactivitiesView, setIndependentactivitiesView] = useState([]);
+
   const [checkRoles, setCheckRoles] = useState('');
 
   useEffect(() => {
@@ -134,6 +140,7 @@ function UserRoles() {
         extractPermission.push(String(data.id));
       });
     }
+    console.log('extractPermission:', extractPermission);
     setCheckRoles(extractPermission);
   }, [activePermission]);
 
@@ -144,6 +151,7 @@ function UserRoles() {
 
   useEffect(() => {
     var permissionIdArray = [];
+    console.log('permissionsId?.Organization:', permissionsId?.Organization);
     permissionsId?.Organization.filter((data) => projectEditName.includes(data.name) && permissionIdArray.push(data.id));
     setProjectEdit(permissionIdArray);
     permissionIdArray = [];
@@ -355,13 +363,46 @@ function UserRoles() {
                               <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organiziation'}
+                                  type={'Organization'}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
                                   bold
                                 />
                               </div>
+                              {/* Independent activities Start */}
+                              <div className="permission">
+                                <div className="selection-tab-custom">
+                                  <div className="form-group custom-select-style-for-sub">
+                                    <NewEdit
+                                      setFieldValue={setFieldValue}
+                                      type={'Independent activities'}
+                                      permissions={values.permissions}
+                                      currentFeatureView={[independentactivitiesView]}
+                                      currentFeatureEdit={[independentactivitiesEdit]}
+                                      bold
+                                    />
+                                  </div>
+                                </div>
+                                {/* <h6>Project</h6> */}
+                                <div className="permission-about">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'All independent activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesView}
+                                    currentFeatureEdit={independentactivitiesEdit}
+                                  />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Exported activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={independentactivitiesView}
+                                    currentFeatureEdit={independentactivitiesEdit}
+                                  />
+                                </div>
+                              </div>
+                              {/* Independent activities End */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
@@ -629,7 +670,7 @@ function UserRoles() {
                             >
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Organiziation'}
+                                type={'Organization'}
                                 permissions={values.permissions}
                                 currentFeatureView={orgView}
                                 currentFeatureEdit={orgEdit}
@@ -800,6 +841,47 @@ function UserRoles() {
                               </div>
                             </Card.Body>
                           </Tab.Pane>
+                          {/* Independent activities start */}
+                          <Tab.Pane eventKey="5">
+                            <Card.Body
+                              className="flex-column"
+                              style={{
+                                background: '#f7faff',
+                                margin: '32px',
+                              }}
+                            >
+                              <div className="selection-tab-custom">
+                                <div className="form-group custom-select-style-for-sub">
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
+                                    type={'Independent activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={[independentactivitiesView]}
+                                    currentFeatureEdit={[independentactivitiesEdit]}
+                                    bold
+                                  />
+                                </div>
+                              </div>
+                              {/* <h6>User</h6> */}
+                              <div className="permission-about d-flex">
+                                {/* <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={"Users"}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userView}
+                                  currentFeatureEdit={userEdit}
+                                />
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
+                                  type={"Manage Roles"}
+                                  permissions={values.permissions}
+                                  currentFeatureView={userRoleView}
+                                  currentFeatureEdit={userRolesEdit}
+                                /> */}
+                              </div>
+                            </Card.Body>
+                          </Tab.Pane>
+                          {/* Independent activities end */}
                         </Tab.Content>
                       </Col>
                     </Row>

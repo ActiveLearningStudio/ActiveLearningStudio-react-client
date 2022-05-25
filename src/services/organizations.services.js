@@ -48,7 +48,7 @@ const branding = (domain) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getSubOrganizationList = (id, size, page, query, column, orderBy) => httpService
+const getSubOrganizationList = (id, size, page, query, column = '', orderBy = '') => httpService
   .get(`/${apiVersion}/suborganizations/${id}/index?size=${size}&page=${page}
   ${query !== '' ? `&query=${query}` : ''}${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -98,7 +98,7 @@ const allPermission = (id) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getOrgUsers = (id, page, activeRole, size, query, column, orderBy) => httpService
+const getOrgUsers = (id, page, activeRole, size, query, column = '', orderBy = '') => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?page=${page}${activeRole ? `&role=${activeRole}` : ''}${size ? `&size=${size}` : ''}
   ${query !== '' ? `&query=${query}` : ''}${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)
@@ -120,7 +120,7 @@ const removeUserFromOrganization = (subOrgId, body) => httpService
     Promise.reject(err.response.data);
   });
 
-const searchUserInOrganization = (id, query, page, role, size, column, orderBy) => httpService
+const searchUserInOrganization = (id, query, page, role, size, column = '', orderBy = '') => httpService
   .get(`/${apiVersion}/suborganizations/${id}/users?query=${query}${page ? `&page=${page}` : ''}${role ? `&role=${role}` : ''}
   ${size ? `&size=${size}` : ''}${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}`)
   .then(({ data }) => data)

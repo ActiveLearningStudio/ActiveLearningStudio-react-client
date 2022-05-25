@@ -18,6 +18,7 @@ import {
   LTI_ACTIVITY_INIT,
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
+  GET_TEAMS,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -34,6 +35,8 @@ const INITIAL_STATE = {
   searchSelectedPlaylist: null,
   searchPreviewActivity: null,
   searchHasMoreResults: false,
+  // Deeplinking teams tab
+  teams: null,
   // Other
   h5pSettings: null,
   ltiFinished: false,
@@ -181,6 +184,27 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         summaryActivityInfo: action.summaryActivityInfo.activity,
+      };
+
+    case GET_TEAMS:
+      // Massaging the data a little to line up with components
+      const teams = action.results.teams.map((team) => {
+        const newTeam = { ...team };
+        newTeam.projects = team.projects.map((project) => {
+          const newProject = { ...project };
+          if (!project.title) {
+            newProject.title = project.name;
+          }
+
+          return newProject;
+        });
+
+        return newTeam;
+      });
+
+      return {
+        ...state,
+        teams,
       };
 
     default:

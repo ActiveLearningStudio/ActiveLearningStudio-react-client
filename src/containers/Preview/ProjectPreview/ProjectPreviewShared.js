@@ -85,6 +85,7 @@ function ProjectPreviewShared(props) {
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
               lti
+              shared
             />
           ));
         } else {

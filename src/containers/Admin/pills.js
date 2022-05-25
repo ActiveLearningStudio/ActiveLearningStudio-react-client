@@ -21,10 +21,12 @@ import {
   getActivityTypes,
   getActivityLayout,
   teamsActionAdminPanel,
+  getOrganizationMedaiSource,
 } from 'store/actions/admin';
 import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
 import { alphaNumeric } from 'utils';
 import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
+import Media from './media';
 
 export default function Pills(props) {
   const { modules, type, subType, allProjectTab, setAllProjectTab, setModalShow, setModalShowTeam, setrowData, setActivePageNumber, users, setUsers } = props;
@@ -50,7 +52,7 @@ export default function Pills(props) {
     indexing: null,
     shared: null,
   });
-  const { activeOrganization, roles, permission, searchUsers, allSuborgList } = organization;
+  const { activeOrganization, currentOrganization, roles, permission, searchUsers, allSuborgList } = organization;
   const [activeRole, setActiveRole] = useState('');
   const { activeTab, activityType } = admin;
   const [currentTab, setCurrentTab] = useState('All Projects');
@@ -85,12 +87,20 @@ export default function Pills(props) {
   const [authorTag, setAuthorTag] = useState(null);
   const [activityLayout, setActivityLayout] = useState(null);
   const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState('');
+  const [searchLayoutQuery, setSearchLayoutQuery] = useState('');
+  const [searchSubjectsQuery, setSearchSubjectsQuery] = useState('');
+  const [searchAuthorTagQuery, setSearchAuthorTagQuery] = useState('');
+  const [searchEducationLevelQuery, setSearchEducationLevelQuery] = useState('');
+  const [searchActivityTypesQuery, setSearchActivityTypesQuery] = useState('');
+  const [searchActivityItemsQuery, setSearchActivityItemsQuery] = useState('');
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
+
   useEffect(() => {
     setlmsBrightCove(allbrightCove);
   }, [allbrightCove]);
+
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole, size, orderByColumn, currentOrderBy));
@@ -292,26 +302,26 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
-  }, [type, subTypeState, activePage, size]);
+  }, [type, subTypeState, activePage, size, activeOrganization]);
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Types') {
       //on page 1
       // dispatch(loadResourceTypesAction());
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchQuery))
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery))
       dispatch(updatePageNumber(activePage));
     }
-  }, [activePage, subTypeState, type, size]);
+  }, [activePage, subTypeState, type, size, activeOrganization]);
   const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
     if (subTypeRecieved === 'Activity Types') {
       if (query) {
@@ -324,7 +334,7 @@ export default function Pills(props) {
         const encodeQuery = encodeURI(searchQueryActivities);
         await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
       } else if (query === '') {
-        await dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size));
+        await dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size));
       }
     }
   };
@@ -463,23 +473,20 @@ export default function Pills(props) {
   }, [dataRedux.admin.lmsIntegration]);
 
   useMemo(async () => {
-    console.log('orderBy-', currentOrderBy);
     if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
     }
     if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
-
     }
     if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, orderByColumn, currentOrderBy));
       dispatch(updatePageNumber(activePage));
-
     }
     if (type === 'Activities') {
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, orderByColumn, currentOrderBy));
     }
   }, [type, subTypeState, activePage, activeOrganization?.id, size, currentOrderBy]);
 
@@ -500,7 +507,7 @@ export default function Pills(props) {
       setAuthorTag(dataRedux.admin.author_tags);
     }
   }, [dataRedux.admin.author_tags]);
-  
+
   useEffect(() => {
     if (dataRedux.admin.activity_layouts) {
       setActivityLayout(dataRedux.admin.activity_layouts);
@@ -529,31 +536,31 @@ export default function Pills(props) {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchActivityTypesQuery(encodeQuery);
     dispatch(getActivityTypes(activeOrganization?.id, 1, size, '', '', encodeQuery));
   };
-  
+
   const searchQueryChangeHandlerActivityItems = (search) => {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchActivityItemsQuery(encodeQuery);
     dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
   };
- 
+
   const filterActivityItems = (type) => {
     setActivePage(1);
-    dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage, size, '', '', type));
+    dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, '', '', type));
   };
-  
+
   const searchQueryChangeHandlerActivityLayouts = (search) => {
     // setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchLayoutQuery(encodeQuery);
     dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy));
   };
-  
+
   const searchQueryChangeHandlerOrg = (search) => {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
@@ -589,40 +596,40 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
-  
+
   const searchQueryChangeHandlerSubjects = (search) => {
     setSubjects(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchSubjectsQuery(encodeQuery);
     const result = adminService.getSubjects(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setSubjects(data);
     });
   };
-  
+
   const searchQueryChangeHandlerEducationLevel = (search) => {
     setEducationLevel(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchEducationLevelQuery(encodeQuery);
     const result = adminService.getEducationLevel(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setEducationLevel(data);
     });
   };
-  
+
   const searchQueryChangeHandlerAuthorTag = (search) => {
     setAuthorTag(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    setSearchAuthorTagQuery(encodeQuery);
     const result = adminService.getAuthorTag(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
     result.then((data) => {
       setAuthorTag(data);
     });
   };
-  
+
   const filterLtiTool = (item) => {
     setLtiTool(null);
     setActivePage(1);
@@ -633,7 +640,6 @@ export default function Pills(props) {
     });
   };
 
-  
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
     setActivePage(1);
@@ -643,7 +649,7 @@ export default function Pills(props) {
       setDefaultSso(data);
     });
   };
- 
+
   const filterLmsSetting = (filterBy) => {
     setLmsProject(null);
     setActivePage(1);
@@ -653,7 +659,6 @@ export default function Pills(props) {
       setLmsProject(data);
     });
   };
-
 
   useEffect(() => {
     // if (subTypeState === 'Library requests') {
@@ -679,7 +684,7 @@ export default function Pills(props) {
 
   useEffect(() => {
     if (activeOrganization && type === 'Teams') {
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy))
+      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
     }
   }, [size, activePage, activeOrganization, searchQueryTeam]);
 
@@ -750,7 +755,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchQuery));
+      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchActivityTypesQuery));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -765,7 +770,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems(activeOrganization?.id, searchQuery, activePage || 1, size, col, orderBy,));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy,));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -780,7 +785,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -795,7 +800,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy,));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, col, orderBy,));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -810,7 +815,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -825,7 +830,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy));
+      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -886,7 +891,7 @@ export default function Pills(props) {
           col = 'first_name';
       }
       const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, col, orderBy));
-      setUsers(result)
+      setUsers(result);
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -969,7 +974,7 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
-      id="controlled-tab-example"
+      id='controlled-tab-example'
       activeKey={key}
       onSelect={(key) => {
         setSubTypeState(key);
@@ -992,14 +997,14 @@ export default function Pills(props) {
         ?.filter((data) => !!data)
         ?.map((asset) => (
           <Tab key={asset} eventKey={asset} title={asset}>
-            <div key={asset} className="module-content-inner">
+            <div key={asset} className='module-content-inner'>
               {type === 'Users' && subTypeState === 'All Users' && (
                 <Starter
                   paginationCounter={true}
                   search={true}
                   print={false}
-                  btnText="Add user"
-                  btnAction="create_user"
+                  btnText='Add user'
+                  btnAction='create_user'
                   importUser={true}
                   filter={false}
                   tableHead={columnData.userall}
@@ -1028,13 +1033,13 @@ export default function Pills(props) {
                   paginationCounter={false}
                   search={false}
                   print={false}
-                  btnText="Add Role"
-                  btnAction="add_role"
+                  btnText='Add Role'
+                  btnAction='add_role'
                   importUser={false}
                   filter={false}
                   subTypeState={subTypeState}
                   tableHead={[]}
-                  subType="Manage Roles"
+                  subType='Manage Roles'
                   sortCol={[]}
                   handleSort={handleSort}
                   data={[]}
@@ -1049,8 +1054,8 @@ export default function Pills(props) {
                 <Starter
                   search={true}
                   print={false}
-                  btnText="Add Organization"
-                  btnAction="add_org"
+                  btnText='Add Organization'
+                  btnAction='add_org'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.organization}
@@ -1075,8 +1080,8 @@ export default function Pills(props) {
                   subType={'LMS settings'}
                   search={true}
                   print={false}
-                  btnText="Add LMS settings"
-                  btnAction="add_lms"
+                  btnText='Add LMS settings'
+                  btnAction='add_lms'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.lmssettings}
@@ -1098,8 +1103,8 @@ export default function Pills(props) {
                   subType={'BrightCove'}
                   search={true}
                   print={false}
-                  btnText="Add New Entry"
-                  btnAction="add_brightcove"
+                  btnText='Add New Entry'
+                  btnAction='add_brightcove'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
@@ -1113,6 +1118,34 @@ export default function Pills(props) {
                   searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
                 />
               )}
+              {/* Media Start */}
+              {type === 'LMS' && subTypeState === 'Media' && (
+                <Media />
+                // <Starter
+                //   paginationCounter={true}
+                //   size={size}
+                //   setSize={setSize}
+                //   subType={"Media"}
+                //   search={true}
+                //   print={false}
+                //   subTypeState={subTypeState}
+                //   btnText="Add New Entry"
+                //   btnAction="add_Media"
+                //   importUser={false}
+                //   filter={false}
+                //   sortCol={[]}
+                //   handleSort={handleSort}
+                //   data={lmsBrightCove}
+                //   type={type}
+                //   searchQuery={searchQuery}
+                //   setActivePage={setActivePage}
+                //   activePage={activePage}
+                //   searchQueryChangeHandler={
+                //     searchQueryChangeHandlerLMSBrightCove
+                //   }
+                // />
+              )}
+              {/* Media End */}
 
               {type === 'Projects' && subTypeState === 'All Projects' && (
                 <Starter
@@ -1160,7 +1193,7 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  subType="Exported Projects"
+                  subType='Exported Projects'
                   setCurrentTab={setCurrentTab}
                   searchQueryProject={searchQueryProject}
                   setSearchQueryProject={setSearchQueryProject}
@@ -1211,8 +1244,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add Activity Type"
-                  btnAction="add_activity_type"
+                  btnText='Add Activity Type'
+                  btnAction='add_activity_type'
                   data={activityTypes}
                   type={type}
                   setActivePage={setActivePage}
@@ -1221,6 +1254,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityTypes}
+                  setSearchKey={searchActivityTypesQuery}
                 />
               )}
               {type === 'Activities' && subTypeState === 'Activity Items' && (
@@ -1233,8 +1267,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add Activity Item"
-                  btnAction="add_activity_item"
+                  btnText='Add Activity Item'
+                  btnAction='add_activity_item'
                   data={activityItems}
                   type={type}
                   setActivePage={setActivePage}
@@ -1244,6 +1278,7 @@ export default function Pills(props) {
                   setSize={setSize}
                   filteredItems={filterActivityItems}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
+                  setSearchKey={searchActivityItemsQuery}
                 />
               )}
 
@@ -1257,8 +1292,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new subject"
-                  btnAction="add_subject"
+                  btnText='Add a new subject'
+                  btnAction='add_subject'
                   data={subjects}
                   type={type}
                   setActivePage={setActivePage}
@@ -1267,6 +1302,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerSubjects}
+                  setSearchKey={searchSubjectsQuery}
                 />
               )}
 
@@ -1280,8 +1316,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new education level"
-                  btnAction="add_education_level"
+                  btnText='Add a new education level'
+                  btnAction='add_education_level'
                   data={educationLevel}
                   type={type}
                   setActivePage={setActivePage}
@@ -1290,6 +1326,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerEducationLevel}
+                  setSearchKey={searchEducationLevelQuery}
                 />
               )}
 
@@ -1303,8 +1340,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new author tag"
-                  btnAction="add_author_tag"
+                  btnText='Add a new author tag'
+                  btnAction='add_author_tag'
                   data={authorTag}
                   type={type}
                   setActivePage={setActivePage}
@@ -1313,9 +1350,10 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerAuthorTag}
+                  setSearchKey={searchAuthorTagQuery}
                 />
               )}
-              
+
               {type === 'Activities' && subTypeState === 'Activity Layouts' && (
                 <Starter
                   search={true}
@@ -1326,8 +1364,8 @@ export default function Pills(props) {
                   // searchQueryActivities={searchQueryActivities}
                   // setSearchQueryActivities={setSearchQueryActivities}
                   // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add activity layout"
-                  btnAction="add_activity_layout"
+                  btnText='Add activity layout'
+                  btnAction='add_activity_layout'
                   data={activityLayout}
                   type={type}
                   setActivePage={setActivePage}
@@ -1336,6 +1374,7 @@ export default function Pills(props) {
                   size={size}
                   setSize={setSize}
                   searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
+                  setSearchKey={searchLayoutQuery}
                 />
               )}
               {type === 'Settings' && subTypeState === 'LMS settings' && <Starter type={type} subType={'LMS settings'} subTypeState={subTypeState} />}
@@ -1346,8 +1385,8 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   print={false}
-                  btnText="Add Default SSO settings"
-                  btnAction="add_default_sso"
+                  btnText='Add Default SSO settings'
+                  btnAction='add_default_sso'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.defaultsso}
@@ -1369,8 +1408,8 @@ export default function Pills(props) {
                   subType={'LTI Tools'}
                   search={true}
                   print={false}
-                  btnText="Create New LTI Tool"
-                  btnAction="add_lti_tool"
+                  btnText='Create New LTI Tool'
+                  btnAction='add_lti_tool'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.ltitool}

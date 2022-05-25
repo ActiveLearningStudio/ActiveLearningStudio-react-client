@@ -155,7 +155,7 @@ const getItems = (activityTypeId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityItems = (subOrgId, query, page, size, column, orderBy, filterBy) =>
+const getActivityItems = (subOrgId, query, page, size, column = '', orderBy = '', filterBy) =>
   httpService
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${page ? `?page=${page}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
