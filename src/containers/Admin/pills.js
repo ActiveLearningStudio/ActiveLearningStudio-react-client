@@ -670,6 +670,8 @@ export default function Pills(props) {
         activePage,
         size,
         null,
+        null,
+        null,
         projectFilterObj.author_id || null,
         projectFilterObj.created_from || null,
         projectFilterObj.created_to || null,
@@ -890,6 +892,36 @@ export default function Pills(props) {
           col = 'created_at';
       }
       dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, col, orderBy));
+      setCurrentOrderBy(orderBy);
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+      setOrderByColumn(col);
+    } else if (subType == 'All independent activities') {
+      let col = '';
+      switch (column) {
+        case 'Created':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject, col, orderBy));
+
+      setCurrentOrderBy(orderBy);
+      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      setOrderBy(order);
+      setOrderByColumn(col);
+    } else if (subType == 'Exported activities') {
+      let col = '';
+      switch (column) {
+        case 'Created':
+          col = 'created_at';
+          break;
+        default:
+          col = 'created_at';
+      }
+      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject, col, orderBy));
+
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
       setOrderBy(order);

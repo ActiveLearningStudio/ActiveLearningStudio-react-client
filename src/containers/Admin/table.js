@@ -771,7 +771,11 @@ function Table(props) {
                     const updateNew = new Date(row.updated_at);
                     return (
                       <tr key={counter} className="admin-panel-rows">
-                        <td>
+                        <td
+                          onClick={() => {
+                            setCurrentActivity(row.id), setModalShowh5p(true);
+                          }}
+                        >
                           <div className="admin-name-img">
                             <div
                               style={{
@@ -789,7 +793,7 @@ function Table(props) {
                         <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
 
                         <td>{row.id}</td>
-                        <td>{row.author_tags[0]?.name}</td>
+                        <td>{row.users?.[0]?.name}</td>
 
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (

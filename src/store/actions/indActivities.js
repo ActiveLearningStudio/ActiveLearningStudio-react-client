@@ -97,8 +97,8 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   }
 };
 
-export const allAdminExportActivity = (orgId, page, size, search) => async (dispatch) => {
-  const allActivities = await indResourceService.allAdminExportActivity(orgId, page, size, search);
+export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {
+  const allActivities = await indResourceService.allAdminExportActivity(orgId, page, size, search, column, orderBy);
   // console.log("allActivities", allActivities);
   if (allActivities) {
     dispatch({
@@ -178,32 +178,30 @@ export const adminIntActivities = (
   page,
   size,
   searchQueryProject,
+  column = '',
+  orderBy = '',
   authorId,
   createdFrom,
   createdTo,
   updatedFrom,
   updatedTo,
   shared,
-  index,
-  query = '',
-  column = '',
-  orderBy = ''
+  index
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
     page,
     size,
     searchQueryProject,
+    column,
+    orderBy,
     authorId,
     createdFrom,
     createdTo,
     updatedFrom,
     updatedTo,
     shared,
-    index,
-    (query = ''),
-    (column = ''),
-    (orderBy = '')
+    index
   );
   if (allActivities) {
     dispatch({

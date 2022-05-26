@@ -326,7 +326,7 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
 
                 <ul className="dropdown-menu check">
                   <li>
-                    <a>xAPI Download</a>
+                    <a href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}>xAPI Download</a>
                   </li>
                   <li
                     onClick={() => {

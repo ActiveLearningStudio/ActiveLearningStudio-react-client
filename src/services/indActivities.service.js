@@ -23,12 +23,12 @@ const allIndActivity = (subOrgId, page = 1, size = 10) =>
       return Promise.reject(err.response.data);
     });
 
-const allAdminExportActivity = (subOrgId, page = 1, size = 10, search) =>
+const allAdminExportActivity = (subOrgId, page = 1, size = 10, search, column = '', orderBy = '') =>
   httpService
     .get(
       `${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list-independent-activities?page=${page}&size=${size}${
         search && `&query=${search?.replace(/#/, '%23')}`
-      }`
+      }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}`
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -42,29 +42,14 @@ const renderh5pIndependent = (orgId, activityId) =>
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
-const allAdminIntActivities = (
-  subOrgId,
-  page = 1,
-  size = 10,
-  search,
-  authorId,
-  createdFrom,
-  createdTo,
-  updatedFrom,
-  updatedTo,
-  shared,
-  index,
-  query = '',
-  column = '',
-  orderBy = ''
-) =>
+const allAdminIntActivities = (subOrgId, page = 1, size = 10, search, column = '', orderBy = '', authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) =>
   httpService
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}
     ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
 ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
         index ? `&indexing=${index}` : ''
-      }${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}
+      }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}
 
 
     `
