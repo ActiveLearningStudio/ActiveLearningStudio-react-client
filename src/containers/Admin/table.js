@@ -793,7 +793,7 @@ function Table(props) {
                         <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
 
                         <td>{row.id}</td>
-                        <td>{row.users?.[0]?.name}</td>
+                        <td>{row.user?.name}</td>
 
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
