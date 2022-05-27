@@ -55,10 +55,10 @@ const Media = () => {
                             name='videoall'
                             type='checkbox'
                             label='Selectall'
-                            checked={orgVideoSource?.length === 6 ? true : false}
+                            checked={orgVideoSource?.length === 5 ? true : false}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setorgVideoSource(allVideoSource);
+                                setorgVideoSource(allVideoSource.filter((source) => source.name !== 'Safari Montage'));
                               } else {
                                 setorgVideoSource([]);
                               }
@@ -101,27 +101,29 @@ const Media = () => {
                         <div>
                           {allMediaSources?.mediaSources?.Video?.map((source, counter) => {
                             const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
-                            return (
-                              <div className='media-field-checkbox' key={counter}>
-                                <input
-                                  name={source.name}
-                                  type='checkbox'
-                                  className='media-sources-checkboxes '
-                                  checked={isVideoSource?.length > 0 ? true : false}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setorgVideoSource([...orgVideoSource, source]);
-                                    } else {
-                                      setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
-                                    }
-                                  }}
-                                  disabled={source.name === 'Safari Montage' ? true : false}
-                                />
-                                <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
-                                  {source.name}
-                                </span>
-                              </div>
-                            );
+                            if (source.name !== 'Safari Montage') {
+                              return (
+                                <div className='media-field-checkbox' key={counter}>
+                                  <input
+                                    name={source.name}
+                                    type='checkbox'
+                                    className='media-sources-checkboxes '
+                                    checked={isVideoSource?.length > 0 ? true : false}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setorgVideoSource([...orgVideoSource, source]);
+                                      } else {
+                                        setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
+                                      }
+                                    }}
+                                    disabled={source.name === 'Safari Montage' ? true : false}
+                                  />
+                                  <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
+                                    {source.name}
+                                  </span>
+                                </div>
+                              );
+                            }
                           })}
                         </div>
                       </div>
@@ -140,10 +142,10 @@ const Media = () => {
                             name='imageall'
                             type='checkbox'
                             label='Selectall'
-                            checked={orgImageSource?.length === 3 ? true : false}
+                            checked={orgImageSource?.length === 2 ? true : false}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setorgImageSource(allImageSource);
+                                setorgImageSource(allImageSource.filter((source) => source.name !== 'Safari Montage'));
                               } else {
                                 setorgImageSource([]);
                               }
@@ -185,26 +187,28 @@ const Media = () => {
                         <div>
                           {allMediaSources?.mediaSources?.Image?.map((source, counter) => {
                             const isImageSource = orgImageSource?.filter((orgVideo) => orgVideo.name === source.name);
-                            return (
-                              <div className='media-field-checkbox' key={counter}>
-                                <input
-                                  name={source.name}
-                                  type='checkbox'
-                                  checked={isImageSource?.length > 0 ? true : false}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setorgImageSource([...orgImageSource, source]);
-                                    } else {
-                                      setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
-                                    }
-                                  }}
-                                  disabled={source.name === 'Safari Montage' ? true : false}
-                                />
-                                <span id={isImageSource.length > 0 && 'span-sub-selected'} className='span-sub'>
-                                  {source.name}
-                                </span>
-                              </div>
-                            );
+                            if (source.name !== 'Safari Montage') {
+                              return (
+                                <div className='media-field-checkbox' key={counter}>
+                                  <input
+                                    name={source.name}
+                                    type='checkbox'
+                                    checked={isImageSource?.length > 0 ? true : false}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setorgImageSource([...orgImageSource, source]);
+                                      } else {
+                                        setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
+                                      }
+                                    }}
+                                    disabled={source.name === 'Safari Montage' ? true : false}
+                                  />
+                                  <span id={isImageSource.length > 0 && 'span-sub-selected'} className='span-sub'>
+                                    {source.name}
+                                  </span>
+                                </div>
+                              );
+                            }
                           })}
                         </div>
                       </div>

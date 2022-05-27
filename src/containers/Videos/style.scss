@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .myvideomain {
   .inner-content {
@@ -47,6 +47,13 @@
     .video-default-contianer {
       padding-top: 122px;
       padding-left: 104px;
+      display: flex;
+      justify-content: space-between;
+
+      img {
+        max-width: 600px;
+        margin-right: 30px;
+      }
       .video-heading-1 {
         h2 {
           border: none !important;

@@ -118,32 +118,34 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading text="1. Add a video" tabActive={true} />
-          <TabsHeading text="2. Describe video" className="ml-10" tabActive={true} />
+          <TabsHeading text={activityPreview ? '1. Add an activity' : '1. Add a video'} tabActive={true} />
+          <TabsHeading text={activityPreview ? '1. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
-            <HeadingTwo text="Interactive Video" color="#084892" />
+            <HeadingTwo text={activityPreview ? 'Independent Activity' : 'Interactive Video'} color="#084892" />
           </div>
-          <div
-            className="back-button"
-            id="back-button-none-bg"
-            onClick={() => {
-              if (showback) {
-                changeScreenHandler('addvideo');
-              } else {
-                setScreenStatus('AddVideo');
-              }
-            }}
-          >
-            {/* <img src={BackButton} alt="back button " /> */}
-            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-              <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <p className="">Back to options</p>
-          </div>
+          {!activityPreview && (
+            <div
+              className="back-button"
+              id="back-button-none-bg"
+              onClick={() => {
+                if (showback) {
+                  changeScreenHandler('addvideo');
+                } else {
+                  setScreenStatus('AddVideo');
+                }
+              }}
+            >
+              {/* <img src={BackButton} alt="back button " /> */}
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <p className="">Back to options</p>
+            </div>
+          )}
           {/* <div className="add-describevideo-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />

@@ -10,6 +10,7 @@ import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 import store from '../index';
+import { unescape } from 'lodash';
 
 // global variable for h5p object
 let h5pid;
@@ -243,7 +244,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       playlist_id: playlistId,
       thumb_url: metadata?.thumb_url,
       action: 'create',
-      title: metadata?.title,
+      title: unescape(metadata?.title),
       type: 'h5p',
       content: 'place_holder',
       subject_id: metadata?.subject_id,
@@ -626,7 +627,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     playlist_id: playlistId,
     thumb_url: metadata?.thumb_url,
     action: 'create',
-    title: metadata?.title,
+    title: unescape(metadata?.title),
     type: 'h5p',
     content: 'place_holder',
     subject_id: metadata.subject_id,
@@ -699,7 +700,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     playlist_id: activity.playlist.id,
     thumb_url: metadata?.thumb_url,
     action: 'create',
-    title: metadata?.title,
+    title: unescape(metadata?.title),
     type: 'h5p',
     content: 'place_holder',
     subject_id: formatSelectBoxData(metadata.subject_id),

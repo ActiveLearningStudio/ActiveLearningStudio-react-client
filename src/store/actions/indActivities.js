@@ -82,7 +82,7 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   dispatch({
     type: actionTypes.ALL_IND_ACTIVITIES_REQUEST,
   });
-  const allActivities = await indResourceService.allAdminIntActivities(orgId, page, size, search);
+  const allActivities = await indResourceService.allIndActivity(orgId, page, size, search);
   // console.log("allActivities", allActivities);
   if (allActivities) {
     dispatch({

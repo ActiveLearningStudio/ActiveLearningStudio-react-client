@@ -24,7 +24,6 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
-  const [activeKey, setActiveKey] = useState('Mydevice');
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
   const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
@@ -32,7 +31,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [showSidebar, setShowSidebar] = useState(true);
   const [platform, setplatform] = useState('Mydevice');
   const [mediaSources, setMediaSources] = useState([]);
-
+  const [activeKey, setActiveKey] = useState(mediaSources[0]?.name);
   const { editVideo } = useSelector((state) => state.videos);
 
   useEffect(() => {
@@ -169,7 +168,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
               }}
               id='controlled-tab-example'
             >
-              {!editVideo && mediaSources.some((obj) => obj.name === 'My device') ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Video') ? (
                 <Tab
                   eventKey='Mydevice'
                   title='My device'

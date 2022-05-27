@@ -809,7 +809,37 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
+        {type === 'Projects' && subType === 'All Projects' && (
+          <button
+            className="switch-libreq"
+            type="button"
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
+            onClick={() => {
+              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              setLibraryReqSelected(!libraryReqSelected);
+            }}
+          >
+            {/* <img src={eye} alt="eye" /> */}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
+              <path
+                d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
+                stroke={primaryColor}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Library request to review
+          </button>
+        )}
+        {subType === 'All independent activities' && (
           <button
             className="switch-libreq"
             type="button"

@@ -178,8 +178,9 @@ const PreviewLayoutModel = (props) => {
               <>
                 <div className="add-activity-form">
                   <div className="add-activity-tabs" style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Tabs text="1. Add a video" className="m-2" tabActive={true} />
-                    <Tabs text="2. Describe video" className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? '1. Add an activity' : '1. Add a video'} className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? '1. Describe activity' : '2. Describe video'} className="m-2" tabActive={true} />
+
                     <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
                   </div>
                 </div>

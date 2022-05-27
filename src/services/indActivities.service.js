@@ -15,9 +15,9 @@ const create = (subOrgId, activity) =>
       Promise.reject(err.response.data);
     });
 
-const allIndActivity = (subOrgId, page = 1, size = 10) =>
+const allIndActivity = (subOrgId, page = 1, size = 10, search) =>
   httpService
-    .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}`)
+    .get(`${apiVersion}/suborganization/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}`)
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);

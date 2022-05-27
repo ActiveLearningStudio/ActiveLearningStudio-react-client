@@ -9,7 +9,7 @@ import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import './style.scss';
 import '../Admin/style.scss';
-
+import initialpic from 'assets/images/no-project-found.png';
 import HeadingText from 'utils/HeadingText/headingtext';
 import MyActivity from 'containers/MyActivity';
 import VideoImage from 'assets/images/svg/Interactivevideos.svg';
@@ -37,7 +37,7 @@ const Index = ({ activities }) => {
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
   const { allActivities, isLoading } = useSelector((state) => state.activities);
-  // const { isLoading } = useSelector((state) => state.isLoading);
+  const [activescreenType, setActiveScreenPage] = useState('');
   const { allVideos } = videos;
   const [searchQuery, setSearchQuery] = useState('');
   const [ActivePage, setActivePage] = useState(1);
@@ -51,7 +51,20 @@ const Index = ({ activities }) => {
     if (activeOrganization && activities) {
       dispatch(allIndActivity(activeOrganization.id));
     }
+    if (activities) {
+      setActiveScreenPage('allActivities');
+    } else {
+      setActiveScreenPage('allVideos');
+    }
   }, [activeOrganization, activities]);
+
+  useEffect(() => {
+    if (activities) {
+      setActiveScreenPage(allActivities);
+    } else {
+      setActiveScreenPage(allVideos);
+    }
+  }, [allActivities, allVideos]);
 
   console.log('allActivities-allActivities', allActivities);
 
@@ -143,8 +156,11 @@ const Index = ({ activities }) => {
                         <input
                           placeholder="Search library..."
                           onChange={(e) => {
-                            // setSearchActivity(e.target.value);
-                            dispatch(allIndActivity(activeOrganization.id, 1, 10, e.target.value));
+                            if (activities) {
+                              dispatch(allIndActivity(activeOrganization.id, 1, 10, e.target.value));
+                            } else {
+                              dispatch(getAllVideos(activeOrganization.id, 1, 10, e.target.value));
+                            }
                           }}
                           // onKeyPress={(e) => {
                           //   if (e.key === "Enter") {
@@ -228,37 +244,42 @@ const Index = ({ activities }) => {
                   </div>
                 </div>
                 <div className="my-interactive-videos">
-                  {!allVideos?.data?.length && false ? (
+                  {!activescreenType?.data?.length ? (
                     <>
                       <div className="video-default-contianer">
-                        <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
-                        <HeadingText
-                          text={
-                            activities
-                              ? 'We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.'
-                              : 'Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired.'
-                          }
-                          className="video-heading-2"
-                        />
-                        <HeadingThree
-                          text={
-                            activities
-                              ? ' Start by creating a new Activity or choose a guide from the right to learn more.'
-                              : 'Start by pressing “Create a video” and make your content live!'
-                          }
-                          className="video-heading-3"
-                        />
-                        <div className="vedio-help">
-                          <p>
-                            Feeling lost? Go to <span>Help Center</span>
-                          </p>
+                        <div>
+                          <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
+                          <HeadingText
+                            text={
+                              activities
+                                ? 'We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.'
+                                : 'Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired.'
+                            }
+                            className="video-heading-2"
+                          />
+                          <HeadingThree
+                            text={
+                              activities
+                                ? ' Start by creating a new Activity or choose a guide from the right to learn more.'
+                                : 'Start by pressing “Create a video” and make your content live!'
+                            }
+                            className="video-heading-3"
+                          />
+                          <div className="vedio-help">
+                            <p>
+                              Feeling lost? Go to <span>Help Center</span>
+                            </p>
+                          </div>
                         </div>
+                        <img src={initialpic} alt="initial-project-screen" />
                       </div>
                     </>
                   ) : (
                     <>
                       {isLoading ? (
-                        <Alert variant="primary">Loading data...</Alert>
+                        <Alert mt="10px" variant="primary">
+                          Loading data...
+                        </Alert>
                       ) : (
                         <>
                           <div className="video-cards-contianer">

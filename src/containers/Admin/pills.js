@@ -277,12 +277,30 @@ export default function Pills(props) {
   }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size, searchQueryProject, libraryReqSelected]);
 
   useMemo(() => {
-    if (subTypeState === 'All independent activities' && activeOrganization?.id) {
-      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject));
+    if (libraryReqSelected && subTypeState === 'All independent activities') {
+      dispatch(
+        adminIntActivities(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject,
+          orderByColumn,
+          currentOrderBy,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          1
+        )
+      );
+    } else if (subTypeState === 'All independent activities' && activeOrganization?.id) {
+      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject, orderByColumn, currentOrderBy));
     } else if (subTypeState === 'Exported activities' && activeOrganization?.id) {
-      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject));
+      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject, orderByColumn, currentOrderBy));
     }
-  }, [activeOrganization?.id, type, activePage, subTypeState, size, searchQueryProject]);
+  }, [activeOrganization?.id, type, activePage, subTypeState, size, searchQueryProject, libraryReqSelected]);
 
   // Activity Tab Business Logic
   useEffect(() => {
@@ -324,58 +342,6 @@ export default function Pills(props) {
       }
     }
   };
-  // Stats User Report
-  useEffect(() => {
-    if (type === 'Stats' && subTypeState === 'Report' && searchQueryStats) {
-      setUserReportStats(null);
-      let result = dispatch(getUserReport('all', size, activePage, searchQueryStats));
-      result.then((data) => {
-        setUserReportStats(data);
-      });
-    } else if (type === 'Stats' && subTypeState === 'Report' && (activePage !== organization?.activePage || size !== organization?.size)) {
-      //pagination
-      setUserReportStats(null);
-      let result = dispatch(getUserReport('all', size, activePage, ''));
-      result.then((data) => {
-        setUserReportStats(data);
-      });
-    } else if (type === 'Stats' && subTypeState === 'Report' && (activePage === 1 || size === 10)) {
-      //on page 1
-      setUserReportStats(null);
-      let result = dispatch(getUserReport('all'));
-      result.then((data) => {
-        setUserReportStats(data);
-      });
-    }
-    if (type === 'Stats' && subTypeState === 'Queues: Jobs' && searchQueryStats) {
-      let result = dispatch(getJobListing(jobType.value, size, activePage, searchQueryStats));
-      result.then((data) => setJobs(data.data));
-    } else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage !== organization?.activePage || size !== organization?.size) && jobType) {
-      const result = dispatch(getJobListing(jobType.value, size, activePage));
-      result.then((data) => {
-        setJobs(data.data);
-      });
-    } else if (type === 'Stats' && subTypeState === 'Queues: Jobs' && (activePage === 1 || size === 10)) {
-      const result = dispatch(getJobListing(jobType.value));
-      result.then((data) => {
-        setJobs(data.data);
-      });
-    }
-    if (type === 'Stats' && subTypeState === 'Queues: Logs' && searchQueryStats) {
-      let result = dispatch(getLogsListing(logType.value, size, activePage, searchQueryStats));
-      result.then((data) => setLogs(data.data));
-    } else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage !== organization?.activePage || size !== organization?.size) && logType) {
-      const result = dispatch(getLogsListing(logType.value, size, activePage));
-      result.then((data) => {
-        setLogs(data.data);
-      });
-    } else if (type === 'Stats' && subTypeState === 'Queues: Logs' && (activePage === 1 || size === 10)) {
-      const result = dispatch(getLogsListing(logType.value));
-      result.then((data) => {
-        setLogs(data.data);
-      });
-    }
-  }, [activePage, subTypeState, type, size, jobType, logType]);
 
   //LMS project ***************************************
   useMemo(async () => {
@@ -1234,7 +1200,6 @@ export default function Pills(props) {
                   setProjectFilterObj={setProjectFilterObj}
                   filterSearch={filterSearch}
                   libraryReqSelected={libraryReqSelected}
-                  setLibraryReqSelected={setLibraryReqSelected}
                   setCurrentTab={setCurrentTab}
                   setAllProjectTab={setAllProjectTab}
                   resetProjectFilter={resetProjectFilter}
