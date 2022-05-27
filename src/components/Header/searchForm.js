@@ -41,20 +41,20 @@ function SearchForm() {
 
   useEffect(() => {
     if (currentOrganization?.id) {
-      if (subjects.length === 0) {
-        const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
-        resultSub.then((data) => setSubjects(data));
-      }
-      if (authorTags.length === 0) {
-        const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
-        resultAuth.then((data) => setAuthorTags(data));
-      }
-      if (educationLevels.length === 0) {
-        const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
-        resultEdu.then((data) => setEducationLevels(data));
-      }
+      // if (subjects.length === 0) {
+      const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
+      resultSub.then((data) => setSubjects(data));
+      // }
+      // if (authorTags.length === 0) {
+      const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+      resultAuth.then((data) => setAuthorTags(data));
+      // }
+      // if (educationLevels.length === 0) {
+      const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+      resultEdu.then((data) => setEducationLevels(data));
+      // }
     }
-  }, [currentOrganization?.id, authorTags.length, dispatcher, educationLevels.length, subjects.length]);
+  }, [currentOrganization, dispatcher]);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
