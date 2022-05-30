@@ -15,7 +15,7 @@ import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos,
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platform, showSidebar, setSelectedVideoIdKaltura } = props;
+  const { platform, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [vimeo, setVimeo] = useState(null);
@@ -389,12 +389,13 @@ const BrightcoveModel = (props) => {
                                                 props.setSelectedVideoIdVimeo(data.link);
                                               }}
                                               type="radio"
+                                              checked={selectedVideoIdVimeo === data.link ? true : false}
                                             />
                                             <img src={data?.pictures?.base_link} className="image-size" />
                                             <span>{data.name}</span>
                                           </td>
                                           <td>{created?.toLocaleDateString()}</td>
-                                          <td>{data.resource_key}</td>
+                                          <td>{data.uri?.split('/')?.[data.uri.split('/').length - 1]}</td>
                                           <td>{update?.toLocaleDateString()}</td>
                                         </tr>
                                       );
@@ -462,7 +463,7 @@ const BrightcoveModel = (props) => {
             />
             <Buttons
               primary={true}
-              text="Add File"
+              text="Add Video"
               width="106px"
               height="32px"
               hover={true}
