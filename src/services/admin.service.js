@@ -42,10 +42,10 @@ const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, u
       Promise.reject(err.response.data);
     });
 
-const getAllExportedProject = (page, size, query = '', column = '', orderBy = '') =>
+const getAllExportedProject = (subOrgId, page, size, query = '', column = '', orderBy = '') =>
   httpService
     .get(
-      `/${apiVersion}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}
+      `/${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
     )
     .then(({ data }) => data)

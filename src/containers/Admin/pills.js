@@ -262,14 +262,14 @@ export default function Pills(props) {
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
-        const userproject = adminService.getAllExportedProject(activePage, size, searchQueryProject);
+        const userproject = adminService.getAllExportedProject(activeOrganization?.id, activePage, size, searchQueryProject);
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
           })
           .catch((e) => setAllProjectUserTab([]));
       } else {
-        const result = await adminService.getAllExportedProject(activePage || 1, size);
+        const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size);
         setAllProjectUserTab(result);
       }
     }
@@ -318,7 +318,7 @@ export default function Pills(props) {
     } else if (type === 'Activities' && subTypeState === 'Activity Types') {
       //on page 1
       // dispatch(loadResourceTypesAction());
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery))
+      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery));
       dispatch(updatePageNumber(activePage));
     }
   }, [activePage, subTypeState, type, size, activeOrganization]);
@@ -770,7 +770,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy,));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -800,7 +800,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, col, orderBy,));
+      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, col, orderBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -922,7 +922,7 @@ export default function Pills(props) {
         default:
           col = 'created_at';
       }
-      const result = await adminService.getAllExportedProject(activePage || 1, size, '', col, orderBy);
+      const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size, '', col, orderBy);
       setAllProjectUserTab(result);
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
@@ -974,7 +974,7 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
-      id='controlled-tab-example'
+      id="controlled-tab-example"
       activeKey={key}
       onSelect={(key) => {
         setSubTypeState(key);
@@ -997,14 +997,14 @@ export default function Pills(props) {
         ?.filter((data) => !!data)
         ?.map((asset) => (
           <Tab key={asset} eventKey={asset} title={asset}>
-            <div key={asset} className='module-content-inner'>
+            <div key={asset} className="module-content-inner">
               {type === 'Users' && subTypeState === 'All Users' && (
                 <Starter
                   paginationCounter={true}
                   search={true}
                   print={false}
-                  btnText='Add user'
-                  btnAction='create_user'
+                  btnText="Add user"
+                  btnAction="create_user"
                   importUser={true}
                   filter={false}
                   tableHead={columnData.userall}
@@ -1033,13 +1033,13 @@ export default function Pills(props) {
                   paginationCounter={false}
                   search={false}
                   print={false}
-                  btnText='Add Role'
-                  btnAction='add_role'
+                  btnText="Add Role"
+                  btnAction="add_role"
                   importUser={false}
                   filter={false}
                   subTypeState={subTypeState}
                   tableHead={[]}
-                  subType='Manage Roles'
+                  subType="Manage Roles"
                   sortCol={[]}
                   handleSort={handleSort}
                   data={[]}
@@ -1054,8 +1054,8 @@ export default function Pills(props) {
                 <Starter
                   search={true}
                   print={false}
-                  btnText='Add Organization'
-                  btnAction='add_org'
+                  btnText="Add Organization"
+                  btnAction="add_org"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.organization}
@@ -1080,8 +1080,8 @@ export default function Pills(props) {
                   subType={'LMS settings'}
                   search={true}
                   print={false}
-                  btnText='Add LMS settings'
-                  btnAction='add_lms'
+                  btnText="Add LMS settings"
+                  btnAction="add_lms"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.lmssettings}
@@ -1103,8 +1103,8 @@ export default function Pills(props) {
                   subType={'BrightCove'}
                   search={true}
                   print={false}
-                  btnText='Add New Entry'
-                  btnAction='add_brightcove'
+                  btnText="Add New Entry"
+                  btnAction="add_brightcove"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
@@ -1193,7 +1193,7 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  subType='Exported Projects'
+                  subType="Exported Projects"
                   setCurrentTab={setCurrentTab}
                   searchQueryProject={searchQueryProject}
                   setSearchQueryProject={setSearchQueryProject}
@@ -1244,8 +1244,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add Activity Type'
-                  btnAction='add_activity_type'
+                  btnText="Add Activity Type"
+                  btnAction="add_activity_type"
                   data={activityTypes}
                   type={type}
                   setActivePage={setActivePage}
@@ -1267,8 +1267,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add Activity Item'
-                  btnAction='add_activity_item'
+                  btnText="Add Activity Item"
+                  btnAction="add_activity_item"
                   data={activityItems}
                   type={type}
                   setActivePage={setActivePage}
@@ -1292,8 +1292,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add a new subject'
-                  btnAction='add_subject'
+                  btnText="Add a new subject"
+                  btnAction="add_subject"
                   data={subjects}
                   type={type}
                   setActivePage={setActivePage}
@@ -1316,8 +1316,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add a new education level'
-                  btnAction='add_education_level'
+                  btnText="Add a new education level"
+                  btnAction="add_education_level"
                   data={educationLevel}
                   type={type}
                   setActivePage={setActivePage}
@@ -1340,8 +1340,8 @@ export default function Pills(props) {
                   searchQueryActivities={searchQueryActivities}
                   setSearchQueryActivities={setSearchQueryActivities}
                   searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add a new author tag'
-                  btnAction='add_author_tag'
+                  btnText="Add a new author tag"
+                  btnAction="add_author_tag"
                   data={authorTag}
                   type={type}
                   setActivePage={setActivePage}
@@ -1364,8 +1364,8 @@ export default function Pills(props) {
                   // searchQueryActivities={searchQueryActivities}
                   // setSearchQueryActivities={setSearchQueryActivities}
                   // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText='Add activity layout'
-                  btnAction='add_activity_layout'
+                  btnText="Add activity layout"
+                  btnAction="add_activity_layout"
                   data={activityLayout}
                   type={type}
                   setActivePage={setActivePage}
@@ -1385,8 +1385,8 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   print={false}
-                  btnText='Add Default SSO settings'
-                  btnAction='add_default_sso'
+                  btnText="Add Default SSO settings"
+                  btnAction="add_default_sso"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.defaultsso}
@@ -1408,8 +1408,8 @@ export default function Pills(props) {
                   subType={'LTI Tools'}
                   search={true}
                   print={false}
-                  btnText='Create New LTI Tool'
-                  btnAction='add_lti_tool'
+                  btnText="Create New LTI Tool"
+                  btnAction="add_lti_tool"
                   importUser={false}
                   filter={false}
                   tableHead={columnData.ltitool}
