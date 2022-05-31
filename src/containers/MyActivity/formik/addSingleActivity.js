@@ -49,12 +49,16 @@ const ActivityLayout = (props) => {
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
   const allActivitytypes = useSelector((state) => state.resource.types);
   useEffect(() => {
-    setLayout(allActivity?.[0] || null);
     setAllSingleActivities(allActivity);
     if (allActivity) {
       toast.dismiss();
     }
   }, [allActivity]);
+
+useEffect(() => {
+  setLayout(allActivitiesSingle?.[0] || null);
+}, [allActivitiesSingle]);
+
   useEffect(() => {
     const setData = [];
     allActivitytypes?.data?.forEach((data) => {
