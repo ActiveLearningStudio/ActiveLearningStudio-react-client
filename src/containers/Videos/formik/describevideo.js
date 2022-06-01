@@ -124,7 +124,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
-            <HeadingTwo text={activityPreview ? 'Independent Activity' : 'Interactive Video'} color="#084892" />
+            <HeadingTwo text={activityPreview ? editVideo?.h5p_content?.library?.title : 'Interactive Video'} color="#084892" />
           </div>
           {!activityPreview && (
             <div
