@@ -27,6 +27,7 @@ import AddVideoCard from 'utils/AddVideoCard/addvideocard';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
+import SearchForm from 'components/Header/searchForm';
 
 const Index = ({ activities }) => {
   const [openMyVideo, setOpenVideo] = useState(false);
@@ -167,31 +168,15 @@ const Index = ({ activities }) => {
                     </div>
                     <div className="search-bar-btn">
                       {/* Search Start */}
-                      <div className="search-bar-activity">
-                        <input
-                          placeholder="Search library..."
-                          onChange={(e) => {
-                            if (activities) {
-                              dispatch(allIndActivity(activeOrganization.id, 1, 10, e.target.value));
-                            } else {
-                              dispatch(getAllVideos(activeOrganization.id, 1, 10, e.target.value));
-                            }
-                          }}
-                          // onKeyPress={(e) => {
-                          //   if (e.key === "Enter") {
-                          //     dispatch(
-                          //       allIndActivity(
-                          //         activeOrganization.id,
-                          //         1,
-                          //         10,
-                          //         searchActivity
-                          //       )
-                          //     );
-                          //   }
-                          // }}
-                        />
-                        <FontAwesomeIcon icon={faSearch} color={primaryColor} />
-                      </div>
+                      {activities && (
+                        <div className="project-headline">
+                          <div className="search-main-relaced">
+                            <div className="search-div">
+                              <SearchForm />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       {/* Search End */}
                       <div>
                         {activities ? (
@@ -258,11 +243,77 @@ const Index = ({ activities }) => {
                     </div>
                   </div>
                 </div>
+                {!activities && (
+                  <div className="video-cards-top-search-filter">
+                    <div className="search-bar">
+                      <input
+                        className=""
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value);
+                          if (activeOrganization) {
+                            if (e.target.value.trim()) {
+                              dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                            } else {
+                              dispatch(getAllVideos(activeOrganization.id));
+                            }
+                          }
+                        }}
+                        placeholder="Search"
+                      />
+                      {/* <img
+                            src={searchimg}
+                            alt="search"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              if (activeOrganization) {
+                                dispatch(
+                                  getSearchVideoCard(
+                                    activeOrganization.id,
+                                    searchQuery
+                                  )
+                                );
+                              }
+                            }}
+                          /> */}
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          if (activeOrganization) {
+                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                          }
+                        }}
+                      >
+                        <path
+                          d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    {/* <div className="video-filter-bar">
+                            <FontAwesomeIcon icon={faFilter} color="#084892" />
+                            <span>Filter</span>
+                          </div> */}
+                  </div>
+                )}
                 <div className="my-interactive-videos">
                   {!activescreenType?.data?.length ? (
                     <>
+                      {/* <Alert mt="10px" variant="warning">
+                        No Data Available
+                      </Alert> */}
                       <div className="video-default-contianer">
-                        <div>
+                        <div style={{ maxWidth: '50%' }}>
                           <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
                           <HeadingText
                             text={
