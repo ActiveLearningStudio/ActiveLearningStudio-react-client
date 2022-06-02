@@ -16,7 +16,7 @@ import {
   googleClassRoomLoginFailureAction,
   googleClassRoomCourseTopicAction,
 } from 'store/actions/gapi';
-import { copyProject, publishPlaylist, publishActivity, publistActivity } from 'store/actions/share';
+import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity } from 'store/actions/share';
 
 const GoogleLoginModal = ({
   show,
@@ -85,12 +85,23 @@ const GoogleLoginModal = ({
       }
     }
     else if (params.playlistId != 0 && params.activityId != 0){
-      if (typeof params.values.course == 'undefined') {
-        publistActivity(params.projectId, null, null, params.playlistId, params.activityId, params.tokenTemp);
-      } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
-        publistActivity(params.projectId, params.values.course, null, params.playlistId, params.activityId, params.tokenTemp);
-      } else {
-        publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.activityId, params.tokenTemp);
+      if(params.playlistId === 999999) {
+        if (typeof params.values.course == 'undefined') {
+          publishIdependentActivity(null, null, params.activityId, params.tokenTemp);
+        } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
+          publishIdependentActivity(params.values.course, null, params.activityId, params.tokenTemp);
+        } else {
+          publishIdependentActivity(params.values.course, params.values.playlist, params.activityId, params.tokenTemp);
+        }
+      }
+      else {
+        if (typeof params.values.course == 'undefined') {
+          publistActivity(params.projectId, null, null, params.playlistId, params.activityId, params.tokenTemp);
+        } else if ((typeof params.values.course == 'undefined') && (typeof params.values.playlist == 'undefined')) {
+          publistActivity(params.projectId, params.values.course, null, params.playlistId, params.activityId, params.tokenTemp);
+        } else {
+          publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.activityId, params.tokenTemp);
+        }
       }
     }
     else if (params.playlistId != 0 && params.activityId == 0)
