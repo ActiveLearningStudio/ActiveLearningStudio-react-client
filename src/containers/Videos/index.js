@@ -26,6 +26,7 @@ import { allIndActivity, adminIntActivities } from 'store/actions/indActivities'
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
 
 const Index = ({ activities }) => {
@@ -44,6 +45,8 @@ const Index = ({ activities }) => {
   const [ActivePage, setActivePage] = useState(1);
   const [currentActivity, setCurrentActivity] = useState(null);
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState(0);
 
   useEffect(() => {
     if (activeOrganization && !activities) {
@@ -71,6 +74,18 @@ const Index = ({ activities }) => {
 
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
+
+  const handleShow = () => {
+    setShow(true); //! state.show
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const setActivityId = (activityId) => {
+    setSelectedActivityId(activityId);
+  };
   return (
     <>
       {openMyVideo && (
@@ -350,6 +365,8 @@ const Index = ({ activities }) => {
                                           activities={activities}
                                           isActivityCard={true}
                                           permission={permission}
+                                          handleShow={handleShow}
+                                          setSelectedActivityId={setActivityId}
                                         />
                                       </>
                                     );
@@ -413,6 +430,12 @@ const Index = ({ activities }) => {
       </div>
       <MyActivity playlistPreview activityPreview />
       <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={activities} />
+      <GoogleModel
+        playlistId={999999}//pass just for showing activity selectbox on google share popup
+        activityId={selectedActivityId}
+        show={show} // {props.show}
+        onHide={handleClose}
+      />
     </>
   );
 };

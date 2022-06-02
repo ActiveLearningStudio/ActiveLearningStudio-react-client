@@ -15,7 +15,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getIndex } from 'store/actions/indActivities';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 
-const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOpenVideo, className, data, selectionStatus = false, permission, activities, isActivityCard }) => {
+const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOpenVideo, className, data, selectionStatus = false, permission, activities, isActivityCard, handleShow, setSelectedActivityId }) => {
   const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
   const currikiUtility = classNames('curriki-utility-addvideo-card', className);
   const dispatch = useDispatch();
@@ -63,6 +63,8 @@ const AddVideoCard = ({ setModalShow, setCurrentActivity, setScreenStatus, setOp
               setOpenVideo={setOpenVideo}
               setScreenStatus={setScreenStatus}
               permission={permission}
+              handleShow={handleShow}
+              setSelectedActivityId={setSelectedActivityId}
             />
           </div>
           <div className="addvideo-card-title">
