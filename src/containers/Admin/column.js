@@ -41,10 +41,10 @@ export const columnData = {
   organizationSortCol: ['Name'],
 
   IntegrationBrightCove: ['Studio org ID', 'Account ID', 'BrightCove email ID ', 'Account name', 'Description', 'Key', 'Secret', 'CSS'],
-  
+
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   defaultssoSortCol: ['Site Name'],
-  
+
   ltitool: ['Name', 'URL', 'Tool type', 'User', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],
 
@@ -56,10 +56,16 @@ export const columnData = {
 
   authorTags: ['Name', 'Order', ''],
   authorTagsSortCol: ['Order'],
-  
+
   activityLayouts: ['Name', 'Order', 'Items'],
   activityLayoutsSortCol: ['Order'],
-  
+
   teams: ['Name', 'Created', 'Description', 'Members', 'Projects', 'Updated'],
   teamsSortCol: ['Created'],
+
+  indActivitiesCol: ['Name', 'Created', 'ID', 'Author', 'Library', 'Library preference', 'Sharing', 'Updated'],
+  indActivitiesSortCol: ['Created'],
+
+  indActivitiesExportCol: ['Name', 'Created', 'Expired date', 'Download'],
+  indActivitiesExportSortCol: ['Created'],
 };

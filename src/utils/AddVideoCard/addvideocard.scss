@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .curriki-utility-addvideo-card {
   margin-right: 30px;
@@ -14,15 +14,11 @@
     position: relative;
     height: 156px;
     &:before {
-      background: linear-gradient(
-        180deg,
-        rgba(81, 81, 81, 0.2) 0%,
-        rgba(0, 0, 0, 0.8) 100%
-      );
+      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       //   background-color: rgba(113, 117, 119, 0.7);
-      content: "";
+      content: '';
       display: block;
       height: 100%;
       position: absolute;
@@ -51,7 +47,7 @@
   .addvideo-card-detail {
     padding: 24px 16px 16px 16px;
     p {
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -67,7 +63,7 @@
     margin-left: 16px;
     .share-text {
       span {
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 12px;
@@ -86,7 +82,7 @@
     text-align: right;
     span {
       margin-left: 8px;
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -94,4 +90,48 @@
       color: #515151;
     }
   }
+  .addvideo-card-add-share-options {
+    margin-bottom: 25px;
+    margin-right: 20px;
+  }
+  .activity-update-lib {
+    padding: 0px 16px 24px 16px;
+    .activity-update {
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .activity-lib {
+      margin-top: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      span {
+        color: $curriki-main-blue;
+      }
+    }
+  }
+}
+.hover-apply {
+  &:hover {
+    opacity: 1;
+    transition: 0.3s;
+    background-color: #f1f1f1;
+    padding: 8px;
+    border-radius: 4px;
+    .textinButton {
+      display: inline-flex;
+      // margin-left: -10px;
+      margin-right: 5px;
+      // opacity: 1;
+    }
+  }
+}
+
+.textinButton {
+  display: none;
 }

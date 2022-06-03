@@ -15,7 +15,7 @@ const PreviewLayoutModel = (props) => {
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const { platform, videoId } = useSelector((state) => state.videos);
   const dispatch = useDispatch();
-  const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData } = props;
+  const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData, activityPreview } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
   const [showActivitySearch, setShowActivitySearch] = useState(false);
@@ -178,8 +178,9 @@ const PreviewLayoutModel = (props) => {
               <>
                 <div className="add-activity-form">
                   <div className="add-activity-tabs" style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Tabs text="1. Add a video" className="m-2" tabActive={true} />
-                    <Tabs text="2. Describe video" className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? '1. Add an activity' : '1. Add a video'} className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? '1. Describe activity' : '2. Describe video'} className="m-2" tabActive={true} />
+
                     <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
                   </div>
                 </div>
@@ -199,6 +200,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {platform === 'Brightcove' && !editVideo && (
@@ -219,6 +221,7 @@ const PreviewLayoutModel = (props) => {
                       reverseType={reverseType}
                       playlistId={playlist?.id || undefined}
                       submitForm={submitForm}
+                      activityPreview={activityPreview}
                     />
                   </div>
                 )}
@@ -238,6 +241,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {/* Vimeo */}
@@ -257,6 +261,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
 
@@ -276,6 +281,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
                 {editVideo && (
@@ -290,6 +296,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
               </>
@@ -300,16 +307,16 @@ const PreviewLayoutModel = (props) => {
                     <Tabs text="1. Select  layout" tabActive={true} />
                     {
                       ((counter = 0),
-                      layout?.map((data) => {
-                        if (data.id === selectedLayout?.id && counter == 0) {
-                          counter++;
-                          return (
-                            <>
-                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
-                            </>
-                          );
-                        }
-                      }))
+                        layout?.map((data) => {
+                          if (data.id === selectedLayout?.id && counter == 0) {
+                            counter++;
+                            return (
+                              <>
+                                <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                              </>
+                            );
+                          }
+                        }))
                     }
                     {counter === 0 && (
                       <>
@@ -335,6 +342,7 @@ const PreviewLayoutModel = (props) => {
                   editActivity={activity ? true : false}
                   activityId={activity?.id}
                   submitForm={submitForm}
+                  activityPreview={activityPreview}
                 />
               </>
             )}

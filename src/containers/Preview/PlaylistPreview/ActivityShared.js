@@ -7,8 +7,10 @@ import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 import { Alert } from 'react-bootstrap';
 import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction } from 'store/actions/resource';
+import indResourceService from 'services/indActivities.service';
 import HeaderLogo from 'assets/images/GCLogo.png';
 import * as xAPIHelper from 'helpers/xapi';
+import QueryString from 'query-string';
 
 import './activity-share.scss';
 
@@ -17,7 +19,7 @@ let lrs = null;
 
 const ActivityShared = (props) => {
   const currikiH5PWrapper = useRef(null);
-
+  const query = QueryString.parse(window.location.search);
   const { match, embed } = props;
   const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
   const lrsAuth = new URLSearchParams(window.location.search).get('auth');
@@ -105,17 +107,32 @@ const ActivityShared = (props) => {
             setAuthorized(true);
           });
       } else if (!window.location.pathname.includes('/preview')) {
-        loadH5pResourceSettingsShared(match.params.activityId)
-          .then(async (data) => {
-            if (data) {
-              h5pInsertion(data);
-            } else {
+        if (query.type === 'ind') {
+          indResourceService
+            .h5pResourceSettingsSharedIndActivity(match.params.activityId)
+            .then(async (data) => {
+              if (data) {
+                h5pInsertion(data);
+              } else {
+                setAuthorized(true);
+              }
+            })
+            .catch(() => {
               setAuthorized(true);
-            }
-          })
-          .catch(() => {
-            setAuthorized(true);
-          });
+            });
+        } else {
+          loadH5pResourceSettingsShared(match.params.activityId)
+            .then(async (data) => {
+              if (data) {
+                h5pInsertion(data);
+              } else {
+                setAuthorized(true);
+              }
+            })
+            .catch(() => {
+              setAuthorized(true);
+            });
+        }
       }
 
       const checkXapi = setInterval(() => {
