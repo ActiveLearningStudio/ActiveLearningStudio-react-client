@@ -249,11 +249,14 @@ const ActivityLayout = (props) => {
               </Taber.Tab>
               <Taber.Tab eventKey="demo" title="Demo">
                 {layout.demo_activity_id ? (
-                  <H5PPreview
-                    activityId={layout.demo_activity_id.trim()}
-                    tokenrequire={false}
-                    showltipreview
-                  />
+                  <>
+                    <H5PPreview
+                      activityId={layout.demo_activity_id.trim()}
+                      tokenrequire={false}
+                      showltipreview
+                    />
+                    <HeadingText text={layout.description} color="#515151" />
+                  </>
                 ) : (
                   <Taber.Alert variant="warning">
                     Demo is not Available.
