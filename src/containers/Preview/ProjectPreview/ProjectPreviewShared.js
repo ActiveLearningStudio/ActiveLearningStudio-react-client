@@ -46,6 +46,7 @@ function ProjectPreviewShared(props) {
     speed: 500,
     slidesToScroll: 1,
     variableWidth: true,
+    infinite: false,
   };
 
   useEffect(() => {
@@ -108,6 +109,11 @@ function ProjectPreviewShared(props) {
               className={counter === 0 ? 'active activity-slider-button' : 'activity-slider-button'}
               onClick={() => {
                 accordion.current[counter].classList.toggle('active');
+                accordion.current.forEach((el) => {
+                  if (el !== accordion.current[counter]) {
+                    el.classList.remove('active');
+                  }
+                });
                 if (playlist.id === activeAccordion) {
                   setActiveAccordion();
                 } else {
