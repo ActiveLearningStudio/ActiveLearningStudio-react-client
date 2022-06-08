@@ -26,11 +26,12 @@ function CanvasLtiSSO(props) {
 	useEffect(() => {
 		(async () => {
 			const query = QueryString.parse(window.location.search);
+      const sso_info_arr = _base64ToArray(query.sso_info);
 			if (query.sso_info) {
 				const result = dispatch(CanvasSSOLoginAction({ sso_info: query.sso_info }));
 				result.then((data) => {
           const domain = data.user.user_organization;
-          if(typeof _base64ToArray(query.sso_info)['redirect'] !== "undefined"){
+          if(typeof sso_info_arr['redirect'] !== "undefined" && sso_info_arr['redirect'] === "independent_activity"){
             history.push(`/org/${domain?.domain}/activities`);
           }
           else {
