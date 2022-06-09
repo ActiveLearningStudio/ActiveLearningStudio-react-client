@@ -546,7 +546,7 @@ const FormikVideo = ({
                         } else {
                           Swal.fire({
                             title: 'Please Wait !',
-                            html: 'Uploading Video, This may took some time ...',
+                            html: 'Uploading video may take some time.',
                             allowOutsideClick: false,
                             didOpen: () => {
                               Swal.showLoading();
