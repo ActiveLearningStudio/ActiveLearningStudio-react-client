@@ -83,6 +83,7 @@ const AddVideo = ({
         setSelectedVideoId={setSelectedVideoId}
         setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
         setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
+        selectedVideoIdVimeo={selectedVideoIdVimeo}
         showSidebar={showSidebar}
         platform={platform}
       />
@@ -997,8 +998,7 @@ const FormikVideo = ({
                         } else {
                           Swal.fire({
                             title: "Please Wait !",
-                            html:
-                              "Uploading Video, This may took some time ...",
+                            html: "Uploading video may take some time.",
                             allowOutsideClick: false,
                             didOpen: () => {
                               Swal.showLoading();
@@ -1090,6 +1090,7 @@ const FormikVideo = ({
 
             <div className="describe-video">
               <Buttons
+                className="describe-btn"
                 type="submit"
                 primary
                 text="Describe Video"
