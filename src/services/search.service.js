@@ -156,6 +156,20 @@ const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, ac
       return Promise.reject(err.response.data);
     });
 
+const googleClassPublishIndependentActivity = (courseId, topicId, activityId, token, OrgId) =>
+  httpService
+    .post(`/${apiVersion}/google-classroom/activities/${activityId}/publish`, {
+      course_id: courseId,
+      topic_id: topicId,
+      access_token: token,
+      publisher_org: OrgId,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 export default {
   searchResult,
   cloneProject,
@@ -168,4 +182,5 @@ export default {
   getCourseTopics,
   googleClassPublishPlaylist,
   googleClassPublishActivity,
+  googleClassPublishIndependentActivity,
 };

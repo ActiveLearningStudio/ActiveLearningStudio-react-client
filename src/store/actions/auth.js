@@ -386,6 +386,7 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
 
     await dispatch(getAllOrganizationforSSO());
     console.log('SSOLoginAction success');
+    return response;
   } catch (e) {
     console.log('SSOLoginAction failed');
     dispatch({

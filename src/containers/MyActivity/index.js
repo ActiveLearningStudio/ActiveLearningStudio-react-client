@@ -24,7 +24,7 @@ import DescribeVideo from 'containers/Videos/formik/describevideo';
 import 'containers/Videos/style.scss';
 import Swal from 'sweetalert2';
 // import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
-const MyActivity = ({ playlistPreview }) => {
+const MyActivity = ({ playlistPreview, activityPreview }) => {
   const [edit, setEdit] = useState(false);
   const [addActivityPopUp, setAddActivityPopUp] = useState(false);
   const params = useParams();
@@ -96,6 +96,7 @@ const MyActivity = ({ playlistPreview }) => {
                   screenState={screenState}
                   activtyMethod={activtyMethod}
                   setUploadImageStatus={setUploadImageStatus}
+                  activityPreview={activityPreview}
                 />
               )}
               {screenState === 'uploadinteractivevideo' && <UploadInteractiveVideo changeScreenHandler={changeScreenHandler} screenState={screenState} />}
@@ -122,6 +123,7 @@ const MyActivity = ({ playlistPreview }) => {
                     showback={true}
                     changeScreenHandler={changeScreenHandler}
                     setUploadImageStatus={setUploadImageStatus}
+                    activityPreview={activityPreview}
                   />
                 </div>
               )}

@@ -19,6 +19,7 @@ import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { shareDisableLink, shareEnableLink, editIndActivityItem, getIndex } from 'store/actions/indActivities';
 function Table(props) {
   const {
     tableHead,
@@ -44,6 +45,8 @@ function Table(props) {
     setModalShowTeam,
     setrowData,
     setActivePageNumber,
+    setCurrentActivity,
+    setModalShowh5p,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -565,7 +568,7 @@ function Table(props) {
                             <div className="filter-dropdown-table">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
-                                  {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
+                                  {row.indexing_text}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
@@ -618,7 +621,12 @@ function Table(props) {
                                     <Dropdown.Item
                                       onClick={async () => {
                                         Swal.showLoading();
-                                        const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
+                                        const result = await dispatch(
+                                          updateProjectAction(row.id, {
+                                            ...row,
+                                            organization_visibility_type_id: element.id,
+                                          })
+                                        );
                                         if (result) {
                                           setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                         }
@@ -753,6 +761,227 @@ function Table(props) {
                 </tr>
               ))}
 
+            {/* Ind. Activity Start */}
+            {type === 'IndActivities' &&
+              subType === 'All independent activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row.created_at);
+                    const updateNew = new Date(row.updated_at);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td
+                          onClick={() => {
+                            setCurrentActivity(row.id), setModalShowh5p(true);
+                          }}
+                        >
+                          <div className="admin-name-img">
+                            <div
+                              style={{
+                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                              }}
+                              className="admin-img"
+                            ></div>
+
+                            <Link className="admin-name">{row.title}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+
+                        <td>{row.id}</td>
+                        <td>{row.user?.name}</td>
+
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.indexing_text}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            dispatch(getIndex(row.id, element, 'admin'));
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      )
+                                  )}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            row.indexing_text
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {visibilityTypeArray?.map((element) => (
+                                    <Dropdown.Item
+                                      onClick={() => {
+                                        dispatch(
+                                          editIndActivityItem(
+                                            row.id,
+                                            {
+                                              ...row,
+                                              data: '',
+                                              organization_visibility_type_id: element.id,
+                                            },
+                                            'admin'
+                                          )
+                                        );
+                                      }}
+                                    >
+                                      {element.display_name}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.shared ? 'Enabled' : 'Disabled'}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      dispatch(shareEnableLink(row.id, 'admin'));
+                                    }}
+                                  >
+                                    Enable
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={() => {
+                                      Swal.fire({
+                                        icon: 'warning',
+                                        title: `You are about to stop sharing <strong>"${row.title}"</strong>`,
+                                        html: `Please remember that anyone you have shared this project
+                                                              with will no longer have access its contents. Do you want to continue?`,
+                                        showCloseButton: true,
+                                        showCancelButton: true,
+                                        focusConfirm: false,
+                                        confirmButtonText: 'Stop Sharing!',
+                                        confirmButtonAriaLabel: 'Stop Sharing!',
+                                        cancelButtonText: 'Cancel',
+                                        cancelButtonAriaLabel: 'Cancel',
+                                      }).then((resp) => {
+                                        if (resp.isConfirmed) {
+                                          dispatch(shareDisableLink(row.id, 'admin'));
+                                        }
+                                      });
+                                    }}
+                                  >
+                                    Disable
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : row.shared ? (
+                            'Enabled'
+                          ) : (
+                            'Disabled'
+                          )}
+                        </td>
+                        {/* <td>{String(row.starter_project)}</td> */}
+                        {/* <td>{row.status_text}</td> */}
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
+                            <div>
+                              <AdminDropdown
+                                activePage={activePage}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                                setCurrentActivity={setCurrentActivity}
+                                setModalShowh5p={setModalShowh5p}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'IndActivities' &&
+              subType === 'Exported activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row?.created_at);
+                    const expireNew = new Date(row.will_expire_on);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>
+                          <div className="admin-name-img">
+                            <Link className="admin-name">{row.project}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>{new Date(expireNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>
+                          <a href={row.link} target="_blank">
+                            Download
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {/* Ind. Activity End*/}
+
             {type === 'Activities' &&
               subType === 'Activity Types' &&
               (localStateData ? (
@@ -777,7 +1006,6 @@ function Table(props) {
                       <td>
                         <div className="admin-panel-dropdown">
                           <div className="admin-description-main">
-
                             <div className="admin-description2">
                               {row.activityItems.map((item, i) => (
                                 <div>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</div>

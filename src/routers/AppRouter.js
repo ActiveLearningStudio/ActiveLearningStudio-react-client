@@ -60,6 +60,7 @@ const TeamsPage = loadable(() => import('../containers/Teams'));
 const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
 const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
+
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
@@ -129,7 +130,7 @@ const AppRouter = (props) => {
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview/lti" exact component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute path="/playlist/:playlistId/activity/:activityId/preview" exact component={LtiPreviewPage} previewType="playlist" />
         <PrivateRoute exact path="/playlist/:playlistId/preview" component={LtiPreviewPage} previewType="playlist" />
-        <OpenRoute exact path="/project/:projectId/playlist/:playlistId/shared" component={LtiPreviewPage} previewType="playlistShared" />
+        <OpenRoute exact path="/project/:projectId/playlist/:playlistId/shared" component={LtiPreviewPage} previewType="playlist" />
         <OpenRoute exact path="/playlist/:playlistId/preview/lti" component={LtiPreviewPage} previewType="playlist" />
         <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/preview" component={PreviewPage} previewType="playlist" />
 
@@ -169,6 +170,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamDetailPage} />
                   <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={TeamAddProjects} />
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
+                  <PrivateRoute exact path="/org/:organization/activities" component={VideoPage} overview activities />
                   <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
 
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
