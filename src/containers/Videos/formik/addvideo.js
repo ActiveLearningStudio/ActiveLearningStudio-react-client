@@ -677,7 +677,7 @@ const FormikVideo = ({
                           width="146px"
                           height="35px"
                           hover
-                          className="ml-32"
+                          className={`${"ml-32"} ${"search-btn"}`}
                           onClick={() => {
                             setModalShow(true);
                           }}

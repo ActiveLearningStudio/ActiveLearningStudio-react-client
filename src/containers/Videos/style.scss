@@ -222,7 +222,7 @@
       .nav-item {
         margin-top: 24px;
         background: transparent !important;
-        color: $curriki-main-blue !important;
+        color: $curriki-main-blueb3 !important;
         // width: 160px;
         height: 36px;
         // padding: 8px 32px 8px 0px;
@@ -240,9 +240,9 @@
 
     .main-tabs .nav-item.active {
       background-color: $white !important;
-      color: $fun-blue-1 !important;
+      color: $curriki-main-blueb3 !important;
       border: none !important;
-      border-bottom: 4px solid $curriki-main-blue !important;
+      border-bottom: 4px solid $curriki-main-blueb3 !important;
       font-weight: 500 !important;
       font-size: 14px;
       line-height: 20px;
@@ -252,10 +252,12 @@
     }
     .nav-tabs .nav-link {
       border: none !important;
+      color: $curriki-main-blueb3;
     }
     .nav-tabs .nav-link:hover {
       border: none !important;
-      border-bottom: 4px solid $curriki-main-blue !important;
+      color: $curriki-main-blueb3 !important;
+      border-bottom: 4px solid $curriki-main-blueb3 !important;
     }
   }
   .add-video-layout-formik {
@@ -300,6 +302,10 @@
         margin-left: 32px;
       }
     }
+    .search-btn {
+      box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
+      font-weight: 500;
+    }
     .komodo-top-logo {
       margin-top: 50px;
     }
@@ -327,6 +333,7 @@
         background-color: #ffff;
         max-width: 62px;
         margin: 0 auto;
+        color: $curriki-main-blue !important;
         text-align: center;
       }
     }
@@ -343,11 +350,16 @@
       input {
         width: 380px;
         height: 36px;
+        color: $lightgray !important;
         outline: none;
         background: #ffffff;
-        border: 1px solid #515151;
+        border: 1px solid $lightgray;
         border-radius: 4px;
         text-indent: 10px;
+      }
+      ::placeholder {
+        color: $lightgray !important;
+        opacity: 1 !important;
       }
     }
     .komodo-record-section {
@@ -523,14 +535,13 @@
         font-weight: normal !important;
         font-size: 14px;
         line-height: 20px;
-
         // margin-right: 8px;
       }
     }
 
     .main-tabs .nav-item.active {
       background-color: $white !important;
-      color: $fun-blue-1 !important;
+      color: $curriki-main-blueb3 !important;
       border: none !important;
       border-bottom: 2px solid $curriki-main-blue !important;
     }
