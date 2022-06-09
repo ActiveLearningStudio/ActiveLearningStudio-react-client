@@ -1,47 +1,45 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { addUserInOrganization, editUserInOrganization, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import { loadOrganizationTypesAction } from 'store/actions/auth';
 import { getOrgUsers } from 'store/actions/organization';
 import checkImg from 'assets/images/svg/check.svg';
+import warningSVG from 'assets/images/svg/warning.svg';
 import './createuser.scss';
 
 export default function CreateUser(prop) {
-  const { editMode, checkedEmail } = prop;
-  const [activityImage, setActivityImage] = useState('')
-  const imgref = useRef();
+  const { editMode, checkedEmail, existingUser } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const organizationTypes = useSelector((state) => state.auth.organizationTypes);
   const { roles } = organization;
   const adminState = useSelector((state) => state.admin);
-  const { activeForm, currentUser } = adminState;
-
+  const { currentUser } = adminState;
   useEffect(() => {
     dispatch(loadOrganizationTypesAction());
-  }, [])
+  }, []);
   const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
     const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
-    console.log(regex.test(pwd));
     return regex.test(pwd);
   };
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          first_name: editMode ? currentUser?.first_name : '',
-          last_name: editMode ? currentUser?.last_name : '',
-          user_id: editMode ? currentUser?.id : '',
-          organization_type: editMode ? currentUser?.organization_type : '',
-          organization_name: editMode ? currentUser?.organization_name : '',
-          job_title: editMode ? currentUser?.job_title : '',
-          role_id: editMode ? currentUser?.organization_role_id : '',
-          email: editMode ? currentUser?.email : checkedEmail,
+          first_name: (editMode || existingUser) ? currentUser?.first_name : '',
+          last_name: (editMode || existingUser) ? currentUser?.last_name : '',
+          user_id: (editMode || existingUser) ? currentUser?.id : '',
+          organization_type: (editMode || existingUser) ? currentUser?.organization_type : '',
+          organization_name: (editMode || existingUser) ? currentUser?.organization_name : '',
+          job_title: (editMode || existingUser) ? currentUser?.job_title : '',
+          role_id: (editMode || existingUser) ? currentUser?.organization_role_id : '',
+          email: (editMode || existingUser) ? currentUser?.email : checkedEmail,
+          send_email: false,
+          message: '',
           password: '',
         }}
         validate={(values) => {
@@ -74,7 +72,7 @@ export default function CreateUser(prop) {
             errors.organization_type = 'Required';
           }
           if (!values.organization_name || values.organization_name.trim() === '' || values.organization_name.length > 255) {
-            errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';;
+            errors.organization_name = values.organization_name.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
           }
           if (!values.job_title || values.job_title.trim() === '' || values.job_title.length > 255) {
             errors.job_title = values.job_title.length > 255 ? 'Length must be 255 characters or less ' : 'Required';
@@ -104,7 +102,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
                   htmlContainer: 'create-user-confirm-modal-content',
-                }
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
@@ -136,7 +134,7 @@ export default function CreateUser(prop) {
                   confirmButton: 'create-user-confirm-btn',
                   content: 'create-user-confirm-modal-content',
                   htmlContainer: 'create-user-confirm-modal-content',
-                }
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(getOrgUsers(organization?.activeOrganization?.id, organization?.activePage, organization?.activeRole));
@@ -145,7 +143,6 @@ export default function CreateUser(prop) {
               });
             }
           }
-
         }}
       >
         {({
@@ -159,7 +156,11 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit} autoComplete="off">
-            <h2>{editMode ? 'Edit ' : 'Add '} user</h2>
+            <h2>
+              {editMode ? 'Edit ' : 'Add '}
+              {' '}
+              user
+            </h2>
             <div className="row">
               <div className="col">
                 <div className="form-group-create">
@@ -223,7 +224,7 @@ export default function CreateUser(prop) {
                   <div className="filter-dropdown-user">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
-                        {roles?.length > 0 && roles?.find(role => role.id === values.role_id)?.display_name}
+                        {roles?.length > 0 && roles?.find((role) => role.id === values.role_id)?.display_name}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {roles?.length > 0 && roles?.map((role) => (
@@ -241,7 +242,7 @@ export default function CreateUser(prop) {
                   <div className="filter-dropdown-user">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
-                        {organizationTypes?.length > 0 && organizationTypes?.find(type => type.label === values.organization_type)?.label}
+                        {organizationTypes?.length > 0 && organizationTypes?.find((type) => type.label === values.organization_type)?.label}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
@@ -280,11 +281,33 @@ export default function CreateUser(prop) {
                     {errors.job_title && touched.job_title && errors.job_title}
                   </div>
                 </div>
+                {!editMode && (
+                  <>
+                    <div className="form-group-create">
+                      <h3>Message</h3>
+                      <textarea name="message" onChange={handleChange} onBlur={handleBlur} value={values.message} />
+                    </div>
+                    <div className="form-group-create row-checkbox">
+                      <input type="checkbox" value={values.send_email} onChange={handleChange} name="send_email" />
+                      <div>Send email to user</div>
+                    </div>
+                  </>
+                )}
+                {existingUser && (
+                  <div className="form-group-create">
+                    <Alert variant="warning">
+                      <img className="warning-img" src={warningSVG} alt="warning" />
+                      This user already exists in another organization.
+                      <br />
+                      Do you want to add the user to this org?
+                    </Alert>
+                  </div>
+                )}
               </div>
             </div>
             <div className="button-group">
               <button type="submit">
-                {editMode ? 'Edit ' : 'Add '} user
+                Save
               </button>
               <button
                 type="button"

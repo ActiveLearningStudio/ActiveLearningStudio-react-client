@@ -9,22 +9,22 @@ import gifloader from 'assets/images/dotsloader.gif';
 // import './style.scss';
 
 const Browse = (props) => {
-  const {
-    match,
-    browse,
-    browseResults,
-  } = props;
+  const { match, browse, browseResults } = props;
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
     const url = new URL(window.location.href);
     const email = url.searchParams.get('user_email');
+    const domainName = url.searchParams.get('api_domain_url');
+    const courseId = url.searchParams.get('course_id');
     browse({
       lms_url: match.params.lmsUrl,
       lti_client_id: match.params.ltiClientId,
       user_email: email,
       mode: 'browse',
+      course_id: courseId,
+      api_domain_url: domainName,
     });
   }, [match]);
 
@@ -38,14 +38,8 @@ const Browse = (props) => {
             </div>
           </div>
         )}
-        {browseResults !== null && browseResults.length === 0 && (
-          <Alert variant="warning">
-            No projects found.
-          </Alert>
-        )}
-        {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => (
-          <Project project={project} key={project.id} />
-        ))}
+        {browseResults !== null && browseResults.length === 0 && <Alert variant="warning">No projects found.</Alert>}
+        {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
       </div>
     </div>
   );

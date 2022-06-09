@@ -12,57 +12,61 @@ import './style.scss';
 const Project = (props) => {
   const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
 
-  // const showActivityPreview = (id) => {
-  //   const activityId = parseInt(id, 10);
-  //   const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+  const showActivityPreview = (id) => {
+    const activityId = parseInt(id, 10);
+    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
 
-  //   if (activity) {
-  //     setPreviewActivity(activity);
-  //   }
-  // };
+    if (activity) {
+      setPreviewActivity(activity);
+    }
+  };
+  const addToLMS = (id) => {
+    const activityId = parseInt(id, 10);
+    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
 
-  // const addToLMS = (id) => {
-  //   const activityId = parseInt(id, 10);
-  //   const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+    if (!activity) return;
 
-  //   if (!activity) return;
-
-  //   const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
-  //   Swal.fire({
-  //     html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Ok',
-  //   }).then((result) => {
-  //     if (result.value) {
-  //       window.location.href = finalUrl;
-  //     }
-  //   });
-  // };
+    const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
+    Swal.fire({
+      icon: 'warning',
+      html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
+      showCancelButton: true,
+      confirmButtonColor: '#084892',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, add it',
+    }).then((result) => {
+      if (result.value) {
+        window.location.href = finalUrl;
+      }
+    });
+  };
 
   return (
     <>
-      <div className="row mt-2 mb-2 lti-deeplink-project-container">
+      <div className=" mt-2 mb-2 lti-deeplink-project-container">
         <div className="col result">
-          <div key={project.id} className="row  mb-4">
-            <div className="col-2">
-              <Image src={project.thumb_url.includes('pexels.com') ? project.thumb_url : `${global.config.resourceUrl}${project.thumb_url}`} thumbnail />
-            </div>
-            <div className="col">
+          <div key={project.id} className="row project ">
+            <div className="col project-about">
+              <div
+                className="project-img"
+                style={{
+                  backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                }}
+              ></div>
+
               <div className="row project-details-row">
-                <div className="col">
-                  <h5>
+                <div className="col project-detail">
+                  <h5 className="project-detail-title">
                     {project.title.length > 0 && project.title}
                     {project.title.length === 0 && 'Project title not available'}
                   </h5>
-                  <p>
-                    {project.description.length > 0 && project.description}
+                  <p className="project-detail-paragraph">
+                    {project.description.length > 0 && project?.description?.slice(0, 120)}
                     {project.description.length === 0 && 'Project description not available'}
                   </p>
                   {project.user && (
-                    <p className="text-right">
-                      <label>Author:</label>
+                    <p className="project-detail-by-author">
+                      <label>By:</label>
                       {` ${project.user.last_name}, ${project.user.first_name} (${project.user.email})`}
                       <br />
                       <label>Organization:</label>
@@ -72,83 +76,84 @@ const Project = (props) => {
                   )}
                 </div>
               </div>
-
-              {/* 
-            //  <div className="row playlists-row">
-            //     <div className="col">
-            //       {selectedProject?.id === project.id && (
-            //         <div className="row">
-            //           <div className="col">
-            //             {selectedProject.playlists.length === 0 && <Alert variant="warning">This project has no playlists</Alert>}
-            //             {selectedProject.playlists.length > 0 && (
-            //               <Card className="mt-2">
-            //                 <ListGroup variant="flush">
-            //                   {selectedProject.playlists.map((playlist) => (
-            //                     <ListGroup.Item key={playlist.id} className="plist" onClick={() => showPlaylist(playlist)}>
-            //                       <div className="row">
-            //                         <div className="col">
-            //                           <h5>{playlist.title}</h5>
-            //                         </div>
-            //                         <div className="col text-right">
-            //                           <FontAwesomeIcon className="pull-right" icon="chevron-right" />
-            //                         </div>
-            //                       </div>
-            //                       {selectedPlaylist?.id === playlist.id && playlist.activities.length === 0 && <Alert variant="warning">This playlist has no activities.</Alert>}
-
-            //                       {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
-            //                         <div className="playlist-activities">
-            //                           {playlist.activities.map((activity) => (
-            //                             <div className="row mt-2" key={activity.id}>
-            //                               <div className="col-2.5">
-            //                                 <Image
-            //                                   src={activity.thumb_url.includes('pexels.com') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`}
-            //                                   thumbnail
-            //                                 />
-            //                               </div>
-            //                               <div className="col pt-1">
-            //                                 <h6>{activity.title}</h6>
-            //                               </div>
-            //                               <div className="col text-right">
-            //                                 <Dropdown>
-            //                                   <Dropdown.Toggle className="actions-button" style={{ backgroundColor: '#fff ' }}>
-            //                                     <FontAwesomeIcon icon="ellipsis-v" style={{ color: 'rgb(8, 72, 146)' }} />
-            //                                   </Dropdown.Toggle>
-            //                                   <Dropdown.Menu>
-            //                                     <Dropdown.Item to="#" eventKey={activity.id} onSelect={showActivityPreview}>
-            //                                       <FontAwesomeIcon icon="eye" className="action-icon" />
-            //                                       Preview
-            //                                     </Dropdown.Item>
-            //                                     <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
-            //                                       <FontAwesomeIcon icon="plus" className="action-icon" />
-            //                                       Add to Course
-            //                                     </Dropdown.Item>
-            //                                   </Dropdown.Menu>
-            //                                 </Dropdown>
-            //                               </div>
-            //                             </div>
-            //                           ))}
-            //                         </div>
-            //                       )}
-            //                     </ListGroup.Item>
-            //                   ))}
-            //                 </ListGroup>
-            //               </Card>
-            //             )}
-            //           </div>
-            //         </div>
-            //       )}
-            //     </div>
-                                      // </div>*/}
             </div>
 
-            {/* 
-            //  {selectedProject?.id !== project.id && (
-            //   <div className="col-2 text-right actions">
-            //     <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
-            //       View Playlists
-            //     </button>
-            //   </div>
-          // )}*/}
+            {/* {selectedProject?.id !== project.id && ( */}
+            <div className=" text-right actions">
+              <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
+                View Playlists
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="row playlists-row">
+          <div className="col">
+            {selectedProject?.id === project.id && (
+              <div className="row">
+                <div className="col playlists-container">
+                  {selectedProject.playlists.length === 0 && <Alert variant="warning">This project has no playlists</Alert>}
+                  {selectedProject.playlists.length > 0 && (
+                    <Card>
+                      <ListGroup variant="flush">
+                        {selectedProject.playlists.map((playlist) => (
+                          <ListGroup.Item key={playlist.id} className="plist" onClick={() => showPlaylist(playlist)}>
+                            <div className={selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 ? 'row active-2' : 'row active'}>
+                              <div className="col">
+                                <h5>{playlist.title}</h5>
+                              </div>
+                              <div className="col text-right">
+                                <FontAwesomeIcon
+                                  className="pull-right"
+                                  icon={selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 ? 'chevron-down' : 'chevron-right'}
+                                />
+                              </div>
+                            </div>
+                            {selectedPlaylist?.id === playlist.id && playlist.activities.length === 0 && <Alert variant="warning">This playlist has no activities.</Alert>}
+
+                            {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
+                              <div className="playlist-activities">
+                                {playlist.activities.map((activity) => (
+                                  <div className="  activities" key={activity.id}>
+                                    <div
+                                      className="project-img"
+                                      style={{
+                                        backgroundImage: activity.thumb_url.includes('pexels.com')
+                                          ? `url(${activity.thumb_url})`
+                                          : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                                      }}
+                                    ></div>
+                                    <div className=" title">
+                                      <p>{activity.title}</p>
+                                    </div>
+                                    <div className=" dropdown-icon ">
+                                      <Dropdown>
+                                        <Dropdown.Toggle className="actions-button">
+                                          <FontAwesomeIcon icon="ellipsis-v" style={{ color: 'rgb(8, 72, 146)' }} />
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={showActivityPreview}>
+                                            <FontAwesomeIcon icon="eye" className="action-icon" />
+                                            Preview
+                                          </Dropdown.Item>
+                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+                                            <FontAwesomeIcon icon="plus" className="action-icon" />
+                                            Add to Course
+                                          </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                      </Dropdown>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

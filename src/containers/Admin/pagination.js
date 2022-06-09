@@ -37,6 +37,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Stats' && subTypeState === 'Queues: Logs' && (
@@ -190,6 +192,21 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
           />
         )}
         {type === 'Activities' && subType === 'Author Tags' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Activities' && subType === 'Activity Layouts' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}

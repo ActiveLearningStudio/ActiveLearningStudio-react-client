@@ -3,7 +3,7 @@ import React from "react";
 import Tabview from "../../../tabview/Tabview";
 import Addroleimg from "./addrole.PNG";
 import AddRoleStoreCode from "!!raw-loader!../../../../store/actions/organization";
-import AddRoleSnippet from "!!raw-loader!../../../../containers/Admin/formik/createOrg";
+import AddRoleSnippet from "!!raw-loader!../../../../containers/Admin/formik/addRole";
 import Stylesheetused from "!!raw-loader!../../../../containers/Admin/style.scss";
 export const Addrole = () => {
   return (

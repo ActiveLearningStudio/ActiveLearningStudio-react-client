@@ -25,8 +25,8 @@ const create = (project, subOrgId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const get = (id, subOrgId) => httpService
-  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`)
+const get = (id, subOrgId, signal) => httpService
+  .get(`/${apiVersion}/suborganization/${subOrgId}/projects/${id}`, {}, {}, signal)
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
@@ -91,10 +91,9 @@ const fetchLmsDetails = (lms, projectId, settingId) => httpService
   }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const getReorderAll = (projectData, subOrgId) => httpService
-  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/reorder`, {
-    projects: projectData,
-  }).then(({ data }) => data)
+const getReorderAll = (projectId, subOrgId, order) => httpService
+  // eslint-disable-next-line object-shorthand
+  .post(`/${apiVersion}/suborganization/${subOrgId}/projects/${projectId}/order`, { order: order }).then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
 const lmsPublish = (lms, projectId, settingId, counter, playlistId) => httpService
@@ -128,6 +127,11 @@ const searchPreviewProject = (subOrgId, projectId) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const exportProjectsToNoovo = (subOrgId, projectId, teamId) => httpService
+  .post(`/${apiVersion}/suborganization/${subOrgId}/teams/${teamId}/projects/${projectId}/export-projects-to-noovo`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -151,4 +155,5 @@ export default {
   shareProjects,
   visibilityTypes,
   searchPreviewProject,
+  exportProjectsToNoovo,
 };

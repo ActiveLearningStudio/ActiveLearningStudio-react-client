@@ -19,6 +19,7 @@ import {
   LTI_ACTIVITY_INIT,
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
+  GET_TEAMS,
 } from '../actionTypes';
 
 // Deeplinking browse tab
@@ -90,7 +91,6 @@ export const showSearchProjectAction = (project) => async (dispatch) => {
     project: fullProject.project,
   });
 };
-
 export const showSearchProjectActionPlaylist = (project) => async () => {
   const fullProject = await canvasService.getProject(project.id);
   return fullProject;
@@ -112,11 +112,11 @@ export const getH5pSettingsAction = (activityId) => async (dispatch) => {
   });
 };
 
-export const gradePassBackAction = (session, gpb, score, isLearner) => async (dispatch) => {
+export const gradePassBackAction = (session, gpb, score) => async (dispatch) => {
   dispatch({
     type: GRADE_PASS_BACK,
   });
-  if (isLearner) await canvasService.tsugiGradePassback(session, gpb, score);
+  await canvasService.tsugiGradePassback(session, gpb, score);
 };
 
 export const activityInitAction = () => async (dispatch) => {
@@ -146,5 +146,14 @@ export const passLtiCourseDetails = (params) => async (dispatch) => {
   dispatch({
     type: GET_H5P_SETTINGS,
     ltiCourseDetails,
+  });
+};
+
+// Deeplinking teams tab
+export const getTeamsAction = (params) => async (dispatch) => {
+  const results = await canvasService.teams(params);
+  dispatch({
+    type: GET_TEAMS,
+    results,
   });
 };

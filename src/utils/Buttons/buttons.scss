@@ -1,4 +1,4 @@
-@import "../../assets/css/index.scss";
+@import '../../assets/css/index.scss';
 
 .curriki-utility,
 .curriki-theme-button {
@@ -6,7 +6,8 @@
   justify-content: center;
   align-items: center;
   height: 30px;
-  width: 163px;
+  width: auto;
+  padding: 0 15px;
   background: $fun-blue-1;
   border: 1px solid $fun-blue-1;
   box-sizing: border-box;
@@ -17,9 +18,9 @@
   background: $fun-blue-1;
   border: 1px solid $fun-blue-1;
   color: $white;
-  .btn-icon {
-    color: $curriki-main-yellow;
-  }
+  // .btn-icon {
+  //   color: $curriki-main-yellow;
+  // }
 }
 .curriki-theme-secondary-button {
   background: $white;
@@ -27,8 +28,14 @@
   color: $fun-blue-1;
 }
 .curriki-theme-defaultgrey-button {
-  background: $gray;
+  background-color: $gray;
   border: 1px solid $gray;
+  color: $white;
+}
+
+button.curriki-theme-defaultgrey-button {
+  background-color: $gray !important;
+  border: 1px solid $gray !important;
   color: $white;
 }
 .curriki-theme-defaultwhite-button {

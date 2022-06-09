@@ -3,7 +3,7 @@ import React from "react";
 import Tabview from "../../../tabview/Tabview";
 import HelpSnippet from "!!raw-loader!../../../../containers/App/help";
 import helpimg from "./help.png";
-import Stylesheetused from "!!raw-loader!../../../../components/Header/style.scss";
+import Stylesheetused from "!!raw-loader!../../../../containers/App/style.scss";
 export const Help = () => {
   return (
     <>

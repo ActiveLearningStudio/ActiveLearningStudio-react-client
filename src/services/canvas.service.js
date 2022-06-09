@@ -60,6 +60,18 @@ const passLtiCourseDetails = (params) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const teams = (params) => httpService
+  .get(
+    `/${apiVersion}/go/lms/teams`,
+    {},
+    {
+      lti_client_id: params.lti_client_id,
+      user_email: params.user_email,
+    },
+  )
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   browse,
   search,
@@ -68,4 +80,5 @@ export default {
   tsugiGradePassback,
   getLtiSummary,
   passLtiCourseDetails,
+  teams,
 };

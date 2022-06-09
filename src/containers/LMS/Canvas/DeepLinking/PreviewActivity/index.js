@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { closePreviewAction, getH5pSettingsAction } from 'store/actions/canvas';
 import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
+import AddImg from 'assets/images/add-btn.svg';
 import './style.scss';
 
 const PreviewActivity = (props) => {
@@ -49,6 +50,7 @@ const PreviewActivity = (props) => {
   const addToLMS = () => {
     const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
     Swal.fire({
+      icon: 'warning',
       html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -62,18 +64,22 @@ const PreviewActivity = (props) => {
   };
 
   return (
-    <div className="activity-wrapper mt-2">
+    <div className="activity-wrapper ">
       <div className="row mb-2">
-        <div className="col ">
-          <h5 style={{ color: 'rgb(70,70,70)' }}>
-            Previewing:<span style={{ color: ' rgb(8, 72, 146)' }}> {activity.title}</span>
-          </h5>
-        </div>
-        <div className="col text-right">
-          <button type="button" className="btn close-preview-button m-1" onClick={addToLMS}>
-            Add to Course
-          </button>
-          <button type="button" className="btn close-preview-button m-1" onClick={closePreview}>
+        {/* <div className="col ">
+      <h5 style={{ color: 'rgb(70,70,70)' }}>
+        Previewing:<span style={{ color: ' rgb(8, 72, 146)' }}> {activity.title}</span>
+      </h5>
+  </div> */}
+        <div className="col buttons">
+          <div className="  close-preview-button ">
+            <img src={AddImg} alt="logo" />
+            <button type="button" className="btn add-Course " onClick={addToLMS}>
+              Add to Course
+            </button>
+          </div>
+
+          <button type="button" className="btn close-preview-button close-Preview  m-1" onClick={closePreview}>
             Close Preview
           </button>
         </div>

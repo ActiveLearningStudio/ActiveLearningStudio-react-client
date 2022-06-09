@@ -18,6 +18,7 @@ import {
   LTI_ACTIVITY_INIT,
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
+  GET_TEAMS,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -34,6 +35,8 @@ const INITIAL_STATE = {
   searchSelectedPlaylist: null,
   searchPreviewActivity: null,
   searchHasMoreResults: false,
+  // Deeplinking teams tab
+  teams: null,
   // Other
   h5pSettings: null,
   ltiFinished: false,
@@ -57,8 +60,8 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentPage: 'results',
-        searchProjects: action.results.projects.slice(0, 10),
-        searchHasMoreResults: action.results.projects.length > 10,
+        searchProjects: action.results.projects?.slice(0, 10),
+        searchHasMoreResults: action.results.projects?.length > 10,
       };
 
     case SHOW_RESULTS:
@@ -111,7 +114,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         ...state,
         searchParams: {
           ...state.searchParams,
-          from: (state.searchParams.from) ? state.searchParams.from + 10 : 10,
+          from: state.searchParams.from ? state.searchParams.from + 10 : 10,
         },
       };
 
@@ -143,7 +146,7 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
     case LTI_ACTIVITY_INIT:
       return {
         ...state,
-        attemptId: (state.attemptId) ? state.attemptId : Date.now(),
+        attemptId: state.attemptId ? state.attemptId : Date.now(),
       };
 
     case GET_LTI_SUMMARY:
@@ -177,11 +180,32 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         summaryError: null,
       };
 
-      case GET_LTI_SUMMARY_ACTIVITY_INFO:
-        return {
-          ...state,
-          summaryActivityInfo: action.summaryActivityInfo.activity,
-        };
+    case GET_LTI_SUMMARY_ACTIVITY_INFO:
+      return {
+        ...state,
+        summaryActivityInfo: action.summaryActivityInfo.activity,
+      };
+
+    case GET_TEAMS:
+      // Massaging the data a little to line up with components
+      const teams = action.results.teams.map((team) => {
+        const newTeam = { ...team };
+        newTeam.projects = team.projects.map((project) => {
+          const newProject = { ...project };
+          if (!project.title) {
+            newProject.title = project.name;
+          }
+
+          return newProject;
+        });
+
+        return newTeam;
+      });
+
+      return {
+        ...state,
+        teams,
+      };
 
     default:
       return state;

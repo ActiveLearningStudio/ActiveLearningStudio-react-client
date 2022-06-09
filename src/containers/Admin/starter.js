@@ -1,12 +1,13 @@
 /* eslint-disable */
-import React, { useState } from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { Tabs, Tab } from "react-bootstrap";
+import PropTypes from "prop-types";
 
-import Controller from './controller';
-import TableData from './table';
-import Userroles from './userroles';
-import Settings from './settings';
+import Controller from "./controller";
+import TableData from "./table";
+import Userroles from "./userroles";
+// import Media from "./media";
+// import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -70,6 +71,7 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setSearchKey,
   } = props;
   return (
     <>
@@ -121,9 +123,11 @@ function Starter(props) {
         resetProjectFilter={resetProjectFilter}
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
+        setSearchKey={setSearchKey}
       />
-      {subTypeState === 'All settings' && <Settings />}
-      {subTypeState === 'Manage Roles' ? (
+      {/* {subTypeState === 'All settings' && <Settings />} */}
+      {/* {subTypeState === "Media" && <Media />} */}
+      {subTypeState === "Manage Roles" ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData

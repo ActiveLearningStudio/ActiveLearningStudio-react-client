@@ -12,7 +12,7 @@ export default function CreateAuthorTag(props) {
   const { editMode } = props;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
 
   return (
     <div className="create-form lms-admin-form">
@@ -20,6 +20,7 @@ export default function CreateAuthorTag(props) {
       initialValues={{
         name: editMode ? activeEdit?.name : '',
         order: editMode ? activeEdit?.order : '',
+        organization_id: organization?.activeOrganization?.id,
       }}
       validate={(values) => {
         const errors = {};
@@ -44,7 +45,7 @@ export default function CreateAuthorTag(props) {
             button: false,
           });
 
-          const result = adminapi.updateAuthorTag(activeEdit?.id, values);
+          const result = adminapi.updateAuthorTag(organization?.activeOrganization?.id, activeEdit?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -54,7 +55,7 @@ export default function CreateAuthorTag(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getAuthorTag(1));
+            dispatch(getAuthorTag(organization?.activeOrganization?.id, activePage));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -73,7 +74,7 @@ export default function CreateAuthorTag(props) {
             },
             button: false,
           });
-          const result = adminapi.createAuthorTag(values);
+          const result = adminapi.createAuthorTag(organization?.activeOrganization?.id, values);
           result.then((res) => {
             Swal.fire({
               icon: 'success',
@@ -83,7 +84,7 @@ export default function CreateAuthorTag(props) {
                 confirmButton: 'confirmation-close-btn',               
               }
             });
-            dispatch(getAuthorTag(1));
+            dispatch(getAuthorTag(organization?.activeOrganization?.id, 1));
             dispatch(removeActiveAdminForm());
             dispatch({
               type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -118,14 +119,14 @@ export default function CreateAuthorTag(props) {
 
                   <div className="form-group-create">
                     <h3>Order</h3>
-                    <input type="number" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
+                    <input type="number" min="0" name="order" onChange={handleChange} onBlur={handleBlur} value={values.order} />
                     <div className="error">{errors.order && touched.order && errors.order}</div>
                   </div>
                 </div>
               </div>
               
               <div className="button-group">
-                <button type="submit">{editMode ? 'Edit ' : 'Add '}Author tag</button>
+                <button type="submit">Save</button>
                 <button
                   type="button"
                   className="cancel"

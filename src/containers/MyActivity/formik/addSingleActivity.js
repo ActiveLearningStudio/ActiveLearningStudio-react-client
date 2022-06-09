@@ -14,6 +14,7 @@ import Buttons from 'utils/Buttons/buttons';
 import { useHistory } from 'react-router-dom';
 import { getSingleLayoutActivities, loadResourceTypesAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const ActivityLayout = (props) => {
   const [allActivitiesSingle, setAllSingleActivities] = useState(null);
@@ -21,6 +22,7 @@ const ActivityLayout = (props) => {
   const history = useHistory();
   const [layout, setLayout] = useState({ title: 'Interactive Book' });
   const [filterData, setFilterData] = useState([]);
+  const organization = useSelector((state) => state.organization);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,24 +36,29 @@ const ActivityLayout = (props) => {
       icon: '',
     });
     dispatch(loadResourceTypesAction());
-    dispatch(getSingleLayoutActivities());
+    dispatch(getSingleLayoutActivities(organization?.activeOrganization?.id));
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
   const allActivitytypes = useSelector((state) => state.resource.types);
   useEffect(() => {
-    setLayout(allActivity?.[0] || null);
     setAllSingleActivities(allActivity);
     if (allActivity) {
       toast.dismiss();
     }
   }, [allActivity]);
+
+  useEffect(() => {
+    setLayout(allActivitiesSingle?.[0] || null);
+  }, [allActivitiesSingle]);
+
   useEffect(() => {
     const setData = [];
-    allActivitytypes?.forEach((data) => {
+    allActivitytypes?.data?.forEach((data) => {
       setData.push(data.id);
     });
     setFilterData(setData);
   }, [allActivitytypes]);
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="activity-layout-form ">
       <div className="activity-layout-tabs">
@@ -63,8 +70,12 @@ const ActivityLayout = (props) => {
         <div className="activity-layout-title ">
           <HeadingOne text="Select activity" color="#084892" />
         </div>
-        <div className="back-button" onClick={() => changeScreenHandler('layout')}>
-          <img src={BackButton} alt="back button " />
+        <div className="back-button" id="back-button-none-bg" onClick={() => changeScreenHandler('layout')}>
+          {/* <img src={BackButton} alt="back button " /> */}
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+            <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
           <p className="">Back to options</p>
         </div>
       </div>
@@ -72,7 +83,7 @@ const ActivityLayout = (props) => {
         <Headings
           headingType="body2"
           color="#515151"
-          text="Within the five activity types, there are over 50 learning activity types. These range from Interactive Video, Flashcards, to Memory Games. We also have special activity types that we will refer to as layouts. "
+          text="Preview each activity in the library by selecting Demo. Utilize the filter below to assist in choosing the best activity type for your content."
         />
       </div>
       <div className="search-card-singleActivity">
@@ -97,8 +108,8 @@ const ActivityLayout = (props) => {
           </div>
 
           <div class="dropdown-content-select">
-            {allActivitytypes?.length > 0 &&
-              allActivitytypes?.map((data, counter) => {
+            {allActivitytypes?.data?.length > 0 &&
+              allActivitytypes?.data?.map((data, counter) => {
                 return (
                   <label>
                     <input
@@ -120,7 +131,7 @@ const ActivityLayout = (props) => {
           </div>
         </div>
 
-        {allActivitiesSingle?.length > 10 && <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
+        <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
@@ -134,12 +145,11 @@ const ActivityLayout = (props) => {
                     className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
                     onClick={() => {
                       if (data?.title === 'Interactive Video') {
-                        setLayout(data)
-                        changeScreenHandler('addvideo')
+                        setLayout(data);
+                        changeScreenHandler('addvideo');
                       } else {
-                        setLayout(data)
+                        setLayout(data);
                       }
-
                     }}
                     btnTextOne="Demo"
                     btnTextTwo="Video"
@@ -153,22 +163,22 @@ const ActivityLayout = (props) => {
             })}
         </div>
       </div>
-      <ConfigButtons changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
+      {allActivitiesSingle?.length > 10 && <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
     </div>
   );
 };
 
-const ConfigButtons = ({ changeScreenHandler, layout, dispatch }) => (
+const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count }) => (
   <div className="activity-layout-btns" style={{ display: 'flex' }}>
     {/* <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} /> */}
 
     <div className="btns-margin ml-3">
       <Buttons
+        disabled={count > 0 ? false : true}
         text="Select Activity"
-        defaultgrey={layout ? false : true}
+        defaultgrey={count > 0 ? false : true}
         width="153px"
         height="36px"
-        disabled={layout ? false : true}
         onClick={() => {
           changeScreenHandler('addactivity');
           dispatch({
