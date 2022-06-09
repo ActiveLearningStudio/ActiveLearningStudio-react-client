@@ -23,6 +23,7 @@ import Footer from 'components/Footer';
 import CloneModel from './CloneModel';
 
 import './style.scss';
+import SearchLibrary from 'components/Search/SearchLibrary';
 
 let paginationStarter = true;
 
@@ -259,8 +260,7 @@ function SearchInterface(props) {
       if (!fromTeam) {
         // eslint-disable-next-line max-len
         history.push(
-          `/org/${
-            currentOrganization?.domain
+          `/org/${currentOrganization?.domain
           }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
         );
       }
@@ -340,21 +340,21 @@ function SearchInterface(props) {
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
 
-  useEffect (() => {
-    if(currentOrganization?.id) {
-      if(subjects.length == 0) {
+  useEffect(() => {
+    if (currentOrganization?.id) {
+      if (subjects.length == 0) {
         const result_sub = dispatcher(getSubjects(currentOrganization?.id || 1));
-        result_sub.then((data)=>setSubjects(data));
+        result_sub.then((data) => setSubjects(data));
       }
-      if(authorTags.length == 0) {
+      if (authorTags.length == 0) {
         const result_auth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
-        result_auth.then((data)=>setAuthorTags(data));
+        result_auth.then((data) => setAuthorTags(data));
       }
-      if(educationLevels.length == 0) {
+      if (educationLevels.length == 0) {
         const result_edu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
-        result_edu.then((data)=>setEducationLevels(data));
+        result_edu.then((data) => setEducationLevels(data));
       }
-    }    
+    }
   }, currentOrganization);
   return (
     <>
@@ -388,301 +388,35 @@ function SearchInterface(props) {
                 <div className="main-content-search">
                   <div className="left-search">
                     <div className="search-library">
-                      <Accordion defaultActiveKey="0">
-                        <Card>
-                          <Accordion.Toggle
-                            as={Card.Header}
-                            eventKey="0"
-                            onClick={() =>
-                              setToggleStates({
-                                ...toggleStates,
-                                searchLibrary: !toggleStates.searchLibrary,
-                              })
-                            }
-                          >
-                            Search Library
-                            <FontAwesomeIcon className="ml-2" icon={toggleStates.searchLibrary ? 'chevron-up' : 'chevron-down'} />
-                          </Accordion.Toggle>
-
-                          <Accordion.Collapse eventKey="0">
-                            <Card.Body>
-                              <div className="body-search">
-                                <input
-                                  // style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
-                                  value={searchInput}
-                                  onChange={(e) => {
-                                    setSearchInput(e.target.value);
-                                  }}
-                                  onKeyPress={async (e) => {
-                                    if (e.key === 'Enter') {
-                                      if (!searchInput.trim() && searchType !== 'orgSearch') {
-                                        Swal.fire('Search field is required.');
-                                      } else if (searchInput.length > 255) {
-                                        Swal.fire('Character limit should be less than 255.');
-                                      } else {
-                                        Swal.fire({
-                                          title: 'Searching...', // add html attribute if you want or remove
-                                          html: 'We are fetching results for you!',
-                                          allowOutsideClick: false,
-                                          onBeforeOpen: () => {
-                                            Swal.showLoading();
-                                          },
-                                        });
-                                        let dataSend;
-                                        if (searchType === 'orgSearch') {
-                                          dataSend = {
-                                            phrase: searchInput.trim(),
-                                            subjectArray: activeSubject,
-                                            gradeArray: activeEducation,
-                                            authorTagsArray: activeAuthorTag,
-                                            authors: authorName || undefined,
-                                            standardArray: activeType,
-                                            type: searchType,
-                                            from: 0,
-                                            size: 20,
-                                          };
-                                        } else {
-                                          dataSend = {
-                                            phrase: searchInput.trim(),
-                                            subjectArray: activeSubject,
-                                            gradeArray: activeEducation,
-                                            authorTagsArray: activeAuthorTag,
-                                            authors: authorName || undefined,
-                                            standardArray: activeType,
-                                            type: searchType,
-                                            from: 0,
-                                            size: 20,
-                                          };
-                                        }
-                                        const result = await dispatch(simpleSearchAction(dataSend));
-                                        setTotalCount(result.meta?.total);
-                                        const tempEducation = [];
-                                        const tempSubject = [];
-                                        const tempTag = [];
-                                        if (activeEducation) {
-                                          activeEducation.forEach((edu) => {
-                                            if (String(edu).includes('&')) {
-                                              const temp = String(edu).replace('&', 'and');
-                                              tempEducation.push(temp);
-                                            } else {
-                                              tempEducation.push(edu);
-                                            }
-                                          });
-                                          setActiveEducation(tempEducation);
-                                        }
-                                        if (activeSubject) {
-                                          activeSubject.forEach((sub) => {
-                                            if (String(sub).includes('&')) {
-                                              const temp = String(sub).replace('&', 'and');
-                                              tempSubject.push(temp);
-                                            } else {
-                                              tempSubject.push(sub);
-                                            }
-                                          });
-                                          setActiveSubject(tempSubject);
-                                        }
-                                        if (activeAuthorTag) {
-                                          activeAuthorTag.forEach((sub) => {
-                                            if (String(sub).includes('&')) {
-                                              const temp = String(sub).replace('&', 'and');
-                                              tempTag.push(temp);
-                                            } else {
-                                              tempTag.push(sub);
-                                            }
-                                          });
-                                          setActiveAuthorTag(tempTag);
-                                        }
-                                        // eslint-disable-next-line max-len
-                                        if (!fromTeam) {
-                                          // eslint-disable-next-line max-len
-                                          history.push(
-                                            `/org/${
-                                              currentOrganization?.domain
-                                            }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
-                                          );
-                                        }
-                                      }
-                                    }
-                                  }}
-                                  type="search"
-                                  placeholder="Search"
-                                />
-
-                                <div className="form-group">
-                                  <div className="radio-btns">
-                                    {true && (
-                                      <label>
-                                        <input
-                                          name="type"
-                                          onChange={(e) => {
-                                            setSearchType(e.target.value);
-                                          }}
-                                          value="private"
-                                          checked={searchType === 'private'}
-                                          type="radio"
-                                        />
-                                        <span>My Projects</span>
-                                      </label>
-                                    )}
-                                    {true && (
-                                      <label>
-                                        <input
-                                          name="type"
-                                          onChange={(e) => {
-                                            setSearchType(e.target.value);
-                                          }}
-                                          value="public"
-                                          checked={searchType === 'public'}
-                                          type="radio"
-                                        />
-                                        <span>All Shared Projects</span>
-                                      </label>
-                                    )}
-                                    {true && (
-                                      <label>
-                                        <input
-                                          name="type"
-                                          onChange={(e) => {
-                                            setSearchType(e.target.value);
-                                          }}
-                                          value="orgSearch"
-                                          checked={searchType === 'orgSearch'}
-                                          type="radio"
-                                        />
-                                        <span>All Shared Projects In My Org</span>
-                                      </label>
-                                    )}
-                                  </div>
-                                </div>
-                                {permission?.Organization?.includes('organization:view-user') && searchType !== 'private' && <div className="author-label">Author</div>}
-                                <div
-                                  className="form-group"
-                                  style={{
-                                    display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none',
-                                  }}
-                                >
-                                  <input
-                                    placeholder="Enter author name"
-                                    className="authorName"
-                                    value={authorName}
-                                    onChange={({ target }) => {
-                                      if (target.value) {
-                                        SetAuthor(target.value);
-                                      } else {
-                                        SetAuthor('');
-                                      }
-                                    }}
-                                  />
-                                </div>
-                                <div
-                                  className="src-btn"
-                                  onClick={async () => {
-                                    Setfromdate(undefined);
-                                    Settodate(undefined);
-                                    setActiveTab(fromTeam ? 'projects' : 'total');
-                                    if (!searchInput.trim() && searchType !== 'orgSearch') {
-                                      Swal.fire('Search field is required.');
-                                    } else if (searchInput.length > 255) {
-                                      Swal.fire('Character limit should be less than 255.');
-                                    } else if (!searchType) {
-                                      Swal.fire('Search type is required. Click one of the radio buttons.');
-                                    } else {
-                                      Swal.fire({
-                                        title: 'Searching...', // add html attribute if you want or remove
-                                        html: 'We are fetching results for you!',
-                                        allowOutsideClick: false,
-                                        onBeforeOpen: () => {
-                                          Swal.showLoading();
-                                        },
-                                      });
-                                      let dataSend;
-                                      if (searchType === 'orgSearch') {
-                                        dataSend = {
-                                          phrase: searchInput.trim(),
-                                          subjectArray: activeSubject,
-                                          gradeArray: activeEducation,
-                                          authorTagsArray: activeAuthorTag,
-                                          standardArray: activeType,
-                                          author: authorName || undefined,
-                                          fromDate: fromdate || undefined,
-                                          toDate: todate || undefined,
-                                          type: searchType,
-                                          from: 0,
-                                          size: 20,
-                                        };
-                                      } else {
-                                        dataSend = {
-                                          phrase: searchInput.trim(),
-                                          subjectArray: activeSubject,
-                                          author: authorName || undefined,
-                                          fromDate: fromdate || undefined,
-                                          toDate: todate || undefined,
-                                          gradeArray: activeEducation,
-                                          authorTagsArray: activeAuthorTag,
-                                          standardArray: activeType,
-                                          type: searchType,
-                                          from: 0,
-                                          size: 20,
-                                        };
-                                      }
-                                      const result = await dispatch(simpleSearchAction(dataSend));
-                                      setTotalCount(result.meta?.total);
-                                      const tempEducation = [];
-                                      const tempSubject = [];
-                                      const tempTag = [];
-                                      if (activeEducation) {
-                                        activeEducation.forEach((edu) => {
-                                          if (String(edu).includes('&')) {
-                                            const temp = String(edu).replace('&', 'and');
-                                            tempEducation.push(temp);
-                                          } else {
-                                            tempEducation.push(edu);
-                                          }
-                                        });
-                                        setActiveEducation(tempEducation);
-                                      }
-                                      if (activeSubject) {
-                                        activeSubject.forEach((sub) => {
-                                          if (String(sub).includes('&')) {
-                                            const temp = String(sub).replace('&', 'and');
-                                            tempSubject.push(temp);
-                                          } else {
-                                            tempSubject.push(sub);
-                                          }
-                                        });
-                                        setActiveSubject(tempSubject);
-                                      }
-                                      if (activeAuthorTag) {
-                                        activeAuthorTag.forEach((sub) => {
-                                          if (String(sub).includes('&')) {
-                                            const temp = String(sub).replace('&', 'and');
-                                            tempTag.push(temp);
-                                          } else {
-                                            tempTag.push(sub);
-                                          }
-                                        });
-                                        setActiveAuthorTag(tempSubject);
-                                      }
-                                      if (!fromTeam) {
-                                        // eslint-disable-next-line max-len
-                                        history.push(
-                                          `/org/${
-                                            currentOrganization?.domain
-                                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
-                                        );
-                                      }
-                                    }
-                                    // setModalShow(true);
-                                  }}
-                                >
-                                  <FontAwesomeIcon icon="search" />
-                                  Search
-                                </div>
-                              </div>
-                            </Card.Body>
-                          </Accordion.Collapse>
-                        </Card>
-                      </Accordion>
+                      <SearchLibrary
+                        currentOrganization={currentOrganization}
+                        simpleSearchAction={simpleSearchAction}
+                        setToggleStates={setToggleStates}
+                        toggleStates={toggleStates}
+                        searchInput={searchInput}
+                        searchType={searchType}
+                        activeSubject={activeSubject}
+                        activeEducation={activeEducation}
+                        activeAuthorTag={activeAuthorTag}
+                        activeType={activeType}
+                        authorName={authorName}
+                        fromdate={fromdate}
+                        todate={todate}
+                        fromTeam={fromTeam}
+                        setActiveTab={setActiveTab}
+                        setSearchInput={setSearchInput}
+                        setSearchType={setSearchType}
+                        setActiveEducation={setActiveEducation}
+                        setActiveSubject={setActiveSubject}
+                        setActiveAuthorTag={setActiveAuthorTag}
+                        setAuthor={SetAuthor}
+                        setFromDate={Setfromdate}
+                        setToDate={Settodate}
+                        setTotalCount={setTotalCount}
+                        history={history}
+                        dispatch={dispatch}
+                        permission={permission}
+                      />
                     </div>
 
                     <div className="refine-search">
@@ -1039,10 +773,10 @@ function SearchInterface(props) {
                                         href={
                                           res.model === 'Activity'
                                             ? // eslint-disable-next-line max-len
-                                              `/activity/${res.id}/preview`
+                                            `/activity/${res.id}/preview`
                                             : res.model === 'Playlist'
-                                            ? `/playlist/${res.id}/preview/lti`
-                                            : `/project/${res.id}/preview`
+                                              ? `/playlist/${res.id}/preview/lti`
+                                              : `/project/${res.id}/preview`
                                         }
                                         target="_blank"
                                         rel="noreferrer"
@@ -1301,8 +1035,8 @@ function SearchInterface(props) {
                                             res.model === 'Activity'
                                               ? `/activity/${res.id}/preview`
                                               : res.model === 'Playlist'
-                                              ? `/playlist/${res.id}/preview/lti`
-                                              : `/project/${res.id}/preview`
+                                                ? `/playlist/${res.id}/preview/lti`
+                                                : `/project/${res.id}/preview`
                                           }
                                           target="_blank"
                                           rel="noreferrer"
@@ -1483,10 +1217,10 @@ function SearchInterface(props) {
                                             href={
                                               res.model === 'Activity'
                                                 ? // eslint-disable-next-line max-len
-                                                  `/activity/${res.id}/preview`
+                                                `/activity/${res.id}/preview`
                                                 : res.model === 'Playlist'
-                                                ? `/playlist/${res.id}/preview/lti`
-                                                : `/project/${res.id}/preview`
+                                                  ? `/playlist/${res.id}/preview/lti`
+                                                  : `/project/${res.id}/preview`
                                             }
                                             target="_blank"
                                             rel="noreferrer"
@@ -1587,8 +1321,8 @@ function SearchInterface(props) {
                                                 res.model === 'Activity'
                                                   ? `/activity/${res.id}/preview`
                                                   : res.model === 'Playlist'
-                                                  ? `/playlist/${res.id}/preview/lti`
-                                                  : `/project/${res.id}/preview`
+                                                    ? `/playlist/${res.id}/preview/lti`
+                                                    : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
                                               rel="noreferrer"
