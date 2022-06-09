@@ -90,3 +90,31 @@ export const publistActivity = async (projectId, courseId, topicId, playlistId, 
     });
   }
 };
+
+export const publishIdependentActivity = async (courseId, topicId, activityId, token) => {
+  Swal.fire({
+    title: 'Publishing....',
+    showCancelButton: false,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await searchService.googleClassPublishIndependentActivity(courseId, topicId, activityId, token, activeOrganization?.id);
+  if (result.course) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Shared!',
+      confirmButtonColor: '#5952c6',
+      html: 'Your Activity has been published to Google Classroom',
+    });
+  } else {
+    Swal.fire({
+      confirmButtonColor: '#5952c6',
+      icon: 'error',
+      text: 'Something went wrong, Kindly try again.',
+    });
+  }
+};
