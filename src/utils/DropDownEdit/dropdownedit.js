@@ -17,7 +17,19 @@ import { visibilityTypes } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 
-const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, setModalShow, setCurrentActivity, setOpenVideo, setScreenStatus, permission, handleShow, setSelectedActivityId }) => {
+const DropDownEdit = ({
+  iconColor,
+  data,
+  activities,
+  isActivityCard = false,
+  setModalShow,
+  setCurrentActivity,
+  setOpenVideo,
+  setScreenStatus,
+  permission,
+  handleShow,
+  setSelectedActivityId,
+}) => {
   const IconColor = iconColor ? iconColor : '#084892';
   const { activeOrganization } = useSelector((state) => state.organization);
   const project = useSelector((state) => state.project);
@@ -210,7 +222,7 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                             }
                           });
                         }}
-                        // }
+                      // }
                       >
                         <a>Disable</a>
                       </li>
@@ -327,7 +339,15 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
 
                 <ul className="dropdown-menu check">
                   <li>
-                    <a href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}>xAPI Download</a>
+                    <a
+                      target="_blank"
+                      onClick={() => {
+                        dispatch(shareEnableLink(data.id));
+                      }}
+                      href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
+                    >
+                      xAPI Download
+                    </a>
                   </li>
                   <li
                     onClick={() => {
@@ -450,19 +470,19 @@ const DropDownEdit = ({ iconColor, data, activities, isActivityCard = false, set
                   />
                   <path d="M5.27148 7.96411L9.06593 10.3722" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M9.06037 3.72876L5.27148 6.13683" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>&nbsp;
-                Publish
+                </svg>
+                &nbsp; Publish
               </a>
               <ul className="dropdown-menu check">
-                  <li
-                    onClick={() => {
-                      handleShow();
-                      setSelectedActivityId(data.id);
-                      dispatch(googleShare(false));
-                    }}
-                  >
-                    <a>Google Classroom</a>
-                  </li>
+                <li
+                  onClick={() => {
+                    handleShow();
+                    setSelectedActivityId(data.id);
+                    dispatch(googleShare(false));
+                  }}
+                >
+                  <a>Google Classroom</a>
+                </li>
               </ul>
             </li>
           )}

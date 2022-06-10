@@ -289,7 +289,7 @@ p {
   .add-video-form-tabs
   .nav-tabs
   .nav-link:hover {
-  border-bottom-color: var(--main-primary-color) !important;
+  /* border-bottom-color: var(--main-primary-color) !important; */
 }
 .form-new-popup-myvideo svg {
   color: var(--main-paragraph-text-color) !important;
@@ -1408,9 +1408,9 @@ textarea,
   .add-video-form-tabs
   .nav-tabs
   .nav-link {
-  color: var(--main-primary-color) !important;
+  /* color: var(--main-primary-color) !important; */
   font-family: var(--main-heading-font) !important;
-  border-bottom-color: var(--main-primary-color) !important;
+  /* border-bottom-color: var(--main-primary-color) !important; */
 }
 
 .add-describevideo-form
@@ -1563,7 +1563,7 @@ textarea,
   .video-model-tab-row
   #role-permission-tab-id
   .nav-link.active {
-  color: var(--main-primary-color) !important;
+  /* color: var(--main-primary-color) !important; */
   font-family: var(--main-text-font) !important;
 }
 

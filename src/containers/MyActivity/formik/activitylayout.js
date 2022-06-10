@@ -204,20 +204,15 @@ const ActivityLayout = (props) => {
                     src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
                     title={layout.title}
                     frameborder="0"
-                    allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  >
-                  </iframe>
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
                 </div>
                 <HeadingText text={layout.description} color="#515151" />
               </Taber.Tab>
               <Taber.Tab eventKey="demo" title="Sample Activity">
                 {layout.demo_activity_id ? (
                   <>
-                    <H5PPreview
-                      activityId={layout.demo_activity_id.trim()}
-                      tokenrequire={false}
-                      showltipreview
-                    />
+                    <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
                     <HeadingText text={layout.description} color="#515151" />
                   </>
                 ) : (
