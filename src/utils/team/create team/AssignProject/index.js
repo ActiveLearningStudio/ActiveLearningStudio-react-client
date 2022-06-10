@@ -9,7 +9,7 @@ export const Index = () => {
     <>
       <Tabview
         componentName="Index"
-        path="\src\containers\Teams\components\AssignProjects\index.js"
+        path="\src\containers\Teams\CreateTeam\components\AssignProjects\index.js"
         description="In this component, you can add a project to your team during the creation 
     of a team. You will see a list of the project from where you can easily choose your project
      and add it to your team. After selecting multiple projects,

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from "react";
 import Tabview from "../../../../tabview/Tabview";
-import TypeSnippet from "!!raw-loader!../../../../../components/ResourceCard/AddResource/ResourceSelectActivity";
+import TypeSnippet from "!!raw-loader!../../../../../components/ResourceCard/AddResource/ResourceActivityType";
 import TypeImg from "./activityType.png";
 import ResourceStore from "!!raw-loader!../../../../../store/actions/resource";
 import Stylesheetused from "!!raw-loader!../../../../../components/ResourceCard/AddResource/style.scss";
