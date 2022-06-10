@@ -33,6 +33,7 @@ const SearchLibrary = (props) => {
     history,
     dispatch,
     permission,
+    activities,
   } = props;
   return (
 
@@ -159,7 +160,7 @@ const SearchLibrary = (props) => {
                         checked={searchType === 'private'}
                         type="radio"
                       />
-                      <span>My Projects</span>
+                      <span>{activities ? 'My activities' : 'My Projects'}</span>
                     </label>
                   )}
                   {true && (
@@ -173,7 +174,7 @@ const SearchLibrary = (props) => {
                         checked={searchType === 'public'}
                         type="radio"
                       />
-                      <span>All Shared Projects</span>
+                      <span>{activities ? 'All shared activities' : 'All Shared Projects'}</span>
                     </label>
                   )}
                   {true && (
@@ -187,7 +188,7 @@ const SearchLibrary = (props) => {
                         checked={searchType === 'orgSearch'}
                         type="radio"
                       />
-                      <span>All Shared Projects In My Org</span>
+                      <span>{activities ? 'All shsared activities in my Org' : 'All Shared Projects In My Org'}</span>
                     </label>
                   )}
                 </div>
@@ -348,6 +349,10 @@ SearchLibrary.propTypes = {
   history: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
   permission: PropTypes.object.isRequired,
+  activities: PropTypes.bool,
+};
+SearchLibrary.defaultProps = {
+  activities: false,
 };
 
 export default SearchLibrary;

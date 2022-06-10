@@ -46,7 +46,29 @@
       text-transform: capitalize;
     }
   }
-
+  .main-tabs .nav-item {
+    background-color: $fun-blue-1 !important;
+    color: $white !important;
+    width: 200px;
+    height: 36px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500 !important;
+    margin-right: 8px;
+  }
+  
+  .main-tabs .nav-item.active {
+    background-color: $white !important;
+    color: $fun-blue-1 !important;
+    border-bottom: #fff !important;
+  }
+  .main-tabs .nav-item.active:after {
+    display: none !important;
+  }
   .main-content-search {
     display: flex;
     justify-content: space-between;
