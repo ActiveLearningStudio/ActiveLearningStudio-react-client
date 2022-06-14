@@ -250,9 +250,9 @@ const PreviewLayoutModel = (props) => {
                     h5pParams={
                       props.editVideo.h5p
                         ? props.editVideo.h5p
-                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/vimeo"}]}}},"metadata":{"title":"${title}"}}`
+                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}

@@ -28,8 +28,14 @@
   color: $fun-blue-1;
 }
 .curriki-theme-defaultgrey-button {
-  background: $gray;
+  background-color: $gray;
   border: 1px solid $gray;
+  color: $white;
+}
+
+button.curriki-theme-defaultgrey-button {
+  background-color: $gray !important;
+  border: 1px solid $gray !important;
   color: $white;
 }
 .curriki-theme-defaultwhite-button {

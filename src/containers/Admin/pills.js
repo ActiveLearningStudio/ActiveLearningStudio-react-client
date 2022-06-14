@@ -263,14 +263,14 @@ export default function Pills(props) {
       }
     } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
       if (searchQueryProject) {
-        const userproject = adminService.getAllExportedProject(activePage, size, searchQueryProject);
+        const userproject = adminService.getAllExportedProject(activeOrganization?.id, activePage, size, searchQueryProject);
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
           })
           .catch((e) => setAllProjectUserTab([]));
       } else {
-        const result = await adminService.getAllExportedProject(activePage || 1, size);
+        const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size);
         setAllProjectUserTab(result);
       }
     }
@@ -842,7 +842,7 @@ export default function Pills(props) {
         default:
           col = 'created_at';
       }
-      const result = await adminService.getAllExportedProject(activePage || 1, size, '', col, orderBy);
+      const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size, '', col, orderBy);
       setAllProjectUserTab(result);
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
