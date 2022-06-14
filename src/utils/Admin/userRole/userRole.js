@@ -10,7 +10,7 @@ export const UserRole = () => {
     <>
       <Tabview
         componentName="User Role"
-        path="\ActiveLearningStudio-react-client\src\containers\Admin\userrole.js"
+        path="\src\containers\Admin\userrole.js"
         description="In the user role component, you can create a role for every module of the project. You can set roles for projects, playlists, organization, activity, team, groups, etc. For creating roles you will find an accordion for project roles. an accordion for activity role and accordion for all other role permissions.
 You have to select checkboxes in each accordion for providing roles to the respective module."
         codeSnippet={codeSnippet}

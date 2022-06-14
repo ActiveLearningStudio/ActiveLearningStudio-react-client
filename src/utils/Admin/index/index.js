@@ -10,7 +10,7 @@ export const Index = () => {
     <>
       <Tabview
         componentName="Index"
-        path="\ActiveLearningStudio-react-client\src\containers\Admin\index.js"
+        path="\src\containers\Admin\index.js"
         description="This is the component of the index page of the admin module.
         In this component, we have a tab for switching into the different modules. For example, you can switch into organization for showing organization and LMS for  Showing LMS setting.
          There is also a table that shows the details of every module.  If you go to the organization module in the above tab, you will see an image of the organization, Domain, project into this organization, and another lot of information related to the organization module."

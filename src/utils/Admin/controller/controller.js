@@ -10,7 +10,7 @@ export const Controller = () => {
     <>
       <Tabview
         componentName="Controller"
-        path="\ActiveLearningStudio-react-client\src\containers\Admin\controller.js"
+        path="\src\containers\Admin\controller.js"
         description="This is the controller component, which is used to control stats, projects, organization, users, etc. 
          In the controller panel, you will see a tab for managing projects, activities, users, etc.
 If you click on organization, then organization data will be shown below in the table. 

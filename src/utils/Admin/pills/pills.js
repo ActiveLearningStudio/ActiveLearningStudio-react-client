@@ -10,7 +10,7 @@ export const Pills = () => {
     <>
       <Tabview
         componentName="Pills"
-        path="\ActiveLearningStudio-react-client\src\containers\Admin\pills.js"
+        path="\src\containers\Admin\pills.js"
         description="This is the component of pill functionality. In this component, you will see all the inner tabs which you are using in the table of the administrate module. 
 You can switch to different functions which are used in each table.
 You can go to all users, manage roles, and perform other functionalities which are related to every module."
