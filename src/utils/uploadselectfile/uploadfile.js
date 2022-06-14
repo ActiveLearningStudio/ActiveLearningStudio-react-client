@@ -33,7 +33,7 @@ const UploadFile = ({ className, formRef, activityPreview }) => {
       h5pFile,
     };
     console.log(formRef.current.values, 'upload file');
-    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, project, activityPreview));
+    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, activityPreview));
   };
   return (
     <>
