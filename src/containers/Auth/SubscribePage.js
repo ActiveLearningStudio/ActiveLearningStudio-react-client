@@ -40,7 +40,8 @@ class SubscribePage extends Component {
       acceptTerms();
       // eslint-disable-next-line react/prop-types
       if (location.pathname.includes('activities')) {
-        history.push('/org/currikistudio/activities');
+        // eslint-disable-next-line react/prop-types
+        history.push(location.pathname);
       } else {
         history.push('/');
       }
