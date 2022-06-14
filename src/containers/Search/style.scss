@@ -47,8 +47,8 @@
     }
   }
   .main-tabs .nav-item {
-    background-color: $fun-blue-1 !important;
-    color: $white !important;
+    background-color: $fun-blue-1;
+    color: $white;
     width: 200px;
     height: 36px;
     padding: 0px;
@@ -62,8 +62,8 @@
   }
   
   .main-tabs .nav-item.active {
-    background-color: $white !important;
-    color: $fun-blue-1 !important;
+    background-color: $white;
+    color: $fun-blue-1;
     border-bottom: #fff !important;
   }
   .main-tabs .nav-item.active:after {

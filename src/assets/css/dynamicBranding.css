@@ -2004,6 +2004,23 @@ textarea,
   font-family: var(--main-heading-font) !important;
   color: var(--main-paragraph-text-color) !important;
 }
+.search-result-main .main-tabs .nav-item {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
+.search-result-main .nav-tabs .nav-link {
+  border: 1px solid var(--main-primary-color) !important;
+}
+
+.search-result-main .main-tabs .nav-item.active {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+  background-color: var(--main-white-color) !important;
+}
+.search-result-main .main-tabs .nav-item.active:after {
+  display: none !important;
+}
+
 .search-result-main
   .right-search
   .results_search

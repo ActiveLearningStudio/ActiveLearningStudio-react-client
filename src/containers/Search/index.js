@@ -8,7 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
-import { simpleSearchAction, cloneProject } from 'store/actions/search';
+import {
+  simpleSearchAction,
+  cloneProject,
+  setSearchTypeAction,
+  searchIndependentActivitiesAction,
+} from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
 import { addProjectFav, loadLmsAction, getProjectCourseFromLMS } from 'store/actions/project';
 import { getProjectId, googleShare } from 'store/actions/gapi';
@@ -73,7 +78,6 @@ function SearchInterface(props) {
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
-  const dispatcher = useDispatch();
   const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
   const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
@@ -103,13 +107,6 @@ function SearchInterface(props) {
   const [subjects, setSubjects] = useState([]);
   const [authorTags, setAuthorTags] = useState([]);
   const [educationLevels, setEducationLevels] = useState([]);
-  // const [selectedAuthor, setSelectedAuthor] = useState([]);
-  // const [authors, setAuthors] = useState([]);
-  // var activeSubject1;
-  //   useMemo(() => {
-
-  // activeSubject1 = activeSubject.map((data1) => data1.replace('and', '&'))
-  //   },[activeSubject])
   const handleShow = () => {
     setShow(true); //! state.show
   };
@@ -150,13 +147,7 @@ function SearchInterface(props) {
     // eslint-disable-next-line no-restricted-globals
     const query = QueryString.parse(location.search);
     if (query.type) {
-      if (query.type === 'private') {
-        setSearchType('private');
-      } else if (query.type === 'public') {
-        setSearchType('public');
-      } else {
-        setSearchType('orgSearch');
-      }
+      setSearchType(query.type);
     }
     if (query.h5p) {
       setActiveType(query.h5p.split(','));
@@ -325,10 +316,10 @@ function SearchInterface(props) {
   });
 
   useEffect(() => {
-    if (activityTypesState?.length === 0) {
+    if (activityTypesState?.length === 0 && currentOrganization?.id) {
       dispatch(loadResourceTypesAction());
     }
-  }, []);
+  }, [activityTypesState?.length, dispatch, currentOrganization]);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
@@ -353,15 +344,15 @@ function SearchInterface(props) {
   useEffect(() => {
     if (currentOrganization?.id) {
       if (subjects.length === 0) {
-        const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
+        const resultSub = dispatch(getSubjects(currentOrganization?.id || 1));
         resultSub.then((data) => setSubjects(data));
       }
       if (authorTags.length === 0) {
-        const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+        const resultAuth = dispatch(getAuthorTag(currentOrganization?.id || 1));
         resultAuth.then((data) => setAuthorTags(data));
       }
       if (educationLevels.length === 0) {
-        const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+        const resultEdu = dispatch(getEducationLevel(currentOrganization?.id || 1));
         resultEdu.then((data) => setEducationLevels(data));
       }
     }
@@ -408,6 +399,25 @@ function SearchInterface(props) {
                   className="main-tabs"
                   onSelect={(eventKey) => {
                     setActiveSearchType(eventKey);
+                    setSearchInput('');
+                    setSearch([]);
+                    setMeta({});
+                    setTotalCount(0);
+                    setSearchType('');
+                    setToggleStates({
+                      searchLibrary: true,
+                      subject: true,
+                      education: false,
+                      authorTag: false,
+                      type: false,
+                    });
+                    setActiveSubject([]);
+                    setActiveEducation([]);
+                    setActiveAuthorTag([]);
+                    SetAuthor([]);
+                    Settodate([]);
+                    Setfromdate([]);
+                    dispatch(setSearchTypeAction(eventKey));
                   }}
                   defaultActiveKey={activeSearchType}
                 >
@@ -418,6 +428,7 @@ function SearchInterface(props) {
                           <SearchLibrary
                             currentOrganization={currentOrganization}
                             simpleSearchAction={simpleSearchAction}
+                            searchIndependentActivitiesAction={searchIndependentActivitiesAction}
                             setToggleStates={setToggleStates}
                             toggleStates={toggleStates}
                             searchInput={searchInput}
@@ -443,11 +454,10 @@ function SearchInterface(props) {
                             history={history}
                             dispatch={dispatch}
                             permission={permission}
+                            activeMainSearchType={allState?.searchType}
                           />
                         </div>
                         <RefineSearch
-                          setToggleStates={setToggleStates}
-                          toggleStates={toggleStates}
                           setActiveAuthorTag={setActiveAuthorTag}
                           authorTags={authorTags}
                           educationLevels={educationLevels}
@@ -460,6 +470,8 @@ function SearchInterface(props) {
                           setActiveEducation={setActiveEducation}
                           setActiveType={setActiveType}
                           activeSubject={activeSubject}
+                          toggleStates={toggleStates}
+                          setToggleStates={setToggleStates}
                         />
                       </div>
 
@@ -1324,8 +1336,8 @@ function SearchInterface(props) {
                           <SearchLibrary
                             currentOrganization={currentOrganization}
                             simpleSearchAction={simpleSearchAction}
+                            searchIndependentActivitiesAction={searchIndependentActivitiesAction}
                             setToggleStates={setToggleStates}
-                            toggleStates={toggleStates}
                             searchInput={searchInput}
                             searchType={searchType}
                             activeSubject={activeSubject}
@@ -1350,10 +1362,9 @@ function SearchInterface(props) {
                             dispatch={dispatch}
                             permission={permission}
                             activities
+                            activeMainSearchType={allState?.searchType}
                           />
                           <RefineSearch
-                            setToggleStates={setToggleStates}
-                            toggleStates={toggleStates}
                             setActiveAuthorTag={setActiveAuthorTag}
                             authorTags={authorTags}
                             educationLevels={educationLevels}
@@ -1366,18 +1377,149 @@ function SearchInterface(props) {
                             setActiveEducation={setActiveEducation}
                             setActiveType={setActiveType}
                             activeSubject={activeSubject}
+                            toggleStates={toggleStates}
+                            setToggleStates={setToggleStates}
                           />
                         </div>
-                        <div className="right-search" id="right-search-branding-style">
-                          <Tabs
-                            activeKey={activetab}
-                            id="controlled-tab-example"
-                          >
-                            <Tab eventKey="Ind. activities" title="Ind. activities">
-                              tada
-                            </Tab>
-                          </Tabs>
-                        </div>
+                      </div>
+                      <div className="right-search" id="right-search-branding-style">
+                        <Tabs
+                          activeKey="Ind. activities"
+                          id="controlled-tab-example"
+                        >
+                          <Tab eventKey="Ind. activities" title="Ind. activities">
+                            <div className="content">
+                              <div className="results_search">
+                                {!!search && search.length > 0 ? (
+                                  search.map((res) => (
+                                    <>
+                                      <div className="box">
+                                        <div className="imgbox">
+                                          {res.thumb_url ? (
+                                            <div
+                                              style={{
+                                                backgroundImage: res.thumb_url.includes('pexels.com')
+                                                  ? `url(${res.thumb_url})`
+                                                  : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                              }}
+                                            />
+                                          ) : (
+                                            <div
+                                              style={{
+                                                backgroundImage:
+                                                  // eslint-disable-next-line max-len
+                                                  'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                              }}
+                                            />
+                                          )}
+
+                                          {/* <h5>CALCULUS</h5> */}
+                                        </div>
+
+                                        <div className="contentbox">
+                                          <div className="search-content">
+                                            <a
+                                              href={`/activity/${res.id}/preview`}
+                                              target="_blank"
+                                              rel="noreferrer"
+                                            >
+                                              <h2>{res.title || res.name}</h2>
+                                            </a>
+                                            <ul>
+                                              {res.user && (
+                                                <li>
+                                                  by
+                                                  {' '}
+                                                  <span>{res.user.first_name}</span>
+                                                </li>
+                                              )}
+                                              <li>
+                                                Type
+                                                {' '}
+                                                <span className="type">{res.activity_type}</span>
+                                              </li>
+                                              {/* <li>
+                                                  Member Rating{" "}
+                                                  <span className="type">Project</span>
+                                                </li> */}
+                                            </ul>
+                                            <p>{res.description}</p>
+                                          </div>
+                                          {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
+                                            <Dropdown className="playlist-dropdown check">
+                                              <Dropdown.Toggle>
+                                                <FontAwesomeIcon icon="ellipsis-v" />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      setModalShow(true);
+                                                      setClone(res);
+                                                    }}
+                                                  >
+                                                    <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                    Duplicate
+                                                  </Dropdown.Item>
+                                                  {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                                    <li
+                                                      className="dropdown-submenu send"
+                                                      style={{
+                                                        display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
+                                                      }}
+                                                    >
+                                                      <a tabIndex="-1" className="dropdown-item">
+                                                        <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                        Publish
+                                                      </a>
+                                                      <ul className="dropdown-menu check">
+                                                        {allLms?.shareVendors.map((data) => {
+                                                          if (data.lms_name !== 'safarimontage') return false;
+                                                          return (
+                                                            data?.activity_visibility && (
+                                                              <li>
+                                                                <a
+                                                                  onClick={() => {
+                                                                    dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
+                                                                  }}
+                                                                >
+                                                                  {data.site_name}
+                                                                </a>
+                                                              </li>
+                                                            )
+                                                          );
+                                                        })}
+                                                        <Modal
+                                                          dialogClassName="safari-modal"
+                                                          show={safariMontagePublishTool}
+                                                          onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                          aria-labelledby="example-modal-sizes-title-lg"
+                                                        >
+                                                          <Modal.Header closeButton>
+                                                            <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+                                                          </Modal.Header>
+                                                          <Modal.Body>
+                                                            <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+                                                          </Modal.Body>
+                                                        </Modal>
+                                                      </ul>
+                                                    </li>
+                                                  )}
+                                                </>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </>
+                                  ))
+                                ) : (
+                                  <div className="box">No result found !</div>
+                                )}
+                              </div>
+                            </div>
+                          </Tab>
+                        </Tabs>
                       </div>
                     </div>
                   </Tab>

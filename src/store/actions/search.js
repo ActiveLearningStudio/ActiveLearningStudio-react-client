@@ -7,6 +7,7 @@ import {
   CLEAR_SEARCH,
   SELECT_EXISTING_ACTIVITY,
   RESET_EXISTING_ACTIVITY,
+  SET_SEARCH_TYPE,
 } from '../actionTypes';
 import store from '../index';
 
@@ -31,20 +32,20 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   // }
   const activeGrades = [];
   if (values.gradeArray) {
-      values.gradeArray.forEach((grade) => {
-        activeGrades.push(grade);
+    values.gradeArray.forEach((grade) => {
+      activeGrades.push(grade);
     });
   }
   const activeSubjects = [];
   if (values.subjectArray) {
-      values.subjectArray.forEach((subject) => {
-        activeSubjects.push(subject);
+    values.subjectArray.forEach((subject) => {
+      activeSubjects.push(subject);
     });
   }
   const activeAuthTags = [];
   if (values.authorTagsArray) {
-      values.authorTagsArray.forEach((tag) => {
-        activeAuthTags.push(tag);
+    values.authorTagsArray.forEach((tag) => {
+      activeAuthTags.push(tag);
     });
   }
   let sendData;
@@ -138,6 +139,34 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   }
 
   return response;
+};
+
+export const searchIndependentActivitiesAction = (values, searchType) => async (dispatch) => {
+  console.log(values);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  let sendData;
+  // eslint-disable-next-line prefer-const
+  sendData = {
+    query: values.query,
+    subjectArray: values.subjectArray,
+    gradeArray: values.gradeArray,
+    authorTagsArray: values.authorTagsArray,
+    authors: values.author || undefined,
+    standardArray: values.standardArray,
+    from: 0,
+    size: 20,
+  };
+  const result = await searchService.searchIndependentActivities(activeOrganization?.id, searchType, sendData);
+  dispatch(searchRedux(result?.data, values?.query, result?.meta));
+  return result;
+};
+
+export const setSearchTypeAction = (type) => async (dispatch) => {
+  dispatch({
+    type: SET_SEARCH_TYPE,
+    searchType: type,
+  });
 };
 
 export const cloneProject = (projectID) => {

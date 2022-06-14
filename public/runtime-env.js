@@ -1,11 +1,11 @@
 window.__RUNTIME_CONFIG__ = {
   REACT_APP_PEXEL_API: '563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf',
 
-  REACT_APP_API_URL: 'https://multitenancy.currikistudio.org/api/api',
+  REACT_APP_API_URL: 'https://dev.currikistudio.org/api/api',
 
-  REACT_DOMAIN_URL: 'https://https://multitenancy.currikistudio.org/.currikistudio.org/',
+  REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
 
-  REACT_APP_RESOURCE_URL: 'https://multitenancy.currikistudio.org/api',
+  REACT_APP_RESOURCE_URL: 'https://dev.currikistudio.org/api',
 
   REACT_APP_GOOGLE_CAPTCHA: '6LdImbgZAAAAAN4s1eEi53-ul7uJfLONrFuBcKS0',
   REACT_APP_GAPI_CLIENT_ID: '898143939834-9ioui2i9ghgrmcgmgtg0h6rsf83d0t0c.apps.googleusercontent.com',
@@ -16,7 +16,7 @@ window.__RUNTIME_CONFIG__ = {
 
   REACT_APP_H5P_KEY: 'B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQ',
 
-  REACT_APP_TSUGI_SERVER_URL: 'http://multitenancy.-tsugi.currikistudio.org/mod/curriki/',
+  REACT_APP_TSUGI_SERVER_URL: 'http://dev.-tsugi.currikistudio.org/mod/curriki/',
 
   REACT_APP_SHARED_PROJECT_DEMO_USER: 'demoaccount@gmail.com',
 
