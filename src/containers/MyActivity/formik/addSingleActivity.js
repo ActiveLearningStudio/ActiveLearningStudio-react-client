@@ -56,8 +56,16 @@ const ActivityLayout = (props) => {
     allActivitytypes?.data?.forEach((data) => {
       setData.push(data.id);
     });
-    setFilterData(setData);
+    // setFilterData(setData);
   }, [allActivitytypes]);
+
+  useEffect(() => {
+    if (filterData?.length) {
+      setAllSingleActivities(allActivity?.filter((data) => filterData.includes(data.activityType?.id)));
+    } else {
+      setAllSingleActivities(allActivity);
+    }
+  }, [filterData]);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="activity-layout-form ">
@@ -113,7 +121,7 @@ const ActivityLayout = (props) => {
                 return (
                   <label>
                     <input
-                      checked={filterData.includes(data.id)}
+                      //checked={filterData.includes(data.id)}
                       onChange={(e) => {
                         if (e.target.checked) {
                           setFilterData([...filterData, data.id]);
@@ -136,34 +144,32 @@ const ActivityLayout = (props) => {
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
           {allActivitiesSingle?.length > 0 &&
-            allActivitiesSingle?.map((data) => {
-              return (
-                filterData.includes(data.activityType?.id) && (
-                  <LayoutCard
-                    image={data.image}
-                    text={data.title}
-                    className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
-                    onClick={() => {
-                      if (data?.title === 'Interactive Video') {
-                        setLayout(data);
-                        changeScreenHandler('addvideo');
-                      } else {
-                        setLayout(data);
-                      }
-                    }}
-                    btnTextOne="Demo"
-                    btnTextTwo="Video"
-                    setCurrentActivity={setCurrentActivity}
-                    setActiveType={setActiveType}
-                    setModalShow={setModalShow}
-                    activity={data}
-                  />
-                )
-              );
-            })}
+            allActivitiesSingle?.map((data) => (
+              <LayoutCard
+                image={data.image}
+                text={data.title}
+                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
+                onClick={() => {
+                  if (data?.title === 'Interactive Video') {
+                    setLayout(data);
+                    changeScreenHandler('addvideo');
+                  } else {
+                    setLayout(data);
+                  }
+                }}
+                btnTextOne="Demo"
+                btnTextTwo="Video"
+                setCurrentActivity={setCurrentActivity}
+                setActiveType={setActiveType}
+                setModalShow={setModalShow}
+                activity={data}
+              />
+            ))}
         </div>
       </div>
-      {allActivitiesSingle?.length > 10 && <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />}
+      {allActivitiesSingle?.length > 10 && !filterData.length && (
+        <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
+      )}
     </div>
   );
 };
