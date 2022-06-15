@@ -494,15 +494,7 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
   }
 };
 
-export const createResourceByH5PUploadAction = (
-  playlistId,
-  editor,
-  editorType,
-  payload,
-  metadata,
-  activityPreview
-  // projectId,
-) => async (dispatch) => {
+export const createResourceByH5PUploadAction = (playlistId, editor, editorType, payload, metadata, activityPreview) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
