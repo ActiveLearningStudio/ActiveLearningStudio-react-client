@@ -172,7 +172,7 @@ const Index = ({ activities }) => {
                         <div className="project-headline">
                           <div className="search-main-relaced">
                             <div className="search-div">
-                              <SearchForm />
+                              <SearchForm activities />
                             </div>
                           </div>
                         </div>
@@ -352,40 +352,40 @@ const Index = ({ activities }) => {
                             <div className="video-cards-detail">
                               {activities
                                 ? allActivities?.data.map((activityData) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={activityData.title}
-                                          data={activityData}
-                                          className="card-spacing"
-                                          activities={activities}
-                                          isActivityCard={true}
-                                          permission={permission}
-                                          handleShow={handleShow}
-                                          setSelectedActivityId={setActivityId}
-                                        />
-                                      </>
-                                    );
-                                  })
+                                  return (
+                                    <>
+                                      <AddVideoCard
+                                        setModalShow={setModalShow}
+                                        setCurrentActivity={setCurrentActivity}
+                                        setScreenStatus={setScreenStatus}
+                                        setOpenVideo={setOpenVideo}
+                                        title={activityData.title}
+                                        data={activityData}
+                                        className="card-spacing"
+                                        activities={activities}
+                                        isActivityCard={true}
+                                        permission={permission}
+                                        handleShow={handleShow}
+                                        setSelectedActivityId={setActivityId}
+                                      />
+                                    </>
+                                  );
+                                })
                                 : allVideos?.data?.map((video) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={video.title}
-                                          data={video}
-                                          className="card-spacing"
-                                        />
-                                      </>
-                                    );
-                                  })}
+                                  return (
+                                    <>
+                                      <AddVideoCard
+                                        setModalShow={setModalShow}
+                                        setCurrentActivity={setCurrentActivity}
+                                        setScreenStatus={setScreenStatus}
+                                        setOpenVideo={setOpenVideo}
+                                        title={video.title}
+                                        data={video}
+                                        className="card-spacing"
+                                      />
+                                    </>
+                                  );
+                                })}
                             </div>
                             {allVideos?.data && !activities && (
                               <div style={{}} className="admin-panel ">

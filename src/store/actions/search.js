@@ -145,19 +145,60 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
   console.log(values);
   const centralizedState = store.getState();
   const { organization: { activeOrganization } } = centralizedState;
+  const activeGrades = [];
+  if (values.gradeArray) {
+    values.gradeArray.forEach((grade) => {
+      activeGrades.push(grade);
+    });
+  }
+  const activeSubjects = [];
+  if (values.subjectArray) {
+    values.subjectArray.forEach((subject) => {
+      activeSubjects.push(subject);
+    });
+  }
+  const activeAuthTags = [];
+  if (values.authorTagsArray) {
+    values.authorTagsArray.forEach((tag) => {
+      activeAuthTags.push(tag);
+    });
+  }
   let sendData;
-  // eslint-disable-next-line prefer-const
-  sendData = {
-    query: values.query,
-    subjectArray: values.subjectArray,
-    gradeArray: values.gradeArray,
-    authorTagsArray: values.authorTagsArray,
-    authors: values.author || undefined,
-    standardArray: values.standardArray,
-    from: 0,
-    size: 20,
-  };
-  const result = await searchService.searchIndependentActivities(activeOrganization?.id, searchType, sendData);
+  if (values.standardArray && values.standardArray.length > 0) {
+    sendData = {
+      query: values.query || values.phrase,
+      subjectArray: values.subjectArray,
+      gradeArray: values.gradeArray,
+      author: values.author || undefined,
+      subjectIds: activeSubjects,
+      authorTagIds: activeAuthTags,
+      negativeQuery: values.no_words || undefined,
+      h5pLibraries: values.standardArray,
+      startDate: values.fromDate || undefined,
+      educationLevelIds: activeGrades,
+      endDate: values.toDate || undefined,
+      organization_id: activeOrganization?.id,
+      from: values.from,
+      size: values.size,
+    };
+  } else {
+    sendData = {
+      query: values.query || values.phrase,
+      subjectArray: values.subjectArray,
+      gradeArray: values.gradeArray,
+      authorTagIds: activeAuthTags,
+      subjectIds: activeSubjects,
+      educationLevelIds: activeGrades,
+      author: values.author || undefined,
+      negativeQuery: values.no_words || undefined,
+      startDate: values.fromDate || undefined,
+      organization_id: activeOrganization?.id,
+      endDate: values.toDate || undefined,
+      from: values.from,
+      size: values.size,
+    };
+  }
+  const result = await searchService.searchIndependentActivities(searchType, sendData);
   dispatch(searchRedux(result?.data, values?.query, result?.meta));
   return result;
 };

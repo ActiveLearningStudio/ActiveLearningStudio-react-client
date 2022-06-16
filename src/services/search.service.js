@@ -157,8 +157,8 @@ const googleClassPublishIndependentActivity = (courseId, topicId, activityId, to
     return Promise.reject(err.response.data);
   });
 
-const searchIndependentActivities = (orgId, searchType, searchData) => httpService
-  .get(`/${apiVersion}/search/independent-activities?organization_id=${orgId}&searchType=${searchType}`, '', { ...searchData })
+const searchIndependentActivities = (searchType, searchData) => httpService
+  .get(`/${apiVersion}/search/independent-activities?searchType=${searchType}`, '', { ...searchData })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 

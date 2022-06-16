@@ -82,7 +82,6 @@ function SearchInterface(props) {
   const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const [activeSearchType, setActiveSearchType] = useState('Projects');
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [activityTypes, setActivityTypes] = useState([]);
@@ -356,7 +355,7 @@ function SearchInterface(props) {
         resultEdu.then((data) => setEducationLevels(data));
       }
     }
-  }, currentOrganization);
+  }, [authorTags.length, currentOrganization?.id, dispatch, educationLevels.length, subjects.length]);
   return (
     <>
       <div>
@@ -398,11 +397,8 @@ function SearchInterface(props) {
                 <Tabs
                   className="main-tabs"
                   onSelect={(eventKey) => {
-                    setActiveSearchType(eventKey);
+                    dispatch(setSearchTypeAction(eventKey));
                     setSearchInput('');
-                    setSearch([]);
-                    setMeta({});
-                    setTotalCount(0);
                     setSearchType('');
                     setToggleStates({
                       searchLibrary: true,
@@ -417,9 +413,8 @@ function SearchInterface(props) {
                     SetAuthor([]);
                     Settodate([]);
                     Setfromdate([]);
-                    dispatch(setSearchTypeAction(eventKey));
                   }}
-                  defaultActiveKey={activeSearchType}
+                  defaultActiveKey={allState.searchType}
                 >
                   <Tab eventKey="Projects" title="Projects">
                     <div className="main-content-search">
@@ -1269,261 +1264,281 @@ function SearchInterface(props) {
                             </Tab>
                           )}
                         </Tabs>
-                        {totalCount > 20 && (
-                          <Pagination
-                            activePage={activePage}
-                            itemsCountPerPage={20}
-                            totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
-                            pageRangeDisplayed={8}
-                            onChange={async (e) => {
-                              setActivePage(e);
-                              if (activeModel === 'total') {
-                                const searchData = {
-                                  phrase: searchQueries.trim(),
-                                  from: e * 20 - 20,
-                                  size: 20,
-                                  type: searchType,
-                                  subjectArray: activeSubject || undefined,
-                                  gradeArray: activeEducation || undefined,
-                                  authorTagsArray: activeAuthorTag || undefined,
-                                  standardArray: activeType || undefined,
-                                  author: authorName || undefined,
-                                };
-                                Swal.fire({
-                                  title: 'Loading...',
-                                  allowOutsideClick: false,
-                                  onBeforeOpen: () => {
-                                    Swal.showLoading();
-                                  },
-                                });
-                                await dispatch(simpleSearchAction(searchData));
-                                Swal.close();
-                              } else {
-                                const searchData = {
-                                  phrase: searchQueries.trim(),
-                                  from: e * 20 - 20,
-                                  size: 20,
-                                  type: searchType,
-                                  model: activeModel,
-                                  subjectArray: activeSubject || undefined,
-                                  gradeArray: activeEducation || undefined,
-                                  authorTagsArray: activeAuthorTag || undefined,
-                                  standardArray: activeType || undefined,
-                                  author: authorName || undefined,
-                                };
-                                Swal.fire({
-                                  title: 'Loading...',
-                                  allowOutsideClick: false,
-                                  onBeforeOpen: () => {
-                                    Swal.showLoading();
-                                  },
-                                });
-                                await dispatch(simpleSearchAction(searchData));
-                                Swal.close();
-                              }
-                            }}
-                            itemClass="page-item"
-                            linkClass="page-link"
-                          />
-                        )}
+
                       </div>
                     </div>
                   </Tab>
-                  <Tab eventKey="Independent activities" title="Independent activities">
-                    <div className="main-content-search">
-                      <div className="left-search">
-                        <div className="search-library">
-                          <SearchLibrary
-                            currentOrganization={currentOrganization}
-                            simpleSearchAction={simpleSearchAction}
-                            searchIndependentActivitiesAction={searchIndependentActivitiesAction}
-                            setToggleStates={setToggleStates}
-                            searchInput={searchInput}
-                            searchType={searchType}
-                            activeSubject={activeSubject}
-                            activeEducation={activeEducation}
-                            activeAuthorTag={activeAuthorTag}
-                            activeType={activeType}
-                            authorName={authorName}
-                            fromdate={fromdate}
-                            todate={todate}
-                            fromTeam={fromTeam}
-                            setActiveTab={setActiveTab}
-                            setSearchInput={setSearchInput}
-                            setSearchType={setSearchType}
-                            setActiveEducation={setActiveEducation}
-                            setActiveSubject={setActiveSubject}
-                            setActiveAuthorTag={setActiveAuthorTag}
-                            setAuthor={SetAuthor}
-                            setFromDate={Setfromdate}
-                            setToDate={Settodate}
-                            setTotalCount={setTotalCount}
-                            history={history}
-                            dispatch={dispatch}
-                            permission={permission}
-                            activities
-                            activeMainSearchType={allState?.searchType}
-                          />
-                          <RefineSearch
-                            setActiveAuthorTag={setActiveAuthorTag}
-                            authorTags={authorTags}
-                            educationLevels={educationLevels}
-                            subjects={subjects}
-                            setActiveSubject={setActiveSubject}
-                            activeAuthorTag={activeAuthorTag}
-                            activityTypes={activityTypes}
-                            activeType={activeType}
-                            activeEducation={activeEducation}
-                            setActiveEducation={setActiveEducation}
-                            setActiveType={setActiveType}
-                            activeSubject={activeSubject}
-                            toggleStates={toggleStates}
-                            setToggleStates={setToggleStates}
-                          />
+                  {!fromTeam && (
+                    <Tab eventKey="Independent activities" title="Independent activities">
+                      <div className="main-content-search">
+                        <div className="left-search">
+                          <div className="search-library">
+                            <SearchLibrary
+                              currentOrganization={currentOrganization}
+                              simpleSearchAction={simpleSearchAction}
+                              searchIndependentActivitiesAction={searchIndependentActivitiesAction}
+                              setToggleStates={setToggleStates}
+                              searchInput={searchInput}
+                              searchType={searchType}
+                              activeSubject={activeSubject}
+                              activeEducation={activeEducation}
+                              activeAuthorTag={activeAuthorTag}
+                              activeType={activeType}
+                              authorName={authorName}
+                              fromdate={fromdate}
+                              todate={todate}
+                              fromTeam={fromTeam}
+                              setActiveTab={setActiveTab}
+                              setSearchInput={setSearchInput}
+                              setSearchType={setSearchType}
+                              setActiveEducation={setActiveEducation}
+                              setActiveSubject={setActiveSubject}
+                              setActiveAuthorTag={setActiveAuthorTag}
+                              setAuthor={SetAuthor}
+                              setFromDate={Setfromdate}
+                              setToDate={Settodate}
+                              setTotalCount={setTotalCount}
+                              history={history}
+                              dispatch={dispatch}
+                              permission={permission}
+                              activities
+                              activeMainSearchType={allState?.searchType}
+                            />
+                            <RefineSearch
+                              setActiveAuthorTag={setActiveAuthorTag}
+                              authorTags={authorTags}
+                              educationLevels={educationLevels}
+                              subjects={subjects}
+                              setActiveSubject={setActiveSubject}
+                              activeAuthorTag={activeAuthorTag}
+                              activityTypes={activityTypes}
+                              activeType={activeType}
+                              activeEducation={activeEducation}
+                              setActiveEducation={setActiveEducation}
+                              setActiveType={setActiveType}
+                              activeSubject={activeSubject}
+                              toggleStates={toggleStates}
+                              setToggleStates={setToggleStates}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="right-search" id="right-search-branding-style">
-                        <Tabs
-                          activeKey="Ind. activities"
-                          id="controlled-tab-example"
-                        >
-                          <Tab eventKey="Ind. activities" title="Ind. activities">
-                            <div className="content">
-                              <div className="results_search">
-                                {!!search && search.length > 0 ? (
-                                  search.map((res) => (
-                                    <>
-                                      <div className="box">
-                                        <div className="imgbox">
-                                          {res.thumb_url ? (
-                                            <div
-                                              style={{
-                                                backgroundImage: res.thumb_url.includes('pexels.com')
-                                                  ? `url(${res.thumb_url})`
-                                                  : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                              }}
-                                            />
-                                          ) : (
-                                            <div
-                                              style={{
-                                                backgroundImage:
-                                                  // eslint-disable-next-line max-len
-                                                  'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-                                              }}
-                                            />
-                                          )}
+                        <div className="right-search" id="right-search-branding-style">
+                          <Tabs
+                            activeKey="Ind. activities"
+                            id="controlled-tab-example"
+                          >
+                            <Tab eventKey="Ind. activities" title="Ind. activities">
+                              <div className="content">
+                                <div className="results_search">
+                                  {!!search && search.length > 0 ? (
+                                    search.map((res) => (
+                                      <>
+                                        <div className="box">
+                                          <div className="imgbox">
+                                            {res.thumb_url ? (
+                                              <div
+                                                style={{
+                                                  backgroundImage: res.thumb_url.includes('pexels.com')
+                                                    ? `url(${res.thumb_url})`
+                                                    : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                                }}
+                                              />
+                                            ) : (
+                                              <div
+                                                style={{
+                                                  backgroundImage:
+                                                    // eslint-disable-next-line max-len
+                                                    'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                }}
+                                              />
+                                            )}
 
-                                          {/* <h5>CALCULUS</h5> */}
-                                        </div>
+                                            {/* <h5>CALCULUS</h5> */}
+                                          </div>
 
-                                        <div className="contentbox">
-                                          <div className="search-content">
-                                            <a
-                                              href={`/activity/${res.id}/preview`}
-                                              target="_blank"
-                                              rel="noreferrer"
-                                            >
-                                              <h2>{res.title || res.name}</h2>
-                                            </a>
-                                            <ul>
+                                          <div className="contentbox">
+                                            <div className="search-content">
+                                              <a
+                                                href={`/activity/${res.id}/preview`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                              >
+                                                <h2>{res.title || res.name}</h2>
+                                              </a>
                                               {res.user && (
-                                                <li>
-                                                  by
+                                                <div>
+                                                  By:
                                                   {' '}
                                                   <span>{res.user.first_name}</span>
-                                                </li>
+                                                </div>
                                               )}
-                                              <li>
-                                                Type
+                                              <div>
+                                                Type:
                                                 {' '}
                                                 <span className="type">{res.activity_type}</span>
-                                              </li>
-                                              {/* <li>
-                                                  Member Rating{" "}
-                                                  <span className="type">Project</span>
-                                                </li> */}
-                                            </ul>
-                                            <p>{res.description}</p>
-                                          </div>
-                                          {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
-                                            <Dropdown className="playlist-dropdown check">
-                                              <Dropdown.Toggle>
-                                                <FontAwesomeIcon icon="ellipsis-v" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <>
-                                                  <Dropdown.Item
-                                                    onClick={() => {
-                                                      setModalShow(true);
-                                                      setClone(res);
-                                                    }}
-                                                  >
-                                                    <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                    Duplicate
-                                                  </Dropdown.Item>
-                                                  {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
-                                                    <li
-                                                      className="dropdown-submenu send"
-                                                      style={{
-                                                        display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
+                                              </div>
+                                              <p>{res.description}</p>
+                                            </div>
+                                            {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
+                                              <Dropdown className="playlist-dropdown check">
+                                                <Dropdown.Toggle>
+                                                  <FontAwesomeIcon icon="ellipsis-v" />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <>
+                                                    <Dropdown.Item
+                                                      onClick={() => {
+                                                        setModalShow(true);
+                                                        setClone(res);
                                                       }}
                                                     >
-                                                      <a tabIndex="-1" className="dropdown-item">
-                                                        <FontAwesomeIcon icon="newspaper" className="mr-2" />
-                                                        Publish
-                                                      </a>
-                                                      <ul className="dropdown-menu check">
-                                                        {allLms?.shareVendors.map((data) => {
-                                                          if (data.lms_name !== 'safarimontage') return false;
-                                                          return (
-                                                            data?.activity_visibility && (
-                                                              <li>
-                                                                <a
-                                                                  onClick={() => {
-                                                                    dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
-                                                                  }}
-                                                                >
-                                                                  {data.site_name}
-                                                                </a>
-                                                              </li>
-                                                            )
-                                                          );
-                                                        })}
-                                                        <Modal
-                                                          dialogClassName="safari-modal"
-                                                          show={safariMontagePublishTool}
-                                                          onHide={() => dispatch(closeSafariMontageToolAction())}
-                                                          aria-labelledby="example-modal-sizes-title-lg"
-                                                        >
-                                                          <Modal.Header closeButton>
-                                                            <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
-                                                          </Modal.Header>
-                                                          <Modal.Body>
-                                                            <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
-                                                          </Modal.Body>
-                                                        </Modal>
-                                                      </ul>
-                                                    </li>
-                                                  )}
-                                                </>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          )}
+                                                      <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                      Duplicate
+                                                    </Dropdown.Item>
+                                                    {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                                      <li
+                                                        className="dropdown-submenu send"
+                                                        style={{
+                                                          display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
+                                                        }}
+                                                      >
+                                                        <a tabIndex="-1" className="dropdown-item">
+                                                          <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                          Publish
+                                                        </a>
+                                                        <ul className="dropdown-menu check">
+                                                          {allLms?.shareVendors.map((data) => {
+                                                            if (data.lms_name !== 'safarimontage') return false;
+                                                            return (
+                                                              data?.activity_visibility && (
+                                                                <li>
+                                                                  <a
+                                                                    onClick={() => {
+                                                                      dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
+                                                                    }}
+                                                                  >
+                                                                    {data.site_name}
+                                                                  </a>
+                                                                </li>
+                                                              )
+                                                            );
+                                                          })}
+                                                          <Modal
+                                                            dialogClassName="safari-modal"
+                                                            show={safariMontagePublishTool}
+                                                            onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                            aria-labelledby="example-modal-sizes-title-lg"
+                                                          >
+                                                            <Modal.Header closeButton>
+                                                              <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                              <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+                                                            </Modal.Body>
+                                                          </Modal>
+                                                        </ul>
+                                                      </li>
+                                                    )}
+                                                  </>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                          </div>
                                         </div>
-                                      </div>
-                                    </>
-                                  ))
-                                ) : (
-                                  <div className="box">No result found !</div>
-                                )}
+                                      </>
+                                    ))
+                                  ) : (
+                                    <div className="box">No result found !</div>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          </Tab>
-                        </Tabs>
+                            </Tab>
+                          </Tabs>
+                        </div>
                       </div>
-                    </div>
-                  </Tab>
+                    </Tab>
+                  )}
+
                 </Tabs>
+                {totalCount > 20 && (
+                  <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={20}
+                    totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
+                    pageRangeDisplayed={8}
+                    onChange={async (e) => {
+                      setActivePage(e);
+                      if (allState.searchType === 'Projects') {
+                        if (activeModel === 'total') {
+                          const searchData = {
+                            phrase: searchQueries.trim(),
+                            from: e * 20 - 20,
+                            size: 20,
+                            type: searchType,
+                            subjectArray: activeSubject || undefined,
+                            gradeArray: activeEducation || undefined,
+                            authorTagsArray: activeAuthorTag || undefined,
+                            standardArray: activeType || undefined,
+                            author: authorName || undefined,
+                          };
+                          Swal.fire({
+                            title: 'Loading...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
+                        } else {
+                          const searchData = {
+                            phrase: searchQueries.trim(),
+                            from: e * 20 - 20,
+                            size: 20,
+                            type: searchType,
+                            model: activeModel,
+                            subjectArray: activeSubject || undefined,
+                            gradeArray: activeEducation || undefined,
+                            authorTagsArray: activeAuthorTag || undefined,
+                            standardArray: activeType || undefined,
+                            author: authorName || undefined,
+                          };
+                          Swal.fire({
+                            title: 'Loading...',
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+                          await dispatch(simpleSearchAction(searchData));
+                          Swal.close();
+                        }
+                      } else if (allState.searchType === 'Independent Activities') {
+                        const searchData = {
+                          query: searchInput.trim(),
+                          subjectArray: activeSubject,
+                          gradeArray: activeEducation,
+                          authorTagsArray: activeAuthorTag,
+                          authors: authorName || undefined,
+                          standardArray: activeType,
+                          from: e * 20 - 20,
+                          size: 20,
+                        };
+                        Swal.fire({
+                          title: 'Loading...',
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                        });
+                        await dispatch(searchIndependentActivitiesAction(searchData, searchType));
+                        Swal.close();
+                      }
+                    }}
+                    itemClass="page-item"
+                    linkClass="page-link"
+                  />
+                )}
               </div>
             ) : (
               <Alert variant="danger">You are not authorized to view this page!</Alert>
