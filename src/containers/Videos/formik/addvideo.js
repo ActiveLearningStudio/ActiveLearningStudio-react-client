@@ -1,26 +1,26 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-unused-vars */
 /* eslint-disable  */
-import React, { useEffect, useRef, useState } from "react";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import TabsHeading from "utils/Tabs/tabs";
-import { Tabs, Tab, Alert } from "react-bootstrap";
-import { Formik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import AddVideoImage from "assets/images/svg/addvidobright.svg";
-import AddVideoTube from "assets/images/svg/youtube.svg";
-import AddKaltura from "assets/images/kaltura.jpg";
-import AddVemeo from "assets/images/vemeo.PNG";
-import Buttons from "utils/Buttons/buttons";
-import videoService from "services/videos.services";
-import UploadImg from "assets/images/upload1.png";
-import Swal from "sweetalert2";
-import "utils/uploadselectfile/uploadfile.scss";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import { getMediaSources } from "store/actions/admin";
-import BrightcoveModel from "../model/brightmodel";
-import KomodoLogo from "../../../assets/images/svg/komodo.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef, useState } from 'react';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import TabsHeading from 'utils/Tabs/tabs';
+import { Tabs, Tab, Alert } from 'react-bootstrap';
+import { Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import AddVideoImage from 'assets/images/svg/addvidobright.svg';
+import AddVideoTube from 'assets/images/svg/youtube.svg';
+import AddKaltura from 'assets/images/kaltura.jpg';
+import AddVemeo from 'assets/images/vemeo.PNG';
+import Buttons from 'utils/Buttons/buttons';
+import videoService from 'services/videos.services';
+import UploadImg from 'assets/images/upload1.png';
+import Swal from 'sweetalert2';
+import 'utils/uploadselectfile/uploadfile.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { getMediaSources } from 'store/actions/admin';
+import BrightcoveModel from '../model/brightmodel';
+import KomodoLogo from '../../../assets/images/svg/komodo.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleDown,
   faCamera,
@@ -34,24 +34,19 @@ import {
   faPlay,
   faVideo,
   faVideoSlash,
-} from "@fortawesome/free-solid-svg-icons";
-import { faWindowClose } from "@fortawesome/free-regular-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
+import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 
-const AddVideo = ({
-  setScreenStatus,
-  showback,
-  changeScreenHandler,
-  hideallothers,
-}) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
-  const [selectedVideoId, setSelectedVideoId] = useState("");
-  const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState("");
-  const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState("");
-  const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState("");
+  const [selectedVideoId, setSelectedVideoId] = useState('');
+  const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
+  const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
-  const [platform, setplatform] = useState("Mydevice");
+  const [platform, setplatform] = useState('Mydevice');
   const [mediaSources, setMediaSources] = useState([]);
   const [activeKey, setActiveKey] = useState(mediaSources[0]?.name);
   const { editVideo } = useSelector((state) => state.videos);
@@ -64,15 +59,13 @@ const AddVideo = ({
 
   useEffect(() => {
     if (mediaSources.length === 0) {
-      const result = dispatch(
-        getMediaSources(organization?.activeOrganization?.id)
-      );
+      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
       result.then((data) => {
         setMediaSources(data.mediaSources);
       });
     }
   }, [mediaSources]);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <BrightcoveModel
@@ -108,34 +101,15 @@ const AddVideo = ({
               className=" back-button "
               id="back-button-none-bg"
               style={{
-                display: "flex",
-                justifyContent: "center",
-                cursor: "pointer",
+                display: 'flex',
+                justifyContent: 'center',
+                cursor: 'pointer',
               }}
-              onClick={() => changeScreenHandler("layout")}
+              onClick={() => changeScreenHandler('layout')}
             >
-              <svg
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: "8px", marginTop: "4px" }}
-              >
-                <path
-                  d="M13 5L1 5"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M5 1L1 5L5 9"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
 
               <p style={{ margin: 0 }} className="">
@@ -146,17 +120,13 @@ const AddVideo = ({
         </div>
         {hideallothers && (
           <div className="add-video-form-tabs">
-            <Tabs
-              className="main-tabs"
-              defaultActiveKey="Brightcove"
-              id="uncontrolled-tab-example"
-            >
+            <Tabs className="main-tabs" defaultActiveKey="Brightcove" id="uncontrolled-tab-example">
               {!editVideo ? (
                 <Tab
                   eventKey="Brightcove"
                   title="BrightCove"
                   onClick={() => {
-                    setplatform("Brightcove");
+                    setplatform('Brightcove');
                     setShowSidebar(true);
                   }}
                 >
@@ -174,12 +144,12 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Brightcove" && (
+                editVideo.source_type === 'Brightcove' && (
                   <Tab
                     eventKey="Brightcove"
                     title="BrightCove"
                     onClick={() => {
-                      setplatform("Brightcove");
+                      setplatform('Brightcove');
                       setShowSidebar(true);
                     }}
                   >
@@ -203,12 +173,7 @@ const AddVideo = ({
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
     <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
-            {editVideo && editVideo.source_type !== "Brightcove" && (
-              <Alert variant="warning">
-                This activity is not editable in new release, Please create a
-                new one
-              </Alert>
-            )}
+            {editVideo && editVideo.source_type !== 'Brightcove' && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
           </div>
         )}
         {!hideallothers && (
@@ -221,15 +186,12 @@ const AddVideo = ({
               }}
               id="controlled-tab-example"
             >
-              {!editVideo &&
-              mediaSources.some(
-                (obj) => obj.name === "My device" && obj.media_type === "Video"
-              ) ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Video') ? (
                 <Tab
                   eventKey="Mydevice"
                   title="My device"
                   onClick={() => {
-                    setplatform("Mydevice");
+                    setplatform('Mydevice');
                   }}
                 >
                   {/* <UploadFile metadata={formData} formRef={formRef} /> */}
@@ -243,20 +205,14 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Mydevice" && (
+                editVideo.source_type === 'Mydevice' && (
                   <Tab
                     eventKey="Mydevice"
                     title="My device"
                     onClick={() => {
-                      setplatform("Mydevice");
+                      setplatform('Mydevice');
                     }}
-                    className={
-                      editVideo
-                        ? editVideo.source_type !== "Brightcove"
-                          ? "hidevideotab"
-                          : "showvideotab"
-                        : "showvideotab"
-                    }
+                    className={editVideo ? (editVideo.source_type !== 'Brightcove' ? 'hidevideotab' : 'showvideotab') : 'showvideotab'}
                   >
                     {/* <UploadFile metadata={formData} formRef={formRef} /> */}
                     <FormikVideo
@@ -271,13 +227,12 @@ const AddVideo = ({
                   </Tab>
                 )
               )}
-              {!editVideo &&
-              mediaSources.some((obj) => obj.name === "BrightCove") ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'BrightCove') ? (
                 <Tab
                   eventKey="Brightcove"
                   title="BrightCove"
                   onClick={() => {
-                    setplatform("Brightcove");
+                    setplatform('Brightcove');
                     setShowSidebar(true);
                   }}
                 >
@@ -295,12 +250,12 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Brightcove" && (
+                editVideo.source_type === 'Brightcove' && (
                   <Tab
                     eventKey="Brightcove"
                     title="BrightCove"
                     onClick={() => {
-                      setplatform("Brightcove");
+                      setplatform('Brightcove');
                       setShowSidebar(true);
                     }}
                   >
@@ -320,18 +275,17 @@ const AddVideo = ({
                   </Tab>
                 )
               )}
-              {!editVideo &&
-              mediaSources.some((obj) => obj.name === "YouTube") ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'YouTube') ? (
                 <Tab
                   eventKey="Youtube"
                   title="YouTube"
                   onClick={() => {
-                    setplatform("Youtube");
+                    setplatform('Youtube');
                   }}
                 >
                   <FormikVideo
                     Input
-                    editVideo={editVideo?.brightcoveData?.videoId || ""}
+                    editVideo={editVideo?.brightcoveData?.videoId || ''}
                     platform={platform}
                     showback={showback}
                     changeScreenHandler={changeScreenHandler}
@@ -341,12 +295,12 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Youtube" && (
+                editVideo.source_type === 'Youtube' && (
                   <Tab
                     eventKey="Youtube"
                     title="YouTube"
                     onClick={() => {
-                      setplatform("Youtube");
+                      setplatform('Youtube');
                     }}
                   >
                     <FormikVideo
@@ -362,13 +316,12 @@ const AddVideo = ({
                   </Tab>
                 )
               )}
-              {!editVideo &&
-              mediaSources.some((obj) => obj.name === "Kaltura") ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'Kaltura') ? (
                 <Tab
                   eventKey="Kaltura"
                   title="Kaltura"
                   onClick={() => {
-                    setplatform("Kaltura");
+                    setplatform('Kaltura');
                     setShowSidebar(false);
                   }}
                 >
@@ -386,12 +339,12 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Kaltura" && (
+                editVideo.source_type === 'Kaltura' && (
                   <Tab
                     eventKey="Kaltura"
                     title="Kaltura"
                     onClick={() => {
-                      setplatform("Kaltura");
+                      setplatform('Kaltura');
                       setShowSidebar(false);
                     }}
                   >
@@ -414,13 +367,12 @@ const AddVideo = ({
 
               {/* Vemo Video */}
 
-              {!editVideo &&
-              mediaSources.some((obj) => obj.name === "Vimeo") ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'Vimeo') ? (
                 <Tab
                   eventKey="Vimeo"
                   title="Vimeo"
                   onClick={() => {
-                    setplatform("Vimeo");
+                    setplatform('Vimeo');
                     setShowSidebar(false);
                   }}
                 >
@@ -438,12 +390,12 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Vimeo" && (
+                editVideo.source_type === 'Vimeo' && (
                   <Tab
                     eventKey="Vimeo"
                     title="Vimeo"
                     onClick={() => {
-                      setplatform("Vimeo");
+                      setplatform('Vimeo');
                       setShowSidebar(false);
                     }}
                   >
@@ -471,7 +423,7 @@ const AddVideo = ({
                   eventKey="Komodo"
                   title="Komodo"
                   onClick={() => {
-                    setplatform("Komodo");
+                    setplatform('Komodo');
                     setShowSidebar(false);
                   }}
                 >
@@ -490,18 +442,18 @@ const AddVideo = ({
                   />
                 </Tab>
               ) : (
-                editVideo.source_type === "Komodo" && (
+                editVideo.source_type === 'Komodo' && (
                   <Tab
                     eventKey="Komodo"
                     title="Komodo"
                     onClick={() => {
-                      setplatform("Komodo");
+                      setplatform('Komodo');
                       setShowSidebar(false);
                     }}
                   >
                     <FormikVideo
-                      Input
-                      showBrowse
+                      // Input
+                      // showBrowse
                       setModalShow={setModalShow}
                       showback={showback}
                       changeScreenHandler={changeScreenHandler}
@@ -511,6 +463,7 @@ const AddVideo = ({
                       platform={platform}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter here your Komodo link"
+                      komodo
                     />
                   </Tab>
                 )
@@ -519,12 +472,7 @@ const AddVideo = ({
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
-            {editVideo && !editVideo.source_type && (
-              <Alert variant="warning">
-                This activity is not editable in new release, Please create a
-                new one
-              </Alert>
-            )}
+            {editVideo && !editVideo.source_type && <Alert variant="warning">This activity is not editable in new release, Please create a new one</Alert>}
           </div>
         )}
       </div>
@@ -552,19 +500,19 @@ const FormikVideo = ({
 }) => {
   const dispatch = useDispatch();
   const imgUpload = useRef();
-  const [uploadedFile, setUploadedFile] = useState("");
+  const [uploadedFile, setUploadedFile] = useState('');
   const [record, setRecord] = useState(false);
-  const [selectTab, setSelectTab] = useState("enterscreen");
+  const [selectTab, setSelectTab] = useState('enterscreen');
   const [play, setPlay] = useState(false);
   const [startRecord, setStartRecord] = useState(false);
 
   const formRef = useRef();
   useEffect(() => {
-    if (editVideo && platform === "Mydevice") {
+    if (editVideo && platform === 'Mydevice') {
       setUploadedFile(editVideo);
     }
   }, [editVideo, platform]);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="add-video-layout-formik">
       <Formik
@@ -576,18 +524,18 @@ const FormikVideo = ({
         validate={(values) => {
           const errors = {};
           if (!values.videoUrl) {
-            errors.videoUrl = "Required";
+            errors.videoUrl = 'Required';
           }
           return errors;
         }}
         onSubmit={(values) => {
           if (showback) {
-            changeScreenHandler("describevideo");
+            changeScreenHandler('describevideo');
           } else {
-            setScreenStatus("DescribeVideo");
+            setScreenStatus('DescribeVideo');
           }
           dispatch({
-            type: "ADD_VIDEO_URL",
+            type: 'ADD_VIDEO_URL',
             payload: values.videoUrl,
             platform,
           });
@@ -627,13 +575,10 @@ const FormikVideo = ({
                               setStartRecord(false);
                             }}
                           >
-                            <FontAwesomeIcon
-                              icon={faVideo}
-                              className="record-icon-color"
-                            />
+                            <FontAwesomeIcon icon={faVideo} className="record-icon-color" />
                             <span
                               style={{
-                                marginLeft: "8px",
+                                marginLeft: '8px',
                               }}
                             >
                               Record
@@ -649,19 +594,12 @@ const FormikVideo = ({
                         <div className="komodo-text-field">
                           <label
                             style={{
-                              display: "block",
+                              display: 'block',
                             }}
                           >
                             Add with a link
                           </label>
-                          <input
-                            type="text"
-                            name="videoUrl"
-                            placeholder={placeholder}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.videoUrl}
-                          />
+                          <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
                         </div>
                         <div class="komodo-parent-div">
                           <p>or</p>
@@ -678,7 +616,7 @@ const FormikVideo = ({
                           width="146px"
                           height="35px"
                           hover
-                          className={`${"ml-32"} ${"search-btn"}`}
+                          className={`${'ml-32'} ${'search-btn'}`}
                           onClick={() => {
                             setModalShow(true);
                           }}
@@ -694,7 +632,7 @@ const FormikVideo = ({
                                 </div>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button
@@ -711,7 +649,7 @@ const FormikVideo = ({
                                 </div>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn">
@@ -720,7 +658,7 @@ const FormikVideo = ({
                                 </div>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn">
@@ -730,7 +668,7 @@ const FormikVideo = ({
 
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn">
@@ -739,7 +677,7 @@ const FormikVideo = ({
                                 </div>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn">
@@ -757,10 +695,7 @@ const FormikVideo = ({
                                       setPlay(true);
                                     }}
                                   >
-                                    <FontAwesomeIcon
-                                      icon={faPlay}
-                                      className="play-icon-color"
-                                    />
+                                    <FontAwesomeIcon icon={faPlay} className="play-icon-color" />
                                   </button>
                                 </div>
                               </>
@@ -774,15 +709,12 @@ const FormikVideo = ({
                                       setPlay(false);
                                     }}
                                   >
-                                    <FontAwesomeIcon
-                                      icon={faMicrophoneSlash}
-                                      className="micro-icon-color"
-                                    />
+                                    <FontAwesomeIcon icon={faMicrophoneSlash} className="micro-icon-color" />
                                   </button>
                                 </div>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn">
@@ -794,7 +726,7 @@ const FormikVideo = ({
                             {!startRecord && (
                               <div
                                 style={{
-                                  marginLeft: "8px",
+                                  marginLeft: '8px',
                                 }}
                               >
                                 <button className="komodo-rounded-btn">
@@ -806,14 +738,13 @@ const FormikVideo = ({
                               <>
                                 <div
                                   style={{
-                                    marginLeft: "8px",
+                                    marginLeft: '8px',
                                   }}
                                 >
                                   <button className="komodo-rounded-btn-space">
                                     <span>Space: </span>
                                     <span>
-                                      None{" "}
-                                      <FontAwesomeIcon icon={faAngleDown} />
+                                      None <FontAwesomeIcon icon={faAngleDown} />
                                     </span>
                                   </button>
                                 </div>
@@ -834,24 +765,15 @@ const FormikVideo = ({
                           <div className="choose-second-heading">
                             <strong
                               style={{
-                                display: "block",
+                                display: 'block',
                               }}
                             >
                               Choose what to share
                             </strong>
-                            <span className="second-heading-detail">
-                              Chrome extension ://kjsdfjksdf want to share the
-                              content of your screen
-                            </span>
+                            <span className="second-heading-detail">Chrome extension ://kjsdfjksdf want to share the content of your screen</span>
                           </div>
                           <div className="play-tabs-section">
-                            <Tabs
-                              className="main-tabs"
-                              defaultActiveKey={selectTab}
-                              activeKey={selectTab}
-                              id="uncontrolled-tab-example"
-                              onSelect={(k) => setSelectTab(k)}
-                            >
+                            <Tabs className="main-tabs" defaultActiveKey={selectTab} activeKey={selectTab} id="uncontrolled-tab-example" onSelect={(k) => setSelectTab(k)}>
                               <Tab eventKey="enterscreen" title="Enter Screen">
                                 <div className="play-tabs-detail">
                                   enterscreen
@@ -871,31 +793,13 @@ const FormikVideo = ({
                                 <div className="play-tabs-detail">Windows</div>
                               </Tab>
                               <Tab eventKey="chrometab" title="Chrome Tab">
-                                <div className="play-tabs-detail">
-                                  chrometab
-                                </div>
+                                <div className="play-tabs-detail">chrometab</div>
                               </Tab>
                             </Tabs>
                           </div>
                           <div className="play-screen-btn">
-                            <Buttons
-                              type="button"
-                              secondary
-                              text="Cancel"
-                              width="86px"
-                              height="35px"
-                              hover
-                              className="screen-btn screen-btn-cancel "
-                            />
-                            <Buttons
-                              type="button"
-                              defaultgrey
-                              text="Share"
-                              width="86px"
-                              height="35px"
-                              hover
-                              className="screen-btn"
-                            />
+                            <Buttons type="button" secondary text="Cancel" width="86px" height="35px" hover className="screen-btn screen-btn-cancel " />
+                            <Buttons type="button" defaultgrey text="Share" width="86px" height="35px" hover className="screen-btn" />
                           </div>
                         </div>
                       </div>
@@ -908,14 +812,7 @@ const FormikVideo = ({
               {Input && (
                 <>
                   <img src={type} alt="video" />
-                  <input
-                    type="text"
-                    name="videoUrl"
-                    placeholder={placeholder}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.videoUrl}
-                  />
+                  <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
                 </>
               )}
               {showBrowse && (
@@ -944,14 +841,7 @@ const FormikVideo = ({
                       }}
                       type="reset"
                     >
-                      <svg
-                        width="15"
-                        height="12"
-                        className="mr-2"
-                        viewBox="0 0 15 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                      <svg width="15" height="12" className="mr-2" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           // eslint-disable-next-line max-len
                           d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
@@ -960,20 +850,8 @@ const FormikVideo = ({
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
-                        <path
-                          d="M10.1499 3.39999L7.5249 1L4.8999 3.39999"
-                          stroke={primaryColor}
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M7.5 1V8.79997"
-                          stroke={primaryColor}
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                        <path d="M10.1499 3.39999L7.5249 1L4.8999 3.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M7.5 1V8.79997" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                       Select File
                     </button>
@@ -986,19 +864,16 @@ const FormikVideo = ({
                         e.preventDefault();
 
                         const h5pFile = e.target.files[0];
-                        const fileArr = h5pFile.name.split(".");
-                        const fileExtension =
-                          fileArr.length > 0 ? fileArr[fileArr.length - 1] : "";
-                        if (fileExtension !== "mp4") {
-                          Swal.fire(
-                            "Invalid file selected, kindly select mp4 file."
-                          );
+                        const fileArr = h5pFile.name.split('.');
+                        const fileExtension = fileArr.length > 0 ? fileArr[fileArr.length - 1] : '';
+                        if (fileExtension !== 'mp4') {
+                          Swal.fire('Invalid file selected, kindly select mp4 file.');
                           return true;
                           // eslint-disable-next-line no-else-return
                         } else {
                           Swal.fire({
-                            title: "Please Wait !",
-                            html: "Uploading video may take some time.",
+                            title: 'Please Wait !',
+                            html: 'Uploading video may take some time.',
                             allowOutsideClick: false,
                             didOpen: () => {
                               Swal.showLoading();
@@ -1006,10 +881,10 @@ const FormikVideo = ({
                             showConfirmButton: false,
                           });
                           const formData = new FormData();
-                          formData.append("file", h5pFile);
-                          formData.append("contentId", 0);
+                          formData.append('file', h5pFile);
+                          formData.append('contentId', 0);
                           formData.append(
-                            "field",
+                            'field',
                             `{"name":"files",
                             "type":"video",
                             "label":"Add a video",
@@ -1020,9 +895,7 @@ const FormikVideo = ({
                             "extraAttributes":["metadata"],
                             "enableCustomQualityLabel":true}`
                           );
-                          const result = await videoService.uploadvideoDirect(
-                            formData
-                          );
+                          const result = await videoService.uploadvideoDirect(formData);
                           Swal.close();
                           if (result.success === false) {
                             Swal.fire({
@@ -1031,20 +904,20 @@ const FormikVideo = ({
                           } else {
                             setUploadedFile(h5pFile.name);
                             setSelectedVideoId(result.path);
-                            setFieldValue("videoUrl", result.path);
+                            setFieldValue('videoUrl', result.path);
                           }
                         }
                       }}
                       ref={imgUpload}
                       style={{
-                        cursor: "pointer",
-                        background: "#F1F1F1",
-                        padding: "160px 41px 0px 41px",
-                        borderRadius: "8px",
-                        border: "none",
+                        cursor: 'pointer',
+                        background: '#F1F1F1',
+                        padding: '160px 41px 0px 41px',
+                        borderRadius: '8px',
+                        border: 'none',
                       }}
                       onClick={(e) => {
-                        e.target.value = "";
+                        e.target.value = '';
                       }}
                     />
                     <div
@@ -1053,17 +926,12 @@ const FormikVideo = ({
                         setUploadedFile();
                       }}
                       className="upload-holder"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                     >
-                      <img
-                        style={{ cursor: "pointer" }}
-                        src={UploadImg}
-                        alt="upload"
-                        className="mr-2"
-                      />
+                      <img style={{ cursor: 'pointer' }} src={UploadImg} alt="upload" className="mr-2" />
                       <p>
                         Drag & drop file or&nbsp;
-                        <span style={{ color: "#2e8df5" }}>browse</span>
+                        <span style={{ color: '#2e8df5' }}>browse</span>
                         &nbsp; to upload
                       </p>
                     </div>
@@ -1071,10 +939,10 @@ const FormikVideo = ({
                   {uploadedFile && (
                     <div
                       style={{
-                        color: "#1dca1d",
-                        fontSize: "14px",
-                        padding: "10px 0px",
-                        fontWeight: "bold",
+                        color: '#1dca1d',
+                        fontSize: '14px',
+                        padding: '10px 0px',
+                        fontWeight: 'bold',
                       }}
                     >
                       {uploadedFile}
@@ -1084,20 +952,12 @@ const FormikVideo = ({
                 </div>
               </div>
             )}
-            <div className="error" style={{ color: "red" }}>
+            <div className="error" style={{ color: 'red' }}>
               {errors.videoUrl && touched.videoUrl && errors.videoUrl}
             </div>
 
             <div className="describe-video">
-              <Buttons
-                className="describe-btn"
-                type="submit"
-                primary
-                text="Describe Video"
-                width="149px"
-                height="35px"
-                hover
-              />
+              <Buttons className="describe-btn" type="submit" primary text="Describe Video" width="149px" height="35px" hover />
             </div>
           </form>
         )}

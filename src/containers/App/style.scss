@@ -20,7 +20,7 @@
   &.left .modal-dialog,
   &.right .modal-dialog {
     position: relative;
-    max-width: none;
+    max-width: none !important;
     height: 100%;
     margin-top: 0;
     padding-left: 346px;
