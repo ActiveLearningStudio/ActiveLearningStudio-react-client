@@ -45,7 +45,7 @@ const PreviewLayoutModel = (props) => {
               path: videoId,
             },
           ];
-        } else if (platform === 'Kaltura') {
+        } else if (platform === 'Kaltura' || platform === 'Komodo') {
           replaceH5p.params.interactiveVideo.video.files = [
             {
               copyright: { license: 'U' },
@@ -226,6 +226,25 @@ const PreviewLayoutModel = (props) => {
                   </div>
                 )}
                 {platform === 'Kaltura' && !editVideo && (
+                  <H5PEditor
+                    h5pParams={
+                      props.editVideo.h5p
+                        ? props.editVideo.h5p
+                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
+                    }
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                    hide={props.onHide}
+                    type={type}
+                    formData={props?.formData}
+                    editVideo={editVideo}
+                    setOpenVideo={setOpenVideo}
+                    reverseType={reverseType}
+                    playlistId={playlist?.id || undefined}
+                    submitForm={submitForm}
+                    activityPreview={activityPreview}
+                  />
+                )}
+                {platform === 'Komodo' && !editVideo && (
                   <H5PEditor
                     h5pParams={
                       props.editVideo.h5p
