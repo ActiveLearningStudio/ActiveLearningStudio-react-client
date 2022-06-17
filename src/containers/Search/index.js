@@ -20,16 +20,16 @@ import { getProjectId, googleShare } from 'store/actions/gapi';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
 import ShareLink from 'components/ResourceCard/ShareLink';
-import { lmsPlaylist } from 'store/actions/playlist';
+import { lmsPlaylist, addActivityPlaylistSearch } from 'store/actions/playlist';
 import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 import teamicon from 'assets/images/sidebar/users-team.svg';
-// import Header from 'components/Header';
 import Footer from 'components/Footer';
-// import Sidebar from 'components/Sidebar';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import SearchLibrary from 'components/Search/SearchLibrary';
 import RefineSearch from 'components/Search/RefineSearch';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import Buttons from 'utils/Buttons/buttons';
 import CloneModel from './CloneModel';
-
 import './style.scss';
 
 let paginationStarter = true;
@@ -37,7 +37,12 @@ let paginationStarter = true;
 function MyVerticallyCenteredModal(props) {
   const { clone } = props;
   return (
-    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           Duplicate
@@ -66,8 +71,17 @@ MyVerticallyCenteredModal.defaultProps = {
 
 function SearchInterface(props) {
   const {
-    history, fromTeam, selectProject, setSelectProject,
+    history,
+    fromTeam,
+    selectProject,
+    setSelectProject,
+    showBackOption,
+    setSelectSearchModule,
+    playlistIdForSearchingTab,
+    setReloadPlaylist,
+    reloadPlaylist,
   } = props;
+  const primaryColor = getGlobalColor('--main-primary-color');
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
     subject: true,
@@ -188,7 +202,11 @@ function SearchInterface(props) {
     localStorage.setItem('refreshPage', 'true');
   };
   useEffect(() => {
-    if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
+    if (
+      localStorage.getItem('refreshPage') === 'true'
+      && currentOrganization
+      && searchType
+    ) {
       let dataSend;
       if (searchType === 'orgSearch') {
         dataSend = {
@@ -360,17 +378,49 @@ function SearchInterface(props) {
     <>
       <div>
         <div className={!fromTeam && 'search-wrapper'}>
-          <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
+          <MyVerticallyCenteredModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            className="clone-lti"
+            clone={clone}
+          />
 
           <div className="content-search">
             {true ? (
               <div className="search-result-main">
-                {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
-                {!fromTeam && <div className="exp-lib-cnt">Explore library content</div>}
+                {!fromTeam && (
+                  <div className="current-org-search">
+                    {currentOrganization?.name}
+                  </div>
+                )}
+                {!fromTeam && (
+                  <div className="search-top-header">
+                    <div className="exp-lib-cnt">Explore library content</div>
+                    {showBackOption && (
+                      <>
+                        <div
+                          className="back-option-sectioin"
+                          onClick={() => {
+                            setSelectSearchModule(false);
+                            setReloadPlaylist(!reloadPlaylist);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            color={primaryColor}
+                            className="mr-12"
+                          />
+                          <span> Back to Playlist</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
                 <div
                   className="total-count"
                   style={{
-                    display: totalCount > 1000 || !!searchQueries ? 'block' : 'none',
+                    display:
+                      totalCount > 1000 || !!searchQueries ? 'block' : 'none',
                   }}
                 >
                   {totalCount > 10000 ? (
@@ -581,7 +631,11 @@ function SearchInterface(props) {
                                         {res.thumb_url ? (
                                           <div
                                             style={{
-                                              backgroundImage: res.thumb_url.includes('pexels.com') ? `url(${res.thumb_url})` : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                              backgroundImage: res.thumb_url.includes(
+                                                'pexels.com',
+                                              )
+                                                ? `url(${res.thumb_url})`
+                                                : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                             }}
                                           />
                                         ) : (
@@ -773,7 +827,10 @@ function SearchInterface(props) {
                                                   setClone(res);
                                                 }}
                                               >
-                                                <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                <FontAwesomeIcon
+                                                  className="mr-2"
+                                                  icon="clone"
+                                                />
                                                 Duplicate
                                               </Dropdown.Item>
                                               {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
@@ -1187,69 +1244,96 @@ function SearchInterface(props) {
                                                 </ul>
                                                 <p>{res.description}</p>
                                               </div>
-                                              {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
-                                                <Dropdown className="playlist-dropdown check">
-                                                  <Dropdown.Toggle>
-                                                    <FontAwesomeIcon icon="ellipsis-v" />
-                                                  </Dropdown.Toggle>
-                                                  <Dropdown.Menu>
-                                                    <>
-                                                      <Dropdown.Item
+                                              {showBackOption ? (
+                                                <>
+                                                  {permission?.Activity?.includes(
+                                                    'activity:duplicate',
+                                                  )
+                                                    && res.model === 'Activity' && (
+                                                      <Buttons
+                                                        text="Add"
+                                                        primary
+                                                        width="56px"
+                                                        height="36px"
                                                         onClick={() => {
-                                                          setModalShow(true);
-                                                          setClone(res);
+                                                          dispatch(
+                                                            addActivityPlaylistSearch(
+                                                              21,
+                                                              playlistIdForSearchingTab,
+                                                            ),
+                                                          );
                                                         }}
-                                                      >
-                                                        <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                        Duplicate
-                                                      </Dropdown.Item>
-                                                      {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
-                                                        <li
-                                                          className="dropdown-submenu send"
-                                                          style={{
-                                                            display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
-                                                          }}
-                                                        >
-                                                          <a tabIndex="-1" className="dropdown-item">
-                                                            <FontAwesomeIcon icon="newspaper" className="mr-2" />
-                                                            Publish
-                                                          </a>
-                                                          <ul className="dropdown-menu check">
-                                                            {allLms?.shareVendors.map((data) => {
-                                                              if (data.lms_name !== 'safarimontage') return false;
-                                                              return (
-                                                                data?.activity_visibility && (
-                                                                  <li>
-                                                                    <a
-                                                                      onClick={() => {
-                                                                        dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
-                                                                      }}
-                                                                    >
-                                                                      {data.site_name}
-                                                                    </a>
-                                                                  </li>
-                                                                )
-                                                              );
-                                                            })}
-                                                            <Modal
-                                                              dialogClassName="safari-modal"
-                                                              show={safariMontagePublishTool}
-                                                              onHide={() => dispatch(closeSafariMontageToolAction())}
-                                                              aria-labelledby="example-modal-sizes-title-lg"
+                                                        hover
+                                                      />
+                                                    )}
+                                                </>
+                                              ) : (
+                                                <>
+                                                  {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
+                                                    <Dropdown className="playlist-dropdown check">
+                                                      <Dropdown.Toggle>
+                                                        <FontAwesomeIcon icon="ellipsis-v" />
+                                                      </Dropdown.Toggle>
+                                                      <Dropdown.Menu>
+                                                        <>
+                                                          <Dropdown.Item
+                                                            onClick={() => {
+                                                              setModalShow(true);
+                                                              setClone(res);
+                                                            }}
+                                                          >
+                                                            <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                            Duplicate
+                                                          </Dropdown.Item>
+                                                          {permission?.Activity?.includes('activity:share') && allLms?.length !== 0 && (
+                                                            <li
+                                                              className="dropdown-submenu send"
+                                                              style={{
+                                                                display: activityVisibilityLMS.includes(true) && safariMontageActivity.includes(true) ? 'block' : 'none',
+                                                              }}
                                                             >
-                                                              <Modal.Header closeButton>
-                                                                <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
-                                                              </Modal.Header>
-                                                              <Modal.Body>
-                                                                <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
-                                                              </Modal.Body>
-                                                            </Modal>
-                                                          </ul>
-                                                        </li>
-                                                      )}
-                                                    </>
-                                                  </Dropdown.Menu>
-                                                </Dropdown>
+                                                              <a tabIndex="-1" className="dropdown-item">
+                                                                <FontAwesomeIcon icon="newspaper" className="mr-2" />
+                                                                Publish
+                                                              </a>
+                                                              <ul className="dropdown-menu check">
+                                                                {allLms?.shareVendors.map((data) => {
+                                                                  if (data.lms_name !== 'safarimontage') return false;
+                                                                  return (
+                                                                    data?.activity_visibility && (
+                                                                      <li>
+                                                                        <a
+                                                                          onClick={() => {
+                                                                            dispatch(loadSafariMontagePublishToolAction(res.project_id, res.playlist_id, res.id, data.id));
+                                                                          }}
+                                                                        >
+                                                                          {data.site_name}
+                                                                        </a>
+                                                                      </li>
+                                                                    )
+                                                                  );
+                                                                })}
+                                                                <Modal
+                                                                  dialogClassName="safari-modal"
+                                                                  show={safariMontagePublishTool}
+                                                                  onHide={() => dispatch(closeSafariMontageToolAction())}
+                                                                  aria-labelledby="example-modal-sizes-title-lg"
+                                                                >
+                                                                  <Modal.Header closeButton>
+                                                                    <Modal.Title id="example-modal-sizes-title-lg">Safari Montage</Modal.Title>
+                                                                  </Modal.Header>
+                                                                  <Modal.Body>
+                                                                    <iframe title="Safari Montage" src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`} />
+                                                                  </Modal.Body>
+                                                                </Modal>
+                                                              </ul>
+                                                            </li>
+                                                          )}
+                                                        </>
+                                                      </Dropdown.Menu>
+                                                    </Dropdown>
+                                                  )}
+                                                </>
                                               )}
                                             </div>
                                           </div>
@@ -1541,7 +1625,9 @@ function SearchInterface(props) {
                 )}
               </div>
             ) : (
-              <Alert variant="danger">You are not authorized to view this page!</Alert>
+              <Alert variant="danger">
+                You are not authorized to view this page!
+              </Alert>
             )}
           </div>
         </div>
@@ -1566,10 +1652,18 @@ SearchInterface.propTypes = {
   fromTeam: PropTypes.bool,
   selectProject: PropTypes.func.isRequired,
   setSelectProject: PropTypes.func.isRequired,
+  showBackOption: PropTypes.bool,
+  playlistIdForSearchingTab: PropTypes.string,
+  setReloadPlaylist: PropTypes.func.isRequired,
+  setSelectSearchModule: PropTypes.func.isRequired,
+  reloadPlaylist: PropTypes.bool,
 };
 
 SearchInterface.defaultProps = {
   fromTeam: false,
+  showBackOption: false,
+  playlistIdForSearchingTab: '',
+  reloadPlaylist: false,
 };
 
 export default SearchInterface;

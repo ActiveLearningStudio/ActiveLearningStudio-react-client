@@ -79,7 +79,17 @@ const UploadFile = ({ className, formRef, activityPreview }) => {
               <img src={UploadImg} alt="upload" className="mr-2" />
               <p>
                 Drag & drop file or &nbsp;
-                <span style={{ color: '#2e8df5' }}>browse</span>
+                <span
+                  onClick={() => {
+                    formRef.current.handleSubmit();
+                    if (formRef.current.values.title && formRef.current.values.title.length < 255) {
+                      imgUpload.current.click();
+                    }
+                  }}
+                  style={{ color: '#2e8df5' }}
+                >
+                  browse
+                </span>
                 &nbsp;to upload
               </p>
             </div>
