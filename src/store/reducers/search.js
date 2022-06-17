@@ -3,12 +3,14 @@ import {
   CLEAR_SEARCH,
   SELECT_EXISTING_ACTIVITY,
   RESET_EXISTING_ACTIVITY,
+  SET_SEARCH_TYPE,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
   searchResult: {},
   searchQuery: '',
   searchMeta: {},
+  searchType: 'Projects',
   existingActivitySearchSelected: null,
 };
 
@@ -39,7 +41,11 @@ const SearchReducer = (state = INITIAL_STATE, action) => {
         ...state,
         existingActivitySearchSelected: null,
       };
-
+    case SET_SEARCH_TYPE:
+      return {
+        ...state,
+        searchType: action.searchType,
+      };
     default:
       return state;
   }

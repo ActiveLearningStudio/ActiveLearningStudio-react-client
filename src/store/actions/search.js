@@ -7,6 +7,7 @@ import {
   CLEAR_SEARCH,
   SELECT_EXISTING_ACTIVITY,
   RESET_EXISTING_ACTIVITY,
+  SET_SEARCH_TYPE,
 } from '../actionTypes';
 import store from '../index';
 
@@ -31,20 +32,20 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   // }
   const activeGrades = [];
   if (values.gradeArray) {
-      values.gradeArray.forEach((grade) => {
-        activeGrades.push(grade);
+    values.gradeArray.forEach((grade) => {
+      activeGrades.push(grade);
     });
   }
   const activeSubjects = [];
   if (values.subjectArray) {
-      values.subjectArray.forEach((subject) => {
-        activeSubjects.push(subject);
+    values.subjectArray.forEach((subject) => {
+      activeSubjects.push(subject);
     });
   }
   const activeAuthTags = [];
   if (values.authorTagsArray) {
-      values.authorTagsArray.forEach((tag) => {
-        activeAuthTags.push(tag);
+    values.authorTagsArray.forEach((tag) => {
+      activeAuthTags.push(tag);
     });
   }
   let sendData;
@@ -138,6 +139,75 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   }
 
   return response;
+};
+
+export const searchIndependentActivitiesAction = (values, searchType) => async (dispatch) => {
+  console.log(values);
+  const centralizedState = store.getState();
+  const { organization: { activeOrganization } } = centralizedState;
+  const activeGrades = [];
+  if (values.gradeArray) {
+    values.gradeArray.forEach((grade) => {
+      activeGrades.push(grade);
+    });
+  }
+  const activeSubjects = [];
+  if (values.subjectArray) {
+    values.subjectArray.forEach((subject) => {
+      activeSubjects.push(subject);
+    });
+  }
+  const activeAuthTags = [];
+  if (values.authorTagsArray) {
+    values.authorTagsArray.forEach((tag) => {
+      activeAuthTags.push(tag);
+    });
+  }
+  let sendData;
+  if (values.standardArray && values.standardArray.length > 0) {
+    sendData = {
+      query: values.query || values.phrase,
+      subjectArray: values.subjectArray,
+      gradeArray: values.gradeArray,
+      author: values.author || undefined,
+      subjectIds: activeSubjects,
+      authorTagIds: activeAuthTags,
+      negativeQuery: values.no_words || undefined,
+      h5pLibraries: values.standardArray,
+      startDate: values.fromDate || undefined,
+      educationLevelIds: activeGrades,
+      endDate: values.toDate || undefined,
+      organization_id: activeOrganization?.id,
+      from: values.from,
+      size: values.size,
+    };
+  } else {
+    sendData = {
+      query: values.query || values.phrase,
+      subjectArray: values.subjectArray,
+      gradeArray: values.gradeArray,
+      authorTagIds: activeAuthTags,
+      subjectIds: activeSubjects,
+      educationLevelIds: activeGrades,
+      author: values.author || undefined,
+      negativeQuery: values.no_words || undefined,
+      startDate: values.fromDate || undefined,
+      organization_id: activeOrganization?.id,
+      endDate: values.toDate || undefined,
+      from: values.from,
+      size: values.size,
+    };
+  }
+  const result = await searchService.searchIndependentActivities(searchType, sendData);
+  dispatch(searchRedux(result?.data, values?.query, result?.meta));
+  return result;
+};
+
+export const setSearchTypeAction = (type) => async (dispatch) => {
+  dispatch({
+    type: SET_SEARCH_TYPE,
+    searchType: type,
+  });
 };
 
 export const cloneProject = (projectID) => {
