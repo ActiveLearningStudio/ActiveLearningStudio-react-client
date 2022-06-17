@@ -450,6 +450,9 @@ function SearchInterface(props) {
                     dispatch(setSearchTypeAction(eventKey));
                     setSearchInput('');
                     setSearchType('');
+                    setSearch([]);
+                    setTotalCount(0);
+                    setMeta({});
                     setToggleStates({
                       searchLibrary: true,
                       subject: true,

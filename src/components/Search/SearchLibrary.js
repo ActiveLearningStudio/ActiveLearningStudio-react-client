@@ -37,7 +37,6 @@ const SearchLibrary = (props) => {
     activities,
     activeMainSearchType,
   } = props;
-  console.log(searchType, 'searchType');
   return (
 
     <Accordion defaultActiveKey="0">
