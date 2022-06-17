@@ -715,3 +715,24 @@ ul.pagination {
     width: 100%;
   }
 }
+
+.search-top-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.back-option-sectioin{
+  cursor: pointer;
+  margin-bottom: 16px;
+  .mr-12{
+    margin-right: 12px;
+  }
+  span{
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+color: #084892;
+  }
+}
