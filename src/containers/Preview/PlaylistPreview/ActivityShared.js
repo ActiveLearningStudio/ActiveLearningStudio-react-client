@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
 import { Alert } from 'react-bootstrap';
-import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction } from 'store/actions/resource';
+import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction, searchPreviewIndependentActivityAction } from 'store/actions/resource';
 import indResourceService from 'services/indActivities.service';
 import HeaderLogo from 'assets/images/GCLogo.png';
 import * as xAPIHelper from 'helpers/xapi';
@@ -94,7 +94,19 @@ const ActivityShared = (props) => {
           .catch(() => {
             setAuthorized(true);
           });
-      } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+      } else if (query.type === 'ind-search' && window.location.pathname.includes('/preview') && activeOrganization?.id) {
+        dispatch(searchPreviewIndependentActivityAction(match.params.activityId))
+          .then(async (data) => {
+            if (data) {
+              h5pInsertion(data);
+            } else {
+              setAuthorized(true);
+            }
+          })
+          .catch(() => {
+            setAuthorized(true);
+          });
+      } else if (window.location.pathname.includes('/preview') && activeOrganization?.id && query.type !== 'ind-search') {
         dispatch(searchPreviewActivityAction(match.params.activityId))
           .then(async (data) => {
             if (data) {

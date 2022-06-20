@@ -856,6 +856,19 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   return result;
 };
 
+export const searchPreviewIndependentActivityAction = (activityId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await resourceService.searchPreviewIndependentActivity(activeOrganization?.id, activityId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
+    payload: result,
+  });
+  return result;
+}
+
 export const formatSelectBoxData = (data) => {
   let ids = [];
   if (data.length > 0) {
