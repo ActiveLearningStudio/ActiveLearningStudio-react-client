@@ -1446,7 +1446,7 @@ function SearchInterface(props) {
                                           <div className="contentbox">
                                             <div className="search-content">
                                               <a
-                                                href={`/activity/${res.id}/preview`}
+                                                href={`/activity/${res.id}/preview?type=ind-search`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                               >
