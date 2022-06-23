@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import gifLoader from 'assets/images/276.gif';
 import { loadH5pResource, loadH5pResourceSettingsOpen, loadH5pResourceSettingsShared, loadH5pResourceXapi } from 'store/actions/resource';
 import videoServices from 'services/videos.services';
+import indServices from 'services/indActivities.service';
 import * as xAPIHelper from 'helpers/xapi';
 import useH5PPreviewResizer from '../helpers/useH5PPreviewResizer';
 
@@ -18,7 +19,7 @@ const H5PPreview = (props) => {
   const [resourceId, setResourceId] = useState(null);
   const currikiH5PWrapper = useRef(null);
   const adjustedWidth = useH5PPreviewResizer(currikiH5PWrapper);
-  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview, showvideoH5p } = props;
+  const { activityId, loadH5pResourceProp, showLtiPreview, showActivityPreview, showvideoH5p, activities } = props;
   const initialActivityState = {
     intervalId: null,
     assets: [],
@@ -141,12 +142,22 @@ const H5PPreview = (props) => {
               await resourceLoaded(response.activity);
             }
           } else if (showvideoH5p) {
-            const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
-            if (response.activity?.brightcoveData) {
-              window.brightcoveAccountId = response.activity?.brightcoveData?.accountId;
-            }
-            if (response.activity) {
-              await resourceLoaded(response.activity);
+            if (activities) {
+              const response = await indServices.renderh5pIndependent(activeOrganization.id, activityId);
+              if (response?.['independent-activity']?.brightcoveData) {
+                window.brightcoveAccountId = response.activity?.brightcoveData?.accountId;
+              }
+              if (response?.['independent-activity']) {
+                await resourceLoaded(response['independent-activity']);
+              }
+            } else {
+              const response = await videoServices.renderh5pvideo(activeOrganization.id, activityId);
+              if (response.activity?.brightcoveData) {
+                window.brightcoveAccountId = response.activity?.brightcoveData?.accountId;
+              }
+              if (response.activity) {
+                await resourceLoaded(response.activity);
+              }
             }
           } else {
             const response = await loadH5pResourceProp(activityId);
@@ -188,7 +199,7 @@ const H5PPreview = (props) => {
     const h5pLibData = activityState.h5pObject && window.H5PIntegration ? Object.values(window.H5PIntegration.contents) : null;
     const h5pLib = Array.isArray(h5pLibData) && h5pLibData.length > 0 ? h5pLibData[0].library.split(' ')[0] : null;
     const resizeFor = ['H5P.InteractiveVideo', 'H5P.CurrikiInteractiveVideo', 'H5P.BrightcoveInteractiveVideo'];
-    const isActvityResizeable = resizeFor.find(lib => lib === h5pLib) ? true : false;
+    const isActvityResizeable = resizeFor.find((lib) => lib === h5pLib) ? true : false;
 
     if (currikiH5PWrapper && currikiH5PWrapper.current && isActvityResizeable) {
       const aspectRatio = 1.778; // standard aspect ratio of video width and height

@@ -16,7 +16,7 @@ import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admi
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
+const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview, activityPreview }) => {
   const [modalShow, setModalShow] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
   const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
@@ -28,7 +28,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
-  const parser = new DOMParser()
+  const parser = new DOMParser();
 
   const formatApiData = (data) => {
     let ids = [];
@@ -106,6 +106,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
           setModalShow(false);
         }}
         type={playlistPreview ? '' : 'videoModal'}
+        activityPreview={activityPreview}
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}
@@ -117,32 +118,34 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading text="1. Add a video" tabActive={true} />
-          <TabsHeading text="2. Describe video" className="ml-10" tabActive={true} />
+          <TabsHeading text={activityPreview ? '1. Add an activity' : '1. Add a video'} tabActive={true} />
+          <TabsHeading text={activityPreview ? '1. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
-            <HeadingTwo text="Interactive Video" color="#084892" />
+            <HeadingTwo text={activityPreview ? editVideo?.h5p_content?.library?.title : 'Interactive Video'} color="#084892" />
           </div>
-          <div
-            className="back-button"
-            id="back-button-none-bg"
-            onClick={() => {
-              if (showback) {
-                changeScreenHandler('addvideo');
-              } else {
-                setScreenStatus('AddVideo');
-              }
-            }}
-          >
-            {/* <img src={BackButton} alt="back button " /> */}
-            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-              <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <p className="">Back to options</p>
-          </div>
+          {!activityPreview && (
+            <div
+              className="back-button"
+              id="back-button-none-bg"
+              onClick={() => {
+                if (showback) {
+                  changeScreenHandler('addvideo');
+                } else {
+                  setScreenStatus('AddVideo');
+                }
+              }}
+            >
+              {/* <img src={BackButton} alt="back button " /> */}
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <p className="">Back to options</p>
+            </div>
+          )}
           {/* <div className="add-describevideo-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
@@ -158,9 +161,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               initialValues={{
                 title: editVideo ? editVideo.title : '',
                 description: editVideo ? editVideo.description || undefined : undefined,
-                author_tag_id: selecteAuthorTags || "",
-                education_level_id: selectedEducationLevel ||"",
-                subject_id: selectedSubjects || "",
+                author_tag_id: selecteAuthorTags || '',
+                education_level_id: selectedEducationLevel || '',
+                subject_id: selectedSubjects || '',
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -224,11 +227,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="subject_id"
                           hideSearch
                           options={subjects}
-                          onChange={(e)=>{
-                            setFieldValue("subject_id", e)
+                          onChange={(e) => {
+                            setFieldValue('subject_id', e);
                           }}
                           value={values.subject_id}
-                          />
+                        />
                       </div>
 
                       <div className="formik-select mr-16">
@@ -237,9 +240,9 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
-                          onChange={(e)=>{
-                            setFieldValue("education_level_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('education_level_id', e);
+                          }}
                           value={values.education_level_id}
                         />
                       </div>
@@ -250,11 +253,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="author_tag_id"
                           hideSearch
                           options={authorTags}
-                          onChange={(e)=>{
-                            setFieldValue("author_tag_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('author_tag_id', e);
+                          }}
                           value={values.author_tag_id}
-                          />
+                        />
                       </div>
                     </div>
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -6,7 +7,7 @@ import { Dropdown } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Buttons from 'utils/Buttons/buttons';
-import { simpleSearchAction } from 'store/actions/search';
+import { searchIndependentActivitiesAction, setSearchTypeAction, simpleSearchAction } from 'store/actions/search';
 import {
   getActivityItems,
   loadResourceTypesAction,
@@ -16,7 +17,8 @@ import {
 } from 'store/actions/admin';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
-function SearchForm() {
+function SearchForm(props) {
+  const { activities } = props;
   const history = useHistory();
   const dispatcher = useDispatch();
 
@@ -41,20 +43,20 @@ function SearchForm() {
 
   useEffect(() => {
     if (currentOrganization?.id) {
-      if (subjects.length === 0) {
-        const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
-        resultSub.then((data) => setSubjects(data));
-      }
-      if (authorTags.length === 0) {
-        const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
-        resultAuth.then((data) => setAuthorTags(data));
-      }
-      if (educationLevels.length === 0) {
-        const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
-        resultEdu.then((data) => setEducationLevels(data));
-      }
+      // if (subjects.length === 0) {
+      const resultSub = dispatcher(getSubjects(currentOrganization?.id || 1));
+      resultSub.then((data) => setSubjects(data));
+      // }
+      // if (authorTags.length === 0) {
+      const resultAuth = dispatcher(getAuthorTag(currentOrganization?.id || 1));
+      resultAuth.then((data) => setAuthorTags(data));
+      // }
+      // if (educationLevels.length === 0) {
+      const resultEdu = dispatcher(getEducationLevel(currentOrganization?.id || 1));
+      resultEdu.then((data) => setEducationLevels(data));
+      // }
     }
-  }, [currentOrganization?.id, authorTags.length, dispatcher, educationLevels.length, subjects.length]);
+  }, [currentOrganization, dispatcher]);
 
   const compare = (a, b) => {
     // Use toUpperCase() to ignore character casing
@@ -97,7 +99,7 @@ function SearchForm() {
                 Swal.fire('Search field is required');
               } else if (simpleSearch.length > 255) {
                 Swal.fire('Character limit should be less than 255 ');
-              } else {
+              } else if (searchState?.searchType === 'Projects' && !activities) {
                 const searchData = {
                   phrase: simpleSearch.trim(),
                   from: 0,
@@ -111,6 +113,19 @@ function SearchForm() {
                   }/search?q=${simpleSearch.trim()}&type=public`,
                 );
                 localStorage.setItem('refreshPage', false);
+              } else if (activities) {
+                const searchData = {
+                  query: simpleSearch.trim(),
+                  from: 0,
+                  size: 20,
+                };
+                dispatcher(setSearchTypeAction('Independent activities'));
+                dispatcher(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+                localStorage.setItem('loading', 'true');
+                history.push(
+                  `/org/${currentOrganization?.domain
+                  }/search?q=${simpleSearch.trim()}&type=showcase_activities`,
+                );
               }
             }
           }}
@@ -128,7 +143,7 @@ function SearchForm() {
               Swal.fire('Search field is required');
             } else if (simpleSearch.length > 255) {
               Swal.fire('Character limit should be less than 255 ');
-            } else {
+            } else if (searchState?.searchType === 'Projects' && !activities) {
               const searchData = {
                 phrase: simpleSearch.trim(),
                 from: 0,
@@ -142,6 +157,19 @@ function SearchForm() {
                 }/search?q=${simpleSearch.trim()}&type=public`,
               );
               localStorage.setItem('refreshPage', false);
+            } else if (activities) {
+              const searchData = {
+                query: simpleSearch.trim(),
+                from: 0,
+                size: 20,
+              };
+              dispatcher(setSearchTypeAction('Independent activities'));
+              dispatcher(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+              localStorage.setItem('loading', 'true');
+              history.push(
+                `/org/${currentOrganization?.domain
+                }/search?q=${simpleSearch.trim()}&type=showcase_activities`,
+              );
             }
           }}
         >
@@ -209,15 +237,18 @@ function SearchForm() {
             }}
             onSubmit={(values) => {
               closeModel.current.click();
-
               history.push(
                 // eslint-disable-next-line max-len
                 `/org/${currentOrganization?.domain}/search?q=${values.phrase}&type=${values.type}&grade=${values.subjectArray}&education=${values.gradeArray}&authorTag=${values.authorTagsArray}&h5p=${values.standardArray}&fromDate=${values.fromDate}&toDate=${values.toDate}&author=${values.author}`,
               );
               localStorage.setItem('refreshPage', false);
-
               Swal.showLoading();
-              dispatcher(simpleSearchAction(values));
+              if (!activities) {
+                dispatcher(simpleSearchAction(values));
+              } else {
+                dispatcher(setSearchTypeAction('Independent activities'));
+                dispatcher(searchIndependentActivitiesAction(values, values.type));
+              }
             }}
           >
             {({
@@ -236,33 +267,47 @@ function SearchForm() {
                         name="type"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value="private"
-                        checked={values.type === 'private'}
+                        value={activities ? 'my_activities' : 'private'}
+                        checked={values.type === 'private' || values.type === 'my_activities'}
                         type="radio"
                       />
-                      <span>Search My Projects</span>
+                      <span>
+                        Search My
+                        {' '}
+                        {activities ? 'Activities' : 'Projects'}
+                      </span>
                     </label>
                     <label>
                       <input
                         name="type"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value="public"
-                        checked={values.type === 'public'}
+                        value={activities ? 'showcase_activities' : 'public'}
+                        checked={values.type === 'public' || values.type === 'showcase_activities'}
                         type="radio"
                       />
-                      <span>Search All Shared Projects</span>
+                      <span>
+                        Search All Shared
+                        {' '}
+                        {activities ? 'Activities' : 'Projects'}
+                      </span>
                     </label>
                     <label>
                       <input
                         name="type"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        value="orgSearch"
-                        checked={values.type === 'orgSearch'}
+                        value={activities ? 'org_activities' : 'orgSearch'}
+                        checked={values.type === 'orgSearch' || values.type === 'org_activities'}
                         type="radio"
                       />
-                      <span>Search All Shared Projects In My Org</span>
+                      <span>
+                        Search All Shared
+                        {' '}
+                        {activities ? 'Activities' : 'Projects'}
+                        {' '}
+                        In My Org
+                      </span>
                     </label>
                   </div>
                 </div>
@@ -306,7 +351,7 @@ function SearchForm() {
                       {' '}
                       Subject + Subject Area
                     </option>
-                    {subjects?.data.map((data) => (
+                    {subjects?.data?.map((data) => (
                       <option key={data.id} value={data.id}>
                         {data.name}
                       </option>
@@ -566,5 +611,13 @@ function SearchForm() {
     </Dropdown>
   );
 }
+
+SearchForm.propTypes = {
+  activities: PropTypes.bool,
+};
+
+SearchForm.defaultProps = {
+  activities: false,
+};
 
 export default SearchForm;

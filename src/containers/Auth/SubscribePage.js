@@ -32,12 +32,19 @@ class SubscribePage extends Component {
     e.preventDefault();
 
     const { allTerms } = this.state;
-    const { acceptTerms } = this.props;
+    // eslint-disable-next-line react/prop-types
+    const { acceptTerms, location } = this.props;
 
     if (allTerms) {
       const { history } = this.props;
       acceptTerms();
-      history.push('/');
+      // eslint-disable-next-line react/prop-types
+      if (location.pathname.includes('activities')) {
+        // eslint-disable-next-line react/prop-types
+        history.push(location.pathname);
+      } else {
+        history.push('/');
+      }
     }
   };
 

@@ -103,3 +103,18 @@
 .playlist-body-bg {
   background: none !important;
 }
+.playlist-header-icon-section{
+  margin: 0px 16px 16px 16px;
+  padding: 16px 0px;
+  display: flex;
+  border-top: 1px solid #DDDDDD;
+  border-bottom: 1px solid #DDDDDD;
+  flex-direction: row;
+  div{
+    cursor: pointer;
+  }
+  .mr-30{
+
+    margin-right: 30px;
+  }
+}
