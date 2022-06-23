@@ -9,7 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users', 'Ind. activities'];
+  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
 
   // organization all projects
   const projectEditName = [
@@ -371,7 +371,7 @@ function UserRoles() {
                                 />
                               </div>
                               {/* Independent activities Start */}
-                              <div className="permission">
+                              {/* <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
@@ -384,7 +384,7 @@ function UserRoles() {
                                     />
                                   </div>
                                 </div>
-                                {/* <h6>Project</h6> */}
+
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
@@ -401,7 +401,7 @@ function UserRoles() {
                                     currentFeatureEdit={independentactivitiesEdit}
                                   />
                                 </div>
-                              </div>
+                              </div> */}
                               {/* Independent activities End */}
                               <div className="permission">
                                 <div className="selection-tab-custom">

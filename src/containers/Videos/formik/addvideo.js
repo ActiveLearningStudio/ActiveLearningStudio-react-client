@@ -344,7 +344,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
 
               {/* Vemo Video */}
 
-              {!editVideo ? (
+              {/* {!editVideo ? (
                 <Tab
                   eventKey="Vimeo"
                   title="Vimeo"
@@ -391,7 +391,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     />
                   </Tab>
                 )
-              )}
+              )} */}
               {/* <Tab eventKey="Vimeo" title="Vimeo"></Tab>
             <Tab eventKey="Kaltura" title="Kaltura"></Tab> */}
             </Tabs>
