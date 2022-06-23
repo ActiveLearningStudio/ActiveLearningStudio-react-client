@@ -67,6 +67,7 @@ import PlaylistCard from "./PlaylistCard";
 import PreviewResourcePage from "./PreviewResourcePage";
 import CreatePlaylistPopup from "./CreatePlaylistPopup";
 import SearchInterface from "containers/Search";
+import SelectActivity from "./SelectActivity";
 
 function PlaylistsPage(props) {
   const dispatch = useDispatch();
@@ -569,8 +570,14 @@ function PlaylistsPage(props) {
     <>
       {selectSearchModule ? (
         <>
-          <SearchInterface
+          {/* <SearchInterface
             showBackOption={true}
+            setSelectSearchModule={setSelectSearchModule}
+            playlistIdForSearchingTab={playlistIdForSearchingTab}
+            setReloadPlaylist={setReloadPlaylist}
+            reloadPlaylist={reloadPlaylist}
+          /> */}
+          <SelectActivity
             setSelectSearchModule={setSelectSearchModule}
             playlistIdForSearchingTab={playlistIdForSearchingTab}
             setReloadPlaylist={setReloadPlaylist}
