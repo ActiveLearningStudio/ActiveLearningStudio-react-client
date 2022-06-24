@@ -61,7 +61,7 @@ const SearchLibrary = (props) => {
                 }}
                 onKeyPress={async (e) => {
                   if (e.key === 'Enter') {
-                    if (!searchInput.trim() && (searchType !== 'orgSearch' || searchType !== 'org_activities')) {
+                    if (!searchInput.trim() && (searchType !== 'orgSearch' && searchType !== 'org_activities')) {
                       Swal.fire('Search field is required.');
                     } else if (searchInput.length > 255) {
                       Swal.fire('Character limit should be less than 255.');
@@ -285,7 +285,7 @@ const SearchLibrary = (props) => {
                   setFromDate(undefined);
                   setToDate(undefined);
                   setActiveTab(fromTeam ? 'projects' : 'total');
-                  if (!searchInput.trim() && (searchType !== 'orgSearch' || searchType === 'org_activities')) {
+                  if (!searchInput.trim() && (searchType !== 'orgSearch' && searchType !== 'org_activities')) {
                     Swal.fire('Search field is required.');
                   } else if (searchInput.length > 255) {
                     Swal.fire('Character limit should be less than 255.');
