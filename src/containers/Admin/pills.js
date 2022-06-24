@@ -91,6 +91,7 @@ export default function Pills(props) {
   const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState('');
   const [ltiTool, setLtiTool] = useState(null);
   const [ltiToolFilterBy, setLtiToolFilterBy] = useState('');
+  const [activityItemFilterBy, setActivityItemFilterBy] = useState('');
   const [jobs, setJobs] = useState(null);
   const [jobType, SetJobType] = useState({ value: 1, display_name: 'Pending' });
   const [logs, setLogs] = useState(null);
@@ -306,11 +307,11 @@ export default function Pills(props) {
   useEffect(() => {
     if (type === 'Activities' && subTypeState === 'Activity Items') {
       //pagination
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy, activityItemFilterBy));
       dispatch(updatePageNumber(activePage));
     } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
       //on page 1
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy, activityItemFilterBy));
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage, size, activeOrganization]);
@@ -452,6 +453,7 @@ export default function Pills(props) {
 
   const filterActivityItems = (type) => {
     setActivePage(1);
+    setActivityItemFilterBy(type)
     dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, '', '', type));
   };
 
@@ -690,7 +692,7 @@ export default function Pills(props) {
         default:
           col = 'order';
       }
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy));
+      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy, activityItemFilterBy));
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
