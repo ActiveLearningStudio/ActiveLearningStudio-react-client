@@ -184,7 +184,7 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
 
-                <div className="mr-30">
+                <div className="mr-30" title="Upload Activity">
                   <svg
                     width="16"
                     height="16"
@@ -212,7 +212,7 @@ class PlaylistCard extends React.Component {
                     <path d="M8 3V10.8" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </div>
-                <div className="mr-30">
+                <div className="mr-30" title="Add In Playlist">
                   <svg
                     width="16"
                     height="16"
