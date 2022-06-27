@@ -39,16 +39,16 @@ const SelectActivity = ({
     dispatch(allIndActivity(activeOrganization.id));
   }, [activeOrganization]);
 
-  useEffect(() => {
-    console.log("allActivities", allActivities);
-    allActivities?.data.map((item) => {
-      console.log("Detail", item.title);
-    });
-  }, [allActivities]);
+  // useEffect(() => {
+  //   console.log("allActivities", allActivities);
+  //   allActivities?.data.map((item) => {
+  //     console.log("Detail", item.title);
+  //   });
+  // }, [allActivities]);
 
-  useEffect(() => {
-    console.log("selectProject", selectProject[0]);
-  }, [selectProject]);
+  // useEffect(() => {
+  //   console.log("selectProject", selectProject[0]);
+  // }, [selectProject]);
 
   return (
     <>
@@ -64,6 +64,7 @@ const SelectActivity = ({
                 <div
                   className="back-to-project"
                   onClick={() => {
+                    setReloadPlaylist(!reloadPlaylist);
                     setSelectSearchModule(false);
                   }}
                 >
@@ -138,9 +139,7 @@ const SelectActivity = ({
                                     playlistIdForSearchingTab
                                   )
                                 );
-
-                                setReloadPlaylist(!reloadPlaylist);
-                                setSelectSearchModule(false);
+                                setSelectProject([]);
                               }}
                             />
                           </div>

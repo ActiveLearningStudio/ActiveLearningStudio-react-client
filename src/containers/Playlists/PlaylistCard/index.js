@@ -210,7 +210,7 @@ class PlaylistCard extends React.Component {
                   ? teamPermission?.Team?.includes("team:add-activity")
                   : permission?.Activity?.includes("activity:create") ||
                     permission?.Activity?.includes("activity:upload")) && (
-                  <div className="mr-30">
+                  <div className="mr-30" title="Add New Activity">
                     <FontAwesomeIcon
                       icon={faPlus}
                       color={primaryColor}
@@ -227,7 +227,7 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
 
-                <div className="mr-30">
+                <div className="mr-30" title="Upload Activity">
                   <svg
                     width="16"
                     height="16"
@@ -267,7 +267,7 @@ class PlaylistCard extends React.Component {
                     />
                   </svg>
                 </div>
-                <div className="mr-30">
+                <div className="mr-30" title="Add In Playlist">
                   <svg
                     width="16"
                     height="16"

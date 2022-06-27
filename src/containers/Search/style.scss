@@ -485,14 +485,30 @@
   .top-box-project {
     max-height: 520px;
     min-height: 300px;
+
     overflow-y: auto;
-    width: 55%;
+    // width: 55%;
+    width: 100%;
   }
 
   .footer-model {
     display: flex;
-    justify-content: flex-end;
+    // justify-content: flex-end;
+    justify-content: space-between;
     margin: 20px;
+    .footer-model-project-name{
+      p{
+        font-family: 'Open Sans', sans-serif !important ;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #084892 !important;
+      }
+      span{
+        color: #767676 !important;
+      }
+    }
 
     .button-submit {
       background: #5952c6 0% 0% no-repeat padding-box;
@@ -512,18 +528,70 @@
   display: flex;
   justify-content: space-between;
   background: #fff;
+  // After Change
+  flex-direction: column;
 
   .information-clone {
-    width: 40%;
+    // width: 40%;
+    width: 100%;
     padding: 25px;
     display: flex;
     justify-content: center;
     flex-direction: column;
 
     p {
-      font: normal normal normal 14px/22px $rubik;
-      color: $mine-shaft;
+      // font: normal normal normal 14px/22px $rubik;
+      // color: $mine-shaft;
+      font-family: 'Open Sans', sans-serif !important;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: $curriki-main-blue !important;
     }
+ 
+    .clone-searching-section{
+      margin-top: 18px;
+      margin-bottom: 18px;
+      background: #F7FAFF;
+      border-radius: 8px;
+      padding: 16px 24px;
+      .search-and-filters {
+        display: flex;
+        justify-content: space-between;
+        .search-bar {
+          position: relative;
+          input {
+            margin-right: 39.17px;
+            max-width: 358px;
+            min-width: 258px;
+            border: none;
+            background: none;
+            border-bottom: 2px solid #084892;
+            &::placeholder {
+              color: $fun-blue-1;
+            }
+          }
+          img {
+            position: absolute;
+            right: 40px;
+            bottom: 4px;
+          }
+          svg {
+            position: absolute;
+            right: 40px;
+            bottom: 4px;
+          }
+        }
+        .filter {
+          color: $fun-blue-1;
+          img {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  
 
     .active-resource {
       background: #ffffff 0% 0% no-repeat padding-box;
@@ -553,12 +621,14 @@
 
   .flex-bar {
     display: flex;
-    width: 100%;
+    // width: 100%;
     flex-direction: row;
     justify-content: space-between;
     padding: 10px;
     .text-align-left {
+      margin-top: 24px;
       text-align: left;
+
     }
   }
 
@@ -572,7 +642,7 @@
   }
 
   .top-card.card-header {
-    background-color: #084892;
+    // background-color: #084892;
 
     span {
       color: #fff;
@@ -583,9 +653,14 @@
       }
     }
 
-    .top-card-btn {
-      padding: 0;
-    }
+    // .top-card-btn {
+    //   padding: 0;
+    //   &:focus{
+    //     box-shadow: 0px !important;
+    //   }
+    // }
+  
+
   }
 
   .middle-card {
@@ -627,6 +702,107 @@
     }
   }
 }
+.active-resource-update-space{
+  padding-bottom: 22px;
+  border-bottom: 1px solid #DDDDDD;
+}
+.active-resource-update{
+  display: flex;
+  // border: 1px solid red;
+  width: 100%;
+  img{
+    width: 159px;
+    height: 90px;
+    border: 1px solid rgb(172, 172, 172);
+    border-radius: 5px;
+  }
+  .active-resource-detail{
+    width: 100%;
+   text-align: left;
+    margin-left: 17px;
+    display: flex;
+    flex-direction: column;
+    h6{
+      margin-bottom: 4px !important;
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      color: $curriki-main-blue;
+    }
+    p{
+      margin-bottom: 4px !important;
+      font-family: 'Open Sans', sans-serif;;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      color: #959595 !important;
+      span{
+        color: $curriki-main-blue;
+      }
+    }
+    .model-name-activity-selection{
+      // border: 1px solid black;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .model-name-activity{
+        p{
+          margin-bottom: 4px !important;
+          font-family: 'Open Sans', sans-serif;;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 16px;
+          color: #959595 !important;
+          span{
+            color: $curriki-main-blue;
+          }
+        }
+      }
+      .model-name-activity-playlist{
+        cursor: pointer;
+        color: $curriki-main-blue;
+        height: 28px;
+        width: 146px;
+        background: #E5EEFF;
+        border-radius: 4px;
+        padding: 4px;
+      }
+      
+    }
+  }
+}
+.activity-project-playlist{
+  background: #FFFFFF;
+  box-shadow: 0px 1px 6px 1px rgba(8, 72, 146, 0.16);
+  border-radius: 8px;
+  margin-top: 8px;
+  .activity-project-playlist-title{
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: $curriki-main-blue;
+    text-decoration: none;
+  }
+}
+.list-add-project-activity{
+  max-height: 520px;
+  min-height: 300px;
+  overflow-y: auto;
+  .playlist-list-update{
+    display: flex;
+    margin-top: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #DDDDDD;
+  }
+}
+
 
 ul.pagination {
   display: flex;
