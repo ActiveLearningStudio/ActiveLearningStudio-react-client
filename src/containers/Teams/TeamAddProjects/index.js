@@ -139,7 +139,7 @@ const AddTeamProjects = (props) => {
                           <Buttons
                             icon={faPlus}
                             type="button"
-                            text="Add projects to team"
+                            text="Add project to team"
                             primary
                             width="188px"
                             height="32px"
@@ -154,7 +154,8 @@ const AddTeamProjects = (props) => {
                                     });
                                     loadTeam(team?.id);
                                     history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                                  }).catch((err) => {
+                                  })
+                                  .catch((err) => {
                                     Swal.fire({
                                       icon: 'error',
                                       title: err?.message,
@@ -228,24 +229,35 @@ const AddTeamProjects = (props) => {
                         <div className="project-selection">
                           <p>{selectProject?.length} projects have been selected. </p>
                         </div>
-                        <Buttons icon={faPlus} text="Add projects to team" type="button" primary width="188px" height="32px" hover disabled={selectProject?.length === 0} onClick={() => {
-                          if (selectProject.length > 0) {
-                            addProjectToTeam(team?.id, selectProject)
-                              .then((result) => {
-                                Swal.fire({
-                                  icon: 'success',
-                                  title: result?.message,
+                        <Buttons
+                          icon={faPlus}
+                          text="Add project to team"
+                          type="button"
+                          primary
+                          width="188px"
+                          height="32px"
+                          hover
+                          disabled={selectProject?.length === 0}
+                          onClick={() => {
+                            if (selectProject.length > 0) {
+                              addProjectToTeam(team?.id, selectProject)
+                                .then((result) => {
+                                  Swal.fire({
+                                    icon: 'success',
+                                    title: result?.message,
+                                  });
+                                  loadTeam(team?.id);
+                                  history.push(`/org/${organization?.domain}/teams/${team?.id}`);
+                                })
+                                .catch((err) => {
+                                  Swal.fire({
+                                    icon: 'error',
+                                    title: err?.message,
+                                  });
                                 });
-                                loadTeam(team?.id);
-                                history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                              }).catch((err) => {
-                                Swal.fire({
-                                  icon: 'error',
-                                  title: err?.message,
-                                });
-                              });
-                          }
-                        }} />
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

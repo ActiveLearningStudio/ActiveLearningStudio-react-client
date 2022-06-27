@@ -62,7 +62,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add projects to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add Project to team" primary={true} width="188px" height="32px" hover={true} />
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add projects to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add project to team" primary={true} width="188px" height="32px" hover={true} />
                 </div>
               </div>
             </div>

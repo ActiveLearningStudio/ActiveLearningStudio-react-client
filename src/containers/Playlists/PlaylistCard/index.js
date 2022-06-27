@@ -1,25 +1,22 @@
 /*eslint-disable */
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as actionTypes from "store/actionTypes";
-import {
-  changePlaylistTitleAction,
-  clearFormData,
-} from "store/actions/playlist";
-import { clearSearch } from "store/actions/search";
-import { showDeletePopupAction, hideDeletePopupAction } from "store/actions/ui";
-import ResourceCard from "components/ResourceCard";
-import PlaylistCardDropdown from "./PlaylistCardDropdown";
-import UploadLogo from "../../../assets/images/upload-active.svg";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as actionTypes from 'store/actionTypes';
+import { changePlaylistTitleAction, clearFormData } from 'store/actions/playlist';
+import { clearSearch } from 'store/actions/search';
+import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
+import ResourceCard from 'components/ResourceCard';
+import PlaylistCardDropdown from './PlaylistCardDropdown';
+import UploadLogo from '../../../assets/images/upload-active.svg';
 
-import "./style.scss";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import { faPlus, faUpload } from "@fortawesome/free-solid-svg-icons";
+import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { faPlus, faUpload } from '@fortawesome/free-solid-svg-icons';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -35,7 +32,7 @@ class PlaylistCard extends React.Component {
     e.preventDefault();
 
     const { playlist, showDeletePopup } = this.props;
-    showDeletePopup(playlist.id, playlist.title, "Playlist");
+    showDeletePopup(playlist.id, playlist.title, 'Playlist');
   };
 
   handleAddNewResourceClick = () => {
@@ -49,15 +46,7 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const {
-      playlist,
-      organization,
-      teamPermission,
-      handleShow,
-      setProjectId,
-      setProjectPlaylistId,
-      setProjectPlaylistActivityId,
-    } = this.props;
+    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="alert alert-info">No resource yet.</div>;
@@ -65,9 +54,7 @@ class PlaylistCard extends React.Component {
 
     return playlist.activities.map(
       (resource, index) =>
-        (Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes("team:view-activity")
-          : organization?.permission?.Activity?.includes("activity:view")) && (
+        (Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : organization?.permission?.Activity?.includes('activity:view')) && (
           <ResourceCard
             {...this.props}
             resource={resource}
@@ -92,7 +79,7 @@ class PlaylistCard extends React.Component {
   onBlur = (e) => {
     const title = e.target.value;
     if (title.length > 50) {
-      Swal.fire("Character limit should be less than 50.");
+      Swal.fire('The title may not be greater than 50 characters.');
       return;
     }
     const { playlist, projectId, changePlaylistTitle } = this.props;
@@ -106,15 +93,15 @@ class PlaylistCard extends React.Component {
         if (err.errors) {
           if (err.errors.title.length > 0) {
             Swal.fire({
-              icon: "error",
-              title: "Error",
+              icon: 'error',
+              title: 'Error',
               text: err.errors.title[0],
             });
           }
         } else {
           Swal.fire({
-            icon: "error",
-            title: "Error",
+            icon: 'error',
+            title: 'Error',
             text: err.message,
           });
         }
@@ -123,12 +110,7 @@ class PlaylistCard extends React.Component {
   };
 
   handleClickPlaylistTitle = async () => {
-    if (
-      this.props.organization?.permission?.Playlist?.includes(
-        "playlist:edit"
-      ) ||
-      this.props.teamPermission?.Team?.includes("team:edit-playlist")
-    ) {
+    if (this.props.organization?.permission?.Playlist?.includes('playlist:edit') || this.props.teamPermission?.Team?.includes('team:edit-playlist')) {
       this.setState(
         {
           editMode: true,
@@ -142,44 +124,20 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const {
-      index,
-      playlist,
-      projectId,
-      organization,
-      teamPermission,
-      handleShow,
-      setProjectId,
-      setProjectPlaylistId,
-      setProjectPlaylistActivityId,
-    } = this.props;
+    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
     const { permission } = organization;
-    const primaryColor = getGlobalColor("--main-primary-color");
+    const primaryColor = getGlobalColor('--main-primary-color');
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
         {(provided) => (
-          <div
-            className="list-wrapper"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
+          <div className="list-wrapper" ref={provided.innerRef} {...provided.draggableProps}>
             <div className="list playlist-bg">
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
-                  <div
-                    className={`playlist-title-wrapper d-flex align-items-center ${
-                      editMode ? "hide" : "show"
-                    }`}
-                    onClick={this.handleClickPlaylistTitle}
-                  >
-                    <span>{playlist.title}</span>
-                    {(Object.keys(teamPermission).length
-                      ? teamPermission?.Team?.includes("team:edit-playlist")
-                      : permission?.Playlist?.includes("playlist:edit")) && (
-                      <FontAwesomeIcon
-                        icon="pencil-alt"
-                        className="ml-2 edit-icon"
-                      />
+                  <div className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`} onClick={this.handleClickPlaylistTitle}>
+                    <span title={playlist.title}>{playlist.title}</span>
+                    {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
+                      <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
                     )}
                   </div>
 
@@ -188,7 +146,7 @@ class PlaylistCard extends React.Component {
                       this.titleInput = input;
                     }}
                     name="playlist-title"
-                    className={editMode ? "show" : "hide"}
+                    className={editMode ? 'show' : 'hide'}
                     onBlur={this.onBlur}
                     onKeyPress={this.onEnterPress}
                     defaultValue={playlist.title}
@@ -207,10 +165,9 @@ class PlaylistCard extends React.Component {
               </div>
               <div className="playlist-header-icon-section">
                 {(Object.keys(teamPermission).length
-                  ? teamPermission?.Team?.includes("team:add-activity")
-                  : permission?.Activity?.includes("activity:create") ||
-                    permission?.Activity?.includes("activity:upload")) && (
-                  <div className="mr-30" title="Add New Activity">
+                  ? teamPermission?.Team?.includes('team:add-activity')
+                  : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+                  <div className="mr-30">
                     <FontAwesomeIcon
                       icon={faPlus}
                       color={primaryColor}
@@ -251,20 +208,8 @@ class PlaylistCard extends React.Component {
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
-                    <path
-                      d="M10.6504 5.39999L8.02539 3L5.40039 5.39999"
-                      stroke={primaryColor}
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M8 3V10.8"
-                      stroke={primaryColor}
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                    <path d="M10.6504 5.39999L8.02539 3L5.40039 5.39999" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M8 3V10.8" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </div>
                 <div className="mr-30" title="Add In Playlist">
@@ -293,35 +238,15 @@ class PlaylistCard extends React.Component {
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     />
-                    <path
-                      d="M3.7998 3.79883H3.80925"
-                      stroke={primaryColor}
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M3.7998 12.1992H3.80925"
-                      stroke={primaryColor}
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
+                    <path d="M3.7998 3.79883H3.80925" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3.7998 12.1992H3.80925" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </div>
               </div>
 
-              <Droppable
-                key={playlist.id}
-                droppableId={`${playlist.id}`}
-                type="resource"
-              >
+              <Droppable key={playlist.id} droppableId={`${playlist.id}`} type="resource">
                 {(provd) => (
-                  <div
-                    className="list-body playlist-body-bg"
-                    {...provd.droppableProps}
-                    ref={provd.innerRef}
-                  >
+                  <div className="list-body playlist-body-bg" {...provd.droppableProps} ref={provd.innerRef}>
                     <div className="playlist-resources">
                       {this.renderResources()}
                       {provd.placeholder}
@@ -339,7 +264,7 @@ class PlaylistCard extends React.Component {
                     className="add-resource-to-playlist-btn"
                     onClick={() => {
                       const { clearSearchform } = this.props;
-                     
+
                       this.props.clear();
                       this.props.openActivity(playlist, projectId);
                       clearSearchform();
@@ -347,7 +272,7 @@ class PlaylistCard extends React.Component {
                       this.props.clearEditState();
                     }}
                   >
-                   
+
                     <svg
                       width="17"
                       height="16"
@@ -403,29 +328,27 @@ PlaylistCard.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showDeletePopup: (id, title, deleteType) =>
-    dispatch(showDeletePopupAction(id, title, deleteType)),
+  showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   hideDeletePopup: () => dispatch(hideDeletePopupAction()),
-  changePlaylistTitle: (projectId, id, title) =>
-    dispatch(changePlaylistTitleAction(projectId, id, title)),
+  changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
   clearEditState: () =>
     dispatch({
-      type: "SET_ACTIVE_VIDEO_SCREEN",
-      payload: "",
+      type: 'SET_ACTIVE_VIDEO_SCREEN',
+      payload: '',
     }),
   openActivity: (playlist, project) =>
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: "layout",
+      payload: 'layout',
       playlist: playlist,
       project: project,
     }),
   openActivityUpload: (playlist, project) =>
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: "layoutActivityUpload",
+      payload: 'layoutActivityUpload',
       playlist: playlist,
       project: project,
     }),
@@ -444,6 +367,4 @@ const mapStateToProps = (state) => ({
   organization: state.organization,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PlaylistCard)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PlaylistCard));
