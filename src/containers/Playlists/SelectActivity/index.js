@@ -1,42 +1,36 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
-import {
-  faArrowLeft,
-  faArrowRight,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import { Tabs, Tab, Alert } from "react-bootstrap";
-import { getAllVideos, getSearchVideoCard } from "store/actions/videos";
-import "./style.scss";
-import Buttons from "utils/Buttons/buttons";
-import TeamProjectCard from "utils/TeamProjectCard/teamprojectcard";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  allIndActivity,
-  adminIntActivities,
-} from "store/actions/indActivities";
-import { addActivityPlaylistSearch } from "store/actions/playlist";
+import React, { useEffect, useState } from 'react';
+import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { Tabs, Tab, Alert } from 'react-bootstrap';
+import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
+import './style.scss';
+import Buttons from 'utils/Buttons/buttons';
+import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
+import { useDispatch, useSelector } from 'react-redux';
+import { allIndActivity, adminIntActivities } from 'store/actions/indActivities';
+import search from 'services/search.service';
 
-const SelectActivity = ({
-  setSelectSearchModule,
-  playlistIdForSearchingTab,
-  setReloadPlaylist,
-  reloadPlaylist,
-}) => {
-  const primaryColor = getGlobalColor("--main-primary-color");
-  const secondaryColor = getGlobalColor("--main-secondary-color");
-  const [activeTab, setActiveTab] = useState("Ind. Activities");
+import { addActivityPlaylistSearch } from 'store/actions/playlist';
+
+const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setReloadPlaylist, reloadPlaylist }) => {
+  const primaryColor = getGlobalColor('--main-primary-color');
+  const secondaryColor = getGlobalColor('--main-secondary-color');
+  const [activeTab, setActiveTab] = useState('Ind. Activities');
   const [selectProject, setSelectProject] = useState([]);
+  const [allSearchActivities, setAllSearchActivities] = useState(null);
   const dispatch = useDispatch();
-  const { allActivities, isLoading } = useSelector((state) => state.activities);
-  const { activeOrganization, permission } = useSelector(
-    (state) => state.organization
-  );
+
+  const { activeOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    dispatch(allIndActivity(activeOrganization.id));
+    (async () => {
+      const result = await search.searchIndependentActivities('org_activities', {
+        organization_id: activeOrganization?.id,
+      });
+      setAllSearchActivities(result);
+    })();
   }, [activeOrganization]);
 
   // useEffect(() => {
@@ -54,7 +48,7 @@ const SelectActivity = ({
     <>
       <div className="content-wrapper">
         <div className="inner-content">
-          <div className="content" style={{ minHeight: "764px" }}>
+          <div className="content" style={{ minHeight: '764px' }}>
             <div className="organization-name">Curriki Studio</div>
             <div>
               <div className="activity-header">
@@ -68,20 +62,11 @@ const SelectActivity = ({
                     setSelectSearchModule(false);
                   }}
                 >
-                  <FontAwesomeIcon
-                    icon={faArrowLeft}
-                    className="mr-18"
-                    color={primaryColor}
-                  />
+                  <FontAwesomeIcon icon={faArrowLeft} className="mr-18" color={primaryColor} />
                   <span>Back to project </span>
                 </div>
               </div>
-              <Tabs
-                onSelect={(eventKey) => {}}
-                className="main-tabs"
-                defaultActiveKey={activeTab}
-                id="uncontrolled-tab-example"
-              >
+              <Tabs onSelect={(eventKey) => {}} className="main-tabs" defaultActiveKey={activeTab} id="uncontrolled-tab-example">
                 <Tab eventKey="Ind. Activities" title="Ind. Activities">
                   <div className="row">
                     <div className="col-md-12">
@@ -92,7 +77,14 @@ const SelectActivity = ({
                               <input
                                 type="text"
                                 className="search-input"
-                                placeholder="Search team"
+                                placeholder="Search activity"
+                                onChange={async (e) => {
+                                  const result = await search.searchIndependentActivities('org_activities', {
+                                    organization_id: activeOrganization?.id,
+                                    query: e.target.value || undefined,
+                                  });
+                                  setAllSearchActivities(result);
+                                }}
                                 // value={searchQuery}
                               />
 
@@ -111,13 +103,7 @@ const SelectActivity = ({
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                 />
-                                <path
-                                  d="M21 20.9984L16.65 16.6484"
-                                  stroke={primaryColor}
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
+                                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             </div>
                           </div>
@@ -132,13 +118,9 @@ const SelectActivity = ({
                               width="220px"
                               height="32px"
                               hover
+                              disabled={selectProject.length ? false : true}
                               onClick={() => {
-                                dispatch(
-                                  addActivityPlaylistSearch(
-                                    selectProject[0],
-                                    playlistIdForSearchingTab
-                                  )
-                                );
+                                dispatch(addActivityPlaylistSearch(selectProject[0], playlistIdForSearchingTab));
                                 setSelectProject([]);
                               }}
                             />
@@ -146,7 +128,7 @@ const SelectActivity = ({
                         </div>
                       </div>
 
-                      {isLoading ? (
+                      {!allSearchActivities ? (
                         <>
                           <Alert variant="primary" className="alert">
                             Loading...
@@ -155,19 +137,25 @@ const SelectActivity = ({
                       ) : (
                         <>
                           <div className="list-of-team-projects">
-                            {allActivities?.data.map((item) => {
-                              return (
-                                <TeamProjectCard
-                                  backgroundImg={item?.thumb_url}
-                                  title={item?.title}
-                                  className="mrt"
-                                  key={item?.id}
-                                  selectProject={selectProject}
-                                  setSelectProject={setSelectProject}
-                                  project={item}
-                                />
-                              );
-                            })}
+                            {allSearchActivities?.data?.length ? (
+                              allSearchActivities?.data.map((item) => {
+                                return (
+                                  <TeamProjectCard
+                                    backgroundImg={item?.thumb_url}
+                                    title={item?.title}
+                                    className="mrt"
+                                    key={item?.id}
+                                    selectProject={selectProject}
+                                    setSelectProject={setSelectProject}
+                                    project={item}
+                                  />
+                                );
+                              })
+                            ) : (
+                              <Alert variant="danger" className="alert">
+                                No Result Found
+                              </Alert>
+                            )}
                           </div>
                         </>
                       )}
