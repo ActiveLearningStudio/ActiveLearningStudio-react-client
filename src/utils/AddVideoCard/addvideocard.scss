@@ -56,6 +56,28 @@
       margin-bottom: 0 !important;
     }
   }
+  .addvideo-activity-menu-option{
+    display: flex;
+    flex-direction: column;
+    .activity-request-tag{
+      cursor: pointer;
+      background: #F1F1F1;
+      width: max-content;
+      padding: 6px;
+      // margin-left: 16px;
+      border-radius: 4px;
+      span{
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #515151;
+        margin-left: 10px;
+      }
+    }
+  }
+ 
 
   .addvideo-card-add-share {
     display: flex;
@@ -90,12 +112,26 @@
       color: #515151;
     }
   }
+  .addvideo-card-add-share-options-parent{
+    display: flex;
+    margin-bottom: 16px;
+    
+  }
   .addvideo-card-add-share-options {
+    padding: 8px;
+    margin-top: 8px;
+    // margin-bottom: 25px;
+    // margin-right: 20px;
+  }
+  .addvideo-card-add-share-options-ind {
+    // padding: 8px;
+    // margin-top: 8px;
     margin-bottom: 25px;
     margin-right: 20px;
   }
+ 
   .activity-update-lib {
-    padding: 0px 16px 24px 16px;
+    padding: 0px 16px 6px 16px;
     .activity-update {
       font-family: 'Open Sans', sans-serif;
       font-style: normal;
@@ -121,12 +157,13 @@
     opacity: 1;
     transition: 0.3s;
     background-color: #f1f1f1;
-    padding: 8px;
+    // padding: 8px;
     border-radius: 4px;
     .textinButton {
       display: inline-flex;
+      margin-left: 10px;
       // margin-left: -10px;
-      margin-right: 5px;
+      // margin-right: 5px;
       // opacity: 1;
     }
   }
@@ -134,4 +171,11 @@
 
 .textinButton {
   display: none;
+  font-family: $rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: $curriki-main-blue;
+  
 }
