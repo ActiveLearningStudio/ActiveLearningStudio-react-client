@@ -1084,7 +1084,7 @@ function SearchInterface(props) {
                                                       }}
                                                     >
                                                       <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                      Duplicate
+                                                      Add to projects
                                                     </Dropdown.Item>
                                                   </>
                                                 )}
