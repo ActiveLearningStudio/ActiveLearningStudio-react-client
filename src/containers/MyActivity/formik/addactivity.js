@@ -396,7 +396,10 @@ const AddActivity = (props) => {
                       {errors.title && touched.title && errors.title}
                     </div>
                   </div>
-                  <div className="layout-formik-select">
+                  <div
+                    className="layout-formik-select"
+                    id="layout-formik-select-id-btn"
+                  >
                     <div className="formik-select mr-16">
                       <HeadingText
                         text="Subject"
