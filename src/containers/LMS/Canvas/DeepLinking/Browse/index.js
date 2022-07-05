@@ -18,6 +18,7 @@ const Browse = (props) => {
     const email = url.searchParams.get('user_email');
     const domainName = url.searchParams.get('api_domain_url');
     const courseId = url.searchParams.get('course_id');
+    const courseName = url.searchParams.get('course_name');
     browse({
       lms_url: match.params.lmsUrl,
       lti_client_id: match.params.ltiClientId,
@@ -25,6 +26,7 @@ const Browse = (props) => {
       mode: 'browse',
       course_id: courseId,
       api_domain_url: domainName,
+      course_name: courseName,
     });
   }, [match]);
 
