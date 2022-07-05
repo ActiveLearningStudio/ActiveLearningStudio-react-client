@@ -1261,18 +1261,6 @@ export default function Pills(props) {
         case "Domain":
           col = "domain";
           break;
-        case "Projects":
-          col = "projects_count";
-          break;
-        case "Sub Org.":
-          col = "suborganization_count";
-          break;
-        case "Users":
-          col = "users_count";
-          break;
-        case "Teams":
-          col = "teams_count";
-          break;
         default:
           col = "name";
       }

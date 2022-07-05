@@ -63,14 +63,7 @@ export const columnData = {
   lmssettingsSortCol: ["Type"],
 
   organization: ["Name", "Domain", "Projects", "Sub Org.", "Users", "Teams"],
-  organizationSortCol: [
-    "Name",
-    "Domain",
-    "Projects",
-    "Sub Org.",
-    "Users",
-    "Teams",
-  ],
+  organizationSortCol: ["Name", "Domain"],
 
   IntegrationBrightCove: [
     "Studio org ID",
