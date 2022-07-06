@@ -292,14 +292,14 @@ const DropDownEdit = ({
                     >
                       <path
                         d="M1.33398 2H5.33398C6.04123 2 6.71951 2.28095 7.2196 2.78105C7.7197 3.28115 8.00065 3.95942 8.00065 4.66667V14C8.00065 13.4696 7.78994 12.9609 7.41486 12.5858C7.03979 12.2107 6.53108 12 6.00065 12H1.33398V2Z"
-                        stroke="#084892"
+                        stroke={primaryColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M14.6667 2H10.6667C9.95942 2 9.28115 2.28095 8.78105 2.78105C8.28095 3.28115 8 3.95942 8 4.66667V14C8 13.4696 8.21071 12.9609 8.58579 12.5858C8.96086 12.2107 9.46957 12 10 12H14.6667V2Z"
-                        stroke="#084892"
+                        stroke={primaryColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -352,21 +352,21 @@ const DropDownEdit = ({
                     >
                       <path
                         d="M5 13H2.33333C1.97971 13 1.64057 12.8595 1.39052 12.6095C1.14048 12.3594 1 12.0203 1 11.6667V2.33333C1 1.97971 1.14048 1.64057 1.39052 1.39052C1.64057 1.14048 1.97971 1 2.33333 1H5"
-                        stroke="#084892"
+                        stroke={primaryColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M9.54492 10.4137L13.0018 6.95686L9.54492 3.5"
-                        stroke="#084892"
+                        stroke={primaryColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M12.0645 7H5.06445"
-                        stroke="#084892"
+                        stroke={primaryColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"

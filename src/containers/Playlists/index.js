@@ -68,6 +68,7 @@ import PreviewResourcePage from "./PreviewResourcePage";
 import CreatePlaylistPopup from "./CreatePlaylistPopup";
 import SearchInterface from "containers/Search";
 import SelectActivity from "./SelectActivity";
+import { faCheckSquare, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
 function PlaylistsPage(props) {
   const dispatch = useDispatch();
@@ -959,12 +960,42 @@ function PlaylistsPage(props) {
                                 >
                                   {selectedProject?.indexing_text ===
                                   "REQUESTED" ? (
-                                    <FontAwesomeIcon icon="exclamation-circle" />
+                                    <FontAwesomeIcon
+                                      icon="exclamation-circle"
+                                      color={primaryColor}
+                                    />
                                   ) : selectedProject?.indexing_text ===
                                     "APPROVED" ? (
-                                    <img src={Correct} alt="approved" />
+                                    <>
+                                      {/* <img src={Correct} alt="approved" /> */}
+                                      <svg
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 16 16"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
+                                          stroke={primaryColor}
+                                          stroke-width="1.5"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                        />
+                                        <path
+                                          d="M10.836 6.2002L7.23597 9.8002L5.59961 8.16383"
+                                          stroke={primaryColor}
+                                          stroke-width="1.5"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                        />
+                                      </svg>
+                                    </>
                                   ) : (
-                                    <FontAwesomeIcon icon="times-circle" />
+                                    <FontAwesomeIcon
+                                      icon="times-circle"
+                                      color={primaryColor}
+                                    />
                                   )}
                                   {selectedProject?.indexing_text}
                                 </div>

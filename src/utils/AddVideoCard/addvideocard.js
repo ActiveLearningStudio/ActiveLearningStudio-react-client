@@ -34,6 +34,7 @@ const AddVideoCard = ({
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
   const primaryColor = getGlobalColor("--main-primary-color");
+  const prapagraphColor = getGlobalColor("--main-paragraph-text-color");
   const visibilityData = [
     {
       id: 1,
@@ -138,21 +139,22 @@ const AddVideoCard = ({
                     >
                       <path
                         d="M7 13C10.3137 13 13 10.3137 13 7C13 3.68629 10.3137 1 7 1C3.68629 1 1 3.68629 1 7C1 10.3137 3.68629 13 7 13Z"
-                        stroke="#767676"
+                        // stroke="#767676"
+                        stroke={prapagraphColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M7 4.6001V7.0001"
-                        stroke="#767676"
+                        stroke={prapagraphColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                       <path
                         d="M7 9.3999H7.00533"
-                        stroke="#767676"
+                        stroke={prapagraphColor}
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
