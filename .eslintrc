@@ -5,7 +5,7 @@
     "requireConfigFile": false,
     "babelOptions": {
       "presets": ["@babel/preset-react"]
-     }
+    }
   },
   "env": {
     "browser": true,
@@ -34,8 +34,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "react/jsx-props-no-spreading": 0,
     "react/no-array-index-key": 1,
-    "linebreak-style": 1,
-    "template-curly-spacing" : "off",
+    "linebreak-style": 0,
+    "template-curly-spacing": "off",
     "indent": "off"
   }
 }
