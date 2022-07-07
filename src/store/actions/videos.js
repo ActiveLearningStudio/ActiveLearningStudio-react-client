@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { toast } from 'react-toastify';
 
 import videoServices from 'services/videos.services';
@@ -13,13 +12,12 @@ export const getAllVideos = (id, page, size, search) => async (dispatch) => {
   });
 };
 
-export const addVideo = (values) => async (dispatch) => {
+export const addVideo = (values) => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-
-  const result = await videoServices.addVideo(activeOrganization?.id, values);
+  await videoServices.addVideo(activeOrganization?.id, values);
   // dispatch({
   //   type: actionTypes.ALL_VIDEOS,
   //   payload: result,
@@ -27,7 +25,7 @@ export const addVideo = (values) => async (dispatch) => {
   // return result;
 };
 
-export const getBrightCMS = () => async (dispatch) => {
+export const getBrightCMS = () => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -36,7 +34,7 @@ export const getBrightCMS = () => async (dispatch) => {
   return result;
 };
 
-export const getBrightVideos = (brightId, offset) => async (dispatch) => {
+export const getBrightVideos = (brightId, offset) => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -47,22 +45,22 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
       id: brightId,
       query_param: `query=-tags:curriki&limit=6&offset=${offset}`,
     },
-    offset
+    offset,
   );
   console.log('result', result);
   return result;
 };
 
-export const getKalturaVideos = (searchText = '', page = 0, size = 6) => async (dispatch) => {
+export const getKalturaVideos = (searchText = '', page = 0, size = 6) => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  var result;
+  let result;
   try {
     result = await videoServices.getKalturaVideos({
       organization_id: activeOrganization.id,
-      searchText: searchText,
+      searchText,
       pageIndex: page,
       pageSize: size,
     });
@@ -73,17 +71,17 @@ export const getKalturaVideos = (searchText = '', page = 0, size = 6) => async (
   return result;
 };
 
-export const getVimeoVideos = (searchText = '', page = 1, size = 6) => async (dispatch) => {
+export const getVimeoVideos = (searchText = '', page = 1, size = 6) => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  var result;
+  let result;
   try {
     result = await videoServices.getVimeoVideos({
       organization_id: activeOrganization.id,
       query: searchText,
-      page: page,
+      page,
       per_page: size,
     });
   } catch (e) {
@@ -93,7 +91,7 @@ export const getVimeoVideos = (searchText = '', page = 1, size = 6) => async (di
   return result;
 };
 
-export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => {
+export const getBrightVideosSearch = (brightId, videoID) => async () => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -120,7 +118,7 @@ export const deleteVideo = (videoID) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await videoServices.deleteVideo(activeOrganization.id, videoID);
+  await videoServices.deleteVideo(activeOrganization.id, videoID);
   dispatch({
     type: actionTypes.REMOVE_VIDEOS,
     payload: videoID,

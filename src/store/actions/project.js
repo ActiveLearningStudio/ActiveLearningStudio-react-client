@@ -1,16 +1,17 @@
-import axios from 'axios';
-import Swal from 'sweetalert2';
+/* eslint-disable */
+import axios from "axios";
+import Swal from "sweetalert2";
 // import Echo from 'laravel-echo';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-import loaderImg from 'assets/images/loader.svg';
-import SharePreviewPopup from 'components/SharePreviewPopup';
-import projectService from 'services/project.service';
+import loaderImg from "assets/images/loader.svg";
+import SharePreviewPopup from "components/SharePreviewPopup";
+import projectService from "services/project.service";
 // import groupService from 'services/group.service';
 // import teamService from 'services/team.service';
 // import socketConnection from 'services/http.service';
-import * as actionTypes from '../actionTypes';
-import store from '../index';
+import * as actionTypes from "../actionTypes";
+import store from "../index";
 
 export const visibilityTypes = () => async (dispatch) => {
   const result = await projectService.visibilityTypes();
@@ -43,13 +44,15 @@ export const setCurrentVisibilityType = (data) => async (dispatch) => {
 // };
 export const createProjectAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    toast.info('creating project ...', {
-      position: 'top-center',
+    toast.info("creating project ...", {
+      position: "top-center",
       hideProgressBar: false,
-      icon: '',
+      icon: "",
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
@@ -62,8 +65,8 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
     toast.dismiss();
     if (project) {
-      toast.success('New Project Created', {
-        position: 'top-center',
+      toast.success("New Project Created", {
+        position: "top-center",
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -76,9 +79,9 @@ export const createProjectAction = (data) => async (dispatch) => {
   } catch (e) {
     dispatch({ type: actionTypes.CREATE_PROJECT_FAIL });
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: e.message || 'Something went wrong !',
+      icon: "error",
+      title: "Error",
+      text: e.message || "Something went wrong !",
     });
   }
 };
@@ -98,7 +101,9 @@ export const clearSelectedProject = () => (dispatch) => {
 
 export const loadProjectAction = (projectId, signal) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_PROJECT_REQUEST,
@@ -111,8 +116,9 @@ export const loadProjectAction = (projectId, signal) => async (dispatch) => {
       payload: { project },
     });
   } catch (e) {
-    if (e === 'AbortError') {
-      console.log('Call aborted');
+    if (e === "AbortError") {
+      // eslint-disable-next-line no-console
+      console.log("Call aborted");
     }
     dispatch({
       type: actionTypes.LOAD_PROJECT_FAIL,
@@ -122,12 +128,14 @@ export const loadProjectAction = (projectId, signal) => async (dispatch) => {
 
 export const updateProjectAction = (projectId, data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
-    toast.info('Updating Project ...', {
-      position: 'top-center',
+    toast.info("Updating Project ...", {
+      position: "top-center",
       hideProgressBar: true,
-      icon: '',
+      icon: "",
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
@@ -137,8 +145,8 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
     const { project } = await projectService.update(projectId, data, activeOrganization.id);
     toast.dismiss();
-    toast.success('Project Edited', {
-      position: 'top-center',
+    toast.success("Project Edited", {
+      position: "top-center",
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
@@ -155,9 +163,9 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
   } catch (e) {
     dispatch({ type: actionTypes.UPDATE_PROJECT_FAIL });
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: e.message || 'Something went wrong !',
+      icon: "error",
+      title: "Error",
+      text: e.message || "Something went wrong !",
     });
     return e.message;
   }
@@ -165,7 +173,9 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
 
 export const deleteProjectAction = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_PROJECT_REQUEST });
 
@@ -192,25 +202,25 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
       dispatch({
         type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
         payload: {
-          progress: `Uploaded progress: ${Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100,
-          )}%`,
+          progress: `Uploaded progress: ${Math.round((progressEvent.loaded / progressEvent.total) * 100)}%`,
         },
       });
     },
   };
   const centralizedState = store.getState();
-  toast.info('Uploading image...', {
-    position: 'top-center',
+  toast.info("Uploading image...", {
+    position: "top-center",
     hideProgressBar: false,
-    icon: '',
+    icon: "",
     closeOnClick: true,
     pauseOnHover: false,
     draggable: true,
     progress: undefined,
     autoClose: 30000,
   });
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
   toast.dismiss();
   dispatch({
@@ -222,7 +232,9 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
 
 export const loadMyProjectsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { currentOrganization } } = centralizedState;
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
@@ -246,7 +258,9 @@ export const loadMyProjectsAction = () => async (dispatch) => {
 
 export const loadMyFavProjectsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { currentOrganization } } = centralizedState;
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
   const { projects } = await projectService.getAllFav(currentOrganization?.id);
   dispatch({
     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
@@ -257,7 +271,9 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
 /* eslint-disable */
 export const loadMyReorderProjectsAction = (projectId, projectDivider) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const reorderProject = [];
   let reorderIndex = 0;
   projectDivider.map((data) => {
@@ -265,12 +281,12 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
       reorderProject.push({
         order: reorderIndex,
         id: collections.id,
-        project: collections
+        project: collections,
       });
       reorderIndex = reorderIndex + 1;
     });
   });
-  const choosenProject = reorderProject.filter(data => {
+  const choosenProject = reorderProject.filter((data) => {
     if (data?.id == projectId) {
       return data;
     }
@@ -282,7 +298,9 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
 
 export const loadMyCloneProjectsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const projects = await projectService.getClone(activeOrganization?.id);
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
@@ -292,7 +310,9 @@ export const loadMyCloneProjectsAction = () => async (dispatch) => {
 
 export const sampleProjects = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { currentOrganization } } = centralizedState;
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
   const { projects } = await projectService.getSampleProject(currentOrganization?.id);
   dispatch({
     type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
@@ -310,7 +330,9 @@ export const sampleProjects = () => async (dispatch) => {
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
@@ -337,7 +359,9 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
 
 export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
 
   dispatch({
@@ -352,7 +376,9 @@ export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = fa
 
 export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
   dispatch({
@@ -368,28 +394,31 @@ export const toggleProjectShareRemovedAction = (projectId, projectName, adminPan
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   Swal.fire({
     showCancelButton: true,
     confirmButtonColor: '#5952c6',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Delete',
     title: 'Are you sure you want to remove this ?',
-  })
-    .then(async (result) => {
-      if (result.value) {
-        Swal.showLoading();
-        await projectService.addToFav(projectId, activeOrganization.id);
-        Swal.close();
-        dispatch(loadMyFavProjectsAction());
-      }
-    });
+  }).then(async (result) => {
+    if (result.value) {
+      Swal.showLoading();
+      await projectService.addToFav(projectId, activeOrganization.id);
+      Swal.close();
+      dispatch(loadMyFavProjectsAction());
+    }
+  });
 };
 
 export const addProjectFav = (projectId) => async (/* dispatch */) => {
   Swal.showLoading();
   const centralizedState = store.getState();
-  const { organization: { activeOrganization, currentOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization, currentOrganization },
+  } = centralizedState;
   const project = await projectService.addToFav(projectId, activeOrganization.id);
 
   if (project.message) {
@@ -400,12 +429,11 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
       confirmButtonText: 'My Favorite Projects',
       icon: 'success',
       title: project.message,
-    })
-      .then((result) => {
-        if (result.value) {
-          window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
-        }
-      });
+    }).then((result) => {
+      if (result.value) {
+        window.location.href = `/org/${currentOrganization?.domain}/?active=fav`;
+      }
+    });
   }
 };
 
@@ -452,6 +480,7 @@ export const shareProjectAction = (projectId) => async () => {
     )
     .then((response) => {
       if (response.data.status === 'error' || response.status !== 200) {
+        // eslint-disable-next-line no-console
         console.log(`Error: ${response.data.message}`);
       }
     })
@@ -478,14 +507,7 @@ export const loadLmsAction = () => async (dispatch) => {
   });
 };
 
-export const ShareLMS = (
-  playlistId,
-  LmsTokenId,
-  lmsName,
-  lmsUrl,
-  playlistName,
-  projectName,
-) => {
+export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, projectName) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
 
   Swal.fire({
@@ -540,24 +562,22 @@ export const ShareLMS = (
   });
 };
 
-export const getProjectCourseFromLMS = (
-  lms,
-  settingId,
-  projectId,
-  playlist,
-  lmsUrl,
-) => async (dispatch, getState) => {
-  const response = await toast.promise(projectService.fetchLmsDetails(lms, projectId, settingId), {
-    pending: 'Fetching information...',
-    success: 'Information fetched!',
-    error: 'Error fetching information',
-  }, {
-    className: 'project-loading',
-    position: toast.POSITION.BOTTOM_RIGHT,
-    autoClose: 10000,
-    closeOnClick: false,
-    closeButton: false,
-  });
+export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lmsUrl) => async (dispatch, getState) => {
+  const response = await toast.promise(
+    projectService.fetchLmsDetails(lms, projectId, settingId),
+    {
+      pending: 'Fetching information...',
+      success: 'Information fetched!',
+      error: 'Error fetching information',
+    },
+    {
+      className: 'project-loading',
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 10000,
+      closeOnClick: false,
+      closeButton: false,
+    },
+  );
   const globalStoreClone = getState();
   if (response) {
     dispatch({
@@ -587,12 +607,9 @@ export const getProjectCourseFromLMS = (
         async function asyncFunc() {
           for (let x = 0; x < playlist.length; x += 1) {
             // eslint-disable-next-line no-await-in-loop
-            const counter = !!globalStoreCloneUpdated.project.lmsCourse
-              && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
-                .length > 0
-              ? globalStoreCloneUpdated.project.lmsCourse
-                .playlistsCopyCounter[x].counter
-              : 0;
+            const counter = !!globalStoreCloneUpdated.project.lmsCourse && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter.length > 0
+                ? globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter[x].counter
+                : 0;
 
             // eslint-disable-next-line no-await-in-loop
             await projectService.lmsPublish(lms, projectId, settingId, counter, playlist[x].id);
@@ -631,13 +648,7 @@ export const setLmsCourse = (course, allstate) => ({
   allstate,
 });
 
-export const getProjectCourseFromLMSPlaylist = (
-  playlistId,
-  settingId,
-  lms,
-  lmsUrl,
-  projectId,
-) => async (dispatch) => {
+export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsUrl, projectId) => async (dispatch) => {
   Swal.fire({
     icon: loaderImg,
     title: 'Fetching Information....',
@@ -669,9 +680,7 @@ export const getProjectCourseFromLMSPlaylist = (
         });
 
         const globalStore = store.getState();
-        const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlistsCopyCounter
-          ? globalStore.project.lmsCourse.playlistsCopyCounter
-          : [];
+        const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlistsCopyCounter ? globalStore.project.lmsCourse.playlistsCopyCounter : [];
 
         let counterId = 0;
         playlistCounter.forEach((p) => {
@@ -712,6 +721,7 @@ export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch)
       });
     }
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 };
@@ -749,7 +759,9 @@ export const clearProjectSelected = () => (dispatch) => {
 
 export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const { project } = await projectService.searchPreviewProject(activeOrganization?.id, projectId);
   dispatch({
     type: actionTypes.SEARCH_PREVIEW_PROJECT,
@@ -759,7 +771,9 @@ export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
 
 export const exportProjectsToNoovo = (projectId, teamId) => async () => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     const result = await projectService.exportProjectsToNoovo(activeOrganization?.id, projectId, teamId);
     return result.message;

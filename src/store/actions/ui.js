@@ -1,8 +1,4 @@
-import {
-  SHOW_DELETE_POPUP,
-  HIDE_DELETE_POPUP,
-  SIDE_BAR_COLLAPSE_TOGGLE,
-} from '../actionTypes';
+import { SHOW_DELETE_POPUP, HIDE_DELETE_POPUP, SIDE_BAR_COLLAPSE_TOGGLE } from '../actionTypes';
 
 export const showDeletePopup = (id, title, deleteType) => ({
   type: SHOW_DELETE_POPUP,

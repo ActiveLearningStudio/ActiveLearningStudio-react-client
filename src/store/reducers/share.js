@@ -1,10 +1,5 @@
-import {
-  SHOW_LMS,
-  CHANGE_LOADING,
-  GOOGLE_SHARE,
-  ALL_COURSES,
-  GET_COURSE_TOPICS,
-} from '../actionTypes';
+/* eslint-disable */
+import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE, ALL_COURSES, GET_COURSE_TOPICS } from '../actionTypes';
 
 const INITIAL_STATE = {
   shareVendors: [],

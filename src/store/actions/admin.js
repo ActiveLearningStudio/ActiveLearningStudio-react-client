@@ -1,4 +1,3 @@
-/* eslint-disable */
 import adminService from 'services/admin.service';
 import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
@@ -260,8 +259,8 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
   return result;
 };
 
-export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
-  const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);
+export const updateOrganizationMedaiSource = (subOrgId, mediaIds, updatedMediasSource) => async (dispatch) => {
+  const result = await adminService.updateOrgMediaSource(subOrgId, mediaIds);
   if (result) {
     Swal.fire({
       icon: 'success',

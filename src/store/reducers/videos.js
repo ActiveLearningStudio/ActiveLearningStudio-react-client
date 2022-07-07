@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -42,9 +41,8 @@ export default (state = INITIAL_STATE, action) => {
       const updatedData = state.allVideos?.data.map((data) => {
         if (data.id === action.payload.id) {
           return action.payload;
-        } else {
-          return data;
         }
+        return data;
       });
       return {
         ...state,

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { prepareLmsCourse } from 'logic/lmsCourse';
 import * as actionTypes from '../actionTypes';
 
@@ -87,14 +86,14 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.UPDATE_PROJECT_SUCCESS:
       // const index = projects.findIndex((p) => p.id === action.payload.project.id);
       // if (index > -1) {
-      // 	projects.splice(index, 1, action.payload.project);
-      // 	return {
-      // 		...state,
-      // 		isLoading: false,
-      // 		projects,
-      // 		// thumbUrl: null,
-      // 		// currentVisibilityType: null,
-      // 	};
+      // projects.splice(index, 1, action.payload.project);
+      // return {
+      // ...state,
+      // isLoading: false,
+      // projects,
+      // // thumbUrl: null,
+      // // currentVisibilityType: null,
+      // };
       // }
       return {
         ...state,

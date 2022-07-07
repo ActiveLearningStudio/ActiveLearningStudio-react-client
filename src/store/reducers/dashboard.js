@@ -1,10 +1,5 @@
-import {
-  GET_USER_PROJECTS,
-  GET_SHARED_USER_PROJECTS,
-  GET_USER_ACTIVITIES,
-  GET_SHARED_USER_ACTIVITIES,
-  GET_USER_PLAYLISTS,
-} from '../actionTypes';
+/* eslint-disable */
+import { GET_USER_PROJECTS, GET_SHARED_USER_PROJECTS, GET_USER_ACTIVITIES, GET_SHARED_USER_ACTIVITIES, GET_USER_PLAYLISTS } from '../actionTypes';
 
 const INITIAL_STATE = {
   projects: [],
@@ -17,11 +12,9 @@ export default (state = INITIAL_STATE, action) => {
     case GET_USER_PROJECTS:
       return {
         ...state,
-        projects: action.projects.projects.filter((project) => !(
-          action.query !== ''
-          && project.name.search(action.query) === -1
-          && project.description.search(action.query) === -1
-        )),
+        projects: action.projects.projects.filter(
+          (project) => !(action.query !== '' && project.name.search(action.query) === -1 && project.description.search(action.query) === -1),
+        ),
       };
 
     case GET_SHARED_USER_PROJECTS:
@@ -30,11 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         projects: action.projects.projects.filter((project) => {
           if (!project.shared) return false;
 
-          return !(
-            action.query !== ''
-            && project.name.search(new RegExp(action.query, 'i')) === -1
-            && project.description.search(new RegExp(action.query, 'i')) === -1
-          );
+          return !(action.query !== '' && project.name.search(new RegExp(action.query, 'i')) === -1 && project.description.search(new RegExp(action.query, 'i')) === -1);
         }),
       };
 

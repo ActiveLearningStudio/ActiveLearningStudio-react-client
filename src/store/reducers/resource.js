@@ -330,9 +330,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         formData: {
           metaTitle: action.metaTitle || '',
-          metaSubject: (typeof action.metaSubject === 'object' && !!action.metaSubject) ? action.metaSubject.value : action.metaSubject,
-          metaEducationLevels: (typeof action.metaEducationLevels === 'object' && !!action.metaEducationLevels)
-            ? action.metaEducationLevels.value : action.metaEducationLevels,
+          metaSubject: typeof action.metaSubject === 'object' && !!action.metaSubject ? action.metaSubject.value : action.metaSubject,
+          metaEducationLevels: typeof action.metaEducationLevels === 'object' && !!action.metaEducationLevels ? action.metaEducationLevels.value : action.metaEducationLevels,
         },
       };
 

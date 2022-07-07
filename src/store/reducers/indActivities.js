@@ -1,5 +1,4 @@
-/* eslint-disable */
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   allActivities: null,
@@ -24,9 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allActivities: {
           ...state.allActivities,
-          data: state.allActivities.data.filter(
-            (data) => data.id !== action.payload
-          ),
+          data: state.allActivities.data.filter((data) => data.id !== action.payload),
         },
       };
     case actionTypes.EDIT_IND_ACTIVITIES:
@@ -44,9 +41,11 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.EDIT_IND_ACTIVITIES_INDEX:
       const newEditDataIndex = state.allActivities.data.map((data) => {
         if (data.id === action.payload) {
-          console.log("Matched");
+          console.log('Matched');
+          // eslint-disable-next-line no-param-reassign
           data.indexing = 1;
-          data.indexing_text = "REQUESTED";
+          // eslint-disable-next-line no-param-reassign
+          data.indexing_text = 'REQUESTED';
         }
         return data;
       });

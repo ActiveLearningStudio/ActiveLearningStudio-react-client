@@ -1,12 +1,11 @@
-/* eslint-disable */
-import axios from "axios";
-import Swal from "sweetalert2";
-import Echo from "laravel-echo";
-import store from "../index";
-import socketConnection from "services/http.service";
-import playlistService from "services/playlist.service";
-import * as actionTypes from "../actionTypes";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { toast } from 'react-toastify';
+// import Echo from 'laravel-echo';
+// import socketConnection from 'services/http.service';
+import playlistService from 'services/playlist.service';
+import store from '../index';
+import * as actionTypes from '../actionTypes';
 
 export const createPlaylistAction = (projectId, title) => async (dispatch) => {
   try {
@@ -45,10 +44,9 @@ export const loadPlaylistAction = (projectId, id) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message || "Something went wrong! We are unable to load activity.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -75,21 +73,13 @@ export const deletePlaylistAction = (projectId, id) => async (dispatch) => {
   }
 };
 
-export const loadProjectPlaylistsAction = (
-  projectId,
-  skipContent = false,
-  signal
-) => async (dispatch) => {
+export const loadProjectPlaylistsAction = (projectId, skipContent = false, signal) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { playlists } = await playlistService.getAll(
-      projectId,
-      skipContent,
-      signal
-    );
+    const { playlists } = await playlistService.getAll(projectId, skipContent, signal);
 
     dispatch({
       type: actionTypes.LOAD_PROJECT_PLAYLISTS,
@@ -105,8 +95,9 @@ export const loadProjectPlaylistsAction = (
     //   icon: 'error',
     //   html: e.message || 'Something went wrong! We are unable to load activity.',
     // });
-    if (e === "AbortError") {
-      console.log("Call aborted");
+    if (e === 'AbortError') {
+      // eslint-disable-next-line no-console
+      console.log('Call aborted');
     }
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
@@ -123,11 +114,7 @@ export const lmsPlaylist = (projectId) => async (dispatch) => {
   return { playlists };
 };
 
-export const changePlaylistTitleAction = (
-  projectId,
-  playlistId,
-  title
-) => async (dispatch) => {
+export const changePlaylistTitleAction = (projectId, playlistId, title) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.UPDATE_PLAYLIST_REQUEST,
@@ -156,11 +143,7 @@ export const clearFormData = () => async (dispatch) => {
 };
 
 // Reorders playlists AND activities
-export const reorderPlaylistsAction = (
-  projectId,
-  orgPlaylists,
-  playlists
-) => async (dispatch) => {
+export const reorderPlaylistsAction = (projectId, orgPlaylists, playlists) => async (dispatch) => {
   try {
     // Optimistically dispatching action with new playlists data
     // to avoid waiting for request to go through
@@ -178,10 +161,7 @@ export const reorderPlaylistsAction = (
       })),
     }));
 
-    const { playlists: updatedPlaylists } = await playlistService.reorder(
-      projectId,
-      pLists
-    );
+    const { playlists: updatedPlaylists } = await playlistService.reorder(projectId, pLists);
 
     dispatch({
       type: actionTypes.REORDER_PLAYLISTS_SUCCESS,
@@ -195,9 +175,7 @@ export const reorderPlaylistsAction = (
   }
 };
 
-export const loadSharedPlaylistAction = (projectId, playlistId) => async (
-  dispatch
-) => {
+export const loadSharedPlaylistAction = (projectId, playlistId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_REQUEST,
@@ -245,10 +223,9 @@ export const loadLtiPlaylistAction = (playlistId) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message || "Something went wrong! We are unable to load activity.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load activity.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -270,9 +247,7 @@ export const reorderPlaylistActivities = (playlist) => ({
   playlist,
 });
 
-export const reorderPlaylistActivitiesAction = (playlist) => async (
-  dispatch
-) => {
+export const reorderPlaylistActivitiesAction = (playlist) => async (dispatch) => {
   // Optimistically dispatching action with new playlist data
   // to avoid waiting for request to go through
   dispatch(reorderPlaylistActivities(playlist));
@@ -280,15 +255,11 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (
   // Then performing request. If something goes wrong,
   // dispatch loadProjectPlaylistsAction to refresh playlists
   // with fresh server data
-  const { token } = JSON.parse(localStorage.getItem("auth"));
+  const { token } = JSON.parse(localStorage.getItem('auth'));
   axios
-    .post(
-      "/api/reorder-playlist",
-      { playlist },
-      { headers: { Authorization: `Bearer ${token}` } }
-    )
+    .post('/api/reorder-playlist', { playlist }, { headers: { Authorization: `Bearer ${token}` } })
     .then((response) => {
-      if (response.data.status === "error" || response.status !== 200) {
+      if (response.data.status === 'error' || response.status !== 200) {
         dispatch(loadProjectPlaylistsAction(playlist.projectId));
       }
     })
@@ -297,43 +268,38 @@ export const reorderPlaylistActivitiesAction = (playlist) => async (
     });
 };
 
-export const updatedPlaylist = (userId) => async () => {
-  // const echo = new Echo(socketConnection.notificationSocket());
-  // echo.private("playlist-update").listen("PlaylistUpdatedEvent", (msg) => {
-  //   if (msg.userId !== userId) {
-  //     const path = window.location.pathname;
-  //     let message = "";
-  //     if (path.includes(`playlist/${msg.playlistId}`)) {
-  //       message =
-  //         "This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?";
-  //     } else if (path.includes(`project/${msg.projectId}`)) {
-  //       message =
-  //         "This project has been modified by other team member. Are you ok to refresh page to see what is updated?";
-  //     }
-  //     if (message) {
-  //       Swal.fire({
-  //         title: message,
-  //         showDenyButton: true,
-  //         showCancelButton: true,
-  //         confirmButtonText: "Yes",
-  //         denyButtonText: "No",
-  //       }).then((result) => {
-  //         if (result.isConfirmed) {
-  //           window.location.reload();
-  //         }
-  //       });
-  //     }
-  //   }
-  // });
-};
+// export const updatedPlaylist = (userId) => async () => {
+//   // const echo = new Echo(socketConnection.notificationSocket());
+//   // echo.private("playlist-update").listen("PlaylistUpdatedEvent", (msg) => {
+//   //   if (msg.userId !== userId) {
+//   //     const path = window.location.pathname;
+//   //     let message = "";
+//   //     if (path.includes(`playlist/${msg.playlistId}`)) {
+//   //       message =
+//   //         "This playlist has been modified by other team member. Are you ok to refresh page to see what is updated?";
+//   //     } else if (path.includes(`project/${msg.projectId}`)) {
+//   //       message =
+//   //         "This project has been modified by other team member. Are you ok to refresh page to see what is updated?";
+//   //     }
+//   //     if (message) {
+//   //       Swal.fire({
+//   //         title: message,
+//   //         showDenyButton: true,
+//   //         showCancelButton: true,
+//   //         confirmButtonText: "Yes",
+//   //         denyButtonText: "No",
+//   //       }).then((result) => {
+//   //         if (result.isConfirmed) {
+//   //           window.location.reload();
+//   //         }
+//   //       });
+//   //     }
+//   //   }
+//   // });
+// };
 
-export const enablePlaylistShare = (projectId, playlistId) => async (
-  dispatch
-) => {
-  const { playlist } = await playlistService.enablePlaylistShare(
-    projectId,
-    playlistId
-  );
+export const enablePlaylistShare = (projectId, playlistId) => async (dispatch) => {
+  const { playlist } = await playlistService.enablePlaylistShare(projectId, playlistId);
   dispatch({
     type: actionTypes.ENABLE_PLAYLIST_SHARE,
     isSharedPlaylist: playlist?.shared,
@@ -341,13 +307,8 @@ export const enablePlaylistShare = (projectId, playlistId) => async (
   return playlist;
 };
 
-export const disablePlaylistShare = (projectId, playlistId) => async (
-  dispatch
-) => {
-  const { playlist } = await playlistService.disablePlaylistShare(
-    projectId,
-    playlistId
-  );
+export const disablePlaylistShare = (projectId, playlistId) => async (dispatch) => {
+  const { playlist } = await playlistService.disablePlaylistShare(projectId, playlistId);
   dispatch({
     type: actionTypes.DISABLE_PLAYLIST_SHARE,
     isSharedPlaylist: playlist?.shared,
@@ -355,18 +316,13 @@ export const disablePlaylistShare = (projectId, playlistId) => async (
   return playlist;
 };
 
-export const loadSingleSharedPlaylist = (projectId, playlistId) => async (
-  dispatch
-) => {
+export const loadSingleSharedPlaylist = (projectId, playlistId) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_REQUEST,
     });
 
-    const { playlist } = await playlistService.loadSingleSharedPlaylist(
-      projectId,
-      playlistId
-    );
+    const { playlist } = await playlistService.loadSingleSharedPlaylist(projectId, playlistId);
 
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_SUCCESS,
@@ -378,11 +334,9 @@ export const loadSingleSharedPlaylist = (projectId, playlistId) => async (
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message ||
-        "Something went wrong! We are unable to load shared playlist.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load shared playlist.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -398,9 +352,7 @@ export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
       type: actionTypes.LOAD_PLAYLIST_REQUEST,
     });
 
-    const { playlists } = await playlistService.loadAllSharedPlaylists(
-      projectId
-    );
+    const { playlists } = await playlistService.loadAllSharedPlaylists(projectId);
 
     dispatch({
       type: actionTypes.LOAD_ALL_SHARED_PLAYLIST,
@@ -408,11 +360,9 @@ export const loadAllSharedPlaylist = (projectId) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: "Error",
-      icon: "error",
-      html:
-        e.message ||
-        "Something went wrong! We are unable to load shared playlist.",
+      title: 'Error',
+      icon: 'error',
+      html: e.message || 'Something went wrong! We are unable to load shared playlist.',
     });
     dispatch({
       type: actionTypes.LOAD_PLAYLIST_FAIL,
@@ -427,10 +377,7 @@ export const searchPreviewPlaylistAction = (playlistId) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { playlist } = await playlistService.searchPreviewPlaylist(
-    activeOrganization?.id,
-    playlistId
-  );
+  const { playlist } = await playlistService.searchPreviewPlaylist(activeOrganization?.id, playlistId);
   dispatch({
     type: actionTypes.LOAD_PLAYLIST_SUCCESS,
     payload: { playlist },
@@ -441,28 +388,22 @@ export const searchPreviewPlaylistAction = (playlistId) => async (dispatch) => {
   });
 };
 
-export const addActivityPlaylistSearch = (ind_id, playlist_id) => async (
-  dispatch
-) => {
-  toast.info("Adding new Activity ...", {
-    className: "project-loading",
+export const addActivityPlaylistSearch = (indId, playlistId) => async () => {
+  toast.info('Adding new Activity ...', {
+    className: 'project-loading',
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 10000,
-    icon: "",
+    icon: '',
   });
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const addActivityResult = await playlistService.addActivityPlaylistSearch(
-    activeOrganization?.id,
-    ind_id,
-    playlist_id
-  );
+  await playlistService.addActivityPlaylistSearch(activeOrganization?.id, indId, playlistId);
   toast.dismiss();
-  toast.success("Activity Added", {
+  toast.success('Activity Added', {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 4000,
   });

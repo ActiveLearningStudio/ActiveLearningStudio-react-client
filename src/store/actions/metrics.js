@@ -1,11 +1,6 @@
+/* eslint-disable */
 import metricsService from 'services/metrics.service';
-import {
-  GET_USER_METRICS,
-  GET_USER_MEMBERSHIP,
-  ACTIVITY_VIEWED,
-  PLAYLIST_VIEWED,
-  PROJECT_VIEWED,
-} from '../actionTypes';
+import { GET_USER_METRICS, GET_USER_MEMBERSHIP, ACTIVITY_VIEWED, PLAYLIST_VIEWED, PROJECT_VIEWED } from '../actionTypes';
 
 export const getUserMetricsAction = (userId) => async (dispatch) => {
   const { metrics } = await metricsService.getUserMetrics(userId);

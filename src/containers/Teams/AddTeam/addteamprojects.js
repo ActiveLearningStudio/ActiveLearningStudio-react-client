@@ -1,10 +1,10 @@
-/*eslint-disable */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Buttons from 'utils/Buttons/buttons';
-import { Alert, Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import './style.scss';
-import { faAngleLeft, faAngleRight, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
 import Project1 from 'assets/images/teamprojects/project1.png';
 import Project2 from 'assets/images/teamprojects/project2.png';
@@ -12,6 +12,7 @@ import Project3 from 'assets/images/teamprojects/project3.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchInterface from 'containers/Search';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+
 const AddTeamProjects = ({ setPageLoad }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
@@ -44,16 +45,16 @@ const AddTeamProjects = ({ setPageLoad }) => {
                 <div className="search-and-filters">
                   <div className="search-bar">
                     <input type="text" className="search-input" placeholder="Search project" />
-                    {/*  <img src={searchimg} alt="search" />*/}
+                    {/*  <img src={searchimg} alt="search" /> */}
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" css-inspector-installed="true">
                       <path
                         d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                         stroke={primaryColor}
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
-                      <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                 </div>
@@ -62,7 +63,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add Project to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add Project to team" primary width="188px" height="32px" hover />
                 </div>
               </div>
             </div>
@@ -89,11 +90,11 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add project to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add project to team" primary width="188px" height="32px" hover />
                 </div>
               </div>
             </div>
-            <SearchInterface fromTeam={true} />
+            <SearchInterface fromTeam />
           </Tab>
         </Tabs>
       </div>
@@ -130,3 +131,6 @@ const AddTeamProjects = ({ setPageLoad }) => {
 };
 
 export default AddTeamProjects;
+AddTeamProjects.propTypes = {
+  setPageLoad: PropTypes.func.isRequired,
+};

@@ -1,11 +1,6 @@
+/* eslint-disable  */
 import dashboardService from 'services/dashboard.service';
-import {
-  GET_USER_PROJECTS,
-  GET_SHARED_USER_PROJECTS,
-  GET_USER_ACTIVITIES,
-  GET_SHARED_USER_ACTIVITIES,
-  GET_USER_PLAYLISTS,
-} from '../actionTypes';
+import { GET_USER_PROJECTS, GET_SHARED_USER_PROJECTS, GET_USER_ACTIVITIES, GET_SHARED_USER_ACTIVITIES, GET_USER_PLAYLISTS } from '../actionTypes';
 
 export const getUserProjectsAction = (shared, query) => async (dispatch) => {
   const projects = await dashboardService.getUserProjects();
@@ -16,8 +11,6 @@ export const getUserProjectsAction = (shared, query) => async (dispatch) => {
   });
 };
 
-// TODO: fix eslint issues
-/* eslint-disable */
 export const getUserActivitiesAction = (shared, query) => async (dispatch) => {
   const activities = [];
   const projects = await dashboardService.getUserProjects();
@@ -26,7 +19,7 @@ export const getUserActivitiesAction = (shared, query) => async (dispatch) => {
     const playlists = await dashboardService.getProject(project.id);
     for (const playlist of playlists.playlists) {
       for (const activity of playlist.activities) {
-        if (shared && activity.shared == false) continue;
+        if (shared && activity.shared === false) continue;
 
         if (query !== '' && activity.h5p_content.title.search(new RegExp(query, 'i')) === -1) continue;
 

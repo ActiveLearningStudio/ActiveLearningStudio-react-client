@@ -1,16 +1,17 @@
 /* eslint-disable */
 import axios from 'axios';
 import Swal from 'sweetalert2';
-//import Echo from 'laravel-echo';
+import { unescape } from 'lodash';
+// import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
 import indResourceService from 'services/indActivities.service';
 import videoService from 'services/videos.services';
-import socketConnection from 'services/http.service';
-import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 import store from '../index';
-import { unescape } from 'lodash';
+// import socketConnection from 'services/http.service';
+
+import * as actionTypes from '../actionTypes';
 
 // global variable for h5p object
 let h5pid;
@@ -493,6 +494,15 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
     Swal.close();
   }
 };
+export const formatSelectBoxData = (data) => {
+  const ids = [];
+  if (data.length > 0) {
+    data?.map((datum) => {
+      ids.push(datum.value);
+    });
+  }
+  return ids;
+};
 
 export const createResourceByH5PUploadAction = (playlistId, editor, editorType, payload, metadata, activityPreview) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -610,11 +620,11 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     icon: '',
   });
 
-  //try {
+  // try {
   const dataUpload = {
     data: h5pdata,
 
-    //h5p_content_id: h5pid.h5p_content.id,
+    // h5p_content_id: h5pid.h5p_content.id,
 
     playlist_id: playlistId,
     thumb_url: metadata?.thumb_url,
@@ -683,11 +693,11 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     icon: '',
   });
 
-  //try {
+  // try {
   const dataUpload = {
     data: h5pdata,
 
-    //h5p_content_id: h5pid.h5p_content.id,
+    // h5p_content_id: h5pid.h5p_content.id,
 
     playlist_id: activity.playlist.id,
     thumb_url: metadata?.thumb_url,
@@ -699,7 +709,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     education_level_id: formatSelectBoxData(metadata.education_level_id),
     author_tag_id: formatSelectBoxData(metadata.author_tag_id),
   };
-  const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
+  await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
   await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
   toast.dismiss();
   toast.success('Activity Edited', {
@@ -867,14 +877,4 @@ export const searchPreviewIndependentActivityAction = (activityId) => async (dis
     payload: result,
   });
   return result;
-}
-
-export const formatSelectBoxData = (data) => {
-  let ids = [];
-  if (data.length > 0) {
-    data?.map((datum) => {
-      ids.push(datum.value);
-    });
-  }
-  return ids;
 };

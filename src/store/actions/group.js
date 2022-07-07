@@ -35,7 +35,9 @@ export const showAssigningAction = () => async (dispatch) => {
 
 export const loadGroupsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
@@ -62,7 +64,9 @@ export const loadGroupsAction = () => async (dispatch) => {
 
 export const loadSubOrganizationGroupsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
@@ -89,7 +93,9 @@ export const loadSubOrganizationGroupsAction = () => async (dispatch) => {
 
 export const createGroupAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_GROUP_REQUEST });
 
@@ -110,7 +116,9 @@ export const createGroupAction = (data) => async (dispatch) => {
 
 export const loadGroupAction = (groupId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_GROUP_REQUEST,
@@ -131,7 +139,9 @@ export const loadGroupAction = (groupId) => async (dispatch) => {
 
 export const updateGroupAction = (groupId, data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_GROUP_REQUEST });
 
@@ -150,7 +160,9 @@ export const updateGroupAction = (groupId, data) => async (dispatch) => {
 
 export const deleteGroupAction = (groupId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_GROUP_REQUEST });
 
@@ -217,7 +229,9 @@ export const inviteMemberAction = (groupId, email) => async (dispatch) => {
 
 export const inviteMembersAction = (groupId, users, note) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 

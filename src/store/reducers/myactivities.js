@@ -1,8 +1,7 @@
-/* eslint-disable */
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
-  screenState: "",
+  screenState: '',
   layout: null,
   selectedLayout: null,
   singleLayout: null,
@@ -28,7 +27,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     case actionTypes.CLEAR_STATE:
       return {
-        screenState: "",
+        screenState: '',
         layout: null,
         selectedLayout: null,
         singleLayout: null,

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import Swal from 'sweetalert2';
 import searchService from 'services/search.service';
 import gapiService from 'services/gapi.service';
@@ -56,7 +55,6 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
     // save access token
     await searchService.googleShareToken(JSON.stringify(response.tokenObj));
     const getCourses = await searchService.getCourses();
-    console.log(getCourses);
     dispatch({
       type: ALL_COURSES,
       payload: getCourses.courses,
@@ -64,6 +62,7 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
 
     // dispatch(googleClassRoomLogin(response));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 };
@@ -88,6 +87,7 @@ export const googleClassRoomLoginFailureAction = (response) => async (dispatch) 
     // dispatch(googleShare(true));
     dispatch(googleClassRoomLoginFailure(response));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 };
@@ -124,11 +124,13 @@ export const getStudentCoursesAction = (token) => async (dispatch) => {
 
 export const loadH5pResourceSettings = (activityId, studentId = null, submissionId = null) => async (dispatch) => {
   const h5pSettings = await gapiService.h5pResourceSettings(activityId, studentId, submissionId);
+  // eslint-disable-next-line no-console
   console.log(h5pSettings?.brightcoveData?.accountId);
   try {
     localStorage.setItem('brightcoveAccountId', h5pSettings?.brightcoveData?.accountId);
     localStorage.setItem('brightcoveVideoId', h5pSettings?.brightcoveData?.videoId);
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
   dispatch({
@@ -181,6 +183,7 @@ export const googleClassRoomCourseTopicAction = (courseId) => async (dispatch) =
       payload: getTopics.topics,
     });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.log(e);
   }
 };

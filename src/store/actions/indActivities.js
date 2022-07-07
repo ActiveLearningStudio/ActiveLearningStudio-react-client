@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
@@ -186,7 +184,7 @@ export const adminIntActivities = (
   updatedFrom,
   updatedTo,
   shared,
-  index
+  index,
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
@@ -201,7 +199,7 @@ export const adminIntActivities = (
     updatedFrom,
     updatedTo,
     shared,
-    index
+    index,
   );
   if (allActivities) {
     dispatch({
@@ -287,7 +285,6 @@ export const getIndex = (id, index, admin) => async (dispatch) => {
   } else {
     result = await indResourceService.getIndex(id, index);
   }
-  console.log('Reslt index', result);
   toast.dismiss();
 
   if (result.message) {

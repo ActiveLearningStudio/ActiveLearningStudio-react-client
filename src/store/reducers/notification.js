@@ -40,7 +40,7 @@ export default (state = INITIAL_STATE, action) => {
 
       return {
         ...state,
-        notification: updatedList.reduce(((key, value) => Object.assign(key, value)), {}),
+        notification: updatedList.reduce((key, value) => Object.assign(key, value), {}),
       };
 
     default:

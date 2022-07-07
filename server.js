@@ -32,4 +32,3 @@ if (cluster.isMaster) {
 
   app.use(bodyParser).listen(port);
 }
-

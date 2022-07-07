@@ -1,8 +1,4 @@
-import {
-  SIDEBAR_ALL_PROJECT,
-  SIDEBAR_SAMPLE_PROJECT,
-  SIDEBAR_UPDATE_PROJECT,
-} from '../actionTypes';
+import { SIDEBAR_ALL_PROJECT, SIDEBAR_SAMPLE_PROJECT, SIDEBAR_UPDATE_PROJECT } from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoaded: false,

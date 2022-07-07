@@ -1,8 +1,6 @@
-/* eslint-disable */
 import Swal from 'sweetalert2';
-import store from '../index';
 import searchService from 'services/search.service';
-
+import store from '../index';
 // eslint-disable-next-line import/prefer-default-export
 export const copyProject = async (projectId, courseId, token) => {
   Swal.fire({

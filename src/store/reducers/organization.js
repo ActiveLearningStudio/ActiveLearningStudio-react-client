@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -47,7 +46,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.UPDATE_ALL_ORG:
       return {
         ...state,
-        allOrganizations: state.allOrganizations.map((data) => (data.id == action.payload.id ? action.payload : data)),
+        allOrganizations: state.allOrganizations.map((data) => (data.id === action.payload.id ? action.payload : data)),
       };
     case actionTypes.ADD_CURRENT_ORG:
       return {
