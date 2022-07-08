@@ -67,6 +67,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     }
   }
 
+  // eslint-disable-next-line no-constant-condition
   if (platform[path] === 'LTI client' || 'GenericLMS') {
     other.push({
       objectType: 'Activity',

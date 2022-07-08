@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
@@ -8,7 +6,9 @@ import imgAvatar from 'assets/images/default-upload-img.png';
 import pcIcon from 'assets/images/pc-icon.png';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import { createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction } from 'store/actions/resource';
+import {
+ createActivityItem, editActivityItem, getActivityItems, uploadActivityItemThumbAction,
+} from 'store/actions/resource';
 
 export default function CreateActivityItem(props) {
   const { editMode } = props;
@@ -186,8 +186,8 @@ export default function CreateActivityItem(props) {
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
                     {/* <option value=""> </option> */}
-                    {activityTypes?.data.length > 0 &&
-                      activityTypes?.data.map((type) => (
+                    {activityTypes?.data.length > 0
+                      && activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
                           {type?.title}
                         </option>
@@ -232,11 +232,11 @@ export default function CreateActivityItem(props) {
                       onChange={(e) => {
                         if (
                           !(
-                            e.target.files[0].type.includes('png') ||
-                            e.target.files[0].type.includes('jpg') ||
-                            e.target.files[0].type.includes('gif') ||
-                            e.target.files[0].type.includes('jpeg') ||
-                            e.target.files[0].type.includes('svg')
+                            e.target.files[0].type.includes('png')
+                            || e.target.files[0].type.includes('jpg')
+                            || e.target.files[0].type.includes('gif')
+                            || e.target.files[0].type.includes('jpeg')
+                            || e.target.files[0].type.includes('svg')
                           )
                         ) {
                           Swal.fire({
@@ -281,6 +281,7 @@ export default function CreateActivityItem(props) {
                             height: '215px',
                             borderRadius: '8px',
                           }}
+                          alt="activity item"
                         />
                         <span className="upload-btn">
                           <img src={pcIcon} alt="" />

@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable  */
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';

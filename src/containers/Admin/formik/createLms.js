@@ -1,17 +1,17 @@
-/* eslint-disable */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
-import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
+import { removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
 import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import authapi from '../../../services/auth.service';
 import adminapi from '../../../services/admin.service';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 export default function CreateUser(prop) {
   const { editMode, clone } = prop;
@@ -248,7 +248,11 @@ export default function CreateUser(prop) {
                   </div>
 
                   <div className="form-group-create">
-                    <h3>User <div><small>Search users from dropdown list only</small></div></h3>
+                    <h3>
+                      User
+                      {' '}
+                      <div><small>Search users from dropdown list only</small></div>
+                    </h3>
                     <input
                       type="text"
                       name="name"
