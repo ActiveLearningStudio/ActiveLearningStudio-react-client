@@ -1,11 +1,10 @@
-/*eslint-disable*/
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import DropdownActivity from "components/ResourceCard/dropdown";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import DropdownActivity from 'components/ResourceCard/dropdown';
 
-import "./style.scss";
-import { useSelector } from "react-redux";
+import './style.scss';
+import { useSelector } from 'react-redux';
 
 const ActivityPreviewCard = (props) => {
   const {
@@ -35,13 +34,13 @@ const ActivityPreviewCard = (props) => {
             <div
               className="bg-thumbnail"
               style={{
-                backgroundImage: activity.thumb_url.includes("pexels.com")
+                backgroundImage: activity.thumb_url.includes('pexels.com')
                   ? `url(${activity.thumb_url})`
                   : `url(${global.config.resourceUrl}${activity.thumb_url})`,
               }}
             />
           )}
-          <div style={{ maxWidth: "253px" }}>
+          <div style={{ maxWidth: '253px' }}>
             <div className="title">{activity.title}</div>
           </div>
         </li>

@@ -12,5 +12,13 @@
     "javascript"
   ],
   "explorer.expandSingleFolderWorkspaces": false,
-  "prettier.jsxSingleQuote": true
+  "prettier.jsxSingleQuote": true,
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 180,
+  "diffEditor.wordWrap": "off",
+  "editor.accessibilitySupport": "auto",
+  "debug.console.wordWrap": true,
+  "reactSnippets.settings.prettierEnabled": true,
+  "prettier.requireConfig": true,
+  "editor.minimap.maxColumn": 180
 }

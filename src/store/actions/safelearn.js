@@ -1,4 +1,3 @@
-/* eslint-disable */
 import html2canvas from 'html2canvas';
 import service from 'services/safelearn.service';
 
@@ -7,13 +6,13 @@ export const saveResultScreenshotAction = (org, statement, title, studentName) =
   const parsedStatement = JSON.parse(statement);
 
   if (
-    parsedStatement?.result?.response &&
-    parsedStatement?.verb?.display['en-US'] === 'interacted' &&
-    parsedStatement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0' &&
-    org.account_id &&
-    org.api_key &&
-    org.unit_path &&
-    org.name
+    parsedStatement?.result?.response
+    && parsedStatement?.verb?.display['en-US'] === 'interacted'
+    && parsedStatement?.context?.contextActivities?.category[0]?.id === 'http://h5p.org/libraries/H5P.OpenEndedQuestion-1.0'
+    && org.account_id
+    && org.api_key
+    && org.unit_path
+    && org.name
   ) {
     const safeData = await service.safeApiAuth(org.account_id, org.api_key);
     const customhtml = document.createElement('div');

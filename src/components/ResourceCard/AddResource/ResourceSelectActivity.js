@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -8,7 +7,9 @@ import { Field, reduxForm } from 'redux-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { required, FadeDiv } from 'utils';
-import { loadResourceItemsAction, showDescribeActivityAction, onChangeActivityAction, showCreateResourceActivityAction, saveSearchKeyInCreation } from 'store/actions/resource';
+import {
+ loadResourceItemsAction, showDescribeActivityAction, onChangeActivityAction, showCreateResourceActivityAction, saveSearchKeyInCreation,
+} from 'store/actions/resource';
 
 import ResourceActivityTypeField from '../fields/ResourceActivityTypeField';
 import MyVerticallyCenteredModal from '../../models/activityOptions';
@@ -41,7 +42,7 @@ let ResourceSelectActivity = (props) => {
       setActivities(data);
       saveSearchKey(e.target.value.toLowerCase());
     },
-    [saveSearchKey, searchActivities]
+    [saveSearchKey, searchActivities],
   );
 
   // useEffect(() => {

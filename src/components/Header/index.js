@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
@@ -9,11 +9,11 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import HeaderNotification from './notification';
 import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 function Header(props) {
   const { logout } = props;

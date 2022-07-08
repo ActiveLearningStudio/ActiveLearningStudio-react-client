@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
@@ -21,7 +20,9 @@ const ResourceCardDropdownShare = (props) => {
             <div className="share-project-preview-url project-share-check">
               <br />
               <h3>
-                You can now share Activity <strong>{resource.title}</strong>
+                You can now share Activity
+                {' '}
+                <strong>{resource.title}</strong>
                 <br />
                 Anyone with the link below can access your activity:
               </h3>

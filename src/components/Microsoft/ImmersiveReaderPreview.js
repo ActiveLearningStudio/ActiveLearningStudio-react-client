@@ -39,6 +39,7 @@ class ImmersiveReaderPreview extends React.Component {
         <h1>{activity.metadata.title}</h1>
         <button type="button" onClick={this.doLaunch}>Launch Immersive Reader</button>
         <div
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: activity.textContent }}
         />
       </div>

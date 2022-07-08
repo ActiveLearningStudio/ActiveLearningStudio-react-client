@@ -1,47 +1,47 @@
 /* eslint-disable max-len */
-/* eslint-disable */
-import React from "react";
-import Swal from "sweetalert2";
-import PropTypes from "prop-types";
-import Switch from "react-switch";
-import { useDispatch } from "react-redux";
+
+import React from 'react';
+import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import Switch from 'react-switch';
+import { useDispatch } from 'react-redux';
 import {
   toggleProjectShareAction,
   toggleProjectShareRemovedAction,
-} from "store/actions/project";
-import "./style.scss";
-import SharePreviewPopup from "components/SharePreviewPopup";
+} from 'store/actions/project';
+import './style.scss';
+import SharePreviewPopup from 'components/SharePreviewPopup';
 // import linkIcon from 'assets/images/project-link.svg';
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const ProjectSharing = (props) => {
   const { activeShared, selectedProject, setActiveShared } = props;
   const dispatch = useDispatch();
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="share-button">
       <Switch
         onChange={() => {
           if (activeShared) {
             Swal.fire({
-              icon: "warning",
+              icon: 'warning',
               title: `You are about to stop sharing <strong>"${selectedProject.name}"</strong>`,
               html: `Please remember that anyone you have shared this project
                                     with will no longer have access its contents. Do you want to continue?`,
               showCloseButton: true,
               showCancelButton: true,
               focusConfirm: false,
-              confirmButtonText: "Stop Sharing!",
-              confirmButtonAriaLabel: "Stop Sharing!",
-              cancelButtonText: "Cancel",
-              cancelButtonAriaLabel: "Cancel",
+              confirmButtonText: 'Stop Sharing!',
+              confirmButtonAriaLabel: 'Stop Sharing!',
+              cancelButtonText: 'Cancel',
+              cancelButtonAriaLabel: 'Cancel',
             }).then((resp) => {
               if (resp.isConfirmed) {
                 dispatch(
                   toggleProjectShareRemovedAction(
                     selectedProject.id,
-                    selectedProject.name
-                  )
+                    selectedProject.name,
+                  ),
                 );
                 setActiveShared(false);
               } else if (resp.isDismissed || resp.dismiss) {
@@ -51,7 +51,7 @@ const ProjectSharing = (props) => {
             });
           } else {
             dispatch(
-              toggleProjectShareAction(selectedProject.id, selectedProject.name)
+              toggleProjectShareAction(selectedProject.id, selectedProject.name),
             );
             setActiveShared(true);
           }
@@ -67,8 +67,8 @@ const ProjectSharing = (props) => {
         offHandleColor="#666"
       />
       &nbsp;
-      <span style={{ marginLeft: "18px" }}>
-        {activeShared ? "Disable Sharing" : "Enable Sharing"}
+      <span style={{ marginLeft: '18px' }}>
+        {activeShared ? 'Disable Sharing' : 'Enable Sharing'}
       </span>
       {activeShared && (
         <button
@@ -76,9 +76,9 @@ const ProjectSharing = (props) => {
           className="link-btn"
           onClick={() => {
             if (window.gapi && window.gapi.sharetoclassroom) {
-              window.gapi.sharetoclassroom.go("croom");
+              window.gapi.sharetoclassroom.go('croom');
             }
-            const protocol = `${window.location.href.split("/")[0]}//`;
+            const protocol = `${window.location.href.split('/')[0]}//`;
             const url = `${protocol}${window.location.host}/project/${selectedProject.id}/shared`;
             return SharePreviewPopup(url, selectedProject.name);
           }}

@@ -1,16 +1,18 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 
-const Embed = ({ url, projectName, playlistName = null, onClose }) => (
+const Embed = ({
+ url, projectName, playlistName = null, onClose,
+}) => (
   <>
     <h1>
-      You can embed below html snippet for{' '}
+      You can embed below html snippet for
+      {' '}
       <strong>
         &quot;
-        {playlistName ? playlistName : projectName}
+        {playlistName || projectName}
         &quot;
       </strong>
       <br />
