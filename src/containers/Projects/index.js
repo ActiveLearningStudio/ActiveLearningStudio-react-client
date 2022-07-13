@@ -1,6 +1,5 @@
-import React, {
-  useState, useEffect, memo, useRef,
-} from 'react';
+/* eslint-disable */
+import React, { useState, useEffect, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
@@ -25,6 +24,7 @@ import {
   loadLmsAction,
   sampleProjects,
   loadMyFavProjectsAction,
+  setCurrentVisibilityType,
   // allSidebarProjects,
 } from 'store/actions/project';
 import DeletePopup from 'components/DeletePopup';
@@ -36,6 +36,8 @@ import ProjectCard from './ProjectCard';
 import SampleProjectCard from './SampleProjectCard';
 import NewProjectPage from './NewProjectPage';
 import Headline from './headline';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { Dropdown } from 'react-bootstrap';
 import './style.scss';
 // import MyProjects from "./MyProjects";
 const ImgLoader = () => <img src={loader} alt="loader" />;
@@ -60,6 +62,7 @@ export const ProjectsPage = (props) => {
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
+
   const samplerRef = useRef();
   const {
     ui,
@@ -212,11 +215,7 @@ export const ProjectsPage = (props) => {
     if (source.droppableId === destination.droppableId) {
       projectDivider.forEach(async (data, index) => {
         if (data.id === source.droppableId) {
-          const items = reorder(
-            data.collection,
-            source.index,
-            destination.index,
-          );
+          const items = reorder(data.collection, source.index, destination.index);
 
           projectDivider[index] = {
             id: data.id,
@@ -240,12 +239,7 @@ export const ProjectsPage = (props) => {
         }
       });
 
-      const res = move(
-        verticalSource,
-        verticalDestination,
-        source,
-        destination,
-      );
+      const res = move(verticalSource, verticalDestination, source, destination);
 
       Object.keys(res).forEach((key) => {
         projectDivider.forEach((data, index) => {
@@ -259,9 +253,11 @@ export const ProjectsPage = (props) => {
       });
 
       const updateProjectList = [];
-      projectDivider.forEach((data) => data.collection.forEach((arrays) => {
-        updateProjectList.push(arrays);
-      }));
+      projectDivider.forEach((data) =>
+        data.collection.forEach((arrays) => {
+          updateProjectList.push(arrays);
+        })
+      );
 
       setProjectDivider(projectDivider);
       divideProjects(updateProjectList);
@@ -274,7 +270,7 @@ export const ProjectsPage = (props) => {
       toast.dismiss();
     }
     setAllProjects(allStateProject.projects);
-    divideProjects(allStateProject.projects);
+    // divideProjects([{ type: 'create' }, ...allStateProject.projects]);
     // }
   }, [allStateProject]);
 
@@ -310,7 +306,7 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (allProjects) {
-      divideProjects(allProjects);
+      divideProjects([{ type: 'create' }, ...allProjects]);
     }
   }, [allProjects, sortNumber]);
 
@@ -347,7 +343,7 @@ export const ProjectsPage = (props) => {
   // };
 
   const { showDeletePlaylistPopup } = ui;
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <div className={`content-wrapper ${activeFilter}`}>
@@ -372,13 +368,90 @@ export const ProjectsPage = (props) => {
                 id="uncontrolled-tab-example"
               >
                 <Tab eventKey="My Projects" title="My Projects">
+                  <div className="my-project-cards-top-search-filter">
+                    <div className="search-bar">
+                      <input className="" type="text" placeholder="Search" />
+
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }}>
+                        <path
+                          d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                    <div className="activity-counter">
+                      <div className="pagination-counter drop-counter ">
+                        My Project per page
+                        <span>
+                          <Dropdown>
+                            <Dropdown.Toggle id="dropdown-basic">10</Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                              <Dropdown.Item
+                              // onClick={() => {
+                              //   setSize(10);
+                              //   setActivePage(1);
+                              // }}
+                              >
+                                10
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                              // onClick={() => {
+                              //   setSize(25);
+                              //   setActivePage(1);
+                              // }}
+                              >
+                                25
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                              // onClick={() => {
+                              //   setSize(50);
+                              //   setActivePage(1);
+                              // }}
+                              >
+                                50
+                              </Dropdown.Item>
+                              <Dropdown.Item
+                              // onClick={() => {
+                              //   setSize(100);
+                              //   setActivePage(1);
+                              // }}
+                              >
+                                100
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </span>
+                      </div>
+                    </div>
+                    {/* <div className="filter-dropdown-project">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
+                          stroke={primaryColor}
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      Filter
+                    </div> */}
+                  </div>
                   <div className="row">
                     <div className="col-md-12">
                       {!!projectDivider && projectDivider.length > 0 ? (
                         <>
                           <div className="project-list-all">
+                            {/* <div className="add-project-block">
+
+                            </div> */}
+
                             <DragDropContext onDragEnd={onDragEnd}>
-                              {projectDivider.map((rowData) => (
+                              {projectDivider.map((rowData, indexFirst) => (
                                 <Droppable
                                   key={rowData.id}
                                   droppableId={rowData.id}
@@ -388,69 +461,72 @@ export const ProjectsPage = (props) => {
                                   direction="horizontal"
                                 >
                                   {(provided) => (
-                                    <div
-                                      {...provided.droppableProps}
-                                      ref={provided.innerRef}
-                                    >
-                                      <div className="check-home" id={value}>
-                                        {/* <div id={value}> */}
-                                        {rowData.collection.map(
-                                          (proj, index) => {
+                                    <>
+                                      <div {...provided.droppableProps} ref={provided.innerRef}>
+                                        <div className="check-home" id={value}>
+                                          {/* <div id={value}> */}
+
+                                          {rowData.collection.map((proj, index) => {
                                             const res = {
                                               title: proj.name,
                                               id: proj.id,
                                               deleteType: 'Project',
                                             };
-                                            return (
-                                              <Draggable
-                                                key={proj.id}
-                                                draggableId={`${proj.id}`}
-                                                index={index}
-                                              >
+                                            return index === 0 && indexFirst === 0 ? (
+                                              permission?.Project?.includes('project:create') && (
+                                                <div
+                                                  className="Add-my-project-section playlist-resource"
+                                                  onClick={() => {
+                                                    setCurrentVisibilityType(null);
+                                                    setCreateProject(true);
+                                                  }}
+                                                >
+                                                  <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                      d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005"
+                                                      stroke={primaryColor}
+                                                      stroke-width="4"
+                                                      stroke-linecap="round"
+                                                      stroke-linejoin="round"
+                                                    />
+                                                    <path
+                                                      d="M26 50C26 49.9656 26 17.9857 26 2"
+                                                      stroke={primaryColor}
+                                                      stroke-width="4"
+                                                      stroke-linecap="round"
+                                                      stroke-linejoin="round"
+                                                    />
+                                                  </svg>
+                                                  <span>Create new project</span>
+                                                </div>
+                                              )
+                                            ) : (
+                                              <Draggable key={proj.id} draggableId={`${proj.id}`} index={index}>
                                                 {(provid) => (
-                                                  <div
-                                                    className="playlist-resource"
-                                                    ref={provid.innerRef}
-                                                    {...provid.draggableProps}
-                                                    {...provid.dragHandleProps}
-                                                  >
+                                                  <div className="playlist-resource" ref={provid.innerRef} {...provid.draggableProps} {...provid.dragHandleProps}>
                                                     <ProjectCard
                                                       key={proj.id}
                                                       project={proj}
                                                       res={res}
-                                                      handleDeleteProject={
-                                                        handleDeleteProject
-                                                      }
-                                                      handleShareProject={
-                                                        handleShareProject
-                                                      }
-                                                      showDeletePopup={
-                                                        showDeletePopup
-                                                      }
-                                                      showPreview={
-                                                        showPreview === proj.id
-                                                      }
+                                                      handleDeleteProject={handleDeleteProject}
+                                                      handleShareProject={handleShareProject}
+                                                      showDeletePopup={showDeletePopup}
+                                                      showPreview={showPreview === proj.id}
                                                       handleShow={handleShow}
                                                       handleClose={handleClose}
-                                                      setProjectId={
-                                                        setProjectId
-                                                      }
-                                                      activeFilter={
-                                                        activeFilter
-                                                      }
-                                                      setCreateProject={
-                                                        setCreateProject
-                                                      }
+                                                      setProjectId={setProjectId}
+                                                      activeFilter={activeFilter}
+                                                      setCreateProject={setCreateProject}
                                                     />
                                                   </div>
                                                 )}
                                               </Draggable>
                                             );
-                                          },
-                                        )}
+                                          })}
+                                        </div>
+                                        {provided.placeholder}
                                       </div>
-                                      {provided.placeholder}
-                                    </div>
+                                    </>
                                   )}
                                 </Droppable>
                               ))}
@@ -473,11 +549,7 @@ export const ProjectsPage = (props) => {
                             <div className="project-page-settings">
                               <div className="sort-project-btns">
                                 <div
-                                  className={
-                                    activeFilter === 'list-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     // const allchunk = [];
                                     // var counterSimpl = 0;
@@ -489,11 +561,7 @@ export const ProjectsPage = (props) => {
                                   <FontAwesomeIcon icon="bars" />
                                 </div>
                                 <div
-                                  className={
-                                    activeFilter === 'small-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     setActiveFilter('small-grid');
                                     setSortNumber(5);
@@ -503,11 +571,7 @@ export const ProjectsPage = (props) => {
                                   <FontAwesomeIcon icon="grip-horizontal" />
                                 </div>
                                 <div
-                                  className={
-                                    activeFilter === 'normal-grid'
-                                      ? 'sort-btn active'
-                                      : 'sort-btn'
-                                  }
+                                  className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
                                     setActiveFilter('normal-grid');
                                     setSortNumber(4);
@@ -534,20 +598,14 @@ export const ProjectsPage = (props) => {
                               setShowSampleSort={setShowSampleSort}
                             />
                           ) : (
-                            <Alert variant="warning">
-                              No Favorite Project found.
-                            </Alert>
+                            <Alert variant="warning">No Favorite Project found.</Alert>
                           )}
                         </div>
                       </div>
                     </div>
                   </Tab>
                 )}
-                <Tab
-                  eventKey="Sample Projects"
-                  ref={samplerRef}
-                  title="Sample Projects"
-                >
+                <Tab eventKey="Sample Projects" ref={samplerRef} title="Sample Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">
@@ -557,11 +615,7 @@ export const ProjectsPage = (props) => {
                           <div className="project-page-settings">
                             <div className="sort-project-btns">
                               <div
-                                className={
-                                  activeFilter === 'list-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   // const allchunk = [];
                                   // let counterSimpl = 0;
@@ -573,11 +627,7 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="bars" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'small-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('small-grid');
                                   setSortNumber(5);
@@ -587,11 +637,7 @@ export const ProjectsPage = (props) => {
                                 <FontAwesomeIcon icon="grip-horizontal" />
                               </div>
                               <div
-                                className={
-                                  activeFilter === 'normal-grid'
-                                    ? 'sort-btn active'
-                                    : 'sort-btn'
-                                }
+                                className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
                                   setActiveFilter('normal-grid');
                                   setSortNumber(4);
@@ -618,10 +664,7 @@ export const ProjectsPage = (props) => {
                             setShowSampleSort={setShowSampleSort}
                           />
                         ) : (
-                          <Alert variant="warning">
-                            {' '}
-                            No sample project found.
-                          </Alert>
+                          <Alert variant="warning"> No sample project found.</Alert>
                         )}
                       </div>
                     </div>
@@ -637,17 +680,8 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       {showSampleSort && (
                         <div className="search-bar-team-tab">
-                          <input
-                            type="text"
-                            placeholder="Search team projects"
-                            value={searchTeamQuery}
-                            onChange={({ target }) => SetSearchTeamQuery(target.value)}
-                          />
-                          <img
-                            src={searchimg}
-                            alt="search"
-                            onClick={handleSearchQueryTeams}
-                          />
+                          <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                          <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
                         </div>
                       )}
                       <div className="flex-smaple">
@@ -664,9 +698,7 @@ export const ProjectsPage = (props) => {
                             setProjectId={setProjectId}
                           />
                         ) : (
-                          <Alert variant="warning">
-                            No Team Project found.
-                          </Alert>
+                          <Alert variant="warning">No Team Project found.</Alert>
                         )}
                       </div>
                     </div>
@@ -691,24 +723,14 @@ export const ProjectsPage = (props) => {
                 </Tab>
               </Tabs>
             ) : (
-              <Alert variant="danger">
-                {' '}
-                You are not authorized to view Projects
-              </Alert>
+              <Alert variant="danger"> You are not authorized to view Projects</Alert>
             )}
           </div>
         </div>
       </div>
-      {createProject && (
-        <NewProjectPage
-          project={project}
-          handleCloseProjectModal={setCreateProject}
-        />
-      )}
+      {createProject && <NewProjectPage project={project} handleCloseProjectModal={setCreateProject} />}
 
-      {showDeletePlaylistPopup && (
-        <DeletePopup {...props} deleteType="Project" />
-      )}
+      {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 
       <GoogleModel
         projectId={selectedProjectId}
@@ -770,6 +792,4 @@ const mapDispatchToProps = (dispatch) => ({
   getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
 });
 
-export default memo(
-  withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)),
-);
+export default memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)));
