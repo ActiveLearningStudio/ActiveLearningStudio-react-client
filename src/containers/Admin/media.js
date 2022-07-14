@@ -4,10 +4,12 @@ import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
+import HeadingThree from "utils/HeadingThree/headingthree";
 import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
 const Media = () => {
   const dispatch = useDispatch();
+  const h5plib = ["H5P.InteractiveVideo 1.24", "H5P.InteractiveVideo 1.25", "H5P.InteractiveVideo 1.26", "H5P.InteractiveVideo 1.27", "H5P.InteractiveVideo 1.28"]
   const { allMediaSources, orgMediaSources } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
@@ -15,7 +17,7 @@ const Media = () => {
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
   const { activeOrganization } = organization;
-
+  const [h5pVersion, seth5pVersion] = useState(h5plib)
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -43,7 +45,7 @@ const Media = () => {
               alert(values.mydivice);
             }}
           >
-            {({ handleSubmit }) => (
+            {({ handleSubmit, handleBlur }) => (
               <form onSubmit={handleSubmit}>
                 <div className='sources-section'>
                   <h3>Video sources</h3>
@@ -51,6 +53,7 @@ const Media = () => {
                     <div className='sources-options'>
                       <div className='sources-options-all'>
                         <div className='media-field-checkbox'>
+                          <div>
                           <input
                             name='videoall'
                             type='checkbox'
@@ -65,6 +68,14 @@ const Media = () => {
                             }}
                           />
                           <span className='span-heading'>Select all</span>
+                          </div>
+                          <div className='h5p-heading-text'>
+                            <HeadingThree
+                              text="H5P library"
+                              color="#515151"
+                              className="textField-title"
+                            />
+                          </div>
                         </div>
                         <div className='btn-text'>
                           <button
@@ -103,24 +114,38 @@ const Media = () => {
                             const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
                             if (source.name !== 'Safari Montage') {
                               return (
-                                <div className='media-field-checkbox' key={counter}>
-                                  <input
-                                    name={source.name}
-                                    type='checkbox'
-                                    className='media-sources-checkboxes '
-                                    checked={isVideoSource?.length > 0 ? true : false}
-                                    onChange={(e) => {
-                                      if (e.target.checked) {
-                                        setorgVideoSource([...orgVideoSource, source]);
-                                      } else {
-                                        setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
-                                      }
-                                    }}
-                                    disabled={source.name === 'Safari Montage' ? true : false}
-                                  />
-                                  <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
-                                    {source.name}
-                                  </span>
+                                <div className='media-version-options'>
+                                  <div className='media-field-checkbox' key={counter}>
+                                    <input
+                                      name={source.name}
+                                      type='checkbox'
+                                      className='media-sources-checkboxes '
+                                      checked={isVideoSource?.length > 0 ? true : false}
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          setorgVideoSource([...orgVideoSource, source]);
+                                        } else {
+                                          setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
+                                        }
+                                      }}
+                                      disabled={source.name === 'Safari Montage' ? true : false}
+                                    />
+                                    <span id={isVideoSource.length > 0 && 'span-sub-selected'} className='span-sub'>
+                                      {source.name}
+                                    </span>
+                                  </div>
+                                  <div className="h5p-title-formik-textField">
+                                    <input
+                                      type="text"
+                                      name={source.name}
+                                      placeholder="H5P.InteractiveVideo 1.24"
+                                      onChange={(e) => {
+                                        seth5pVersion([h5pVersion, e.target.value])
+                                      }}
+                                      onBlur={handleBlur}
+                                      value="H5P.InteractiveVideo 1.24"
+                                    />
+                                  </div>
                                 </div>
                               );
                             }
