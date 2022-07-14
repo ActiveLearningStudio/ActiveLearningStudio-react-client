@@ -29,6 +29,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
 import { Dropdown } from 'react-bootstrap';
+import StartingPage from 'utils/StartingPage/startingpage';
 
 const Index = ({ activities }) => {
   const [openMyVideo, setOpenVideo] = useState(false);
@@ -470,7 +471,7 @@ const Index = ({ activities }) => {
                       {/* <Alert mt="10px" variant="warning">
                         No Data Available
                       </Alert> */}
-                      <div className="video-default-contianer">
+                      {/* <div className="video-default-contianer">
                         <div style={{ maxWidth: '50%' }}>
                           <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
                           <HeadingText
@@ -496,7 +497,62 @@ const Index = ({ activities }) => {
                           </div>
                         </div>
                         <img src={initialpic} alt="initial-project-screen" />
-                      </div>
+                      </div> */}
+                      {activities ? (
+                        <>
+                          {' '}
+                          <StartingPage
+                            createBtnTitle="Create new activity"
+                            createTitle="Start creating engaging activities."
+                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.  
+                            Start by creating a new Activity or choose a guide from the right to learn more."
+                            helpBtnTitle="Help center"
+                            helpTitle="Learn how it works"
+                            helpDetail="Create your learning content using interactive activities.
+                            Organize your content by projects."
+                            onClick={() => {
+                              dispatch({
+                                type: actionTypes.CLEAR_STATE,
+                              });
+
+                              dispatch({
+                                type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                payload: 'layout',
+                                playlist: {},
+                                project: {},
+                              });
+
+                              dispatch(clearSearch());
+
+                              dispatch({
+                                type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                payload: '',
+                              });
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <StartingPage
+                            createBtnTitle="Create a video"
+                            createTitle="Start creating engaging activities."
+                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.  
+                            Start by creating a new Activity or choose a guide from the right to learn more."
+                            helpBtnTitle="Help center"
+                            helpTitle="Learn how it works"
+                            helpDetail="Create your learning content using interactive activities.
+                            Organize your content by projects."
+                            onClick={() => {
+                              setOpenVideo(!openMyVideo);
+                              setScreenStatus('AddVideo');
+                              dispatch({
+                                type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                payload: '',
+                              });
+                            }}
+                          />
+                        </>
+                      )}
                     </>
                   ) : (
                     <>
