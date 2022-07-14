@@ -4,7 +4,7 @@ import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
-  projects: [],
+  projects: null,
   selectedProject: {},
   thumbUrl: null,
   projectSelect: {},
