@@ -15,7 +15,7 @@ import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos,
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platform, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo } = props;
+  const { platformName, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [vimeo, setVimeo] = useState(null);
@@ -28,12 +28,12 @@ const BrightcoveModel = (props) => {
   const [error, setError] = useState(null);
   useEffect(() => {
     (async () => {
-      if (platform == 'Brightcove') {
+      if (platformName == 'Brightcove') {
         const result = await dispatch(getBrightCMS());
 
         setcms(result.data);
         setActiveCms(result.data?.[0]);
-      } else if (platform == 'Kaltura') {
+      } else if (platformName == 'Kaltura') {
         setActiveCms(null);
         const result = await dispatch(getKalturaVideos());
         if (result?.errors) {
@@ -42,7 +42,7 @@ const BrightcoveModel = (props) => {
         } else {
           setkaltura(result);
         }
-      } else if (platform == 'Vimeo') {
+      } else if (platformName == 'Vimeo') {
         setActiveCms(null);
         const result = await dispatch(getVimeoVideos());
         if (result?.errors) {
@@ -54,7 +54,7 @@ const BrightcoveModel = (props) => {
         }
       }
     })();
-  }, [platform]);
+  }, [platformName]);
   useEffect(() => {
     (async () => {
       if (activeCms) {
@@ -88,7 +88,7 @@ const BrightcoveModel = (props) => {
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <HeadingTwo text={`Add videos from ${platform}`} color="#515151" className="model-top-heading" />
+        <HeadingTwo text={`Add videos from ${platformName}`} color="#515151" className="model-top-heading" />
       </Modal.Header>
 
       <Modal.Body style={{ display: 'block !important' }}>
@@ -132,7 +132,7 @@ const BrightcoveModel = (props) => {
                         <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or id..." />
                         <button
                           onClick={async () => {
-                            if (platform == 'Brightcove') {
+                            if (platformName == 'Brightcove') {
                               setcmsVideo(null);
                               dispatch(getBrightVideosSearch(activeCms.id, searchId))
                                 .then((data) => {
@@ -145,7 +145,7 @@ const BrightcoveModel = (props) => {
                                     setError('No record Found');
                                   }
                                 });
-                            } else if (platform == 'Kaltura') {
+                            } else if (platformName == 'Kaltura') {
                               setkaltura(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos(searchId));
@@ -155,7 +155,7 @@ const BrightcoveModel = (props) => {
                                 setkaltura([]);
                                 setError('No record Found');
                               }
-                            } else if (platform == 'Vimeo') {
+                            } else if (platformName == 'Vimeo') {
                               setVimeo(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getVimeoVideos(searchId));
@@ -175,7 +175,7 @@ const BrightcoveModel = (props) => {
                         <button
                           onClick={async () => {
                             setSearchId('');
-                            if (platform == 'Brightcove') {
+                            if (platformName == 'Brightcove') {
                               setcmsVideo(null);
                               try {
                                 const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
@@ -188,12 +188,12 @@ const BrightcoveModel = (props) => {
                                   setError('No record Found');
                                 }
                               }
-                            } else if (platform == 'Kaltura') {
+                            } else if (platformName == 'Kaltura') {
                               setkaltura(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos());
                               setkaltura(result);
-                            } else if (platform == 'Vimeo') {
+                            } else if (platformName == 'Vimeo') {
                               setVimeo(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getVimeoVideos());
@@ -210,7 +210,7 @@ const BrightcoveModel = (props) => {
                 </div>
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-table responsive-table">
-                    {platform == 'Brightcove' && (
+                    {platformName == 'Brightcove' && (
                       <Tab.Content>
                         {cms?.map((data1, counter) => (
                           <Tab.Pane eventKey={`manual-${counter + 1}`}>
@@ -283,7 +283,7 @@ const BrightcoveModel = (props) => {
                         ))}
                       </Tab.Content>
                     )}
-                    {platform == 'Kaltura' && (
+                    {platformName == 'Kaltura' && (
                       <Tab.Content>
                         <Tab.Pane eventKey="manual-1">
                           <Card.Body style={{ padding: '0px' }}>
@@ -361,7 +361,7 @@ const BrightcoveModel = (props) => {
                     )}
 
                     {/* Vimeo */}
-                    {platform == 'Vimeo' && (
+                    {platformName == 'Vimeo' && (
                       <Tab.Content>
                         <Tab.Pane eventKey="manual-1">
                           <Card.Body style={{ padding: '0px' }}>

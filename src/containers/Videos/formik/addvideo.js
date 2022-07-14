@@ -51,11 +51,10 @@ const AddVideo = ({
   const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState("");
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState("");
   const [showSidebar, setShowSidebar] = useState(true);
-  const [platform, setplatform] = useState("Mydevice");
+  const [platformName, setplatformName] = useState("Mydevice");
   const [mediaSources, setMediaSources] = useState([]);
-  const [activeKey, setActiveKey] = useState(mediaSources[0]?.name);
-  const { editVideo } = useSelector((state) => state.videos);
-
+  const { editVideo, videoId, platform } = useSelector((state) => state.videos);
+  const [activeKey, setActiveKey] = useState(platform ? platform : mediaSources[0]?.name);
   useEffect(() => {
     if (editVideo?.source_type) {
       setActiveKey(editVideo?.source_type);
@@ -85,7 +84,7 @@ const AddVideo = ({
         setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
         selectedVideoIdVimeo={selectedVideoIdVimeo}
         showSidebar={showSidebar}
-        platform={platform}
+        platformName={platformName}
       />
       <div className="add-video-form">
         <div className="add-video-tabs">
@@ -156,7 +155,7 @@ const AddVideo = ({
                   eventKey="Brightcove"
                   title="BrightCove"
                   onClick={() => {
-                    setplatform("Brightcove");
+                    setplatformName("Brightcove");
                     setShowSidebar(true);
                   }}
                 >
@@ -169,7 +168,7 @@ const AddVideo = ({
                     setScreenStatus={setScreenStatus}
                     showBrowse
                     setModalShow={setModalShow}
-                    platform={platform}
+                    platformName={platformName}
                     placeholder="Enter a video Id"
                   />
                 </Tab>
@@ -179,7 +178,7 @@ const AddVideo = ({
                     eventKey="Brightcove"
                     title="BrightCove"
                     onClick={() => {
-                      setplatform("Brightcove");
+                      setplatformName("Brightcove");
                       setShowSidebar(true);
                     }}
                   >
@@ -192,7 +191,7 @@ const AddVideo = ({
                       setScreenStatus={setScreenStatus}
                       showBrowse
                       setModalShow={setModalShow}
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video Id"
                     />
@@ -222,14 +221,14 @@ const AddVideo = ({
               id="controlled-tab-example"
             >
               {!editVideo &&
-              mediaSources.some(
-                (obj) => obj.name === "My device" && obj.media_type === "Video"
-              ) ? (
+                mediaSources.some(
+                  (obj) => obj.name === "My device" && obj.media_type === "Video"
+                ) ? (
                 <Tab
                   eventKey="Mydevice"
                   title="My device"
                   onClick={() => {
-                    setplatform("Mydevice");
+                    setplatformName("Mydevice");
                   }}
                 >
                   {/* <UploadFile metadata={formData} formRef={formRef} /> */}
@@ -239,7 +238,7 @@ const AddVideo = ({
                     setScreenStatus={setScreenStatus}
                     changeScreenHandler={changeScreenHandler}
                     uploadFile
-                    platform={platform}
+                    platformName={platformName}
                   />
                 </Tab>
               ) : (
@@ -248,7 +247,7 @@ const AddVideo = ({
                     eventKey="Mydevice"
                     title="My device"
                     onClick={() => {
-                      setplatform("Mydevice");
+                      setplatformName("Mydevice");
                     }}
                     className={
                       editVideo
@@ -264,7 +263,7 @@ const AddVideo = ({
                       setScreenStatus={setScreenStatus}
                       changeScreenHandler={changeScreenHandler}
                       uploadFile
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       setSelectedVideoId={setSelectedVideoIdUpload}
                     />
@@ -272,12 +271,12 @@ const AddVideo = ({
                 )
               )}
               {!editVideo &&
-              mediaSources.some((obj) => obj.name === "BrightCove") ? (
+                mediaSources.some((obj) => obj.name === "BrightCove") ? (
                 <Tab
                   eventKey="Brightcove"
                   title="BrightCove"
                   onClick={() => {
-                    setplatform("Brightcove");
+                    setplatformName("Brightcove");
                     setShowSidebar(true);
                   }}
                 >
@@ -285,12 +284,12 @@ const AddVideo = ({
                     Input
                     showback={showback}
                     changeScreenHandler={changeScreenHandler}
-                    selectedVideoId={selectedVideoId}
+                    selectedVideoId={videoId && platform === "Brightcove" ? videoId : selectedVideoId}
                     type={AddVideoImage}
                     setScreenStatus={setScreenStatus}
                     showBrowse
                     setModalShow={setModalShow}
-                    platform={platform}
+                    platformName={platformName}
                     placeholder="Enter a video Id"
                   />
                 </Tab>
@@ -300,7 +299,7 @@ const AddVideo = ({
                     eventKey="Brightcove"
                     title="BrightCove"
                     onClick={() => {
-                      setplatform("Brightcove");
+                      setplatformName("Brightcove");
                       setShowSidebar(true);
                     }}
                   >
@@ -313,7 +312,7 @@ const AddVideo = ({
                       setScreenStatus={setScreenStatus}
                       showBrowse
                       setModalShow={setModalShow}
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video Id"
                     />
@@ -321,18 +320,18 @@ const AddVideo = ({
                 )
               )}
               {!editVideo &&
-              mediaSources.some((obj) => obj.name === "YouTube") ? (
+                mediaSources.some((obj) => obj.name === "YouTube") ? (
                 <Tab
                   eventKey="Youtube"
                   title="YouTube"
                   onClick={() => {
-                    setplatform("Youtube");
+                    setplatformName("Youtube");
                   }}
                 >
                   <FormikVideo
                     Input
-                    editVideo={editVideo?.brightcoveData?.videoId || ""}
-                    platform={platform}
+                    editVideo={editVideo?.brightcoveData?.videoId || videoId && platform === "Youtube" ? videoId : ""}
+                    platformName={platformName}
                     showback={showback}
                     changeScreenHandler={changeScreenHandler}
                     type={AddVideoTube}
@@ -346,12 +345,12 @@ const AddVideo = ({
                     eventKey="Youtube"
                     title="YouTube"
                     onClick={() => {
-                      setplatform("Youtube");
+                      setplatformName("Youtube");
                     }}
                   >
                     <FormikVideo
                       Input
-                      platform={platform}
+                      platformName={platformName}
                       showback={showback}
                       changeScreenHandler={changeScreenHandler}
                       type={AddVideoTube}
@@ -363,12 +362,12 @@ const AddVideo = ({
                 )
               )}
               {!editVideo &&
-              mediaSources.some((obj) => obj.name === "Kaltura") ? (
+                mediaSources.some((obj) => obj.name === "Kaltura") ? (
                 <Tab
                   eventKey="Kaltura"
                   title="Kaltura"
                   onClick={() => {
-                    setplatform("Kaltura");
+                    setplatformName("Kaltura");
                     setShowSidebar(false);
                   }}
                 >
@@ -380,8 +379,8 @@ const AddVideo = ({
                     changeScreenHandler={changeScreenHandler}
                     type={AddKaltura}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={selectedVideoIdKaltura}
-                    platform={platform}
+                    selectedVideoId={videoId && platform === "Kaltura" ? videoId : selectedVideoIdKaltura}
+                    platformName={platformName}
                     placeholder="Enter a video url"
                   />
                 </Tab>
@@ -391,7 +390,7 @@ const AddVideo = ({
                     eventKey="Kaltura"
                     title="Kaltura"
                     onClick={() => {
-                      setplatform("Kaltura");
+                      setplatformName("Kaltura");
                       setShowSidebar(false);
                     }}
                   >
@@ -404,7 +403,7 @@ const AddVideo = ({
                       type={AddKaltura}
                       setScreenStatus={setScreenStatus}
                       selectedVideoId={selectedVideoIdKaltura}
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video url"
                     />
@@ -415,12 +414,12 @@ const AddVideo = ({
               {/* Vemo Video */}
 
               {!editVideo &&
-              mediaSources.some((obj) => obj.name === "Vimeo") ? (
+                mediaSources.some((obj) => obj.name === "Vimeo") ? (
                 <Tab
                   eventKey="Vimeo"
                   title="Vimeo"
                   onClick={() => {
-                    setplatform("Vimeo");
+                    setplatformName("Vimeo");
                     setShowSidebar(false);
                   }}
                 >
@@ -432,8 +431,8 @@ const AddVideo = ({
                     changeScreenHandler={changeScreenHandler}
                     type={AddVemeo}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={selectedVideoIdVimeo}
-                    platform={platform}
+                    selectedVideoId={videoId && platform === "Vimeo" ? videoId : selectedVideoIdVimeo}
+                    platformName={platformName}
                     placeholder="Enter a video url"
                   />
                 </Tab>
@@ -443,7 +442,7 @@ const AddVideo = ({
                     eventKey="Vimeo"
                     title="Vimeo"
                     onClick={() => {
-                      setplatform("Vimeo");
+                      setplatformName("Vimeo");
                       setShowSidebar(false);
                     }}
                   >
@@ -456,7 +455,7 @@ const AddVideo = ({
                       type={AddVemeo}
                       setScreenStatus={setScreenStatus}
                       selectedVideoId={selectedVideoIdVimeo}
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video url"
                     />
@@ -465,13 +464,12 @@ const AddVideo = ({
               )}
               {/* Vemo Video */}
               {/* Komodo Start */}
-
               {!editVideo ? (
                 <Tab
                   eventKey="Komodo"
                   title="Komodo"
                   onClick={() => {
-                    setplatform("Komodo");
+                    setplatformName("Komodo");
                     setShowSidebar(false);
                   }}
                 >
@@ -483,8 +481,8 @@ const AddVideo = ({
                     changeScreenHandler={changeScreenHandler}
                     type={AddVemeo}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={selectedVideoIdVimeo}
-                    platform={platform}
+                    selectedVideoId={videoId && platform === "Komodo" ? videoId : selectedVideoIdVimeo}
+                    platformName={platformName}
                     placeholder="Enter here your Komodo link"
                     komodo
                   />
@@ -495,7 +493,7 @@ const AddVideo = ({
                     eventKey="Komodo"
                     title="Komodo"
                     onClick={() => {
-                      setplatform("Komodo");
+                      setplatformName("Komodo");
                       setShowSidebar(false);
                     }}
                   >
@@ -508,7 +506,7 @@ const AddVideo = ({
                       type={AddVemeo}
                       setScreenStatus={setScreenStatus}
                       selectedVideoId={selectedVideoIdVimeo}
-                      platform={platform}
+                      platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter here your Komodo link"
                       komodo
@@ -538,7 +536,7 @@ export default AddVideo;
 const FormikVideo = ({
   setSelectedVideoId,
   Input,
-  platform,
+  platformName,
   type,
   editVideo,
   showback,
@@ -561,10 +559,10 @@ const FormikVideo = ({
 
   const formRef = useRef();
   useEffect(() => {
-    if (editVideo && platform === "Mydevice") {
+    if (editVideo && platformName === "Mydevice") {
       setUploadedFile(editVideo);
     }
-  }, [editVideo, platform]);
+  }, [editVideo, platformName]);
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="add-video-layout-formik">
@@ -590,7 +588,7 @@ const FormikVideo = ({
           dispatch({
             type: "ADD_VIDEO_URL",
             payload: values.videoUrl,
-            platform,
+            platformName,
           });
         }}
       >
@@ -706,7 +704,7 @@ const FormikVideo = ({
                                   >
                                     <FontAwesomeIcon
                                       icon={faMicrophoneSlash}
-                                      // className="micro-icon-colo"
+                                    // className="micro-icon-colo"
                                     />
                                   </button>
                                 </div>
