@@ -1,0 +1,82 @@
+@import "assets/css/index";
+.curriki-utility-startpage {
+  padding: 56px 63px;
+.startpage-section{
+  display: flex;
+  justify-content: space-between;
+  
+  .section-detail{
+    h1{
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 48px;
+      line-height: 58px;
+      color: #515151;
+      margin-bottom: 8px;
+    }
+    h2{
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 38px;
+      color: #515151;
+     
+    }
+    .create-section-h2-space{
+      margin-bottom: 24px;
+    }
+    p{
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 26px;
+      color: #515151;
+      margin-bottom: 0px !important;
+    }
+    .prap-width{
+      max-width: 697px;
+    }
+  }
+  .section-btn{
+    background: #E5EEFF;
+    width: 290px;
+    height: 240px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    span{
+      margin-top: 28px;
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      letter-spacing: 0.02em;
+      color: #2E68BF;
+    }
+  }
+}
+.help-section{
+  margin-top: 40px;
+  .help-section-lost-title{
+      margin-bottom: 32px !important;
+      font-family: 'Open Sans', sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 26px;
+      color: #515151;
+    }
+    .help-section-h2-heading{
+      margin-top: 8px;
+    }
+
+
+}
+}

@@ -1,41 +1,41 @@
-/*eslint-disable*/
-import React, { useState } from 'react';
-import Buttons from 'utils/Buttons/buttons';
+/* eslint-disable react/jsx-indent */
+/* eslint-disable max-len */
+import React, { useState, useEffect } from 'react';
 import TopHeading from 'utils/TopHeading/topheading';
-import { faFilter, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { clearSearch } from 'store/actions/search';
 import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import './style.scss';
 import '../Admin/style.scss';
-import initialpic from 'assets/images/no-project-found.png';
 import HeadingText from 'utils/HeadingText/headingtext';
+
 import MyActivity from 'containers/MyActivity';
 import VideoImage from 'assets/images/svg/Interactivevideos.svg';
 import * as actionTypes from 'store/actionTypes';
-import { Tabs, Tab, Alert } from 'react-bootstrap';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
-import HeadingThree from 'utils/HeadingThree/headingthree';
-import AddVideo from './formik/addvideo';
+import { Alert, Dropdown } from 'react-bootstrap';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DescribeVideo from './formik/describevideo';
-import { useEffect } from 'react';
+
 import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
-import { allIndActivity, adminIntActivities } from 'store/actions/indActivities';
+import { allIndActivity } from 'store/actions/indActivities';
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
-import { Dropdown } from 'react-bootstrap';
 
+import StartingPage from 'utils/StartingPage/startingpage';
+import DescribeVideo from './formik/describevideo';
+import AddVideo from './formik/addvideo';
+
+// eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState('');
   const [modalShow, setModalShow] = useState(false);
-  const [searchActivity, setSearchActivity] = useState('');
 
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
@@ -74,7 +74,6 @@ const Index = ({ activities }) => {
   console.log('allActivities-allActivities', allActivities);
 
   const primaryColor = getGlobalColor('--main-primary-color');
-  const secondaryColor = getGlobalColor('--main-secondary-color');
 
   const handleShow = () => {
     setShow(true); //! state.show
@@ -112,8 +111,8 @@ const Index = ({ activities }) => {
             }}
           />
           <div className="inner-form-content">
-            {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
-            {screenStatus == 'DescribeVideo' && (
+            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
+            {screenStatus === 'DescribeVideo' && (
               <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />
             )}
           </div>
@@ -297,38 +296,10 @@ const Index = ({ activities }) => {
                             <Dropdown.Toggle id="dropdown-basic">10</Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                              <Dropdown.Item
-                              // onClick={() => {
-                              //   setSize(10);
-                              //   setActivePage(1);
-                              // }}
-                              >
-                                10
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                              // onClick={() => {
-                              //   setSize(25);
-                              //   setActivePage(1);
-                              // }}
-                              >
-                                25
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                              // onClick={() => {
-                              //   setSize(50);
-                              //   setActivePage(1);
-                              // }}
-                              >
-                                50
-                              </Dropdown.Item>
-                              <Dropdown.Item
-                              // onClick={() => {
-                              //   setSize(100);
-                              //   setActivePage(1);
-                              // }}
-                              >
-                                100
-                              </Dropdown.Item>
+                              <Dropdown.Item>10</Dropdown.Item>
+                              <Dropdown.Item>25</Dropdown.Item>
+                              <Dropdown.Item>50</Dropdown.Item>
+                              <Dropdown.Item>100</Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
                         </span>
@@ -408,38 +379,10 @@ const Index = ({ activities }) => {
                               <Dropdown.Toggle id="dropdown-basic">10</Dropdown.Toggle>
 
                               <Dropdown.Menu>
-                                <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(10);
-                                //   setActivePage(1);
-                                // }}
-                                >
-                                  10
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(25);
-                                //   setActivePage(1);
-                                // }}
-                                >
-                                  25
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(50);
-                                //   setActivePage(1);
-                                // }}
-                                >
-                                  50
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(100);
-                                //   setActivePage(1);
-                                // }}
-                                >
-                                  100
-                                </Dropdown.Item>
+                                <Dropdown.Item>10</Dropdown.Item>
+                                <Dropdown.Item>25</Dropdown.Item>
+                                <Dropdown.Item>50</Dropdown.Item>
+                                <Dropdown.Item>100</Dropdown.Item>
                               </Dropdown.Menu>
                             </Dropdown>
                           </span>
@@ -467,36 +410,61 @@ const Index = ({ activities }) => {
                 <div className="my-interactive-videos">
                   {!activescreenType?.data?.length ? (
                     <>
-                      {/* <Alert mt="10px" variant="warning">
-                        No Data Available
-                      </Alert> */}
-                      <div className="video-default-contianer">
-                        <div style={{ maxWidth: '50%' }}>
-                          <HeadingTwo text={activities ? 'Start creating engaging activities.' : 'Start creating awesome interactive videos.'} className="video-heading-1" />
-                          <HeadingText
-                            text={
-                              activities
-                                ? 'We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.'
-                                : 'Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired.'
-                            }
-                            className="video-heading-2"
+                      {activities ? (
+                        <>
+                          {' '}
+                          <StartingPage
+                            createBtnTitle="Create new activity"
+                            createTitle="Start creating engaging activities."
+                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
+                            Start by creating a new Activity or choose a guide from the right to learn more."
+                            helpBtnTitle="Help center"
+                            helpTitle="Learn how it works"
+                            helpDetail="Create your learning content using interactive activities.
+                            Organize your content by projects."
+                            onClick={() => {
+                              dispatch({
+                                type: actionTypes.CLEAR_STATE,
+                              });
+
+                              dispatch({
+                                type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                payload: 'layout',
+                                playlist: {},
+                                project: {},
+                              });
+
+                              dispatch(clearSearch());
+
+                              dispatch({
+                                type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                payload: '',
+                              });
+                            }}
                           />
-                          <HeadingThree
-                            text={
-                              activities
-                                ? ' Start by creating a new Activity or choose a guide from the right to learn more.'
-                                : 'Start by pressing “Create a video” and make your content live!'
-                            }
-                            className="video-heading-3"
+                        </>
+                      ) : (
+                        <>
+                          <StartingPage
+                            createBtnTitle="Create a video"
+                            createTitle="Start creating engaging activities."
+                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
+                            Start by creating a new Activity or choose a guide from the right to learn more."
+                            helpBtnTitle="Help center"
+                            helpTitle="Learn how it works"
+                            helpDetail="Create your learning content using interactive activities.
+                            Organize your content by projects."
+                            onClick={() => {
+                              setOpenVideo(!openMyVideo);
+                              setScreenStatus('AddVideo');
+                              dispatch({
+                                type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                payload: '',
+                              });
+                            }}
                           />
-                          <div className="vedio-help">
-                            <p>
-                              Feeling lost? Go to <span>Help Center</span>
-                            </p>
-                          </div>
-                        </div>
-                        <img src={initialpic} alt="initial-project-screen" />
-                      </div>
+                        </>
+                      )}
                     </>
                   ) : (
                     <>
@@ -535,8 +503,8 @@ const Index = ({ activities }) => {
                                     }}
                                   >
                                     <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                                      <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                                      <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                                      <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                     <span>Create new activity</span>
                                   </div>
@@ -554,49 +522,43 @@ const Index = ({ activities }) => {
                                   }}
                                 >
                                   <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                                   </svg>
                                   <span>Create a video</span>
                                 </div>
                               )}
 
                               {activities
-                                ? allActivities?.data.map((activityData) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={activityData.title}
-                                          data={activityData}
-                                          className="card-spacing"
-                                          activities={activities}
-                                          isActivityCard={true}
-                                          permission={permission}
-                                          handleShow={handleShow}
-                                          setSelectedActivityId={setActivityId}
-                                        />
-                                      </>
-                                    );
-                                  })
-                                : allVideos?.data?.map((video) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={video.title}
-                                          data={video}
-                                          className="card-spacing"
-                                        />
-                                      </>
-                                    );
-                                  })}
+                                ? allActivities?.data.map((activityData) => (
+                                    <AddVideoCard
+                                      setModalShow={setModalShow}
+                                      setCurrentActivity={setCurrentActivity}
+                                      setScreenStatus={setScreenStatus}
+                                      setOpenVideo={setOpenVideo}
+                                      title={activityData.title}
+                                      data={activityData}
+                                      className="card-spacing"
+                                      activities={activities}
+                                      isActivityCard
+                                      permission={permission}
+                                      handleShow={handleShow}
+                                      setSelectedActivityId={setActivityId}
+                                    />
+                                  ))
+                                : allVideos?.data?.map((video) => (
+                                    <>
+                                      <AddVideoCard
+                                        setModalShow={setModalShow}
+                                        setCurrentActivity={setCurrentActivity}
+                                        setScreenStatus={setScreenStatus}
+                                        setOpenVideo={setOpenVideo}
+                                        title={video.title}
+                                        data={video}
+                                        className="card-spacing"
+                                      />
+                                    </>
+                                  ))}
                             </div>
                             {allVideos?.data && !activities && (
                               <div style={{}} className="admin-panel ">
@@ -640,9 +602,9 @@ const Index = ({ activities }) => {
         </div>
       </div>
       <MyActivity playlistPreview activityPreview />
-      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={activities} />
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p activeType="demo" activities={activities} />
       <GoogleModel
-        playlistId={999999} //pass just for showing activity selectbox on google share popup
+        playlistId={999999} // pass just for showing activity selectbox on google share popup
         activityId={selectedActivityId}
         show={show} // {props.show}
         onHide={handleClose}
