@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable operator-linebreak */
 import React, { useEffect } from 'react';
 import {
   // Route,

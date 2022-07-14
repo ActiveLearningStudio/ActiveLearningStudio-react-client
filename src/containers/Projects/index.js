@@ -39,6 +39,7 @@ import Headline from './headline';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { Dropdown } from 'react-bootstrap';
 import './style.scss';
+import StartingPage from 'utils/StartingPage/startingpage';
 // import MyProjects from "./MyProjects";
 const ImgLoader = () => <img src={loader} alt="loader" />;
 export const ProjectsPage = (props) => {
@@ -534,7 +535,21 @@ export const ProjectsPage = (props) => {
                           </div>
                         </>
                       ) : (
-                        <Initialpage />
+                        // <Initialpage />
+                        <StartingPage
+                          createBtnTitle="Create new project"
+                          createTitle="Start creating engaging activities."
+                          createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.  
+                          Start by creating a new Activity or choose a guide from the right to learn more."
+                          helpBtnTitle="Help center"
+                          helpTitle="Learn how it works"
+                          helpDetail="Create your learning content using interactive activities.
+                          Organize your content by projects."
+                          onClick={() => {
+                            setCurrentVisibilityType(null);
+                            setCreateProject(true);
+                          }}
+                        />
                       )}
                     </div>
                   </div>
