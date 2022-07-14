@@ -332,6 +332,7 @@ const AddActivity = (props) => {
                   activity?.thumb_url ||
                   "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
                 title: activity?.title || "",
+                description:activity?.description || "",
               }}
               enableReinitialize
               innerRef={formRef}
@@ -396,6 +397,18 @@ const AddActivity = (props) => {
                       {errors.title && touched.title && errors.title}
                     </div>
                   </div>
+                  <div className="dec-title-formik-textField">
+                      <span>Description</span>
+                      <textarea
+                        rows="4"
+                        cols="4"
+                        name="description"
+                        placeholder="What is this layout about"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.description}
+                      />
+                    </div>
                   <div
                     className="layout-formik-select"
                     id="layout-formik-select-id-btn"

@@ -855,8 +855,51 @@
           text-indent: 10px;
         }
       }
+      .dec-title-formik-textField {
+        margin-top: 16px;
+        .textField-title {
+          h3 {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 17px;
+          }
+        }
+        .textField-detailText {
+          p {
+            font-size: 12px;
+            line-height: 16px;
+          }
+        }
+        input {
+          width: 100%;
+          height: 40px;
+          outline: none;
+          background: #ffffff;
+          border: 1px solid #515151;
+          border-radius: 4px;
+          text-indent: 10px;
+          color:#777
+        }
+        textarea {
+          width: 100%;
+          // height: 40px;
+          outline: none;
+          background: #ffffff;
+          border: 1px solid #515151;
+          border-radius: 4px;
+          text-indent: 10px;
+          padding: 8px;
+          &::placeholder {
+            color: #959595 !important;  
+          }
+        }
+       
+        .ml-32 {
+          margin-left: 32px;
+        }
+      }
       .layout-formik-select {
-        margin-top: 33px;
+        margin-top: 25px;
         display: flex;
         .formik-select {
           max-width: 168px;
