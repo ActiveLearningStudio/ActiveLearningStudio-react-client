@@ -546,7 +546,32 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+.clone-back-option-project{
+  margin-bottom: 38px;
+  span{
+    margin-left: 18px;
+    
+    font-family: $rubik;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892;
+  }
+}
+.clone-create-project-headng {
+font-family: $rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
 
+  color: #084892;
+  border-bottom: 4px solid #f8af2c;
+  padding-bottom: 4px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
     p {
       // font: normal normal normal 14px/22px $rubik;
       // color: $mine-shaft;
@@ -588,7 +613,7 @@
           svg {
             position: absolute;
             right: 40px;
-            bottom: 4px;
+            bottom: 12px;
           }
         }
         .filter {
@@ -770,20 +795,59 @@
       .model-name-activity-playlist {
         cursor: pointer;
         color: $curriki-main-blue;
-        height: 28px;
-        width: 146px;
+        // height: 28px;
+        // width: 146px;
         background: #e5eeff;
         border-radius: 4px;
-        padding: 4px;
+        padding: 8px;
       }
     }
   }
 }
+.activity-project-playlist-selected{
+
+  background: #F7FAFF !important;
+}
+.activity-project-playlist-unselected{
+  background: #ffffff !important;
+}
+
 .activity-project-playlist {
   background: #ffffff;
   box-shadow: 0px 1px 6px 1px rgba(8, 72, 146, 0.16);
   border-radius: 8px;
   margin-top: 8px;
+  .playlist-title-copy-text{
+    display: flex;
+    justify-content: space-between;
+    .copy-here-unselected{
+      background: #F7FAFF !important;
+      span{
+        color: #2E68BF !important;
+      }
+    }
+    .copy-here-selected{
+      background: #E5EEFF !important;
+      span{
+        color: #084892 !important;
+      }
+    }
+    .copy-here{
+      background: #F7FAFF;
+      border-radius: 4px;
+      width: 82px;
+      height: 28px;
+      padding: 4px 8px;
+      span{
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;      
+        color: $curriki-main-blue
+      }
+    }
+  }
   .activity-project-playlist-title {
     font-family: $rubik;
     font-style: normal;

@@ -28,6 +28,7 @@ import SearchForm from 'components/Header/searchForm';
 
 import StartingPage from 'utils/StartingPage/startingpage';
 import { MyVerticallyCenteredModal } from 'containers/Search';
+import Buttons from 'utils/Buttons/buttons';
 import DescribeVideo from './formik/describevideo';
 import AddVideo from './formik/addvideo';
 
@@ -370,6 +371,7 @@ const Index = ({ activities }) => {
                           <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
+
                       {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
                           Activities per page
@@ -403,14 +405,22 @@ const Index = ({ activities }) => {
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div> */}
-                      <div className="move_activities">
-                        <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
-                        <p>move activities to project</p>
-                        {addToProjectCheckbox && (
-                          <button onClick={() => setModalShowClone(true)} type="button">
-                            Next
-                          </button>
-                        )}
+
+                      <div className="searc_bar_move_activities">
+                        <div className="move_activities">
+                          <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+                          <p className="move_text" id="move_text_id_branding">
+                            Move activities to projects
+                          </p>
+                        </div>
+                        <div className="next_btn_activity">
+                          {addToProjectCheckbox && (
+                            // <button onClick={() => setModalShowClone(true)} type="button">
+                            //   Next
+                            // </button>
+                            <Buttons primary text="Next" iconColor={primaryColor} width="80px" height="32px" hover onClick={() => setModalShowClone(true)} />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </>
@@ -430,6 +440,7 @@ const Index = ({ activities }) => {
                             helpTitle="Learn how it works"
                             helpDetail="Create your learning content using interactive activities.
                             Organize your content by projects."
+                            primaryColor={primaryColor}
                             onClick={() => {
                               dispatch({
                                 type: actionTypes.CLEAR_STATE,
@@ -462,6 +473,7 @@ const Index = ({ activities }) => {
                             helpTitle="Learn how it works"
                             helpDetail="Create your learning content using interactive activities.
                             Organize your content by projects."
+                            primaryColor={primaryColor}
                             onClick={() => {
                               setOpenVideo(!openMyVideo);
                               setScreenStatus('AddVideo');

@@ -278,6 +278,38 @@ p {
 .form-new-popup-myvideo svg {
   color: var(--main-paragraph-text-color) !important;
 }
+
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section span{
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section{
+  /* background-color: var(--main-primary-color) !important;
+  opacity: 0.1; */
+}
+
+.curriki-utility-startpage .startpage-section .section-btn{
+  /* background-color: var(--main-primary-color) !important;
+  opacity: 0.1; */
+}
+.curriki-utility-startpage .startpage-section .section-btn span{
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities .move_text{
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.curriki-utility-addvideo-card .apply-check-video:before{
+  background: var(--main-primary-color);
+}
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities input{
+accent-color: var(--main-primary-color) !important;
+}
+.curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-dropdown input{
+  accent-color: var(--main-primary-color) !important;
+}
 /* My Projects Search Library branding */
 
 .search-div h4 {
