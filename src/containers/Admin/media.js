@@ -144,6 +144,7 @@ const Media = () => {
                                       }}
                                       onBlur={handleBlur}
                                       value="H5P.InteractiveVideo 1.24"
+                                      readOnly
                                     />
                                   </div>
                                 </div>

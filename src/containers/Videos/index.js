@@ -31,6 +31,8 @@ import SearchForm from 'components/Header/searchForm';
 import { Dropdown } from 'react-bootstrap';
 
 const Index = ({ activities }) => {
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videodesc, setvideodesc] = useState('');
   const [openMyVideo, setOpenVideo] = useState(false);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState('');
@@ -70,6 +72,12 @@ const Index = ({ activities }) => {
       setActiveScreenPage(allVideos);
     }
   }, [allActivities, allVideos]);
+  useEffect(() => {
+    if(!screenStatus){
+      setVideoTitle('');
+      setvideodesc('')
+    }
+  }, [screenStatus]);
 
   console.log('allActivities-allActivities', allActivities);
 
@@ -114,7 +122,8 @@ const Index = ({ activities }) => {
           <div className="inner-form-content">
             {screenStatus == 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
             {screenStatus == 'DescribeVideo' && (
-              <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />
+              <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} setVideoTitle={setVideoTitle} videoTitle={videoTitle} setvideodesc={setvideodesc}
+                videodesc={videodesc} />
             )}
           </div>
         </div>
@@ -563,40 +572,40 @@ const Index = ({ activities }) => {
 
                               {activities
                                 ? allActivities?.data.map((activityData) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={activityData.title}
-                                          data={activityData}
-                                          className="card-spacing"
-                                          activities={activities}
-                                          isActivityCard={true}
-                                          permission={permission}
-                                          handleShow={handleShow}
-                                          setSelectedActivityId={setActivityId}
-                                        />
-                                      </>
-                                    );
-                                  })
+                                  return (
+                                    <>
+                                      <AddVideoCard
+                                        setModalShow={setModalShow}
+                                        setCurrentActivity={setCurrentActivity}
+                                        setScreenStatus={setScreenStatus}
+                                        setOpenVideo={setOpenVideo}
+                                        title={activityData.title}
+                                        data={activityData}
+                                        className="card-spacing"
+                                        activities={activities}
+                                        isActivityCard={true}
+                                        permission={permission}
+                                        handleShow={handleShow}
+                                        setSelectedActivityId={setActivityId}
+                                      />
+                                    </>
+                                  );
+                                })
                                 : allVideos?.data?.map((video) => {
-                                    return (
-                                      <>
-                                        <AddVideoCard
-                                          setModalShow={setModalShow}
-                                          setCurrentActivity={setCurrentActivity}
-                                          setScreenStatus={setScreenStatus}
-                                          setOpenVideo={setOpenVideo}
-                                          title={video.title}
-                                          data={video}
-                                          className="card-spacing"
-                                        />
-                                      </>
-                                    );
-                                  })}
+                                  return (
+                                    <>
+                                      <AddVideoCard
+                                        setModalShow={setModalShow}
+                                        setCurrentActivity={setCurrentActivity}
+                                        setScreenStatus={setScreenStatus}
+                                        setOpenVideo={setOpenVideo}
+                                        title={video.title}
+                                        data={video}
+                                        className="card-spacing"
+                                      />
+                                    </>
+                                  );
+                                })}
                             </div>
                             {allVideos?.data && !activities && (
                               <div style={{}} className="admin-panel ">

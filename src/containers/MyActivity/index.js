@@ -40,6 +40,8 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
       setEdit(params.statusbool);
     }
   }, []);
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videodesc, setvideodesc] = useState('');
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -89,6 +91,8 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     }).then(async (result) => {
                       if (result.isConfirmed) {
                         changeScreenHandler("");
+                        setVideoTitle('');
+                        setvideodesc('')
                       }
                     });
                   }}
@@ -166,6 +170,10 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     changeScreenHandler={changeScreenHandler}
                     setUploadImageStatus={setUploadImageStatus}
                     activityPreview={activityPreview}
+                    setVideoTitle={setVideoTitle}
+                    videoTitle={videoTitle}
+                    setvideodesc={setvideodesc}
+                    videodesc={videodesc}
                   />
                 </div>
               )}

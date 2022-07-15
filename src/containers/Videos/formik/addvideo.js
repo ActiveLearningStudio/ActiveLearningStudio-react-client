@@ -163,7 +163,7 @@ const AddVideo = ({
                     Input
                     showback={showback}
                     changeScreenHandler={changeScreenHandler}
-                    selectedVideoId={selectedVideoId}
+                    selectedVideoId={videoId && platform === "Brightcove" ? videoId : selectedVideoId}
                     type={AddVideoImage}
                     setScreenStatus={setScreenStatus}
                     showBrowse
