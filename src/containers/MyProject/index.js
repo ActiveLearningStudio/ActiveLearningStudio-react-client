@@ -12,7 +12,6 @@ import ProjectPlayListCard from 'utils/ProjectPlayListCard/projectplaylistcard';
 import PlayListImage from 'assets/images/svg/playlist1.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MyProjectsCreate from './formik/createproject';
-import PlayCardImage from 'assets/images/artcourseimg.png';
 import MyProjectCard from 'utils/MyProjectCard/myprojectcard';
 import ProjectCard1 from 'assets/images/myproject1.png';
 import ProjectCard2 from 'assets/images/myproject2.png';
