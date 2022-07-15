@@ -38,6 +38,9 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
   }, []);
   const [videoTitle, setVideoTitle] = useState("");
   const [videodesc, setvideodesc] = useState("");
+  const [subName, setsubName] = useState("");
+  const [authortagName, setauthortagName] = useState("");
+  const [eduLevel, seteduLevel] = useState("");
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
 
@@ -88,6 +91,7 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                         changeScreenHandler("");
                         setVideoTitle("");
                         setvideodesc("");
+                        setsubName("");
                       }
                     });
                   }}
@@ -162,6 +166,12 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     videoTitle={videoTitle}
                     setvideodesc={setvideodesc}
                     videodesc={videodesc}
+                    setsubName={setsubName}
+                    subName={subName}
+                    authortagName={authortagName}
+                    setauthortagName={setauthortagName}
+                    eduLevel={eduLevel}
+                    seteduLevel={seteduLevel}
                   />
                 </div>
               )}
