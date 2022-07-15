@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable react/jsx-indent */
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import TopHeading from 'utils/TopHeading/topheading';
@@ -403,7 +403,7 @@ const Index = ({ activities }) => {
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div> */}
-                      {/* <div className="move_activities">
+                      <div className="move_activities">
                         <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
                         <p>move activities to project</p>
                         {addToProjectCheckbox && (
@@ -411,7 +411,7 @@ const Index = ({ activities }) => {
                             Next
                           </button>
                         )}
-                      </div> */}
+                      </div>
                     </div>
                   </>
                 )}
