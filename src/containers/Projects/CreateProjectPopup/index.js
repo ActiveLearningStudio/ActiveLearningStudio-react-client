@@ -15,7 +15,7 @@ import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction,
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
-
+import { addActivityPlaylistSearch } from 'store/actions/playlist';
 import './style.scss';
 
 const maxLength80 = maxLength(80);
@@ -25,7 +25,7 @@ let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, project, fromTeam, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
+  const { history, project, fromTeam, addtoProject, currentPlaylist, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
   const { name, description, vType } = values;
   const result = await dispatch(
     project?.thumbUrl
@@ -47,11 +47,19 @@ const onSubmit = async (values, dispatch, props) => {
           thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
         })
   );
-  handleCloseProjectModal(false);
+  if (handleCloseProjectModal) {
+    handleCloseProjectModal(false);
+  }
+
   if (result && !fromTeam) {
-    console.log(result);
-    history.push('/projects');
-    history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+    if (addtoProject) {
+      console.log(selectedProjectstoAdd);
+      selectedProjectstoAdd?.map((id) => {
+        dispatch(addActivityPlaylistSearch(id, currentPlaylist.id));
+      });
+    } else {
+      history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+    }
   }
 };
 export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
@@ -78,7 +86,7 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch) =
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, handleSubmit, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, project, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
@@ -228,7 +236,7 @@ let CreateProjectPopup = (props) => {
         </div>
         <div className="create-project-template-wrapper">
           <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
-            {isLoading ? <img src={loader} alt="" /> : 'Create Project'}
+            {isLoading ? <img src={loader} alt="" /> : addtoProject ? 'Save & Continue' : 'Create Project'}
           </button>
         </div>
       </form>
