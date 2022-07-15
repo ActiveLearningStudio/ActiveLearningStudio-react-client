@@ -24,20 +24,27 @@ import { useEffect } from 'react';
 import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
 import { allIndActivity, adminIntActivities } from 'store/actions/indActivities';
 import AddVideoCard from 'utils/AddVideoCard/addvideocard';
-import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
+import MyVerticallyCenteredModals from 'components/models/videoH5pmodal';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
 import { Dropdown } from 'react-bootstrap';
 
+import StartingPage from 'utils/StartingPage/startingpage';
+import { MyVerticallyCenteredModal } from 'containers/Search';
+
+// eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
   const [videoTitle, setVideoTitle] = useState("");
   const [videodesc, setvideodesc] = useState('');
   const [openMyVideo, setOpenVideo] = useState(false);
+  const [selectedProjectstoAdd, setSelectedProjectstoAdd] = useState([]);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [screenStatus, setScreenStatus] = useState('');
   const [modalShow, setModalShow] = useState(false);
   const [searchActivity, setSearchActivity] = useState('');
+  const [modalShowClone, setModalShowClone] = useState(false);
+  const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
 
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
@@ -368,21 +375,16 @@ const Index = ({ activities }) => {
                           className=""
                           type="text"
                           value={searchQuery}
-                          // onChange={(e) => {
-                          //   setSearchQuery(e.target.value);
-                          //   if (activeOrganization) {
-                          //     if (e.target.value.trim()) {
-                          //       dispatch(
-                          //         getSearchVideoCard(
-                          //           activeOrganization.id,
-                          //           e.target.value
-                          //         )
-                          //       );
-                          //     } else {
-                          //       dispatch(getAllVideos(activeOrganization.id));
-                          //     }
-                          //   }
-                          // }}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            if (activeOrganization) {
+                              if (e.target.value.trim()) {
+                                dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                              } else {
+                                dispatch(getAllVideos(activeOrganization.id));
+                              }
+                            }
+                          }}
                           placeholder="Search"
                         />
 
@@ -409,7 +411,7 @@ const Index = ({ activities }) => {
                           <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <div className="activity-counter">
+                      {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
                           Activities per page
                           <span>
@@ -453,7 +455,7 @@ const Index = ({ activities }) => {
                             </Dropdown>
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       {/* <div className="filter-dropdown-project">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -470,6 +472,15 @@ const Index = ({ activities }) => {
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div> */}
+                      <div className="move_activities">
+                        <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+                        <p>move activities to project</p>
+                        {addToProjectCheckbox && (
+                          <button onClick={() => setModalShowClone(true)} type="button">
+                            Next
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </>
                 )}
@@ -571,28 +582,26 @@ const Index = ({ activities }) => {
                               )}
 
                               {activities
-                                ? allActivities?.data.map((activityData) => {
-                                  return (
-                                    <>
-                                      <AddVideoCard
-                                        setModalShow={setModalShow}
-                                        setCurrentActivity={setCurrentActivity}
-                                        setScreenStatus={setScreenStatus}
-                                        setOpenVideo={setOpenVideo}
-                                        title={activityData.title}
-                                        data={activityData}
-                                        className="card-spacing"
-                                        activities={activities}
-                                        isActivityCard={true}
-                                        permission={permission}
-                                        handleShow={handleShow}
-                                        setSelectedActivityId={setActivityId}
-                                      />
-                                    </>
-                                  );
-                                })
-                                : allVideos?.data?.map((video) => {
-                                  return (
+                                ? allActivities?.data.map((activityData) => (
+                                    <AddVideoCard
+                                      setModalShow={setModalShow}
+                                      setCurrentActivity={setCurrentActivity}
+                                      setScreenStatus={setScreenStatus}
+                                      setOpenVideo={setOpenVideo}
+                                      title={activityData.title}
+                                      data={activityData}
+                                      className="card-spacing"
+                                      activities={activities}
+                                      isActivityCard
+                                      permission={permission}
+                                      handleShow={handleShow}
+                                      setSelectedActivityId={setActivityId}
+                                      addToProjectCheckbox={addToProjectCheckbox}
+                                      selectedProjectstoAdd={selectedProjectstoAdd}
+                                      setSelectedProjectstoAdd={setSelectedProjectstoAdd}
+                                    />
+                                  ))
+                                : allVideos?.data?.map((video) => (
                                     <>
                                       <AddVideoCard
                                         setModalShow={setModalShow}
@@ -604,8 +613,8 @@ const Index = ({ activities }) => {
                                         className="card-spacing"
                                       />
                                     </>
-                                  );
-                                })}
+                                  )
+                                )}
                             </div>
                             {allVideos?.data && !activities && (
                               <div style={{}} className="admin-panel ">
@@ -649,7 +658,8 @@ const Index = ({ activities }) => {
         </div>
       </div>
       <MyActivity playlistPreview activityPreview />
-      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={activities} />
+      <MyVerticallyCenteredModals show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p activeType="demo" activities={activities} />
+      <MyVerticallyCenteredModal ind selectedProjectstoAdd={selectedProjectstoAdd} show={modalShowClone} onHide={() => setModalShowClone(false)} className="clone-lti" clone="" />
       <GoogleModel
         playlistId={999999} //pass just for showing activity selectbox on google share popup
         activityId={selectedActivityId}

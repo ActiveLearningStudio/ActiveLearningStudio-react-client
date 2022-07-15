@@ -1,39 +1,35 @@
-/*eslint-disable*/
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import TopHeading from "utils/TopHeading/topheading";
 import TopHeadingImage from "assets/images/svg/myProject.svg";
-import "./styles.scss";
+import Swal from "sweetalert2";
+
 import Buttons from "utils/Buttons/buttons";
 import * as actionTypes from "store/actionTypes";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  faBoxTissue,
-  faList,
-  faListAlt,
-  faPlus,
-  faTh,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import HeadingThree from "utils/HeadingThree/headingthree";
-import NewActivity from "./formik/newactivity";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MyVerticallyCenteredModal from "components/models/activityOptions";
+import AddVideo from "containers/Videos/formik/addvideo";
+import DescribeVideo from "containers/Videos/formik/describevideo";
+
 import ActivityLayout from "./formik/activitylayout";
 import SingleActivity from "./formik/addSingleActivity";
 import AddActivity from "./formik/addactivity";
 import PreviewLayout from "./formik/previewlayout";
 import UploadInteractiveVideo from "./formik/uploadinteractivevideo";
-import MyVerticallyCenteredModal from "components/models/activityOptions";
-import AddVideo from "containers/Videos/formik/addvideo";
-import DescribeVideo from "containers/Videos/formik/describevideo";
 import "containers/Videos/style.scss";
-import Swal from "sweetalert2";
-import SearchInterface from "containers/Search";
-// import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
+import "./styles.scss";
+
 const MyActivity = ({ playlistPreview, activityPreview }) => {
   const [edit, setEdit] = useState(false);
-  const [addActivityPopUp, setAddActivityPopUp] = useState(false);
+
   const params = useParams();
   useEffect(() => {
     if (params.statusbool) {
@@ -41,11 +37,10 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
     }
   }, []);
   const [videoTitle, setVideoTitle] = useState("");
-  const [videodesc, setvideodesc] = useState('');
+  const [videodesc, setvideodesc] = useState("");
   const [cardShow, setCardShow] = useState(true);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const [listView, setListView] = useState(false);
+
   const [activtyMethod, setActivityMethod] = useState("create");
   const [activeType, setActiveType] = useState("");
   const [currentActivity, setCurrentActivity] = useState(null);
@@ -55,7 +50,7 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
   const changeScreenHandler = (payload, method) => {
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: payload,
+      payload,
     });
     if (method === "upload") {
       setActivityMethod("upload");
@@ -91,20 +86,13 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     }).then(async (result) => {
                       if (result.isConfirmed) {
                         changeScreenHandler("");
-                        setVideoTitle('');
-                        setvideodesc('')
+                        setVideoTitle("");
+                        setvideodesc("");
                       }
                     });
                   }}
                 />
               </div>
-
-              {/* {screenState === "newactivity" && (
-              <NewActivity
-                changeScreenHandler={changeScreenHandler}
-                screenState={screenState}
-              />
-             )} */}
 
               {screenState === "layout" && (
                 <ActivityLayout
@@ -156,7 +144,7 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
               {screenState === "addvideo" && (
                 <div className="form-new-popup-myvideo ">
                   <AddVideo
-                    showback={true}
+                    showback
                     changeScreenHandler={changeScreenHandler}
                   />
                 </div>
@@ -164,9 +152,9 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
               {screenState === "describevideo" && (
                 <div className="form-new-popup-myvideo ">
                   <DescribeVideo
-                    playlistPreview={activity ? true : false}
+                    playlistPreview={!!activity}
                     reverseType
-                    showback={true}
+                    showback
                     changeScreenHandler={changeScreenHandler}
                     setUploadImageStatus={setUploadImageStatus}
                     activityPreview={activityPreview}
@@ -196,13 +184,13 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                 </div>
                 <div className="topBtn">
                   <Buttons
-                    primary={true}
+                    primary
                     text="New Activity"
                     icon={faPlus}
                     width="163px"
                     height="35px"
                     onClick={() => changeScreenHandler("layout")}
-                    hover={true}
+                    hover
                   />
                 </div>
               </div>
