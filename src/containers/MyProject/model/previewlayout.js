@@ -24,7 +24,7 @@ const PreviewLayoutModel = (props) => {
 
   // useEffect(() => {
   //   if (type === "videoModal" && props.show) {
-  //     dispatch(loadH5pSettingsActivity("H5P.InteractiveVideo 1.22"));
+  //     dispatch(loadH5pSettingsActivity("H5P.InteractiveVideo 1.24"));
   //   }
   // }, []);
   const submitForm = useRef(null);
@@ -191,7 +191,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.InteractiveVideo 1.24"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -291,7 +291,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/mp4"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.InteractiveVideo 1.24"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
