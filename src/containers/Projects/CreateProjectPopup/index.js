@@ -25,7 +25,7 @@ let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, project, fromTeam, addtoProject, currentPlaylist, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
+  const { history, project, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
   const { name, description, vType } = values;
   const result = await dispatch(
     project?.thumbUrl
@@ -55,7 +55,7 @@ const onSubmit = async (values, dispatch, props) => {
     if (addtoProject) {
       console.log(selectedProjectstoAdd);
       selectedProjectstoAdd?.map((id) => {
-        dispatch(addActivityPlaylistSearch(id, currentPlaylist.id));
+        dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
       });
     } else {
       history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
