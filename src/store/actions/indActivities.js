@@ -63,6 +63,10 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
       payload: '',
     });
+    dispatch({
+      type: "ADD_VIDEO_URL",
+      payload: ''
+    });
   }
 };
 

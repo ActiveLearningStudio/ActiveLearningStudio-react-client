@@ -29,9 +29,13 @@ const DescribeVideo = ({
   reverseType,
   playlistPreview,
   activityPreview,
+  setVideoTitle,
+  videoTitle,
+  setvideodesc,
+  videodesc,
 }) => {
   const [modalShow, setModalShow] = useState(false);
-  const [videoTitle, setVideoTitle] = useState("");
+
   const { videoId, platform, editVideo, activecms } = useSelector(
     (state) => state.videos
   );
@@ -261,10 +265,10 @@ const DescribeVideo = ({
               innerRef={formRef}
               enableReinitialize
               initialValues={{
-                title: editVideo ? editVideo.title : "",
+                title: editVideo ? editVideo.title : videoTitle,
                 description: editVideo
                   ? editVideo.description || undefined
-                  : undefined,
+                  : videodesc,
                 author_tag_id: selecteAuthorTags || "",
                 education_level_id: selectedEducationLevel || "",
                 subject_id: selectedSubjects || "",
@@ -341,7 +345,10 @@ const DescribeVideo = ({
                         cols="4"
                         name="description"
                         placeholder="What is this video about"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange;
+                          setvideodesc(e.target.value)
+                        }}
                         onBlur={handleBlur}
                         value={values.description}
                       />
