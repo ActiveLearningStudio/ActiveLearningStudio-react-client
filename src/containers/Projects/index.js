@@ -286,13 +286,6 @@ export const ProjectsPage = (props) => {
 
     if (organization.activeOrganization && !allState.projects) {
       if (organization?.currentOrganization) {
-        toast('Loading Projects ...', {
-          className: 'project-loading',
-          closeOnClick: false,
-          closeButton: false,
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: 10000,
-        });
         loadMyProjects();
       }
     }

@@ -1,10 +1,13 @@
-/*eslint-disable*/
-import React, { useState } from 'react';
+/* eslint-disable react/require-default-props */
+/* eslint-disable max-len */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faEye, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
 import videoServices from 'services/videos.services';
@@ -28,8 +31,15 @@ const AddVideoCard = ({
   isActivityCard,
   handleShow,
   setSelectedActivityId,
+  addToProjectCheckbox,
+  setSelectedProjectstoAdd,
+  selectedProjectstoAdd,
 }) => {
-  const [changeAddActivityPopUp, setChangeAddActivityPopUp] = useState(false);
+  useEffect(() => {
+    if (setSelectedProjectstoAdd) {
+      setSelectedProjectstoAdd([]);
+    }
+  }, [addToProjectCheckbox]);
   const currikiUtility = classNames('curriki-utility-addvideo-card', className);
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
@@ -114,22 +124,36 @@ const AddVideoCard = ({
           }}
         >
           <div className="addvideo-card-dropdown">
-            <DropDownEdit
-              data={data}
-              iconColor="white"
-              activities={activities}
-              isActivityCard={isActivityCard}
-              setModalShow={setModalShow}
-              setCurrentActivity={setCurrentActivity}
-              setOpenVideo={setOpenVideo}
-              setScreenStatus={setScreenStatus}
-              permission={permission}
-              handleShow={handleShow}
-              setSelectedActivityId={setSelectedActivityId}
-            />
+            {addToProjectCheckbox ? (
+              <input
+                type="checkbox"
+                onChange={() => {
+                  if (selectedProjectstoAdd.includes(data.id)) {
+                    setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                  } else {
+                    setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                  }
+                }}
+              />
+            ) : (
+              <DropDownEdit
+                data={data}
+                iconColor="white"
+                activities={activities}
+                isActivityCard={isActivityCard}
+                setModalShow={setModalShow}
+                setCurrentActivity={setCurrentActivity}
+                setOpenVideo={setOpenVideo}
+                setScreenStatus={setScreenStatus}
+                permission={permission}
+                handleShow={handleShow}
+                setSelectedActivityId={setSelectedActivityId}
+              />
+            )}
           </div>
           <div onClick={() => openEditor()} className="addvideo-card-title">
             <h2>{data.title}</h2>
+            {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'}
           </div>
         </div>
         <div className="addvideo-card-detail">
@@ -343,7 +367,7 @@ const AddVideoCard = ({
                     setCurrentActivity(data.id);
                     setModalShow(true);
                   }}
-                ></div>
+                />
                 <div
                   onClick={async () => {
                     toast.dismiss();
@@ -411,9 +435,9 @@ const AddVideoCard = ({
 
 AddVideoCard.propTypes = {
   className: PropTypes.string,
-  backgroundImg: PropTypes.string,
+
   title: PropTypes.string,
-  listView: PropTypes.bool,
+
   selectionStatus: PropTypes.bool,
 };
 
