@@ -537,6 +537,7 @@ export const ProjectsPage = (props) => {
                             helpTitle="Learn how it works"
                             helpDetail="Create your learning content using interactive activities.
                           Organize your content by projects."
+                            primaryColor={primaryColor}
                             onClick={() => {
                               setCurrentVisibilityType(null);
                               setCreateProject(true);

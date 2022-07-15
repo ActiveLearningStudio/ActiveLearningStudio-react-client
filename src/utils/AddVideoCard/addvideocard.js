@@ -118,7 +118,7 @@ const AddVideoCard = ({
     <>
       <div className={currikiUtility}>
         <div
-          className="addvideo-card-top"
+          className={selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox ? 'addvideo-card-top apply-check-video' : 'addvideo-card-top apply-uncheck-video'}
           style={{
             backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
           }}
@@ -153,7 +153,7 @@ const AddVideoCard = ({
           </div>
           <div onClick={() => openEditor()} className="addvideo-card-title">
             <h2>{data.title}</h2>
-            {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'}
+            {/* {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'} */}
           </div>
         </div>
         <div className="addvideo-card-detail">
