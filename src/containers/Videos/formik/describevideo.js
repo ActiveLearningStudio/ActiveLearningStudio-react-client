@@ -33,6 +33,12 @@ const DescribeVideo = ({
   videoTitle,
   setvideodesc,
   videodesc,
+  setsubName,
+  subName,
+  authortagName,
+  setauthortagName,
+  eduLevel,
+  seteduLevel,
 }) => {
   const [modalShow, setModalShow] = useState(false);
 
@@ -269,9 +275,9 @@ const DescribeVideo = ({
                 description: editVideo
                   ? editVideo.description || undefined
                   : videodesc,
-                author_tag_id: selecteAuthorTags || "",
-                education_level_id: selectedEducationLevel || "",
-                subject_id: selectedSubjects || "",
+                author_tag_id: selecteAuthorTags || authortagName,
+                education_level_id: selectedEducationLevel || eduLevel,
+                subject_id: selectedSubjects || subName,
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -347,7 +353,7 @@ const DescribeVideo = ({
                         placeholder="What is this video about"
                         onChange={(e) => {
                           handleChange;
-                          setvideodesc(e.target.value)
+                          setvideodesc(e.target.value);
                         }}
                         onBlur={handleBlur}
                         value={values.description}
@@ -365,6 +371,7 @@ const DescribeVideo = ({
                           options={subjects}
                           onChange={(e) => {
                             setFieldValue("subject_id", e);
+                            setsubName(e);
                           }}
                           value={values.subject_id}
                         />
@@ -381,6 +388,7 @@ const DescribeVideo = ({
                           options={educationLevels}
                           onChange={(e) => {
                             setFieldValue("education_level_id", e);
+                            seteduLevel(e);
                           }}
                           value={values.education_level_id}
                         />
@@ -397,6 +405,7 @@ const DescribeVideo = ({
                           options={authorTags}
                           onChange={(e) => {
                             setFieldValue("author_tag_id", e);
+                            setauthortagName(e);
                           }}
                           value={values.author_tag_id}
                         />
