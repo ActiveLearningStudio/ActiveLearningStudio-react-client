@@ -45,7 +45,9 @@ export function MyVerticallyCenteredModal(props) {
       </Modal.Header>
 
       <Modal.Body>
-        <CloneModel clone={props} />
+        <div>
+          <CloneModel clone={props} />
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -245,7 +247,7 @@ function SearchInterface(props) {
         history.push(
           `/org/${
             currentOrganization?.domain
-          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
+          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
         );
       }
     }
@@ -665,7 +667,7 @@ function SearchInterface(props) {
                                                       : res.model === 'Playlist'
                                                       ? `/playlist/${res.id}/preview/lti`
                                                       : `/project/${res.id}/preview`,
-                                                    '_blank'
+                                                    '_blank',
                                                   )
                                                 }
                                               >
@@ -790,7 +792,7 @@ function SearchInterface(props) {
                                                     : res.model === 'Playlist'
                                                     ? `/playlist/${res.id}/preview/lti`
                                                     : `/project/${res.id}/preview`,
-                                                  '_blank'
+                                                  '_blank',
                                                 )
                                               }
                                             >
@@ -841,7 +843,7 @@ function SearchInterface(props) {
                                                       : res.model === 'Playlist'
                                                       ? `/playlist/${res.id}/preview/lti`
                                                       : `/project/${res.id}/preview`,
-                                                    '_blank'
+                                                    '_blank',
                                                   )
                                                 }
                                               >
@@ -1049,7 +1051,7 @@ function SearchInterface(props) {
                                                             : res.model === 'Playlist'
                                                             ? `/playlist/${res.id}/preview/lti`
                                                             : `/project/${res.id}/preview`,
-                                                          '_blank'
+                                                          '_blank',
                                                         )
                                                       }
                                                     >
@@ -1266,7 +1268,7 @@ function SearchInterface(props) {
                                                           : res.model === 'Playlist'
                                                           ? `/playlist/${res.id}/preview/lti`
                                                           : `/project/${res.id}/preview`,
-                                                        '_blank'
+                                                        '_blank',
                                                       )
                                                     }
                                                   >
@@ -1410,7 +1412,7 @@ function SearchInterface(props) {
                                                                   : res.model === 'Playlist'
                                                                   ? `/playlist/${res.id}/preview/lti`
                                                                   : `/project/${res.id}/preview`,
-                                                                '_blank'
+                                                                '_blank',
                                                               )
                                                             }
                                                           >
