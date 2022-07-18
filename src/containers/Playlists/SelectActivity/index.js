@@ -1,18 +1,19 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from 'react';
-import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
-import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
-import './style.scss';
+import Swal from 'sweetalert2';
+
 import Buttons from 'utils/Buttons/buttons';
 import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
 import { useDispatch, useSelector } from 'react-redux';
-import { allIndActivity, adminIntActivities } from 'store/actions/indActivities';
+
 import search from 'services/search.service';
 
 import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import './style.scss';
 
 const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setReloadPlaylist, reloadPlaylist }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
@@ -22,27 +23,16 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
   const [allSearchActivities, setAllSearchActivities] = useState(null);
   const dispatch = useDispatch();
 
-  const { activeOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
     (async () => {
       const result = await search.searchIndependentActivities('org_activities', {
-        organization_id: activeOrganization?.id,
+        organization_id: currentOrganization?.id,
       });
       setAllSearchActivities(result);
     })();
-  }, [activeOrganization]);
-
-  // useEffect(() => {
-  //   console.log("allActivities", allActivities);
-  //   allActivities?.data.map((item) => {
-  //     console.log("Detail", item.title);
-  //   });
-  // }, [allActivities]);
-
-  // useEffect(() => {
-  //   console.log("selectProject", selectProject[0]);
-  // }, [selectProject]);
+  }, [currentOrganization]);
 
   return (
     <>
@@ -80,7 +70,7 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
                                 placeholder="Search activity"
                                 onChange={async (e) => {
                                   const result = await search.searchIndependentActivities('org_activities', {
-                                    organization_id: activeOrganization?.id,
+                                    organization_id: currentOrganization?.id,
                                     query: e.target.value || undefined,
                                   });
                                   setAllSearchActivities(result);
@@ -110,18 +100,44 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
 
                           <div>
                             <Buttons
-                              icon={faPlus}
-                              iconColor={secondaryColor}
                               type="button"
-                              text="Add activity to project"
+                              text="Move activities"
                               primary
-                              width="220px"
+                              width="130px"
                               height="32px"
                               hover
                               disabled={selectProject.length ? false : true}
-                              onClick={() => {
-                                dispatch(addActivityPlaylistSearch(selectProject[0], playlistIdForSearchingTab));
-                                setSelectProject([]);
+                              defaultgrey={selectProject.length ? false : true}
+                              onClick={async () => {
+                                Swal.fire({
+                                  html: `Are you sure you want to move these activities?`,
+                                  showCancelButton: true,
+                                  confirmButtonColor: '#3085d6',
+                                  cancelButtonColor: '#d33',
+                                  confirmButtonText: 'Yes',
+                                  icon: 'info',
+                                }).then(async (result) => {
+                                  if (result.isConfirmed) {
+                                    for (var i = 0; i < selectProject.length; i++) {
+                                      await dispatch(addActivityPlaylistSearch(selectProject[i], playlistIdForSearchingTab));
+
+                                      if (selectProject.length === i + 1) {
+                                        Swal.fire({
+                                          title: 'Your request is being processed.',
+                                          text: 'Please refresh after a moment.',
+                                          icon: 'success',
+                                          showCancelButton: false,
+                                          confirmButtonText: 'Close',
+                                          customClass: {
+                                            confirmButton: 'confirmation-close-btn',
+                                          },
+                                        });
+                                        setReloadPlaylist(!reloadPlaylist);
+                                        setSelectSearchModule(false);
+                                      }
+                                    }
+                                  }
+                                });
                               }}
                             />
                           </div>
@@ -148,6 +164,7 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
                                     selectProject={selectProject}
                                     setSelectProject={setSelectProject}
                                     project={item}
+                                    activity
                                   />
                                 );
                               })
