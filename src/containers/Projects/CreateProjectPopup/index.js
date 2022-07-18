@@ -17,6 +17,7 @@ import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
 import { addActivityPlaylistSearch } from 'store/actions/playlist';
 import './style.scss';
+import { result } from 'lodash';
 
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
@@ -27,39 +28,81 @@ const projectShare = true;
 const onSubmit = async (values, dispatch, props) => {
   const { history, project, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
   const { name, description, vType } = values;
-  const result = await dispatch(
-    project?.thumbUrl
-      ? createProjectAction({
-          name,
-          description,
-          thumb_url: project?.thumbUrl,
-          is_public: projectShare,
-          organization_visibility_type_id: 1,
-          team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-        })
-      : createProjectAction({
-          name,
-          description,
-          is_public: projectShare,
-          organization_visibility_type_id: 1,
-          team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-          // eslint-disable-next-line max-len
-          thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-        })
-  );
-  if (handleCloseProjectModal) {
-    handleCloseProjectModal(false);
-  }
-
-  if (result && !fromTeam) {
-    if (addtoProject) {
-      console.log(selectedProjectstoAdd);
-      selectedProjectstoAdd?.map((id) => {
-        dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
-      });
-    } else {
-      history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+  var result;
+  if (addtoProject) {
+    Swal.fire({
+      title: 'Are you sure you want to move these activities?',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: 'yes',
+      customClass: {
+        confirmButton: 'confirmation-close-btn',
+      },
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        result = await dispatch(
+          project?.thumbUrl
+            ? createProjectAction({
+                name,
+                description,
+                thumb_url: project?.thumbUrl,
+                is_public: projectShare,
+                organization_visibility_type_id: 1,
+                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+              })
+            : createProjectAction({
+                name,
+                description,
+                is_public: projectShare,
+                organization_visibility_type_id: 1,
+                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+                // eslint-disable-next-line max-len
+                thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+              }),
+        );
+        if (result) {
+          selectedProjectstoAdd?.map((id) => {
+            dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
+          });
+          Swal.fire({
+            title: 'Your request is being processed.',
+            text: 'Please refresh after a moment.',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'Close',
+            customClass: {
+              confirmButton: 'confirmation-close-btn',
+            },
+          });
+          history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+        }
+      }
+    });
+  } else {
+    result = await dispatch(
+      project?.thumbUrl
+        ? createProjectAction({
+            name,
+            description,
+            thumb_url: project?.thumbUrl,
+            is_public: projectShare,
+            organization_visibility_type_id: 1,
+            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+          })
+        : createProjectAction({
+            name,
+            description,
+            is_public: projectShare,
+            organization_visibility_type_id: 1,
+            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+            // eslint-disable-next-line max-len
+            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          }),
+    );
+    if (handleCloseProjectModal) {
+      handleCloseProjectModal(false);
     }
+    history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
   }
 };
 export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
@@ -102,7 +145,7 @@ let CreateProjectPopup = (props) => {
         handleCloseProjectModal(event);
       }
     },
-    [handleCloseProjectModal]
+    [handleCloseProjectModal],
   );
 
   useEffect(() => {

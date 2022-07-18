@@ -26,12 +26,22 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case actionTypes.CREATE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        projects: [...projects, action.payload.project],
-        thumbUrl: null,
-      };
+      if (projects) {
+        return {
+          ...state,
+          isLoading: false,
+          projects: [...projects, action.payload.project],
+          thumbUrl: null,
+        };
+      } else {
+        return {
+          ...state,
+          isLoading: false,
+          projects: [action.payload.project],
+          thumbUrl: null,
+        };
+      }
+
     case actionTypes.CREATE_PROJECT_FAIL:
       return {
         ...state,

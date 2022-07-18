@@ -12,11 +12,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
 import videoServices from 'services/videos.services';
 import intActivityServices from 'services/indActivities.service';
-
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './addvideocard.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getIndex } from 'store/actions/indActivities';
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { Info } from 'assets/curriki-icons';
 
 const AddVideoCard = ({
   setModalShow,
@@ -125,16 +126,34 @@ const AddVideoCard = ({
         >
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
-              <input
-                type="checkbox"
-                onChange={() => {
-                  if (selectedProjectstoAdd.includes(data.id)) {
-                    setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
-                  } else {
-                    setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
-                  }
-                }}
-              />
+              data.shared === false ? (
+                <input
+                  type="checkbox"
+                  onChange={() => {
+                    if (selectedProjectstoAdd.includes(data.id)) {
+                      setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                    } else {
+                      setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                    }
+                  }}
+                />
+              ) : (
+                <OverlayTrigger
+                  placement="bottom"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={(props) => (
+                    <Tooltip id="button-tooltip" {...props}>
+                      To move this activity, please change to:
+                      <ul>
+                        <li>Sharing - Disabled</li>
+                        <li>Library preference - Private</li>
+                      </ul>
+                    </Tooltip>
+                  )}
+                >
+                  <Info />
+                </OverlayTrigger>
+              )
             ) : (
               <DropDownEdit
                 data={data}

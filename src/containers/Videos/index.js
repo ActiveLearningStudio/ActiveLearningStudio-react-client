@@ -415,10 +415,17 @@ const Index = ({ activities }) => {
                         </div>
                         <div className="next_btn_activity">
                           {addToProjectCheckbox && (
-                            // <button onClick={() => setModalShowClone(true)} type="button">
-                            //   Next
-                            // </button>
-                            <Buttons primary text="Next" iconColor={primaryColor} width="80px" height="32px" hover onClick={() => setModalShowClone(true)} />
+                            <Buttons
+                              disabled={!selectedProjectstoAdd.length}
+                              defaultgrey={!selectedProjectstoAdd.length}
+                              primary
+                              text="Next"
+                              iconColor={primaryColor}
+                              width="80px"
+                              height="32px"
+                              hover
+                              onClick={() => setModalShowClone(true)}
+                            />
                           )}
                         </div>
                       </div>

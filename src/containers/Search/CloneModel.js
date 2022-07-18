@@ -30,7 +30,7 @@ function LtiProjectShared(props) {
   console.log('prop', project);
   useEffect(() => {
     dispatch(
-      loadMyCloneProjectsAction()
+      loadMyCloneProjectsAction(),
       // loadMyProjectsAction(),
     );
   }, [dispatch]);
@@ -132,7 +132,7 @@ function LtiProjectShared(props) {
               <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
             </div>
             <h3 className="clone-create-project-headng">Create Project</h3>
-            <MyProjectsCreate currentPlaylist={currentPlaylist} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
+            <MyProjectsCreate project={project} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
           </div>
         )}
 
@@ -249,7 +249,7 @@ function LtiProjectShared(props) {
                                               }}
                                             >
                                               {/* <div className="flex-b">
-                                              
+
                                               </div> */}
                                               <div className="playlist-title-copy-text">
                                                 <div>
@@ -274,7 +274,37 @@ function LtiProjectShared(props) {
                                                     {data2.title}
                                                   </span>
                                                 </div>
-                                                <div className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}>
+                                                <div
+                                                  onClick={() => {
+                                                    Swal.fire({
+                                                      html: `Are you sure you want to move these activities?`,
+                                                      showCancelButton: true,
+                                                      confirmButtonColor: '#3085d6',
+                                                      cancelButtonColor: '#d33',
+                                                      confirmButtonText: 'Yes',
+                                                      icon: 'info',
+                                                    }).then((result) => {
+                                                      if (result.value) {
+                                                        if (currentPlaylist) {
+                                                          if (clone.ind) {
+                                                            if (clone.selectedProjectstoAdd) {
+                                                              clone.selectedProjectstoAdd?.map((id) => {
+                                                                dispatch(addActivityPlaylistSearch(id, data2.id));
+                                                              });
+                                                            } else {
+                                                              dispatch(addActivityPlaylistSearch(clone.clone.id, currentPlaylist.id));
+                                                            }
+                                                          } else {
+                                                            cloneActivity(data2.id, clone.clone.id);
+                                                          }
+                                                        } else {
+                                                          clonePlaylist(data2.id, clone.clone.id);
+                                                        }
+                                                      }
+                                                    });
+                                                  }}
+                                                  className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
+                                                >
                                                   <span>Copy here</span>
                                                 </div>
                                               </div>

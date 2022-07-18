@@ -33,15 +33,15 @@ export const createProjectAction = (data) => async (dispatch) => {
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    toast.info('creating project ...', {
-      position: 'top-center',
-      hideProgressBar: false,
-      icon: '',
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
+    // toast.info('creating project ...', {
+    //   position: 'top-center',
+    //   hideProgressBar: false,
+    //   icon: '',
+    //   closeOnClick: true,
+    //   pauseOnHover: false,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
     const { project } = await projectService.create(data, activeOrganization.id);
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
@@ -49,14 +49,14 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
     toast.dismiss();
     if (project) {
-      toast.success('New Project Created', {
-        position: 'top-center',
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.success('New Project Created', {
+      //   position: 'top-center',
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       return project;
     }
     // dispatch(allSidebarProjects());
