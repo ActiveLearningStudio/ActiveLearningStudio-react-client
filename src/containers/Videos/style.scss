@@ -90,14 +90,38 @@
     }
 
     .video-cards-top-search-filter {
+      height: 64px;
       display: flex;
-      // justify-content: space-between;
+      justify-content: space-between;
       align-items: center;
-      padding: 20px 10px;
+      padding: 10px  20px;
       width: 100%;
       flex-wrap: wrap;
       margin: 16px 0px 22px;
       background-color: #f7faff;
+      .searc_bar_move_activities{
+        display: flex;
+        .cutom_checkbox{
+          margin-bottom: 0px !important;
+          input{
+              display: none;
+              &:checked + span{
+                  background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+                  background-color: $curriki-main-blue;
+              }
+          }
+          span{
+              transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+              border: 1.5px solid #2E68BF;
+              border-radius: 2px;
+              background-repeat: no-repeat;
+              background-position: 2px 1px;
+              display: inline-block;
+              height: 12px;
+              width: 12px;
+          }
+      }
+      }
       .search-bar {
         position: relative;
         margin-right: 33px;
@@ -464,6 +488,28 @@
             }
           }
         }
+      }
+      .move_activities{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        input{
+          width: 12px;
+          height: 12px;
+        }
+        .move_text{
+          // font-family: $rubik !important;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          // color: $curriki-main-blue !important;
+          margin-bottom: 0px !important;
+          margin-left: 10px;
+        }
+      }
+      .next_btn_activity{
+margin-left: 36px;
       }
     }
     .video-cards-detail {

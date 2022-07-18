@@ -12,11 +12,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
 import videoServices from 'services/videos.services';
 import intActivityServices from 'services/indActivities.service';
-
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import './addvideocard.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getIndex } from 'store/actions/indActivities';
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { Info } from 'assets/curriki-icons';
 
 const AddVideoCard = ({
   setModalShow,
@@ -118,23 +119,59 @@ const AddVideoCard = ({
     <>
       <div className={currikiUtility}>
         <div
-          className="addvideo-card-top"
+          className={selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox ? 'addvideo-card-top apply-check-video' : 'addvideo-card-top apply-uncheck-video'}
           style={{
             backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
           }}
         >
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
-              <input
-                type="checkbox"
-                onChange={() => {
-                  if (selectedProjectstoAdd.includes(data.id)) {
-                    setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
-                  } else {
-                    setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
-                  }
-                }}
-              />
+              data.shared === false ? (
+                <>
+                  <label className="cutom_checkbox">
+                    {/* <input type="checked" /> */}
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        if (selectedProjectstoAdd.includes(data.id)) {
+                          setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                        } else {
+                          setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                        }
+                      }}
+                    />
+
+                    <span />
+                  </label>
+                  {/* <input
+                    type="checkbox"
+                    onChange={() => {
+                      if (selectedProjectstoAdd.includes(data.id)) {
+                        setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                      } else {
+                        setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                      }
+                    }}
+                  /> */}
+                </>
+              ) : (
+                <OverlayTrigger
+                  placement="bottom"
+                  className="curriki-tooltip"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={(props) => (
+                    <Tooltip id="button-tooltip" {...props} className="button-tooltip_style">
+                      To move this activity, please change to:
+                      <ul>
+                        <li>1. Sharing - Disabled</li>
+                        <li>2. Library preference - Private</li>
+                      </ul>
+                    </Tooltip>
+                  )}
+                >
+                  <Info />
+                </OverlayTrigger>
+              )
             ) : (
               <DropDownEdit
                 data={data}
@@ -153,7 +190,7 @@ const AddVideoCard = ({
           </div>
           <div onClick={() => openEditor()} className="addvideo-card-title">
             <h2>{data.title}</h2>
-            {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'}
+            {/* {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'} */}
           </div>
         </div>
         <div className="addvideo-card-detail">

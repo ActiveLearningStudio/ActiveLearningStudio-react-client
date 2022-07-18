@@ -7,12 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 import { loadMyCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyProjectsCreate from 'containers/Projects/CreateProjectPopup';
 import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import Buttons from 'utils/Buttons/buttons';
+import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 function LtiProjectShared(props) {
   const { clone } = props;
   const [setShowProjectCard, setShowCreateProject] = useState(false);
@@ -21,19 +24,20 @@ function LtiProjectShared(props) {
   const [currentProject, setCurrentProject] = useState(null);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const history = useHistory();
   const dispatch = useDispatch();
   let project = useSelector((state) => state.project);
-  // const forSearchingProject = useSelector((state) => state.project);
-
+  const { currentOrganization } = useSelector((state) => state.organization);
+  console.log('prop', project);
   useEffect(() => {
     dispatch(
-      loadMyCloneProjectsAction()
+      loadMyCloneProjectsAction(),
       // loadMyProjectsAction(),
     );
   }, [dispatch]);
 
   const primaryColor = getGlobalColor('--main-primary-color');
+  const secondaryColor = getGlobalColor('--main-secondary-color');
 
   const handlerSearchResult = (query) => {
     // project.clone = forSearchingProject.clone;
@@ -112,9 +116,12 @@ function LtiProjectShared(props) {
                     <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <button type="button" onClick={() => setShowCreateProject(true)}>
+                {/* <button type="button" onClick={() => setShowCreateProject(true)}>
                   create Project
-                </button>
+                </button> */}
+                <div>
+                  <Buttons primary text="Create Project" icon={faPlus} iconColor={secondaryColor} width="155px" height="32px" hover onClick={() => setShowCreateProject(true)} />
+                </div>
               </div>
             </div>
           </div>
@@ -122,9 +129,11 @@ function LtiProjectShared(props) {
 
         {setShowProjectCard && (
           <div className="information-clone">
-            <div onClick={() => setShowCreateProject(false)}>back</div>
-            <h3>Create Project</h3>
-            <MyProjectsCreate currentPlaylist={currentPlaylist} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
+            <div onClick={() => setShowCreateProject(false)} className="clone-back-option-project">
+              <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
+            </div>
+            <h3 className="clone-create-project-headng">Create Project</h3>
+            <MyProjectsCreate project={project} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
           </div>
         )}
 
@@ -154,7 +163,7 @@ function LtiProjectShared(props) {
                               }}
                             >
                               <div className="playlist-list-update">
-                                <div className="flex-bar">
+                                {/* <div className="flex-bar">
                                   <div className="text-align-left">
                                     {activeProject === counterTop + 1 ? (
                                       <FontAwesomeIcon icon="check-square" size={25} color={primaryColor} />
@@ -167,7 +176,7 @@ function LtiProjectShared(props) {
                                       />
                                     )}
                                   </div>
-                                </div>
+                                </div> */}
                                 <div className="active-resource-update">
                                   <div
                                     className="backgroundimg-clone"
@@ -223,7 +232,11 @@ function LtiProjectShared(props) {
                                   <Accordion>
                                     {data.playlists.map((data2, counterPlaylist) => (
                                       <>
-                                        <div className="activity-project-playlist">
+                                        <div
+                                          className={`activity-project-playlist ${
+                                            activePlaylist === counterPlaylist + counterTop + 1 ? 'activity-project-playlist-selected' : 'activity-project-playlist-unselected'
+                                          }`}
+                                        >
                                           <Accordion.Toggle as={Button} variant="link" eventKey={counterPlaylist + counterTop + 1}>
                                             <span
                                               onClick={() => {
@@ -236,10 +249,13 @@ function LtiProjectShared(props) {
                                                 }
                                               }}
                                             >
-                                              <div className="flex-bar">
-                                                <div className="">
-                                                  <span className="activity-project-playlist-title">
-                                                    {activePlaylist === counterPlaylist + counterTop + 1 ? (
+                                              {/* <div className="flex-b">
+
+                                              </div> */}
+                                              <div className="playlist-title-copy-text">
+                                                <div>
+                                                  <span className="activity-project-playlist-title ">
+                                                    {/* {activePlaylist === counterPlaylist + counterTop + 1 ? (
                                                       <FontAwesomeIcon
                                                         // icon="stop-circle"
                                                         icon="check-square"
@@ -255,9 +271,41 @@ function LtiProjectShared(props) {
                                                         color={primaryColor}
                                                         className="mr-2"
                                                       />
-                                                    )}
+                                                    )} */}
                                                     {data2.title}
                                                   </span>
+                                                </div>
+                                                <div
+                                                  onClick={() => {
+                                                    Swal.fire({
+                                                      html: `Are you sure you want to move these activities?`,
+                                                      showCancelButton: true,
+                                                      confirmButtonColor: '#3085d6',
+                                                      cancelButtonColor: '#d33',
+                                                      confirmButtonText: 'Yes',
+                                                      icon: 'info',
+                                                    }).then(async (result) => {
+                                                      if (result.isConfirmed) {
+                                                        if (clone.ind) {
+                                                          if (clone.selectedProjectstoAdd) {
+                                                            for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
+                                                              await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
+                                                              if (clone.selectedProjectstoAdd.length === i + 1) {
+                                                                history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
+                                                              }
+                                                            }
+                                                          } else {
+                                                            dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
+                                                          }
+                                                        } else {
+                                                          cloneActivity(data2.id, clone.clone.id);
+                                                        }
+                                                      }
+                                                    });
+                                                  }}
+                                                  className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
+                                                >
+                                                  <span>Copy here</span>
                                                 </div>
                                               </div>
                                             </span>
@@ -337,7 +385,7 @@ function LtiProjectShared(props) {
         )}
       </div>
 
-      <div className="footer-model">
+      {/* <div className="footer-model">
         <div className="footer-model-project-name">
           <p>
             Project: <span>{currentProject?.name}</span>
@@ -393,7 +441,7 @@ function LtiProjectShared(props) {
         >
           Done
         </button>
-      </div>
+      </div> */}
     </>
   );
 }

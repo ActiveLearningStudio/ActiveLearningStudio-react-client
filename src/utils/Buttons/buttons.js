@@ -33,7 +33,7 @@ const Buttons = ({
     defaultgrey && 'curriki-theme-defaultgrey-button',
     defaultwhite && 'curriki-theme-defaultwhite-button',
     hover && 'curriki-theme-hover',
-    className
+    className,
   );
 
   const btnCurrikiStyle = {
