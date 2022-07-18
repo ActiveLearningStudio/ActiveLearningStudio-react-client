@@ -29,9 +29,19 @@ const DescribeVideo = ({
   reverseType,
   playlistPreview,
   activityPreview,
+  setVideoTitle,
+  videoTitle,
+  setvideodesc,
+  videodesc,
+  setsubName,
+  subName,
+  authortagName,
+  setauthortagName,
+  eduLevel,
+  seteduLevel,
 }) => {
   const [modalShow, setModalShow] = useState(false);
-  const [videoTitle, setVideoTitle] = useState("");
+
   const { videoId, platform, editVideo, activecms } = useSelector(
     (state) => state.videos
   );
@@ -43,6 +53,7 @@ const DescribeVideo = ({
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [isSubmitActivty, setisSubmitActivty] = useState(false);
   const parser = new DOMParser();
 
   const formatApiData = (data) => {
@@ -123,7 +134,19 @@ const DescribeVideo = ({
       setSelectedEducationLevel(output);
     }
   });
-
+  useEffect(() => {
+    if (isSubmitActivty) {
+      setVideoTitle("");
+      setvideodesc("");
+      seteduLevel("");
+      setauthortagName("");
+      setsubName("");
+      dispatch({
+        type: "ADD_VIDEO_URL",
+        payload: "",
+      });
+    }
+  }, [isSubmitActivty]);
   const primaryColor = getGlobalColor("--main-primary-color");
   const formRef = useRef();
   return (
@@ -143,6 +166,7 @@ const DescribeVideo = ({
         accountId={activecms?.account_id}
         settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
         reverseType={reverseType}
+        setisSubmitActivty={setisSubmitActivty}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
@@ -261,13 +285,13 @@ const DescribeVideo = ({
               innerRef={formRef}
               enableReinitialize
               initialValues={{
-                title: editVideo ? editVideo.title : "",
+                title: editVideo ? editVideo.title : videoTitle,
                 description: editVideo
                   ? editVideo.description || undefined
-                  : undefined,
-                author_tag_id: selecteAuthorTags || "",
-                education_level_id: selectedEducationLevel || "",
-                subject_id: selectedSubjects || "",
+                  : videodesc,
+                author_tag_id: selecteAuthorTags || authortagName,
+                education_level_id: selectedEducationLevel || eduLevel,
+                subject_id: selectedSubjects || subName,
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -341,7 +365,10 @@ const DescribeVideo = ({
                         cols="4"
                         name="description"
                         placeholder="What is this video about"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange;
+                          setvideodesc(e.target.value);
+                        }}
                         onBlur={handleBlur}
                         value={values.description}
                       />
@@ -358,6 +385,7 @@ const DescribeVideo = ({
                           options={subjects}
                           onChange={(e) => {
                             setFieldValue("subject_id", e);
+                            setsubName(e);
                           }}
                           value={values.subject_id}
                         />
@@ -374,6 +402,7 @@ const DescribeVideo = ({
                           options={educationLevels}
                           onChange={(e) => {
                             setFieldValue("education_level_id", e);
+                            seteduLevel(e);
                           }}
                           value={values.education_level_id}
                         />
@@ -390,6 +419,7 @@ const DescribeVideo = ({
                           options={authorTags}
                           onChange={(e) => {
                             setFieldValue("author_tag_id", e);
+                            setauthortagName(e);
                           }}
                           value={values.author_tag_id}
                         />

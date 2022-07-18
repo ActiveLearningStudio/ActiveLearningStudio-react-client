@@ -197,16 +197,13 @@ const Index = ({ activities }) => {
                               height="35px"
                               onClick={() => {
                                 dispatch({ type: actionTypes.CLEAR_STATE });
-
                                 dispatch({
                                   type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
                                   payload: "layout",
                                   playlist: {},
                                   project: {},
                                 });
-
                                 dispatch(clearSearch());
-
                                 dispatch({
                                   type: "SET_ACTIVE_VIDEO_SCREEN",
                                   payload: "",
@@ -378,7 +375,6 @@ const Index = ({ activities }) => {
                           <span>
                             <Dropdown>
                               <Dropdown.Toggle id="dropdown-basic">10</Dropdown.Toggle>
-
                               <Dropdown.Menu>
                                 <Dropdown.Item>10</Dropdown.Item>
                                 <Dropdown.Item>25</Dropdown.Item>
