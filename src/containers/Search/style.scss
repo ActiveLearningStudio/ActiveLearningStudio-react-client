@@ -810,6 +810,7 @@ font-family: $rubik;
 }
 .activity-project-playlist-unselected{
   background: #ffffff !important;
+  border: 1px solid #DDDDDD;
 }
 
 .activity-project-playlist {
@@ -867,6 +868,9 @@ font-family: $rubik;
     margin-top: 22px;
     padding-bottom: 22px;
     border-bottom: 1px solid #dddddd;
+  }
+  .btn:focus{
+    box-shadow: none !important;
   }
 }
 
