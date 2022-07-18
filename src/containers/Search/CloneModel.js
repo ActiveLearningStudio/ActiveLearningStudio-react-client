@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Accordion, Card, Button } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { faSquare } from '@fortawesome/free-regular-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 import { loadMyCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
@@ -23,10 +24,10 @@ function LtiProjectShared(props) {
   const [currentProject, setCurrentProject] = useState(null);
   const [currentPlaylist, setCurrentPlaylist] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const history = useHistory();
   const dispatch = useDispatch();
   let project = useSelector((state) => state.project);
-  // const forSearchingProject = useSelector((state) => state.project);
+  const { currentOrganization } = useSelector((state) => state.organization);
   console.log('prop', project);
   useEffect(() => {
     dispatch(
@@ -283,22 +284,21 @@ function LtiProjectShared(props) {
                                                       cancelButtonColor: '#d33',
                                                       confirmButtonText: 'Yes',
                                                       icon: 'info',
-                                                    }).then((result) => {
-                                                      if (result.value) {
-                                                        if (currentPlaylist) {
-                                                          if (clone.ind) {
-                                                            if (clone.selectedProjectstoAdd) {
-                                                              clone.selectedProjectstoAdd?.map((id) => {
-                                                                dispatch(addActivityPlaylistSearch(id, data2.id));
-                                                              });
-                                                            } else {
-                                                              dispatch(addActivityPlaylistSearch(clone.clone.id, currentPlaylist.id));
+                                                    }).then(async (result) => {
+                                                      if (result.isConfirmed) {
+                                                        if (clone.ind) {
+                                                          if (clone.selectedProjectstoAdd) {
+                                                            for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
+                                                              await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
+                                                              if (clone.selectedProjectstoAdd.length === i + 1) {
+                                                                history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
+                                                              }
                                                             }
                                                           } else {
-                                                            cloneActivity(data2.id, clone.clone.id);
+                                                            dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
                                                           }
                                                         } else {
-                                                          clonePlaylist(data2.id, clone.clone.id);
+                                                          cloneActivity(data2.id, clone.clone.id);
                                                         }
                                                       }
                                                     });

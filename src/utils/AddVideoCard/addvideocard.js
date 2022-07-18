@@ -140,9 +140,22 @@ const AddVideoCard = ({
               ) : (
                 <OverlayTrigger
                   placement="bottom"
+                  className="curriki-tooltip"
                   delay={{ show: 250, hide: 400 }}
                   overlay={(props) => (
-                    <Tooltip id="button-tooltip" {...props}>
+                    <Tooltip
+                      id="button-tooltip"
+                      {...props}
+                      style={{
+                        position: 'absolute',
+                        backgroundColor: 'rgba(255, 100, 100, 0.85)',
+                        padding: '2px 10px',
+                        color: 'white',
+                        textAlign: 'left',
+                        borderRadius: 3,
+                        ...props.style,
+                      }}
+                    >
                       To move this activity, please change to:
                       <ul>
                         <li>Sharing - Disabled</li>
