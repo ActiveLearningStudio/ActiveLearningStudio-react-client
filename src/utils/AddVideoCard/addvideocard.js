@@ -127,39 +127,44 @@ const AddVideoCard = ({
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
               data.shared === false ? (
-                <input
-                  type="checkbox"
-                  onChange={() => {
-                    if (selectedProjectstoAdd.includes(data.id)) {
-                      setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
-                    } else {
-                      setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
-                    }
-                  }}
-                />
+                <>
+                  <label className="cutom_checkbox">
+                    {/* <input type="checked" /> */}
+                    <input
+                      type="checkbox"
+                      onChange={() => {
+                        if (selectedProjectstoAdd.includes(data.id)) {
+                          setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                        } else {
+                          setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                        }
+                      }}
+                    />
+
+                    <span />
+                  </label>
+                  {/* <input
+                    type="checkbox"
+                    onChange={() => {
+                      if (selectedProjectstoAdd.includes(data.id)) {
+                        setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                      } else {
+                        setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                      }
+                    }}
+                  /> */}
+                </>
               ) : (
                 <OverlayTrigger
                   placement="bottom"
                   className="curriki-tooltip"
                   delay={{ show: 250, hide: 400 }}
                   overlay={(props) => (
-                    <Tooltip
-                      id="button-tooltip"
-                      {...props}
-                      style={{
-                        position: 'absolute',
-                        backgroundColor: 'rgba(255, 100, 100, 0.85)',
-                        padding: '2px 10px',
-                        color: 'white',
-                        textAlign: 'left',
-                        borderRadius: 3,
-                        ...props.style,
-                      }}
-                    >
+                    <Tooltip id="button-tooltip" {...props} className="button-tooltip_style">
                       To move this activity, please change to:
                       <ul>
-                        <li>Sharing - Disabled</li>
-                        <li>Library preference - Private</li>
+                        <li>1. Sharing - Disabled</li>
+                        <li>2. Library preference - Private</li>
                       </ul>
                     </Tooltip>
                   )}

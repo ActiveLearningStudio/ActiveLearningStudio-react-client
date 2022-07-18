@@ -404,7 +404,14 @@ const Index = ({ activities }) => {
 
                       <div className="searc_bar_move_activities">
                         <div className="move_activities">
-                          <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+                          <label className="cutom_checkbox">
+                            {/* <input type="checked" /> */}
+                            <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+
+                            <span />
+                          </label>
+
+                          {/* <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} /> */}
                           <p className="move_text" id="move_text_id_branding">
                             Move activities to projects
                           </p>
