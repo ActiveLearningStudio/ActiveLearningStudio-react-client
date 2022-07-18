@@ -53,6 +53,7 @@ const DescribeVideo = ({
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [isSubmitActivty, setisSubmitActivty] = useState(false);
   const parser = new DOMParser();
 
   const formatApiData = (data) => {
@@ -133,7 +134,19 @@ const DescribeVideo = ({
       setSelectedEducationLevel(output);
     }
   });
-
+  useEffect(() => {
+    if (isSubmitActivty) {
+      setVideoTitle("");
+      setvideodesc("");
+      seteduLevel("");
+      setauthortagName("");
+      setsubName("");
+      dispatch({
+        type: "ADD_VIDEO_URL",
+        payload: "",
+      });
+    }
+  }, [isSubmitActivty]);
   const primaryColor = getGlobalColor("--main-primary-color");
   const formRef = useRef();
   return (
@@ -153,6 +166,7 @@ const DescribeVideo = ({
         accountId={activecms?.account_id}
         settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
         reverseType={reverseType}
+        setisSubmitActivty={setisSubmitActivty}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
