@@ -347,7 +347,9 @@ const H5PEditor = (props) => {
                 className="saveclosemodel"
                 onClick={() => {
                   submitResource();
-                  setisSubmitActivty(true);
+                  if (!editVideo) {
+                    setisSubmitActivty(true);
+                  }
                 }}
               >
                 Save & Close

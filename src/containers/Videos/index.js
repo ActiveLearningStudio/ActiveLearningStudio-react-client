@@ -1,53 +1,61 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
-import TopHeading from 'utils/TopHeading/topheading';
+/* eslint-disable */
+import React, { useState, useEffect } from "react";
+import TopHeading from "utils/TopHeading/topheading";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { clearSearch } from 'store/actions/search';
-import Pagination from 'react-js-pagination';
-import Swal from 'sweetalert2';
-import './style.scss';
-import '../Admin/style.scss';
-import HeadingText from 'utils/HeadingText/headingtext';
+import { useDispatch, useSelector } from "react-redux";
+import { clearSearch } from "store/actions/search";
+import Pagination from "react-js-pagination";
+import Swal from "sweetalert2";
+import "./style.scss";
+import "../Admin/style.scss";
+import HeadingText from "utils/HeadingText/headingtext";
 
-import MyActivity from 'containers/MyActivity';
-import VideoImage from 'assets/images/svg/Interactivevideos.svg';
-import * as actionTypes from 'store/actionTypes';
-import { Alert, Dropdown } from 'react-bootstrap';
+import MyActivity from "containers/MyActivity";
+import VideoImage from "assets/images/svg/Interactivevideos.svg";
+import * as actionTypes from "store/actionTypes";
+import { Alert, Dropdown } from "react-bootstrap";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { getAllVideos, getSearchVideoCard } from 'store/actions/videos';
-import { allIndActivity } from 'store/actions/indActivities';
-import AddVideoCard from 'utils/AddVideoCard/addvideocard';
-import MyVerticallyCenteredModals from 'components/models/videoH5pmodal';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import GoogleModel from 'components/models/GoogleLoginModal';
-import SearchForm from 'components/Header/searchForm';
+import { getAllVideos, getSearchVideoCard } from "store/actions/videos";
+import { allIndActivity } from "store/actions/indActivities";
+import AddVideoCard from "utils/AddVideoCard/addvideocard";
+import MyVerticallyCenteredModals from "components/models/videoH5pmodal";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import GoogleModel from "components/models/GoogleLoginModal";
+import SearchForm from "components/Header/searchForm";
 
-import StartingPage from 'utils/StartingPage/startingpage';
-import { MyVerticallyCenteredModal } from 'containers/Search';
-import Buttons from 'utils/Buttons/buttons';
-import DescribeVideo from './formik/describevideo';
-import AddVideo from './formik/addvideo';
+import StartingPage from "utils/StartingPage/startingpage";
+import { MyVerticallyCenteredModal } from "containers/Search";
+import Buttons from "utils/Buttons/buttons";
+import DescribeVideo from "./formik/describevideo";
+import AddVideo from "./formik/addvideo";
 
 // eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
+  const [videoTitle, setVideoTitle] = useState("");
+  const [videodesc, setvideodesc] = useState("");
+  const [subName, setsubName] = useState("");
+  const [authortagName, setauthortagName] = useState("");
+  const [eduLevel, seteduLevel] = useState("");
   const [openMyVideo, setOpenVideo] = useState(false);
   const [selectedProjectstoAdd, setSelectedProjectstoAdd] = useState([]);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
-  const [screenStatus, setScreenStatus] = useState('');
+  const [screenStatus, setScreenStatus] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [modalShowClone, setModalShowClone] = useState(false);
   const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
 
   const videos = useSelector((state) => state.videos);
-  const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { activeOrganization, permission } = useSelector(
+    (state) => state.organization
+  );
   const { allActivities, isLoading } = useSelector((state) => state.activities);
-  const [activescreenType, setActiveScreenPage] = useState('');
+  const [activescreenType, setActiveScreenPage] = useState("");
   const { allVideos } = videos;
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [ActivePage, setActivePage] = useState(1);
   const [currentActivity, setCurrentActivity] = useState(null);
   const dispatch = useDispatch();
@@ -62,9 +70,9 @@ const Index = ({ activities }) => {
       dispatch(allIndActivity(activeOrganization.id));
     }
     if (activities) {
-      setActiveScreenPage('allActivities');
+      setActiveScreenPage("allActivities");
     } else {
-      setActiveScreenPage('allVideos');
+      setActiveScreenPage("allVideos");
     }
   }, [activeOrganization, activities]);
 
@@ -75,10 +83,18 @@ const Index = ({ activities }) => {
       setActiveScreenPage(allVideos);
     }
   }, [allActivities, allVideos]);
+  useEffect(() => {
+    if (!screenStatus) {
+      setVideoTitle("");
+      setvideodesc("");
+      setsubName("");
+      seteduLevel("");
+      setauthortagName("");
+    }
+  }, [screenStatus]);
+  console.log("allActivities-allActivities", allActivities);
 
-  console.log('allActivities-allActivities', allActivities);
-
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
 
   const handleShow = () => {
     setShow(true); //! state.show
@@ -94,39 +110,70 @@ const Index = ({ activities }) => {
   return (
     <>
       {openMyVideo && (
-        <div className={uploadImageStatus ? 'form-new-popup-myvideo z-index' : 'form-new-popup-myvideo'}>
+        <div
+          className={
+            uploadImageStatus
+              ? "form-new-popup-myvideo z-index"
+              : "form-new-popup-myvideo"
+          }
+        >
           <FontAwesomeIcon
             icon="times"
             className="cross-all-pop"
             onClick={() => {
               Swal.fire({
-                text: 'All changes will be lost if you don’t save them',
-                icon: 'warning',
+                text: "All changes will be lost if you don’t save them",
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#084892',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Close it!',
+                confirmButtonColor: "#084892",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Close it!",
                 allowOutsideClick: false,
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   setOpenVideo(!openMyVideo);
-                  setScreenStatus('');
+                  setScreenStatus("");
+                  dispatch({
+                    type: "ADD_VIDEO_URL",
+                    payload: "",
+                  });
                 }
               });
             }}
           />
           <div className="inner-form-content">
-            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
-            {screenStatus === 'DescribeVideo' && (
-              <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />
+            {screenStatus === "AddVideo" && (
+              <AddVideo setScreenStatus={setScreenStatus} hideallothers />
+            )}
+            {screenStatus === "DescribeVideo" && (
+              <DescribeVideo
+                activityPreview={activities}
+                setOpenVideo={setOpenVideo}
+                setScreenStatus={setScreenStatus}
+                setUploadImageStatus={setUploadImageStatus}
+                setVideoTitle={setVideoTitle}
+                videoTitle={videoTitle}
+                setvideodesc={setvideodesc}
+                videodesc={videodesc}
+                setsubName={setsubName}
+                subName={subName}
+                authortagName={authortagName}
+                setauthortagName={setauthortagName}
+                eduLevel={eduLevel}
+                seteduLevel={seteduLevel}
+              />
             )}
           </div>
         </div>
       )}
       <div className="myvideomain">
         <div className="content-wrapper">
-          <div style={{ paddingBottom: ' 66px' }} className="inner-content">
-            {permission?.[activities ? 'Independent Activity' : 'Video']?.includes(activities ? 'independent-activity:view-author' : 'video:view') ? (
+          <div style={{ paddingBottom: " 66px" }} className="inner-content">
+            {permission?.[
+              activities ? "Independent Activity" : "Video"
+            ]?.includes(
+              activities ? "independent-activity:view-author" : "video:view"
+            ) ? (
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
@@ -137,7 +184,13 @@ const Index = ({ activities }) => {
                         svgImage={
                           activities ? (
                             <>
-                              <svg width="36" height="32" viewBox="0 0 36 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <svg
+                                width="36"
+                                height="32"
+                                viewBox="0 0 36 32"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
                                 <path
                                   d="M2 6.9375V28.6875C2 29.6885 2.81149 30.5 3.8125 30.5H32.8125C33.8136 30.5 34.625 29.6885 34.625 28.6875V9.44715C34.625 8.44614 33.8136 7.63465 32.8125 7.63465H19.9856"
                                   stroke={primaryColor}
@@ -153,10 +206,36 @@ const Index = ({ activities }) => {
                               </svg>
                             </>
                           ) : (
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="1" y="1.5" width="20" height="12" rx="2" stroke={primaryColor} strokeWidth="2" />
-                              <path d="M1 18.5H21" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" />
-                              <circle cx="15" cy="18.5" r="2" fill="white" stroke={primaryColor} strokeWidth="2" />
+                            <svg
+                              width="22"
+                              height="22"
+                              viewBox="0 0 22 22"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <rect
+                                x="1"
+                                y="1.5"
+                                width="20"
+                                height="12"
+                                rx="2"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                              />
+                              <path
+                                d="M1 18.5H21"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                              />
+                              <circle
+                                cx="15"
+                                cy="18.5"
+                                r="2"
+                                fill="white"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                              />
                               <path
                                 d="M9 9.66667V5.43426C9 5.03491 9.44507 4.79672 9.77735 5.01823L13.3044 7.36957C13.619 7.5793 13.5959 8.04885 13.2623 8.22677L9.73529 10.1078C9.40224 10.2855 9 10.0441 9 9.66667Z"
                                 stroke={primaryColor}
@@ -166,9 +245,13 @@ const Index = ({ activities }) => {
                             </svg>
                           )
                         }
-                        heading={activities ? 'Activities' : 'My interactive videos'}
+                        heading={
+                          activities ? "Activities" : "My interactive videos"
+                        }
                         color="#084892"
-                        className={activeOrganization && 'video-top-heading-custom'}
+                        className={
+                          activeOrganization && "video-top-heading-custom"
+                        }
                       />
                     </div>
                     <div className="search-bar-btn">
@@ -239,8 +322,8 @@ const Index = ({ activities }) => {
                       <HeadingText
                         text={
                           activities
-                            ? 'Create new activities, manage them and organize them in playlists and projects.'
-                            : 'Create and organize your activities into projects to create complete courses.'
+                            ? "Create new activities, manage them and organize them in playlists and projects."
+                            : "Create and organize your activities into projects to create complete courses."
                         }
                         color="#515151"
                       />
@@ -258,7 +341,12 @@ const Index = ({ activities }) => {
                           setSearchQuery(e.target.value);
                           if (activeOrganization) {
                             if (e.target.value.trim()) {
-                              dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                              dispatch(
+                                getSearchVideoCard(
+                                  activeOrganization.id,
+                                  e.target.value
+                                )
+                              );
                             } else {
                               dispatch(getAllVideos(activeOrganization.id));
                             }
@@ -273,10 +361,15 @@ const Index = ({ activities }) => {
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: "pointer" }}
                         onClick={() => {
                           if (activeOrganization) {
-                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                            dispatch(
+                              getSearchVideoCard(
+                                activeOrganization.id,
+                                searchQuery
+                              )
+                            );
                           }
                         }}
                       >
@@ -287,7 +380,13 @@ const Index = ({ activities }) => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
-                        <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path
+                          d="M21 20.9984L16.65 16.6484"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
                     </div>
                     <div className="activity-counter">
@@ -295,7 +394,9 @@ const Index = ({ activities }) => {
                         My Interactive per page
                         <span>
                           <Dropdown>
-                            <Dropdown.Toggle id="dropdown-basic">10</Dropdown.Toggle>
+                            <Dropdown.Toggle id="dropdown-basic">
+                              10
+                            </Dropdown.Toggle>
 
                             <Dropdown.Menu>
                               <Dropdown.Item>10</Dropdown.Item>
@@ -336,7 +437,12 @@ const Index = ({ activities }) => {
                             setSearchQuery(e.target.value);
                             if (activeOrganization) {
                               if (e.target.value.trim()) {
-                                dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                                dispatch(
+                                  getSearchVideoCard(
+                                    activeOrganization.id,
+                                    e.target.value
+                                  )
+                                );
                               } else {
                                 dispatch(getAllVideos(activeOrganization.id));
                               }
@@ -351,10 +457,15 @@ const Index = ({ activities }) => {
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          style={{ cursor: 'pointer' }}
+                          style={{ cursor: "pointer" }}
                           onClick={() => {
                             if (activeOrganization) {
-                              dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                              dispatch(
+                                getSearchVideoCard(
+                                  activeOrganization.id,
+                                  searchQuery
+                                )
+                              );
                             }
                           }}
                         >
@@ -365,7 +476,13 @@ const Index = ({ activities }) => {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
-                          <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          <path
+                            d="M21 20.9984L16.65 16.6484"
+                            stroke={primaryColor}
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </div>
 
@@ -406,7 +523,12 @@ const Index = ({ activities }) => {
                         <div className="move_activities">
                           <label className="cutom_checkbox">
                             {/* <input type="checked" /> */}
-                            <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+                            <input
+                              type="checkbox"
+                              onChange={() =>
+                                setAddToProjectCheckbox(!addToProjectCheckbox)
+                              }
+                            />
 
                             <span />
                           </label>
@@ -440,7 +562,7 @@ const Index = ({ activities }) => {
                     <>
                       {activities ? (
                         <>
-                          {' '}
+                          {" "}
                           <StartingPage
                             createBtnTitle="Create new activity"
                             createTitle="Start creating engaging activities."
@@ -458,7 +580,7 @@ const Index = ({ activities }) => {
 
                               dispatch({
                                 type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                payload: 'layout',
+                                payload: "layout",
                                 playlist: {},
                                 project: {},
                               });
@@ -466,8 +588,8 @@ const Index = ({ activities }) => {
                               dispatch(clearSearch());
 
                               dispatch({
-                                type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                payload: '',
+                                type: "SET_ACTIVE_VIDEO_SCREEN",
+                                payload: "",
                               });
                             }}
                           />
@@ -486,10 +608,10 @@ const Index = ({ activities }) => {
                             primaryColor={primaryColor}
                             onClick={() => {
                               setOpenVideo(!openMyVideo);
-                              setScreenStatus('AddVideo');
+                              setScreenStatus("AddVideo");
                               dispatch({
-                                type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                payload: '',
+                                type: "SET_ACTIVE_VIDEO_SCREEN",
+                                payload: "",
                               });
                             }}
                           />
@@ -509,7 +631,9 @@ const Index = ({ activities }) => {
                               {/* Adding New Design Add  */}
 
                               {activities ? (
-                                permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                                permission?.["Independent Activity"]?.includes(
+                                  "independent-activity:edit-author"
+                                ) && (
                                   <div
                                     className="Add-video-interaction-section"
                                     onClick={() => {
@@ -518,8 +642,9 @@ const Index = ({ activities }) => {
                                       });
 
                                       dispatch({
-                                        type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                        payload: 'layout',
+                                        type:
+                                          actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                        payload: "layout",
                                         playlist: {},
                                         project: {},
                                       });
@@ -527,14 +652,32 @@ const Index = ({ activities }) => {
                                       dispatch(clearSearch());
 
                                       dispatch({
-                                        type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                        payload: '',
+                                        type: "SET_ACTIVE_VIDEO_SCREEN",
+                                        payload: "",
                                       });
                                     }}
                                   >
-                                    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                                      <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                                    <svg
+                                      width="52"
+                                      height="52"
+                                      viewBox="0 0 52 52"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005"
+                                        stroke={primaryColor}
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M26 50C26 49.9656 26 17.9857 26 2"
+                                        stroke={primaryColor}
+                                        strokeWidth="4"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
                                     </svg>
                                     <span>Create new activity</span>
                                   </div>
@@ -544,16 +687,34 @@ const Index = ({ activities }) => {
                                   className="Add-video-interaction-section"
                                   onClick={() => {
                                     setOpenVideo(!openMyVideo);
-                                    setScreenStatus('AddVideo');
+                                    setScreenStatus("AddVideo");
                                     dispatch({
-                                      type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                      payload: '',
+                                      type: "SET_ACTIVE_VIDEO_SCREEN",
+                                      payload: "",
                                     });
                                   }}
                                 >
-                                  <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                                  <svg
+                                    width="52"
+                                    height="52"
+                                    viewBox="0 0 52 52"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005"
+                                      stroke={primaryColor}
+                                      strokeWidth="4"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                    <path
+                                      d="M26 50C26 49.9656 26 17.9857 26 2"
+                                      stroke={primaryColor}
+                                      strokeWidth="4"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
                                   </svg>
                                   <span>Create a video</span>
                                 </div>
@@ -574,9 +735,15 @@ const Index = ({ activities }) => {
                                       permission={permission}
                                       handleShow={handleShow}
                                       setSelectedActivityId={setActivityId}
-                                      addToProjectCheckbox={addToProjectCheckbox}
-                                      selectedProjectstoAdd={selectedProjectstoAdd}
-                                      setSelectedProjectstoAdd={setSelectedProjectstoAdd}
+                                      addToProjectCheckbox={
+                                        addToProjectCheckbox
+                                      }
+                                      selectedProjectstoAdd={
+                                        selectedProjectstoAdd
+                                      }
+                                      setSelectedProjectstoAdd={
+                                        setSelectedProjectstoAdd
+                                      }
                                     />
                                   ))
                                 : allVideos?.data?.map((video) => (
@@ -602,7 +769,9 @@ const Index = ({ activities }) => {
                                   totalItemsCount={allVideos?.meta?.total}
                                   onChange={(e) => {
                                     setActivePage(e);
-                                    dispatch(getAllVideos(activeOrganization.id, e));
+                                    dispatch(
+                                      getAllVideos(activeOrganization.id, e)
+                                    );
                                   }}
                                 />
                               </div>
@@ -612,11 +781,15 @@ const Index = ({ activities }) => {
                                 <Pagination
                                   activePage={ActivePage}
                                   pageRangeDisplayed={5}
-                                  itemsCountPerPage={allActivities?.meta?.per_page}
+                                  itemsCountPerPage={
+                                    allActivities?.meta?.per_page
+                                  }
                                   totalItemsCount={allActivities?.meta?.total}
                                   onChange={(e) => {
                                     setActivePage(e);
-                                    dispatch(allIndActivity(activeOrganization.id, e));
+                                    dispatch(
+                                      allIndActivity(activeOrganization.id, e)
+                                    );
                                   }}
                                 />
                               </div>
@@ -629,14 +802,30 @@ const Index = ({ activities }) => {
                 </div>
               </>
             ) : (
-              <Alert variant="danger">You are not authorized to view this page.</Alert>
+              <Alert variant="danger">
+                You are not authorized to view this page.
+              </Alert>
             )}
           </div>
         </div>
       </div>
       <MyActivity playlistPreview activityPreview />
-      <MyVerticallyCenteredModals show={modalShow} onHide={() => setModalShow(false)} activity={currentActivity} showvideoH5p activeType="demo" activities={activities} />
-      <MyVerticallyCenteredModal ind selectedProjectstoAdd={selectedProjectstoAdd} show={modalShowClone} onHide={() => setModalShowClone(false)} className="clone-lti" clone="" />
+      <MyVerticallyCenteredModals
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        activity={currentActivity}
+        showvideoH5p
+        activeType="demo"
+        activities={activities}
+      />
+      <MyVerticallyCenteredModal
+        ind
+        selectedProjectstoAdd={selectedProjectstoAdd}
+        show={modalShowClone}
+        onHide={() => setModalShowClone(false)}
+        className="clone-lti"
+        clone=""
+      />
       <GoogleModel
         playlistId={999999} // pass just for showing activity selectbox on google share popup
         activityId={selectedActivityId}
