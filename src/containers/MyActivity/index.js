@@ -92,6 +92,12 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                         setVideoTitle("");
                         setvideodesc("");
                         setsubName("");
+                        seteduLevel("");
+                        setauthortagName("");
+                        dispatch({
+                          type: "ADD_VIDEO_URL",
+                          payload: "",
+                        });
                       }
                     });
                   }}

@@ -92,6 +92,8 @@ const Index = ({ activities }) => {
       setVideoTitle("");
       setvideodesc("");
       setsubName("");
+      seteduLevel("");
+      setauthortagName("");
     }
   }, [screenStatus]);
 
@@ -137,6 +139,10 @@ const Index = ({ activities }) => {
                 if (result.isConfirmed) {
                   setOpenVideo(!openMyVideo);
                   setScreenStatus("");
+                  dispatch({
+                    type: "ADD_VIDEO_URL",
+                    payload: "",
+                  });
                 }
               });
             }}
