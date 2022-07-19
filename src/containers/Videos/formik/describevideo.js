@@ -367,6 +367,7 @@ const DescribeVideo = ({
                         placeholder="What is this video about"
                         onChange={(e) => {
                           handleChange;
+                          setFieldValue("description", e.target.value);
                           setvideodesc(e.target.value);
                         }}
                         onBlur={handleBlur}

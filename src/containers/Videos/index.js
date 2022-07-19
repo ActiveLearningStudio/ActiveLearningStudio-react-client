@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable max-len */
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import TopHeading from 'utils/TopHeading/topheading';
 
@@ -34,6 +35,11 @@ import AddVideo from './formik/addvideo';
 
 // eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
+  const [videoTitle, setVideoTitle] = useState('');
+  const [videodesc, setvideodesc] = useState('');
+  const [subName, setsubName] = useState('');
+  const [authortagName, setauthortagName] = useState('');
+  const [eduLevel, seteduLevel] = useState('');
   const [openMyVideo, setOpenVideo] = useState(false);
   const [selectedProjectstoAdd, setSelectedProjectstoAdd] = useState([]);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
@@ -75,7 +81,15 @@ const Index = ({ activities }) => {
       setActiveScreenPage(allVideos);
     }
   }, [allActivities, allVideos]);
-
+  useEffect(() => {
+    if (!screenStatus) {
+      setVideoTitle('');
+      setvideodesc('');
+      setsubName('');
+      seteduLevel('');
+      setauthortagName('');
+    }
+  }, [screenStatus]);
   console.log('allActivities-allActivities', allActivities);
 
   const primaryColor = getGlobalColor('--main-primary-color');
@@ -111,6 +125,10 @@ const Index = ({ activities }) => {
                 if (result.isConfirmed) {
                   setOpenVideo(!openMyVideo);
                   setScreenStatus('');
+                  dispatch({
+                    type: 'ADD_VIDEO_URL',
+                    payload: '',
+                  });
                 }
               });
             }}
@@ -118,7 +136,22 @@ const Index = ({ activities }) => {
           <div className="inner-form-content">
             {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
             {screenStatus === 'DescribeVideo' && (
-              <DescribeVideo activityPreview={activities} setOpenVideo={setOpenVideo} setScreenStatus={setScreenStatus} setUploadImageStatus={setUploadImageStatus} />
+              <DescribeVideo
+                activityPreview={activities}
+                setOpenVideo={setOpenVideo}
+                setScreenStatus={setScreenStatus}
+                setUploadImageStatus={setUploadImageStatus}
+                setVideoTitle={setVideoTitle}
+                videoTitle={videoTitle}
+                setvideodesc={setvideodesc}
+                videodesc={videodesc}
+                setsubName={setsubName}
+                subName={subName}
+                authortagName={authortagName}
+                setauthortagName={setauthortagName}
+                eduLevel={eduLevel}
+                seteduLevel={seteduLevel}
+              />
             )}
           </div>
         </div>
