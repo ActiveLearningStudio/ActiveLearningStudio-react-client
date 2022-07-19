@@ -336,9 +336,9 @@ const Index = ({ activities }) => {
                             setSearchQuery(e.target.value);
                             if (activeOrganization) {
                               if (e.target.value.trim()) {
-                                dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
+                                dispatch(allIndActivity(activeOrganization.id, ActivePage, 10, e.target.value));
                               } else {
-                                dispatch(getAllVideos(activeOrganization.id));
+                                dispatch(allIndActivity(activeOrganization.id));
                               }
                             }
                           }}
@@ -619,7 +619,7 @@ const Index = ({ activities }) => {
                                   totalItemsCount={allActivities?.meta?.total}
                                   onChange={(e) => {
                                     setActivePage(e);
-                                    dispatch(allIndActivity(activeOrganization.id, e));
+                                    dispatch(allIndActivity(activeOrganization.id, e, 10, searchQuery));
                                   }}
                                 />
                               </div>
