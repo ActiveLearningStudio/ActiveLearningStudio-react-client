@@ -126,7 +126,7 @@ const AddVideoCard = ({
         >
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
-              data.shared === false ? (
+              data.shared === false && data.organization_visibility_type_id !== 1 ? (
                 <>
                   <label className="cutom_checkbox">
                     {/* <input type="checked" /> */}
