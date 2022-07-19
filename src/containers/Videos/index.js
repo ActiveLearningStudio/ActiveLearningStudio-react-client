@@ -538,8 +538,8 @@ const Index = ({ activities }) => {
                             Move activities to projects
                           </p>
                         </div>
-                        <div className="next_btn_activity">
-                          {addToProjectCheckbox && (
+                        {addToProjectCheckbox && (
+                          <div className="next_btn_activity">
                             <Buttons
                               disabled={!selectedProjectstoAdd.length}
                               defaultgrey={!selectedProjectstoAdd.length}
@@ -551,8 +551,11 @@ const Index = ({ activities }) => {
                               hover
                               onClick={() => setModalShowClone(true)}
                             />
-                          )}
-                        </div>
+                          </div>
+                        )}
+                        {/* <div className="next_btn_activity">
+
+                        </div> */}
                       </div>
                     </div>
                   </>
