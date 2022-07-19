@@ -1447,10 +1447,10 @@ textarea,
 }
 
 .curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio {
-  border-color: var(--main-primary-color) !important;
+  /* border-color: var(--main-primary-color) !important; */
 }
 .curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio .checkmark {
-  background-color: var(--main-primary-color) !important;
+  /* background-color: var(--main-primary-color) !important; */
 }
 .teams-page .btn-top-page {
   background-color: var(--main-primary-color) !important;
