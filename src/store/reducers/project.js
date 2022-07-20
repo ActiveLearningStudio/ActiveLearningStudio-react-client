@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
-  projects: [],
+  projects: null,
   selectedProject: {},
   thumbUrl: null,
   projectSelect: {},
@@ -25,12 +25,21 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case actionTypes.CREATE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        projects: [...projects, action.payload.project],
-        thumbUrl: null,
-      };
+      if (projects) {
+        return {
+          ...state,
+          isLoading: false,
+          projects: [...projects, action.payload.project],
+          thumbUrl: null,
+        };
+      }
+        return {
+          ...state,
+          isLoading: false,
+          projects: [action.payload.project],
+          thumbUrl: null,
+        };
+
     case actionTypes.CREATE_PROJECT_FAIL:
       return {
         ...state,

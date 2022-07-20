@@ -1,15 +1,13 @@
 /* eslint-disable */
 import axios from "axios";
 import Swal from "sweetalert2";
-// import Echo from 'laravel-echo';
+
 import { toast } from "react-toastify";
 
 import loaderImg from "assets/images/loader.svg";
 import SharePreviewPopup from "components/SharePreviewPopup";
 import projectService from "services/project.service";
-// import groupService from 'services/group.service';
-// import teamService from 'services/team.service';
-// import socketConnection from 'services/http.service';
+
 import * as actionTypes from "../actionTypes";
 import store from "../index";
 
@@ -27,21 +25,7 @@ export const setCurrentVisibilityType = (data) => async (dispatch) => {
     payload: data,
   });
 };
-// export const allSidebarProjects = () => async (dispatch) => {
-//   const centralizedState = store.getState();
-//   const { organization: { activeOrganization } } = centralizedState;
-//   const { projects } = await projectService.getAll(activeOrganization.id);
-//   // const { teams } = await teamService.getAll(activeOrganization.id);
-//   const { groups } = await groupService.getAll(activeOrganization.id);
-//   dispatch({
-//     type: actionTypes.SIDEBAR_ALL_PROJECT,
-//     data: {
-//       projects,
-//       // teams,
-//       groups,
-//     },
-//   });
-// };
+
 export const createProjectAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
@@ -49,30 +33,33 @@ export const createProjectAction = (data) => async (dispatch) => {
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    toast.info("creating project ...", {
-      position: "top-center",
-      hideProgressBar: false,
-      icon: "",
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
-    const { project } = await projectService.create(data, activeOrganization.id);
+    // toast.info('creating project ...', {
+    //   position: 'top-center',
+    //   hideProgressBar: false,
+    //   icon: '',
+    //   closeOnClick: true,
+    //   pauseOnHover: false,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
+    const { project } = await projectService.create(
+      data,
+      activeOrganization.id
+    );
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
     });
     toast.dismiss();
     if (project) {
-      toast.success("New Project Created", {
-        position: "top-center",
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.success('New Project Created', {
+      //   position: 'top-center',
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       return project;
     }
     // dispatch(allSidebarProjects());
@@ -109,7 +96,11 @@ export const loadProjectAction = (projectId, signal) => async (dispatch) => {
       type: actionTypes.LOAD_PROJECT_REQUEST,
     });
 
-    const { project } = await projectService.get(projectId, activeOrganization?.id, signal);
+    const { project } = await projectService.get(
+      projectId,
+      activeOrganization?.id,
+      signal
+    );
     Swal.close();
     dispatch({
       type: actionTypes.LOAD_PROJECT_SUCCESS,
@@ -143,7 +134,11 @@ export const updateProjectAction = (projectId, data) => async (dispatch) => {
       autoClose: 5000,
     });
     dispatch({ type: actionTypes.UPDATE_PROJECT_REQUEST });
-    const { project } = await projectService.update(projectId, data, activeOrganization.id);
+    const { project } = await projectService.update(
+      projectId,
+      data,
+      activeOrganization.id
+    );
     toast.dismiss();
     toast.success("Project Edited", {
       position: "top-center",
@@ -202,7 +197,9 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
       dispatch({
         type: actionTypes.PROJECT_THUMBNAIL_PROGRESS,
         payload: {
-          progress: `Uploaded progress: ${Math.round((progressEvent.loaded / progressEvent.total) * 100)}%`,
+          progress: `Uploaded progress: ${Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          )}%`,
         },
       });
     },
@@ -221,7 +218,11 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { thumbUrl } = await projectService.upload(formData, config, activeOrganization.id);
+  const { thumbUrl } = await projectService.upload(
+    formData,
+    config,
+    activeOrganization.id
+  );
   toast.dismiss();
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
@@ -268,8 +269,10 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
   });
 };
 
-/* eslint-disable */
-export const loadMyReorderProjectsAction = (projectId, projectDivider) => async (dispatch) => {
+export const loadMyReorderProjectsAction = (
+  projectId,
+  projectDivider
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -291,7 +294,11 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
       return data;
     }
   });
-  await projectService.getReorderAll(projectId, activeOrganization?.id, choosenProject[0]?.order);
+  await projectService.getReorderAll(
+    projectId,
+    activeOrganization?.id,
+    choosenProject[0]?.order
+  );
   dispatch(loadMyProjectsAction());
 };
 /* eslint-enable */
@@ -313,20 +320,14 @@ export const sampleProjects = () => async (dispatch) => {
   const {
     organization: { currentOrganization },
   } = centralizedState;
-  const { projects } = await projectService.getSampleProject(currentOrganization?.id);
+  const { projects } = await projectService.getSampleProject(
+    currentOrganization?.id,
+  );
   dispatch({
     type: actionTypes.SIDEBAR_SAMPLE_PROJECT,
     data: { projects },
   });
 };
-
-// export const allUpdateProject = () => async (dispatch) => {
-//   const { projects } = await projectService.getUpdatedProjects();
-//   dispatch({
-//     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-//     data: { projects },
-//   });
-// };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -338,7 +339,10 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { project } = await projectService.get(projectId, activeOrganization?.id);
+    const { project } = await projectService.get(
+      projectId,
+      activeOrganization?.id,
+    );
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS_SELECTED,
@@ -357,12 +361,19 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
+export const toggleProjectShareAction = (
+  projectId,
+  ProjectName,
+  adminPanel = false,
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { project } = await projectService.share(projectId, activeOrganization?.id);
+  const { project } = await projectService.share(
+    projectId,
+    activeOrganization?.id,
+  );
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -374,12 +385,19 @@ export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = fa
   return SharePreviewPopup(url, ProjectName);
 };
 
-export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
+export const toggleProjectShareRemovedAction = (
+  projectId,
+  projectName,
+  adminPanel = false,
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
+  const { project } = await projectService.removeShared(
+    activeOrganization?.id,
+    projectId,
+  );
 
   dispatch({
     type: actionTypes.SHARE_PROJECT,
@@ -388,7 +406,8 @@ export const toggleProjectShareRemovedAction = (projectId, projectName, adminPan
   if (adminPanel) return project;
   Swal.fire({
     title: `You stopped sharing <strong>"${projectName}"</strong> !`,
-    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+    html:
+      'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
   });
 };
 
@@ -419,7 +438,10 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
   const {
     organization: { activeOrganization, currentOrganization },
   } = centralizedState;
-  const project = await projectService.addToFav(projectId, activeOrganization.id);
+  const project = await projectService.addToFav(
+    projectId,
+    activeOrganization.id,
+  );
 
   if (project.message) {
     Swal.fire({
@@ -437,7 +459,9 @@ export const addProjectFav = (projectId) => async (/* dispatch */) => {
   }
 };
 
-export const loadMyProjectsPreviewSharedAction = (projectId) => async (dispatch) => {
+export const loadMyProjectsPreviewSharedAction = (projectId) => async (
+  dispatch,
+) => {
   try {
     // dispatch({
     //   type: actionTypes.PAGE_LOADING,
@@ -507,7 +531,14 @@ export const loadLmsAction = () => async (dispatch) => {
   });
 };
 
-export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, projectName) => {
+export const ShareLMS = (
+  playlistId,
+  LmsTokenId,
+  lmsName,
+  lmsUrl,
+  playlistName,
+  projectName,
+) => {
   const { token } = JSON.parse(localStorage.getItem('auth'));
 
   Swal.fire({
@@ -562,7 +593,13 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, 
   });
 };
 
-export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lmsUrl) => async (dispatch, getState) => {
+export const getProjectCourseFromLMS = (
+  lms,
+  settingId,
+  projectId,
+  playlist,
+  lmsUrl,
+) => async (dispatch, getState) => {
   const response = await toast.promise(
     projectService.fetchLmsDetails(lms, projectId, settingId),
     {
@@ -603,16 +640,27 @@ export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lms
           allowOutsideClick: false,
         });
         const globalStoreCloneUpdated = getState();
+
         // eslint-disable-next-line no-inner-declarations
         async function asyncFunc() {
           for (let x = 0; x < playlist.length; x += 1) {
-            // eslint-disable-next-line no-await-in-loop
-            const counter = !!globalStoreCloneUpdated.project.lmsCourse && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter.length > 0
-                ? globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter[x].counter
+            // eslint-disable-next-line operator-linebreak
+            const counter =
+              !!globalStoreCloneUpdated.project.lmsCourse
+              && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter
+                .length > 0
+                ? globalStoreCloneUpdated.project.lmsCourse
+                    .playlistsCopyCounter[x].counter
                 : 0;
 
             // eslint-disable-next-line no-await-in-loop
-            await projectService.lmsPublish(lms, projectId, settingId, counter, playlist[x].id);
+            await projectService.lmsPublish(
+              lms,
+              projectId,
+              settingId,
+              counter,
+              playlist[x].id,
+            );
 
             if (x + 1 === playlist.length) {
               Swal.fire({
@@ -648,7 +696,13 @@ export const setLmsCourse = (course, allstate) => ({
   allstate,
 });
 
-export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsUrl, projectId) => async (dispatch) => {
+export const getProjectCourseFromLMSPlaylist = (
+  playlistId,
+  settingId,
+  lms,
+  lmsUrl,
+  projectId,
+) => async (dispatch) => {
   Swal.fire({
     icon: loaderImg,
     title: 'Fetching Information....',
@@ -657,7 +711,11 @@ export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsU
     allowOutsideClick: false,
   });
 
-  const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
+  const response = await projectService.fetchLmsDetails(
+    lms,
+    projectId,
+    settingId,
+  );
   if (response.project) {
     const globalStoreClone = store.getState();
     dispatch(setLmsCourse(response.project, globalStoreClone));
@@ -680,7 +738,10 @@ export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsU
         });
 
         const globalStore = store.getState();
-        const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlistsCopyCounter ? globalStore.project.lmsCourse.playlistsCopyCounter : [];
+        const playlistCounter = !!globalStore.project.lmsCourse
+          && globalStore.project.lmsCourse.playlistsCopyCounter
+            ? globalStore.project.lmsCourse.playlistsCopyCounter
+            : [];
 
         let counterId = 0;
         playlistCounter.forEach((p) => {
@@ -689,7 +750,13 @@ export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsU
           }
         });
 
-        await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
+        await projectService.lmsPublish(
+          lms,
+          projectId,
+          settingId,
+          counterId,
+          playlistId,
+        );
 
         Swal.fire({
           icon: 'success',
@@ -703,7 +770,9 @@ export const getProjectCourseFromLMSPlaylist = (playlistId, settingId, lms, lmsU
   }
 };
 
-export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (dispatch) => {
+export const loadMyProjectsLtiAction = (lmsUrl, ltiClientId) => async (
+  dispatch,
+) => {
   try {
     const data = {
       lms_url: lmsUrl,
@@ -762,7 +831,10 @@ export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { project } = await projectService.searchPreviewProject(activeOrganization?.id, projectId);
+  const { project } = await projectService.searchPreviewProject(
+    activeOrganization?.id,
+    projectId,
+  );
   dispatch({
     type: actionTypes.SEARCH_PREVIEW_PROJECT,
     payload: project,
@@ -775,7 +847,11 @@ export const exportProjectsToNoovo = (projectId, teamId) => async () => {
     organization: { activeOrganization },
   } = centralizedState;
   try {
-    const result = await projectService.exportProjectsToNoovo(activeOrganization?.id, projectId, teamId);
+    const result = await projectService.exportProjectsToNoovo(
+      activeOrganization?.id,
+      projectId,
+      teamId,
+    );
     return result.message;
   } catch (err) {
     return err.message;

@@ -45,6 +45,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     };
 
     const result = await indResourceService.create(activeOrganization.id, activity);
+    // const resultShared = await indResourceService.sharedIndependentActivity(insertedH5pResource.id);
+    // window.top.postMessage(resultShared, 'http://127.0.0.1:5500');
     toast.dismiss();
     toast.success('Activity Created', {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -57,6 +59,10 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     hide();
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: '',
+    });
+    dispatch({
+      type: 'ADD_VIDEO_URL',
       payload: '',
     });
   }

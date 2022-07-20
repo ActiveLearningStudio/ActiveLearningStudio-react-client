@@ -1,4 +1,7 @@
 /* eslint-disable */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-unused-vars */
+/* eslint-disable object-curly-newline */
 import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,13 +12,11 @@ import Pagination from 'react-js-pagination';
 import QueryString from 'query-string';
 import { simpleSearchAction, cloneProject, setSearchTypeAction, searchIndependentActivitiesAction } from 'store/actions/search';
 import { loadResourceTypesAction } from 'store/actions/resource';
-import { addProjectFav, loadLmsAction, getProjectCourseFromLMS } from 'store/actions/project';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { addProjectFav, loadLmsAction } from 'store/actions/project';
+
 import GoogleModel from 'components/models/GoogleLoginModal';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import ShareLink from 'components/ResourceCard/ShareLink';
-import { lmsPlaylist, addActivityPlaylistSearch } from 'store/actions/playlist';
-import { loadSafariMontagePublishToolAction, closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
+import { addActivityPlaylistSearch } from 'store/actions/playlist';
 import teamicon from 'assets/images/sidebar/users-team.svg';
 import Footer from 'components/Footer';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -23,16 +24,17 @@ import SearchLibrary from 'components/Search/SearchLibrary';
 import RefineSearch from 'components/Search/RefineSearch';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import Buttons from 'utils/Buttons/buttons';
-import CloneModel from './CloneModel';
-import './style.scss';
+
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import intActivityServices from 'services/indActivities.service';
 import MyVerticallyCenteredModalForActivity from 'components/models/videoH5pmodal';
+import CloneModel from './CloneModel';
+import './style.scss';
+
 let paginationStarter = true;
 
-function MyVerticallyCenteredModal(props) {
-  const { clone } = props;
+export function MyVerticallyCenteredModal(props) {
   return (
     <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
       <Modal.Header closeButton>
@@ -43,7 +45,9 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Header>
 
       <Modal.Body>
-        <CloneModel clone={props} />
+        <div>
+          <CloneModel clone={props} />
+        </div>
       </Modal.Body>
     </Modal>
   );
@@ -71,7 +75,7 @@ function SearchInterface(props) {
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector((state) => state.resource.types);
   const { currentOrganization, permission } = useSelector((state) => state.organization);
-  const safariMontagePublishTool = useSelector((state) => state.genericLMS.safariMontagePublishTool);
+
   const allLms = useSelector((state) => state.share);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -101,16 +105,7 @@ function SearchInterface(props) {
   const [authorTags, setAuthorTags] = useState([]);
   const [educationLevels, setEducationLevels] = useState([]);
   const [indClone, setIndClone] = useState(false);
-  const handleShow = () => {
-    setShow(true); //! state.show
-  };
-  const setProjectId = (projectId) => {
-    setSelectedProjectId(projectId);
-  };
 
-  const setProjectPlaylistId = (playlistId) => {
-    setSelectedProjectPlaylistId(playlistId);
-  };
   const projectVisibilityLMS = allLms?.shareVendors?.map((data) => {
     if (data.project_visibility === true) {
       return true;
@@ -124,12 +119,7 @@ function SearchInterface(props) {
     }
     return false;
   });
-  const safariMontageActivity = allLms?.shareVendors?.map((data) => {
-    if (data.lms_name === 'safarimontage') {
-      return true;
-    }
-    return false;
-  });
+
   useMemo(() => {
     dispatch(loadLmsAction());
   }, []);
@@ -257,7 +247,7 @@ function SearchInterface(props) {
         history.push(
           `/org/${
             currentOrganization?.domain
-          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`
+          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
         );
       }
     }
@@ -677,7 +667,7 @@ function SearchInterface(props) {
                                                       : res.model === 'Playlist'
                                                       ? `/playlist/${res.id}/preview/lti`
                                                       : `/project/${res.id}/preview`,
-                                                    '_blank'
+                                                    '_blank',
                                                   )
                                                 }
                                               >
@@ -802,7 +792,7 @@ function SearchInterface(props) {
                                                     : res.model === 'Playlist'
                                                     ? `/playlist/${res.id}/preview/lti`
                                                     : `/project/${res.id}/preview`,
-                                                  '_blank'
+                                                  '_blank',
                                                 )
                                               }
                                             >
@@ -853,7 +843,7 @@ function SearchInterface(props) {
                                                       : res.model === 'Playlist'
                                                       ? `/playlist/${res.id}/preview/lti`
                                                       : `/project/${res.id}/preview`,
-                                                    '_blank'
+                                                    '_blank',
                                                   )
                                                 }
                                               >
@@ -1061,7 +1051,7 @@ function SearchInterface(props) {
                                                             : res.model === 'Playlist'
                                                             ? `/playlist/${res.id}/preview/lti`
                                                             : `/project/${res.id}/preview`,
-                                                          '_blank'
+                                                          '_blank',
                                                         )
                                                       }
                                                     >
@@ -1278,7 +1268,7 @@ function SearchInterface(props) {
                                                           : res.model === 'Playlist'
                                                           ? `/playlist/${res.id}/preview/lti`
                                                           : `/project/${res.id}/preview`,
-                                                        '_blank'
+                                                        '_blank',
                                                       )
                                                     }
                                                   >
@@ -1422,7 +1412,7 @@ function SearchInterface(props) {
                                                                   : res.model === 'Playlist'
                                                                   ? `/playlist/${res.id}/preview/lti`
                                                                   : `/project/${res.id}/preview`,
-                                                                '_blank'
+                                                                '_blank',
                                                               )
                                                             }
                                                           >
@@ -1970,8 +1960,8 @@ function SearchInterface(props) {
         show={modalShowActivity}
         onHide={() => setModalShowActivity(false)}
         activity={currentActivity}
-        showvideoH5p={true}
-        activeType={'demo'}
+        showvideoH5p
+        activeType="demo"
         // activities={activities}
       />
 

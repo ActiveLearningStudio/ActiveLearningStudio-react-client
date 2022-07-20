@@ -4051,7 +4051,12 @@ body.collapsed {
   height: 32px;
   padding: 0 !important;
 }
-
+.swal2-cancel,
+.swal2-confirm,
+.swal2-deny {
+  height: 32px;
+  padding: 0 !important;
+}
 .video_activity .interactivevideoreferce {
   margin: 0 auto;
   min-height: calc(100vh - 200px);

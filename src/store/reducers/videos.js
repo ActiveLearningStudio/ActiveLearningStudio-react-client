@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         videoId: action.payload,
-        platform: action.platform,
+        platform: action.platformName,
       };
     case actionTypes.ADD_NEW_VIDEO:
       return {
