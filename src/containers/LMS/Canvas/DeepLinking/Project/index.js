@@ -1,16 +1,19 @@
-/* eslint-disable */
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert, Image, Card, ListGroup, Dropdown } from 'react-bootstrap';
+import {
+ Alert, Card, ListGroup, Dropdown,
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { showSearchProjectAction, showSearchPlaylistAction, setPreviewActivityAction } from 'store/actions/canvas';
 import './style.scss';
 
 const Project = (props) => {
-  const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
+  const {
+ match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity,
+} = props;
 
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
@@ -52,7 +55,7 @@ const Project = (props) => {
                 style={{
                   backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
-              ></div>
+              />
 
               <div className="row project-details-row">
                 <div className="col project-detail">
@@ -121,7 +124,7 @@ const Project = (props) => {
                                           ? `url(${activity.thumb_url})`
                                           : `url(${global.config.resourceUrl}${activity.thumb_url})`,
                                       }}
-                                    ></div>
+                                    />
                                     <div className=" title">
                                       <p>{activity.title}</p>
                                     </div>

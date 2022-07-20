@@ -1,4 +1,4 @@
-/*eslint-disable*/
+
 import React, { useState } from 'react';
 import Buttons from 'utils/Buttons/buttons';
 import TopHeading from 'utils/TopHeading/topheading';

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useCallback, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,13 +7,15 @@ import { FadeDiv } from 'utils';
 import './style.scss';
 
 function AssignProject(props) {
-  const { isSaving, projects, handleSubmit, selectedProjects, setSelectedProjects, search, setSearch } = props;
+  const {
+ isSaving, projects, handleSubmit, selectedProjects, setSelectedProjects, search, setSearch,
+} = props;
 
   const onChange = useCallback(
     (e) => {
       setSearch(e.target.value);
     },
-    [setSearch]
+    [setSearch],
   );
   const [filteredProjects, setFilteredProjects] = useState([]);
   const selectProject = useCallback(
@@ -28,7 +29,7 @@ function AssignProject(props) {
         setSelectedProjects(newProjects);
       }
     },
-    [selectedProjects]
+    [selectedProjects],
   );
 
   const onFinish = useCallback(() => {

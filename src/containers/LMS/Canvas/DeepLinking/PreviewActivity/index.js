@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -10,7 +9,9 @@ import AddImg from 'assets/images/add-btn.svg';
 import './style.scss';
 
 const PreviewActivity = (props) => {
-  const { activity, closePreview, h5pSettings, getH5pSettings, match } = props;
+  const {
+ activity, closePreview, h5pSettings, getH5pSettings, match,
+} = props;
 
   // Init
   useEffect(() => {
@@ -34,7 +35,7 @@ const PreviewActivity = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      })
+      }),
     );
 
     const newScripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
