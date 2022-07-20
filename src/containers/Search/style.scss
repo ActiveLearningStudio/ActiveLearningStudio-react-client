@@ -479,7 +479,8 @@
 
   .modal-body {
     padding: 0;
-    background: #ebeef3;
+    // background: #ebeef3;
+    background-color: #FFFFFF;
   }
 
   .top-box-project {
@@ -491,8 +492,10 @@
     width: 100%;
   }
   .backgroundimg-clone {
-    width: 160px;
-    height: 110px;
+    // width: 160px;
+    // height: 110px;
+    width: 161px;
+    height: 107px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -538,11 +541,30 @@
   background: #fff;
   // After Change
   flex-direction: column;
+  .btn{
+    text-decoration: none !important;
+  }
+  .btn-link{
+    &:hover{
+      text-decoration: none !important;
+    }
+  }
+  .btn-link.focus{
+    &:hover{
+      text-decoration: none !important;
+    }
+  }
 
-  .information-clone {
+  .information-clone-model-project{
+    padding: 30px 62px !important;
+  }
+  // .information-clone//change name
+  .information-clone-model {
     // width: 40%;
     width: 100%;
-    padding: 25px;
+    // padding: 25px;
+    padding-left: 4px;
+    padding-right: 4px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -583,9 +605,16 @@ font-family: $rubik;
       color: $curriki-main-blue !important;
     }
 
-    .clone-searching-section {
+    .clone-searching-section-margin{
       margin-top: 18px;
       margin-bottom: 18px;
+    }
+    .clone-searching-section-margin-ind{
+      margin-bottom: 24px;
+    }
+    .clone-searching-section {
+      // margin-top: 18px;
+      // margin-bottom: 18px;
       background: #f7faff;
       border-radius: 8px;
       padding: 16px 24px;
@@ -796,16 +825,26 @@ font-family: $rubik;
         cursor: pointer;
         color: $curriki-main-blue;
         // height: 28px;
-        // width: 146px;
+        width: 132px;
         background: #e5eeff;
         border-radius: 4px;
-        padding: 8px;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        span{
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          margin-right: 12px;
+        }
       }
     }
   }
 }
 .activity-project-playlist-selected{
-
+  border: 1px solid transparent;
   background: #F7FAFF !important;
 }
 .activity-project-playlist-unselected{
@@ -817,10 +856,16 @@ font-family: $rubik;
   background: #ffffff;
   box-shadow: 0px 1px 6px 1px rgba(8, 72, 146, 0.16);
   border-radius: 8px;
-  margin-top: 8px;
+  // margin-top: 8px;
+  margin-bottom: 12px;
+  height: 60px;
+  padding: 6px 6px;
+  // border: 1px solid red;
+  
   .playlist-title-copy-text{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .copy-here-unselected{
       background: #F7FAFF !important;
       span{
@@ -836,7 +881,7 @@ font-family: $rubik;
     .copy-here{
       background: #F7FAFF;
       border-radius: 4px;
-      width: 82px;
+      width: 84px;
       height: 28px;
       padding: 4px 8px;
       span{
@@ -859,15 +904,32 @@ font-family: $rubik;
     text-decoration: none;
   }
 }
+.list-add-project-activity-accordion{
+  padding: 0px 8px 8px 8px;
+}
 .list-add-project-activity {
+  padding: 0px 4px;
   max-height: 520px;
   min-height: 300px;
   overflow-y: auto;
+  box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
+  border-radius: 4px;
+  .activity-project-playlist-section{
+    margin: 0px 4px 0px 8px;
+    border-bottom: 1px solid #DDDDDD;
+    .card-body{
+      padding-top: 0px !important;
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      padding-bottom: 0px !important;
+
+    }
+  }
   .playlist-list-update {
     display: flex;
     margin-top: 22px;
-    padding-bottom: 22px;
-    border-bottom: 1px solid #dddddd;
+    padding-bottom: 12px;//22
+    // border-bottom: 1px solid #dddddd;
   }
   .btn:focus{
     box-shadow: none !important;

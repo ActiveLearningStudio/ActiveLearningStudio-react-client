@@ -53,7 +53,7 @@ function LtiProjectShared(props) {
     <>
       <div className="lti-all-project">
         {!setShowProjectCard && (
-          <div className="information-clone">
+          <div className="information-clone-model">
             {!clone.selectedProjectstoAdd && (
               <>
                 <p>
@@ -84,7 +84,7 @@ function LtiProjectShared(props) {
                 </div>
               </>
             )}
-            <div className="clone-searching-section">
+            <div className={`clone-searching-section ${clone.ind ? 'clone-searching-section-margin-ind' : 'clone-searching-section-margin'}`}>
               <div className="search-and-filters">
                 <div className="search-bar">
                   <input
@@ -127,8 +127,9 @@ function LtiProjectShared(props) {
           </div>
         )}
 
+        {/* className information-clone*/}
         {setShowProjectCard && (
-          <div className="information-clone">
+          <div className=" information-clone-model information-clone-model-project ">
             <div onClick={() => setShowCreateProject(false)} className="clone-back-option-project">
               <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
             </div>
@@ -143,7 +144,7 @@ function LtiProjectShared(props) {
             {clone.clone.model === 'Activity' || clone.ind ? (
               <>
                 {' '}
-                <Accordion>
+                <Accordion className="list-add-project-activity-accordion">
                   <div className="list-add-project-activity">
                     {!!project.clone &&
                       project.clone.map((data, counterTop) => (
@@ -197,23 +198,24 @@ function LtiProjectShared(props) {
                                       {(clone.clone.model === 'Activity' || clone.ind) && (
                                         <>
                                           <div className="model-name-activity-playlist ">
-                                            View playlists
+                                            {/* View playlists */}
+                                            <span>View playlists</span>
                                             {(clone.clone.model === 'Activity' || clone.ind) &&
                                               (activeProject === counterTop + 1 ? (
                                                 <FontAwesomeIcon
-                                                  icon="chevron-up"
+                                                  icon="chevron-right"
                                                   color={primaryColor}
-                                                  style={{
-                                                    marginLeft: '12px',
-                                                  }}
+                                                  // style={{
+                                                  //   marginLeft: '12px',
+                                                  // }}
                                                 />
                                               ) : (
                                                 <FontAwesomeIcon
                                                   icon="chevron-down"
                                                   color={primaryColor}
-                                                  style={{
-                                                    marginLeft: '12px',
-                                                  }}
+                                                  // style={{
+                                                  //   marginLeft: '12px',
+                                                  // }}
                                                 />
                                               ))}
                                           </div>
@@ -225,37 +227,38 @@ function LtiProjectShared(props) {
                               </div>
                             </span>
                           </Accordion.Toggle>
-                          <Accordion.Collapse eventKey={counterTop + 1}>
-                            <Card.Body>
-                              {(clone.clone.model === 'Activity' || clone.ind) &&
-                                (!!data.playlists && data.playlists.length > 0 ? (
-                                  <Accordion>
-                                    {data.playlists.map((data2, counterPlaylist) => (
-                                      <>
-                                        <div
-                                          className={`activity-project-playlist ${
-                                            activePlaylist === counterPlaylist + counterTop + 1 ? 'activity-project-playlist-selected' : 'activity-project-playlist-unselected'
-                                          }`}
-                                        >
-                                          <Accordion.Toggle as={Button} variant="link" eventKey={counterPlaylist + counterTop + 1}>
-                                            <span
-                                              onClick={() => {
-                                                if (activePlaylist === counterPlaylist + counterTop + 1) {
-                                                  setActivePlaylist(null);
-                                                  setCurrentPlaylist(null);
-                                                } else {
-                                                  setActivePlaylist(counterPlaylist + counterTop + 1);
-                                                  setCurrentPlaylist(data2);
-                                                }
-                                              }}
-                                            >
-                                              {/* <div className="flex-b">
+                          <div className="activity-project-playlist-section">
+                            <Accordion.Collapse eventKey={counterTop + 1}>
+                              <Card.Body>
+                                {(clone.clone.model === 'Activity' || clone.ind) &&
+                                  (!!data.playlists && data.playlists.length > 0 ? (
+                                    <Accordion>
+                                      {data.playlists.map((data2, counterPlaylist) => (
+                                        <>
+                                          <div
+                                            className={`activity-project-playlist ${
+                                              activePlaylist === counterPlaylist + counterTop + 1 ? 'activity-project-playlist-selected' : 'activity-project-playlist-unselected'
+                                            }`}
+                                          >
+                                            <Accordion.Toggle as={Button} variant="link" eventKey={counterPlaylist + counterTop + 1}>
+                                              <span
+                                                onClick={() => {
+                                                  if (activePlaylist === counterPlaylist + counterTop + 1) {
+                                                    setActivePlaylist(null);
+                                                    setCurrentPlaylist(null);
+                                                  } else {
+                                                    setActivePlaylist(counterPlaylist + counterTop + 1);
+                                                    setCurrentPlaylist(data2);
+                                                  }
+                                                }}
+                                              >
+                                                {/* <div className="flex-b">
 
                                               </div> */}
-                                              <div className="playlist-title-copy-text">
-                                                <div>
-                                                  <span className="activity-project-playlist-title ">
-                                                    {/* {activePlaylist === counterPlaylist + counterTop + 1 ? (
+                                                <div className="playlist-title-copy-text">
+                                                  <div>
+                                                    <span className="activity-project-playlist-title ">
+                                                      {/* {activePlaylist === counterPlaylist + counterTop + 1 ? (
                                                       <FontAwesomeIcon
                                                         // icon="stop-circle"
                                                         icon="check-square"
@@ -272,53 +275,54 @@ function LtiProjectShared(props) {
                                                         className="mr-2"
                                                       />
                                                     )} */}
-                                                    {data2.title}
-                                                  </span>
-                                                </div>
-                                                <div
-                                                  onClick={() => {
-                                                    Swal.fire({
-                                                      html: `Are you sure you want to move these activities?`,
-                                                      showCancelButton: true,
-                                                      confirmButtonColor: '#3085d6',
-                                                      cancelButtonColor: '#d33',
-                                                      confirmButtonText: 'Yes',
-                                                      icon: 'info',
-                                                    }).then(async (result) => {
-                                                      if (result.isConfirmed) {
-                                                        if (clone.ind) {
-                                                          if (clone.selectedProjectstoAdd) {
-                                                            for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
-                                                              await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
-                                                              if (clone.selectedProjectstoAdd.length === i + 1) {
-                                                                history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
+                                                      {data2.title}
+                                                    </span>
+                                                  </div>
+                                                  <div
+                                                    onClick={() => {
+                                                      Swal.fire({
+                                                        html: `Are you sure you want to move these activities?`,
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Yes',
+                                                        icon: 'info',
+                                                      }).then(async (result) => {
+                                                        if (result.isConfirmed) {
+                                                          if (clone.ind) {
+                                                            if (clone.selectedProjectstoAdd) {
+                                                              for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
+                                                                await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
+                                                                if (clone.selectedProjectstoAdd.length === i + 1) {
+                                                                  history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
+                                                                }
                                                               }
+                                                            } else {
+                                                              dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
                                                             }
                                                           } else {
-                                                            dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
+                                                            cloneActivity(data2.id, clone.clone.id);
                                                           }
-                                                        } else {
-                                                          cloneActivity(data2.id, clone.clone.id);
                                                         }
-                                                      }
-                                                    });
-                                                  }}
-                                                  className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
-                                                >
-                                                  <span>Copy here</span>
+                                                      });
+                                                    }}
+                                                    className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
+                                                  >
+                                                    <span>Copy Here</span>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            </span>
-                                          </Accordion.Toggle>
-                                        </div>
-                                      </>
-                                    ))}{' '}
-                                  </Accordion>
-                                ) : (
-                                  clone.clone.model === 'Activity' && <span className="error">No Playlists found</span>
-                                ))}
-                            </Card.Body>
-                          </Accordion.Collapse>
+                                              </span>
+                                            </Accordion.Toggle>
+                                          </div>
+                                        </>
+                                      ))}{' '}
+                                    </Accordion>
+                                  ) : (
+                                    clone.clone.model === 'Activity' && <span className="error">No Playlists found</span>
+                                  ))}
+                              </Card.Body>
+                            </Accordion.Collapse>
+                          </div>
                         </>
                       ))}
                   </div>
