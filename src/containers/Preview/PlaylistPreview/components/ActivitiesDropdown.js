@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import ActivityPreviewCardDropdown from 'components/ActivityPreviewCard/ActivityPreviewCardDropdown';
 
 function ActivitiesDropdown(props) {
-  const { showLti, shared, projectId, playlistId, activities } = props;
+  const {
+ showLti, shared, projectId, playlistId, activities,
+} = props;
 
   if (activities.length === 0) {
     return (

@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import Buttons from "utils/Buttons/buttons";
-import TopHeading from "utils/TopHeading/topheading";
-import { faEye, faPlus } from "@fortawesome/free-solid-svg-icons";
-import projectFolder from "assets/images/svg/projectFolder.svg";
-import "./style.scss";
+import React, { useState } from 'react';
+import Buttons from 'utils/Buttons/buttons';
+import TopHeading from 'utils/TopHeading/topheading';
+import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
+import projectFolder from 'assets/images/svg/projectFolder.svg';
+import './style.scss';
 
-import PlayListImage from "assets/images/svg/playlist1.svg";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import ProjectList from "utils/ProjectList/projectlist";
+import PlayListImage from 'assets/images/svg/playlist1.svg';
+import HeadingThree from 'utils/HeadingThree/headingthree';
+import ProjectList from 'utils/ProjectList/projectlist';
 // import Footer from "components/Footer";
 
 const ProjectDetailList = () => {
   const playList1 = [
-    { title: "Activity #1" },
-    { title: "Activity #2" },
-    { title: "My first activity", status: "Shared" },
+    { title: 'Activity #1' },
+    { title: 'Activity #2' },
+    { title: 'My first activity', status: 'Shared' },
   ];
   const playList2 = [
-    { title: "Activity #1" },
-    { title: "Activity #2" },
-    { title: "My first activity", status: "Shared" },
-    { title: "Activity #2" },
-    { title: "Activity #2", status: "Shared" },
+    { title: 'Activity #1' },
+    { title: 'Activity #2' },
+    { title: 'My first activity', status: 'Shared' },
+    { title: 'Activity #2' },
+    { title: 'Activity #2', status: 'Shared' },
   ];
 
   const [openMyProject, setOpenMyProject] = useState(false);
@@ -44,21 +44,21 @@ const ProjectDetailList = () => {
                 </div>
                 <div className="playlist-creation-btn">
                   <Buttons
-                    secondary={true}
+                    secondary
                     text="Create new playlist"
                     icon={faPlus}
                     width="189px"
                     height="35px"
-                    hover={true}
+                    hover
                     className="btn-margin"
                   />
                   <Buttons
-                    primary={true}
+                    primary
                     text="Project Preview"
                     icon={faEye}
                     width="162px"
                     height="35px"
-                    hover={true}
+                    hover
                   />
                 </div>
               </div>

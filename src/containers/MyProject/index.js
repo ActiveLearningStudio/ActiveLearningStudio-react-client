@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Buttons from 'utils/Buttons/buttons';
 import TopHeading from 'utils/TopHeading/topheading';
@@ -11,11 +10,11 @@ import PlaylistCard from 'containers/Playlists/PlaylistCard';
 import ProjectPlayListCard from 'utils/ProjectPlayListCard/projectplaylistcard';
 import PlayListImage from 'assets/images/svg/playlist1.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MyProjectsCreate from './formik/createproject';
 import MyProjectCard from 'utils/MyProjectCard/myprojectcard';
 import ProjectCard1 from 'assets/images/myproject1.png';
 import ProjectCard2 from 'assets/images/myproject2.png';
 import ProjectCard3 from 'assets/images/myproject3.png';
+import MyProjectsCreate from './formik/createproject';
 // import Footer from "components/Footer";
 const MyProjectMain = () => {
   const playList1 = [
@@ -48,7 +47,7 @@ const MyProjectMain = () => {
             <div className="topHeading-prject-detail">
               <div className="topHeading">
                 <TopHeading description="Nevada Department of Education" image={projectFolder} heading="My Projects" color="#084892" />
-                <Buttons primary={true} text="Create a project" icon={faPlus} width="163px" height="35px" onClick={() => setOpenMyProject(!openMyProject)} hover={true} />
+                <Buttons primary text="Create a project" icon={faPlus} width="163px" height="35px" onClick={() => setOpenMyProject(!openMyProject)} hover />
               </div>
               <div className="top-project-detail">
                 {/* <div className="project-title-btn">
@@ -73,39 +72,39 @@ const MyProjectMain = () => {
             </div>
             <div className="top-project-detail-btn-tabs">
               <Buttons
-                primary={true}
+                primary
                 text="My Projects"
                 width="163px"
                 height="35px"
                 // onClick={() => setOpenMyProject(!openMyProject)}
-                hover={true}
+                hover
                 className="btn-tabs"
               />
               <Buttons
-                secondary={true}
+                secondary
                 text="Sample Projects"
                 width="163px"
                 height="35px"
                 // onClick={() => setOpenMyProject(!openMyProject)}
-                hover={true}
+                hover
                 className="btn-tabs"
               />
               <Buttons
-                secondary={true}
+                secondary
                 text="Favorite Projects"
                 width="163px"
                 height="35px"
                 // onClick={() => setOpenMyProject(!openMyProject)}
-                hover={true}
+                hover
                 className="btn-tabs"
               />
               <Buttons
-                secondary={true}
+                secondary
                 text="My Team Projects"
                 width="163px"
                 height="35px"
                 // onClick={() => setOpenMyProject(!openMyProject)}
-                hover={true}
+                hover
                 className="btn-tabs"
               />
             </div>
