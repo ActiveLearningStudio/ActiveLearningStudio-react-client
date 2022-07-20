@@ -187,6 +187,7 @@ p {
 
 .user-dropdown-item {
   color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
 }
 
 .noovo-group-title label {
@@ -271,43 +272,40 @@ p {
   background-color: var(--main-primary-color) !important;
   opacity: 0.7 !important;
 }
-.form-new-popup-myvideo .add-video-form .add-video-form-tabs .main-tabs .nav-item.active,
-.form-new-popup-myvideo .add-video-form .add-video-form-tabs .nav-tabs .nav-link:hover {
-  /* border-bottom-color: var(--main-primary-color) !important; */
-}
+
 .form-new-popup-myvideo svg {
   color: var(--main-paragraph-text-color) !important;
 }
 
-.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section span{
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section{
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section {
   /* background-color: var(--main-primary-color) !important;
   opacity: 0.1; */
 }
 
-.curriki-utility-startpage .startpage-section .section-btn{
+.curriki-utility-startpage .startpage-section .section-btn {
   /* background-color: var(--main-primary-color) !important;
   opacity: 0.1; */
 }
-.curriki-utility-startpage .startpage-section .section-btn span{
+.curriki-utility-startpage .startpage-section .section-btn span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
 
-.myvideomain .inner-content .video-cards-top-search-filter .move_activities .move_text{
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities .move_text {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.curriki-utility-addvideo-card .apply-check-video:before{
+.curriki-utility-addvideo-card .apply-check-video:before {
   background: var(--main-primary-color);
 }
-.myvideomain .inner-content .video-cards-top-search-filter .move_activities input{
-accent-color: var(--main-primary-color) !important;
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities input {
+  accent-color: var(--main-primary-color) !important;
 }
-.curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-dropdown input{
+.curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-dropdown input {
   accent-color: var(--main-primary-color) !important;
 }
 /* My Projects Search Library branding */
@@ -346,6 +344,7 @@ accent-color: var(--main-primary-color) !important;
   color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
 }
+
 .activity-layout-form .layout-cards-process-btn .explore-upload-buttons .ex-up-button p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
@@ -1271,6 +1270,7 @@ textarea,
 } */
 .curriki-utility-addvideo-card .addvideo-activity-menu-option .activity-request-tag span {
   color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField ::placeholder,
@@ -1336,12 +1336,15 @@ textarea,
 
 .curriki-utility-addvideo-card .activity-update-lib .activity-update {
   color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .curriki-utility-addvideo-card .activity-update-lib .activity-lib {
   color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .curriki-utility-addvideo-card .activity-update-lib .activity-lib span {
   color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
 }
 .addvideo-card-add-share-options .textinButton {
   color: var(--main-primary-color) !important;
@@ -1741,8 +1744,12 @@ textarea,
 }
 .search-result-main .nav-tabs .nav-link {
   border: 1px solid var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
 }
-
+.search-result-main .right-search .results_search .contentbox .btn-fav {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-paragraph-text-color) !important;
+}
 .search-result-main .main-tabs .nav-item.active {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
@@ -1797,4 +1804,43 @@ textarea,
   font-family: var(--main-text-font) !important;
   background-color: var(--main-primary-color) !important;
   color: var(--main-white-color) !important;
+}
+
+.Add-my-project-section span {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.my-project-cards-top-search-filter .activity-counter .drop-counter {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.search-result-main .total-count {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.myvideomain .inner-content .video-cards-top-search-filter .activity-counter .drop-counter {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.curriki-utility-addvideo-card .addvideo-card-add-share .btn-box {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-secondary-color) !important;
+}
+
+.account-page .form-group label {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.account-page .form-group input,
+.account-page .form-group select {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-paragraph-text-color) !important;
+}
+
+.add-team-page .team-back-to-option .team-back-to-option-link {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-paragraph-text-color) !important;
 }
