@@ -274,7 +274,7 @@ const PreviewLayoutModel = (props) => {
                           ? props.editVideo.h5p
                           : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": "${video}"}}},"metadata":{"title":"${title}"}}`
                       }
-                      h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
+                      h5pLib="H5P.BrightcoveInteractiveVideo 1.1"
                       hide={props.onHide}
                       type={type}
                       formData={props?.formData}
@@ -297,7 +297,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -317,7 +317,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -338,7 +338,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
