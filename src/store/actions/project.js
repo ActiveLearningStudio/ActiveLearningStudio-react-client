@@ -213,7 +213,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   return thumbUrl;
 };
 
-export const loadMyProjectsAction = () => async (dispatch) => {
+export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { currentOrganization },
@@ -222,7 +222,7 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(currentOrganization?.id);
+    const { projects } = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
@@ -278,12 +278,21 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
 };
 /* eslint-enable */
 
-export const loadMyCloneProjectsAction = () => async (dispatch) => {
+export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization },
+    organization: { currentOrganization },
   } = centralizedState;
-  const projects = await projectService.getClone(activeOrganization?.id);
+  const projects = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,
