@@ -209,9 +209,7 @@ const Index = ({ activities }) => {
                       {activities && (
                         <div className="project-headline">
                           <div className="search-main-relaced">
-                            <div className="search-div">
-                              <SearchForm activities />
-                            </div>
+                            <div className="search-div">{/* <SearchForm activities /> */}</div>
                           </div>
                         </div>
                       )}

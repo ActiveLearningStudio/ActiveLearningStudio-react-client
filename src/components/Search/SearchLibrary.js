@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable max-len */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,15 +38,13 @@ const SearchLibrary = (props) => {
     activities,
     activeMainSearchType,
   } = props;
+  useEffect(() => {
+    setSearchType(activities ? 'org_activities' : 'orgSearch');
+  });
   return (
-
     <Accordion defaultActiveKey="0">
       <Card>
-        <Accordion.Toggle
-          as={Card.Header}
-          eventKey="0"
-          onClick={() => setToggleStates({ ...toggleStates, searchLibrary: !toggleStates?.searchLibrary })}
-        >
+        <Accordion.Toggle as={Card.Header} eventKey="0" onClick={() => setToggleStates({ ...toggleStates, searchLibrary: !toggleStates?.searchLibrary })}>
           Search Library
           <FontAwesomeIcon className="ml-2" icon={toggleStates?.searchLibrary ? 'chevron-up' : 'chevron-down'} />
         </Accordion.Toggle>
@@ -53,6 +52,7 @@ const SearchLibrary = (props) => {
         <Accordion.Collapse eventKey="0">
           <Card.Body>
             <div className="body-search">
+              <div className="author-label">Contains</div>
               <input
                 // style={{ display: searchType === 'orgSearch' ? 'none' : 'block' }}
                 value={searchInput}
@@ -61,7 +61,7 @@ const SearchLibrary = (props) => {
                 }}
                 onKeyPress={async (e) => {
                   if (e.key === 'Enter') {
-                    if (!searchInput.trim() && (searchType !== 'orgSearch' && searchType !== 'org_activities')) {
+                    if (!searchInput.trim() && searchType !== 'orgSearch' && searchType !== 'org_activities') {
                       Swal.fire('Search field is required.');
                     } else if (searchInput.length > 255) {
                       Swal.fire('Character limit should be less than 255.');
@@ -73,7 +73,6 @@ const SearchLibrary = (props) => {
                         onBeforeOpen: () => {
                           Swal.showLoading();
                         },
-
                       });
                       let dataSend;
                       if (searchType === 'orgSearch') {
@@ -141,7 +140,11 @@ const SearchLibrary = (props) => {
                       }
                       if (!fromTeam) {
                         // eslint-disable-next-line max-len
-                        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`);
+                        history.push(
+                          `/org/${
+                            currentOrganization?.domain
+                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                        );
                       }
                     } else if (activeMainSearchType === 'Independent activities') {
                       Swal.fire({
@@ -204,7 +207,11 @@ const SearchLibrary = (props) => {
                       }
                       if (!fromTeam) {
                         // eslint-disable-next-line max-len
-                        history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`);
+                        history.push(
+                          `/org/${
+                            currentOrganization?.domain
+                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                        );
                       }
                     }
                   }
@@ -213,7 +220,7 @@ const SearchLibrary = (props) => {
                 placeholder="Search"
               />
 
-              <div className="form-group">
+              {/* <div className="form-group">
                 <div className="radio-btns">
                   {true && (
                     <label>
@@ -258,6 +265,26 @@ const SearchLibrary = (props) => {
                     </label>
                   )}
                 </div>
+              </div> */}
+              <div className="author-label">Does not contain</div>
+              <div
+                className="form-group mb-form"
+                style={{
+                  display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none',
+                }}
+              >
+                <input
+                  placeholder="Park"
+                  className="authorName"
+                  value={authorName}
+                  onChange={({ target }) => {
+                    if (target.value) {
+                      setAuthor(target.value);
+                    } else {
+                      setAuthor('');
+                    }
+                  }}
+                />
               </div>
               {permission?.Organization?.includes('organization:view-user') && searchType !== 'private' && <div className="author-label">Author</div>}
               <div
@@ -285,7 +312,7 @@ const SearchLibrary = (props) => {
                   setFromDate(undefined);
                   setToDate(undefined);
                   setActiveTab(fromTeam ? 'projects' : 'total');
-                  if (!searchInput.trim() && (searchType !== 'orgSearch' && searchType !== 'org_activities')) {
+                  if (!searchInput.trim() && searchType !== 'orgSearch' && searchType !== 'org_activities') {
                     Swal.fire('Search field is required.');
                   } else if (searchInput.length > 255) {
                     Swal.fire('Character limit should be less than 255.');
@@ -370,7 +397,11 @@ const SearchLibrary = (props) => {
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
-                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`);
+                      history.push(
+                        `/org/${
+                          currentOrganization?.domain
+                        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                      );
                     }
                   } else if (activeMainSearchType === 'Independent activities') {
                     Swal.fire({
@@ -433,7 +464,11 @@ const SearchLibrary = (props) => {
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
-                      history.push(`/org/${currentOrganization?.domain}/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`);
+                      history.push(
+                        `/org/${
+                          currentOrganization?.domain
+                        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                      );
                     }
                   }
                   // setModalShow(true);
