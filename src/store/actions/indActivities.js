@@ -64,8 +64,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
       payload: '',
     });
     dispatch({
-      type: "ADD_VIDEO_URL",
-      payload: ''
+      type: 'ADD_VIDEO_URL',
+      payload: '',
     });
   }
 };
@@ -192,7 +192,7 @@ export const adminIntActivities = (
   updatedFrom,
   updatedTo,
   shared,
-  index
+  index,
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
@@ -207,7 +207,7 @@ export const adminIntActivities = (
     updatedFrom,
     updatedTo,
     shared,
-    index
+    index,
   );
   if (allActivities) {
     dispatch({

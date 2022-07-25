@@ -61,7 +61,7 @@ export const ProjectsPage = (props) => {
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState([]);
@@ -299,14 +299,10 @@ export const ProjectsPage = (props) => {
   window.onscroll = function () {
     if (!isLoader) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-        setSize(size + defaultSize);
+        setSize(defaultSize + 10);
         setisLoader(true);
       }
     }
-
-    console.log('Window height (px):', window.innerHeight);
-    console.log('Currently scrolled from top (px):', window.scrollY);
-    console.log('Document height(px):', document.body.scrollHeight);
   };
 
   useEffect(() => {
@@ -413,7 +409,6 @@ export const ProjectsPage = (props) => {
                                 <Dropdown.Item
                                   onClick={() => {
                                     setdefaultSize(10);
-                                    setSize(0);
                                     setActivePage(1);
                                     setisLoader(true);
                                   }}
@@ -425,7 +420,6 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(25);
                                     setActivePage(1);
                                     setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   25
@@ -435,7 +429,6 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(50);
                                     setActivePage(1);
                                     setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   50
@@ -445,7 +438,6 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(100);
                                     setActivePage(1);
                                     setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   100
