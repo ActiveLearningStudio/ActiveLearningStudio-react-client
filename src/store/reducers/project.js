@@ -138,6 +138,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projects: action.payload.projects,
+        isLoading: true,
       };
 
     case actionTypes.LOAD_MY_CLONE_PROJECTS:
