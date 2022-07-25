@@ -5,6 +5,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   projects: null,
+  isProjectLoading: false,
   selectedProject: {},
   thumbUrl: null,
   projectSelect: {},
@@ -138,6 +139,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projects: action.payload.projects,
+        isProjectLoading: true,
       };
 
     case actionTypes.LOAD_MY_CLONE_PROJECTS:

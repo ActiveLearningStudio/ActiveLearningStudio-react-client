@@ -355,7 +355,8 @@ export const ProjectsPage = (props) => {
   //     setTabToggle(false);
   //   }
   // };
-
+  console.log('all', allProjects);
+  console.log('divideProjects', projectDivider);
   const { showDeletePlaylistPopup } = ui;
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
@@ -382,7 +383,7 @@ export const ProjectsPage = (props) => {
                 id='uncontrolled-tab-example'
               >
                 <Tab eventKey='My Projects' title='My Projects'>
-                  {!!projectDivider?.length && (
+                  {allProjects?.length > 0 && projectDivider?.length > 0 && (
                     <div className='my-project-cards-top-search-filter'>
                       <div className='search-bar'>
                         <input className='' type='text' placeholder='Search' value={searchQuery} onChange={(e) => setsearchQuery(e.target.value)} />
@@ -463,8 +464,8 @@ export const ProjectsPage = (props) => {
                   )}
                   <div className='row'>
                     <div className='col-md-12'>
-                      {allProjects ? (
-                        projectDivider?.length > 0 ? (
+                      {allStateProject?.isProjectLoading ? (
+                        allProjects?.length > 0 && projectDivider?.length > 0 ? (
                           <>
                             <div className='project-list-all'>
                               {/* <div className="add-project-block">
