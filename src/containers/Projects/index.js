@@ -436,7 +436,7 @@ export const ProjectsPage = (props) => {
                   )}
                   <div className='row'>
                     <div className='col-md-12'>
-                      {allStateProject?.isLoading ? (
+                      {allStateProject?.isProjectLoading ? (
                         allProjects?.length > 0 && projectDivider?.length > 0 ? (
                           <>
                             <div className='project-list-all'>
