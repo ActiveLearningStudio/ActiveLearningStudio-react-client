@@ -409,3 +409,26 @@ export const addActivityPlaylistSearch = (ind_id, playlist_id) => async (dispatc
   });
   return addActivityResult;
 };
+
+// Move Playlist
+export const moveActivityPlaylist = (playlist_id, playlistData) => async (dispatch) => {
+  toast.info('Adding new Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    icon: '',
+  });
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const addActivityResult = await playlistService.moveActivityPlaylist(activeOrganization?.id, playlist_id, playlistData);
+  toast.dismiss();
+  toast.success('Activity Added', {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
+  return addActivityResult;
+};
