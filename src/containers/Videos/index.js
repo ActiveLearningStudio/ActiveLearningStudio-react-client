@@ -61,7 +61,7 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(10);
   const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -110,11 +110,9 @@ const Index = ({ activities }) => {
     setSelectedActivityId(activityId);
   };
   window.onscroll = function () {
-    if (!isLoader) {
-      if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-        setSize(defaultSize + 10);
-        setisLoader(true);
-      }
+    if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+      setSize(size + 10);
+      setisLoader(true);
     }
     // console.log('Window height (px):', window.innerHeight);
     // console.log('Currently scrolled from top (px):', window.scrollY);
@@ -122,10 +120,11 @@ const Index = ({ activities }) => {
   };
 
   useEffect(() => {
-    if (isLoader && size > 0) {
-      dispatch(allIndActivity(activeOrganization.id, ActivePage, size, searchQuery));
+    if (size > 0) {
+      dispatch(allIndActivity(activeOrganization?.id, ActivePage, size, searchQuery));
     }
-  }, [isLoader]);
+  }, [size]);
+
   return (
     <>
       {openMyVideo && (
@@ -388,9 +387,10 @@ const Index = ({ activities }) => {
                           value={searchQuery}
                           onChange={(e) => {
                             setSearchQuery(e.target.value);
+                            setSize(10);
                             if (activeOrganization) {
                               if (e.target.value.trim()) {
-                                dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize, e.target.value));
+                                dispatch(allIndActivity(activeOrganization.id, ActivePage, size, e.target.value));
                               } else {
                                 dispatch(allIndActivity(activeOrganization.id));
                               }

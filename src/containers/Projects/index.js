@@ -61,7 +61,7 @@ export const ProjectsPage = (props) => {
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(10);
   const [defaultSize, setdefaultSize] = useState(10);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState([]);
@@ -299,7 +299,7 @@ export const ProjectsPage = (props) => {
   window.onscroll = function () {
     if (!isLoader) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-        setSize(defaultSize + 10);
+        setSize(size + 10);
         setisLoader(true);
       }
     }
@@ -388,7 +388,15 @@ export const ProjectsPage = (props) => {
                       <div className='search-bar'>
                         <input className='' type='text' placeholder='Search' value={searchQuery} onChange={(e) => setsearchQuery(e.target.value)} />
 
-                        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' style={{ cursor: 'pointer' }}>
+                        <svg
+                          width='24'
+                          height='24'
+                          viewBox='0 0 24 24'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => loadMyProjects(activePage, size, searchQuery)}
+                        >
                           <path
                             d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
                             stroke={primaryColor}
@@ -412,6 +420,7 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(10);
                                     setActivePage(1);
                                     setisLoader(true);
+                                    setSize(10);
                                   }}
                                 >
                                   10
@@ -421,6 +430,7 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(25);
                                     setActivePage(1);
                                     setisLoader(true);
+                                    setSize(25);
                                   }}
                                 >
                                   25
@@ -430,6 +440,7 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(50);
                                     setActivePage(1);
                                     setisLoader(true);
+                                    setSize(50);
                                   }}
                                 >
                                   50
@@ -439,6 +450,7 @@ export const ProjectsPage = (props) => {
                                     setdefaultSize(100);
                                     setActivePage(1);
                                     setisLoader(true);
+                                    setSize(100);
                                   }}
                                 >
                                   100
