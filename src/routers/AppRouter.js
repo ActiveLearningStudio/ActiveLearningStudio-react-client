@@ -37,6 +37,7 @@ const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
 const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
+const Library = loadable(() => import('../containers/Search'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const termsPolicyContent = loadable(() => import('../components/Footer/termsPolicyContent'));
 const CanvasLtiLogin = loadable(() => import('../containers/Auth/CanvasLtiLogin'));
@@ -172,7 +173,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/activities" component={VideoPage} overview activities />
                   <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
-
+                  <PrivateRoute exact path="/org/:organization/library" showSSO component={Library} />
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
