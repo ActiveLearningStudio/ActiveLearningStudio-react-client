@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyVerticallyCenteredModal from "components/models/activityOptions";
 import AddVideo from "containers/Videos/formik/addvideo";
 import DescribeVideo from "containers/Videos/formik/describevideo";
+import AddCoursePresentation from "containers/MyActivity/AddCoursePresentation";
 
 import ActivityLayout from "./formik/activitylayout";
 import SingleActivity from "./formik/addSingleActivity";
@@ -178,6 +179,14 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     setauthortagName={setauthortagName}
                     eduLevel={eduLevel}
                     seteduLevel={seteduLevel}
+                  />
+                </div>
+              )}
+              {screenState === "coursepresentation" && (
+                <div className="form-new-popup-myvideo ">
+                  <AddCoursePresentation
+                    showback
+                    changeScreenHandler={changeScreenHandler}
                   />
                 </div>
               )}
