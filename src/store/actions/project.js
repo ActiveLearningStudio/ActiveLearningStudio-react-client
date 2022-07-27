@@ -300,6 +300,9 @@ export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dis
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,
     payload: projects,
   });
+  dispatch({
+    type: actionTypes.PAGE_LOADING_COMPLETE,
+  });
 };
 
 export const sampleProjects = () => async (dispatch) => {

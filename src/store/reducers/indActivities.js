@@ -22,6 +22,11 @@ export default (state = INITIAL_STATE, action) => {
         allActivities: action.payload,
         islazyLoader: false,
       };
+    case actionTypes.ALL_IND_REQUEST_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
+      };
     case actionTypes.DEL_IND_ACTIVITIES:
       return {
         ...state,

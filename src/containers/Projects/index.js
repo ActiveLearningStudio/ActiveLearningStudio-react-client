@@ -606,7 +606,7 @@ export const ProjectsPage = (props) => {
                         </div>
                       )}
                     </div>
-                    {allStateProject.islazyLoader && size > 0 && (
+                    {allStateProject?.islazyLoader && size > 0 && (
                       <div className='col-md-12 text-center'>
                         <ImgLoader />
                       </div>

@@ -60,6 +60,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         islazyLoader: true,
       };
+    case actionTypes.PAGE_LOADING_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
+      };
     case actionTypes.SET_SELECTED_PROJECT:
       return {
         ...state,

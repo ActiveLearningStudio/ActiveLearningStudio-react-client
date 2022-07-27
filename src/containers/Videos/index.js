@@ -61,7 +61,8 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
-  const [size, setSize] = useState(0);
+  const [size, setSize] = useState(10);
+  const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activeOrganization && !activities) {
@@ -109,16 +110,17 @@ const Index = ({ activities }) => {
     setSelectedActivityId(activityId);
   };
   window.onscroll = function () {
-    if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-      if (size === 0) {
-        setSize(defaultSize + 10);
-      } else {
+    var scrollerHeight = document.body.scrollHeight - 1;
+    if (allActivities) {
+      if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
         setSize(size + 10);
+        setisLoader(true);
       }
     }
-    // console.log('Window height (px):', window.innerHeight);
-    // console.log('Currently scrolled from top (px):', window.scrollY);
-    // console.log('Document height(px):', document.body.scrollHeight);
+
+    console.log('Window height (px):', window.innerHeight);
+    console.log('Currently scrolled from top (px):', window.scrollY);
+    console.log('Document height(px):', document.body.scrollHeight);
   };
 
   useEffect(() => {
@@ -378,52 +380,53 @@ const Index = ({ activities }) => {
                           </div> */}
                   </div>
                 ) : (
-                  <>
-                    <div className='video-cards-top-search-filter'>
-                      <div className='search-bar'>
-                        <input
-                          className=''
-                          type='text'
-                          value={searchQuery}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value);
-                            setSize(10);
-                            if (activeOrganization) {
-                              if (e.target.value.trim()) {
-                                dispatch(allIndActivity(activeOrganization.id, ActivePage, size, e.target.value));
-                              } else {
-                                dispatch(allIndActivity(activeOrganization.id));
+                  allActivities && (
+                    <>
+                      <div className='video-cards-top-search-filter'>
+                        <div className='search-bar'>
+                          <input
+                            className=''
+                            type='text'
+                            value={searchQuery}
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value);
+                              setSize(10);
+                              if (activeOrganization) {
+                                if (e.target.value.trim()) {
+                                  dispatch(allIndActivity(activeOrganization.id, ActivePage, size, e.target.value));
+                                } else {
+                                  dispatch(allIndActivity(activeOrganization.id));
+                                }
                               }
-                            }
-                          }}
-                          placeholder='Search'
-                        />
-
-                        <svg
-                          width='24'
-                          height='24'
-                          viewBox='0 0 24 24'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => {
-                            if (activeOrganization) {
-                              dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
-                            }
-                          }}
-                        >
-                          <path
-                            d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
-                            stroke={primaryColor}
-                            strokeWidth='2'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
+                            }}
+                            placeholder='Search'
                           />
-                          <path d='M21 20.9984L16.65 16.6484' stroke={primaryColor} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
-                        </svg>
-                      </div>
 
-                      {/* <div className="activity-counter">
+                          <svg
+                            width='24'
+                            height='24'
+                            viewBox='0 0 24 24'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              if (activeOrganization) {
+                                dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                              }
+                            }}
+                          >
+                            <path
+                              d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
+                              stroke={primaryColor}
+                              strokeWidth='2'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                            />
+                            <path d='M21 20.9984L16.65 16.6484' stroke={primaryColor} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+                          </svg>
+                        </div>
+
+                        {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
                           Activities per page
                           <span>
@@ -439,7 +442,7 @@ const Index = ({ activities }) => {
                           </span>
                         </div>
                       </div> */}
-                      {/* <div className="filter-dropdown-project">
+                        {/* <div className="filter-dropdown-project">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
@@ -451,46 +454,47 @@ const Index = ({ activities }) => {
                         </svg>
                         Filter
                       </div> */}
-                      {/* <div className="video-filter-bar">
+                        {/* <div className="video-filter-bar">
                             <FontAwesomeIcon icon={faFilter} color="#084892" />
                             <span>Filter</span>
                           </div> */}
 
-                      <div className='searc_bar_move_activities'>
-                        <div className='move_activities'>
-                          <label className='cutom_checkbox'>
-                            {/* <input type="checked" /> */}
-                            <input type='checkbox' onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
+                        <div className='searc_bar_move_activities'>
+                          <div className='move_activities'>
+                            <label className='cutom_checkbox'>
+                              {/* <input type="checked" /> */}
+                              <input type='checkbox' onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
 
-                            <span />
-                          </label>
+                              <span />
+                            </label>
 
-                          {/* <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} /> */}
-                          <p className='move_text' id='move_text_id_branding'>
-                            Move activities to projects
-                          </p>
-                        </div>
-                        {addToProjectCheckbox && (
-                          <div className='next_btn_activity'>
-                            <Buttons
-                              disabled={!selectedProjectstoAdd.length}
-                              defaultgrey={!selectedProjectstoAdd.length}
-                              primary
-                              text='Next'
-                              iconColor={primaryColor}
-                              width='80px'
-                              height='32px'
-                              hover
-                              onClick={() => setModalShowClone(true)}
-                            />
+                            {/* <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} /> */}
+                            <p className='move_text' id='move_text_id_branding'>
+                              Move activities to projects
+                            </p>
                           </div>
-                        )}
-                        {/* <div className="next_btn_activity">
+                          {addToProjectCheckbox && (
+                            <div className='next_btn_activity'>
+                              <Buttons
+                                disabled={!selectedProjectstoAdd.length}
+                                defaultgrey={!selectedProjectstoAdd.length}
+                                primary
+                                text='Next'
+                                iconColor={primaryColor}
+                                width='80px'
+                                height='32px'
+                                hover
+                                onClick={() => setModalShowClone(true)}
+                              />
+                            </div>
+                          )}
+                          {/* <div className="next_btn_activity">
 
                         </div> */}
+                        </div>
                       </div>
-                    </div>
-                  </>
+                    </>
+                  )
                 )}
                 <div className='my-interactive-videos'>
                   {!activescreenType?.data?.length ? (
@@ -689,7 +693,7 @@ const Index = ({ activities }) => {
               <Alert variant='danger'>You are not authorized to view this page.</Alert>
             )}
 
-            {islazyLoader && size > 0 && (
+            {allActivities && islazyLoader && activities && (
               <div className='col-md-12 text-center mt-4'>
                 <ImgLoader />
               </div>
