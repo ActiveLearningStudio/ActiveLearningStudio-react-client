@@ -15,7 +15,7 @@ import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction,
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
-import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import { result } from 'lodash';
 
@@ -61,9 +61,11 @@ const onSubmit = async (values, dispatch, props) => {
               }),
         );
         if (result) {
-          selectedProjectstoAdd?.map((id) => {
-            dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
-          });
+          // console.log('selectedProjectstoAdd', selectedProjectstoAdd);
+          dispatch(moveActivityPlaylist(result.playlists[0].id, selectedProjectstoAdd));
+          // selectedProjectstoAdd?.map((id) => {
+          //   dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
+          // });
           Swal.fire({
             title: 'Your request is being processed.',
             text: 'Please refresh after a moment.',

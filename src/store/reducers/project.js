@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   isLoading: false,
   projects: null,
   isProjectLoading: false,
+  islazyLoader: false,
   selectedProject: {},
   thumbUrl: null,
   projectSelect: {},
@@ -53,6 +54,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case actionTypes.PAGE_LOADING:
+      return {
+        ...state,
+        islazyLoader: true,
+      };
+    case actionTypes.PAGE_LOADING_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
       };
     case actionTypes.SET_SELECTED_PROJECT:
       return {
@@ -139,6 +150,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projects: action.payload.projects,
+        islazyLoader: false,
         isProjectLoading: true,
       };
 
@@ -146,6 +158,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         clone: action.payload.projects,
+        islazyLoader: false,
       };
 
     case actionTypes.LOAD_MY_PROJECTS_SELECTED:
