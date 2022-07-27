@@ -228,7 +228,7 @@ export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch
       type: actionTypes.LOAD_MY_PROJECTS,
       payload: { projects },
     });
-
+    window.scrollTo(0, 0);
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -306,6 +306,7 @@ export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dis
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
+    window.scrollTo(0, 0);
   }
 };
 

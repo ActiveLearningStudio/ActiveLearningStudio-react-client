@@ -38,7 +38,8 @@ function LtiProjectShared(props) {
     if (scrollerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = scrollerRef.current;
       if (scrollTop + clientHeight >= scrollHeight) {
-        setSize(size + 10);
+        setSize(10);
+        setpage(page + 1);
       }
     }
   };
@@ -48,7 +49,8 @@ function LtiProjectShared(props) {
       loadMyCloneProjectsAction(page, size, searchQuery),
       // loadMyProjectsAction(),
     );
-  }, [dispatch, size, searchQuery]);
+    window.scrollTo(0, 0);
+  }, [dispatch, page, searchQuery]);
 
   // useEffect(() => {
   //   setisLoader(false);
@@ -110,6 +112,7 @@ function LtiProjectShared(props) {
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
                       setSize(10);
+                      setpage(1);
                       // handlerSearchResult(e.target.value);
                     }}
                   />
@@ -353,7 +356,7 @@ function LtiProjectShared(props) {
                       ))}
                   </div>
                 </Accordion>
-                {project?.islazyLoader && size !== 10 && (
+                {project?.islazyLoader && page > 1 && (
                   <div className='col-md-12 text-center'>
                     <ImgLoader />
                   </div>

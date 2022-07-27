@@ -69,7 +69,7 @@ export const ProjectsPage = (props) => {
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
-  const [isLoader, setisLoader] = useState(false);
+  const [isLoader, setisLoader] = useState(true);
 
   const samplerRef = useRef();
   const {
@@ -115,13 +115,13 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (!searchTeamQuery) {
-      if (organization?.currentOrganization) {
+      if (organization?.currentOrganization && isLoader) {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.currentOrganization) {
+    } else if (searchTeamQuery && organization?.currentOrganization && isLoader) {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -129,7 +129,7 @@ export const ProjectsPage = (props) => {
     }
   }, [searchTeamQuery, organization?.currentOrganization, getTeamProjects, activePage]);
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization) {
+    if (!searchTeamQuery && organization?.currentOrganization && isLoader) {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -294,31 +294,35 @@ export const ProjectsPage = (props) => {
         loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
 
   window.onscroll = function () {
-    // if (!allStateProject?.islazyLoader) {
+    // if (!isLoader) {
     if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-      if (size === 0) {
-        setSize(defaultSize + 10);
-      } else {
-        setSize(size + 10);
-      }
-      // setisLoader(true);
+      setActivePage(activePage + 1);
+      setisLoader(true);
     }
     // }
   };
 
   useEffect(() => {
-    if (size > 0) {
+    if (activePage > 1) {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
-          loadMyProjects(activePage, size, searchQuery);
+          loadMyProjects(activePage, 10, searchQuery);
+          setisLoader(false);
         }
       }
     }
-  }, [size, searchQuery]);
-
+  }, [activePage]);
+  // useEffect(() => {
+  //   if (organization.activeOrganization && !allState.projects) {
+  //     if (organization?.currentOrganization) {
+  //       loadMyProjects(activePage, 10, searchQuery);
+  //       setisLoader(false);
+  //     }
+  //   }
+  // }, [searchQuery]);
   useEffect(() => {
     if (allProjects) {
       divideProjects([{ type: 'create' }, ...allProjects]);
@@ -397,7 +401,8 @@ export const ProjectsPage = (props) => {
                           value={searchQuery}
                           onChange={(e) => {
                             setsearchQuery(e.target.value);
-                            setSize(10);
+                            setActivePage(1);
+                            setdefaultSize(10);
                           }}
                         />
 
@@ -408,7 +413,7 @@ export const ProjectsPage = (props) => {
                           fill='none'
                           xmlns='http://www.w3.org/2000/svg'
                           style={{ cursor: 'pointer' }}
-                          onClick={() => loadMyProjects(activePage, size, searchQuery)}
+                          onClick={() => loadMyProjects(activePage, 10, searchQuery)}
                         >
                           <path
                             d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
@@ -432,8 +437,6 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(10);
                                     setActivePage(1);
-                                    // setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   10
@@ -442,8 +445,6 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(25);
                                     setActivePage(1);
-                                    // setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   25
@@ -452,8 +453,6 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(50);
                                     setActivePage(1);
-                                    // setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   50
@@ -462,8 +461,6 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(100);
                                     setActivePage(1);
-                                    // setisLoader(true);
-                                    setSize(0);
                                   }}
                                 >
                                   100
@@ -606,7 +603,7 @@ export const ProjectsPage = (props) => {
                         </div>
                       )}
                     </div>
-                    {allStateProject?.islazyLoader && size > 0 && (
+                    {allStateProject?.islazyLoader && activePage !== 1 && (
                       <div className='col-md-12 text-center'>
                         <ImgLoader />
                       </div>

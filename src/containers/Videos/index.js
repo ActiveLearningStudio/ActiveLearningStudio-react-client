@@ -61,7 +61,6 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
-  const [size, setSize] = useState(10);
   const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,7 +112,7 @@ const Index = ({ activities }) => {
     var scrollerHeight = document.body.scrollHeight - 1;
     if (allActivities) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
-        setSize(size + 10);
+        setActivePage(ActivePage + 1);
         setisLoader(true);
       }
     }
@@ -124,10 +123,10 @@ const Index = ({ activities }) => {
   };
 
   useEffect(() => {
-    if (size > 0) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, size, searchQuery));
+    if (ActivePage > 0) {
+      dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
     }
-  }, [size]);
+  }, [ActivePage]);
 
   return (
     <>
@@ -380,7 +379,7 @@ const Index = ({ activities }) => {
                           </div> */}
                   </div>
                 ) : (
-                  allActivities && (
+                  allActivities?.data?.length > 0 && (
                     <>
                       <div className='video-cards-top-search-filter'>
                         <div className='search-bar'>
@@ -390,10 +389,9 @@ const Index = ({ activities }) => {
                             value={searchQuery}
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
-                              setSize(10);
                               if (activeOrganization) {
                                 if (e.target.value.trim()) {
-                                  dispatch(allIndActivity(activeOrganization.id, ActivePage, size, e.target.value));
+                                  dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize, e.target.value));
                                 } else {
                                   dispatch(allIndActivity(activeOrganization.id));
                                 }
@@ -410,9 +408,8 @@ const Index = ({ activities }) => {
                             xmlns='http://www.w3.org/2000/svg'
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
-                              setSize(10);
                               if (activeOrganization) {
-                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, size, searchQuery));
+                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
                               }
                             }}
                           >
@@ -560,7 +557,7 @@ const Index = ({ activities }) => {
                     </>
                   ) : (
                     <>
-                      {isLoading && size === 0 ? (
+                      {isLoading && ActivePage === 1 ? (
                         <Alert mt='10px' variant='primary'>
                           Loading data...
                         </Alert>
@@ -694,7 +691,7 @@ const Index = ({ activities }) => {
               <Alert variant='danger'>You are not authorized to view this page.</Alert>
             )}
 
-            {allActivities && islazyLoader && activities && (
+            {allActivities?.data?.length > 0 && islazyLoader && activities && (
               <div className='col-md-12 text-center mt-4'>
                 <ImgLoader />
               </div>
