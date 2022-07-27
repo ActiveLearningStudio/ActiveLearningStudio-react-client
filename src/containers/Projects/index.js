@@ -61,11 +61,15 @@ export const ProjectsPage = (props) => {
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
+  const [size, setSize] = useState(0);
+  const [defaultSize, setdefaultSize] = useState(10);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState([]);
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
+  const [searchQuery, setsearchQuery] = useState('');
+  const [isLoader, setisLoader] = useState(true);
 
   const samplerRef = useRef();
   const {
@@ -111,13 +115,13 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (!searchTeamQuery) {
-      if (organization?.currentOrganization) {
+      if (organization?.currentOrganization && isLoader) {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.currentOrganization) {
+    } else if (searchTeamQuery && organization?.currentOrganization && isLoader) {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -125,7 +129,7 @@ export const ProjectsPage = (props) => {
     }
   }, [searchTeamQuery, organization?.currentOrganization, getTeamProjects, activePage]);
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization) {
+    if (!searchTeamQuery && organization?.currentOrganization && isLoader) {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -273,6 +277,7 @@ export const ProjectsPage = (props) => {
     if (allStateProject) {
       toast.dismiss();
       setAllProjects(allStateProject.projects);
+      // setisLoader(false);
     }
   }, [allStateProject]);
 
@@ -286,11 +291,38 @@ export const ProjectsPage = (props) => {
 
     if (organization.activeOrganization && !allState.projects) {
       if (organization?.currentOrganization) {
-        loadMyProjects();
+        loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
 
+  window.onscroll = function () {
+    // if (!isLoader) {
+    if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+      setActivePage(activePage + 1);
+      setisLoader(true);
+    }
+    // }
+  };
+
+  useEffect(() => {
+    if (activePage > 1) {
+      if (organization.activeOrganization && !allState.projects) {
+        if (organization?.currentOrganization) {
+          loadMyProjects(activePage, 10, searchQuery);
+          setisLoader(false);
+        }
+      }
+    }
+  }, [activePage]);
+  // useEffect(() => {
+  //   if (organization.activeOrganization && !allState.projects) {
+  //     if (organization?.currentOrganization) {
+  //       loadMyProjects(activePage, 10, searchQuery);
+  //       setisLoader(false);
+  //     }
+  //   }
+  // }, [searchQuery]);
   useEffect(() => {
     if (allProjects) {
       divideProjects([{ type: 'create' }, ...allProjects]);
@@ -362,9 +394,27 @@ export const ProjectsPage = (props) => {
                   {allProjects?.length > 0 && projectDivider?.length > 0 && (
                     <div className='my-project-cards-top-search-filter'>
                       <div className='search-bar'>
-                        <input className='' type='text' placeholder='Search' />
+                        <input
+                          className=''
+                          type='text'
+                          placeholder='Search'
+                          value={searchQuery}
+                          onChange={(e) => {
+                            setsearchQuery(e.target.value);
+                            setActivePage(1);
+                            setdefaultSize(10);
+                          }}
+                        />
 
-                        <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' style={{ cursor: 'pointer' }}>
+                        <svg
+                          width='24'
+                          height='24'
+                          viewBox='0 0 24 24'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => loadMyProjects(activePage, 10, searchQuery)}
+                        >
                           <path
                             d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
                             stroke={primaryColor}
@@ -380,38 +430,38 @@ export const ProjectsPage = (props) => {
                           My Project per page
                           <span>
                             <Dropdown>
-                              <Dropdown.Toggle id='dropdown-basic'>10</Dropdown.Toggle>
+                              <Dropdown.Toggle id='dropdown-basic'>{defaultSize}</Dropdown.Toggle>
 
                               <Dropdown.Menu>
                                 <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(10);
-                                //   setActivePage(1);
-                                // }}
+                                  onClick={() => {
+                                    setdefaultSize(10);
+                                    setActivePage(1);
+                                  }}
                                 >
                                   10
                                 </Dropdown.Item>
                                 <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(25);
-                                //   setActivePage(1);
-                                // }}
+                                  onClick={() => {
+                                    setdefaultSize(25);
+                                    setActivePage(1);
+                                  }}
                                 >
                                   25
                                 </Dropdown.Item>
                                 <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(50);
-                                //   setActivePage(1);
-                                // }}
+                                  onClick={() => {
+                                    setdefaultSize(50);
+                                    setActivePage(1);
+                                  }}
                                 >
                                   50
                                 </Dropdown.Item>
                                 <Dropdown.Item
-                                // onClick={() => {
-                                //   setSize(100);
-                                //   setActivePage(1);
-                                // }}
+                                  onClick={() => {
+                                    setdefaultSize(100);
+                                    setActivePage(1);
+                                  }}
                                 >
                                   100
                                 </Dropdown.Item>
@@ -553,6 +603,11 @@ export const ProjectsPage = (props) => {
                         </div>
                       )}
                     </div>
+                    {allStateProject?.islazyLoader && activePage !== 1 && (
+                      <div className='col-md-12 text-center'>
+                        <ImgLoader />
+                      </div>
+                    )}
                   </div>
                 </Tab>
                 {permission?.Project?.includes('project:favorite') && (
@@ -793,7 +848,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjects: () => dispatch(loadMyProjectsAction()),
+  loadMyProjects: (activePage, defaultSize, searchQuery) => dispatch(loadMyProjectsAction(activePage, defaultSize, searchQuery)),
   createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),

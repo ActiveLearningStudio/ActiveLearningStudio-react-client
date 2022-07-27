@@ -101,6 +101,10 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
       payload: [],
     });
   }
+  dispatch({
+    type: actionTypes.ALL_IND_REQUEST_COMPLETE,
+  });
+  window.scrollTo(0, 0);
 };
 
 export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {
