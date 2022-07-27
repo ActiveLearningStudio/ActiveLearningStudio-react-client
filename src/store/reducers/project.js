@@ -5,6 +5,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   isLoading: false,
   projects: null,
+  projectMeta: null,
   isProjectLoading: false,
   islazyLoader: false,
   selectedProject: {},
@@ -152,6 +153,7 @@ export default (state = INITIAL_STATE, action) => {
         projects: action.payload.projects,
         islazyLoader: false,
         isProjectLoading: true,
+        projectMeta: action.payload.meta,
       };
 
     case actionTypes.LOAD_MY_CLONE_PROJECTS:
@@ -159,6 +161,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         clone: action.payload.projects,
         islazyLoader: false,
+        projectMeta: action.payload.meta,
       };
 
     case actionTypes.LOAD_MY_PROJECTS_SELECTED:
