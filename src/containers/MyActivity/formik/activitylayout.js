@@ -233,6 +233,8 @@ const ActivityLayout = (props) => {
                   onClick={() => {
                     if (layout.title === 'Interactive Video') {
                       changeScreenHandler('addvideo');
+                    } else if (layout.title === 'Course Presentation'){
+                      changeScreenHandler('coursepresentation');
                     } else {
                       changeScreenHandler('addactivity');
                     }
