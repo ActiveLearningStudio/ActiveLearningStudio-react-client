@@ -292,6 +292,9 @@ export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dis
   const {
     organization: { currentOrganization },
   } = centralizedState;
+  dispatch({
+    type: actionTypes.PAGE_LOADING,
+  });
   const projects = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
   dispatch({
     type: actionTypes.LOAD_MY_CLONE_PROJECTS,

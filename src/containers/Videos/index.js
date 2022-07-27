@@ -51,7 +51,7 @@ const Index = ({ activities }) => {
 
   const videos = useSelector((state) => state.videos);
   const { activeOrganization, permission } = useSelector((state) => state.organization);
-  const { allActivities, isLoading } = useSelector((state) => state.activities);
+  const { allActivities, isLoading, islazyLoader } = useSelector((state) => state.activities);
   const [activescreenType, setActiveScreenPage] = useState('');
   const { allVideos } = videos;
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,8 +61,7 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
-  const [size, setSize] = useState(10);
-  const [isLoader, setisLoader] = useState(false);
+  const [size, setSize] = useState(0);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activeOrganization && !activities) {
@@ -111,8 +110,11 @@ const Index = ({ activities }) => {
   };
   window.onscroll = function () {
     if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-      setSize(size + 10);
-      setisLoader(true);
+      if (size === 0) {
+        setSize(defaultSize + 10);
+      } else {
+        setSize(size + 10);
+      }
     }
     // console.log('Window height (px):', window.innerHeight);
     // console.log('Currently scrolled from top (px):', window.scrollY);
@@ -687,8 +689,8 @@ const Index = ({ activities }) => {
               <Alert variant='danger'>You are not authorized to view this page.</Alert>
             )}
 
-            {isLoader && size !== 0 && (
-              <div className='col-md-12 text-center'>
+            {islazyLoader && size > 0 && (
+              <div className='col-md-12 text-center mt-4'>
                 <ImgLoader />
               </div>
             )}

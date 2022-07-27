@@ -27,7 +27,6 @@ function LtiProjectShared(props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setpage] = useState(1);
   const [size, setSize] = useState(10);
-  const [isLoader, setisLoader] = useState(false);
   const scrollerRef = useRef();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -40,7 +39,6 @@ function LtiProjectShared(props) {
       const { scrollTop, scrollHeight, clientHeight } = scrollerRef.current;
       if (scrollTop + clientHeight >= scrollHeight) {
         setSize(size + 10);
-        setisLoader(true);
       }
     }
   };
@@ -52,9 +50,9 @@ function LtiProjectShared(props) {
     );
   }, [dispatch, size, searchQuery]);
 
-  useEffect(() => {
-    setisLoader(false);
-  }, [project]);
+  // useEffect(() => {
+  //   setisLoader(false);
+  // }, [project]);
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
 
@@ -111,6 +109,7 @@ function LtiProjectShared(props) {
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
+                      setSize(10);
                       // handlerSearchResult(e.target.value);
                     }}
                   />
@@ -122,6 +121,12 @@ function LtiProjectShared(props) {
                     fill='none'
                     xmlns='http://www.w3.org/2000/svg'
                     // onClick={searchQueryHandler}
+                    onClick={() =>
+                      dispatch(
+                        loadMyCloneProjectsAction(page, size, searchQuery),
+                        // loadMyProjectsAction(),
+                      )
+                    }
                   >
                     <path
                       d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
@@ -344,7 +349,7 @@ function LtiProjectShared(props) {
                       ))}
                   </div>
                 </Accordion>
-                {isLoader && (
+                {project?.islazyLoader && size !== 10 && (
                   <div className='col-md-12 text-center'>
                     <ImgLoader />
                   </div>

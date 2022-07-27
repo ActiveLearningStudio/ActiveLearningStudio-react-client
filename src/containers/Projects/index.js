@@ -61,7 +61,7 @@ export const ProjectsPage = (props) => {
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState([]);
@@ -277,7 +277,7 @@ export const ProjectsPage = (props) => {
     if (allStateProject) {
       toast.dismiss();
       setAllProjects(allStateProject.projects);
-      setisLoader(false);
+      // setisLoader(false);
     }
   }, [allStateProject]);
 
@@ -294,26 +294,30 @@ export const ProjectsPage = (props) => {
         loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
 
   window.onscroll = function () {
-    if (!isLoader) {
-      if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+    // if (!allStateProject?.islazyLoader) {
+    if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+      if (size === 0) {
+        setSize(defaultSize + 10);
+      } else {
         setSize(size + 10);
-        setisLoader(true);
       }
+      // setisLoader(true);
     }
+    // }
   };
 
   useEffect(() => {
-    if (isLoader && size > 0) {
+    if (size > 0) {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
           loadMyProjects(activePage, size, searchQuery);
         }
       }
     }
-  }, [isLoader]);
+  }, [size, searchQuery]);
 
   useEffect(() => {
     if (allProjects) {
@@ -386,7 +390,16 @@ export const ProjectsPage = (props) => {
                   {allProjects?.length > 0 && projectDivider?.length > 0 && (
                     <div className='my-project-cards-top-search-filter'>
                       <div className='search-bar'>
-                        <input className='' type='text' placeholder='Search' value={searchQuery} onChange={(e) => setsearchQuery(e.target.value)} />
+                        <input
+                          className=''
+                          type='text'
+                          placeholder='Search'
+                          value={searchQuery}
+                          onChange={(e) => {
+                            setsearchQuery(e.target.value);
+                            setSize(10);
+                          }}
+                        />
 
                         <svg
                           width='24'
@@ -419,8 +432,8 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(10);
                                     setActivePage(1);
-                                    setisLoader(true);
-                                    setSize(10);
+                                    // setisLoader(true);
+                                    setSize(0);
                                   }}
                                 >
                                   10
@@ -429,8 +442,8 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(25);
                                     setActivePage(1);
-                                    setisLoader(true);
-                                    setSize(25);
+                                    // setisLoader(true);
+                                    setSize(0);
                                   }}
                                 >
                                   25
@@ -439,8 +452,8 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(50);
                                     setActivePage(1);
-                                    setisLoader(true);
-                                    setSize(50);
+                                    // setisLoader(true);
+                                    setSize(0);
                                   }}
                                 >
                                   50
@@ -449,8 +462,8 @@ export const ProjectsPage = (props) => {
                                   onClick={() => {
                                     setdefaultSize(100);
                                     setActivePage(1);
-                                    setisLoader(true);
-                                    setSize(100);
+                                    // setisLoader(true);
+                                    setSize(0);
                                   }}
                                 >
                                   100
@@ -593,7 +606,7 @@ export const ProjectsPage = (props) => {
                         </div>
                       )}
                     </div>
-                    {isLoader && (
+                    {allStateProject.islazyLoader && size > 0 && (
                       <div className='col-md-12 text-center'>
                         <ImgLoader />
                       </div>
