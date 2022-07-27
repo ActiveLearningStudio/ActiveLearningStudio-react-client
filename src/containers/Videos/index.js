@@ -410,8 +410,9 @@ const Index = ({ activities }) => {
                             xmlns='http://www.w3.org/2000/svg'
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
+                              setSize(10);
                               if (activeOrganization) {
-                                dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, size, searchQuery));
                               }
                             }}
                           >
