@@ -95,7 +95,7 @@ const addActivityPlaylistSearch = (org_id, ind_id, playlist_id) =>
 
 const moveActivityPlaylist = (org_id, playlist_id, playlistData) =>
   httpService
-    .post(`${apiVersion}/suborganization/1/independent-activities/playlist/${playlist_id}/move-to-playlist`, playlistData)
+    .post(`${apiVersion}/suborganization/${org_id}/independent-activities/playlist/${playlist_id}/move-to-playlist`, playlistData)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 

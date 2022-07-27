@@ -424,7 +424,7 @@ export const moveActivityPlaylist = (playlist_id, playlistData) => async (dispat
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const addActivityResult = await playlistService.moveActivityPlaylist(activeOrganization?.id, playlist_id, playlistData);
+  const addActivityResult = await playlistService.moveActivityPlaylist(activeOrganization?.id, playlist_id, { indAct: playlistData?.join() });
   toast.dismiss();
   toast.success('Activity Added', {
     position: toast.POSITION.BOTTOM_RIGHT,
