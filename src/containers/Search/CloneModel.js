@@ -12,7 +12,7 @@ import { loadMyCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyProjectsCreate from 'containers/Projects/CreateProjectPopup';
-import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import Buttons from 'utils/Buttons/buttons';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import loader from 'assets/images/loader.svg';
@@ -313,11 +313,15 @@ function LtiProjectShared(props) {
                                                         if (result.isConfirmed) {
                                                           if (clone.ind) {
                                                             if (clone.selectedProjectstoAdd) {
-                                                              for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
-                                                                await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
-                                                                if (clone.selectedProjectstoAdd.length === i + 1) {
-                                                                  history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
-                                                                }
+                                                              // for (var i = 0; i < clone.selectedProjectstoAdd.length; i++) {
+                                                              //   await dispatch(addActivityPlaylistSearch(clone.selectedProjectstoAdd[i], data2.id));
+                                                              //   if (clone.selectedProjectstoAdd.length === i + 1) {
+                                                              //     history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
+                                                              //   }
+                                                              // }
+                                                              const result = await dispatch(moveActivityPlaylist(data2.id, clone.selectedProjectstoAdd));
+                                                              if (result?.message) {
+                                                                history.push(`/org/${currentOrganization?.domain}/project/${data.id}`);
                                                               }
                                                             } else {
                                                               dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
