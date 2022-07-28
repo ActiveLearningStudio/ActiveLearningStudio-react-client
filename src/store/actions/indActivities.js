@@ -91,10 +91,17 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   const allActivities = await indResourceService.allIndActivity(orgId, page, size, search);
   // console.log("allActivities", allActivities);
   if (allActivities) {
-    dispatch({
-      type: actionTypes.ALL_IND_ACTIVITIES,
-      payload: allActivities,
-    });
+    if (page > 1) {
+      dispatch({
+        type: actionTypes.ADD_IND_ACTIVITIES,
+        payload: allActivities,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.ALL_IND_ACTIVITIES,
+        payload: allActivities,
+      });
+    }
   } else {
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
@@ -104,7 +111,6 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   dispatch({
     type: actionTypes.ALL_IND_REQUEST_COMPLETE,
   });
-  window.scrollTo(0, 0);
 };
 
 export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {
