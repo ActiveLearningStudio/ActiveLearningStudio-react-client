@@ -206,7 +206,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
 
-                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
+                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}/activities`} />
                 </Switch>
                 <Footer />
               </div>
