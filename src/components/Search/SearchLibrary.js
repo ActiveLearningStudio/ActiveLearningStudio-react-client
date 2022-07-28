@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+/* eslint-disable react/prop-types */
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Accordion, Card } from 'react-bootstrap';
@@ -37,10 +38,11 @@ const SearchLibrary = (props) => {
     permission,
     activities,
     activeMainSearchType,
+    setSearch,
+    setNoWords,
+    noWords,
   } = props;
-  useEffect(() => {
-    setSearchType(activities ? 'org_activities' : 'orgSearch');
-  });
+
   return (
     <Accordion defaultActiveKey="0">
       <Card>
@@ -59,213 +61,10 @@ const SearchLibrary = (props) => {
                 onChange={(e) => {
                   setSearchInput(e.target.value);
                 }}
-                onKeyPress={async (e) => {
-                  if (e.key === 'Enter') {
-                    if (!searchInput.trim() && searchType !== 'orgSearch' && searchType !== 'org_activities') {
-                      Swal.fire('Search field is required.');
-                    } else if (searchInput.length > 255) {
-                      Swal.fire('Character limit should be less than 255.');
-                    } else if (activeMainSearchType === 'Projects') {
-                      Swal.fire({
-                        title: 'Searching...', // add html attribute if you want or remove
-                        html: 'We are fetching results for you!',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                      });
-                      let dataSend;
-                      if (searchType === 'orgSearch') {
-                        dataSend = {
-                          phrase: searchInput.trim(),
-                          subjectArray: activeSubject,
-                          gradeArray: activeEducation,
-                          authorTagsArray: activeAuthorTag,
-                          authors: authorName || undefined,
-                          standardArray: activeType,
-                          type: searchType,
-                          from: 0,
-                          size: 20,
-                        };
-                      } else {
-                        dataSend = {
-                          phrase: searchInput.trim(),
-                          subjectArray: activeSubject,
-                          gradeArray: activeEducation,
-                          authorTagsArray: activeAuthorTag,
-                          authors: authorName || undefined,
-                          standardArray: activeType,
-                          type: searchType,
-                          from: 0,
-                          size: 20,
-                        };
-                      }
-                      const result = await dispatch(simpleSearchAction(dataSend));
-                      setTotalCount(result.meta?.total);
-                      const tempEducation = [];
-                      const tempSubject = [];
-                      const tempTag = [];
-                      if (activeEducation) {
-                        activeEducation.forEach((edu) => {
-                          if (String(edu).includes('&')) {
-                            const temp = String(edu).replace('&', 'and');
-                            tempEducation.push(temp);
-                          } else {
-                            tempEducation.push(edu);
-                          }
-                        });
-                        setActiveEducation(tempEducation);
-                      }
-                      if (activeSubject) {
-                        activeSubject.forEach((sub) => {
-                          if (String(sub).includes('&')) {
-                            const temp = String(sub).replace('&', 'and');
-                            tempSubject.push(temp);
-                          } else {
-                            tempSubject.push(sub);
-                          }
-                        });
-                        setActiveSubject(tempSubject);
-                      }
-                      if (activeAuthorTag) {
-                        activeAuthorTag.forEach((sub) => {
-                          if (String(sub).includes('&')) {
-                            const temp = String(sub).replace('&', 'and');
-                            tempTag.push(temp);
-                          } else {
-                            tempTag.push(sub);
-                          }
-                        });
-                        setActiveAuthorTag(tempTag);
-                      }
-                      if (!fromTeam) {
-                        // eslint-disable-next-line max-len
-                        history.push(
-                          `/org/${
-                            currentOrganization?.domain
-                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                        );
-                      }
-                    } else if (activeMainSearchType === 'Independent activities') {
-                      Swal.fire({
-                        title: 'Searching...', // add html attribute if you want or remove
-                        html: 'We are fetching results for you!',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                          Swal.showLoading();
-                        },
-                      });
-                      let dataSend;
-                      // eslint-disable-next-line prefer-const
-                      dataSend = {
-                        query: searchInput.trim(),
-                        subjectArray: activeSubject,
-                        gradeArray: activeEducation,
-                        authorTagsArray: activeAuthorTag,
-                        authors: authorName || undefined,
-                        standardArray: activeType,
-                        from: 0,
-                        size: 20,
-                      };
-                      const result = await dispatch(searchIndependentActivitiesAction(dataSend, searchType));
-                      setTotalCount(result?.meta?.total);
-                      const tempEducation = [];
-                      const tempSubject = [];
-                      const tempTag = [];
-                      if (activeEducation) {
-                        activeEducation.forEach((edu) => {
-                          if (String(edu).includes('&')) {
-                            const temp = String(edu).replace('&', 'and');
-                            tempEducation.push(temp);
-                          } else {
-                            tempEducation.push(edu);
-                          }
-                        });
-                        setActiveEducation(tempEducation);
-                      }
-                      if (activeSubject) {
-                        activeSubject.forEach((sub) => {
-                          if (String(sub).includes('&')) {
-                            const temp = String(sub).replace('&', 'and');
-                            tempSubject.push(temp);
-                          } else {
-                            tempSubject.push(sub);
-                          }
-                        });
-                        setActiveSubject(tempSubject);
-                      }
-                      if (activeAuthorTag) {
-                        activeAuthorTag.forEach((sub) => {
-                          if (String(sub).includes('&')) {
-                            const temp = String(sub).replace('&', 'and');
-                            tempTag.push(temp);
-                          } else {
-                            tempTag.push(sub);
-                          }
-                        });
-                        setActiveAuthorTag(tempTag);
-                      }
-                      if (!fromTeam) {
-                        // eslint-disable-next-line max-len
-                        history.push(
-                          `/org/${
-                            currentOrganization?.domain
-                          }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                        );
-                      }
-                    }
-                  }
-                }}
                 type="search"
                 placeholder="Search"
               />
 
-              {/* <div className="form-group">
-                <div className="radio-btns">
-                  {true && (
-                    <label>
-                      <input
-                        name="type"
-                        onChange={(e) => {
-                          setSearchType(e.target.value);
-                        }}
-                        value={activities ? 'my_activities' : 'private'}
-                        checked={searchType === 'private' || searchType === 'my_activities'}
-                        type="radio"
-                      />
-                      <span>{activities ? 'My Activities' : 'My Projects'}</span>
-                    </label>
-                  )}
-                  {true && (
-                    <label>
-                      <input
-                        name="type"
-                        onChange={(e) => {
-                          setSearchType(e.target.value);
-                        }}
-                        value={activities ? 'showcase_activities' : 'public'}
-                        checked={searchType === 'public' || searchType === 'showcase_activities'}
-                        type="radio"
-                      />
-                      <span>{activities ? 'All Shared Activities' : 'All Shared Projects'}</span>
-                    </label>
-                  )}
-                  {true && (
-                    <label>
-                      <input
-                        name="type"
-                        onChange={(e) => {
-                          setSearchType(e.target.value);
-                        }}
-                        value={activities ? 'org_activities' : 'orgSearch'}
-                        checked={searchType === 'orgSearch' || searchType === 'org_activities'}
-                        type="radio"
-                      />
-                      <span>{activities ? 'All Shared Activities In My Org' : 'All Shared Projects In My Org'}</span>
-                    </label>
-                  )}
-                </div>
-              </div> */}
               <div className="author-label">Does not contain</div>
               <div
                 className="form-group mb-form"
@@ -274,14 +73,14 @@ const SearchLibrary = (props) => {
                 }}
               >
                 <input
-                  placeholder="Park"
+                  placeholder=""
                   className="authorName"
-                  value={authorName}
+                  value={noWords}
                   onChange={({ target }) => {
                     if (target.value) {
-                      setAuthor(target.value);
+                      setNoWords(target.value);
                     } else {
-                      setAuthor('');
+                      setNoWords('');
                     }
                   }}
                 />
@@ -311,52 +110,34 @@ const SearchLibrary = (props) => {
                 onClick={async () => {
                   setFromDate(undefined);
                   setToDate(undefined);
+                  setSearch(null);
                   setActiveTab(fromTeam ? 'projects' : 'total');
-                  if (!searchInput.trim() && searchType !== 'orgSearch' && searchType !== 'org_activities') {
-                    Swal.fire('Search field is required.');
-                  } else if (searchInput.length > 255) {
+                  if (searchInput?.length > 255) {
                     Swal.fire('Character limit should be less than 255.');
-                  } else if (!searchType) {
-                    Swal.fire('Search type is required. Click one of the radio buttons.');
                   } else if (activeMainSearchType === 'Projects') {
-                    Swal.fire({
-                      title: 'Searching...', // add html attribute if you want or remove
-                      html: 'We are fetching results for you!',
-                      allowOutsideClick: false,
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                    });
-                    let dataSend;
-                    if (searchType === 'orgSearch') {
-                      dataSend = {
-                        phrase: searchInput.trim(),
-                        subjectArray: activeSubject,
-                        gradeArray: activeEducation,
-                        authorTagsArray: activeAuthorTag,
-                        standardArray: activeType,
-                        author: authorName || undefined,
-                        fromDate: fromdate || undefined,
-                        toDate: todate || undefined,
-                        type: searchType,
-                        from: 0,
-                        size: 20,
-                      };
-                    } else {
-                      dataSend = {
-                        phrase: searchInput.trim(),
-                        subjectArray: activeSubject,
-                        author: authorName || undefined,
-                        fromDate: fromdate || undefined,
-                        toDate: todate || undefined,
-                        gradeArray: activeEducation,
-                        authorTagsArray: activeAuthorTag,
-                        standardArray: activeType,
-                        type: searchType,
-                        from: 0,
-                        size: 20,
-                      };
-                    }
+                    // Swal.fire({
+                    //   title: 'Searching...', // add html attribute if you want or remove
+                    //   html: 'We are fetching results for you!',
+                    //   allowOutsideClick: false,
+                    //   onBeforeOpen: () => {
+                    //     Swal.showLoading();
+                    //   },
+                    // });
+                    const dataSend = {
+                      phrase: searchInput?.trim(),
+                      subjectArray: activeSubject,
+                      gradeArray: activeEducation,
+                      authorTagsArray: activeAuthorTag,
+                      standardArray: activeType,
+                      author: authorName || undefined,
+                      fromDate: fromdate || undefined,
+                      toDate: todate || undefined,
+                      type: searchType,
+                      from: 0,
+                      size: 20,
+                      no_words: noWords || undefined,
+                    };
+
                     const result = await dispatch(simpleSearchAction(dataSend));
                     setTotalCount(result.meta?.total);
                     const tempEducation = [];
@@ -397,25 +178,25 @@ const SearchLibrary = (props) => {
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
-                      history.push(
-                        `/org/${
-                          currentOrganization?.domain
-                        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                      );
+                      // history.push(
+                      //   `/org/${
+                      //     currentOrganization?.domain
+                      //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                      // );
                     }
                   } else if (activeMainSearchType === 'Independent activities') {
-                    Swal.fire({
-                      title: 'Searching...', // add html attribute if you want or remove
-                      html: 'We are fetching results for you!',
-                      allowOutsideClick: false,
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                    });
+                    // Swal.fire({
+                    //   title: 'Searching...', // add html attribute if you want or remove
+                    //   html: 'We are fetching results for you!',
+                    //   allowOutsideClick: false,
+                    //   onBeforeOpen: () => {
+                    //     Swal.showLoading();
+                    //   },
+                    // });
                     let dataSend;
                     // eslint-disable-next-line prefer-const
                     dataSend = {
-                      query: searchInput.trim(),
+                      query: searchInput?.trim(),
                       subjectArray: activeSubject,
                       gradeArray: activeEducation,
                       authorTagsArray: activeAuthorTag,
@@ -423,8 +204,9 @@ const SearchLibrary = (props) => {
                       standardArray: activeType,
                       from: 0,
                       size: 20,
+                      no_words: noWords || undefined,
                     };
-                    const result = await dispatch(searchIndependentActivitiesAction(dataSend, searchType));
+                    const result = await dispatch(searchIndependentActivitiesAction(dataSend, 'showcase_activities'));
                     setTotalCount(result?.meta?.total);
                     const tempEducation = [];
                     const tempSubject = [];
@@ -464,11 +246,11 @@ const SearchLibrary = (props) => {
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
-                      history.push(
-                        `/org/${
-                          currentOrganization?.domain
-                        }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                      );
+                      // history.push(
+                      //   `/org/${
+                      //     currentOrganization?.domain
+                      //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+                      // );
                     }
                   }
                   // setModalShow(true);
@@ -516,6 +298,7 @@ SearchLibrary.propTypes = {
   permission: PropTypes.object.isRequired,
   activities: PropTypes.bool,
   activeMainSearchType: PropTypes.string.isRequired,
+  setSearch: PropTypes.func.isRequired,
 };
 SearchLibrary.defaultProps = {
   activities: false,
