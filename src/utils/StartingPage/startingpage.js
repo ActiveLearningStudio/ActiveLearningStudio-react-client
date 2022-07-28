@@ -8,13 +8,13 @@ import classNames from 'classnames';
 import './startingpage.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
-const StartingPage = ({ className, primaryColor = '#2E68BF', createBtnTitle, createTitle, createDetail, helpBtnTitle, helpTitle, helpDetail, onClick = () => {} }) => {
+const StartingPage = ({ className, primaryColor = '#2E68BF', mainHeading, createBtnTitle, createTitle, createDetail, helpBtnTitle, helpTitle, helpDetail, onClick = () => {} }) => {
   const currikiUtility = classNames('curriki-utility-startpage', className);
   return (
     <div className={currikiUtility}>
       <div className="startpage-section">
         <div className="section-detail">
-          <h1>Hello!</h1>
+          <h1>{mainHeading}</h1>
           <h2 className="create-section-h2-space">{createTitle}</h2>
           <p className="prap-width">{createDetail}</p>
         </div>
@@ -61,6 +61,7 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', createBtnTitle, cre
 StartingPage.propTypes = {
   className: PropTypes.string,
   primaryColor: PropTypes.string,
+  mainHeading: PropTypes.string,
   createBtnTitle: PropTypes.string,
   createTitle: PropTypes.string,
   createDetail: PropTypes.string,

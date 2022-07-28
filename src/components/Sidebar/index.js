@@ -106,7 +106,7 @@ function Sidebar(props) {
                 <path d="M4.6001 4.59961H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4.6001 15.3999H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <div className="sidebar-headings">Activities</div>
+              <div className="sidebar-headings">My Activities</div>
             </div>
           </Link>
         </>
@@ -164,7 +164,7 @@ function Sidebar(props) {
                 <path d="M18.9999 18.9999L14.6499 14.6499" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
 
-              <div className="sidebar-headings">Library</div>
+              <div className="sidebar-headings">Explore Library</div>
             </div>
           </Link>
         </>

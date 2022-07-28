@@ -56,11 +56,11 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select layout" tabActive />
-        <Tabs text="2. Describe and create layout" className="ml-10 " />
+        <Tabs text="1. Select Activity" tabActive />
+        <Tabs text="2. Describe and Create Activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select layout" color="#084892" />
+        <HeadingTwo text="Select Activity" color="#084892" />
       </div>
 
       {/* <form className="radio-group ">
@@ -209,7 +209,7 @@ const ActivityLayout = (props) => {
                 </div>
                 <HeadingText text={layout.description} color="#515151" />
               </Taber.Tab>
-              <Taber.Tab eventKey="demo" title="Sample Activity">
+              <Taber.Tab eventKey="demo" title="Video Tutorial">
                 {layout.demo_activity_id ? (
                   <>
                     <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
@@ -233,7 +233,7 @@ const ActivityLayout = (props) => {
                   onClick={() => {
                     if (layout.title === 'Interactive Video') {
                       changeScreenHandler('addvideo');
-                    } else if (layout.title === 'Course Presentation'){
+                    } else if (layout.title === 'Course Presentation') {
                       changeScreenHandler('coursepresentation');
                     } else {
                       changeScreenHandler('addactivity');

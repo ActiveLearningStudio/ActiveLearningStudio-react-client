@@ -44,7 +44,7 @@ import { Dropdown } from 'react-bootstrap';
 import './style.scss';
 import StartingPage from 'utils/StartingPage/startingpage';
 // import MyProjects from "./MyProjects";
-const ImgLoader = () => <img src={loader} alt='loader' />;
+const ImgLoader = () => <img src={loader} alt="loader" />;
 export const ProjectsPage = (props) => {
   const allStateProject = useSelector((state) => state.project);
   const [show, setShow] = useState(false);
@@ -371,7 +371,7 @@ export const ProjectsPage = (props) => {
     <>
       <div className={`content-wrapper ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
-          <div className=''>
+          <div className="">
             <Headline setCreateProject={setCreateProject} />
             {permission?.Project?.includes('project:view') ? (
               <Tabs
@@ -386,18 +386,18 @@ export const ProjectsPage = (props) => {
                     setType('team');
                   }
                 }}
-                className='main-tabs'
+                className="main-tabs"
                 defaultActiveKey={activeTab}
-                id='uncontrolled-tab-example'
+                id="uncontrolled-tab-example"
               >
-                <Tab eventKey='My Projects' title='My Projects'>
+                <Tab eventKey="My Projects" title="My Projects">
                   {allProjects?.length > 0 && projectDivider?.length > 0 && (
-                    <div className='my-project-cards-top-search-filter'>
-                      <div className='search-bar'>
+                    <div className="my-project-cards-top-search-filter">
+                      <div className="search-bar">
                         <input
-                          className=''
-                          type='text'
-                          placeholder='Search'
+                          className=""
+                          type="text"
+                          placeholder="Search Project..."
                           value={searchQuery}
                           onChange={(e) => {
                             setsearchQuery(e.target.value);
@@ -407,30 +407,30 @@ export const ProjectsPage = (props) => {
                         />
 
                         <svg
-                          width='24'
-                          height='24'
-                          viewBox='0 0 24 24'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
                           style={{ cursor: 'pointer' }}
                           onClick={() => loadMyProjects(activePage, 10, searchQuery)}
                         >
                           <path
-                            d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
+                            d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                             stroke={primaryColor}
-                            strokeWidth='2'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
-                          <path d='M21 20.9984L16.65 16.6484' stroke={primaryColor} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
+                          <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <div className='activity-counter'>
-                        <div className='pagination-counter drop-counter '>
+                      <div className="activity-counter">
+                        <div className="pagination-counter drop-counter ">
                           My Project per page
                           <span>
                             <Dropdown>
-                              <Dropdown.Toggle id='dropdown-basic'>{defaultSize}</Dropdown.Toggle>
+                              <Dropdown.Toggle id="dropdown-basic">{defaultSize}</Dropdown.Toggle>
 
                               <Dropdown.Menu>
                                 <Dropdown.Item
@@ -484,12 +484,12 @@ export const ProjectsPage = (props) => {
                     </div> */}
                     </div>
                   )}
-                  <div className='row'>
-                    <div className='col-md-12'>
+                  <div className="row">
+                    <div className="col-md-12">
                       {allStateProject?.isProjectLoading ? (
                         allProjects?.length > 0 && projectDivider?.length > 0 ? (
                           <>
-                            <div className='project-list-all'>
+                            <div className="project-list-all">
                               {/* <div className="add-project-block">
 
                             </div> */}
@@ -501,13 +501,13 @@ export const ProjectsPage = (props) => {
                                     droppableId={rowData.id}
                                     // direction="horizontal"
                                     // type="row"
-                                    className='drag-class'
-                                    direction='horizontal'
+                                    className="drag-class"
+                                    direction="horizontal"
                                   >
                                     {(provided) => (
                                       <>
                                         <div {...provided.droppableProps} ref={provided.innerRef}>
-                                          <div className='check-home' id={value}>
+                                          <div className="check-home" id={value}>
                                             {/* <div id={value}> */}
 
                                             {rowData.collection.map((proj, index) => {
@@ -519,35 +519,35 @@ export const ProjectsPage = (props) => {
                                               return index === 0 && indexFirst === 0 ? (
                                                 permission?.Project?.includes('project:create') && (
                                                   <div
-                                                    className='Add-my-project-section playlist-resource'
+                                                    className="Add-my-project-section playlist-resource"
                                                     onClick={() => {
                                                       setCurrentVisibilityType(null);
                                                       setCreateProject(true);
                                                     }}
                                                   >
-                                                    <svg width='52' height='52' viewBox='0 0 52 52' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                                                    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                       <path
-                                                        d='M2 26C2.03441 26 34.0143 26.0003 50 26.0005'
+                                                        d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005"
                                                         stroke={primaryColor}
-                                                        stroke-width='4'
-                                                        stroke-linecap='round'
-                                                        stroke-linejoin='round'
+                                                        stroke-width="4"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
                                                       />
                                                       <path
-                                                        d='M26 50C26 49.9656 26 17.9857 26 2'
+                                                        d="M26 50C26 49.9656 26 17.9857 26 2"
                                                         stroke={primaryColor}
-                                                        stroke-width='4'
-                                                        stroke-linecap='round'
-                                                        stroke-linejoin='round'
+                                                        stroke-width="4"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
                                                       />
                                                     </svg>
-                                                    <span>Create new project</span>
+                                                    <span>Create New Project</span>
                                                   </div>
                                                 )
                                               ) : (
                                                 <Draggable key={proj.id} draggableId={`${proj.id}`} index={index}>
                                                   {(provid) => (
-                                                    <div className='playlist-resource' ref={provid.innerRef} {...provid.draggableProps} {...provid.dragHandleProps}>
+                                                    <div className="playlist-resource" ref={provid.innerRef} {...provid.draggableProps} {...provid.dragHandleProps}>
                                                       <ProjectCard
                                                         key={proj.id}
                                                         project={proj}
@@ -580,14 +580,14 @@ export const ProjectsPage = (props) => {
                         ) : (
                           // <Initialpage />
                           <StartingPage
-                            createBtnTitle='Create new project'
-                            createTitle='Start creating engaging activities.'
-                            createDetail='We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                          Start by creating a new Activity or choose a guide from the right to learn more.'
-                            helpBtnTitle='Help center'
-                            helpTitle='Learn how it works'
-                            helpDetail='Create your learning content using interactive activities.
-                          Organize your content by projects.'
+                            createBtnTitle="Create New Project"
+                            createTitle="Start creating engaging activities."
+                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
+                          Start by creating a new Activity or choose a guide from the right to learn more."
+                            helpBtnTitle="Help center"
+                            helpTitle="Learn how it works"
+                            helpDetail="Create your learning content using interactive activities.
+                          Organize your content by projects."
                             primaryColor={primaryColor}
                             onClick={() => {
                               setCurrentVisibilityType(null);
@@ -596,7 +596,7 @@ export const ProjectsPage = (props) => {
                           />
                         )
                       ) : (
-                        <div className='d-flex '>
+                        <div className="d-flex ">
                           <ProjectCardSkeleton />
                           <ProjectCardSkeleton />
                           <ProjectCardSkeleton />
@@ -604,21 +604,21 @@ export const ProjectsPage = (props) => {
                       )}
                     </div>
                     {allStateProject?.islazyLoader && activePage !== 1 && allProjects?.length > 0 && (
-                      <div className='col-md-12 text-center'>
+                      <div className="col-md-12 text-center">
                         <ImgLoader />
                       </div>
                     )}
                   </div>
                 </Tab>
                 {permission?.Project?.includes('project:favorite') && (
-                  <Tab eventKey='Favorite Projects' title='Favorite Projects'>
-                    <div className='row'>
-                      <div className='col-md-12' style={{ display: 'none' }}>
-                        <div className='program-page-title'>
+                  <Tab eventKey="Favorite Projects" title="Favorite Projects">
+                    <div className="row">
+                      <div className="col-md-12" style={{ display: 'none' }}>
+                        <div className="program-page-title">
                           <h1>Favorite Projects</h1>
                           {showSampleSort && favProject.length === 0 && (
-                            <div className='project-page-settings'>
-                              <div className='sort-project-btns'>
+                            <div className="project-page-settings">
+                              <div className="sort-project-btns">
                                 <div
                                   className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                   onClick={() => {
@@ -629,7 +629,7 @@ export const ProjectsPage = (props) => {
                                     divideProjects(allProjects);
                                   }}
                                 >
-                                  <FontAwesomeIcon icon='bars' />
+                                  <FontAwesomeIcon icon="bars" />
                                 </div>
                                 <div
                                   className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
@@ -639,7 +639,7 @@ export const ProjectsPage = (props) => {
                                     divideProjects(allProjects);
                                   }}
                                 >
-                                  <FontAwesomeIcon icon='grip-horizontal' />
+                                  <FontAwesomeIcon icon="grip-horizontal" />
                                 </div>
                                 <div
                                   className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
@@ -649,7 +649,7 @@ export const ProjectsPage = (props) => {
                                     divideProjects(allProjects);
                                   }}
                                 >
-                                  <FontAwesomeIcon icon='th-large' />
+                                  <FontAwesomeIcon icon="th-large" />
                                 </div>
                               </div>
                             </div>
@@ -657,8 +657,8 @@ export const ProjectsPage = (props) => {
                         </div>
                       </div>
 
-                      <div className='col-md-12'>
-                        <div className='flex-smaple'>
+                      <div className="col-md-12">
+                        <div className="flex-smaple">
                           {favProject.length > 0 ? (
                             <SampleProjectCard
                               projects={favProject}
@@ -669,22 +669,22 @@ export const ProjectsPage = (props) => {
                               setShowSampleSort={setShowSampleSort}
                             />
                           ) : (
-                            <Alert variant='warning'>No Favorite Project found.</Alert>
+                            <Alert variant="warning">No Favorite Project found.</Alert>
                           )}
                         </div>
                       </div>
                     </div>
                   </Tab>
                 )}
-                <Tab eventKey='Sample Projects' ref={samplerRef} title='Sample Projects'>
-                  <div className='row'>
-                    <div className='col-md-12' style={{ display: 'none' }}>
-                      <div className='program-page-title'>
+                <Tab eventKey="Sample Projects" ref={samplerRef} title="Sample Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: 'none' }}>
+                      <div className="program-page-title">
                         <h1>Sample Projects</h1>
 
                         {showSampleSort && sampleProject.length === 0 && (
-                          <div className='project-page-settings'>
-                            <div className='sort-project-btns'>
+                          <div className="project-page-settings">
+                            <div className="sort-project-btns">
                               <div
                                 className={activeFilter === 'list-grid' ? 'sort-btn active' : 'sort-btn'}
                                 onClick={() => {
@@ -695,7 +695,7 @@ export const ProjectsPage = (props) => {
                                   divideProjects(allProjects);
                                 }}
                               >
-                                <FontAwesomeIcon icon='bars' />
+                                <FontAwesomeIcon icon="bars" />
                               </div>
                               <div
                                 className={activeFilter === 'small-grid' ? 'sort-btn active' : 'sort-btn'}
@@ -705,7 +705,7 @@ export const ProjectsPage = (props) => {
                                   divideProjects(allProjects);
                                 }}
                               >
-                                <FontAwesomeIcon icon='grip-horizontal' />
+                                <FontAwesomeIcon icon="grip-horizontal" />
                               </div>
                               <div
                                 className={activeFilter === 'normal-grid' ? 'sort-btn active' : 'sort-btn'}
@@ -715,7 +715,7 @@ export const ProjectsPage = (props) => {
                                   divideProjects(allProjects);
                                 }}
                               >
-                                <FontAwesomeIcon icon='th-large' />
+                                <FontAwesomeIcon icon="th-large" />
                               </div>
                             </div>
                           </div>
@@ -723,8 +723,8 @@ export const ProjectsPage = (props) => {
                       </div>
                     </div>
 
-                    <div className='col-md-12'>
-                      <div className='flex-smaple'>
+                    <div className="col-md-12">
+                      <div className="flex-smaple">
                         {sampleProject.length > 0 ? (
                           <SampleProjectCard
                             projects={sampleProject}
@@ -735,27 +735,27 @@ export const ProjectsPage = (props) => {
                             setShowSampleSort={setShowSampleSort}
                           />
                         ) : (
-                          <Alert variant='warning'> No sample project found.</Alert>
+                          <Alert variant="warning"> No sample project found.</Alert>
                         )}
                       </div>
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey='Team Projects' title='Team Projects'>
-                  <div className='row'>
-                    <div className='col-md-12' style={{ display: 'none' }}>
-                      <div className='program-page-title'>
+                <Tab eventKey="Team Projects" title="Team Projects">
+                  <div className="row">
+                    <div className="col-md-12" style={{ display: 'none' }}>
+                      <div className="program-page-title">
                         <h1>Team Projects</h1>
                       </div>
                     </div>
-                    <div className='col-md-12'>
+                    <div className="col-md-12">
                       {showSampleSort && (
-                        <div className='search-bar-team-tab'>
-                          <input type='text' placeholder='Search team projects' value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
-                          <img src={searchimg} alt='search' onClick={handleSearchQueryTeams} />
+                        <div className="search-bar-team-tab">
+                          <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                          <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
                         </div>
                       )}
-                      <div className='flex-smaple'>
+                      <div className="flex-smaple">
                         {teamProjects.length > 0 ? (
                           <SampleProjectCard
                             projects={teamProjects}
@@ -769,13 +769,13 @@ export const ProjectsPage = (props) => {
                             setProjectId={setProjectId}
                           />
                         ) : (
-                          <Alert variant='warning'>No Team Project found.</Alert>
+                          <Alert variant="warning">No Team Project found.</Alert>
                         )}
                       </div>
                     </div>
                   </div>
-                  <div className='pagination-top-team'>
-                    <div className='pagination_state'>
+                  <div className="pagination-top-team">
+                    <div className="pagination_state">
                       {showSampleSort && teamProjects.length > 0 && (
                         <Pagination
                           activePage={activePage}
@@ -794,14 +794,14 @@ export const ProjectsPage = (props) => {
                 </Tab>
               </Tabs>
             ) : (
-              <Alert variant='danger'> You are not authorized to view Projects</Alert>
+              <Alert variant="danger"> You are not authorized to view Projects</Alert>
             )}
           </div>
         </div>
       </div>
       {createProject && <NewProjectPage project={project} handleCloseProjectModal={setCreateProject} />}
 
-      {showDeletePlaylistPopup && <DeletePopup {...props} deleteType='Project' />}
+      {showDeletePlaylistPopup && <DeletePopup {...props} deleteType="Project" />}
 
       <GoogleModel
         projectId={selectedProjectId}
