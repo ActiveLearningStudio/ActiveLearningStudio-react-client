@@ -1,16 +1,11 @@
-import {
-  SEARCH_REDUX,
-  CLEAR_SEARCH,
-  SELECT_EXISTING_ACTIVITY,
-  RESET_EXISTING_ACTIVITY,
-  SET_SEARCH_TYPE,
-} from '../actionTypes';
+// eslint-disable-next-line object-curly-newline
+import { SEARCH_REDUX, CLEAR_SEARCH, SELECT_EXISTING_ACTIVITY, RESET_EXISTING_ACTIVITY, SET_SEARCH_TYPE } from '../actionTypes';
 
 const INITIAL_STATE = {
   searchResult: {},
   searchQuery: '',
   searchMeta: {},
-  searchType: 'Projects',
+  searchType: 'Independent activities',
   existingActivitySearchSelected: null,
 };
 
