@@ -222,11 +222,11 @@ export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
-      payload: { projects },
+      payload: response,
     });
     window.scrollTo(0, 0);
     dispatch({
@@ -297,10 +297,10 @@ export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dis
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const projects = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
     dispatch({
       type: actionTypes.LOAD_MY_CLONE_PROJECTS,
-      payload: projects,
+      payload: response,
     });
   } catch (e) {
     dispatch({

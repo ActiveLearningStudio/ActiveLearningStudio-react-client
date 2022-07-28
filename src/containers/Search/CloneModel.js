@@ -35,7 +35,7 @@ function LtiProjectShared(props) {
   console.log('prop', clone);
 
   const onScroll = () => {
-    if (scrollerRef.current) {
+    if (scrollerRef.current && page < project?.projectMeta?.last_page) {
       const { scrollTop, scrollHeight, clientHeight } = scrollerRef.current;
       if (scrollTop + clientHeight >= scrollHeight) {
         setSize(10);

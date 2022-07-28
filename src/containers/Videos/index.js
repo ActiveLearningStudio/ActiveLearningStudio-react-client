@@ -110,7 +110,7 @@ const Index = ({ activities }) => {
   };
   window.onscroll = function () {
     var scrollerHeight = document.body.scrollHeight - 1;
-    if (allActivities) {
+    if (allActivities && activescreenType === allActivities && ActivePage < allActivities?.meta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
         setActivePage(ActivePage + 1);
         setisLoader(true);
@@ -126,7 +126,7 @@ const Index = ({ activities }) => {
     if (ActivePage > 0) {
       dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
     }
-  }, [ActivePage]);
+  }, [ActivePage, searchQuery]);
 
   return (
     <>
@@ -389,13 +389,14 @@ const Index = ({ activities }) => {
                             value={searchQuery}
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
-                              if (activeOrganization) {
-                                if (e.target.value.trim()) {
-                                  dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize, e.target.value));
-                                } else {
-                                  dispatch(allIndActivity(activeOrganization.id));
-                                }
-                              }
+                              setActivePage(1);
+                              // if (activeOrganization) {
+                              //   if (e.target.value.trim()) {
+                              //     dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize, e.target.value));
+                              //   } else {
+                              //     dispatch(allIndActivity(activeOrganization.id));
+                              //   }
+                              // }
                             }}
                             placeholder='Search'
                           />

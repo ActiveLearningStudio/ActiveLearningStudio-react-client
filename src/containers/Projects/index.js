@@ -297,12 +297,12 @@ export const ProjectsPage = (props) => {
   }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
 
   window.onscroll = function () {
-    // if (!isLoader) {
-    if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-      setActivePage(activePage + 1);
-      setisLoader(true);
+    if (allProjects?.length > 0 && activePage < allStateProject?.projectMeta?.last_page) {
+      if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+        setActivePage(activePage + 1);
+        setisLoader(true);
+      }
     }
-    // }
   };
 
   useEffect(() => {
@@ -603,7 +603,7 @@ export const ProjectsPage = (props) => {
                         </div>
                       )}
                     </div>
-                    {allStateProject?.islazyLoader && activePage !== 1 && (
+                    {allStateProject?.islazyLoader && activePage !== 1 && allProjects?.length > 0 && (
                       <div className='col-md-12 text-center'>
                         <ImgLoader />
                       </div>
