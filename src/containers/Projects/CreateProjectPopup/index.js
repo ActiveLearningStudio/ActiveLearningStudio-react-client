@@ -15,9 +15,9 @@ import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction,
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
-import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
-import { result } from 'lodash';
+import { clonePlaylist, cloneActivity } from 'store/actions/search';
 
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
@@ -26,8 +26,9 @@ let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, project, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
-  const { name, description, vType } = values;
+  const { history, activity, project, searchView, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
+
+  const { name, description } = values;
   var result;
   if (addtoProject) {
     Swal.fire({
@@ -61,20 +62,41 @@ const onSubmit = async (values, dispatch, props) => {
               }),
         );
         if (result) {
-          selectedProjectstoAdd?.map((id) => {
-            dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
-          });
-          Swal.fire({
-            title: 'Your request is being processed.',
-            text: 'Please refresh after a moment.',
-            icon: 'success',
-            showCancelButton: false,
-            confirmButtonText: 'Close',
-            customClass: {
-              confirmButton: 'confirmation-close-btn',
-            },
-          });
-          history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          if (searchView) {
+            if (activity.clone.model == 'Playlist') {
+              clonePlaylist(result.id, activity.clone?.id);
+            } else {
+              cloneActivity(result.playlists[0].id, activity.clone?.id);
+            }
+            Swal.fire({
+              title: 'Your request is being processed.',
+              text: 'Please refresh after a moment.',
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',
+              },
+            });
+            history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          } else {
+            dispatch(moveActivityPlaylist(result.playlists[0].id, selectedProjectstoAdd));
+            Swal.fire({
+              title: 'Your request is being processed.',
+              text: 'Please refresh after a moment.',
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',
+              },
+            });
+            history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          }
+
+          // selectedProjectstoAdd?.map((id) => {
+          //   dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
+          // });
         }
       }
     });
@@ -129,7 +151,8 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch) =
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, project, searchView, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
@@ -147,6 +170,7 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
+  console.log(props);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
