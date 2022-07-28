@@ -212,7 +212,30 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   });
   return thumbUrl;
 };
+export const addMyproject = (page, size, searchQuery) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
 
+    dispatch({
+      type: actionTypes.ADD_MY_PROJECTS,
+      payload: response,
+    });
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  }
+};
 export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
@@ -228,7 +251,6 @@ export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch
       type: actionTypes.LOAD_MY_PROJECTS,
       payload: response,
     });
-    window.scrollTo(0, 0);
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -300,6 +322,38 @@ export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dis
     const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
     dispatch({
       type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+    window.scrollTo(0, 0);
+  }
+};
+
+export const addCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    dispatch({
+      type: actionTypes.ADD_MY_CLONE_PROJECTS,
       payload: response,
     });
   } catch (e) {
