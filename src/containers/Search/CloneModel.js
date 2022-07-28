@@ -278,7 +278,7 @@ function LtiProjectShared(props) {
                                                               dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
                                                             }
                                                           } else {
-                                                            cloneActivity(data2.id, clone.id);
+                                                            cloneActivity(data2.id, clone.clone.id);
                                                           }
                                                         }
                                                       });
@@ -342,24 +342,28 @@ function LtiProjectShared(props) {
                                 <p>Playlist Count: {data.playlists?.length}</p>
                               </div>
                             </div>
-                            <div
-                              onClick={() => {
-                                Swal.fire({
-                                  html: `Are you sure you want to copy this playlist?`,
-                                  showCancelButton: true,
-                                  confirmButtonColor: '#3085d6',
-                                  cancelButtonColor: '#d33',
-                                  confirmButtonText: 'Yes',
-                                  icon: 'info',
-                                }).then(async (result) => {
-                                  if (result.isConfirmed) {
-                                    clonePlaylist(currentProject.id, clone?.clone?.id);
-                                  }
-                                });
-                              }}
-                              className={`copy-here copy-here-unselected`}
-                            >
-                              <span>Copy Here</span>
+                            <div className="activity-project-playlist" style={{ height: '38px', cursor: 'pointer' }}>
+                              <div className="playlist-title-copy-text">
+                                <div
+                                  onClick={() => {
+                                    Swal.fire({
+                                      html: `Are you sure you want to copy this playlist?`,
+                                      showCancelButton: true,
+                                      confirmButtonColor: '#3085d6',
+                                      cancelButtonColor: '#d33',
+                                      confirmButtonText: 'Yes',
+                                      icon: 'info',
+                                    }).then(async (result) => {
+                                      if (result.isConfirmed) {
+                                        clonePlaylist(currentProject.id, clone?.clone?.id);
+                                      }
+                                    });
+                                  }}
+                                  className={`copy-here copy-here-unselected`}
+                                >
+                                  <span>Copy Here</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </span>
