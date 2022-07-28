@@ -68,7 +68,7 @@ const Index = ({ activities }) => {
       dispatch(getAllVideos(activeOrganization.id));
     }
     if (activeOrganization && activities) {
-      dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize, searchQuery));
+      dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize));
     }
     if (activities) {
       setActiveScreenPage('allActivities');
@@ -121,9 +121,14 @@ const Index = ({ activities }) => {
     console.log('Currently scrolled from top (px):', window.scrollY);
     console.log('Document height(px):', document.body.scrollHeight);
   };
+  // useEffect(() => {
+  //   if (ActivePage === 1 && searchQuery) {
+  //     dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
+  //   }
+  // }, [activesearchQuery]);
 
   useEffect(() => {
-    if (ActivePage > 0) {
+    if (ActivePage) {
       dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
     }
   }, [ActivePage, searchQuery]);
