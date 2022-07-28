@@ -48,7 +48,7 @@ export function MyVerticallyCenteredModal(props) {
 
       <Modal.Body>
         <div>
-          <CloneModel clone={props} />
+          <CloneModel clone={props} searchView={true} />
         </div>
       </Modal.Body>
     </Modal>
@@ -1609,7 +1609,7 @@ function SearchInterface(props) {
                                                       </Dropdown.Item>
                                                     </>
                                                   )}
-                                                  <Dropdown.Item>
+                                                  {/* <Dropdown.Item>
                                                     <div className="dropDown-item-name-icon">
                                                       <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path
@@ -1642,7 +1642,7 @@ function SearchInterface(props) {
                                                       </svg>
                                                       Copy to My teams
                                                     </div>
-                                                  </Dropdown.Item>
+                                                  </Dropdown.Item> */}
                                                   {/* {permission?.Project?.includes(
                                                   "project:publish"
                                                 ) && (
