@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import { useHistory } from 'react-router-dom';
 
-import { loadMyCloneProjectsAction } from 'store/actions/project';
+import { loadMyCloneProjectsAction, addCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyProjectsCreate from 'containers/Projects/CreateProjectPopup';
@@ -16,7 +16,7 @@ import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/p
 import Buttons from 'utils/Buttons/buttons';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import loader from 'assets/images/loader.svg';
-const ImgLoader = () => <img src={loader} alt="loader" />;
+const ImgLoader = () => <img src={loader} alt='loader' />;
 function LtiProjectShared(props) {
   const { clone, searchView } = props;
   const [setShowProjectCard, setShowCreateProject] = useState(false);
@@ -27,6 +27,7 @@ function LtiProjectShared(props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setpage] = useState(1);
   const [size, setSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(10);
   const scrollerRef = useRef();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -43,39 +44,47 @@ function LtiProjectShared(props) {
       }
     }
   };
-
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(
-      loadMyCloneProjectsAction(page, size, searchQuery),
+      loadMyCloneProjectsAction(page, defaultSize, searchQuery),
       // loadMyProjectsAction(),
     );
-    window.scrollTo(0, 0);
-  }, [dispatch, page, searchQuery]);
+  }, [dispatch, defaultSize, searchQuery]);
+
+  useEffect(() => {
+    if (page > 1) {
+      dispatch(
+        addCloneProjectsAction(page, size, searchQuery),
+        // loadMyProjectsAction(),
+      );
+    }
+  }, [dispatch, page]);
 
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
 
   return (
     <>
-      <div className="lti-all-project">
+      <div className='lti-all-project'>
         {!setShowProjectCard && (
-          <div className="information-clone-model">
+          <div className='information-clone-model'>
             {!clone.selectedProjectstoAdd && (
               <>
                 <p>
                   Select a {clone.clone.model === 'Activity' ? 'Playlist' : 'Project'} from your library that you would like to place this {clone.clone.model}.
                 </p>
 
-                <div className="active-resource-update active-resource-update-space">
+                <div className='active-resource-update active-resource-update-space'>
                   <div
-                    className="backgroundimg-clone"
+                    className='backgroundimg-clone'
                     style={{
                       backgroundImage: clone.clone.thumb_url?.includes('pexels.com')
                         ? `url(${clone.clone.thumb_url})`
                         : `url(${global.config.resourceUrl}${clone.clone.thumb_url})`,
                     }}
                   />
-                  <div className="active-resource-detail">
+                  <div className='active-resource-detail'>
                     <h6>{clone.clone.title}</h6>
                     {clone.clone.model === 'Activity' && <p>Explore America’s national parks. Discover our most treasured places. From science t...</p>}
                     <p>
@@ -91,48 +100,47 @@ function LtiProjectShared(props) {
               </>
             )}
             <div className={`clone-searching-section ${clone.ind ? 'clone-searching-section-margin-ind' : 'clone-searching-section-margin'}`}>
-              <div className="search-and-filters">
-                <div className="search-bar">
+              <div className='search-and-filters'>
+                <div className='search-bar'>
                   <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search activity"
+                    type='text'
+                    className='search-input'
+                    placeholder='Search activity'
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
-                      setSize(10);
                       setpage(1);
                       // handlerSearchResult(e.target.value);
                     }}
                   />
 
                   <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    width='24'
+                    height='24'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
                     // onClick={searchQueryHandler}
                     onClick={() =>
                       dispatch(
-                        loadMyCloneProjectsAction(page, size, searchQuery),
+                        loadMyCloneProjectsAction(page, defaultSize, searchQuery),
                         // loadMyProjectsAction(),
                       )
                     }
                   >
                     <path
-                      d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
+                      d='M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z'
                       stroke={primaryColor}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeWidth='2'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                     />
-                    <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d='M21 20.9984L16.65 16.6484' stroke={primaryColor} strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' />
                   </svg>
                 </div>
 
                 <div>
-                  <Buttons primary text="Create Project" icon={faPlus} iconColor={secondaryColor} width="155px" height="32px" hover onClick={() => setShowCreateProject(true)} />
+                  <Buttons primary text='Create Project' icon={faPlus} iconColor={secondaryColor} width='155px' height='32px' hover onClick={() => setShowCreateProject(true)} />
                 </div>
               </div>
             </div>
@@ -141,11 +149,11 @@ function LtiProjectShared(props) {
 
         {/* className information-clone*/}
         {setShowProjectCard && (
-          <div className=" information-clone-model information-clone-model-project ">
-            <div onClick={() => setShowCreateProject(false)} className="clone-back-option-project">
+          <div className=' information-clone-model information-clone-model-project '>
+            <div onClick={() => setShowCreateProject(false)} className='clone-back-option-project'>
               <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
             </div>
-            <h3 className="clone-create-project-headng">Create Project</h3>
+            <h3 className='clone-create-project-headng'>Create Project</h3>
             <MyProjectsCreate project={project} activity={clone} searchView={searchView} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
           </div>
         )}
@@ -156,12 +164,12 @@ function LtiProjectShared(props) {
             {clone.clone.model === 'Activity' || clone.ind ? (
               <div>
                 {' '}
-                <Accordion className="list-add-project-activity-accordion">
-                  <div className="list-add-project-activity" ref={scrollerRef} onScroll={onScroll} style={{ overflowY: 'auto' }}>
+                <Accordion className='list-add-project-activity-accordion'>
+                  <div className='list-add-project-activity' ref={scrollerRef} onScroll={onScroll} style={{ overflowY: 'auto' }}>
                     {!!project.clone &&
                       project.clone.map((data, counterTop) => (
                         <>
-                          <Accordion.Toggle as={Button} variant="link" eventKey={counterTop + 1} className="top-card-btn">
+                          <Accordion.Toggle as={Button} variant='link' eventKey={counterTop + 1} className='top-card-btn'>
                             <span
                               onClick={() => {
                                 if (activeProject === counterTop + 1) {
@@ -175,33 +183,33 @@ function LtiProjectShared(props) {
                                 // setActivePlaylist(null);
                               }}
                             >
-                              <div className="playlist-list-update">
-                                <div className="active-resource-update">
+                              <div className='playlist-list-update'>
+                                <div className='active-resource-update'>
                                   <div
-                                    className="backgroundimg-clone"
+                                    className='backgroundimg-clone'
                                     style={{
                                       backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                     }}
                                   />
-                                  <div className="active-resource-detail">
+                                  <div className='active-resource-detail'>
                                     <h6> {data.name}</h6>
                                     {clone.clone.model === 'Activity' && <p>{data.description}</p>}
 
-                                    <div className="model-name-activity-selection">
-                                      <div className="model-name-activity">
+                                    <div className='model-name-activity-selection'>
+                                      <div className='model-name-activity'>
                                         <p>
                                           Type: <span>{clone.clone.model}</span>
                                         </p>
                                       </div>
                                       {(clone.clone.model === 'Activity' || clone.ind) && (
                                         <>
-                                          <div className="model-name-activity-playlist ">
+                                          <div className='model-name-activity-playlist '>
                                             {/* View playlists */}
                                             <span>View playlists</span>
                                             {(clone.clone.model === 'Activity' || clone.ind) &&
                                               (activeProject === counterTop + 1 ? (
                                                 <FontAwesomeIcon
-                                                  icon="chevron-right"
+                                                  icon='chevron-right'
                                                   color={primaryColor}
                                                   // style={{
                                                   //   marginLeft: '12px',
@@ -209,7 +217,7 @@ function LtiProjectShared(props) {
                                                 />
                                               ) : (
                                                 <FontAwesomeIcon
-                                                  icon="chevron-down"
+                                                  icon='chevron-down'
                                                   color={primaryColor}
                                                   // style={{
                                                   //   marginLeft: '12px',
@@ -225,7 +233,7 @@ function LtiProjectShared(props) {
                               </div>
                             </span>
                           </Accordion.Toggle>
-                          <div className="activity-project-playlist-section">
+                          <div className='activity-project-playlist-section'>
                             <Accordion.Collapse eventKey={counterTop + 1}>
                               <Card.Body>
                                 {(clone.clone.model === 'Activity' || clone.ind) &&
@@ -238,7 +246,7 @@ function LtiProjectShared(props) {
                                               activePlaylist === counterPlaylist + counterTop + 1 ? 'activity-project-playlist-selected' : 'activity-project-playlist-unselected'
                                             }`}
                                           >
-                                            <Accordion.Toggle as={Button} variant="link" eventKey={counterPlaylist + counterTop + 1}>
+                                            <Accordion.Toggle as={Button} variant='link' eventKey={counterPlaylist + counterTop + 1}>
                                               <span
                                                 onClick={() => {
                                                   if (activePlaylist === counterPlaylist + counterTop + 1) {
@@ -253,9 +261,9 @@ function LtiProjectShared(props) {
                                                 {/* <div className="flex-b">
 
                                               </div> */}
-                                                <div className="playlist-title-copy-text">
+                                                <div className='playlist-title-copy-text'>
                                                   <div>
-                                                    <span className="activity-project-playlist-title ">{data2.title}</span>
+                                                    <span className='activity-project-playlist-title '>{data2.title}</span>
                                                   </div>
                                                   <div
                                                     onClick={() => {
@@ -295,7 +303,7 @@ function LtiProjectShared(props) {
                                       ))}{' '}
                                     </Accordion>
                                   ) : (
-                                    clone.clone.model === 'Activity' && <span className="error">No Playlists found</span>
+                                    clone.clone.model === 'Activity' && <span className='error'>No Playlists found</span>
                                   ))}
                               </Card.Body>
                             </Accordion.Collapse>
@@ -305,14 +313,14 @@ function LtiProjectShared(props) {
                   </div>
                 </Accordion>
                 {project?.islazyLoader && page > 1 && (
-                  <div className="col-md-12 text-center">
+                  <div className='col-md-12 text-center'>
                     <ImgLoader />
                   </div>
                 )}
               </div>
             ) : (
               <>
-                <div className="list-add-project-activity">
+                <div className='list-add-project-activity'>
                   {!!project.clone &&
                     project.clone.map((data, counterTop) => (
                       <>
@@ -328,15 +336,15 @@ function LtiProjectShared(props) {
                             }
                           }}
                         >
-                          <div className="playlist-list-update">
-                            <div className="active-resource-update">
+                          <div className='playlist-list-update'>
+                            <div className='active-resource-update'>
                               <div
-                                className="backgroundimg-clone"
+                                className='backgroundimg-clone'
                                 style={{
                                   backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
-                              <div className="active-resource-detail">
+                              <div className='active-resource-detail'>
                                 <h6> {data.name}</h6>
                                 {clone.clone.model === 'Activity' && <p>{data.description}</p>}
                                 <p>Playlist Count: {data.playlists?.length}</p>
