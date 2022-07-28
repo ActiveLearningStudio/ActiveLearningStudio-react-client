@@ -126,6 +126,68 @@ function SearchInterface(props) {
     }
   }, [currentOrganization]);
 
+  // useEffect(() => {
+  //   window.onscroll = function () {
+  //     if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+  //       console.log('reached', activeModel);
+  //       alert(allState.searchType);
+  //       if (allState.searchType === 'Projects') {
+  //         alert();
+  //         if (activeModel === 'total') {
+  //           const searchData = {
+  //             phrase: searchQueries?.trim() || undefined,
+  //             from: e * 20 - 20,
+  //             size: 20,
+  //             type: searchType,
+  //             subjectArray: activeSubject || undefined,
+  //             gradeArray: activeEducation || undefined,
+  //             authorTagsArray: activeAuthorTag || undefined,
+  //             standardArray: activeType || undefined,
+  //             author: authorName || undefined,
+  //             no_words: noWords || undefined,
+  //           };
+  //           setSearch(null);
+  //           dispatch(simpleSearchAction(searchData));
+  //           Swal.close();
+  //         } else {
+  //           const searchData = {
+  //             phrase: searchQueries?.trim() || undefined,
+  //             from: e * 20 - 20,
+  //             size: 20,
+  //             type: searchType,
+  //             model: activeModel,
+  //             subjectArray: activeSubject || undefined,
+  //             gradeArray: activeEducation || undefined,
+  //             authorTagsArray: activeAuthorTag || undefined,
+  //             standardArray: activeType || undefined,
+  //             author: authorName || undefined,
+  //             no_words: noWords || undefined,
+  //           };
+  //           setSearch(null);
+
+  //           dispatch(simpleSearchAction(searchData));
+  //           Swal.close();
+  //         }
+  //       } else if (allState.searchType === 'Independent Activities') {
+  //         const searchData = {
+  //           query: searchInput?.trim() || undefined,
+  //           subjectArray: activeSubject,
+  //           gradeArray: activeEducation,
+  //           authorTagsArray: activeAuthorTag,
+  //           authors: authorName || undefined,
+  //           standardArray: activeType,
+  //           from: e * 20 - 20,
+  //           size: 20,
+  //           no_words: noWords || undefined,
+  //         };
+
+  //         setSearch(null);
+  //         dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+  //       }
+  //     }
+  //   };
+  // }, []);
+
   // const projectVisibilityLMS = allLms?.shareVendors?.map((data) => {
   //   if (data.project_visibility === true) {
   //     return true;
@@ -294,12 +356,11 @@ function SearchInterface(props) {
 
   useEffect(() => {
     if (allState.searchResult) {
-      if (allState.searchResult?.length > 0 && paginationStarter) {
-        paginationStarter = false;
+      if (allState.searchResult?.length > 0) {
         setTotalCount(allState.searchMeta.total);
       }
     }
-  }, [allState.searchMeta, allState.searchResult, totalCount]);
+  }, [allState.searchMeta, allState.searchResult]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
