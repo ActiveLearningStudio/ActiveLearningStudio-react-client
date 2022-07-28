@@ -225,7 +225,7 @@ class LoginPage extends React.Component {
                           required
                           value={email}
                           onChange={this.onChangeField}
-                          style={{ border: this.state.emailError ? '1px solid #FF403B' : '', borderColor: this.state.emailError ? '#FF403B' : '' }}
+                          style={{ border: this.state.emailError ? '1px solid #FF403B' : '', borderColor: this.state.emailError && '#FF403B' }}
                         />
                         {this.state.emailError && <span className='email-error'>{this.state.emailError}</span>}
                       </div>
@@ -267,6 +267,11 @@ class LoginPage extends React.Component {
                           {isLoading ? <img src={loader} alt='' /> : 'Log In'}
                         </button>
                       </div>
+                      <div className='login-separator-box'>
+                        <div className='login-separator'></div>
+                        <div className='text-separator'>or</div>
+                        <div className='login-separator'></div>
+                      </div>
                       {true ? (
                         <>
                           {/* <div className="vertical-line">
@@ -282,7 +287,7 @@ class LoginPage extends React.Component {
                             </a>
                           </p> */}
 
-                          <div className='form-group text-center mb-0'>
+                          <div className='form-group text-center mb-3'>
                             <GoogleLogin
                               clientId={global.config.gapiClientId}
                               theme='dark'
@@ -300,7 +305,7 @@ class LoginPage extends React.Component {
                         </>
                       ) : null}
                       <div className='termsandcondition'>
-                        By clicking the &quot;Login&quot; button, you agree to Curriki&apos; s{' '}
+                        By logging in, you agree to Curriki's{' '}
                         <a
                           target='_blank'
                           href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
