@@ -76,6 +76,41 @@ function Sidebar(props) {
 
   return (
     <aside className="sidebar-all">
+      {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
+        <>
+          <Link
+            to={`/org/${allState.organization.currentOrganization?.domain}/activities`}
+            onClick={() => {
+              clearStatesOnSidebarClick();
+              dispatch(clearTeamPermissions());
+            }}
+          >
+            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/activities` ? 'row-sidebar activeLink' : 'row-sidebar'}>
+              {/* <img src={foldericon} alt="" /> */}
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M17.2 1H2.8C1.80589 1 1 1.80589 1 2.8V6.4C1 7.39411 1.80589 8.2 2.8 8.2H17.2C18.1941 8.2 19 7.39411 19 6.4V2.8C19 1.80589 18.1941 1 17.2 1Z"
+                  stroke={primaryColor}
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M17.2 11.7998H2.8C1.80589 11.7998 1 12.6057 1 13.5998V17.1998C1 18.1939 1.80589 18.9998 2.8 18.9998H17.2C18.1941 18.9998 19 18.1939 19 17.1998V13.5998C19 12.6057 18.1941 11.7998 17.2 11.7998Z"
+                  stroke={primaryColor}
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="M4.6001 4.59961H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4.6001 15.3999H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div className="sidebar-headings">Activities</div>
+            </div>
+          </Link>
+        </>
+      )}
       {permission?.Project?.includes('project:view') && (
         <>
           <Link
@@ -116,35 +151,20 @@ function Sidebar(props) {
       )}
       {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
         <>
-          <Link
-            to={`/org/${allState.organization.currentOrganization?.domain}/activities`}
-            onClick={() => {
-              clearStatesOnSidebarClick();
-              dispatch(clearTeamPermissions());
-            }}
-          >
-            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/activities` ? 'row-sidebar activeLink' : 'row-sidebar'}>
-              {/* <img src={foldericon} alt="" /> */}
-
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/search`} onClick={() => {}}>
+            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? 'row-sidebar activeLink' : 'row-sidebar'}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
-                  d="M17.2 1H2.8C1.80589 1 1 1.80589 1 2.8V6.4C1 7.39411 1.80589 8.2 2.8 8.2H17.2C18.1941 8.2 19 7.39411 19 6.4V2.8C19 1.80589 18.1941 1 17.2 1Z"
+                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
                   stroke={primaryColor}
                   stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
-                <path
-                  d="M17.2 11.7998H2.8C1.80589 11.7998 1 12.6057 1 13.5998V17.1998C1 18.1939 1.80589 18.9998 2.8 18.9998H17.2C18.1941 18.9998 19 18.1939 19 17.1998V13.5998C19 12.6057 18.1941 11.7998 17.2 11.7998Z"
-                  stroke={primaryColor}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path d="M4.6001 4.59961H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M4.6001 15.3999H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M18.9999 18.9999L14.6499 14.6499" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <div className="sidebar-headings">Activities</div>
+
+              <div className="sidebar-headings">Library</div>
             </div>
           </Link>
         </>

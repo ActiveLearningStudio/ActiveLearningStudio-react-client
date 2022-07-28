@@ -47,8 +47,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     };
 
     const result = await indResourceService.create(activeOrganization.id, activity);
-    // const resultShared = await indResourceService.sharedIndependentActivity(insertedH5pResource.id);
-    // window.top.postMessage(resultShared, 'http://127.0.0.1:5500');
+    const resultShared = await indResourceService.sharedIndependentActivity(insertedH5pResource.id);
+    window.top.postMessage(resultShared, 'http://127.0.0.1:5501');
     toast.dismiss();
     toast.success('Activity Created', {
       position: toast.POSITION.BOTTOM_RIGHT,
@@ -64,8 +64,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
       payload: '',
     });
     dispatch({
-      type: "ADD_VIDEO_URL",
-      payload: ''
+      type: 'ADD_VIDEO_URL',
+      payload: '',
     });
   }
 };
@@ -101,6 +101,10 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
       payload: [],
     });
   }
+  dispatch({
+    type: actionTypes.ALL_IND_REQUEST_COMPLETE,
+  });
+  window.scrollTo(0, 0);
 };
 
 export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {
@@ -192,7 +196,7 @@ export const adminIntActivities = (
   updatedFrom,
   updatedTo,
   shared,
-  index
+  index,
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
@@ -207,7 +211,7 @@ export const adminIntActivities = (
     updatedFrom,
     updatedTo,
     shared,
-    index
+    index,
   );
   if (allActivities) {
     dispatch({
