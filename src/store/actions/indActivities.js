@@ -93,7 +93,7 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   if (allActivities) {
     if (page > 1) {
       dispatch({
-        type: actionTypes.ADD_IND_ACTIVITIES,
+        type: actionTypes.LOAD_MORE_IND_ACTIVITIES,
         payload: allActivities,
       });
     } else {
