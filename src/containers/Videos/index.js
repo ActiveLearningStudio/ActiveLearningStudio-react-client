@@ -110,7 +110,7 @@ const Index = ({ activities }) => {
   };
   window.onscroll = function () {
     var scrollerHeight = document.body.scrollHeight - 1;
-    if (allActivities && ActivePage < allActivities?.meta?.last_page) {
+    if (allActivities && activescreenType === allActivities && ActivePage < allActivities?.meta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
         setActivePage(ActivePage + 1);
         setisLoader(true);
