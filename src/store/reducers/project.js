@@ -154,6 +154,13 @@ export default (state = INITIAL_STATE, action) => {
         islazyLoader: false,
         isProjectLoading: true,
         projectMeta: action.payload.meta,
+        links: action.payload.links?.first,
+      };
+    case actionTypes.SHOW_SKELETON:
+      return {
+        ...state,
+
+        isProjectLoading: false,
       };
     case actionTypes.ADD_MY_PROJECTS:
       if (!projects) {
