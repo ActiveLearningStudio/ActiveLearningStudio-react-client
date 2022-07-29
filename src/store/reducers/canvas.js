@@ -19,6 +19,7 @@ import {
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
   GET_TEAMS,
+  GET_ACTIVITIES,
 } from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -37,6 +38,7 @@ const INITIAL_STATE = {
   searchHasMoreResults: false,
   // Deeplinking teams tab
   teams: null,
+  activities: null,
   // Other
   h5pSettings: null,
   ltiFinished: false,
@@ -207,6 +209,11 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
         teams,
       };
 
+    case GET_ACTIVITIES:
+    return {
+      ...state,
+      activities: action.results,
+    };
     default:
       return state;
   }
