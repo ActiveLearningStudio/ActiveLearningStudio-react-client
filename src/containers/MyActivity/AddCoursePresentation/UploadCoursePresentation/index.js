@@ -1,35 +1,27 @@
 /* eslint-disable */
-import React, { useState, useEffect, useReducer } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import FileUploadDnd from "components/FileInputDnd";
+import FilePreviewAndStore from '../FilePreviewAndStore';
 
-const UploadCoursePresentation = (props) => {
+const UploadCoursePresentation = ({ setEnableDescribeBtn, setLoading }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
   return (
     <div>
       <div className='row'>
         <div className='col'>
-          <FileUploadDnd />
+          <FileUploadDnd handleChange={handleFileChange}/>
+        </div>
+        <div className="col">
+          <FilePreviewAndStore file={selectedFile} setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading}/>
         </div>
       </div>
     </div>
   );
 };
 
-UploadCoursePresentation.propTypes = {
-
-};
-
-UploadCoursePresentation.defaultProps = {
-
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  
-});
-
-const mapStateToProps = (state) => ({
-
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UploadCoursePresentation));
+export default UploadCoursePresentation;
