@@ -26,13 +26,13 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', createBtnTitle, cre
           <span>{createBtnTitle}</span>
         </div>
       </div>
-      <div className="startpage-section help-section">
+      <a href="https://support.curriki.org/" className="startpage-section help-section">
         <div className="section-detail">
           <span className="help-section-lost-title">Feeling lost?</span>
           <h2 className="help-section-h2-heading">{helpTitle}</h2>
           <p className="prap-width">{helpDetail}</p>
         </div>
-        <div className="section-btn " onClick={onClick}>
+        <div className="section-btn ">
           <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M28 54C42.3594 54 54 42.3594 54 28C54 13.6406 42.3594 2 28 2C13.6406 2 2 13.6406 2 28C2 42.3594 13.6406 54 28 54Z"
@@ -53,7 +53,7 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', createBtnTitle, cre
 
           <span>{helpBtnTitle}</span>
         </div>
-      </div>
+      </a>
     </div>
   );
 };

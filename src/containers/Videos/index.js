@@ -71,11 +71,6 @@ const Index = ({ activities }) => {
     if (activeOrganization && activities) {
       dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize));
     }
-    // if (activities) {
-    //   setActiveScreenPage('allActivities');
-    // } else {
-    //   setActiveScreenPage('allVideos');
-    // }
   }, [activeOrganization, activities]);
 
   useEffect(() => {
@@ -117,16 +112,7 @@ const Index = ({ activities }) => {
         setisLoader(true);
       }
     }
-
-    console.log('Window height (px):', window.innerHeight);
-    console.log('Currently scrolled from top (px):', window.scrollY);
-    console.log('Document height(px):', document.body.scrollHeight);
   };
-  // useEffect(() => {
-  //   if (ActivePage === 1 && searchQuery) {
-  //     dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
-  //   }
-  // }, [activesearchQuery]);
 
   useEffect(() => {
     if (ActivePage) {
@@ -610,7 +596,7 @@ const Index = ({ activities }) => {
                       </div>
                     )
                   ) : (
-                    <div className="d-flex ">
+                    <div className="d-flex " style={{ marginTop: '40px' }}>
                       <br />
                       <ProjectCardSkeleton />
                       <ProjectCardSkeleton />
