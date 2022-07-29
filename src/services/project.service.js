@@ -14,7 +14,7 @@ const getAllFav = (subOrgId) =>
 
 const getAll = (subOrgId, activePage, size, searchQuery) =>
   httpService
-    .get(`/${apiVersion}/suborganization/${subOrgId}/projects?page=${activePage}&size=${size}&query=${searchQuery}`)
+    .get(`/${apiVersion}/suborganization/${subOrgId}/projects?page=${activePage}&size=${size}${searchQuery && `&query=${searchQuery}`}`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
