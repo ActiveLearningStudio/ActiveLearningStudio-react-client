@@ -115,12 +115,12 @@ class LoginPage extends React.Component {
     const { isLoading, domain } = this.props;
 
     return (
-      <div className='auth-page'>
+      <div className="auth-page">
         <Logo />
         {!clicked ? (
-          <div className='auth-container'>
-            <div className='d-flex align-items-center justify-content-between'>
-              <h1 className='auth-title '>Welcome to Curriki</h1>
+          <div className="auth-container">
+            <div className="d-flex align-items-center justify-content-between">
+              <h1 className="auth-title ">Welcome to Curriki</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -133,144 +133,144 @@ class LoginPage extends React.Component {
               </button> */}
             </div>
             {/* <h2 className="auth-subtitle">Powering the creation of the world’s Most Immersive Learning Experience</h2> */}
-            <p className='auth-Pdescrip'>Sign Up and start making a difference in the way learning experiences are created.</p>
-            <form onSubmit={this.onSubmit} autoComplete='off' className='auth-form'>
-              <div className='form-group text-center mb-0'>
+            <p className="auth-Pdescrip">Sign Up and start making a difference in the way learning experiences are created.</p>
+            <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
+              <div className="form-group text-center mb-0">
                 <GoogleLogin
                   clientId={global.config.gapiClientId}
-                  theme='dark'
+                  theme="dark"
                   render={(renderProps) => (
-                    <button type='button' className='google-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                      <img src={googleIcon} alt='googleIcon' style={{ float: 'left', paddingRight: '19.23px' }} />
+                    <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                      <img src={googleIcon} alt="googleIcon" style={{ float: 'left', paddingRight: '19.23px' }} />
                       Continue with Google
                     </button>
                   )}
                   onSuccess={this.onGoogleLoginSuccess}
                   onFailure={this.onGoogleLoginFailure}
-                  cookiePolicy='single_host_origin'
+                  cookiePolicy="single_host_origin"
                 />
               </div>
               {window.__RUNTIME_CONFIG__.REACT_APP_STEMULI === 'true' && (
-                <div className='form-group text-center mb-4'>
+                <div className="form-group text-center mb-4">
                   <button
-                    type='button'
-                    className='email-button'
+                    type="button"
+                    className="email-button"
                     onClick={() => {
                       window.location.href = `${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/oauth/stemuli/redirect`;
                     }}
                   >
-                    <img src={stemuliIcon} alt='stemuli icon' style={{ float: 'left', paddingRight: '19.23px' }} />
+                    <img src={stemuliIcon} alt="stemuli icon" style={{ float: 'left', paddingRight: '19.23px' }} />
                     <span>Continue with Stemuli</span>
                   </button>
                 </div>
               )}
-              <div className='form-group text-center mb-0'>
+              <div className="form-group text-center mb-0">
                 <button
-                  type='button'
-                  className='email-button'
+                  type="button"
+                  className="email-button"
                   onClick={() =>
                     this.setState({
                       clicked: true,
                     })
                   }
                 >
-                  <img src={emailIcon} alt='email icon' style={{ float: 'left', paddingRight: '19.23px' }} />
+                  <img src={emailIcon} alt="email icon" style={{ float: 'left', paddingRight: '19.23px' }} />
                   <span>Continue with Email</span>
                 </button>
               </div>
             </form>
-            <p className='auth-description'>
+            <p className="auth-description">
               New to Curriki?&nbsp;
               <a onClick={this.goToRegister}>Sign up</a>
             </p>
-            <p className='auth-p2-descrip'>
+            <p className="auth-p2-descrip">
               By clicking the Sign Up button, you are creating a CurrikiStudio account, and you agree to Currikis&nbsp;
-              <a href='/' target='_blank'>
+              <a href="/" target="_blank">
                 Terms of Use&nbsp;
               </a>
               and&nbsp;
-              <a href='/' target='_blank'>
+              <a href="/" target="_blank">
                 Privacy Policy.
               </a>
             </p>
           </div>
         ) : (
-          <div className='auth-container'>
-            <div className='d-flex align-items-center justify-content-between'>
-              <h1 className='auth-title'>Welcome to Curriki</h1>
+          <div className="auth-container">
+            <div className="d-flex align-items-center justify-content-between">
+              <h1 className="auth-title">Welcome to Curriki</h1>
             </div>
             {/* <p className='auth-Pdescrip'>Start making a difference in the way learning experiences are created.</p> */}
-            <p className='auth-Pdescrip'></p>
-            <div className='content-section'>
+            <p className="auth-Pdescrip"></p>
+            <div className="content-section">
               <Tabs
                 defaultActiveKey={activeTab}
                 activeKey={activeTab}
-                id='uncontrolled-tab-example'
+                id="uncontrolled-tab-example"
                 onSelect={(key) => {
                   this.setState({ activeTab: key });
                   if (key === 'Sign up') this.goToRegister();
                 }}
               >
-                <Tab eventKey='Log in' title='Log In'>
-                  <div className='module-content'>
-                    <form onSubmit={this.onSubmit} autoComplete='off' className='auth-form'>
-                      <div className='form-group'>
+                <Tab eventKey="Log in" title="Log In">
+                  <div className="module-content">
+                    <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
+                      <div className="form-group" id={this.state.emailError && 'email_error_input_field_div'}>
                         {/* <FontAwesomeIcon icon="envelope" /> */}
                         <span>Email</span>
                         <input
                           autoFocus
-                          className='input-box'
+                          className="input-box"
                           // type="email"
-                          name='email'
+                          name="email"
                           required
                           value={email}
                           onChange={this.onChangeField}
                           style={{ border: this.state.emailError ? '1px solid #FF403B' : '', borderColor: this.state.emailError && '#FF403B' }}
                         />
-                        {this.state.emailError && <span className='email-error'>{this.state.emailError}</span>}
+                        {this.state.emailError && <span className="email-error">{this.state.emailError}</span>}
                       </div>
 
-                      <div className='form-group'>
+                      <div className="form-group">
                         {/* <FontAwesomeIcon icon="lock" /> */}
                         <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                           Password
-                          <div className='show-password' onClick={() => this.setState({ showPassword: !showPassword })}>
-                            <img src={eye} alt='show-password' />
+                          <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
+                            <img src={eye} alt="show-password" />
                             Show Password
                           </div>
                         </span>
                         <input
-                          className='password-box'
+                          className="password-box"
                           type={showPassword ? 'text' : 'password'}
-                          name='password'
-                          placeholder='*************'
+                          name="password"
+                          placeholder="*************"
                           required
                           value={password}
                           onChange={this.onChangeField}
                         />
                       </div>
 
-                      <div className='form-group remember-me'>
+                      <div className="form-group remember-me">
                         <label>
-                          <input type='checkbox' name='rememberMe' value={rememberMe} onChange={this.onChangeField} />
+                          <input type="checkbox" name="rememberMe" value={rememberMe} onChange={this.onChangeField} />
                           Keep me Logged In
                         </label>
-                        <div className='forgot-password-box'>
-                          <Link to='/forgot-password'>Forgot Your Password?</Link>
+                        <div className="forgot-password-box">
+                          <Link to="/forgot-password">Forgot Your Password?</Link>
                         </div>
                       </div>
-                      <div className='form-group'>
+                      <div className="form-group">
                         <Error error={error} />
                       </div>
-                      <div className='form-button'>
-                        <button type='submit' className='btn btn-primary submit' disabled={isLoading || this.isDisabled()}>
-                          {isLoading ? <img src={loader} alt='' /> : 'Log In'}
+                      <div className="form-button">
+                        <button type="submit" className="btn btn-primary submit" disabled={isLoading || this.isDisabled()}>
+                          {isLoading ? <img src={loader} alt="" /> : 'Log In'}
                         </button>
                       </div>
-                      <div className='login-separator-box'>
-                        <div className='login-separator'></div>
-                        <div className='text-separator'>or</div>
-                        <div className='login-separator'></div>
+                      <div className="login-separator-box">
+                        <div className="login-separator"></div>
+                        <div className="text-separator">or</div>
+                        <div className="login-separator"></div>
                       </div>
                       {true ? (
                         <>
@@ -287,34 +287,34 @@ class LoginPage extends React.Component {
                             </a>
                           </p> */}
 
-                          <div className='form-group text-center mb-3'>
+                          <div className="form-group text-center mb-3">
                             <GoogleLogin
                               clientId={global.config.gapiClientId}
-                              theme='dark'
+                              theme="dark"
                               render={(renderProps) => (
-                                <button type='button' className='google-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt='googleIcon' />
+                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt="googleIcon" />
                                   <div>Log in with Google</div>
                                 </button>
                               )}
                               onSuccess={this.onGoogleLoginSuccess}
                               onFailure={this.onGoogleLoginFailure}
-                              cookiePolicy='single_host_origin'
+                              cookiePolicy="single_host_origin"
                             />
                           </div>
                         </>
                       ) : null}
-                      <div className='termsandcondition'>
+                      <div className="termsandcondition">
                         By logging in, you agree to Curriki's{' '}
                         <a
-                          target='_blank'
+                          target="_blank"
                           href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
                         >
                           Terms of Use
                         </a>{' '}
                         and{' '}
                         <a
-                          target='_blank'
+                          target="_blank"
                           href={
                             domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
                               ? domain?.privacy_policy_url
@@ -327,7 +327,7 @@ class LoginPage extends React.Component {
                     </form>
                   </div>
                 </Tab>
-                {domain?.self_registration === true && <Tab eventKey='Sign up' title='Register Here!' />}
+                {domain?.self_registration === true && <Tab eventKey="Sign up" title="Register Here!" />}
               </Tabs>
             </div>
           </div>

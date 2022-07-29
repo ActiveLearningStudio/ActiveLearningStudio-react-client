@@ -1638,14 +1638,14 @@ textarea,
   border-color: var(--main-primary-color) !important;
 }
 .auth-page .auth-container nav .nav-link.active {
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
   border-color: var(--main-primary-color) !important;
 }
 .auth-page .auth-container .auth-title {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .auth-page .auth-container .auth-Pdescrip {
   color: var(--main-paragraph-text-color);
@@ -1663,7 +1663,7 @@ textarea,
 }
 .auth-page .auth-container .form-button .submit,
 .auth-page .auth-container .form-group .signUp-btn {
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }

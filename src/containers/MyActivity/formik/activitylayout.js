@@ -60,7 +60,7 @@ const ActivityLayout = (props) => {
         <Tabs text="2. Describe and Create Activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select Activity" color="#084892" />
+        <HeadingTwo text="Select Activity" color="#084892" className="select_activity_title_style" />
       </div>
 
       {/* <form className="radio-group ">
@@ -87,10 +87,8 @@ const ActivityLayout = (props) => {
         </div>
       </form> */}
       <div className="activity-layout-detail">
-        <HeadingText
-          text="Assemble multiple interactions into one of the layout activities below or select Explore all to tour the full library of activity types."
-          color="#515151"
-        />
+        <h5>Use each Activity's information tabs to find the experience that best suits your content.</h5>
+        <HeadingText text="Combine media and interactive questions by selecting one of our Layout Activity types displayed here." color="#515151" className="activity_layout_des" />
       </div>
       <div className="layout-cards-process-btn">
         <div>
@@ -125,7 +123,7 @@ const ActivityLayout = (props) => {
           </div>
           <div className="explore-upload-buttons">
             <div
-              className="ex-up-button expiore"
+              className="ex-up-button expiore show_activity"
               onClick={() => {
                 setLayout('SingleActivity');
                 dispatch({
@@ -146,7 +144,7 @@ const ActivityLayout = (props) => {
                 <path d="M21.0004 21.0004L16.6504 16.6504" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
 
-              <p className="">Explore all</p>
+              <p className="">Show All Activities</p>
             </div>
             <div
               className="ex-up-button"
@@ -195,6 +193,20 @@ const ActivityLayout = (props) => {
               }}
               id="controlled-tab-example"
             >
+              <Taber.Tab eventKey="activity_description" title={'Activity Description'}>
+                <div className="activity-layout-process-box">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ borderRadius: '8px' }}
+                    src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
+                    title={layout.title}
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                </div>
+                <HeadingText text={layout.description} color="#515151" />
+              </Taber.Tab>
               <Taber.Tab eventKey="layout" title={'How-to video'}>
                 <div className="activity-layout-process-box">
                   <iframe
@@ -221,14 +233,14 @@ const ActivityLayout = (props) => {
               </Taber.Tab>
             </Taber.Tabs>
             <div className="activity-layout-btns">
-              <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} />
+              {/* <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} /> */}
 
               <div className="btns-margin">
                 <Buttons
-                  text="Select Layout"
+                  text="Select"
                   defaultgrey={!layout}
-                  width="153px"
-                  height="36px"
+                  width="91px"
+                  height="32px"
                   disabled={!layout}
                   onClick={() => {
                     if (layout.title === 'Interactive Video') {
