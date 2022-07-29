@@ -187,12 +187,12 @@ class RegisterPage extends React.Component {
     return (
       <>
         {domain?.self_registration === true && (
-          <div className="auth-page">
+          <div className='auth-page'>
             <Logo />
 
-            <div className="auth-container">
-              <div className="d-flex align-items-center justify-content-between">
-                <h1 className="auth-title mb2">
+            <div className='auth-container'>
+              <div className='d-flex align-items-center justify-content-between'>
+                <h1 className='auth-title mb2'>
                   Welcome
                   {!clicked ? ' to Curriki' : `, ${firstName}`}
                 </h1>
@@ -208,118 +208,102 @@ class RegisterPage extends React.Component {
                 </button> */}
               </div>
 
-              <p className="auth-Pdescrip text-left">
+              <p className='auth-Pdescrip text-left'>
                 {!clicked
                   ? 'Start making a difference in the way learning experiences are created.'
                   : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
               </p>
-              <div className="content-section">
+              <div className='content-section'>
                 <Tabs
                   defaultActiveKey={activeTab}
                   activeKey={activeTab}
-                  id="uncontrolled-tab-example"
+                  id='uncontrolled-tab-example'
                   style={{ display: stepper ? 'none' : 'flex' }}
                   onSelect={(key) => {
                     this.setState({ activeTab: key });
                     if (key === 'Log in') this.goToLogin();
                   }}
                 >
-                  <Tab eventKey="Log in" title="Log in" />
-                  <Tab eventKey="Sign up" title="Sign up" style={{ display: stepper ? 'none' : 'flex' }}>
-                    <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
+                  <Tab eventKey='Log in' title='Log in' />
+                  <Tab eventKey='Sign up' title='Sign up' style={{ display: stepper ? 'none' : 'flex' }}>
+                    <form onSubmit={this.onSubmit} autoComplete='off' className='auth-form'>
                       {!clicked && (
                         <>
-                          <div className="form-group text-center mb-2">
-                            <GoogleLogin
-                              clientId={global.config.gapiClientId}
-                              theme="dark"
-                              render={(renderProps) => (
-                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt="googleIcon" />
-                                  <div>Sign Up with Google</div>
-                                </button>
-                              )}
-                              onSuccess={async (response) => {
-                                const emailCheckResponse = await authService.checkEmail(response.profileObj.email);
-                                if (emailCheckResponse?.exists === true) return this.setState({ error: emailCheckResponse.message });
-
-                                return this.setState({ stepper: true, googleResponse: response });
-                                // this.onGoogleLoginSuccess(response);
-                              }}
-                              onFailure={this.onGoogleLoginFailure}
-                              cookiePolicy="single_host_origin"
-                            />
-                          </div>
-                          <div className="hr-spacer">
-                            <span>OR</span>
-                          </div>
-                          <div className="form-group d-flex">
-                            <div className="input-wrapper">
+                          <div className='form-group d-flex'>
+                            <div className='input-wrapper'>
                               <span>Name</span>
-                              <input autoFocus className="input-box" name="firstName" required maxLength="50" value={firstName} onChange={this.onChangeField} />
+                              <input autoFocus className='input-box' name='firstName' required maxLength='50' value={firstName} onChange={this.onChangeField} />
                             </div>
 
-                            <div className="input-wrapper">
+                            <div className='input-wrapper'>
                               <span>Last name</span>
-                              <input className="input-box" name="lastName" required maxLength="50" value={lastName} onChange={this.onChangeField} />
+                              <input className='input-box' name='lastName' required maxLength='50' value={lastName} onChange={this.onChangeField} />
                             </div>
                           </div>
 
-                          <div className="form-group">
+                          <div className='form-group'>
                             <span>Email</span>
                             <input
-                              className="input-box"
+                              className='input-box'
                               // type="email"
-                              name="email"
+                              name='email'
                               required
-                              maxLength="250"
+                              maxLength='250'
                               disabled={query?.email && true}
                               value={email}
                               onChange={this.onChangeField}
                             />
                           </div>
 
-                          <div className="form-group">
+                          <div className='form-group'>
                             <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                               Password
-                              <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
-                                <img src={eye} alt="show-password" />
+                              <div className='show-password' onClick={() => this.setState({ showPassword: !showPassword })}>
+                                <img src={eye} alt='show-password' />
                                 Show
                               </div>
                             </span>
                             <input
-                              className="password-box"
+                              className='password-box'
                               type={showPassword ? 'text' : 'password'}
-                              name="password"
+                              name='password'
                               required
-                              maxLength="250"
+                              maxLength='250'
                               value={password}
                               onChange={this.onChangeField}
                             />
                           </div>
-                          <div className="password_detail">
-                            <span>Password Requirements:</span>
+                          <div className='password_detail'>
+                            <div>
+                              <FontAwesomeIcon icon={faCheck} size='sm' className='icon_check  mr-2' />
+                              <span>At least 8 characters long</span>
+                            </div>
+                            <div>
+                              <FontAwesomeIcon icon={faCheck} size='sm' className='icon_check  mr-2' />
+                              <span>Should contain at least:</span>
+                            </div>
+
                             <ul>
                               <li>
-                                <FontAwesomeIcon icon={faCheck} size="sm" className="icon_check" />* At least 8 characters long
+                                <FontAwesomeIcon icon={faCheck} size='sm' className='icon_check' />1 uppercase letter
                               </li>
                               <li>
                                 {' '}
-                                <FontAwesomeIcon icon={faCheck} size="sm" className="icon_check" />* At least 1 uppercase{' '}
+                                <FontAwesomeIcon icon={faCheck} size='sm' className='icon_check' />1 lowercase letter
                               </li>
                               <li>
                                 {' '}
-                                <FontAwesomeIcon icon={faCheck} size="sm" className="icon_check" />* At least 1 lowercase{' '}
+                                <FontAwesomeIcon icon={faCheck} size='sm' className='icon_check' />1 number
                               </li>
                             </ul>
                           </div>
-                          <div className="form-group">
+                          <div className='form-group'>
                             <Error error={error} />
                           </div>
-                          <div className="form-group mb-0" style={{ marginTop: '48px' }}>
+                          <div className='form-group mb-3' style={{ marginTop: '48px' }}>
                             <button
-                              type="button"
-                              className="signUp-btn submit"
+                              type='button'
+                              className='signUp-btn submit'
                               onClick={() => {
                                 const passwordValidator = this.validatePassword(password);
                                 const emailValidator = validator.isEmail(email.trim());
@@ -341,7 +325,7 @@ class RegisterPage extends React.Component {
                               }}
                               disabled={isLoading || this.isDisabledSignUp()}
                             >
-                              {isLoading ? <img src={loader} alt="" /> : 'Sign Up with Email'}
+                              {isLoading ? <img src={loader} alt='' /> : 'Sign Up with Email'}
                             </button>
                           </div>
                           {/* <div className="vertical-line">
@@ -355,18 +339,43 @@ class RegisterPage extends React.Component {
                                 Login
                               </a>
                             </p> */}
+                          <div className='login-separator-box'>
+                            <div className='login-separator'></div>
+                            <div className='text-separator'>or</div>
+                            <div className='login-separator'></div>
+                          </div>
+                          <div className='form-group text-center mb-5'>
+                            <GoogleLogin
+                              clientId={global.config.gapiClientId}
+                              theme='dark'
+                              render={(renderProps) => (
+                                <button type='button' className='google-button' onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt='googleIcon' />
+                                  <div>Sign Up with Google</div>
+                                </button>
+                              )}
+                              onSuccess={async (response) => {
+                                const emailCheckResponse = await authService.checkEmail(response.profileObj.email);
+                                if (emailCheckResponse?.exists === true) return this.setState({ error: emailCheckResponse.message });
 
-                          <div className="termsandcondition">
+                                return this.setState({ stepper: true, googleResponse: response });
+                                // this.onGoogleLoginSuccess(response);
+                              }}
+                              onFailure={this.onGoogleLoginFailure}
+                              cookiePolicy='single_host_origin'
+                            />
+                          </div>
+                          <div className='termsandcondition'>
                             By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
                             <a
-                              target="_blank"
+                              target='_blank'
                               href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}
                             >
                               Terms of Use
                             </a>{' '}
                             and{' '}
                             <a
-                              target="_blank"
+                              target='_blank'
                               href={
                                 domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
                                   ? domain?.privacy_policy_url
@@ -384,29 +393,29 @@ class RegisterPage extends React.Component {
               </div>
               {stepper && (
                 <>
-                  <div className="form-group">
-                    <div className="bkbtn">
+                  <div className='form-group'>
+                    <div className='bkbtn'>
                       {/* <button type="button" onClick={() => this.setState({ clicked: false, stepper: false })}> */}
-                      <img src={leftArrow} alt="arrow-left" />
+                      <img src={leftArrow} alt='arrow-left' />
                       <a onClick={() => this.setState({ clicked: false, stepper: false })}> Back </a>
                       {/* </button> */}
                     </div>
                   </div>
-                  <div className="form-group">
-                    <div className="using-curriki">
-                      <div className="curriki-line">You are using Curriki for:</div>
-                      <div className="line-horizontal" />
+                  <div className='form-group'>
+                    <div className='using-curriki'>
+                      <div className='curriki-line'>You are using Curriki for:</div>
+                      <div className='line-horizontal' />
                     </div>
                   </div>
-                  <div className="form-group ">
+                  <div className='form-group '>
                     <select
-                      className="input-box organization-type"
-                      name="organization_type"
-                      placeholder="Organization Type*"
+                      className='input-box organization-type'
+                      name='organization_type'
+                      placeholder='Organization Type*'
                       value={organization_type}
                       onChange={this.onChangeField}
                     >
-                      <option selected value="">
+                      <option selected value=''>
                         Select an Organization Type
                       </option>
 
@@ -416,36 +425,36 @@ class RegisterPage extends React.Component {
                     </select>
                   </div>
 
-                  <div className="form-group">
+                  <div className='form-group'>
                     <span>Organization name</span>
-                    <input className="input-box" name="organization_name" maxLength="50" value={organization_name} onChange={this.onChangeField} />
+                    <input className='input-box' name='organization_name' maxLength='50' value={organization_name} onChange={this.onChangeField} />
                   </div>
-                  <div className="form-group">
+                  <div className='form-group'>
                     <span>Job title</span>
-                    <input className="input-box" name="job_title" maxLength="50" value={job_title} onChange={this.onChangeField} />
+                    <input className='input-box' name='job_title' maxLength='50' value={job_title} onChange={this.onChangeField} />
                   </div>
-                  <div className="form-group">
+                  <div className='form-group'>
                     <Error error={error} />
                   </div>
-                  <div className="form-group mb-0" style={{ marginTop: '50px' }}>
+                  <div className='form-group mb-0' style={{ marginTop: '50px' }}>
                     <button
-                      type="submit"
-                      className="btn-primary submit get-started-btn"
+                      type='submit'
+                      className='btn-primary submit get-started-btn'
                       onClick={(e) => {
                         this.setState({ clicked: true });
                         this.onSubmit(e);
                       }}
                       disabled={isLoading || (googleResponse ? this.isDisabledGoogle() : this.isDisabled())}
                     >
-                      {isLoading ? <img src={loader} alt="" /> : 'Complete Registration'}
+                      {isLoading ? <img src={loader} alt='' /> : 'Complete Registration'}
                     </button>
                   </div>
                 </>
               )}
             </div>
 
-            <img src={bg} className="bg1" alt="" />
-            <img src={bg1} className="bg2" alt="" />
+            <img src={bg} className='bg1' alt='' />
+            <img src={bg1} className='bg2' alt='' />
           </div>
         )}
       </>
