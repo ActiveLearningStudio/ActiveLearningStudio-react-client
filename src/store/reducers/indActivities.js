@@ -23,7 +23,7 @@ export default (state = INITIAL_STATE, action) => {
         allActivities: action.payload,
         islazyLoader: false,
       };
-    case actionTypes.ADD_IND_ACTIVITIES: {
+    case actionTypes.LOAD_MORE_IND_ACTIVITIES: {
       const { data, meta } = allActivities;
       const updatedMeta = action.payload.meta;
       const newIndActivities = data.concat(action.payload.data);
