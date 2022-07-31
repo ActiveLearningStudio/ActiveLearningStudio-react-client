@@ -296,7 +296,7 @@ export const ProjectsPage = (props) => {
         loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
 
   window.onscroll = function () {
     if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
@@ -396,7 +396,11 @@ export const ProjectsPage = (props) => {
                           onChange={(e) => {
                             setsearchQuery(e.target.value);
                             setActivePage(1);
-                            dispatch({ type: 'SHOW_SKELETON' });
+                            if (!e.target.value) {
+                              dispatch({ type: 'SHOW_SKELETON' });
+
+                              loadMyProjects(1, defaultSize, e.target.value);
+                            }
 
                             // setdefaultSize(10);
                           }}
@@ -409,7 +413,11 @@ export const ProjectsPage = (props) => {
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                           style={{ cursor: 'pointer' }}
-                          onClick={() => loadMyProjects(activePage, defaultSize, searchQuery)}
+                          onClick={() => {
+                            dispatch({ type: 'SHOW_SKELETON' });
+
+                            loadMyProjects(activePage, defaultSize, searchQuery);
+                          }}
                         >
                           <path
                             d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -573,8 +581,10 @@ export const ProjectsPage = (props) => {
                               </DragDropContext>
                             </div>
                           </>
+                        ) : // <Initialpage />
+                        project.links?.includes('query') ? (
+                          <Alert variant="danger">No Search Results Found</Alert>
                         ) : (
-                          // <Initialpage />
                           <StartingPage
                             createBtnTitle="Create new project"
                             createTitle="Start creating engaging activities."

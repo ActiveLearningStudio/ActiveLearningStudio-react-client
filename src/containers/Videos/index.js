@@ -118,7 +118,7 @@ const Index = ({ activities }) => {
     if (ActivePage) {
       dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
     }
-  }, [ActivePage, searchQuery]);
+  }, [ActivePage]);
 
   return (
     <>
@@ -303,9 +303,8 @@ const Index = ({ activities }) => {
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           if (activeOrganization) {
-                            if (e.target.value.trim()) {
-                              dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
-                            } else {
+                            if (!e.target.value.trim()) {
+                              setActiveScreenPage(null);
                               dispatch(getAllVideos(activeOrganization.id));
                             }
                           }
@@ -322,6 +321,7 @@ const Index = ({ activities }) => {
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (activeOrganization) {
+                            setActiveScreenPage(null);
                             dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
                           }
                         }}
@@ -366,7 +366,10 @@ const Index = ({ activities }) => {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                               setActivePage(1);
-                              setActiveScreenPage(null);
+                              if (!e.target.value) {
+                                setActiveScreenPage(null);
+                                dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
+                              }
                             }}
                             placeholder="Search"
                           />
@@ -380,6 +383,7 @@ const Index = ({ activities }) => {
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
                               if (activeOrganization) {
+                                setActiveScreenPage(null);
                                 dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
                               }
                             }}
@@ -429,63 +433,79 @@ const Index = ({ activities }) => {
                 )}
                 <div className="my-interactive-videos">
                   {!!activescreenType ? (
-                    !activescreenType.data.length ? (
+                    !activescreenType.data?.length ? (
                       <>
                         {activities ? (
                           <>
-                            {' '}
-                            <StartingPage
-                              createBtnTitle="Create new activity"
-                              createTitle="Start creating engaging activities."
-                              createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                            Start by creating a new Activity or choose a guide from the right to learn more."
-                              helpBtnTitle="Help center"
-                              helpTitle="Learn how it works"
-                              helpDetail="Create your learning content using interactive activities.
-                            Organize your content by projects."
-                              primaryColor={primaryColor}
-                              onClick={() => {
-                                dispatch({
-                                  type: actionTypes.CLEAR_STATE,
-                                });
+                            {allActivities?.links?.first?.includes('query') ? (
+                              <Alert variant="danger">No results found.</Alert>
+                            ) : (
+                              <StartingPage
+                                welcome="Let's Build a CurrikiStudio Activity!"
+                                createBtnTitle="Create new activity"
+                                createTitle="Create your first learning activity."
+                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                helpBtnTitle="Help center"
+                                helpTitle="How to start?"
+                                type="activity"
+                                primaryColor={primaryColor}
+                                onClick={() => {
+                                  dispatch({
+                                    type: actionTypes.CLEAR_STATE,
+                                  });
 
-                                dispatch({
-                                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                  payload: 'layout',
-                                  playlist: {},
-                                  project: {},
-                                });
+                                  dispatch({
+                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                    payload: 'layout',
+                                    playlist: {},
+                                    project: {},
+                                  });
 
-                                dispatch(clearSearch());
+                                  dispatch(clearSearch());
 
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            />
+                                  dispatch({
+                                    type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                    payload: '',
+                                  });
+                                }}
+                              />
+                            )}
                           </>
                         ) : (
                           <>
-                            <StartingPage
-                              createBtnTitle="Create a video"
-                              createTitle="Start creating engaging activities."
-                              createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                            Start by creating a new Activity or choose a guide from the right to learn more."
-                              helpBtnTitle="Help center"
-                              helpTitle="Learn how it works"
-                              helpDetail="Create your learning content using interactive activities.
-                            Organize your content by projects."
-                              primaryColor={primaryColor}
-                              onClick={() => {
-                                setOpenVideo(!openMyVideo);
-                                setScreenStatus('AddVideo');
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            />
+                            {allVideos?.links?.first?.includes('query') ? (
+                              <Alert variant="danger">No results found.</Alert>
+                            ) : (
+                              <StartingPage
+                                welcome="Let's Build a CurrikiStudio Activity!"
+                                createBtnTitle="Create new activity"
+                                createTitle="Create your first learning activity."
+                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                helpBtnTitle="Help center"
+                                helpTitle="How to start?"
+                                type="activity"
+                                primaryColor={primaryColor}
+                                onClick={() => {
+                                  dispatch({
+                                    type: actionTypes.CLEAR_STATE,
+                                  });
+
+                                  dispatch({
+                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                    payload: 'layout',
+                                    playlist: {},
+                                    project: {},
+                                  });
+
+                                  dispatch(clearSearch());
+
+                                  dispatch({
+                                    type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                    payload: '',
+                                  });
+                                }}
+                              />
+                            )}
                           </>
                         )}
                       </>
