@@ -376,6 +376,25 @@
     margin-top: 24px;
     // margin-right: 100px;
     // width: 970px;
+    h5 {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      letter-spacing: 0.02em;
+      color: $curriki-main-blue;
+    }
+    .activity_layout_des {
+      p {
+        font-family: "Open Sans", sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #515151;
+      }
+    }
   }
   .input-group {
     display: flex;
@@ -479,7 +498,10 @@
       .expiore {
         margin-right: 16px;
       }
-
+      .show_activity {
+        width: max-content !important;
+        padding: 8px;
+      }
       .ex-up-button {
         display: flex;
         align-items: center;
@@ -519,6 +541,7 @@
         margin: 0;
         margin-bottom: 10px;
         border: none !important;
+        width: 100%;
 
         .nav-item {
           font-size: 14px;
@@ -878,7 +901,7 @@
           border: 1px solid #515151;
           border-radius: 4px;
           text-indent: 10px;
-          color:#777
+          color: #777;
         }
         textarea {
           width: 100%;
@@ -890,10 +913,10 @@
           text-indent: 10px;
           padding: 8px;
           &::placeholder {
-            color: #959595 !important;  
+            color: #959595 !important;
           }
         }
-       
+
         .ml-32 {
           margin-left: 32px;
         }
@@ -1335,4 +1358,11 @@
 }
 
 .interactive-video-H5P-model-activity {
+}
+
+.select_activity_title_style {
+  h2 {
+    max-width: max-content;
+    border-bottom: 2px solid $crusta;
+  }
 }

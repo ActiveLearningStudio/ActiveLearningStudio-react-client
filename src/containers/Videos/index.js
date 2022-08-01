@@ -202,6 +202,8 @@ const Index = ({ activities }) => {
                                   strokeWidth="2.5"
                                   strokeLinecap="round"
                                 />
+                                <path d="M7.6001 7.59967H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M7.6001 24.3997H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             </>
                           ) : (
