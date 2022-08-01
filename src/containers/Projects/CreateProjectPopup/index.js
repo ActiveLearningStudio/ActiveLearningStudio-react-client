@@ -151,7 +151,8 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch) =
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, project, searchView, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);

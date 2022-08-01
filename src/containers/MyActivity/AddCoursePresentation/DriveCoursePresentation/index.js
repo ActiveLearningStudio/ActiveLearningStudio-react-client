@@ -7,14 +7,14 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import Buttons from 'utils/Buttons/buttons';
 import gapiService from 'services/gapi.service';
 import DriveModal from './DriveModal';
+import FilePreviewAndStore from '../FilePreviewAndStore';
 import './style.scss';
 
-const DriveCoursePresentation = () => {
+const DriveCoursePresentation = ({ setEnableDescribeBtn, setLoading }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   const [authData, setAuthData] = useState(null);
   const [showDriveModal, setShowDriveModal] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState(null);
-  const [previewImageSource, setPreviewImageSource] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     localStorage.removeItem('coursePresentationFromFile');
@@ -28,37 +28,14 @@ const DriveCoursePresentation = () => {
   };
 
   const handleFileClick = (e) => {
+    const filename = e.currentTarget.getAttribute('filename');
     setShowDriveModal(false);
-    setSelectedFileName(e.currentTarget.getAttribute('filename'));
+    setLoading(true);
     gapiService.getGoogleSlidesPDF(authData.accessToken, e.currentTarget.getAttribute('fileid'))
     .then((response) => {
-      var blob = new Blob([response.data]);
-      var reader = new FileReader();
-      reader.onload = (event) => {
-          var base64 = event.target.result;
-          localStorage.setItem('coursePresentationFromFile', base64);
-          const PDFJS = window.pdfjsLib;
-          var _PDF_DOC = PDFJS.getDocument({ data: atob(base64.split(',')[1]) });
-          _PDF_DOC.promise.then((pdf) => {
-            pdf.getPage(1).then((page) => {
-              var scale = 1.5;
-              var viewport = page.getViewport({scale: scale});
-              var canvas = document.createElement('canvas');
-              var ctx = canvas.getContext('2d');
-              var render_context = {
-                canvasContext: ctx,
-                viewport: viewport
-              };
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
-              var renderTask = page.render(render_context);
-              renderTask.promise.then(() => {
-                setPreviewImageSource(canvas.toDataURL('image/png'));
-              });
-            });
-          });
-      };
-      reader.readAsDataURL(blob);
+      setLoading(false);
+      const file = new File([response.data], filename);
+      setSelectedFile(file);
     });
     
   };
@@ -104,13 +81,7 @@ const DriveCoursePresentation = () => {
           )}
         </div>
         <div className="col">
-          {previewImageSource !== null && (
-            <div>
-              <p>Preview:</p>
-              <img className="google-drive-preview-image" src={previewImageSource} />
-              <p>{selectedFileName}</p>
-            </div>
-          )}
+          <FilePreviewAndStore file={selectedFile} setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading} />
         </div>
       </div>
       {showDriveModal && (

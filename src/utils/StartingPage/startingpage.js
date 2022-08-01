@@ -6,15 +6,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './startingpage.scss';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const StartingPage = ({ className, primaryColor = '#2E68BF', mainHeading, createBtnTitle, createTitle, createDetail, helpBtnTitle, helpTitle, helpDetail, onClick = () => {} }) => {
+const StartingPage = ({
+  type,
+  welcome,
+  className,
+  primaryColor = '#2E68BF',
+  createBtnTitle,
+  createTitle,
+  createDetail,
+  helpBtnTitle,
+  helpTitle,
+  helpDetail,
+  onClick = () => {},
+}) => {
   const currikiUtility = classNames('curriki-utility-startpage', className);
+  const { activeOrganization } = useSelector((state) => state.organization);
   return (
     <div className={currikiUtility}>
       <div className="startpage-section">
         <div className="section-detail">
-          <h1>{mainHeading}</h1>
+          <h1>{welcome}</h1>
           <h2 className="create-section-h2-space">{createTitle}</h2>
           <p className="prap-width">{createDetail}</p>
         </div>
@@ -28,11 +42,29 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', mainHeading, create
       </div>
       <div className="startpage-section help-section">
         <div className="section-detail">
-          <span className="help-section-lost-title">Feeling lost?</span>
-          <h2 className="help-section-h2-heading">{helpTitle}</h2>
-          <p className="prap-width">{helpDetail}</p>
+          {type === 'activity' && (
+            <>
+              <h2 className="help-section-h2-heading">{helpTitle}</h2>
+              <ul>
+                <li>Select the type of activity you want to create.</li>
+                <li>Follow the on-screen directions.</li>
+                <li>Add content and media to enhance your experience.</li>
+                <li>Save & Close your work to preview as a learner.</li>
+              </ul>
+              <h6>
+                Later you can use
+                <Link to={`/org/${activeOrganization?.domain}`}> &quot;My Projects&quot; </Link>
+                option to organize your activities into folders
+              </h6>
+            </>
+          )}
+          <p>
+            Feeling lost? Go to our
+            <a href="https://support.curriki.org/"> Help Center </a>
+            to learn more.
+          </p>
         </div>
-        <div className="section-btn " onClick={onClick}>
+        <a href="https://support.curriki.org/" className="section-btn ">
           <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M28 54C42.3594 54 54 42.3594 54 28C54 13.6406 42.3594 2 28 2C13.6406 2 2 13.6406 2 28C2 42.3594 13.6406 54 28 54Z"
@@ -52,7 +84,7 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', mainHeading, create
           </svg>
 
           <span>{helpBtnTitle}</span>
-        </div>
+        </a>
       </div>
     </div>
   );
@@ -60,8 +92,9 @@ const StartingPage = ({ className, primaryColor = '#2E68BF', mainHeading, create
 
 StartingPage.propTypes = {
   className: PropTypes.string,
+  type: PropTypes.string,
   primaryColor: PropTypes.string,
-  mainHeading: PropTypes.string,
+  // mainHeading: PropTypes.string,
   createBtnTitle: PropTypes.string,
   createTitle: PropTypes.string,
   createDetail: PropTypes.string,
@@ -69,6 +102,7 @@ StartingPage.propTypes = {
   helpTitle: PropTypes.string,
   helpDetail: PropTypes.string,
   onClick: PropTypes.func,
+  welcome: PropTypes.string,
 };
 
 export default StartingPage;

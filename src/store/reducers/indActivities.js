@@ -8,6 +8,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
+  const { allActivities } = state;
   switch (action.type) {
     case actionTypes.ALL_IND_ACTIVITIES_REQUEST:
       return {
@@ -22,6 +23,18 @@ export default (state = INITIAL_STATE, action) => {
         allActivities: action.payload,
         islazyLoader: false,
       };
+    case actionTypes.LOAD_MORE_IND_ACTIVITIES: {
+      const { data, meta } = allActivities;
+      const updatedMeta = action.payload.meta;
+      const newIndActivities = data.concat(action.payload.data);
+      return {
+        ...state,
+        isLoading: false,
+        allActivities: { ...allActivities, data: newIndActivities, meta: updatedMeta },
+        islazyLoader: false,
+      };
+    }
+
     case actionTypes.ALL_IND_REQUEST_COMPLETE:
       return {
         ...state,

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, memo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 // import ReactPlaceholder from "react-placeholder";
 import Pagination from 'react-js-pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,6 +28,7 @@ import {
   sampleProjects,
   loadMyFavProjectsAction,
   setCurrentVisibilityType,
+  addMyproject,
   // allSidebarProjects,
 } from 'store/actions/project';
 import DeletePopup from 'components/DeletePopup';
@@ -64,13 +65,14 @@ export const ProjectsPage = (props) => {
   const [size, setSize] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
   const [meta, setMeta] = useState(1);
-  const [tabToggle, setTabToggle] = useState([]);
+  const [tabToggle, setTabToggle] = useState('My Projects');
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
   const [isLoader, setisLoader] = useState(true);
-
+  const [startSearching, setStartSearching] = useState(true);
+  const dispatch = useDispatch();
   const samplerRef = useRef();
   const {
     ui,
@@ -115,13 +117,13 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (!searchTeamQuery) {
-      if (organization?.currentOrganization && isLoader) {
+      if (organization?.currentOrganization && tabToggle !== 'My Projects') {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.currentOrganization && isLoader) {
+    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -129,7 +131,7 @@ export const ProjectsPage = (props) => {
     }
   }, [searchTeamQuery, organization?.currentOrganization, getTeamProjects, activePage]);
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization && isLoader) {
+    if (!searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -294,10 +296,10 @@ export const ProjectsPage = (props) => {
         loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
 
   window.onscroll = function () {
-    if (allProjects?.length > 0 && activePage < allStateProject?.projectMeta?.last_page) {
+    if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
         setActivePage(activePage + 1);
         setisLoader(true);
@@ -306,10 +308,10 @@ export const ProjectsPage = (props) => {
   };
 
   useEffect(() => {
-    if (activePage > 1) {
+    if (activePage > 1 && tabToggle === 'My Projects') {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
-          loadMyProjects(activePage, 10, searchQuery);
+          dispatch(addMyproject(activePage, defaultSize, searchQuery));
           setisLoader(false);
         }
       }
@@ -356,15 +358,6 @@ export const ProjectsPage = (props) => {
     shareProject(projectId);
   };
 
-  // const handleTabChange = (key) => {
-  //   if (key === 'Favorite Projects') {
-  //     setTabToggle(true);
-  //   } else if (key === 'Sample Projects') {
-  //     setTabToggle(false);
-  //   }
-  // };
-  console.log('all', allProjects);
-  console.log('divideProjects', projectDivider);
   const { showDeletePlaylistPopup } = ui;
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
@@ -377,6 +370,7 @@ export const ProjectsPage = (props) => {
               <Tabs
                 onSelect={(eventKey) => {
                   setShowSampleSort(true);
+                  setActivePage(1);
                   setTabToggle(eventKey);
                   if (eventKey === 'Sample Projects') {
                     setType('sample');
@@ -391,18 +385,24 @@ export const ProjectsPage = (props) => {
                 id="uncontrolled-tab-example"
               >
                 <Tab eventKey="My Projects" title="My Projects">
-                  {allProjects?.length > 0 && projectDivider?.length > 0 && (
+                  {((allProjects?.length > 0 && projectDivider?.length > 0) || project.links?.includes('query')) && (
                     <div className="my-project-cards-top-search-filter">
                       <div className="search-bar">
                         <input
                           className=""
                           type="text"
-                          placeholder="Search Project..."
+                          placeholder="Search"
                           value={searchQuery}
                           onChange={(e) => {
                             setsearchQuery(e.target.value);
                             setActivePage(1);
-                            setdefaultSize(10);
+                            if (!e.target.value) {
+                              dispatch({ type: 'SHOW_SKELETON' });
+
+                              loadMyProjects(1, defaultSize, e.target.value);
+                            }
+
+                            // setdefaultSize(10);
                           }}
                         />
 
@@ -413,7 +413,11 @@ export const ProjectsPage = (props) => {
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                           style={{ cursor: 'pointer' }}
-                          onClick={() => loadMyProjects(activePage, 10, searchQuery)}
+                          onClick={() => {
+                            dispatch({ type: 'SHOW_SKELETON' });
+
+                            loadMyProjects(activePage, defaultSize, searchQuery);
+                          }}
                         >
                           <path
                             d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -577,10 +581,12 @@ export const ProjectsPage = (props) => {
                               </DragDropContext>
                             </div>
                           </>
+                        ) : // <Initialpage />
+                        project.links?.includes('query') ? (
+                          <Alert variant="danger">No Search Results Found</Alert>
                         ) : (
-                          // <Initialpage />
                           <StartingPage
-                            createBtnTitle="Create New Project"
+                            createBtnTitle="Create new project"
                             createTitle="Start creating engaging activities."
                             createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
                           Start by creating a new Activity or choose a guide from the right to learn more."

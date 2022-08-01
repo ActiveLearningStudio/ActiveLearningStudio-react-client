@@ -8,7 +8,7 @@ import indResourceService from 'services/indActivities.service';
 import store from '../index';
 import * as actionTypes from '../actionTypes';
 
-export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
+export const createIndResourceAction = (metadata, hide, accountId, settingId) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -17,6 +17,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
+    brightcove_account_id: accountId || undefined,
+    brightcove_api_setting_id: settingId || undefined,
   };
   toast.info('Creating new Activity ...', {
     className: 'project-loading',
@@ -91,10 +93,17 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   const allActivities = await indResourceService.allIndActivity(orgId, page, size, search);
   // console.log("allActivities", allActivities);
   if (allActivities) {
-    dispatch({
-      type: actionTypes.ALL_IND_ACTIVITIES,
-      payload: allActivities,
-    });
+    if (page > 1) {
+      dispatch({
+        type: actionTypes.LOAD_MORE_IND_ACTIVITIES,
+        payload: allActivities,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.ALL_IND_ACTIVITIES,
+        payload: allActivities,
+      });
+    }
   } else {
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
@@ -104,7 +113,6 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   dispatch({
     type: actionTypes.ALL_IND_REQUEST_COMPLETE,
   });
-  window.scrollTo(0, 0);
 };
 
 export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {
