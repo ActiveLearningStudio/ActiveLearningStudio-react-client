@@ -288,14 +288,7 @@ const Index = ({ activities }) => {
                   </div>
                   <div className="top-video-detail">
                     <div className="video-detail">
-                      <HeadingText
-                        text={
-                          activities
-                            ? 'Create new activities, manage them and organize them in playlists and projects.'
-                            : 'Create and organize your activities into projects to create complete courses.'
-                        }
-                        color="#515151"
-                      />
+                      <HeadingText text={activities ? '' : 'Create and organize your activities into projects to create complete courses.'} color="#515151" />
                     </div>
                   </div>
                 </div>

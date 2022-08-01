@@ -1,10 +1,18 @@
 @import 'assets/css/index';
+
+.curriki-utility-startpage-two {
+  padding: 9px 0px 25px !important;
+}
 .curriki-utility-startpage {
-  padding: 9px 0px 25px;
+  padding: 80px 64px 74px;
+
+  .startpage-section-two {
+    margin-bottom: 350px;
+  }
   .startpage-section {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 350px;
+
     .create-project-card {
       position: relative;
       .create-project-popup {
