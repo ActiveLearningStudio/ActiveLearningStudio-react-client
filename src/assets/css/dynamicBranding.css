@@ -149,7 +149,9 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.top-header .notification-bar .user-dropdown .scroll-notification p {
+.top-header .notification-bar .user-dropdown .scroll-notification p,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-discription,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .lists .list-text {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -158,7 +160,8 @@ p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.notification-area .user-detail p a {
+.notification-area .user-detail p a,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-use-project {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -214,7 +217,8 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.curriki-utility-headings {
+.curriki-utility-headings,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-heading {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -1691,12 +1695,10 @@ textarea,
   font-family: var(--main-text-font) !important;
   color: var(--main-paragraph-text-color) !important;
   border: 2px solid var(--main-search-input-color) !important;
-
 }
-.search-result-main .search-library .card-body input[type=text]:focus {
-  box-shadow: 0px 0px 4px 2px var(--main-primary-color)  !important;
+.search-result-main .search-library .card-body input[type='text']:focus {
+  box-shadow: 0px 0px 4px 2px var(--main-primary-color) !important;
   border: 1px solid var(--main-primary-color) !important;
-
 }
 .search-result-main .search-library .card-body .src-btn {
   font-family: var(--main-text-font) !important;
@@ -1783,15 +1785,15 @@ textarea,
 .search-result-main .search-library .card-body .radio-btns input[type='radio'] {
   accent-color: var(--main-primary-color) !important;
 }
-.search-result-main .exp-lib-cnt span{
+.search-result-main .exp-lib-cnt span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.curriki-utility-subsearch .subsearch-top-search-filter .activity-counter .drop-counter{
+.curriki-utility-subsearch .subsearch-top-search-filter .activity-counter .drop-counter {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.dropDown-item-name-icon span{
+.dropDown-item-name-icon span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
