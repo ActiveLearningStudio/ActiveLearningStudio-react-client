@@ -62,6 +62,8 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
+  const [hideallothers, sethideallothers] = useState(true);
+  const [isbackHide, setisbackHide] = useState(true);
   const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -140,6 +142,7 @@ const Index = ({ activities }) => {
                 if (result.isConfirmed) {
                   setOpenVideo(!openMyVideo);
                   setScreenStatus('');
+                  sethideallothers(true);
                   dispatch({
                     type: 'ADD_VIDEO_URL',
                     payload: '',
@@ -149,7 +152,7 @@ const Index = ({ activities }) => {
             }}
           />
           <div className="inner-form-content">
-            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
+            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers={hideallothers} setisbackHide={setisbackHide} />}
             {screenStatus === 'DescribeVideo' && (
               <DescribeVideo
                 activityPreview={activities}
@@ -166,6 +169,7 @@ const Index = ({ activities }) => {
                 setauthortagName={setauthortagName}
                 eduLevel={eduLevel}
                 seteduLevel={seteduLevel}
+                isbackHide={isbackHide}
               />
             )}
           </div>
@@ -433,7 +437,7 @@ const Index = ({ activities }) => {
                 )}
                 <div className="my-interactive-videos">
                   {!!activescreenType ? (
-                    !activescreenType.data?.length ? (
+                    !activescreenType?.data?.length ? (
                       <>
                         {activities ? (
                           <>
@@ -551,6 +555,7 @@ const Index = ({ activities }) => {
                               onClick={() => {
                                 setOpenVideo(!openMyVideo);
                                 setScreenStatus('AddVideo');
+                                setisbackHide(true);
                                 dispatch({
                                   type: 'SET_ACTIVE_VIDEO_SCREEN',
                                   payload: '',
@@ -583,6 +588,8 @@ const Index = ({ activities }) => {
                                   addToProjectCheckbox={addToProjectCheckbox}
                                   selectedProjectstoAdd={selectedProjectstoAdd}
                                   setSelectedProjectstoAdd={setSelectedProjectstoAdd}
+                                  sethideallothers={sethideallothers}
+                                  setisbackHide={setisbackHide}
                                 />
                               ))
                             : allVideos?.data?.map((video) => (
@@ -595,6 +602,8 @@ const Index = ({ activities }) => {
                                     title={video.title}
                                     data={video}
                                     className="card-spacing"
+                                    sethideallothers={sethideallothers}
+                                    setisbackHide={setisbackHide}
                                   />
                                 </>
                               ))}
