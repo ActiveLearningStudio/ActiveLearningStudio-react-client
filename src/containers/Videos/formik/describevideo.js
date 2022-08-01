@@ -1,24 +1,20 @@
 /*eslint-disable*/
-import React, { useRef, useState, useEffect } from "react";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import TabsHeading from "utils/Tabs/tabs";
+import React, { useRef, useState, useEffect } from 'react';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import TabsHeading from 'utils/Tabs/tabs';
 
-import { Formik } from "formik";
-import Buttons from "utils/Buttons/buttons";
+import { Formik } from 'formik';
+import Buttons from 'utils/Buttons/buttons';
 
-import { useSelector, useDispatch } from "react-redux";
-import UploadImage from "utils/uploadimagev2/uploadimagev2";
-import HeadingText from "utils/HeadingText/headingtext";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import DefaultUpload from "assets/images/defaultUpload.png";
-import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
-import {
-  getSubjects,
-  getEducationLevel,
-  getAuthorTag,
-} from "store/actions/admin";
-import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { useSelector, useDispatch } from 'react-redux';
+import UploadImage from 'utils/uploadimagev2/uploadimagev2';
+import HeadingText from 'utils/HeadingText/headingtext';
+import HeadingThree from 'utils/HeadingThree/headingthree';
+import DefaultUpload from 'assets/images/defaultUpload.png';
+import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
+import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const DescribeVideo = ({
   setUploadImageStatus,
@@ -39,12 +35,11 @@ const DescribeVideo = ({
   setauthortagName,
   eduLevel,
   seteduLevel,
+  isbackHide,
 }) => {
   const [modalShow, setModalShow] = useState(false);
 
-  const { videoId, platform, editVideo, activecms } = useSelector(
-    (state) => state.videos
-  );
+  const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [subjects, setSubjects] = useState(null);
@@ -66,9 +61,7 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (!subjects) {
-      const result_sub = dispatch(
-        getSubjects(organization?.activeOrganization?.id)
-      );
+      const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
       result_sub.then((data) => {
         let subj_array = [];
         data?.data.map((subject) => {
@@ -82,9 +75,7 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (!educationLevels) {
-      const result_edu = dispatch(
-        getEducationLevel(organization?.activeOrganization?.id)
-      );
+      const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
       result_edu.then((data) => {
         let edu_array = [];
         data?.data.map((edu_lvl) => {
@@ -98,9 +89,7 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (!authorTags) {
-      const result_tag = dispatch(
-        getAuthorTag(organization?.activeOrganization?.id)
-      );
+      const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
       result_tag.then((data) => {
         let tag_array = [];
         data?.data.map((tag) => {
@@ -114,40 +103,34 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (editVideo?.subjects && !selectedSubjects) {
-      let output = subjects?.filter(
-        (obj) => formatApiData(editVideo?.subjects).indexOf(obj.value) !== -1
-      );
+      let output = subjects?.filter((obj) => formatApiData(editVideo?.subjects).indexOf(obj.value) !== -1);
       setSelectedSubjects(output);
     }
     if (editVideo?.author_tags && !selecteAuthorTags) {
-      let output = authorTags?.filter(
-        (obj) => formatApiData(editVideo?.author_tags).indexOf(obj.value) !== -1
-      );
+      let output = authorTags?.filter((obj) => formatApiData(editVideo?.author_tags).indexOf(obj.value) !== -1);
       setSelecteAuthorTags(output);
     }
 
     if (editVideo?.education_levels && !selectedEducationLevel) {
-      let output = educationLevels?.filter(
-        (obj) =>
-          formatApiData(editVideo?.education_levels).indexOf(obj.value) !== -1
-      );
+      let output = educationLevels?.filter((obj) => formatApiData(editVideo?.education_levels).indexOf(obj.value) !== -1);
       setSelectedEducationLevel(output);
     }
   });
   useEffect(() => {
     if (isSubmitActivty) {
-      setVideoTitle("");
-      setvideodesc("");
-      seteduLevel("");
-      setauthortagName("");
-      setsubName("");
+      setVideoTitle('');
+      setvideodesc('');
+      seteduLevel('');
+      setauthortagName('');
+      setsubName('');
       dispatch({
-        type: "ADD_VIDEO_URL",
-        payload: "",
+        type: 'ADD_VIDEO_URL',
+        payload: '',
       });
     }
   }, [isSubmitActivty]);
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
+  console.log('siback', isbackHide);
   const formRef = useRef();
   return (
     <>
@@ -156,7 +139,7 @@ const DescribeVideo = ({
         onHide={() => {
           setModalShow(false);
         }}
-        type={playlistPreview ? "" : "videoModal"}
+        type={playlistPreview ? '' : 'videoModal'}
         activityPreview={activityPreview}
         title={videoTitle}
         video={videoId}
@@ -170,17 +153,8 @@ const DescribeVideo = ({
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading
-            text={activityPreview ? "1. Add an activity" : "1. Add a video"}
-            tabActive={true}
-          />
-          <TabsHeading
-            text={
-              activityPreview ? "2. Describe activity" : "2. Describe video"
-            }
-            className="ml-10"
-            tabActive={true}
-          />
+          <TabsHeading text={activityPreview ? '1. Add an activity' : '1. Add a video'} tabActive={true} />
+          <TabsHeading text={activityPreview ? '2. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
@@ -191,87 +165,48 @@ const DescribeVideo = ({
               //     ? editVideo?.h5p_content?.library?.title
               //     : "Interactive Video"
               // }
-              text={
-                editVideo?.h5p_content?.library?.title || "Interactive Video"
-              }
+              text={editVideo?.h5p_content?.library?.title || 'Interactive Video'}
               color="#084892"
             />
           </div>
-          {!activityPreview ? (
-            <div
-              className="back-button"
-              id="back-button-none-bg"
-              onClick={() => {
-                if (showback) {
-                  changeScreenHandler("addvideo");
-                } else {
-                  setScreenStatus("AddVideo");
-                }
-              }}
-            >
-              <svg
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: "8px", marginTop: "4px" }}
+          {isbackHide &&
+            (!activityPreview ? (
+              <div
+                className="back-button"
+                id="back-button-none-bg"
+                onClick={() => {
+                  if (showback) {
+                    changeScreenHandler('addvideo');
+                  } else {
+                    setScreenStatus('AddVideo');
+                  }
+                }}
               >
-                <path
-                  d="M13 5L1 5"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 1L1 5L5 9"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <p className="">Back to options</p>
-            </div>
-          ) : (
-            <div
-              className="back-button"
-              id="back-button-none-bg"
-              onClick={() => {
-                if (showback) {
-                  changeScreenHandler("addvideo");
-                } else {
-                  setScreenStatus("AddVideo");
-                }
-              }}
-            >
-              <svg
-                width="14"
-                height="10"
-                viewBox="0 0 14 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ marginRight: "8px", marginTop: "4px" }}
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                  <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p className="">Back to options</p>
+              </div>
+            ) : (
+              <div
+                className="back-button"
+                id="back-button-none-bg"
+                onClick={() => {
+                  if (showback) {
+                    changeScreenHandler('addvideo');
+                  } else {
+                    setScreenStatus('AddVideo');
+                  }
+                }}
               >
-                <path
-                  d="M13 5L1 5"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 1L1 5L5 9"
-                  stroke={primaryColor}
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <p className="">Back to options</p>
-            </div>
-          )}
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                  <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p className="">Back to options</p>
+              </div>
+            ))}
           {/* <div className="add-describevideo-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
@@ -286,9 +221,7 @@ const DescribeVideo = ({
               enableReinitialize
               initialValues={{
                 title: editVideo ? editVideo.title : videoTitle,
-                description: editVideo
-                  ? editVideo.description || undefined
-                  : videodesc,
+                description: editVideo ? editVideo.description || undefined : videodesc,
                 author_tag_id: selecteAuthorTags || authortagName,
                 education_level_id: selectedEducationLevel || eduLevel,
                 subject_id: selectedSubjects || subName,
@@ -296,12 +229,12 @@ const DescribeVideo = ({
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
                   ? editVideo.thumb_url
-                  : "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
+                  : 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
               }}
               validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = "Required";
+                  errors.title = 'Required';
                 }
                 return errors;
               }}
@@ -309,53 +242,31 @@ const DescribeVideo = ({
                 setModalShow(true);
               }}
             >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                setFieldValue,
-              }) => (
+              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">
-                    Describe layout
-                  </h4>
+                  <h4 className="interactive-video-heading-two">Describe layout</h4>
                   <div>
                     <div className="dec-title-formik-textField">
-                      <HeadingThree
-                        text="Title"
-                        color="#515151"
-                        className="textField-title"
-                      />
-                      <HeadingText
-                        text="Used for searching, reports and copyright information"
-                        color="#515151"
-                        className="textField-detailText"
-                      />
+                      <HeadingThree text="Title" color="#515151" className="textField-title" />
+                      <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
                       <input
                         type="text"
                         name="title"
                         placeholder="Give your layout a name..."
                         onChange={(e) => {
-                          setFieldValue("title", e.target.value);
+                          setFieldValue('title', e.target.value);
                           setVideoTitle(e.target.value);
                         }}
                         onBlur={handleBlur}
-                        value={
-                          parser.parseFromString(values.title, "text/html").body
-                            .textContent
-                        }
+                        value={parser.parseFromString(values.title, 'text/html').body.textContent}
                       />
                     </div>
-                    <div className="error" style={{ color: "red" }}>
+                    <div className="error" style={{ color: 'red' }}>
                       {errors.title && touched.title && errors.title}
                     </div>
                     <div className="dec-title-formik-textField">
@@ -367,7 +278,7 @@ const DescribeVideo = ({
                         placeholder="What is this video about"
                         onChange={(e) => {
                           handleChange;
-                          setFieldValue("description", e.target.value);
+                          setFieldValue('description', e.target.value);
                           setvideodesc(e.target.value);
                         }}
                         onBlur={handleBlur}
@@ -376,16 +287,13 @@ const DescribeVideo = ({
                     </div>
                     <div className="layout-formik-select">
                       <div className="formik-select mr-16">
-                        <HeadingText
-                          text="Subject"
-                          className="formik-select-title"
-                        />
+                        <HeadingText text="Subject" className="formik-select-title" />
                         <ReactMultiSelectCheckboxes
                           name="subject_id"
                           hideSearch
                           options={subjects}
                           onChange={(e) => {
-                            setFieldValue("subject_id", e);
+                            setFieldValue('subject_id', e);
                             setsubName(e);
                           }}
                           value={values.subject_id}
@@ -393,16 +301,13 @@ const DescribeVideo = ({
                       </div>
 
                       <div className="formik-select mr-16">
-                        <HeadingText
-                          text="Education level"
-                          className="formik-select-title"
-                        />
+                        <HeadingText text="Education level" className="formik-select-title" />
                         <ReactMultiSelectCheckboxes
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
                           onChange={(e) => {
-                            setFieldValue("education_level_id", e);
+                            setFieldValue('education_level_id', e);
                             seteduLevel(e);
                           }}
                           value={values.education_level_id}
@@ -410,16 +315,13 @@ const DescribeVideo = ({
                       </div>
 
                       <div className="formik-select">
-                        <HeadingText
-                          text="Author Tags"
-                          className="formik-select-title"
-                        />
+                        <HeadingText text="Author Tags" className="formik-select-title" />
                         <ReactMultiSelectCheckboxes
                           name="author_tag_id"
                           hideSearch
                           options={authorTags}
                           onChange={(e) => {
-                            setFieldValue("author_tag_id", e);
+                            setFieldValue('author_tag_id', e);
                             setauthortagName(e);
                           }}
                           value={values.author_tag_id}
@@ -439,21 +341,9 @@ const DescribeVideo = ({
                     </div>
                   </div>
                   <div className="describe-video">
-                    <h4 className="interactive-video-heading-two">
-                      Add Interactions
-                    </h4>
-                    <p>
-                      Start adding activity by opening the editor. Once you
-                      finish, hit the Save & Close button to see your results."
-                    </p>
-                    <Buttons
-                      primary={true}
-                      text="Add Interactions"
-                      width="162px"
-                      height="32px"
-                      hover={true}
-                      type="submit"
-                    />
+                    <h4 className="interactive-video-heading-two">Add Interactions</h4>
+                    <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
+                    <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
                   </div>
                 </form>
               )}

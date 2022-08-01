@@ -546,7 +546,7 @@ export const ProjectsPage = (props) => {
                                                         stroke-linejoin="round"
                                                       />
                                                     </svg>
-                                                    <span>Create new project</span>
+                                                    <span>Create New Project</span>
                                                   </div>
                                                 )
                                               ) : (

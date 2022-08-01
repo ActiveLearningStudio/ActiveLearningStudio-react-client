@@ -94,6 +94,7 @@ StartingPage.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   primaryColor: PropTypes.string,
+  // mainHeading: PropTypes.string,
   createBtnTitle: PropTypes.string,
   createTitle: PropTypes.string,
   createDetail: PropTypes.string,
