@@ -64,9 +64,9 @@ function Table(props) {
 
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
-    { indexing: 1, indexing_text: 'REQUESTED' },
-    { indexing: 3, indexing_text: 'APPROVED' },
-    { indexing: 2, indexing_text: 'REJECTED' },
+    { indexing: 1, indexing_text: 'Requested' },
+    { indexing: 3, indexing_text: 'Approved' },
+    { indexing: 2, indexing_text: 'Rejected' },
   ];
   useEffect(() => {
     (async () => {

@@ -35,6 +35,8 @@ const AddVideoCard = ({
   addToProjectCheckbox,
   setSelectedProjectstoAdd,
   selectedProjectstoAdd,
+  sethideallothers,
+  setisbackHide,
 }) => {
   useEffect(() => {
     if (setSelectedProjectstoAdd) {
@@ -88,7 +90,14 @@ const AddVideoCard = ({
           payload: result['independent-activity'],
         });
         setOpenVideo(true);
-        setScreenStatus('DescribeVideo');
+        if (result?.['independent-activity']?.source_type) {
+          setScreenStatus('AddVideo');
+          sethideallothers(false);
+          setisbackHide(true);
+        } else {
+          setScreenStatus('DescribeVideo');
+          setisbackHide(false);
+        }
       }
     } else {
       const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
@@ -109,9 +118,10 @@ const AddVideoCard = ({
         type: 'SET_ACTIVE_VIDEO_SCREEN',
         payload: result.activity,
       });
-
+      setisbackHide(true);
       setOpenVideo(true);
       setScreenStatus('AddVideo');
+      sethideallothers(false);
     }
   };
 
@@ -126,7 +136,7 @@ const AddVideoCard = ({
         >
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
-              data.shared === false && data.organization_visibility_type_id !== 1 ? (
+              data.shared === false && data.organization_visibility_type_id === 1 ? (
                 <>
                   <label className="cutom_checkbox">
                     {/* <input type="checked" /> */}
@@ -416,6 +426,7 @@ const AddVideoCard = ({
                       autoClose: 10000,
                       icon: '',
                     });
+                    sethideallothers(false);
                     if (activities) {
                       const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
                       if (result?.['independent-activity']) {

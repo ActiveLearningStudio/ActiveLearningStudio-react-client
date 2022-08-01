@@ -42,13 +42,13 @@ export function MyVerticallyCenteredModal(props) {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {/* Duplicate <b>{clone ? clone.title : ""}</b> {clone ? clone.model : ""}{" "} */}
-          <h5>Add to projects</h5>
+          <h5>Move to My projects</h5>
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         <div>
-          <CloneModel clone={props} searchView={true} />
+          <CloneModel clone={props} searchView={props.searchView} />
         </div>
       </Modal.Body>
     </Modal>
@@ -427,7 +427,7 @@ function SearchInterface(props) {
     <>
       <div>
         <div className={!fromTeam && 'search-wrapper'}>
-          <MyVerticallyCenteredModal ind={indClone} show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
+          <MyVerticallyCenteredModal ind={indClone} searchView={true} show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
 
           <div className="content-search">
             {true ? (
@@ -2108,7 +2108,24 @@ function SearchInterface(props) {
                                                                 <span>Preview</span>
                                                               </div>
                                                             </Dropdown.Item>
-                                                            <Dropdown.Item>
+                                                            {/* <Dropdown.Item
+                                                              onClick={async () => {
+                                                                toast.info('Duplicating Activity...', {
+                                                                  className: 'project-loading',
+                                                                  closeOnClick: false,
+                                                                  closeButton: false,
+                                                                  position: toast.POSITION.BOTTOM_RIGHT,
+                                                                  autoClose: 10000,
+                                                                  icon: '',
+                                                                });
+                                                                const result = await intActivityServices.indActivityClone(currentOrganization?.id, res.id);
+                                                                toast.dismiss();
+                                                                Swal.fire({
+                                                                  html: result.message,
+                                                                  icon: 'success',
+                                                                });
+                                                              }}
+                                                            >
                                                               <div className="dropDown-item-name-icon">
                                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                   <path
@@ -2142,7 +2159,7 @@ function SearchInterface(props) {
                                                                 </svg>
                                                                 <span>Copy to My Activities</span>
                                                               </div>
-                                                            </Dropdown.Item>
+                                                            </Dropdown.Item> */}
                                                             <Dropdown.Item
                                                               onClick={() => {
                                                                 setIndClone(false);

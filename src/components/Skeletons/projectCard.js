@@ -3,6 +3,8 @@ import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
+import './style.scss';
+
 const ProjectCard = () => (
   <div className="main-myproject-card" style={{ width: '300px', marginRight: '20px' }}>
     <div>

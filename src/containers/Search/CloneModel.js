@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import { useHistory } from 'react-router-dom';
 
-import { loadMyCloneProjectsAction } from 'store/actions/project';
+import { loadMyCloneProjectsAction, addCloneProjectsAction } from 'store/actions/project';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyProjectsCreate from 'containers/Projects/CreateProjectPopup';
@@ -27,6 +27,7 @@ function LtiProjectShared(props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setpage] = useState(1);
   const [size, setSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(10);
   const scrollerRef = useRef();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -43,14 +44,22 @@ function LtiProjectShared(props) {
       }
     }
   };
-
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(
-      loadMyCloneProjectsAction(page, size, searchQuery),
+      loadMyCloneProjectsAction(page, defaultSize, searchQuery),
       // loadMyProjectsAction(),
     );
-    window.scrollTo(0, 0);
-  }, [dispatch, page, searchQuery]);
+  }, [dispatch, defaultSize, searchQuery]);
+
+  useEffect(() => {
+    if (page > 1) {
+      dispatch(
+        addCloneProjectsAction(page, size, searchQuery),
+        // loadMyProjectsAction(),
+      );
+    }
+  }, [dispatch, page]);
 
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
@@ -96,11 +105,10 @@ function LtiProjectShared(props) {
                   <input
                     type="text"
                     className="search-input"
-                    placeholder="Search activity"
+                    placeholder="Search Project..."
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
-                      setSize(10);
                       setpage(1);
                       // handlerSearchResult(e.target.value);
                     }}
@@ -115,7 +123,7 @@ function LtiProjectShared(props) {
                     // onClick={searchQueryHandler}
                     onClick={() =>
                       dispatch(
-                        loadMyCloneProjectsAction(page, size, searchQuery),
+                        loadMyCloneProjectsAction(page, defaultSize, searchQuery),
                         // loadMyProjectsAction(),
                       )
                     }
@@ -145,7 +153,7 @@ function LtiProjectShared(props) {
             <div onClick={() => setShowCreateProject(false)} className="clone-back-option-project">
               <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
             </div>
-            <h3 className="clone-create-project-headng">Create Project</h3>
+            <h3 className="clone-create-project-headng">Create New Project</h3>
             <MyProjectsCreate project={project} activity={clone} searchView={searchView} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
           </div>
         )}
@@ -278,14 +286,14 @@ function LtiProjectShared(props) {
                                                               dispatch(addActivityPlaylistSearch(clone.clone.id, data2.id));
                                                             }
                                                           } else {
-                                                            cloneActivity(data2.id, clone.id);
+                                                            cloneActivity(data2.id, clone.clone.id);
                                                           }
                                                         }
                                                       });
                                                     }}
                                                     className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
                                                   >
-                                                    <span>Copy Here</span>
+                                                    <span>Move Here</span>
                                                   </div>
                                                 </div>
                                               </span>
@@ -342,24 +350,28 @@ function LtiProjectShared(props) {
                                 <p>Playlist Count: {data.playlists?.length}</p>
                               </div>
                             </div>
-                            <div
-                              onClick={() => {
-                                Swal.fire({
-                                  html: `Are you sure you want to copy this playlist?`,
-                                  showCancelButton: true,
-                                  confirmButtonColor: '#3085d6',
-                                  cancelButtonColor: '#d33',
-                                  confirmButtonText: 'Yes',
-                                  icon: 'info',
-                                }).then(async (result) => {
-                                  if (result.isConfirmed) {
-                                    clonePlaylist(currentProject.id, clone?.clone?.id);
-                                  }
-                                });
-                              }}
-                              className={`copy-here copy-here-unselected`}
-                            >
-                              <span>Copy Here</span>
+                            <div className="activity-project-playlist" style={{ height: '38px', cursor: 'pointer' }}>
+                              <div className="playlist-title-copy-text">
+                                <div
+                                  onClick={() => {
+                                    Swal.fire({
+                                      html: `Are you sure you want to copy this playlist?`,
+                                      showCancelButton: true,
+                                      confirmButtonColor: '#3085d6',
+                                      cancelButtonColor: '#d33',
+                                      confirmButtonText: 'Yes',
+                                      icon: 'info',
+                                    }).then(async (result) => {
+                                      if (result.isConfirmed) {
+                                        clonePlaylist(currentProject.id, clone?.clone?.id);
+                                      }
+                                    });
+                                  }}
+                                  className={`copy-here copy-here-unselected`}
+                                >
+                                  <span>Copy Here</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </span>

@@ -20,7 +20,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { projects } = state;
+  const { projects, clone } = state;
 
   switch (action.type) {
     case actionTypes.CREATE_PROJECT_REQUEST:
@@ -154,8 +154,33 @@ export default (state = INITIAL_STATE, action) => {
         islazyLoader: false,
         isProjectLoading: true,
         projectMeta: action.payload.meta,
+        links: action.payload.links?.first,
       };
+    case actionTypes.SHOW_SKELETON:
+      return {
+        ...state,
 
+        isProjectLoading: false,
+      };
+    case actionTypes.ADD_MY_PROJECTS:
+      if (!projects) {
+        return {
+          ...state,
+          projects: action.payload.projects,
+          islazyLoader: false,
+          isProjectLoading: true,
+          projectMeta: action.payload.meta,
+        };
+      } else {
+        const newProjects = projects.concat(action.payload.projects);
+        return {
+          ...state,
+          projects: newProjects,
+          islazyLoader: false,
+          isProjectLoading: true,
+          projectMeta: action.payload.meta,
+        };
+      }
     case actionTypes.LOAD_MY_CLONE_PROJECTS:
       return {
         ...state,
@@ -163,6 +188,23 @@ export default (state = INITIAL_STATE, action) => {
         islazyLoader: false,
         projectMeta: action.payload.meta,
       };
+    case actionTypes.ADD_MY_CLONE_PROJECTS:
+      if (!clone) {
+        return {
+          ...state,
+          clone: action.payload.projects,
+          islazyLoader: false,
+          projectMeta: action.payload.meta,
+        };
+      } else {
+        const newClone = clone.concat(action.payload.projects);
+        return {
+          ...state,
+          clone: newClone,
+          islazyLoader: false,
+          projectMeta: action.payload.meta,
+        };
+      }
 
     case actionTypes.LOAD_MY_PROJECTS_SELECTED:
     case actionTypes.SHARE_PROJECT:
