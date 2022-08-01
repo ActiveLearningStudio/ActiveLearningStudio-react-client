@@ -72,6 +72,19 @@ const teams = (params) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const activities = (params) => httpService
+  .get(
+    `/${apiVersion}/go/lms/independent-activities`,
+    {},
+    {
+      user_email: params.user_email,
+      query: params.query,
+      size: params.size,
+    },
+  )
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   browse,
   search,
@@ -81,4 +94,5 @@ export default {
   getLtiSummary,
   passLtiCourseDetails,
   teams,
+  activities,
 };

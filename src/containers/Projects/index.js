@@ -43,7 +43,8 @@ import Headline from './headline';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { Dropdown } from 'react-bootstrap';
 import './style.scss';
-import StartingPage from 'utils/StartingPage/startingpage';
+// import StartingPage from 'utils/StartingPage/startingpage';
+import StartingPageTwo from 'utils/StartingPage/startingpageTwo';
 // import MyProjects from "./MyProjects";
 const ImgLoader = () => <img src={loader} alt="loader" />;
 export const ProjectsPage = (props) => {
@@ -296,7 +297,7 @@ export const ProjectsPage = (props) => {
         loadMyProjects(activePage, defaultSize, searchQuery);
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize, searchQuery]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
 
   window.onscroll = function () {
     if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
@@ -396,7 +397,11 @@ export const ProjectsPage = (props) => {
                           onChange={(e) => {
                             setsearchQuery(e.target.value);
                             setActivePage(1);
-                            dispatch({ type: 'SHOW_SKELETON' });
+                            if (!e.target.value) {
+                              dispatch({ type: 'SHOW_SKELETON' });
+
+                              loadMyProjects(1, defaultSize, e.target.value);
+                            }
 
                             // setdefaultSize(10);
                           }}
@@ -409,7 +414,11 @@ export const ProjectsPage = (props) => {
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                           style={{ cursor: 'pointer' }}
-                          onClick={() => loadMyProjects(activePage, defaultSize, searchQuery)}
+                          onClick={() => {
+                            dispatch({ type: 'SHOW_SKELETON' });
+
+                            loadMyProjects(activePage, defaultSize, searchQuery);
+                          }}
                         >
                           <path
                             d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -537,7 +546,7 @@ export const ProjectsPage = (props) => {
                                                         stroke-linejoin="round"
                                                       />
                                                     </svg>
-                                                    <span>Create new project</span>
+                                                    <span>Create New Project</span>
                                                   </div>
                                                 )
                                               ) : (
@@ -573,23 +582,33 @@ export const ProjectsPage = (props) => {
                               </DragDropContext>
                             </div>
                           </>
+                        ) : // <Initialpage />
+                        project.links?.includes('query') ? (
+                          <Alert variant="danger">No Search Results Found</Alert>
                         ) : (
-                          // <Initialpage />
-                          <StartingPage
+                          <StartingPageTwo
                             createBtnTitle="Create new project"
-                            createTitle="Start creating engaging activities."
-                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                          Start by creating a new Activity or choose a guide from the right to learn more."
-                            helpBtnTitle="Help center"
-                            helpTitle="Learn how it works"
-                            helpDetail="Create your learning content using interactive activities.
-                          Organize your content by projects."
                             primaryColor={primaryColor}
                             onClick={() => {
                               setCurrentVisibilityType(null);
                               setCreateProject(true);
                             }}
                           />
+                          // <StartingPage
+                          //   createBtnTitle="Create new project"
+                          //   createTitle="Start creating engaging activities."
+                          //   createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
+                          // Start by creating a new Activity or choose a guide from the right to learn more."
+                          //   helpBtnTitle="Help center"
+                          //   helpTitle="Learn how it works"
+                          //   helpDetail="Create your learning content using interactive activities.
+                          // Organize your content by projects."
+                          //   primaryColor={primaryColor}
+                          //   onClick={() => {
+                          //     setCurrentVisibilityType(null);
+                          //     setCreateProject(true);
+                          //   }}
+                          // />
                         )
                       ) : (
                         <div className="d-flex ">
@@ -737,7 +756,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey="Team Projects" title="Team Projects">
+                {/*<Tab eventKey="Team Projects" title="Team Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">
@@ -787,7 +806,7 @@ export const ProjectsPage = (props) => {
                       )}
                     </div>
                   </div>
-                </Tab>
+                        </Tab>*/}
               </Tabs>
             ) : (
               <Alert variant="danger"> You are not authorized to view Projects</Alert>

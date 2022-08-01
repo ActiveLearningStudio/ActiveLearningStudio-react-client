@@ -106,7 +106,7 @@ function Sidebar(props) {
                 <path d="M4.6001 4.59961H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M4.6001 15.3999H4.60955" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
-              <div className="sidebar-headings">Activities</div>
+              <div className="sidebar-headings">My Activities</div>
             </div>
           </Link>
         </>
@@ -149,26 +149,6 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-      {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
-        <>
-          <Link to={`/org/${allState.organization.currentOrganization?.domain}/search`} onClick={() => {}}>
-            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? 'row-sidebar activeLink' : 'row-sidebar'}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-                  stroke={primaryColor}
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path d="M18.9999 18.9999L14.6499 14.6499" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-
-              <div className="sidebar-headings">Library</div>
-            </div>
-          </Link>
-        </>
-      )}
       {/* Interactive videos */}
       {permission?.Video?.includes('video:view') && (
         <>
@@ -198,6 +178,27 @@ function Sidebar(props) {
           </Link>
         </>
       )}
+      {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
+        <>
+          <Link to={`/org/${allState.organization.currentOrganization?.domain}/search`} onClick={() => {}}>
+            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? 'row-sidebar activeLink' : 'row-sidebar'}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+                  stroke={primaryColor}
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path d="M18.9999 18.9999L14.6499 14.6499" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+
+              <div className="sidebar-headings">Explore Library</div>
+            </div>
+          </Link>
+        </>
+      )}
+
       {permission?.Team?.includes('team:view') && (
         <>
           <Link

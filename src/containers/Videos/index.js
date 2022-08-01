@@ -62,6 +62,8 @@ const Index = ({ activities }) => {
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
   const [defaultSize, setdefaultSize] = useState(10);
+  const [hideallothers, sethideallothers] = useState(true);
+  const [isbackHide, setisbackHide] = useState(true);
   const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -118,7 +120,7 @@ const Index = ({ activities }) => {
     if (ActivePage) {
       dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
     }
-  }, [ActivePage, searchQuery]);
+  }, [ActivePage]);
 
   return (
     <>
@@ -140,6 +142,7 @@ const Index = ({ activities }) => {
                 if (result.isConfirmed) {
                   setOpenVideo(!openMyVideo);
                   setScreenStatus('');
+                  sethideallothers(true);
                   dispatch({
                     type: 'ADD_VIDEO_URL',
                     payload: '',
@@ -149,7 +152,7 @@ const Index = ({ activities }) => {
             }}
           />
           <div className="inner-form-content">
-            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers />}
+            {screenStatus === 'AddVideo' && <AddVideo setScreenStatus={setScreenStatus} hideallothers={hideallothers} setisbackHide={setisbackHide} />}
             {screenStatus === 'DescribeVideo' && (
               <DescribeVideo
                 activityPreview={activities}
@@ -166,6 +169,7 @@ const Index = ({ activities }) => {
                 setauthortagName={setauthortagName}
                 eduLevel={eduLevel}
                 seteduLevel={seteduLevel}
+                isbackHide={isbackHide}
               />
             )}
           </div>
@@ -198,6 +202,8 @@ const Index = ({ activities }) => {
                                   strokeWidth="2.5"
                                   strokeLinecap="round"
                                 />
+                                <path d="M7.6001 7.59967H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M7.6001 24.3997H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                               </svg>
                             </>
                           ) : (
@@ -282,14 +288,7 @@ const Index = ({ activities }) => {
                   </div>
                   <div className="top-video-detail">
                     <div className="video-detail">
-                      <HeadingText
-                        text={
-                          activities
-                            ? 'Create new activities, manage them and organize them in playlists and projects.'
-                            : 'Create and organize your activities into projects to create complete courses.'
-                        }
-                        color="#515151"
-                      />
+                      <HeadingText text={activities ? '' : 'Create and organize your activities into projects to create complete courses.'} color="#515151" />
                     </div>
                   </div>
                 </div>
@@ -303,9 +302,8 @@ const Index = ({ activities }) => {
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           if (activeOrganization) {
-                            if (e.target.value.trim()) {
-                              dispatch(getSearchVideoCard(activeOrganization.id, e.target.value));
-                            } else {
+                            if (!e.target.value.trim()) {
+                              setActiveScreenPage(null);
                               dispatch(getAllVideos(activeOrganization.id));
                             }
                           }
@@ -322,6 +320,7 @@ const Index = ({ activities }) => {
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (activeOrganization) {
+                            setActiveScreenPage(null);
                             dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
                           }
                         }}
@@ -366,7 +365,10 @@ const Index = ({ activities }) => {
                             onChange={(e) => {
                               setSearchQuery(e.target.value);
                               setActivePage(1);
-                              setActiveScreenPage(null);
+                              if (!e.target.value) {
+                                setActiveScreenPage(null);
+                                dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
+                              }
                             }}
                             placeholder="Search"
                           />
@@ -380,6 +382,7 @@ const Index = ({ activities }) => {
                             style={{ cursor: 'pointer' }}
                             onClick={() => {
                               if (activeOrganization) {
+                                setActiveScreenPage(null);
                                 dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
                               }
                             }}
@@ -429,63 +432,79 @@ const Index = ({ activities }) => {
                 )}
                 <div className="my-interactive-videos">
                   {!!activescreenType ? (
-                    !activescreenType.data.length ? (
+                    !activescreenType?.data?.length ? (
                       <>
                         {activities ? (
                           <>
-                            {' '}
-                            <StartingPage
-                              createBtnTitle="Create new activity"
-                              createTitle="Start creating engaging activities."
-                              createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                            Start by creating a new Activity or choose a guide from the right to learn more."
-                              helpBtnTitle="Help center"
-                              helpTitle="Learn how it works"
-                              helpDetail="Create your learning content using interactive activities.
-                            Organize your content by projects."
-                              primaryColor={primaryColor}
-                              onClick={() => {
-                                dispatch({
-                                  type: actionTypes.CLEAR_STATE,
-                                });
+                            {allActivities?.links?.first?.includes('query') ? (
+                              <Alert variant="danger">No results found.</Alert>
+                            ) : (
+                              <StartingPage
+                                welcome="Let's Build a CurrikiStudio Activity!"
+                                createBtnTitle="Create new activity"
+                                createTitle="Create your first learning activity."
+                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                helpBtnTitle="Help center"
+                                helpTitle="How to start?"
+                                type="activity"
+                                primaryColor={primaryColor}
+                                onClick={() => {
+                                  dispatch({
+                                    type: actionTypes.CLEAR_STATE,
+                                  });
 
-                                dispatch({
-                                  type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                  payload: 'layout',
-                                  playlist: {},
-                                  project: {},
-                                });
+                                  dispatch({
+                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                    payload: 'layout',
+                                    playlist: {},
+                                    project: {},
+                                  });
 
-                                dispatch(clearSearch());
+                                  dispatch(clearSearch());
 
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            />
+                                  dispatch({
+                                    type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                    payload: '',
+                                  });
+                                }}
+                              />
+                            )}
                           </>
                         ) : (
                           <>
-                            <StartingPage
-                              createBtnTitle="Create a video"
-                              createTitle="Start creating engaging activities."
-                              createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                            Start by creating a new Activity or choose a guide from the right to learn more."
-                              helpBtnTitle="Help center"
-                              helpTitle="Learn how it works"
-                              helpDetail="Create your learning content using interactive activities.
-                            Organize your content by projects."
-                              primaryColor={primaryColor}
-                              onClick={() => {
-                                setOpenVideo(!openMyVideo);
-                                setScreenStatus('AddVideo');
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            />
+                            {allVideos?.links?.first?.includes('query') ? (
+                              <Alert variant="danger">No results found.</Alert>
+                            ) : (
+                              <StartingPage
+                                welcome="Let's Build a CurrikiStudio Activity!"
+                                createBtnTitle="Create new activity"
+                                createTitle="Create your first learning activity."
+                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                helpBtnTitle="Help center"
+                                helpTitle="How to start?"
+                                type="activity"
+                                primaryColor={primaryColor}
+                                onClick={() => {
+                                  dispatch({
+                                    type: actionTypes.CLEAR_STATE,
+                                  });
+
+                                  dispatch({
+                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                    payload: 'layout',
+                                    playlist: {},
+                                    project: {},
+                                  });
+
+                                  dispatch(clearSearch());
+
+                                  dispatch({
+                                    type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                    payload: '',
+                                  });
+                                }}
+                              />
+                            )}
                           </>
                         )}
                       </>
@@ -531,6 +550,7 @@ const Index = ({ activities }) => {
                               onClick={() => {
                                 setOpenVideo(!openMyVideo);
                                 setScreenStatus('AddVideo');
+                                setisbackHide(true);
                                 dispatch({
                                   type: 'SET_ACTIVE_VIDEO_SCREEN',
                                   payload: '',
@@ -563,6 +583,8 @@ const Index = ({ activities }) => {
                                   addToProjectCheckbox={addToProjectCheckbox}
                                   selectedProjectstoAdd={selectedProjectstoAdd}
                                   setSelectedProjectstoAdd={setSelectedProjectstoAdd}
+                                  sethideallothers={sethideallothers}
+                                  setisbackHide={setisbackHide}
                                 />
                               ))
                             : allVideos?.data?.map((video) => (
@@ -575,6 +597,8 @@ const Index = ({ activities }) => {
                                     title={video.title}
                                     data={video}
                                     className="card-spacing"
+                                    sethideallothers={sethideallothers}
+                                    setisbackHide={setisbackHide}
                                   />
                                 </>
                               ))}

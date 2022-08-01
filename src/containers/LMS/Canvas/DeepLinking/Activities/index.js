@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { browseAction } from 'store/actions/canvas';
-import Project from 'containers/LMS/Canvas/DeepLinking/Project';
+import { getActivitiesAction } from 'store/actions/canvas';
+import ActivitiesList from 'containers/LMS/Canvas/DeepLinking/ActivitiesList';
 import gifloader from 'assets/images/dotsloader.gif';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import './style.scss';
 
-const Browse = (props) => {
-  const { match, browse, browseResults } = props;
+const Activities = (props) => {
+  const { match, browse, activities } = props;
   const primaryColor = getGlobalColor('--main-primary-color');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -19,18 +19,10 @@ const Browse = (props) => {
     window.scrollTo(0, 0);
     const url = new URL(window.location.href);
     const email = url.searchParams.get('user_email');
-    const domainName = url.searchParams.get('api_domain_url');
-    const courseId = url.searchParams.get('course_id');
-    const courseName = url.searchParams.get('course_name');
     browse({
-      lms_url: match.params.lmsUrl,
-      lti_client_id: match.params.ltiClientId,
       user_email: email,
-      mode: 'browse',
-      course_id: courseId,
-      api_domain_url: domainName,
-      course_name: courseName,
-      search_keyword: searchQuery || null,
+      query: searchQuery || null,
+      size: null,
     });
   }, [match, searchQuery]);
 
@@ -70,37 +62,37 @@ const Browse = (props) => {
       </div>
       <div className="row">
         <div className="col">
-          {browseResults === null && (
+          {activities === null && (
             <div className="row">
               <div className="col text-center">
                 <img style={{ width: '50px' }} src={gifloader} alt="" />
               </div>
             </div>
           )}
-          {browseResults !== null && browseResults.length === 0 && <Alert variant="warning">No projects found.</Alert>}
-          {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
+          {activities !== null && activities.data.length === 0 && <Alert variant="warning">No activity found.</Alert>}
+          {activities !== null && activities.data.length > 0 && activities.data.map((data) => <ActivitiesList activity={data} key={data.id} />)}
         </div>
       </div>
     </>
   );
 };
 
-Browse.defaultProps = {
-  browseResults: null,
+Activities.defaultProps = {
+  activities: null,
 };
 
-Browse.propTypes = {
+Activities.propTypes = {
   match: PropTypes.object.isRequired,
-  browseResults: PropTypes.array,
+  activities: PropTypes.array,
   browse: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  browseResults: state.canvas.browseResults,
+  activities: state.canvas.activities,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  browse: (params) => dispatch(browseAction(params)),
+  browse: (params) => dispatch(getActivitiesAction(params)),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Browse));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Activities));
