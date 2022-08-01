@@ -42,7 +42,7 @@ export function MyVerticallyCenteredModal(props) {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {/* Duplicate <b>{clone ? clone.title : ""}</b> {clone ? clone.model : ""}{" "} */}
-          <h5>Add to projects</h5>
+          <h5>Move to My projects</h5>
         </Modal.Title>
       </Modal.Header>
 

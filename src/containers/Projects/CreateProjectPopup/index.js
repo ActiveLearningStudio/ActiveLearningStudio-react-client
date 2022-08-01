@@ -205,13 +205,13 @@ let CreateProjectPopup = (props) => {
             validate={[required, maxLength80]}
             autoComplete="new-password"
             className="reduxlabel"
-            label="Project name"
+            label="Project Name"
             placeholder="e.g Course Name"
           />
         </div>
 
         <div className="project-description">
-          <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="Project Description" />
+          <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="What is your project about?" />
         </div>
         <div className="upload-thumbnail check">
           <div className="upload_placeholder">
@@ -257,7 +257,7 @@ let CreateProjectPopup = (props) => {
               {project?.thumbUrl ? (
                 <div className="thumb-display">
                   <label>
-                    <h2>Upload Image</h2>
+                    <h2>Project Thumbnail Image</h2>
                   </label>
                   <div
                     className="imgbox"
@@ -269,7 +269,7 @@ let CreateProjectPopup = (props) => {
               ) : (
                 <div className="new-box">
                   <label>
-                    <h2>Upload Image</h2>
+                    <h2>Project Thumbnail Image</h2>
                   </label>
                   <div className="imgbox">
                     {/* eslint-disable-next-line max-len */}
@@ -282,7 +282,7 @@ let CreateProjectPopup = (props) => {
             <div className="button-flex ">
               <div className="pexel" onClick={() => setModalShow(true)}>
                 <img src={pexel} alt="pexel" />
-                <p>Pexels</p>
+                <p>Select from Pexels</p>
               </div>
               <div
                 className="gallery"
@@ -291,19 +291,19 @@ let CreateProjectPopup = (props) => {
                 }}
               >
                 <img src={computer} alt="" />
-                <p>My device</p>
+                <p>Upload from My Device</p>
               </div>
             </div>
           </div>
 
-          <p className="disclaimer">
+          {/* <p className="disclaimer">
             Project Image dimension should be <strong>280px width and 200px height. </strong>
             Maximum File size allowed is <strong>100MB.</strong>
-          </p>
+          </p> */}
         </div>
         <div className="create-project-template-wrapper">
           <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
-            {isLoading ? <img src={loader} alt="" /> : addtoProject ? 'Save & Continue' : 'Create Project'}
+            {isLoading ? <img src={loader} alt="" /> : addtoProject ? 'Save Project' : 'Create Project'}
           </button>
         </div>
       </form>
