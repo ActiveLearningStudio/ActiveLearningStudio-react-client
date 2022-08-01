@@ -71,7 +71,7 @@ const ActivityLayout = (props) => {
     <div className="activity-layout-form ">
       <div className="activity-layout-tabs">
         <Tabs text="1. Select Activity" tabActive={true} />
-        <Tabs text="2. Describe and Create Activity" tabActive={true} className="ml-10 " />
+        <Tabs text="2. Describe and Create Activity" className="ml-10 " />
         {/* <Tabs text="3. Create activity" className="ml-10 " /> */}
       </div>
       <div className="upload-back-button">
