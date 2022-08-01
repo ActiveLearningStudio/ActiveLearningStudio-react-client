@@ -308,7 +308,9 @@ const AddActivity = (props) => {
                   <div className="layout-title-formik-textField">
                     <div className="d-flex">
                       <HeadingThree text="Title" color="#515151" className="textField-title" />
-                      <OverlayTriggerPop icon={faExclamationCircle}>Used for searching, reports and copyright information</OverlayTriggerPop>
+                      <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
+                        Used for searching, reports and copyright information
+                      </OverlayTriggerPop>
                     </div>
                     {/* <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" /> */}
                     <input

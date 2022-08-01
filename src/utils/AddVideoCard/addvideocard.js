@@ -211,7 +211,7 @@ const AddVideoCard = ({
             <div className="activity-update-lib">
               <div className="activity-update">Updated: {data.updated_at.split('T')[0]}</div>
               <div className="activity-lib">
-                Library preference: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.display_name}</span>
+                Library Status: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.display_name}</span>
               </div>
             </div>
           </>

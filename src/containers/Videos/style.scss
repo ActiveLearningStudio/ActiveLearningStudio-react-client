@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .myvideomain {
   .inner-content {
@@ -13,9 +13,9 @@
     }
     .topHeading-video-detail {
       display: flex;
-      flex-direction: column;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #dddddd;
+      // flex-direction: column;
+      // padding-bottom: 16px;
+      // border-bottom: 1px solid #dddddd;
 
       .topHeading {
         display: flex;
@@ -97,7 +97,8 @@
       padding: 10px 20px;
       width: 100%;
       flex-wrap: wrap;
-      margin: 16px 0px 22px;
+      margin-top: 16px;
+      // margin: 16px 0px 22px;
       background-color: #f7faff;
       .searc_bar_move_activities {
         display: flex;
@@ -106,7 +107,7 @@
           input {
             display: none;
             &:checked + span {
-              background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+              background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
               background-color: $curriki-main-blue;
             }
           }
@@ -332,7 +333,7 @@
             width: 50%;
             margin-right: 8px;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -360,7 +361,7 @@
             flex-direction: column;
             width: 50%;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -421,7 +422,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -445,7 +446,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -1184,7 +1185,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
 
       input {
         border: none;

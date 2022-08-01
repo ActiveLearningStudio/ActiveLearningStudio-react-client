@@ -21,3 +21,7 @@
 .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
   border-bottom-color: #e5eeff !important;
 }
+.bs-tooltip-right .arrow::before,
+.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: #e5eeff !important;
+}

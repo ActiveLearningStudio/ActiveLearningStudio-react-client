@@ -413,7 +413,7 @@
       font-size: 16px;
       line-height: 20px;
       letter-spacing: 0.02em;
-      color: $curriki-main-blue;
+      color: #084892;
     }
     .activity_layout_des {
       p {
@@ -566,7 +566,58 @@
       width: 583px;
       margin-top: 32px;
       margin-left: 80px;
+      .activity-des-taber {
+        height: 346px;
+        margin-bottom: 16px;
 
+        .activity-des-taber-detail {
+          margin-top: 24px;
+          h6 {
+            font-family: $rubik;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+
+            color: #084892;
+          }
+          p {
+            font-family: "Open Sans", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            color: #515151;
+            margin-bottom: 0px !important;
+          }
+        }
+        .activity-des-taber-useful {
+          margin-top: 24px;
+          display: flex;
+          align-items: center;
+          .useful-title {
+            margin-right: 10px;
+            font-family: $rubik;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+
+            color: #084892;
+          }
+          p {
+            margin-bottom: 0px !important;
+            margin-left: 10px;
+            font-family: "Open Sans", sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+
+            color: #515151;
+          }
+        }
+      }
       .nav {
         margin: 0;
         margin-bottom: 10px;
