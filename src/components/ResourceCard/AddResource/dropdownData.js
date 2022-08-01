@@ -27,7 +27,7 @@ export const integratedLMS = [
   { name: 'Moodle', value: 'moodle' },
   { name: 'Canvas', value: 'canvas' },
   { name: 'Safari Montage', value: 'safarimontage' },
-  { name: 'Schoology', value: 'schoology' },
-  { name: 'D2L', value: 'd2l' },
-  { name: 'Sakai', value: 'sakai' },
+  // { name: 'Schoology', value: 'schoology' },
+  // { name: 'D2L', value: 'd2l' },
+  // { name: 'Sakai', value: 'sakai' },
 ];

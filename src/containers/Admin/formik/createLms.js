@@ -358,7 +358,7 @@ export default function CreateUser(prop) {
                 </div>
               </div>
               <div className="button-group">
-                <button type="submit">Save</button>
+                <button type="submit">{editMode ? (clone ? 'Save' : 'Edit LMS setting ') : 'Save '}</button>
                 <button
                   type="button"
                   className="cancel"
