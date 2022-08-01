@@ -164,7 +164,7 @@ export default function CreateUser(prop) {
             <div className="row">
               <div className="col">
                 <div className="form-group-create">
-                  <h3>First Name</h3>
+                  <h3>First name</h3>
                   <input
                     type="text"
                     name="first_name"
@@ -177,7 +177,7 @@ export default function CreateUser(prop) {
                   </div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Last Name</h3>
+                  <h3>Last name</h3>
                   <input
                     type="text"
                     name="last_name"
@@ -238,7 +238,7 @@ export default function CreateUser(prop) {
                   </div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Organization Type</h3>
+                  <h3>Organization type</h3>
                   <div className="filter-dropdown-user">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
@@ -256,7 +256,7 @@ export default function CreateUser(prop) {
                   </div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Organization Name</h3>
+                  <h3>Organization name</h3>
                   <input
                     type="text"
                     name="organization_name"
@@ -269,7 +269,7 @@ export default function CreateUser(prop) {
                   </div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Job Title</h3>
+                  <h3>Job title</h3>
                   <input
                     type="text"
                     name="job_title"

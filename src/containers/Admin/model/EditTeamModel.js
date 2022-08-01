@@ -53,7 +53,7 @@ function EditTeamModel(props) {
           <div className="detail-btn">
             <Buttons
               onClick={onClickHandler}
-              text="Close"
+              text="Cancel"
               width="95px"
               height="32px"
               secondary

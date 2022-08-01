@@ -232,7 +232,7 @@ function Controller(props) {
             <input
               className=""
               type="text"
-              placeholder="Search by URL or Email"
+              placeholder="Search"
               onChange={searchQueryChangeHandler}
             />
             {/* <img src={searchimg} alt="search" /> */}
@@ -266,7 +266,7 @@ function Controller(props) {
             <input
               className=""
               type="text"
-              placeholder="Search by URL or User Email"
+              placeholder="Search"
               onChange={searchQueryChangeHandler}
             />
             {/* <img src={searchimg} alt="search" /> */}
@@ -299,7 +299,7 @@ function Controller(props) {
             <input
               className=""
               type="text"
-              placeholder="Search by ID or email"
+              placeholder="Search"
               onChange={searchQueryChangeHandler}
             />
             {/* <img src={searchimg} alt="search" /> */}
@@ -538,7 +538,7 @@ function Controller(props) {
           <div className="search-bar">
             <input
               type="text"
-              placeholder="Search Organization"
+              placeholder="Search"
               onChange={searchQueryChangeHandler}
             />
             <svg
