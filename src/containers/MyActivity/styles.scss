@@ -248,7 +248,22 @@
 .search-card-singleActivity {
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
+  background-color: #f7faff;
+  height: 68px;
+  border-radius: 8px;
+  .search_filter_div {
+    display: flex;
+    .filter_ml_50 {
+      margin-left: 50px;
+    }
+  }
+  .search-input-singleActivity {
+    input {
+      background-color: #f7faff;
+      margin-left: 18px;
+    }
+  }
   input {
     border: none;
     border-bottom: 1px solid #515151;
@@ -263,6 +278,21 @@
     display: inline-block;
     font-family: $sans;
     color: #767676;
+    .dropdown-activity-select-inner-div {
+      display: flex;
+      align-items: center;
+      .filter_title {
+        margin-right: 12px;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+        display: flex;
+        align-items: center;
+        color: $curriki-main-blue;
+      }
+    }
     .dropdown-title {
       font-size: 14px;
       line-height: 20px;
@@ -730,6 +760,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .add_activity_title_h2_style {
+      h2 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 32px;
+        line-height: 38px;
+      }
+    }
     .add-activity-title {
       // margin-top: 50px;
       width: max-content;
@@ -854,6 +892,7 @@
       .layout-title-formik-textField {
         margin-top: 16px;
         .textField-title {
+          margin-right: 10px;
           h3 {
             font-weight: 400;
             font-size: 14px;
@@ -922,7 +961,7 @@
         }
       }
       .layout-formik-select {
-        margin-top: 25px;
+        margin-top: 12px;
         display: flex;
         .formik-select {
           max-width: 168px;
@@ -960,7 +999,8 @@
         margin-top: 33px;
       }
       .interactive-video-heading-two {
-        font-weight: 500;
+        font-style: normal;
+        font-weight: 700;
         font-size: 18px;
         line-height: 24px;
         color: #084892;
@@ -979,7 +1019,7 @@
       margin-left: 80px;
       .layout-add-activity-title {
         h3 {
-          font-weight: 500;
+          font-weight: 700;
           font-size: 18px;
           line-height: 24px;
         }
@@ -991,7 +1031,7 @@
       .add-activity-btns {
         display: flex;
         justify-content: space-between;
-        margin-top: 50px;
+        margin-top: 16px;
         .mr-10 {
           @media screen and (max-width: 1024px) {
             margin-right: 10px;

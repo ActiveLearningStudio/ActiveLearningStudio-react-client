@@ -70,13 +70,13 @@ const ActivityLayout = (props) => {
   return (
     <div className="activity-layout-form ">
       <div className="activity-layout-tabs">
-        <Tabs text="1. Select layout" tabActive={true} />
-        <Tabs text="2. Select activity" tabActive={true} className="ml-10 " />
-        <Tabs text="3. Create activity" className="ml-10 " />
+        <Tabs text="1. Select Activity" tabActive={true} />
+        <Tabs text="2. Describe and Create Activity" tabActive={true} className="ml-10 " />
+        {/* <Tabs text="3. Create activity" className="ml-10 " /> */}
       </div>
       <div className="upload-back-button">
         <div className="activity-layout-title ">
-          <HeadingOne text="Select activity" color="#084892" />
+          <HeadingOne text="Select Activity" color="#084892" />
         </div>
         <div className="back-button" id="back-button-none-bg" onClick={() => changeScreenHandler('layout')}>
           {/* <img src={BackButton} alt="back button " /> */}
@@ -91,51 +91,59 @@ const ActivityLayout = (props) => {
         <Headings
           headingType="body2"
           color="#515151"
-          text="Preview each activity in the library by selecting Demo. Utilize the filter below to assist in choosing the best activity type for your content."
+          text="Preview an example of each activity type by selecting Sample. Use the filter below to assist in choosing the best activity type for your content."
         />
       </div>
       <div className="search-card-singleActivity">
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Search activity"
-            onChange={(e) => {
-              if (e.target.value == '') {
-                setAllSingleActivities(allActivity);
-              } else {
-                setAllSingleActivities(allActivity?.filter((data) => data.title.toLowerCase().includes(e.target.value.trim().toLowerCase())));
-              }
-            }}
-          />
-          <img src={searchicon} className="search-icon" alt="" />
-        </div>
-        <div class="dropdown-activity-select">
-          <div className="dropdown-title">
-            Filter by activity type
-            <img src={arrowdark} alt="arrow" />
+        <div className="search_filter_div">
+          <div className="input-group search-input-singleActivity">
+            <input
+              type="text"
+              placeholder="Search activity types..."
+              onChange={(e) => {
+                if (e.target.value == '') {
+                  setAllSingleActivities(allActivity);
+                } else {
+                  setAllSingleActivities(allActivity?.filter((data) => data.title.toLowerCase().includes(e.target.value.trim().toLowerCase())));
+                }
+              }}
+            />
+            <img src={searchicon} className="search-icon" alt="" />
           </div>
-
-          <div class="dropdown-content-select">
-            {allActivitytypes?.data?.length > 0 &&
-              allActivitytypes?.data?.map((data, counter) => {
-                return (
-                  <label>
-                    <input
-                      //checked={filterData.includes(data.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setFilterData([...filterData, data.id]);
-                        } else {
-                          setFilterData(filterData.filter((ids) => ids !== data.id));
-                        }
-                      }}
-                      type="checkbox"
-                      name={counter}
-                    />
-                    {data.title}
-                  </label>
-                );
-              })}
+          <div class="dropdown-activity-select filter_ml_50">
+            <div className="dropdown-activity-select-inner-div">
+              <div>
+                <span className="filter_title">Filter by</span>
+              </div>
+              <div>
+                <div className="dropdown-title">
+                  -----
+                  <img src={arrowdark} alt="arrow" />
+                </div>
+                <div class="dropdown-content-select">
+                  {allActivitytypes?.data?.length > 0 &&
+                    allActivitytypes?.data?.map((data, counter) => {
+                      return (
+                        <label>
+                          <input
+                            //checked={filterData.includes(data.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFilterData([...filterData, data.id]);
+                              } else {
+                                setFilterData(filterData.filter((ids) => ids !== data.id));
+                              }
+                            }}
+                            type="checkbox"
+                            name={counter}
+                          />
+                          {data.title}
+                        </label>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -181,9 +189,9 @@ const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count }) => (
     <div className="btns-margin ml-3">
       <Buttons
         disabled={count > 0 ? false : true}
-        text="Select Activity"
+        text="Select"
         defaultgrey={count > 0 ? false : true}
-        width="153px"
+        width="91px"
         height="36px"
         onClick={() => {
           changeScreenHandler('addactivity');
