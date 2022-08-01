@@ -37,7 +37,7 @@ export const columnData = {
     "Author",
     "Library status",
     "Library preferences",
-    "Shared status",
+    "Sharing",
     "Updated",
   ],
   projectAllSortCol: ["Created"],
