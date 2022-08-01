@@ -867,7 +867,7 @@ export const searchPreviewIndependentActivityAction = (activityId) => async (dis
     payload: result,
   });
   return result;
-}
+};
 
 export const formatSelectBoxData = (data) => {
   let ids = [];

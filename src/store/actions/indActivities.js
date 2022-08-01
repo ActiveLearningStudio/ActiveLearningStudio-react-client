@@ -8,7 +8,7 @@ import indResourceService from 'services/indActivities.service';
 import store from '../index';
 import * as actionTypes from '../actionTypes';
 
-export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
+export const createIndResourceAction = (metadata, hide, accountId, settingId) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -17,6 +17,8 @@ export const createIndResourceAction = (metadata, hide) => async (dispatch) => {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
     action: 'create',
+    brightcove_account_id: accountId || undefined,
+    brightcove_api_setting_id: settingId || undefined,
   };
   toast.info('Creating new Activity ...', {
     className: 'project-loading',

@@ -14,8 +14,18 @@ import './style.scss';
 const AddCoursePresentation = ({ changeScreenHandler }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   const [activeKey, setActiveKey] = useState('new');
+  const [enableDescribeBtn, setEnableDescribeBtn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => localStorage.removeItem('coursePresentationFromFile'), [activeKey]);
+  useEffect(() => {
+    localStorage.removeItem('coursePresentationFromFile');
+
+    if (activeKey === 'new') {
+      setEnableDescribeBtn(true);
+    } else {
+      setEnableDescribeBtn(false);
+    }
+  }, [activeKey]);
 
   return (
     <div className="add-video-form">
@@ -55,12 +65,13 @@ const AddCoursePresentation = ({ changeScreenHandler }) => {
             <CreateCoursePresentation />
           </Tab>
           <Tab eventKey="upload" title="My Device">
-            <UploadCoursePresentation />
+            <UploadCoursePresentation setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading} />
           </Tab>
           <Tab eventKey="drive" title="Google Drive">
-            {activeKey === 'drive' && <DriveCoursePresentation />}
+            {activeKey === 'drive' && <DriveCoursePresentation setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading} />}
           </Tab>
         </Tabs>
+        <div className={`loading ${(loading) ? '' : 'hide'}`}><FontAwesomeIcon icon="spinner" /></div>
       </div>
       <div className="row mt-2">
         <div className="col">
@@ -70,6 +81,7 @@ const AddCoursePresentation = ({ changeScreenHandler }) => {
             className="cp-describe-layout-btn"
             hover
             onClick={() => changeScreenHandler('addactivity')}
+            disabled={!enableDescribeBtn}
           />
         </div>
       </div>
