@@ -586,7 +586,14 @@ export const ProjectsPage = (props) => {
                         project.links?.includes('query') ? (
                           <Alert variant="danger">No Search Results Found</Alert>
                         ) : (
-                          <StartingPageTwo createBtnTitle="Create new project" />
+                          <StartingPageTwo
+                            createBtnTitle="Create new project"
+                            primaryColor={primaryColor}
+                            onClick={() => {
+                              setCurrentVisibilityType(null);
+                              setCreateProject(true);
+                            }}
+                          />
                           // <StartingPage
                           //   createBtnTitle="Create new project"
                           //   createTitle="Start creating engaging activities."
@@ -749,7 +756,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
-                <Tab eventKey="Team Projects" title="Team Projects">
+                {/*<Tab eventKey="Team Projects" title="Team Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">
@@ -799,7 +806,7 @@ export const ProjectsPage = (props) => {
                       )}
                     </div>
                   </div>
-                </Tab>
+                        </Tab>*/}
               </Tabs>
             ) : (
               <Alert variant="danger"> You are not authorized to view Projects</Alert>

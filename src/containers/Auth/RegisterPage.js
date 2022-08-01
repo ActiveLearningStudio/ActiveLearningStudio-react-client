@@ -281,7 +281,7 @@ class RegisterPage extends React.Component {
                   }}
                 >
                   <Tab eventKey="Log in" title="Log in" />
-                  <Tab eventKey="Sign up" title="Sign up" style={{ display: stepper ? 'none' : 'flex' }}>
+                  <Tab eventKey="Sign up" title="Register Here!" style={{ display: stepper ? 'none' : 'flex' }}>
                     <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
                       {!clicked && (
                         <>

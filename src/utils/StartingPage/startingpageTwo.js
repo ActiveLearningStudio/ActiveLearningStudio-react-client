@@ -22,11 +22,11 @@ const StartingPageTwo = ({
   helpDetail,
   onClick = () => {},
 }) => {
-  const currikiUtility = classNames('curriki-utility-startpage', className);
+  const currikiUtility = classNames('curriki-utility-startpage curriki-utility-startpage-two', className);
   const { activeOrganization } = useSelector((state) => state.organization);
   return (
     <div className={currikiUtility}>
-      <div className="startpage-section">
+      <div className="startpage-section startpage-section-two ">
         <div className="create-project-card">
           <div className="section-btn" onClick={onClick}>
             <svg width="48" height="48" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
