@@ -4,7 +4,7 @@
   padding: 9px 0px 25px !important;
 }
 .curriki-utility-startpage {
-  padding: 80px 64px 74px;
+  padding: 80px 64px 8px;
 
   .startpage-section-two {
     margin-bottom: 350px;
@@ -86,21 +86,31 @@
     }
 
     .section-detail {
+      max-width: 718px;
       h1 {
         font-family: $rubik;
         font-style: normal;
         font-weight: 500;
         font-size: 36px;
-        line-height: 58px;
+        line-height: 44px;
         color: #515151;
+      }
+      .section-heading-one {
         margin-bottom: 24px;
       }
+      .create-section-h2-space {
+        margin-bottom: 8px;
+      }
+      .prap-space {
+        margin-bottom: 24px !important;
+      }
+
       h2 {
         font-family: $rubik;
         font-style: normal;
         font-weight: 500;
         font-size: 18px;
-        line-height: 38px;
+        line-height: 24px;
         color: #515151;
         margin-bottom: 8px;
       }
@@ -109,8 +119,8 @@
         font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 18px;
-        line-height: 26px;
+        font-size: 16px;
+        line-height: 24px;
         color: #515151;
         margin-bottom: 0px !important;
 
@@ -135,14 +145,16 @@
           color: #515151;
         }
       }
-      .prap-width {
-        max-width: 697px;
+      .help-text {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
       }
-
       ul {
         list-style-type: decimal;
         margin-left: 18px;
         margin-top: 10px;
+        margin-bottom: 34px;
         li {
           font-style: normal;
           font-weight: 400;
@@ -155,6 +167,9 @@
           color: #515151;
         }
       }
+    }
+    .create-new-btn {
+      margin-bottom: 40px;
     }
     .section-btn {
       background: #e5eeff;

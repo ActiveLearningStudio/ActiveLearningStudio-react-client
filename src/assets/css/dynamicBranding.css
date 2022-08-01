@@ -178,7 +178,10 @@ p {
 }
 /* My Profile branding */
 
-.user-dropdown-item-name .name {
+.user-dropdown-item-name .name,
+.curriki-utility-startpage .startpage-section .section-detail ul li,
+.curriki-utility-startpage .startpage-section .section-detail h6,
+.curriki-utility-startpage .startpage-section .section-detail .help-text {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -205,7 +208,10 @@ p {
   font-family: var(--main-heading-font) !important;
 }
 
-.footer-img-section span {
+.footer-img-section span,
+.curriki-utility-startpage .startpage-section .section-detail .section-heading-one,
+.curriki-utility-startpage .startpage-section .section-detail .create-section-h2-space,
+.curriki-utility-startpage .startpage-section .section-detail h2 {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
 }
