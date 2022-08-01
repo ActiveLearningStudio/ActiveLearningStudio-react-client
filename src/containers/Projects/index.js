@@ -43,7 +43,8 @@ import Headline from './headline';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { Dropdown } from 'react-bootstrap';
 import './style.scss';
-import StartingPage from 'utils/StartingPage/startingpage';
+// import StartingPage from 'utils/StartingPage/startingpage';
+import StartingPageTwo from 'utils/StartingPage/startingpageTwo';
 // import MyProjects from "./MyProjects";
 const ImgLoader = () => <img src={loader} alt="loader" />;
 export const ProjectsPage = (props) => {
@@ -585,21 +586,22 @@ export const ProjectsPage = (props) => {
                         project.links?.includes('query') ? (
                           <Alert variant="danger">No Search Results Found</Alert>
                         ) : (
-                          <StartingPage
-                            createBtnTitle="Create new project"
-                            createTitle="Start creating engaging activities."
-                            createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
-                          Start by creating a new Activity or choose a guide from the right to learn more."
-                            helpBtnTitle="Help center"
-                            helpTitle="Learn how it works"
-                            helpDetail="Create your learning content using interactive activities.
-                          Organize your content by projects."
-                            primaryColor={primaryColor}
-                            onClick={() => {
-                              setCurrentVisibilityType(null);
-                              setCreateProject(true);
-                            }}
-                          />
+                          <StartingPageTwo createBtnTitle="Create new project" />
+                          // <StartingPage
+                          //   createBtnTitle="Create new project"
+                          //   createTitle="Start creating engaging activities."
+                          //   createDetail="We have a library of over 40 “interactive-by-design” learning activities to create inmersive experiences.
+                          // Start by creating a new Activity or choose a guide from the right to learn more."
+                          //   helpBtnTitle="Help center"
+                          //   helpTitle="Learn how it works"
+                          //   helpDetail="Create your learning content using interactive activities.
+                          // Organize your content by projects."
+                          //   primaryColor={primaryColor}
+                          //   onClick={() => {
+                          //     setCurrentVisibilityType(null);
+                          //     setCreateProject(true);
+                          //   }}
+                          // />
                         )
                       ) : (
                         <div className="d-flex ">
