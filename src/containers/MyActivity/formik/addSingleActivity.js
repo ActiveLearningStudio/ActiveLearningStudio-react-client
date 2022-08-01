@@ -80,11 +80,11 @@ const ActivityLayout = (props) => {
         </div>
         <div className="back-button" id="back-button-none-bg" onClick={() => changeScreenHandler('layout')}>
           {/* <img src={BackButton} alt="back button " /> */}
-          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
             <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <p className="">Back to options</p>
+          <p className="">Cancel</p>
         </div>
       </div>
       <div className="activity-layout-paragraph">
@@ -175,9 +175,9 @@ const ActivityLayout = (props) => {
             ))}
         </div>
       </div>
-      {allActivitiesSingle?.length > 10 && !filterData.length && (
+      {/* {allActivitiesSingle?.length > 10 && !filterData.length && (
         <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
-      )}
+      )} */}
     </div>
   );
 };
