@@ -37,7 +37,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 
-const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers }) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide, isbackHide }) => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
@@ -140,6 +140,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     setModalShow={setModalShow}
                     platformName={platformName}
                     placeholder="Enter a video Id"
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -164,6 +165,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video Id"
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -201,6 +203,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     changeScreenHandler={changeScreenHandler}
                     uploadFile
                     platformName={platformName}
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -222,6 +225,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       setSelectedVideoId={setSelectedVideoIdUpload}
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -246,6 +250,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     setModalShow={setModalShow}
                     platformName={platformName}
                     placeholder="Enter a video Id"
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -270,6 +275,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video Id"
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -291,6 +297,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     type={AddVideoTube}
                     setScreenStatus={setScreenStatus}
                     placeholder="Enter a video url"
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -311,6 +318,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       setScreenStatus={setScreenStatus}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video url"
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -335,6 +343,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     selectedVideoId={videoId && platform === 'Kaltura' ? videoId : selectedVideoIdKaltura}
                     platformName={platformName}
                     placeholder="Enter a video url"
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -359,6 +368,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video url"
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -386,6 +396,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     selectedVideoId={videoId && platform === 'Vimeo' ? videoId : selectedVideoIdVimeo}
                     platformName={platformName}
                     placeholder="Enter a video url"
+                    setisbackHide={setisbackHide}
                   />
                 </Tab>
               ) : (
@@ -410,6 +421,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter a video url"
+                      setisbackHide={setisbackHide}
                     />
                   </Tab>
                 )
@@ -436,6 +448,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     selectedVideoId={videoId && platform === 'Komodo' ? videoId : selectedVideoIdVimeo}
                     platformName={platformName}
                     placeholder="Enter here your Komodo link"
+                    setisbackHide={setisbackHide}
                     komodo
                   />
                 </Tab>
@@ -461,6 +474,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                       platformName={platformName}
                       editVideo={editVideo?.source_url}
                       placeholder="Enter here your Komodo link"
+                      setisbackHide={setisbackHide}
                       komodo
                     />
                   </Tab>
@@ -495,6 +509,7 @@ const FormikVideo = ({
   changeScreenHandler,
   placeholder,
   komodo,
+  setisbackHide,
 }) => {
   const dispatch = useDispatch();
   const imgUpload = useRef();
@@ -537,6 +552,7 @@ const FormikVideo = ({
             payload: values.videoUrl,
             platformName,
           });
+          setisbackHide(true);
         }}
       >
         {({
