@@ -64,14 +64,13 @@ export const ProjectsPage = (props) => {
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(0);
-  const [defaultSize, setdefaultSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(40);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState('My Projects');
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
-  const [isLoader, setisLoader] = useState(true);
   const [startSearching, setStartSearching] = useState(true);
   const dispatch = useDispatch();
   const samplerRef = useRef();
@@ -108,7 +107,7 @@ export const ProjectsPage = (props) => {
       setSortNumber(3);
       setCustomCardWidth('customcard30');
     } else if (sw < 1600) {
-      setSortNumber(4);
+      setSortNumber(5);
       setCustomCardWidth('customcard50');
     } else if (sw > 1600) {
       setSortNumber(6);
@@ -280,7 +279,6 @@ export const ProjectsPage = (props) => {
     if (allStateProject) {
       toast.dismiss();
       setAllProjects(allStateProject.projects);
-      // setisLoader(false);
     }
   }, [allStateProject]);
 
@@ -294,7 +292,7 @@ export const ProjectsPage = (props) => {
 
     if (organization.activeOrganization && !allState.projects) {
       if (organization?.currentOrganization) {
-        loadMyProjects(activePage, defaultSize, searchQuery);
+        loadMyProjects(1, defaultSize, searchQuery);
       }
     }
   }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
@@ -302,8 +300,11 @@ export const ProjectsPage = (props) => {
   window.onscroll = function () {
     if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-        setActivePage(activePage + 1);
-        setisLoader(true);
+        if (activePage === 1) {
+          setActivePage(activePage + 4);
+        } else {
+          setActivePage(activePage + 1);
+        }
       }
     }
   };
@@ -312,20 +313,12 @@ export const ProjectsPage = (props) => {
     if (activePage > 1 && tabToggle === 'My Projects') {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
-          dispatch(addMyproject(activePage, defaultSize, searchQuery));
-          setisLoader(false);
+          dispatch(addMyproject(activePage, 10, searchQuery));
         }
       }
     }
   }, [activePage]);
-  // useEffect(() => {
-  //   if (organization.activeOrganization && !allState.projects) {
-  //     if (organization?.currentOrganization) {
-  //       loadMyProjects(activePage, 10, searchQuery);
-  //       setisLoader(false);
-  //     }
-  //   }
-  // }, [searchQuery]);
+
   useEffect(() => {
     if (allProjects) {
       divideProjects([{ type: 'create' }, ...allProjects]);
@@ -402,8 +395,6 @@ export const ProjectsPage = (props) => {
 
                               loadMyProjects(1, defaultSize, e.target.value);
                             }
-
-                            // setdefaultSize(10);
                           }}
                         />
 
@@ -430,7 +421,7 @@ export const ProjectsPage = (props) => {
                           <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <div className="activity-counter">
+                      {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
                           My Project per page
                           <span>
@@ -474,7 +465,7 @@ export const ProjectsPage = (props) => {
                             </Dropdown>
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       {/* <div className="filter-dropdown-project">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -756,7 +747,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
-                {/*<Tab eventKey="Team Projects" title="Team Projects">
+                <Tab eventKey="Team Projects" title="Team Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">
@@ -806,7 +797,7 @@ export const ProjectsPage = (props) => {
                       )}
                     </div>
                   </div>
-                        </Tab>*/}
+                </Tab>
               </Tabs>
             ) : (
               <Alert variant="danger"> You are not authorized to view Projects</Alert>
@@ -863,7 +854,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjects: (activePage, defaultSize, searchQuery) => dispatch(loadMyProjectsAction(activePage, defaultSize, searchQuery)),
+  loadMyProjects: (Page, defaultSize, searchQuery) => dispatch(loadMyProjectsAction(Page, defaultSize, searchQuery)),
   createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),

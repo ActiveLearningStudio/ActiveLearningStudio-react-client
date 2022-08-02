@@ -194,18 +194,34 @@ const ActivityLayout = (props) => {
               id="controlled-tab-example"
             >
               <Taber.Tab eventKey="activity_description" title={'Activity Description'}>
-                <div className="activity-layout-process-box">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ borderRadius: '8px' }}
-                    src={layout.demo_video_id || 'https://www.youtube-nocookie.com/embed/lgzsJDcMvPI'}
-                    title={layout.title}
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
+                <div className="activity-des-taber">
+                  <div className="activity-des-taber-detail">
+                    <h6>Description</h6>
+                    <p>
+                      An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of
+                      interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas,
+                      Brightspace, Blackboard, Moodle and WordPress.
+                    </p>
+                  </div>
+                  <div className="activity-des-taber-detail">
+                    <h6>When to Use It</h6>
+                    <p>
+                      An HTML5-based interactive video content type allowing users to add multiple choice and fill in the blank questions, pop-up text and other types of
+                      interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video in publishing systems like Canvas,
+                      Brightspace, Blackboard, Moodle and WordPress.
+                    </p>
+                  </div>
+                  <div className="activity-des-taber-useful">
+                    <div>
+                      <span className="useful-title">Useful for</span>
+                      <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 5L13 5" stroke="#084892" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M9 9L13 5L9 1" stroke="#084892" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                    <p>Guided onboardings, Corporated presentations</p>
+                  </div>
                 </div>
-                <HeadingText text={layout.description} color="#515151" />
               </Taber.Tab>
               <Taber.Tab eventKey="layout" title={'How-to video'}>
                 <div className="activity-layout-process-box">

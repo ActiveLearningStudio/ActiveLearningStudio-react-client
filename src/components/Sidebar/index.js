@@ -173,7 +173,7 @@ function Sidebar(props) {
                 />
               </svg>
 
-              <div className="sidebar-headings">My Interactive videos</div>
+              <div className="sidebar-headings">My Interactive Videos</div>
             </div>
           </Link>
         </>

@@ -42,7 +42,7 @@ export function MyVerticallyCenteredModal(props) {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {/* Duplicate <b>{clone ? clone.title : ""}</b> {clone ? clone.model : ""}{" "} */}
-          <h5>Move to My projects</h5>
+          <h5>Move to Project</h5>
         </Modal.Title>
       </Modal.Header>
 
@@ -691,7 +691,7 @@ function SearchInterface(props) {
                                               </Dropdown.Menu>
                                             </Dropdown> */}
                                               {true && (
-                                                <Dropdown className="playlist-dropdown check">
+                                                <Dropdown className="playlist-dropdown check learning_activity_tab">
                                                   <Dropdown.Toggle>
                                                     <FontAwesomeIcon icon="ellipsis-v" />
                                                   </Dropdown.Toggle>
@@ -2108,7 +2108,7 @@ function SearchInterface(props) {
                                                                 <span>Preview</span>
                                                               </div>
                                                             </Dropdown.Item>
-                                                            {/* <Dropdown.Item
+                                                            <Dropdown.Item
                                                               onClick={async () => {
                                                                 toast.info('Duplicating Activity...', {
                                                                   className: 'project-loading',
@@ -2118,7 +2118,7 @@ function SearchInterface(props) {
                                                                   autoClose: 10000,
                                                                   icon: '',
                                                                 });
-                                                                const result = await intActivityServices.indActivityClone(currentOrganization?.id, res.id);
+                                                                const result = await intActivityServices.copyToIndependentActivity(currentOrganization?.id, res.id);
                                                                 toast.dismiss();
                                                                 Swal.fire({
                                                                   html: result.message,
@@ -2159,7 +2159,7 @@ function SearchInterface(props) {
                                                                 </svg>
                                                                 <span>Copy to My Activities</span>
                                                               </div>
-                                                            </Dropdown.Item> */}
+                                                            </Dropdown.Item>
                                                             <Dropdown.Item
                                                               onClick={() => {
                                                                 setIndClone(false);

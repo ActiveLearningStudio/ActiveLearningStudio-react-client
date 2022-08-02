@@ -61,10 +61,9 @@ const Index = ({ activities }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
-  const [defaultSize, setdefaultSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(30);
   const [hideallothers, sethideallothers] = useState(true);
   const [isbackHide, setisbackHide] = useState(true);
-  const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activeOrganization && !activities) {
@@ -110,15 +109,18 @@ const Index = ({ activities }) => {
     var scrollerHeight = document.body.scrollHeight - 1;
     if (allActivities && activescreenType === allActivities && ActivePage < allActivities?.meta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
-        setActivePage(ActivePage + 1);
-        setisLoader(true);
+        if (ActivePage === 1) {
+          setActivePage(ActivePage + 3);
+        } else {
+          setActivePage(ActivePage + 1);
+        }
       }
     }
   };
 
   useEffect(() => {
-    if (ActivePage) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
+    if (ActivePage !== 1) {
+      dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
@@ -189,18 +191,20 @@ const Index = ({ activities }) => {
                         svgImage={
                           activities ? (
                             <>
-                              <svg width="36" height="32" viewBox="0 0 36 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
-                                  d="M2 6.9375V28.6875C2 29.6885 2.81149 30.5 3.8125 30.5H32.8125C33.8136 30.5 34.625 29.6885 34.625 28.6875V9.44715C34.625 8.44614 33.8136 7.63465 32.8125 7.63465H19.9856"
+                                  d="M27.2 2H4.8C3.2536 2 2 3.2536 2 4.8V10.4C2 11.9464 3.2536 13.2 4.8 13.2H27.2C28.7464 13.2 30 11.9464 30 10.4V4.8C30 3.2536 28.7464 2 27.2 2Z"
                                   stroke={primaryColor}
                                   strokeWidth="2.5"
                                   strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                                 <path
-                                  d="M19.9856 7.63465L14.9529 1.76544C14.783 1.59548 14.5525 1.5 14.3121 1.5H2.90625C2.40575 1.5 2 1.90575 2 2.40625V6.9375"
+                                  d="M27.2 18.8H4.8C3.2536 18.8 2 20.0536 2 21.6V27.2C2 28.7464 3.2536 30 4.8 30H27.2C28.7464 30 30 28.7464 30 27.2V21.6C30 20.0536 28.7464 18.8 27.2 18.8Z"
                                   stroke={primaryColor}
                                   strokeWidth="2.5"
                                   strokeLinecap="round"
+                                  strokeLinejoin="round"
                                 />
                                 <path d="M7.6001 7.59967H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                                 <path d="M7.6001 24.3997H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -220,7 +224,7 @@ const Index = ({ activities }) => {
                             </svg>
                           )
                         }
-                        heading={activities ? 'Activities' : 'My interactive videos'}
+                        heading={activities ? 'My Activities' : 'My interactive videos'}
                         color="#084892"
                         className={activeOrganization && 'video-top-heading-custom'}
                       />
@@ -288,7 +292,7 @@ const Index = ({ activities }) => {
                   </div>
                   <div className="top-video-detail">
                     <div className="video-detail">
-                      <HeadingText text={activities ? '' : 'Create and organize your activities into projects to create complete courses.'} color="#515151" />
+                      {/* <HeadingText text={activities ? '' : 'Create and organize your activities into projects to create complete courses.'} color="#515151" /> */}
                     </div>
                   </div>
                 </div>
@@ -301,6 +305,7 @@ const Index = ({ activities }) => {
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
+                          setActivePage(1);
                           if (activeOrganization) {
                             if (!e.target.value.trim()) {
                               setActiveScreenPage(null);
@@ -308,7 +313,7 @@ const Index = ({ activities }) => {
                             }
                           }
                         }}
-                        placeholder="Search"
+                        placeholder="Search My Videos..."
                       />
 
                       <svg
@@ -370,7 +375,7 @@ const Index = ({ activities }) => {
                                 dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
                               }
                             }}
-                            placeholder="Search"
+                            placeholder="Search My Activities..."
                           />
 
                           <svg
@@ -407,7 +412,7 @@ const Index = ({ activities }) => {
                             </label>
 
                             <p className="move_text" id="move_text_id_branding">
-                              Move activities to projects
+                              Move to Project
                             </p>
                           </div>
                           {addToProjectCheckbox && (
@@ -416,9 +421,9 @@ const Index = ({ activities }) => {
                                 disabled={!selectedProjectstoAdd.length}
                                 defaultgrey={!selectedProjectstoAdd.length}
                                 primary
-                                text="Next"
+                                text="Continue"
                                 iconColor={primaryColor}
-                                width="80px"
+                                width="111px"
                                 height="32px"
                                 hover
                                 onClick={() => setModalShowClone(true)}
@@ -476,28 +481,16 @@ const Index = ({ activities }) => {
                               <Alert variant="danger">No results found.</Alert>
                             ) : (
                               <StartingPage
-                                welcome="Let's Build a CurrikiStudio Activity!"
-                                createBtnTitle="Create new activity"
-                                createTitle="Create your first learning activity."
-                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                welcome=""
+                                createBtnTitle="Create new Video"
+                                createTitle="Start creating awesome interactive videos."
+                                createDetail="Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
                                 helpBtnTitle="Help center"
                                 helpTitle="How to start?"
-                                type="activity"
                                 primaryColor={primaryColor}
                                 onClick={() => {
-                                  dispatch({
-                                    type: actionTypes.CLEAR_STATE,
-                                  });
-
-                                  dispatch({
-                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                    payload: 'layout',
-                                    playlist: {},
-                                    project: {},
-                                  });
-
-                                  dispatch(clearSearch());
-
+                                  setOpenVideo(!openMyVideo);
+                                  setScreenStatus('AddVideo');
                                   dispatch({
                                     type: 'SET_ACTIVE_VIDEO_SCREEN',
                                     payload: '',
@@ -541,7 +534,7 @@ const Index = ({ activities }) => {
                                   <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                                   <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                                <span>Create new activity</span>
+                                <span>Create New Activity</span>
                               </div>
                             )
                           ) : (
@@ -633,7 +626,7 @@ const Index = ({ activities }) => {
               <Alert variant="danger">You are not authorized to view this page.</Alert>
             )}
 
-            {allActivities?.data?.length > 0 && islazyLoader && activities && (
+            {allActivities?.data?.length > 0 && ActivePage !== 1 && islazyLoader && activities && (
               <div className="col-md-12 text-center mt-4">
                 <ImgLoader />
               </div>
