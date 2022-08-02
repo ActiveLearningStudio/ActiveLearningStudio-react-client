@@ -45,13 +45,12 @@ const StartingPage = ({
                 <Link to={`/org/${activeOrganization?.domain}`}> &quot;My Projects&quot; </Link>
                 option to organize your activities into folders
               </h6>
-
-              <p className="help-text">
-                Feeling lost?
-                <strong> Go to our Help Center to learn more.</strong>
-              </p>
             </>
           )}
+          <p className="help-text">
+            Feeling lost?
+            <strong> Go to our Help Center to learn more.</strong>
+          </p>
         </div>
         <div>
           <div className="section-btn create-new-btn" onClick={onClick}>
