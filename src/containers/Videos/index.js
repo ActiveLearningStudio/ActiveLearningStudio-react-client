@@ -310,7 +310,7 @@ const Index = ({ activities }) => {
                             }
                           }
                         }}
-                        placeholder="Search My Videos"
+                        placeholder="Search My Videos..."
                       />
 
                       <svg
@@ -372,7 +372,7 @@ const Index = ({ activities }) => {
                                 dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
                               }
                             }}
-                            placeholder="Search Activity..."
+                            placeholder="Search My Activities..."
                           />
 
                           <svg
