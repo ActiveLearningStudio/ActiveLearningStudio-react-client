@@ -15,6 +15,8 @@ import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 const DescribeVideo = ({
   setUploadImageStatus,
@@ -132,6 +134,7 @@ const DescribeVideo = ({
   const primaryColor = getGlobalColor('--main-primary-color');
   console.log('siback', isbackHide);
   const formRef = useRef();
+
   return (
     <>
       <PreviewLayoutModel
@@ -252,8 +255,14 @@ const DescribeVideo = ({
                   <h4 className="interactive-video-heading-two">Describe layout</h4>
                   <div>
                     <div className="dec-title-formik-textField">
-                      <HeadingThree text="Title" color="#515151" className="textField-title" />
-                      <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
+                      <div className="d-flex">
+                        <HeadingThree text="Title" color="#515151" className="textField-title text-title-mr" />
+                        <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
+                          Used for searching, reports and copyright information
+                        </OverlayTriggerPop>
+                      </div>
+                      {/* <HeadingThree text="Title" color="#515151" className="textField-title" /> */}
+                      {/* <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" /> */}
                       <input
                         type="text"
                         name="title"
