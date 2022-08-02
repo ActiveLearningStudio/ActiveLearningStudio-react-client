@@ -691,7 +691,7 @@ function SearchInterface(props) {
                                               </Dropdown.Menu>
                                             </Dropdown> */}
                                               {true && (
-                                                <Dropdown className="playlist-dropdown check">
+                                                <Dropdown className="playlist-dropdown check learning_activity_tab">
                                                   <Dropdown.Toggle>
                                                     <FontAwesomeIcon icon="ellipsis-v" />
                                                   </Dropdown.Toggle>
