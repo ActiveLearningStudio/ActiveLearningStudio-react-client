@@ -64,14 +64,13 @@ export const ProjectsPage = (props) => {
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
   const [size, setSize] = useState(0);
-  const [defaultSize, setdefaultSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(40);
   const [meta, setMeta] = useState(1);
   const [tabToggle, setTabToggle] = useState('My Projects');
   const [type, setType] = useState([]);
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
-  const [isLoader, setisLoader] = useState(true);
   const [startSearching, setStartSearching] = useState(true);
   const dispatch = useDispatch();
   const samplerRef = useRef();
@@ -118,21 +117,22 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (!searchTeamQuery) {
-      if (organization?.currentOrganization && tabToggle !== 'My Projects') {
+      if (organization?.currentOrganization && tabToggle === 'Team Projects') {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
+    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
       });
     }
-  }, [searchTeamQuery, organization?.currentOrganization, getTeamProjects, activePage]);
+  }, [searchTeamQuery, organization?.currentOrganization, tabToggle, getTeamProjects, activePage]);
+  console.log('tabToggle', tabToggle);
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
+    if (!searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
@@ -280,7 +280,6 @@ export const ProjectsPage = (props) => {
     if (allStateProject) {
       toast.dismiss();
       setAllProjects(allStateProject.projects);
-      // setisLoader(false);
     }
   }, [allStateProject]);
 
@@ -294,7 +293,7 @@ export const ProjectsPage = (props) => {
 
     if (organization.activeOrganization && !allState.projects) {
       if (organization?.currentOrganization) {
-        loadMyProjects(activePage, defaultSize, searchQuery);
+        loadMyProjects(1, defaultSize, searchQuery);
       }
     }
   }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
@@ -302,8 +301,11 @@ export const ProjectsPage = (props) => {
   window.onscroll = function () {
     if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-        setActivePage(activePage + 1);
-        setisLoader(true);
+        if (activePage === 1) {
+          setActivePage(activePage + 4);
+        } else {
+          setActivePage(activePage + 1);
+        }
       }
     }
   };
@@ -312,20 +314,12 @@ export const ProjectsPage = (props) => {
     if (activePage > 1 && tabToggle === 'My Projects') {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
-          dispatch(addMyproject(activePage, defaultSize, searchQuery));
-          setisLoader(false);
+          dispatch(addMyproject(activePage, 10, searchQuery));
         }
       }
     }
   }, [activePage]);
-  // useEffect(() => {
-  //   if (organization.activeOrganization && !allState.projects) {
-  //     if (organization?.currentOrganization) {
-  //       loadMyProjects(activePage, 10, searchQuery);
-  //       setisLoader(false);
-  //     }
-  //   }
-  // }, [searchQuery]);
+
   useEffect(() => {
     if (allProjects) {
       divideProjects([{ type: 'create' }, ...allProjects]);
@@ -402,8 +396,6 @@ export const ProjectsPage = (props) => {
 
                               loadMyProjects(1, defaultSize, e.target.value);
                             }
-
-                            // setdefaultSize(10);
                           }}
                         />
 
@@ -863,7 +855,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   showCreateProjectModal: () => dispatch(showCreateProjectModalAction()),
-  loadMyProjects: (activePage, defaultSize, searchQuery) => dispatch(loadMyProjectsAction(activePage, defaultSize, searchQuery)),
+  loadMyProjects: (Page, defaultSize, searchQuery) => dispatch(loadMyProjectsAction(Page, defaultSize, searchQuery)),
   createProject: (name, description, thumbUrl) => dispatch(createProjectAction(name, description, thumbUrl)),
   showDeletePopup: (id, title, deleteType) => dispatch(showDeletePopupAction(id, title, deleteType)),
   deleteProject: (id) => dispatch(deleteProjectAction(id)),

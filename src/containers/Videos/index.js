@@ -61,10 +61,9 @@ const Index = ({ activities }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(0);
-  const [defaultSize, setdefaultSize] = useState(10);
+  const [defaultSize, setdefaultSize] = useState(30);
   const [hideallothers, sethideallothers] = useState(true);
   const [isbackHide, setisbackHide] = useState(true);
-  const [isLoader, setisLoader] = useState(false);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activeOrganization && !activities) {
@@ -110,15 +109,18 @@ const Index = ({ activities }) => {
     var scrollerHeight = document.body.scrollHeight - 1;
     if (allActivities && activescreenType === allActivities && ActivePage < allActivities?.meta?.last_page) {
       if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
-        setActivePage(ActivePage + 1);
-        setisLoader(true);
+        if (ActivePage === 1) {
+          setActivePage(ActivePage + 3);
+        } else {
+          setActivePage(ActivePage + 1);
+        }
       }
     }
   };
 
   useEffect(() => {
-    if (ActivePage) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
+    if (ActivePage !== 1) {
+      dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
@@ -303,6 +305,7 @@ const Index = ({ activities }) => {
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
+                          setActivePage(1);
                           if (activeOrganization) {
                             if (!e.target.value.trim()) {
                               setActiveScreenPage(null);
@@ -623,7 +626,7 @@ const Index = ({ activities }) => {
               <Alert variant="danger">You are not authorized to view this page.</Alert>
             )}
 
-            {allActivities?.data?.length > 0 && islazyLoader && activities && (
+            {allActivities?.data?.length > 0 && ActivePage !== 1 && islazyLoader && activities && (
               <div className="col-md-12 text-center mt-4">
                 <ImgLoader />
               </div>
