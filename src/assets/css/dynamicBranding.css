@@ -1269,7 +1269,8 @@ textarea,
   border-color: var(--main-paragraph-text-color) !important;
 }
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select .css-1r4vtzz {
-  color: var(--main-paragraph-text-color) !important;
+  /* color: var(--main-paragraph-text-color) !important; */
+  color: var(--main-search-input-color);
   border-color: var(--main-paragraph-text-color) !important;
 }
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField .textField-title h3 {

@@ -117,21 +117,22 @@ export const ProjectsPage = (props) => {
 
   useEffect(() => {
     if (!searchTeamQuery) {
-      if (organization?.currentOrganization && tabToggle !== 'My Projects') {
+      if (organization?.currentOrganization && tabToggle === 'Team Projects') {
         getTeamProjects('', activePage).then((data) => {
           setTeamProjects(data.data);
           setMeta(data.meta);
         });
       }
-    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
+    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
       getTeamProjects(searchTeamQuery, activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);
       });
     }
-  }, [searchTeamQuery, organization?.currentOrganization, getTeamProjects, activePage]);
+  }, [searchTeamQuery, organization?.currentOrganization, tabToggle, getTeamProjects, activePage]);
+  console.log('tabToggle', tabToggle);
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization && tabToggle !== 'My Projects') {
+    if (!searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
       getTeamProjects('', activePage).then((data) => {
         setTeamProjects(data.data);
         setMeta(data.meta);

@@ -988,6 +988,10 @@
 
       .dec-title-formik-textField {
         margin-top: 16px;
+        .text-title-mr {
+          margin-right: 10px;
+        }
+
         .textField-title {
           h3 {
             font-weight: 400;
@@ -1001,6 +1005,9 @@
             line-height: 16px;
           }
         }
+        input::placeholder {
+          color: #959595 !important;
+        }
         input {
           width: 100%;
           height: 40px;
@@ -1009,6 +1016,9 @@
           border: 1px solid #515151;
           border-radius: 4px;
           text-indent: 10px;
+        }
+        textarea::placeholder {
+          color: #959595 !important;
         }
         textarea {
           width: 100%;
@@ -1045,7 +1055,7 @@
             width: 100%;
             height: 40px;
             outline: none;
-            color: #515151 !important;
+            color: #959595 !important;
             background: #ffffff;
             border: 1px solid #515151 !important;
             border-radius: 4px;
