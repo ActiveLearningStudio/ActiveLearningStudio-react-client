@@ -776,7 +776,9 @@ export const ProjectsPage = (props) => {
                             setProjectId={setProjectId}
                           />
                         ) : (
-                          <Alert variant="warning">No Team Project found.</Alert>
+                          <Alert variant="warning" style={{ width: '100%' }}>
+                            No Team Project found.
+                          </Alert>
                         )}
                       </div>
                     </div>

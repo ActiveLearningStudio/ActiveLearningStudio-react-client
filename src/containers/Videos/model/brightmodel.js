@@ -237,8 +237,10 @@ const BrightcoveModel = (props) => {
                                               }}
                                               type="radio"
                                             />
-                                            <img src={data?.images?.thumbnail?.src} className="image-size" />
-                                            <span>{data.name}</span>
+                                            <div className="first-col-image-name">
+                                              <img src={data?.images?.thumbnail?.src} className="image-size" />
+                                              <span>{data.name}</span>
+                                            </div>
                                           </td>
                                           <td>{data.created_at?.split('T')[0]}</td>
                                           <td>{data.id}</td>
