@@ -50,11 +50,15 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
         formRef={formRef}
       />
       <div className={currikiUtility}>
-        <h3>Upload image</h3>
+        <h3>Activity Thumbnail Image</h3>
         <div
           className="uploadimage-box"
           style={{
-            backgroundImage: !uploadImage ? `url(${ActivityDefaultImg})` : uploadImage.includes('pexels.com') ? `url(${uploadImage})` : `url(${global.config.resourceUrl}${uploadImage})`,
+            backgroundImage: !uploadImage
+              ? `url(${ActivityDefaultImg})`
+              : uploadImage.includes('pexels.com')
+              ? `url(${uploadImage})`
+              : `url(${global.config.resourceUrl}${uploadImage})`,
           }}
         ></div>
         <div className="uploadimage-option">
@@ -102,7 +106,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             className="btn-mr-27"
           >
             <img src={PixelUpload} className="mr-20" />
-            Pexels
+            Select from Pexels
           </button>
 
           <button
@@ -110,12 +114,10 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             onClick={() => {
               openFile.current.click();
             }}
-           
           >
             <img src={computer} className="mr-20" />
-            My device
+            Upload from My Device
           </button>
-         
         </div>
       </div>
     </>
