@@ -108,7 +108,7 @@ export const ProjectsPage = (props) => {
       setSortNumber(3);
       setCustomCardWidth('customcard30');
     } else if (sw < 1600) {
-      setSortNumber(4);
+      setSortNumber(5);
       setCustomCardWidth('customcard50');
     } else if (sw > 1600) {
       setSortNumber(6);
@@ -430,7 +430,7 @@ export const ProjectsPage = (props) => {
                           <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
-                      <div className="activity-counter">
+                      {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
                           My Project per page
                           <span>
@@ -474,7 +474,7 @@ export const ProjectsPage = (props) => {
                             </Dropdown>
                           </span>
                         </div>
-                      </div>
+                      </div> */}
                       {/* <div className="filter-dropdown-project">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -756,7 +756,7 @@ export const ProjectsPage = (props) => {
                     </div>
                   </div>
                 </Tab>
-                {/*<Tab eventKey="Team Projects" title="Team Projects">
+                <Tab eventKey="Team Projects" title="Team Projects">
                   <div className="row">
                     <div className="col-md-12" style={{ display: 'none' }}>
                       <div className="program-page-title">
@@ -806,7 +806,7 @@ export const ProjectsPage = (props) => {
                       )}
                     </div>
                   </div>
-                        </Tab>*/}
+                </Tab>
               </Tabs>
             ) : (
               <Alert variant="danger"> You are not authorized to view Projects</Alert>

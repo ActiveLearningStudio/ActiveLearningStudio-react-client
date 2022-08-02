@@ -2108,7 +2108,7 @@ function SearchInterface(props) {
                                                                 <span>Preview</span>
                                                               </div>
                                                             </Dropdown.Item>
-                                                            {/* <Dropdown.Item
+                                                            <Dropdown.Item
                                                               onClick={async () => {
                                                                 toast.info('Duplicating Activity...', {
                                                                   className: 'project-loading',
@@ -2118,7 +2118,7 @@ function SearchInterface(props) {
                                                                   autoClose: 10000,
                                                                   icon: '',
                                                                 });
-                                                                const result = await intActivityServices.indActivityClone(currentOrganization?.id, res.id);
+                                                                const result = await intActivityServices.copyToIndependentActivity(currentOrganization?.id, res.id);
                                                                 toast.dismiss();
                                                                 Swal.fire({
                                                                   html: result.message,
@@ -2159,7 +2159,7 @@ function SearchInterface(props) {
                                                                 </svg>
                                                                 <span>Copy to My Activities</span>
                                                               </div>
-                                                            </Dropdown.Item> */}
+                                                            </Dropdown.Item>
                                                             <Dropdown.Item
                                                               onClick={() => {
                                                                 setIndClone(false);

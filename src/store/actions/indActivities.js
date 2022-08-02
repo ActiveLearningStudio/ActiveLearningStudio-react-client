@@ -113,6 +113,7 @@ export const allIndActivity = (orgId, page, size, search) => async (dispatch) =>
   dispatch({
     type: actionTypes.ALL_IND_REQUEST_COMPLETE,
   });
+  return allActivities;
 };
 
 export const allAdminExportActivity = (orgId, page, size, search, column, orderBy) => async (dispatch) => {

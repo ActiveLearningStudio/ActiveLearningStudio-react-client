@@ -75,6 +75,7 @@ const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/S
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
+const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -102,6 +103,7 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
+        <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
         <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />

@@ -310,7 +310,7 @@ const Index = ({ activities }) => {
                             }
                           }
                         }}
-                        placeholder="Search"
+                        placeholder="Search My Videos..."
                       />
 
                       <svg
@@ -372,7 +372,7 @@ const Index = ({ activities }) => {
                                 dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
                               }
                             }}
-                            placeholder="Search Activity..."
+                            placeholder="Search My Activities..."
                           />
 
                           <svg
@@ -478,28 +478,16 @@ const Index = ({ activities }) => {
                               <Alert variant="danger">No results found.</Alert>
                             ) : (
                               <StartingPage
-                                welcome="Let's Build a CurrikiStudio Activity!"
-                                createBtnTitle="Create new activity"
-                                createTitle="Create your first learning activity."
-                                createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
+                                welcome=""
+                                createBtnTitle="Create new Video"
+                                createTitle="Start creating awesome interactive videos."
+                                createDetail="Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
                                 helpBtnTitle="Help center"
                                 helpTitle="How to start?"
-                                type="activity"
                                 primaryColor={primaryColor}
                                 onClick={() => {
-                                  dispatch({
-                                    type: actionTypes.CLEAR_STATE,
-                                  });
-
-                                  dispatch({
-                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                    payload: 'layout',
-                                    playlist: {},
-                                    project: {},
-                                  });
-
-                                  dispatch(clearSearch());
-
+                                  setOpenVideo(!openMyVideo);
+                                  setScreenStatus('AddVideo');
                                   dispatch({
                                     type: 'SET_ACTIVE_VIDEO_SCREEN',
                                     payload: '',

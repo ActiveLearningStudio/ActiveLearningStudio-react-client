@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { allIndActivity } from 'store/actions/indActivities';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 
@@ -27,9 +28,8 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
 
   useEffect(() => {
     (async () => {
-      const result = await search.searchIndependentActivities('org_activities', {
-        organization_id: currentOrganization?.id,
-      });
+      const result = await dispatch(allIndActivity(currentOrganization?.id, 1, 10, ''));
+
       setAllSearchActivities(result);
     })();
   }, [currentOrganization]);
@@ -69,10 +69,9 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
                                 className="search-input"
                                 placeholder="Search activity"
                                 onChange={async (e) => {
-                                  const result = await search.searchIndependentActivities('org_activities', {
-                                    organization_id: currentOrganization?.id,
-                                    query: e.target.value || undefined,
-                                  });
+                                  setAllSearchActivities(null);
+                                  const result = await dispatch(allIndActivity(currentOrganization?.id, 1, 10, e.target.value));
+
                                   setAllSearchActivities(result);
                                 }}
                                 // value={searchQuery}
