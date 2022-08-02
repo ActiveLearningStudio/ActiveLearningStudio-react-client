@@ -428,7 +428,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
               )}
               {/* Vemo Video */}
               {/* Komodo Start */}
-              {!editVideo ? (
+              {!editVideo && mediaSources.some((obj) => obj.name === 'Komodo') ? (
                 <Tab
                   eventKey="Komodo"
                   title="Komodo"

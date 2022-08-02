@@ -14,6 +14,7 @@ import computer from 'assets/images/computer1.svg';
 
 const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) => {
   const project = useSelector((state) => state.project);
+  const mediaSources = useSelector((state) => state.admin.mediaSources);
 
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames('curriki-utility-uploadimageV2', className);
@@ -93,28 +94,33 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             />
             <span>Upload</span>
           </label>
-          <button
-            type="button"
-            onClick={() => {
-              setModalShow(true);
-              setUploadImageStatus(true);
-            }}
-            className="btn-mr-27"
-          >
-            <img src={PixelUpload} className="mr-20" />
-            Pexels
-          </button>
+          {/* {alert(mediaSources.mediaSources.some((obj) => (obj.name === 'My device' && obj.media_type === 'Image')) ? "hi" : "bye")} */}
+          {mediaSources.mediaSources.some((obj) => (obj.name === 'Pexels' && obj.media_type === 'Image')) && 
+            <button
+              type="button"
+              onClick={() => {
+                setModalShow(true);
+                setUploadImageStatus(true);
+              }}
+              className="btn-mr-27"
+            >
+              <img src={PixelUpload} className="mr-20" />
+              Pexels
+            </button>
+          }
 
-          <button
-            type="button"
-            onClick={() => {
-              openFile.current.click();
-            }}
-           
-          >
-            <img src={computer} className="mr-20" />
-            My device
-          </button>
+          {mediaSources.mediaSources.some((obj) => (obj.name === 'My device' && obj.media_type === 'Image')) && 
+            <button
+              type="button"
+              onClick={() => {
+                openFile.current.click();
+              }}
+            
+            >
+              <img src={computer} className="mr-20" />
+              My device
+            </button>
+          }
          
         </div>
       </div>
