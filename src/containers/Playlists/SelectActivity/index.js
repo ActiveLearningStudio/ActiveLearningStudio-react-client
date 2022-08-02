@@ -14,25 +14,52 @@ import { useDispatch, useSelector } from 'react-redux';
 import search from 'services/search.service';
 
 import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import loader from 'assets/images/loader.svg';
+const ImgLoader = () => <img src={loader} alt="loader" />;
 import './style.scss';
 
 const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setReloadPlaylist, reloadPlaylist }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
   const [activeTab, setActiveTab] = useState('Ind. Activities');
+  const [ActivePage, setActivePage] = useState(1);
+  const [defaultSize, setdefaultSize] = useState(30);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectProject, setSelectProject] = useState([]);
   const [allSearchActivities, setAllSearchActivities] = useState(null);
+  const { allActivities, islazyLoader } = useSelector((state) => state.activities);
   const dispatch = useDispatch();
 
   const { currentOrganization } = useSelector((state) => state.organization);
 
   useEffect(() => {
     (async () => {
-      const result = await dispatch(allIndActivity(currentOrganization?.id, 1, 10, ''));
-
-      setAllSearchActivities(result);
+      const result = await dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
     })();
   }, [currentOrganization]);
+
+  useEffect(() => {
+    setAllSearchActivities(allActivities);
+  }, [allActivities]);
+
+  window.onscroll = function () {
+    var scrollerHeight = document.body.scrollHeight - 1;
+    if (allSearchActivities && ActivePage < allSearchActivities?.meta?.last_page) {
+      if (window.innerHeight + Math.ceil(window.scrollY) >= scrollerHeight) {
+        if (ActivePage === 1) {
+          setActivePage(ActivePage + 3);
+        } else {
+          setActivePage(ActivePage + 1);
+        }
+      }
+    }
+  };
+  console.log('allSearchActivities', allSearchActivities);
+  useEffect(() => {
+    if (ActivePage !== 1) {
+      dispatch(allIndActivity(currentOrganization?.id, ActivePage, 10, searchQuery));
+    }
+  }, [ActivePage]);
 
   return (
     <>
@@ -68,7 +95,9 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
                                 type="text"
                                 className="search-input"
                                 placeholder="Search activity"
+                                value={searchQuery}
                                 onChange={async (e) => {
+                                  setSearchQuery(e.target.value);
                                   setAllSearchActivities(null);
                                   const result = await dispatch(allIndActivity(currentOrganization?.id, 1, 10, e.target.value));
 
@@ -181,6 +210,11 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
               </Tabs>
             </div>
           </div>
+          {allSearchActivities?.data?.length > 0 && ActivePage !== 1 && islazyLoader && (
+            <div className="col-md-12 text-center mt-4">
+              <ImgLoader />
+            </div>
+          )}
         </div>
       </div>
     </>
