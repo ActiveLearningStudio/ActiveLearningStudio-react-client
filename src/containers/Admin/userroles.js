@@ -9,8 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organizations', 'Projects', 'Ind. activities', 'Ref. tables', 'Users', 'Integrations'];
-
+  const AdminList = ['Organization', 'Projects', 'Ref. tables', 'Integrations', 'Users', 'Ind. activities'];
   // organization all projects
   const projectEditName = [
     'organization:upload-thumb',
@@ -482,7 +481,7 @@ function UserRoles() {
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
                                       setFieldValue={setFieldValue}
-                                      type={'Activities'}
+                                      type={'Ref. tables'}
                                       permissions={values.permissions}
                                       currentFeatureView={[...activityTypeView, ...activityItemView]}
                                       currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
@@ -789,7 +788,7 @@ function UserRoles() {
                                 <div className="form-group custom-select-style-for-sub">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Activities'}
+                                    type={'Ref. tables'}
                                     permissions={values.permissions}
                                     currentFeatureView={[...activityTypeView, ...activityItemView]}
                                     currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}

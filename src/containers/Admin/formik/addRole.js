@@ -9,7 +9,7 @@ import { Authoring, DropdownSelect } from '../userroles';
 export default function AddRole(props) {
   const dispatch = useDispatch();
   const { permissionsId, activeOrganization, roles } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users', 'Ind. activities'];
+  const AdminList = ['Organization', 'Projects', 'Ref. tables', 'Integrations', 'Users', 'Ind. activities'];
 
   // organization all projects
   const projectEditName = [
@@ -467,7 +467,7 @@ export default function AddRole(props) {
                               <div className="form-group custom-select-style-for-sub">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Activities'}
+                                  type={'Ref. tables'}
                                   permissions={values.permissions}
                                   currentFeatureView={[...activityTypeView, ...activityItemView]}
                                   currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
@@ -785,7 +785,7 @@ export default function AddRole(props) {
                             <div className="form-group custom-select-style-for-sub">
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Activities'}
+                                type={'Ref. tables'}
                                 permissions={values.permissions}
                                 currentFeatureView={[...activityTypeView, ...activityItemView]}
                                 currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
