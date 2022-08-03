@@ -590,7 +590,8 @@ p {
   color: var(--main-paragraph-text-color) !important;
 }
 #layout-formik-select-id-btn button {
-  color: var(--main-paragraph-text-color) !important;
+  /* color: var(--main-paragraph-text-color) !important; */  
+  color: var(--main-search-input-color) !important;
   border: 1px solid var(--main-paragraph-text-color) !important;
 }
 .css-1vr111p-option {

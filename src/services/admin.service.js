@@ -34,7 +34,7 @@ const getAllProject = (subOrgId, page, size, authorId, createdFrom, createdTo, u
       }${createdTo ? `&created_to=${createdTo}` : ''}
   ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
         index ? `&indexing=${index}` : ''
-      }${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+      }${query ? `&query=${query}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -46,7 +46,7 @@ const getAllExportedProject = (subOrgId, page, size, query = '', column = '', or
   httpService
     .get(
       `/${apiVersion}/suborganization/${subOrgId}/users/notifications/export-list?page=${page}${size ? `&size=${size}` : ''}${query ? `&query=${query}` : ''}
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -76,7 +76,7 @@ const getAllProjectSearch = (subOrgId, page, search, size, column, orderBy) =>
   httpService
     .get(
       `/${apiVersion}/suborganizations/${subOrgId}/projects?page=${page}${search ? `&query=${search.replace(/#/, '%23')}` : ''}
-  ${size ? `&size=${size}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${size ? `&size=${size}` : ''}${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
@@ -107,7 +107,7 @@ const getAllProjectIndex = (subOrgId, page, index, size, authorId, createdFrom, 
         createdFrom ? `&created_from=${createdFrom}` : ''
       }${createdTo ? `&created_to=${createdTo}` : ''}${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${
         shared || shared === 0 ? `&shared=${shared}` : ''
-      }`
+      }`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -136,7 +136,7 @@ const getLmsProject = (subOrgId, page, size, query, column, orderBy, filterBy = 
       `${apiVersion}/suborganizations/${subOrgId}/lms-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
   ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
-  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`
+  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -256,7 +256,7 @@ const getDefaultSso = (orgId, page, size, query, column, orderBy, filterBy = '')
       `${apiVersion}/organizations/${orgId}/default-sso-settings?page=${page}
   ${query !== '' ? `&query=${query}` : ''}${size !== '' ? `&size=${size}` : ''}
   ${column !== '' ? `&order_by_column=${column}` : ''}${orderBy !== '' ? `&order_by_type=${orderBy}` : ''}
-  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`
+  ${filterBy !== '' ? `&filter=${filterBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -304,8 +304,16 @@ const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) =>
       `${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}
   ${query ? `&query=${query}` : ''}${size ? `&size=${size}` : ''}
   ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}
-  ${filterBy ? `&filter=${filterBy}` : ''}`
+  ${filterBy ? `&filter=${filterBy}` : ''}`,
     )
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+    });
+
+const getLtiToolsMedia = (subOrgId, page, query, filterBy) =>
+  httpService
+    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${query}&filter=${filterBy}`)
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);
@@ -360,7 +368,13 @@ const cloneLtiTool = (subOrgId, id) =>
         });
       }
     });
-
+const ltiToolType = (subOrgId) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-type`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err);
+    });
 const checkUserEmail = (orgId, email) => httpService.get(`${apiVersion}/suborganization/${orgId}/users/check-email?email=${email}`).then(({ data }) => data);
 
 const addUserToOrg = (subOrgId, userId, role) =>
@@ -390,7 +404,7 @@ const getSubjects = (subOrgId, page, size, query, column, orderBy) =>
       `${apiVersion}/suborganizations/${subOrgId}/subjects${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -430,7 +444,7 @@ const getEducationLevel = (subOrgId, page, size, query, column, orderBy) =>
       `${apiVersion}/suborganizations/${subOrgId}/education-levels${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -470,7 +484,7 @@ const getAuthorTag = (subOrgId, page, size, query, column, orderBy) =>
       `${apiVersion}/suborganizations/${subOrgId}/author-tags${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -508,7 +522,7 @@ const getActivityLayout = (subOrgId, page, size, query, column, orderBy) =>
   httpService
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/activity-layouts${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -549,7 +563,7 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, ord
     .get(
       `${apiVersion}/suborganization/${subOrgId}/get-admin-teams?size=${size}${query ? `&query=${query}` : ''}${page ? `&page=${page}` : ''}${
         order_by_column ? `&order_by_column=${order_by_column}` : ''
-      }${order_by_type ? `&order_by_type=${order_by_type}` : ''}`
+      }${order_by_type ? `&order_by_type=${order_by_type}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -590,7 +604,7 @@ const getMediaSources = (subOrgId, page, size, query, column, orderBy) =>
       `${apiVersion}/suborganizations/${subOrgId}/media-sources${page ? `?page=${page}` : ''}${size ? `&size=${size}` : ''}${!page && !size ? `?skipPagination=${true}` : ''}${
         query ? `&query=${query.replace(/#/, '%23')}` : ''
       }
-  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`
+  ${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy}` : ''}`,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -657,4 +671,6 @@ export default {
   getOrgMediaSource,
   updateOrgMediaSource,
   getMediaSources,
+  ltiToolType,
+  getLtiToolsMedia,
 };

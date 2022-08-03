@@ -10,7 +10,7 @@ const Tabs = ({ text, color, tabActive = false, className }) => {
   return (
     <div className={currikiUtility} style={{ color: color }}>
       <span className={currikiUtility_tabs}></span>
-      <div className={`tab-text ${tabActive ? 'tab-text-color-selected' : 'tab-text-color-unselected'}`}>
+      <div className={`tab-text`} id={tabActive ? 'tab-text-color-selected' : 'tab-text-color-unselected'}>
         <p>{text}</p>
       </div>
     </div>
