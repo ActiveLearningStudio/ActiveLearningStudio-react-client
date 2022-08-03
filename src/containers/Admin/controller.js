@@ -1,31 +1,21 @@
 /* eslint-disable */
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
-import PropTypes from "prop-types";
-import { Dropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { setActiveAdminForm } from "store/actions/admin";
-import filterSearchIcon from "assets/images/svg/filter-placeholder.svg";
-import loader from "assets/images/dotsloader.gif";
-import * as actionTypes from "store/actionTypes";
-import indActivityService from "services/indActivities.service";
-import adminService from "services/admin.service";
-import {
-  getRoles,
-  roleDetail,
-  searchUserInOrganization,
-} from "store/actions/organization";
-import { toolTypeArray } from "utils";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import { integratedLMS } from "../../components/ResourceCard/AddResource/dropdownData";
-import Filter from "./filter";
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { Dropdown } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { searchLtiTool, setActiveAdminForm, ltiToolType } from 'store/actions/admin';
+import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
+import loader from 'assets/images/dotsloader.gif';
+import * as actionTypes from 'store/actionTypes';
+import indActivityService from 'services/indActivities.service';
+import adminService from 'services/admin.service';
+import { getRoles, roleDetail, searchUserInOrganization } from 'store/actions/organization';
+import { toolTypeArray } from 'utils';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
+import Filter from './filter';
 
 function Controller(props) {
   const {
@@ -77,38 +67,34 @@ function Controller(props) {
   const dispatch = useDispatch();
   // const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
-  const [activeRoleInComponent, setActiveRoleInComponent] = useState("");
+  const [activeRoleInComponent, setActiveRoleInComponent] = useState('');
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization } = organization;
   const { activityTypes } = useSelector((state) => state.admin);
-  const [selectedIndexValue, setSelectedIndexValue] = useState("ALL");
+  const [selectedIndexValue, setSelectedIndexValue] = useState('ALL');
   const [selectedIndexValueid, setSelectedIndexValueid] = useState(0);
-  const [authorName, setAuthorName] = useState("");
+  const [authorName, setAuthorName] = useState('');
   const [authorsArray, setAuthorsArray] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
-  const [selectedFilterItem, setSelectedFilterItem] = useState("");
+  const [selectedFilterItem, setSelectedFilterItem] = useState('');
+  const [ltiToolTypes, setLtiToolTypes] = useState();
+
   useMemo(() => {
-    if (type === "Users") {
+    if (type === 'Users') {
       dispatch(getRoles());
     }
   }, [dispatch, type]);
   useEffect(() => {
-    if (
-      roles?.length > 0 &&
-      subTypeState !== "Manage Roles" &&
-      adminState?.activeTab === "Users"
-    ) {
+    if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
       // console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
         setActiveRoleInComponent(roles[0]?.display_name);
       } else if (roles?.length > 0 && activeRole) {
-        setActiveRoleInComponent(
-          roles?.filter((role) => role.id === activeRole)[0]?.display_name
-        );
+        setActiveRoleInComponent(roles?.filter((role) => role.id === activeRole)[0]?.display_name);
       }
-    } else if (roles?.length > 0 && subTypeState === "Manage Roles") {
+    } else if (roles?.length > 0 && subTypeState === 'Manage Roles') {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
   }, [roles, adminState?.activeTab, subTypeState, activeRole, setActiveRole]);
@@ -119,9 +105,7 @@ function Controller(props) {
   const searchUserProjectFilter = useCallback(async () => {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
-      const result = await dispatch(
-        searchUserInOrganization(activeOrganization?.id, authorName)
-      );
+      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
       // console.log(result?.data, 'result');
       if (result?.data?.length > 0) {
         setLoaderImgUser(false);
@@ -140,8 +124,12 @@ function Controller(props) {
     setChangeIndexValue(id);
     setSelectedIndexValueid(id);
   };
-  const primaryColor = getGlobalColor("--main-primary-color");
+  const primaryColor = getGlobalColor('--main-primary-color');
   // const secondaryColor = getGlobalColor('--main-secondary-color');
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes);
+  }, [ltiToolsTypes]);
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
@@ -182,12 +170,9 @@ function Controller(props) {
       )} */}
       {/* LEFT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-left-side">
-        {!!search && type === "Users" && (
+        {!!search && type === 'Users' && (
           <>
-            <div
-              className="search-bar"
-              style={{ display: "flex", flexDirection: "column" }}
-            >
+            <div className="search-bar" style={{ display: 'flex', flexDirection: 'column' }}>
               <input
                 className=""
                 type="text"
@@ -197,13 +182,7 @@ function Controller(props) {
                 onChange={searchQueryChangeHandler}
               />
               {/* <img src={searchimg} alt="search" /> */}
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                   stroke={primaryColor}
@@ -211,38 +190,21 @@ function Controller(props) {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <path
-                  d="M21 20.9984L16.65 16.6484"
-                  stroke={primaryColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
-                <label className="flex" style={{ color: "red" }}>
+                <label className="flex" style={{ color: 'red' }}>
                   Enter at least 2 characters
                 </label>
               )}
             </div>
           </>
         )}
-        {!!search && type === "LMS" && subType === "LMS settings" && (
+        {!!search && type === 'LMS' && subType === 'LMS settings' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -250,33 +212,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "LMS" && subType === "LTI Tools" && (
+        {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -284,32 +229,15 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
-        {!!search && type === "LMS" && subType === "BrightCove" && (
+        {!!search && type === 'LMS' && subType === 'BrightCove' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -317,33 +245,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "DefaultSso" && (
+        {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search by Site name,URL or Client id"
-              onChange={searchQueryChangeHandler}
-            />
+            <input className="" type="text" placeholder="Search by Site name,URL or Client id" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -351,32 +262,15 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
-        {!!search && type === "Teams" && (
+        {!!search && type === 'Teams' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={({ target }) => setSearchQueryTeam(target.value)}
-            />
+            <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -384,13 +278,7 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -414,7 +302,7 @@ function Controller(props) {
           </div>
         )} */}
 
-        {!!search && type === "Projects" && (
+        {!!search && type === 'Projects' && (
           <div className="search-bar">
             <input
               className=""
@@ -426,9 +314,9 @@ function Controller(props) {
                   setActivePage(1);
                   setSearchQueryProject(e.target.value);
                   // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
-                } else if (e.target.value === "") {
+                } else if (e.target.value === '') {
                   setActivePage(1);
-                  setSearchQueryProject("");
+                  setSearchQueryProject('');
                   // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
                 }
               }}
@@ -450,13 +338,7 @@ function Controller(props) {
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() =>
-                searchProjectQueryChangeHandler(
-                  searchQueryProject,
-                  selectedIndexValueid,
-                  subType
-                )
-              }
+              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
             >
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -465,18 +347,12 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "IndActivities" && (
+        {!!search && type === 'IndActivities' && (
           <div className="search-bar">
             <input
               className=""
@@ -494,9 +370,9 @@ function Controller(props) {
                   setActivePage(1);
                   setSearchQueryProject(e.target.value);
                   // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
-                } else if (e.target.value === "") {
+                } else if (e.target.value === '') {
                   setActivePage(1);
-                  setSearchQueryProject("");
+                  setSearchQueryProject('');
                   // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
                 }
               }}
@@ -508,13 +384,7 @@ function Controller(props) {
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              onClick={() =>
-                searchProjectQueryChangeHandler(
-                  searchQueryProject,
-                  selectedIndexValueid,
-                  subType
-                )
-              }
+              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
             >
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
@@ -523,31 +393,15 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "Organization" && (
+        {!!search && type === 'Organization' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-            />
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -555,31 +409,14 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
-        {!!search && type === "Activities" && subType === "Activity Types" && (
+        {!!search && type === 'Activities' && subType === 'Activity Types' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -587,31 +424,14 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
-        {!!search && type === "Activities" && subType === "Activity Items" && (
+        {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -619,34 +439,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "Activities" && subType === "Subjects" && (
+        {!!search && type === 'Activities' && subType === 'Subjects' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -654,34 +456,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "Activities" && subType === "Education Level" && (
+        {!!search && type === 'Activities' && subType === 'Education Level' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -689,34 +473,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "Activities" && subType === "Author Tags" && (
+        {!!search && type === 'Activities' && subType === 'Author Tags' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -724,33 +490,16 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
 
-        {!!search && type === "Activities" && subType === "Activity Layouts" && (
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity layout name"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                 stroke={primaryColor}
@@ -758,13 +507,7 @@ function Controller(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-              <path
-                d="M21 20.9984L16.65 16.6484"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
         )}
@@ -814,31 +557,24 @@ function Controller(props) {
           </div>
         )}
         {/* Ind. activity Start */}
-        {type === "IndActivities" &&
-          subType === "All independent activities" && (
-            <Filter
-              setProjectFilterObj={setProjectFilterObj}
-              projectFilterObj={projectFilterObj}
-              setLibraryReqSelected={setLibraryReqSelected}
-              resetProjectFilter={resetProjectFilter}
-              filterSearch={filterSearch}
-            />
-          )}
+        {type === 'IndActivities' && subType === 'All independent activities' && (
+          <Filter
+            setProjectFilterObj={setProjectFilterObj}
+            projectFilterObj={projectFilterObj}
+            setLibraryReqSelected={setLibraryReqSelected}
+            resetProjectFilter={resetProjectFilter}
+            filterSearch={filterSearch}
+          />
+        )}
 
         {/* Ind. Activity End  */}
         {/* FILTER FOR PROJECT TABS */}
-        {type === "Projects" && subType === "All Projects" && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
                 {/* <img src={filterImg} alt="filter" /> */}
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
                     stroke={primaryColor}
@@ -852,61 +588,36 @@ function Controller(props) {
               <Dropdown.Menu>
                 <div className="authorName-project">
                   <label>Author</label>
-                  <input
-                    type="text"
-                    value={authorName}
-                    onChange={(e) => setAuthorName(e.target.value)}
-                  />
-                  <img
-                    src={filterSearchIcon}
-                    alt="filterSearchIcon"
-                    className={
-                      authorName && authorsArray.length === 0 && "close-circle"
-                    }
-                    onClick={searchUserProjectFilter}
-                  />
-                  {authorName &&
-                    authorName.length >= 2 &&
-                    authorsArray.length > 0 && (
-                      <div className="author-list">
-                        {authorsArray?.length > 0
-                          ? authorsArray?.map((author) => (
-                              <div
-                                className="single-author"
-                                onClick={() => {
-                                  setProjectFilterObj({
-                                    ...projectFilterObj,
-                                    author_id: author.id,
-                                  });
-                                  setAuthorName(
-                                    `${author.first_name} ${author.last_name}`
-                                  );
-                                  setAuthorsArray([]);
-                                }}
-                              >
-                                <div className="initial">
-                                  {author.first_name[0] + author.last_name[0]}
-                                </div>
-                                <div>
-                                  <div className="username-filter-project">
-                                    {author.first_name}
-                                  </div>
-                                  <div className="email-filter-project">
-                                    {author.email}
-                                  </div>
-                                </div>
+                  <input type="text" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
+                  <img src={filterSearchIcon} alt="filterSearchIcon" className={authorName && authorsArray.length === 0 && 'close-circle'} onClick={searchUserProjectFilter} />
+                  {authorName && authorName.length >= 2 && authorsArray.length > 0 && (
+                    <div className="author-list">
+                      {authorsArray?.length > 0
+                        ? authorsArray?.map((author) => (
+                            <div
+                              className="single-author"
+                              onClick={() => {
+                                setProjectFilterObj({
+                                  ...projectFilterObj,
+                                  author_id: author.id,
+                                });
+                                setAuthorName(`${author.first_name} ${author.last_name}`);
+                                setAuthorsArray([]);
+                              }}
+                            >
+                              <div className="initial">{author.first_name[0] + author.last_name[0]}</div>
+                              <div>
+                                <div className="username-filter-project">{author.first_name}</div>
+                                <div className="email-filter-project">{author.email}</div>
                               </div>
-                            ))
-                          : "No user found."}
-                      </div>
-                    )}
+                            </div>
+                          ))
+                        : 'No user found.'}
+                    </div>
+                  )}
                 </div>
-                {loaderImgUser && (
-                  <img src={loader} alt="loader" className="loader-img" />
-                )}
-                {authorName && authorName.length < 2 && (
-                  <div className="error">Enter at least 2 characters.</div>
-                )}
+                {loaderImgUser && <img src={loader} alt="loader" className="loader-img" />}
+                {authorName && authorName.length < 2 && <div className="error">Enter at least 2 characters.</div>}
                 <div className="createdFrom-project">
                   <label>Created</label>
                   <div className="row-project-filter">
@@ -916,7 +627,7 @@ function Controller(props) {
                         type="text"
                         placeholder="MM/DD/YYYY"
                         onFocus={(e) => {
-                          e.target.type = "date";
+                          e.target.type = 'date';
                         }}
                         value={projectFilterObj.created_from}
                         onChange={(e) => {
@@ -933,7 +644,7 @@ function Controller(props) {
                         type="text"
                         placeholder="MM/DD/YYYY"
                         onFocus={(e) => {
-                          e.target.type = "date";
+                          e.target.type = 'date';
                         }}
                         value={projectFilterObj.created_to}
                         onChange={(e) => {
@@ -945,12 +656,7 @@ function Controller(props) {
                       />
                     </div>
                   </div>
-                  {projectFilterObj.created_from >
-                    projectFilterObj.created_to && (
-                    <div className="error">
-                      From date should be less than To date.
-                    </div>
-                  )}
+                  {projectFilterObj.created_from > projectFilterObj.created_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="updatedOn-project">
                   <label>Updated</label>
@@ -961,7 +667,7 @@ function Controller(props) {
                         type="text"
                         placeholder="MM/DD/YYYY"
                         onFocus={(e) => {
-                          e.target.type = "date";
+                          e.target.type = 'date';
                         }}
                         value={projectFilterObj.updated_from}
                         onChange={(e) => {
@@ -978,7 +684,7 @@ function Controller(props) {
                         type="text"
                         placeholder="MM/DD/YYYY"
                         onFocus={(e) => {
-                          e.target.type = "date";
+                          e.target.type = 'date';
                         }}
                         value={projectFilterObj.updated_to}
                         onChange={(e) => {
@@ -990,12 +696,7 @@ function Controller(props) {
                       />
                     </div>
                   </div>
-                  {projectFilterObj.updated_from >
-                    projectFilterObj.updated_to && (
-                    <div className="error">
-                      From date should be less than To date.
-                    </div>
-                  )}
+                  {projectFilterObj.updated_from > projectFilterObj.updated_to && <div className="error">From date should be less than To date.</div>}
                 </div>
                 <div className="status-project">
                   <div className="library-status">
@@ -1087,18 +788,9 @@ function Controller(props) {
                     </span>
                   </div>
                 </div>
-                <div
-                  className="filter-btn-project"
-                  onClick={() => filterSearch()}
-                >
+                <div className="filter-btn-project" onClick={() => filterSearch()}>
                   {/* <img src={filterImg} alt="filter" /> */}
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
                       stroke={primaryColor}
@@ -1112,7 +804,7 @@ function Controller(props) {
                 <div
                   className="filter-btn-project"
                   onClick={() => {
-                    setAuthorName("");
+                    setAuthorName('');
                     resetProjectFilter();
                   }}
                 >
@@ -1123,25 +815,18 @@ function Controller(props) {
             </Dropdown>
           </div>
         )}
-        {type === "Projects" && subType === "All Projects" && (
+        {type === 'Projects' && subType === 'All Projects' && (
           <button
             className="switch-libreq"
             type="button"
-            style={{ border: libraryReqSelected ? "1px solid #F8AF2C" : "0" }}
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
             onClick={() => {
               // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ marginRight: "8px" }}
-            >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
               <path
                 d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
                 stroke={primaryColor}
@@ -1160,25 +845,18 @@ function Controller(props) {
             Library request to review
           </button>
         )}
-        {subType === "All independent activities" && (
+        {subType === 'All independent activities' && (
           <button
             className="switch-libreq"
             type="button"
-            style={{ border: libraryReqSelected ? "1px solid #F8AF2C" : "0" }}
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
             onClick={() => {
               // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ marginRight: "8px" }}
-            >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
               <path
                 d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
                 stroke={primaryColor}
@@ -1198,16 +876,12 @@ function Controller(props) {
           </button>
         )}
         {/* FILTER FOR ACTIVITY ITEMS */}
-        {subType === "Activity Items" && (
+        {subType === 'Activity Items' && (
           <div className="filter-dropdown-activityItems">
             Filter by activity type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
-                  {selectedFilterItem?.title
-                    ? selectedFilterItem?.title
-                    : "Select"}
-                </Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -1233,19 +907,17 @@ function Controller(props) {
             </span>
           </div>
         )}
-        {!!filter && subType === "index" && (
+        {!!filter && subType === 'index' && (
           <div className="filter-dropdown drop-counter ">
             Index Value:
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
-                  {selectedIndexValue}
-                </Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedIndexValue}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
-                      updateIndexAction("ALL", 0);
+                      updateIndexAction('ALL', 0);
                       setActivePage(1);
                     }}
                   >
@@ -1253,7 +925,7 @@ function Controller(props) {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      updateIndexAction("REQUESTED", 1);
+                      updateIndexAction('REQUESTED', 1);
                       setActivePage(1);
                     }}
                   >
@@ -1261,7 +933,7 @@ function Controller(props) {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      updateIndexAction("REJECTED", 2);
+                      updateIndexAction('REJECTED', 2);
                       setActivePage(1);
                     }}
                   >
@@ -1269,7 +941,7 @@ function Controller(props) {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      updateIndexAction("APPROVED", 3);
+                      updateIndexAction('APPROVED', 3);
                       setActivePage(1);
                     }}
                   >
@@ -1280,16 +952,12 @@ function Controller(props) {
             </span>
           </div>
         )}
-        {roles?.length > 0 && type === "Users" ? (
+        {roles?.length > 0 && type === 'Users' ? (
           <div className="filter-dropdown role-dropdown">
-            {subTypeState === "Manage Roles"
-              ? "Select role:"
-              : "Filter by role"}
+            {subTypeState === 'Manage Roles' ? 'Select role:' : 'Filter by role'}
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
-                  {activeRoleInComponent}
-                </Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{activeRoleInComponent}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   {roles?.map((head) => (
@@ -1297,15 +965,9 @@ function Controller(props) {
                       <Dropdown.Item
                         onClick={() => {
                           setActiveRoleInComponent(head.display_name);
-                          if (subTypeState === "Manage Roles")
-                            dispatch(
-                              roleDetail(activeOrganization.id, head.id)
-                            );
-                          if (
-                            subTypeState === "All Users" &&
-                            activeRole !== head.id
-                          ) {
-                            setSearchQuery("");
+                          if (subTypeState === 'Manage Roles') dispatch(roleDetail(activeOrganization.id, head.id));
+                          if (subTypeState === 'All Users' && activeRole !== head.id) {
+                            setSearchQuery('');
                             setActiveRole(head.id);
                             setActivePage(1);
                           }
@@ -1321,16 +983,12 @@ function Controller(props) {
           </div>
         ) : null}
         {/* FILTER FOR ACTIVITY ITEMS */}
-        {subType === "LTI Tools" && (
+        {subType === 'LTI Tools' && (
           <div className="filter-dropdown-activityItems">
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
-                  {selectedFilterItem?.value
-                    ? selectedFilterItem?.value
-                    : "Select"}
-                </Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.name ? selectedFilterItem?.name : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -1341,7 +999,7 @@ function Controller(props) {
                   >
                     Select
                   </Dropdown.Item>
-                  {toolTypeArray?.map((t) => (
+                  {/* {toolTypeArray?.map((t) => (
                     <Dropdown.Item
                       onClick={() => {
                         filteredItems(t.key);
@@ -1350,6 +1008,16 @@ function Controller(props) {
                     >
                       {t.value}
                     </Dropdown.Item>
+                  ))} */}
+                  {ltiToolTypes?.map((t) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(t.id);
+                        setSelectedFilterItem(t);
+                      }}
+                    >
+                      {t.name}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -1357,21 +1025,17 @@ function Controller(props) {
           </div>
         )}
 
-        {(type === "DefaultSso" || subType === "LMS settings") && (
+        {(type === 'DefaultSso' || subType === 'LMS settings') && (
           <div className="filter-dropdown-activityItems">
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
-                  {selectedFilterItem?.value
-                    ? selectedFilterItem?.value
-                    : "All"}
-                </Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'All'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
-                      filteredItems("");
+                      filteredItems('');
                       setSelectedFilterItem(null);
                     }}
                   >
@@ -1397,119 +1061,105 @@ function Controller(props) {
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser &&
-          type === "Projects" &&
-          subType === "All Projects" &&
-          permission?.Organization?.includes("organization:edit-project") && (
-            <div
-              className="import-user"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                importProject.current.click();
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
+          <div
+            className="import-user"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              importProject.current.click();
+            }}
+          >
+            <FontAwesomeIcon icon="sign-in-alt" />
+            <div>Import Project</div>
+            <input
+              type="file"
+              ref={importProject}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                if (e.target.files.length === 0) {
+                  return true;
+                }
+                if (!e.target.files[0].type.includes('zip')) {
+                  Swal.fire({
+                    title: 'Invalid File',
+                    icon: 'error',
+                    text: 'please select zip file',
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Importing Project',
+                    icon: 'info',
+                    text: 'please wait...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading();
+                    },
+                    button: false,
+                  });
+                  const formData = new FormData();
+                  formData.append('project', e.target.files[0]);
+                  const response = adminService.importProject(activeOrganization.id, formData);
+                  response.then((res) => {
+                    Swal.fire({
+                      icon: 'success',
+                      html: res?.message,
+                    });
+                  });
+                }
               }}
-            >
-              <FontAwesomeIcon icon="sign-in-alt" />
-              <div>Import Project</div>
-              <input
-                type="file"
-                ref={importProject}
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  if (e.target.files.length === 0) {
-                    return true;
-                  }
-                  if (!e.target.files[0].type.includes("zip")) {
-                    Swal.fire({
-                      title: "Invalid File",
-                      icon: "error",
-                      text: "please select zip file",
-                    });
-                  } else {
-                    Swal.fire({
-                      title: "Importing Project",
-                      icon: "info",
-                      text: "please wait...",
-                      allowOutsideClick: false,
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                      button: false,
-                    });
-                    const formData = new FormData();
-                    formData.append("project", e.target.files[0]);
-                    const response = adminService.importProject(
-                      activeOrganization.id,
-                      formData
-                    );
-                    response.then((res) => {
-                      Swal.fire({
-                        icon: "success",
-                        html: res?.message,
-                      });
-                    });
-                  }
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
+        )}
 
-        {!!importUser &&
-          type === "IndActivities" &&
-          subType === "All independent activities" &&
-          permission["Independent Activity"]?.includes(
-            "independent-activity:import"
-          ) && (
-            <div
-              className="import-user"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                importProject.current.click();
+        {!!importUser && type === 'IndActivities' && subType === 'All independent activities' && permission['Independent Activity']?.includes('independent-activity:import') && (
+          <div
+            className="import-user"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              importProject.current.click();
+            }}
+          >
+            <FontAwesomeIcon icon="sign-in-alt" />
+            <div>Import activity</div>
+            <input
+              type="file"
+              ref={importProject}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                if (e.target.files.length === 0) {
+                  return true;
+                }
+                if (!e.target.files[0].type.includes('zip')) {
+                  Swal.fire({
+                    title: 'Invalid File',
+                    icon: 'error',
+                    text: 'please select zip file',
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Importing Project',
+                    icon: 'info',
+                    text: 'please wait...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading();
+                    },
+                    button: false,
+                  });
+                  const formData = new FormData();
+                  formData.append('independent_activity', e.target.files[0]);
+                  const response = indActivityService.importIndAvtivity(activeOrganization.id, formData);
+                  response.then((res) => {
+                    Swal.fire({
+                      icon: 'success',
+                      html: res?.message,
+                    });
+                  });
+                }
               }}
-            >
-              <FontAwesomeIcon icon="sign-in-alt" />
-              <div>Import activity</div>
-              <input
-                type="file"
-                ref={importProject}
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  if (e.target.files.length === 0) {
-                    return true;
-                  }
-                  if (!e.target.files[0].type.includes("zip")) {
-                    Swal.fire({
-                      title: "Invalid File",
-                      icon: "error",
-                      text: "please select zip file",
-                    });
-                  } else {
-                    Swal.fire({
-                      title: "Importing Project",
-                      icon: "info",
-                      text: "please wait...",
-                      allowOutsideClick: false,
-                      onBeforeOpen: () => {
-                        Swal.showLoading();
-                      },
-                      button: false,
-                    });
-                    const formData = new FormData();
-                    formData.append("independent_activity", e.target.files[0]);
-                    const response = indActivityService.importIndAvtivity(
-                      activeOrganization.id,
-                      formData
-                    );
-                    response.then((res) => {
-                      Swal.fire({
-                        icon: "success",
-                        html: res?.message,
-                      });
-                    });
-                  }
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
+        )}
 
         {/* {!!print && (
         <div className="print-info">
@@ -1520,237 +1170,200 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText &&
-          subType === "Activity Types" &&
-          permission?.Organization.includes(
-            "organization:create-activity-type"
-          ) && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_activity_type") {
-                    dispatch(setActiveAdminForm("add_activity_type"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-        {!!btnText &&
-          subType === "Activity Items" &&
-          permission?.Organization.includes(
-            "organization:create-activity-item"
-          ) && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_activity_item") {
-                    dispatch(setActiveAdminForm("add_activity_item"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          subType ===
-            "Subjects" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_subject") {
-                    dispatch(setActiveAdminForm("add_subject"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          subType ===
-            "Education Level" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_education_level") {
-                    dispatch(setActiveAdminForm("add_education_level"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          subType ===
-            "Author Tags" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_author_tag") {
-                    dispatch(setActiveAdminForm("add_author_tag"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-        {!!btnText &&
-          subType ===
-            "Activity Layouts" /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_activity_layout") {
-                    dispatch(setActiveAdminForm("add_activity_layout"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          subType === "Manage Roles" &&
-          permission?.Organization.includes("organization:add-role") && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_role") {
-                    dispatch(setActiveAdminForm("add_role"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-        {!!btnText &&
-          subType === "All Users" &&
-          permission?.Organization.includes("organization:add-user") && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "create_user") {
-                    dispatch(setActiveAdminForm("create_user"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-        {!!btnText &&
-          type === "Organization" &&
-          permission?.Organization.includes("organization:create") && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_org") {
-                    dispatch(setActiveAdminForm("add_org"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-        {!!btnText &&
-          type === "LMS" &&
-          subType === "LMS settings" &&
-          permission?.Organization.includes(
-            "organization:create-lms-setting"
-          ) && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_lms") {
-                    dispatch(setActiveAdminForm("add_lms"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          type === "LMS" &&
-          subType === "LTI Tools" &&
-          permission?.Organization.includes(
-            "organization:create-all-setting"
-          ) && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_lti_tool") {
-                    dispatch(setActiveAdminForm("add_lti_tool"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText &&
-          type === "LMS" &&
-          subType === "BrightCove" &&
-          permission?.Organization.includes(
-            "organization:create-brightcove-setting"
-          ) && (
-            <div className="btn-text">
-              <button
-                type="button"
-                onClick={() => {
-                  if (btnAction === "add_brightcove") {
-                    dispatch(setActiveAdminForm("add_brightcove"));
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon="plus" />
-                {btnText}
-              </button>
-            </div>
-          )}
-
-        {!!btnText && type === "DefaultSso" && (
+        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
           <div className="btn-text">
             <button
               type="button"
               onClick={() => {
-                if (btnAction === "add_default_sso") {
-                  dispatch(setActiveAdminForm("add_default_sso"));
+                if (btnAction === 'add_activity_type') {
+                  dispatch(setActiveAdminForm('add_activity_type'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_item') {
+                  dispatch(setActiveAdminForm('add_activity_item'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_subject') {
+                  dispatch(setActiveAdminForm('add_subject'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_education_level') {
+                  dispatch(setActiveAdminForm('add_education_level'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_author_tag') {
+                  dispatch(setActiveAdminForm('add_author_tag'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_role') {
+                  dispatch(setActiveAdminForm('add_role'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'create_user') {
+                  dispatch(setActiveAdminForm('create_user'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && type === 'Organization' && permission?.Organization.includes('organization:create') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_org') {
+                  dispatch(setActiveAdminForm('add_org'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_lms') {
+                  dispatch(setActiveAdminForm('add_lms'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_lti_tool') {
+                  dispatch(setActiveAdminForm('add_lti_tool'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_brightcove') {
+                  dispatch(setActiveAdminForm('add_brightcove'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && type === 'DefaultSso' && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_default_sso') {
+                  dispatch(setActiveAdminForm('add_default_sso'));
                 }
               }}
             >
@@ -1805,20 +1418,20 @@ Controller.propTypes = {
 Controller.defaultProps = {
   paginationCounter: false,
   search: false,
-  btnText: "",
-  btnAction: "",
+  btnText: '',
+  btnAction: '',
   importUser: false,
 
-  subTypeState: "",
-  filter: "",
-  activeRole: "",
+  subTypeState: '',
+  filter: '',
+  activeRole: '',
   setActiveRole: {},
   setActivePage: {},
   filteredItems: {},
-  type: "",
+  type: '',
 
-  searchQuery: "",
-  searchQueryProject: "",
+  searchQuery: '',
+  searchQueryProject: '',
   setSearchQueryProject: {},
   setSearchQueryTeam: {},
 
@@ -1829,7 +1442,7 @@ Controller.defaultProps = {
   size: 10,
   setSize: {},
   roles: [],
-  subType: "",
+  subType: '',
   setChangeIndexValue: {},
 
   libraryReqSelected: false,

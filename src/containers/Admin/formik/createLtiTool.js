@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
@@ -18,6 +19,11 @@ export default function CreateLtiTool(prop) {
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
+  const [ltiToolTypes, setLtiToolTypes] = useState([]);
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes);
+  }, [ltiToolsTypes]);
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -29,7 +35,8 @@ export default function CreateLtiTool(prop) {
           lti_version: editMode ? activeEdit?.lti_version || 'LTI-1p0' : 'LTI-1p0',
           tool_consumer_key: editMode ? activeEdit?.tool_consumer_key : '',
           tool_description: editMode ? activeEdit?.tool_description : '',
-          tool_type: editMode ? activeEdit?.tool_type : '',
+          // tool_type: editMode ? activeEdit?.tool_type : '',media_source_id
+          media_source_id: editMode ? activeEdit?.media_source_id : '',
           tool_secret_key: editMode ? activeEdit?.tool_secret_key : '',
           organization_id: organization?.activeOrganization?.id,
           user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
@@ -155,9 +162,11 @@ export default function CreateLtiTool(prop) {
                     <h3>Tool type</h3>
                     <div className="filter-dropdown-tooltype">
                       <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">{toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}</Dropdown.Toggle>
+                        {/* <Dropdown.Toggle id="dropdown-basic">{toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}</Dropdown.Toggle> */}
+                        <Dropdown.Toggle id="dropdown-basic">{ltiToolTypes?.filter((type) => type.id === values.media_source_id)[0]?.name}</Dropdown.Toggle>
+
                         <Dropdown.Menu>
-                          {toolTypeArray.map((type) => (
+                          {/* {toolTypeArray.map((type) => (
                             <Dropdown.Item
                               key={type.key}
                               onClick={() => {
@@ -165,6 +174,16 @@ export default function CreateLtiTool(prop) {
                               }}
                             >
                               {type.value}
+                            </Dropdown.Item>
+                          ))} */}
+                          {ltiToolTypes.map((type) => (
+                            <Dropdown.Item
+                              key={type.id}
+                              onClick={() => {
+                                setFieldValue('media_source_id', type.id);
+                              }}
+                            >
+                              {type.name}
                             </Dropdown.Item>
                           ))}
                         </Dropdown.Menu>

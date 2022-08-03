@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
+  ltiToolsTypes: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -281,6 +282,17 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mediaSources: action.payload,
+      };
+
+    case actionTypes.GET_LTI_TOOLS_TYPES_REQUEST:
+      return {
+        ...state,
+        ltiToolsTypes: [],
+      };
+    case actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+        ltiToolsTypes: action.payload,
       };
     default:
       return state;

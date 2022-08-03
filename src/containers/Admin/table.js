@@ -96,7 +96,7 @@ function Table(props) {
             } else {
               return lms;
             }
-          })
+          }),
         );
       }
     }
@@ -192,6 +192,11 @@ function Table(props) {
     });
   };
   //const history = useHistory();
+  const [ltiToolTypes, setLtiToolTypes] = useState([]);
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes);
+  }, [ltiToolsTypes]);
   return (
     <div className="table-data">
       {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
@@ -599,7 +604,7 @@ function Table(props) {
                                         >
                                           {element.indexing_text}
                                         </Dropdown.Item>
-                                      )
+                                      ),
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -625,7 +630,7 @@ function Table(props) {
                                           updateProjectAction(row.id, {
                                             ...row,
                                             organization_visibility_type_id: element.id,
-                                          })
+                                          }),
                                         );
                                         if (result) {
                                           setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
@@ -814,7 +819,7 @@ function Table(props) {
                                         >
                                           {element.indexing_text}
                                         </Dropdown.Item>
-                                      )
+                                      ),
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -843,8 +848,8 @@ function Table(props) {
                                               data: '',
                                               organization_visibility_type_id: element.id,
                                             },
-                                            'admin'
-                                          )
+                                            'admin',
+                                          ),
                                         );
                                       }}
                                     >
@@ -1315,7 +1320,8 @@ function Table(props) {
                     <tr key={counter} className="admin-panel-rows">
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
-                      <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
+                      {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
+                      <td>{ltiToolTypes.filter((type) => type.id === row.media_source_id)[0]?.name}</td>
                       <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
                       <td>{row.tool_description}</td>
                       <td>
