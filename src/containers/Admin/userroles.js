@@ -9,7 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users', 'Ind. activities'];
+  const AdminList = ['Organizations', 'Projects', 'Ind. activities', 'Ref. tables', 'Users', 'Integrations'];
 
   // organization all projects
   const projectEditName = [

@@ -228,7 +228,7 @@ function AdminPanel({ showSSO }) {
                     permission?.Organization?.includes(
                       "organization:view-activity-type"
                     )) && (
-                    <Tab eventKey="Activities" title="Activities">
+                    <Tab eventKey="Activities" title="Ref. tables">
                       <div className="module-content">
                         <Pills
                           modules={[
