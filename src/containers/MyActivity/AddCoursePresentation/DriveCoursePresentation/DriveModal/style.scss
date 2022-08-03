@@ -61,3 +61,23 @@
 .google-drive-search-modal .alert {
   margin: 1rem;
 }
+
+.google-drive-file-table-container {
+  margin: 1rem;
+}
+
+.google-drive-file-table-container tbody tr {
+  cursor: pointer;
+}
+
+.google-drive-file-table-container th {
+  font-weight: bold;
+}
+
+.google-drive-file-table-container tbody img {
+  margin-inline: 1rem;
+}
+
+.modal-info svg {
+  font-size: xx-large;
+}
