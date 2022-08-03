@@ -966,6 +966,9 @@
           border: 1px solid #515151;
           border-radius: 4px;
           text-indent: 10px;
+          &::placeholder {
+            color: #959595 !important;
+          }
         }
       }
       .dec-title-formik-textField {

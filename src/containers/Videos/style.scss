@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .myvideomain {
   .inner-content {
@@ -107,7 +107,7 @@
           input {
             display: none;
             &:checked + span {
-              background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+              background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
               background-color: $curriki-main-blue;
             }
           }
@@ -333,7 +333,7 @@
             width: 50%;
             margin-right: 8px;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -361,7 +361,7 @@
             flex-direction: column;
             width: 50%;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -422,7 +422,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -446,7 +446,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -1034,6 +1034,11 @@
           margin-left: 32px;
         }
       }
+      // #layout-formik-select-id-style {
+      //   button {
+      //     color: #959595 !important;
+      //   }
+      // }
       .layout-formik-select {
         margin-top: 16px;
         display: flex;
@@ -1055,7 +1060,7 @@
             width: 100%;
             height: 40px;
             outline: none;
-            color: #959595 !important;
+            // color: #959595 !important;
             background: #ffffff;
             border: 1px solid #515151 !important;
             border-radius: 4px;
@@ -1201,7 +1206,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
 
       input {
         border: none;
