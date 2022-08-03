@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './uploadimagev2.scss';
@@ -11,15 +11,19 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { uploadResourceThumbnailAction } from 'store/actions/resource';
 import computer from 'assets/images/computer1.svg';
+import { getMediaSources } from 'store/actions/admin';
 
 const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) => {
   const project = useSelector((state) => state.project);
+  const organization = useSelector((state) => state.organization);
 
   const [modalShow, setModalShow] = useState(false);
   const currikiUtility = classNames('curriki-utility-uploadimageV2', className);
   const dispatch = useDispatch();
   const openFile = useRef();
   const [uploadImage, setUploadImage] = useState(thumb_url);
+  const [mediaSources, setMediaSources] = useState([]);
+
 
   const uploadThumb = async (e) => {
     const formData = new FormData();
@@ -36,6 +40,15 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
       });
     }
   };
+
+  useEffect(() => {
+    if (mediaSources.length === 0) {
+      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
+      result.then((data) => {
+        setMediaSources(data.mediaSources);
+      });
+    }
+  }, [mediaSources]);
   return (
     <>
       <PexelsAPI
@@ -97,27 +110,34 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             />
             <span>Upload</span>
           </label>
-          <button
-            type="button"
-            onClick={() => {
-              setModalShow(true);
-              setUploadImageStatus(true);
-            }}
-            className="btn-mr-27"
-          >
-            <img src={PixelUpload} className="mr-20" />
-            Select from Pexels
-          </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              openFile.current.click();
-            }}
-          >
-            <img src={computer} className="mr-20" />
-            Upload from My Device
-          </button>
+          {mediaSources.some((obj) => (obj.name === 'Pexels' && obj.media_type === 'Image')) && 
+            <button
+              type="button"
+              onClick={() => {
+                setModalShow(true);
+                setUploadImageStatus(true);
+              }}
+              className="btn-mr-27"
+            >
+              <img src={PixelUpload} className="mr-20" />
+              Select from Pexels
+            </button>
+          }
+
+          {mediaSources.some((obj) => (obj.name === 'My device' && obj.media_type === 'Image')) && 
+            <button
+              type="button"
+              onClick={() => {
+                openFile.current.click();
+              }}
+            
+            >
+              <img src={computer} className="mr-20" />
+              Upload from My device
+            </button>
+          }
+         
         </div>
       </div>
     </>

@@ -34,6 +34,21 @@ const Media = () => {
     setallImageSource(allMediaSources?.mediaSources?.Image);
   }, [orgMediaSources, allMediaSources]);
 
+  const mediaLibrary = (sourceName) => {
+    switch(sourceName) {
+      case 'Kaltura':
+        return 'H5P.CurrikiInteractiveVideo 1.1';
+      case 'Vimeo':
+        return 'H5P.CurrikiInteractiveVideo 1.1';
+      case 'Komodo':
+        return 'H5P.CurrikiInteractiveVideo 1.1';
+      case 'BrightCove':
+        return 'H5P.BrightcoveInteractiveVideo 1.1';
+      default:
+        return 'H5P.InteractiveVideo 1.24';
+    }
+  }
+
   return (
     <>
       <div className='media-section'>
@@ -138,12 +153,12 @@ const Media = () => {
                                     <input
                                       type="text"
                                       name={source.name}
-                                      placeholder="H5P.InteractiveVideo 1.24"
+                                      placeholder={mediaLibrary(source.name)}
                                       onChange={(e) => {
                                         seth5pVersion([h5pVersion, e.target.value])
                                       }}
                                       onBlur={handleBlur}
-                                      value="H5P.InteractiveVideo 1.24"
+                                      value={mediaLibrary(source.name)}
                                       readOnly
                                     />
                                   </div>
