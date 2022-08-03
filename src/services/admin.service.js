@@ -311,6 +311,14 @@ const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) =>
       Promise.reject(err.response.data);
     });
 
+const getLtiToolsMedia = (subOrgId, page, query, filterBy) =>
+  httpService
+    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${query}&filter=${filterBy}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+    });
+
 const createLtiTool = (subOrgId, values) =>
   httpService
     .post(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings`, values)
@@ -664,4 +672,5 @@ export default {
   updateOrgMediaSource,
   getMediaSources,
   ltiToolType,
+  getLtiToolsMedia,
 };

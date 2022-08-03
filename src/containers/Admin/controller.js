@@ -1009,16 +1009,20 @@ function Controller(props) {
                       {t.value}
                     </Dropdown.Item>
                   ))} */}
-                  {ltiToolTypes?.map((t) => (
-                    <Dropdown.Item
-                      onClick={() => {
-                        filteredItems(t.id);
-                        setSelectedFilterItem(t);
-                      }}
-                    >
-                      {t.name}
-                    </Dropdown.Item>
-                  ))}
+                  {ltiToolTypes?.map((t) => {
+                    if (t.name != 'My device' && t.name != 'BrightCove') {
+                      return (
+                        <Dropdown.Item
+                          onClick={() => {
+                            filteredItems(t.id);
+                            setSelectedFilterItem(t);
+                          }}
+                        >
+                          {t.name}
+                        </Dropdown.Item>
+                      );
+                    }
+                  })}
                 </Dropdown.Menu>
               </Dropdown>
             </span>

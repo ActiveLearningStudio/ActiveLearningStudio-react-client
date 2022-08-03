@@ -538,7 +538,9 @@ export default function Pills(props) {
     setLtiTool(null);
     setActivePage(1);
     setLtiToolFilterBy(item);
-    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
+    // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
+    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, searchQuery, item);
+
     result.then((data) => {
       setLtiTool(data);
     });

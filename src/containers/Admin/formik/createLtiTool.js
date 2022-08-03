@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
@@ -176,16 +177,22 @@ export default function CreateLtiTool(prop) {
                               {type.value}
                             </Dropdown.Item>
                           ))} */}
-                          {ltiToolTypes.map((type) => (
-                            <Dropdown.Item
-                              key={type.id}
-                              onClick={() => {
-                                setFieldValue('media_source_id', type.id);
-                              }}
-                            >
-                              {type.name}
-                            </Dropdown.Item>
-                          ))}
+                          {ltiToolTypes.map((type) => {
+                            if (type.name !== 'My device' && type.name !== 'BrightCove') {
+                              return (
+                                <>
+                                  <Dropdown.Item
+                                    key={type.id}
+                                    onClick={() => {
+                                      setFieldValue('media_source_id', type.id);
+                                    }}
+                                  >
+                                    {type.name}
+                                  </Dropdown.Item>
+                                </>
+                              );
+                            }
+                          })}
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
