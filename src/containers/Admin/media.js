@@ -73,7 +73,7 @@ const Media = () => {
                             name='videoall'
                             type='checkbox'
                             label='Selectall'
-                            checked={orgVideoSource?.length === 5 ? true : false}
+                            checked={orgVideoSource?.length === 6 ? true : false}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setorgVideoSource(allVideoSource.filter((source) => source.name !== 'Safari Montage'));
