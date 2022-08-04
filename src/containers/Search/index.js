@@ -122,7 +122,7 @@ function SearchInterface(props) {
         size: 20,
       };
 
-      dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+      // dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
     }
   }, [currentOrganization]);
 
@@ -503,23 +503,24 @@ function SearchInterface(props) {
                     SetAuthor([]);
                     Settodate([]);
                     Setfromdate([]);
-                    if (eventKey === 'Independent activities') {
-                      const searchData = {
-                        standardArray: activeType,
-                        from: 0,
-                        size: 20,
-                      };
+                    setisLoader(false);
+                    // if (eventKey === 'Independent activities') {
+                    //   const searchData = {
+                    //     standardArray: activeType,
+                    //     from: 0,
+                    //     size: 20,
+                    //   };
 
-                      dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
-                    } else {
-                      const searchData = {
-                        standardArray: activeType,
-                        from: 0,
-                        size: 20,
-                      };
+                    //   dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+                    // } else {
+                    //   const searchData = {
+                    //     standardArray: activeType,
+                    //     from: 0,
+                    //     size: 20,
+                    //   };
 
-                      dispatch(simpleSearchAction(searchData));
-                    }
+                    //   dispatch(simpleSearchAction(searchData));
+                    // }
                   }}
                   defaultActiveKey={allState.searchType}
                 >
@@ -561,6 +562,7 @@ function SearchInterface(props) {
                               setSearch={setSearch}
                               noWords={noWords}
                               setNoWords={setNoWords}
+                              setisLoader={setisLoader}
                             />
                             <RefineSearch
                               setActiveAuthorTag={setActiveAuthorTag}
@@ -592,7 +594,7 @@ function SearchInterface(props) {
                                         <>
                                           <div className="box">
                                             <div className="imgbox">
-                                              {res.thumb_url ? (
+                                              {res?.thumb_url ? (
                                                 <div
                                                   style={{
                                                     backgroundImage: res.thumb_url.includes('pexels.com')
@@ -615,7 +617,7 @@ function SearchInterface(props) {
 
                                             <div className="contentbox">
                                               <div className="search-content">
-                                                <a href={`/activity/${res.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">
+                                                <a href={`/activity/${res?.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">
                                                   <h2>{res.title || res.name}</h2>
                                                 </a>
                                                 <p>{res.description}</p>
@@ -873,8 +875,10 @@ function SearchInterface(props) {
                                     ) : (
                                       <Alert variant="danger">No result found !</Alert>
                                     )
-                                  ) : (
+                                  ) : isLoader ? (
                                     <Skeleton count="3" />
+                                  ) : (
+                                    <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert>
                                   )}
                                 </div>
                               </div>
@@ -921,6 +925,7 @@ function SearchInterface(props) {
                             setSearch={setSearch}
                             noWords={noWords}
                             setNoWords={setNoWords}
+                            setisLoader={setisLoader}
                           />
                         </div>
                         <RefineSearch
@@ -1386,6 +1391,46 @@ function SearchInterface(props) {
                                                   </div>
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
+                                                  onClick={async () => {
+                                                    toast.info('Duplicating Activity...', {
+                                                      className: 'project-loading',
+                                                      closeOnClick: false,
+                                                      closeButton: false,
+                                                      position: toast.POSITION.BOTTOM_RIGHT,
+                                                      autoClose: 10000,
+                                                      icon: '',
+                                                    });
+                                                    const result = await intActivityServices.copyToIndependentActivity(currentOrganization?.id, res.id);
+                                                    toast.dismiss();
+                                                    Swal.fire({
+                                                      html: result.message,
+                                                      icon: 'success',
+                                                    });
+                                                  }}
+                                                >
+                                                  <div className="dropDown-item-name-icon">
+                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path
+                                                        d="M13.6 1H2.4C1.6268 1 1 1.6268 1 2.4V5.2C1 5.9732 1.6268 6.6 2.4 6.6H13.6C14.3732 6.6 15 5.9732 15 5.2V2.4C15 1.6268 14.3732 1 13.6 1Z"
+                                                        stroke={primaryColor}
+                                                        strokeWidth="1.5"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                      />
+                                                      <path
+                                                        d="M13.6 9.40015H2.4C1.6268 9.40015 1 10.0269 1 10.8001V13.6001C1 14.3733 1.6268 15.0001 2.4 15.0001H13.6C14.3732 15.0001 15 14.3733 15 13.6001V10.8001C15 10.0269 14.3732 9.40015 13.6 9.40015Z"
+                                                        stroke={primaryColor}
+                                                        strokeWidth="1.5"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                      />
+                                                      <path d="M3.7998 3.7998H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                      <path d="M3.7998 12.1997H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    <span>Copy to My Activities</span>
+                                                  </div>
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
                                                   onClick={() => {
                                                     setIndClone(false);
                                                     setModalShow(true);
@@ -1507,8 +1552,10 @@ function SearchInterface(props) {
                                   ) : (
                                     <Alert variant="danger">No result found !</Alert>
                                   )
-                                ) : (
+                                ) : isLoader ? (
                                   <Skeleton count="3" />
+                                ) : (
+                                  <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert>
                                 )}
                               </div>
                             </Tab>
