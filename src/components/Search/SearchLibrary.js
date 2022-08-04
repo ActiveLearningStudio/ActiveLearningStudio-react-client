@@ -137,12 +137,13 @@ const SearchLibrary = (props) => {
                       size: 20,
                       no_words: noWords || undefined,
                     };
-
+                    console.log(dataSend);
                     const result = await dispatch(simpleSearchAction(dataSend));
                     setTotalCount(result.meta?.total);
                     const tempEducation = [];
                     const tempSubject = [];
                     const tempTag = [];
+                    const tempAuthor = [];
                     if (activeEducation) {
                       activeEducation.forEach((edu) => {
                         if (String(edu).includes('&')) {
@@ -169,12 +170,12 @@ const SearchLibrary = (props) => {
                       activeAuthorTag.forEach((sub) => {
                         if (String(sub).includes('&')) {
                           const temp = String(sub).replace('&', 'and');
-                          tempTag.push(temp);
+                          tempAuthor.push(temp);
                         } else {
-                          tempTag.push(sub);
+                          tempAuthor.push(sub);
                         }
                       });
-                      setActiveAuthorTag(tempSubject);
+                      setActiveAuthorTag(tempAuthor);
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
