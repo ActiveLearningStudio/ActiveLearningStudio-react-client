@@ -302,6 +302,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         ltiToolsTypes: action.payload,
       };
+
+    case actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+      };
     default:
       return state;
   }

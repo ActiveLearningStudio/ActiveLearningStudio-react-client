@@ -293,3 +293,13 @@ export const ltiToolType = (subOrgId) => async (dispatch) => {
     });
   }
 };
+
+export const cloneLtiTool = (subOrgId, id, user_id) => async (dispatch) => {
+  try {
+    const { data } = await adminService.cloneLtiTool(subOrgId, id, user_id);
+    dispatch({
+      type: actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {}
+};

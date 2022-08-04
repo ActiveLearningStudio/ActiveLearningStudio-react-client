@@ -159,24 +159,13 @@ export default function CreateLtiTool(prop) {
                     <div className="error">{errors.tool_description && touched.tool_description && errors.tool_description}</div>
                   </div>
 
-                  <div className="form-group-create">
+                  {/* <div className="form-group-create">
                     <h3>Tool type</h3>
                     <div className="filter-dropdown-tooltype">
                       <Dropdown>
-                        {/* <Dropdown.Toggle id="dropdown-basic">{toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}</Dropdown.Toggle> */}
                         <Dropdown.Toggle id="dropdown-basic">{ltiToolTypes?.filter((type) => type.id === values.media_source_id)[0]?.name}</Dropdown.Toggle>
 
                         <Dropdown.Menu>
-                          {/* {toolTypeArray.map((type) => (
-                            <Dropdown.Item
-                              key={type.key}
-                              onClick={() => {
-                                setFieldValue('tool_type', type.key);
-                              }}
-                            >
-                              {type.value}
-                            </Dropdown.Item>
-                          ))} */}
                           {ltiToolTypes.map((type) => {
                             if (type.name !== 'My device' && type.name !== 'BrightCove') {
                               return (
@@ -196,7 +185,25 @@ export default function CreateLtiTool(prop) {
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
+                  </div> */}
+                  {/* Tool Type Update Start */}
+                  <div className="form-group-create">
+                    <h3>Tool type</h3>
+                    <select name="media_source_id" onChange={handleChange} onBlur={handleBlur} value={values.media_source_id}>
+                      {values.media_source_id === '' && <option value={null}> </option>}
+                      {ltiToolTypes.map((type) => {
+                        if (type.name !== 'My device' && type.name !== 'BrightCove') {
+                          return (
+                            <>
+                              <option value={type.id}>{type.name}</option>
+                            </>
+                          );
+                        }
+                      })}
+                    </select>
+                    <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
                   </div>
+                  {/* Tool Type Update End */}
 
                   <div className="form-group-create">
                     <h3>LTI version</h3>

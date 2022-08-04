@@ -988,7 +988,7 @@ function Controller(props) {
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.name ? selectedFilterItem?.name : 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.name ? selectedFilterItem?.name : 'All'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -997,7 +997,7 @@ function Controller(props) {
                       setSelectedFilterItem(null);
                     }}
                   >
-                    Select
+                    All
                   </Dropdown.Item>
                   {/* {toolTypeArray?.map((t) => (
                     <Dropdown.Item
