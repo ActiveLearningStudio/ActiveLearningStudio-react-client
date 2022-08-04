@@ -1342,12 +1342,12 @@ const AdminDropdown = (props) => {
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
-                    // dispatch({
-                    //   type: 'SET_ACTIVE_EDIT',
-                    //   payload: row,
-                    // });
-                    // dispatch(setActiveAdminForm('clone_lti_tool'));
-                    dispatch(cloneLtiTool(activeOrganization?.id, row.id, auth?.user?.id));
+                    dispatch({
+                      type: 'SET_ACTIVE_EDIT',
+                      payload: row,
+                    });
+                    dispatch(setActiveAdminForm('clone_lti_tool'));
+                    // dispatch(cloneLtiTool(activeOrganization?.id, row.id, auth?.user?.id));
                   }}
                 >
                   {/* <img src={Clone} alt="Preview" className="menue-img" /> */}
