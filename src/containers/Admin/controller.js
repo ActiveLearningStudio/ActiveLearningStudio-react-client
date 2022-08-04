@@ -78,7 +78,7 @@ function Controller(props) {
   const [loaderImgUser, setLoaderImgUser] = useState(false);
   const [selectedFilterItem, setSelectedFilterItem] = useState('');
   const [ltiToolTypes, setLtiToolTypes] = useState();
-
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -126,7 +126,7 @@ function Controller(props) {
   };
   const primaryColor = getGlobalColor('--main-primary-color');
   // const secondaryColor = getGlobalColor('--main-secondary-color');
-  const { ltiToolsTypes } = useSelector((state) => state.admin);
+
   useEffect(() => {
     setLtiToolTypes(ltiToolsTypes);
   }, [ltiToolsTypes]);
