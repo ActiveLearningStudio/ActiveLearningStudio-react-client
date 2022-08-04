@@ -79,8 +79,8 @@ function AdminPanel({ showSSO }) {
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   // ltiToolType calling
   useEffect(() => {
-    dispatch(ltiToolType(activeOrganization?.id));
-  }, []);
+    dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+  }, [activeOrganization, currentOrganization]);
   return (
     <div className="admin-panel">
       {true ? (

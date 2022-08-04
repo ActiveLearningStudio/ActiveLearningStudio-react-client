@@ -248,7 +248,7 @@ class RegisterPage extends React.Component {
 
             <div className="auth-container">
               <div className="d-flex align-items-center justify-content-between">
-                <h1 className="auth-title mb2">
+                <h1 className="auth-title mb2 mb-5">
                   Welcome
                   {!clicked ? ' to Curriki' : `, ${firstName}`}
                 </h1>
@@ -264,11 +264,11 @@ class RegisterPage extends React.Component {
                 </button> */}
               </div>
 
-              <p className="auth-Pdescrip text-left">
+              {/* <p className="auth-Pdescrip text-left">
                 {!clicked
                   ? 'Start making a difference in the way learning experiences are created.'
                   : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-              </p>
+              </p> */}
               <div className="content-section">
                 <Tabs
                   defaultActiveKey={activeTab}
@@ -280,7 +280,7 @@ class RegisterPage extends React.Component {
                     if (key === 'Log in') this.goToLogin();
                   }}
                 >
-                  <Tab eventKey="Log in" title="Log in" />
+                  <Tab eventKey="Log in" title="Log In" />
                   <Tab eventKey="Sign up" title="Register Here!" style={{ display: stepper ? 'none' : 'flex' }}>
                     <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
                       {!clicked && (
@@ -328,6 +328,7 @@ class RegisterPage extends React.Component {
                               required
                               maxLength="250"
                               value={password}
+                              placeholder="********"
                               onChange={this.onChangeField}
                             />
                           </div>
@@ -460,17 +461,17 @@ class RegisterPage extends React.Component {
               {stepper && (
                 <>
                   <div className="form-group">
-                    <div className="bkbtn">
+                    <div className="bkbtn" onClick={() => this.setState({ clicked: false, stepper: false })}>
                       {/* <button type="button" onClick={() => this.setState({ clicked: false, stepper: false })}> */}
                       <img src={leftArrow} alt="arrow-left" />
-                      <a onClick={() => this.setState({ clicked: false, stepper: false })}> Back </a>
+                      <a> Back </a>
                       {/* </button> */}
                     </div>
                   </div>
                   <div className="form-group">
                     <div className="using-curriki">
                       <div className="curriki-line">You are using Curriki for:</div>
-                      <div className="line-horizontal" />
+                      {/* <div className="line-horizontal" /> */}
                     </div>
                   </div>
                   <div className="form-group ">
@@ -505,7 +506,7 @@ class RegisterPage extends React.Component {
                   <div className="form-group mb-0" style={{ marginTop: '50px' }}>
                     <button
                       type="submit"
-                      className="btn-primary submit get-started-btn"
+                      className="btn-primary submit get-started-btn mb-5"
                       onClick={(e) => {
                         this.setState({ clicked: true });
                         this.onSubmit(e);
@@ -514,6 +515,23 @@ class RegisterPage extends React.Component {
                     >
                       {isLoading ? <img src={loader} alt="" /> : 'Complete Registration'}
                     </button>
+                  </div>
+                  <div className="termsandcondition">
+                    By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                    <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                      Terms of Use
+                    </a>{' '}
+                    and{' '}
+                    <a
+                      target="_blank"
+                      href={
+                        domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
+                          ? domain?.privacy_policy_url
+                          : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`
+                      }
+                    >
+                      Privacy Policy.
+                    </a>
                   </div>
                 </>
               )}

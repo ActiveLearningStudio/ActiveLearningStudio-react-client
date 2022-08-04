@@ -446,10 +446,10 @@ const Index = ({ activities }) => {
                             ) : (
                               <StartingPage
                                 welcome="Let's Build a CurrikiStudio Activity!"
-                                createBtnTitle="Create new activity"
+                                createBtnTitle="Create New Activity"
                                 createTitle="Create your first learning activity."
                                 createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
-                                helpBtnTitle="Help center"
+                                helpBtnTitle="Help Center"
                                 helpTitle="How to start?"
                                 type="activity"
                                 primaryColor={primaryColor}
@@ -482,7 +482,7 @@ const Index = ({ activities }) => {
                             ) : (
                               <StartingPage
                                 welcome=""
-                                createBtnTitle="Create new Video"
+                                createBtnTitle="Create New Video"
                                 createTitle="Start creating awesome interactive videos."
                                 createDetail="Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
                                 helpBtnTitle="Help center"

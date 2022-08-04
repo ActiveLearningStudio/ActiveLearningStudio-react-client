@@ -273,9 +273,17 @@ export default (state = INITIAL_STATE, action) => {
         orgMediaSources: action.payload,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      const updateLtiTools = action.payload.mediaSources?.map((source) => {
+        if (source.media_type === 'Video') {
+          return source;
+        } else {
+          return false;
+        }
+      });
       return {
         ...state,
         orgMediaSources: action.payload,
+        ltiToolsTypes: updateLtiTools,
       };
 
     case actionTypes.GET_MEDIA_SOURCES:
