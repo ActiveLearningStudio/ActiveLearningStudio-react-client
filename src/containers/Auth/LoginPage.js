@@ -264,7 +264,7 @@ class LoginPage extends React.Component {
                       </div>
                       <div className="form-button">
                         <button type="submit" className="btn btn-primary submit" disabled={isLoading || this.isDisabled()}>
-                          {isLoading ? <img src={loader} alt="" /> : 'Log In'}
+                          {isLoading ? <img src={loader} alt="" style={{ marginTop: '-10px' }} /> : 'Log In'}
                         </button>
                       </div>
                       <div className="login-separator-box">
@@ -287,7 +287,7 @@ class LoginPage extends React.Component {
                             </a>
                           </p> */}
 
-                          <div className="form-group text-center mb-3">
+                          <div className="form-group text-center mb-5">
                             <GoogleLogin
                               clientId={global.config.gapiClientId}
                               theme="dark"

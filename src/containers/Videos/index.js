@@ -446,10 +446,10 @@ const Index = ({ activities }) => {
                             ) : (
                               <StartingPage
                                 welcome="Let's Build a CurrikiStudio Activity!"
-                                createBtnTitle="Create new activity"
+                                createBtnTitle="Create New Activity"
                                 createTitle="Create your first learning activity."
                                 createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
-                                helpBtnTitle="Help center"
+                                helpBtnTitle="Help Center"
                                 helpTitle="How to start?"
                                 type="activity"
                                 primaryColor={primaryColor}
