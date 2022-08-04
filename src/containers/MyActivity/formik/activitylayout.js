@@ -60,7 +60,7 @@ const ActivityLayout = (props) => {
         <Tabs text="2. Describe and Create Activity" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
-        <HeadingTwo text="Select Activity" color="#084892" className="select_activity_title_style" />
+        <HeadingTwo text="Select layout" color="#084892" className="select_activity_title_style" />
       </div>
 
       {/* <form className="radio-group ">
@@ -193,7 +193,7 @@ const ActivityLayout = (props) => {
               }}
               id="controlled-tab-example"
             >
-              <Taber.Tab eventKey="activity_description" title={'Activity Description'}>
+              {/* <Taber.Tab eventKey="activity_description" title={'Activity Description'}>
                 <div className="activity-des-taber">
                   <div className="activity-des-taber-detail">
                     <h6>Description</h6>
@@ -222,7 +222,7 @@ const ActivityLayout = (props) => {
                     <p>Guided onboardings, Corporated presentations</p>
                   </div>
                 </div>
-              </Taber.Tab>
+              </Taber.Tab> */}
               <Taber.Tab eventKey="layout" title={'How-to video'}>
                 <div className="activity-layout-process-box">
                   <iframe
@@ -235,9 +235,9 @@ const ActivityLayout = (props) => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   ></iframe>
                 </div>
-                {/* <HeadingText text={layout.description} color="#515151" /> */}
+                <HeadingText text={layout.description} color="#515151" />
               </Taber.Tab>
-              <Taber.Tab eventKey="demo" title="Video Tutorial">
+              <Taber.Tab eventKey="demo" title="Sample activity">
                 {layout.demo_activity_id ? (
                   <>
                     <H5PPreview activityId={layout.demo_activity_id.trim()} tokenrequire={false} showltipreview />
