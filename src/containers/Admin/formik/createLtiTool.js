@@ -190,6 +190,7 @@ export default function CreateLtiTool(prop) {
                   <div className="form-group-create">
                     <h3>Tool type</h3>
                     <select name="media_source_id" onChange={handleChange} onBlur={handleBlur} value={values.media_source_id}>
+                      {values.media_source_id === '' && <option value={null}> </option>}
                       {ltiToolTypes.map((type) => {
                         if (type.name !== 'My device' && type.name !== 'BrightCove') {
                           return (
