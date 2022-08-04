@@ -111,7 +111,7 @@ const h5pResourceSettings = (activityId, studentId = null, submissionId = null) 
     },
     params: {
       q: query.length > 0 ? `name contains '${query}' and mimeType='application/vnd.google-apps.presentation'` : "mimeType='application/vnd.google-apps.presentation'",
-      fields: 'files(id, name, mimeType, thumbnailLink)',
+      fields: 'files(id, name, mimeType, iconLink, size, createdTime, lastModifyingUser)',
     },
   })
   .then((response) => response)
