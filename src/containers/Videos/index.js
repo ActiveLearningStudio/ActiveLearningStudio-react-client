@@ -482,7 +482,7 @@ const Index = ({ activities }) => {
                             ) : (
                               <StartingPage
                                 welcome=""
-                                createBtnTitle="Create new Video"
+                                createBtnTitle="Create New Video"
                                 createTitle="Start creating awesome interactive videos."
                                 createDetail="Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
                                 helpBtnTitle="Help center"

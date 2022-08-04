@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 * {
   padding: 0;
   margin: 0;
@@ -91,7 +91,7 @@
             width: 100%;
             border: none;
             outline: none;
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -417,7 +417,7 @@
     }
     .activity_layout_des {
       p {
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
@@ -582,7 +582,7 @@
             color: #084892;
           }
           p {
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -608,7 +608,7 @@
           p {
             margin-bottom: 0px !important;
             margin-left: 10px;
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -622,7 +622,9 @@
         margin: 0;
         margin-bottom: 10px;
         border: none !important;
+        border-bottom: 1px solid #084892 !important;
         width: 100%;
+        max-width: 420px;
 
         .nav-item {
           font-size: 14px;
@@ -695,7 +697,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type="radio"] {
+      input[type='radio'] {
         width: 20px;
         height: 20px;
       }
@@ -785,7 +787,7 @@
       .input {
         margin-right: 11px;
       }
-      input[type="radio"] {
+      input[type='radio'] {
         width: 20px;
         height: 20px;
       }
@@ -827,7 +829,7 @@
       select {
         border: none;
 
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -1161,7 +1163,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;
@@ -1248,7 +1250,7 @@
       select {
         border: none;
         width: 130px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 16px;

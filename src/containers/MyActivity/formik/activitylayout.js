@@ -235,7 +235,7 @@ const ActivityLayout = (props) => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   ></iframe>
                 </div>
-                <HeadingText text={layout.description} color="#515151" />
+                {/* <HeadingText text={layout.description} color="#515151" /> */}
               </Taber.Tab>
               <Taber.Tab eventKey="demo" title="Video Tutorial">
                 {layout.demo_activity_id ? (
