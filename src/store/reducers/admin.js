@@ -273,13 +273,7 @@ export default (state = INITIAL_STATE, action) => {
         orgMediaSources: action.payload,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
-      const updateLtiTools = action.payload.mediaSources?.map((source) => {
-        if (source.media_type === 'Video') {
-          return source;
-        } else {
-          return false;
-        }
-      });
+      const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
       return {
         ...state,
         orgMediaSources: action.payload,
