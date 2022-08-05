@@ -275,6 +275,7 @@ function LtiProjectShared(props) {
                                                         confirmButtonText: 'Yes',
                                                         icon: 'info',
                                                       }).then(async (result) => {
+                                                        console.log(clone);
                                                         if (result.isConfirmed) {
                                                           if (clone.ind) {
                                                             if (clone.selectedProjectstoAdd) {

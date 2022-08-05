@@ -65,6 +65,8 @@ const onSubmit = async (values, dispatch, props) => {
           if (searchView) {
             if (activity.clone.model == 'Playlist') {
               clonePlaylist(result.id, activity.clone?.id);
+            } else if (activity.ind) {
+              dispatch(addActivityPlaylistSearch(activity.clone?.id, result.playlists[0].id));
             } else {
               cloneActivity(result.playlists[0].id, activity.clone?.id);
             }
