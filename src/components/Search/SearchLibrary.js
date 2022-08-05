@@ -41,6 +41,7 @@ const SearchLibrary = (props) => {
     setSearch,
     setNoWords,
     noWords,
+    setisLoader,
   } = props;
 
   return (
@@ -66,12 +67,7 @@ const SearchLibrary = (props) => {
               />
 
               <div className="author-label">Does not contain</div>
-              <div
-                className="form-group mb-form"
-                style={{
-                  display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none',
-                }}
-              >
+              <div className="form-group mb-form">
                 <input
                   placeholder=""
                   className="authorName"
@@ -85,13 +81,8 @@ const SearchLibrary = (props) => {
                   }}
                 />
               </div>
-              {permission?.Organization?.includes('organization:view-user') && searchType !== 'private' && <div className="author-label">Author</div>}
-              <div
-                className="form-group"
-                style={{
-                  display: permission?.Organization?.includes('organization:view-user') && searchType !== 'private' ? 'block' : 'none',
-                }}
-              >
+              <div className="author-label">Author</div>
+              <div className="form-group">
                 <input
                   placeholder="Enter author name"
                   className="authorName"
@@ -108,6 +99,7 @@ const SearchLibrary = (props) => {
               <div
                 className="src-btn"
                 onClick={async () => {
+                  setisLoader(true);
                   setFromDate(undefined);
                   setToDate(undefined);
                   setSearch(null);
@@ -137,12 +129,13 @@ const SearchLibrary = (props) => {
                       size: 20,
                       no_words: noWords || undefined,
                     };
-
+                    console.log(dataSend);
                     const result = await dispatch(simpleSearchAction(dataSend));
                     setTotalCount(result.meta?.total);
                     const tempEducation = [];
                     const tempSubject = [];
                     const tempTag = [];
+                    const tempAuthor = [];
                     if (activeEducation) {
                       activeEducation.forEach((edu) => {
                         if (String(edu).includes('&')) {
@@ -169,12 +162,12 @@ const SearchLibrary = (props) => {
                       activeAuthorTag.forEach((sub) => {
                         if (String(sub).includes('&')) {
                           const temp = String(sub).replace('&', 'and');
-                          tempTag.push(temp);
+                          tempAuthor.push(temp);
                         } else {
-                          tempTag.push(sub);
+                          tempAuthor.push(sub);
                         }
                       });
-                      setActiveAuthorTag(tempSubject);
+                      setActiveAuthorTag(tempAuthor);
                     }
                     if (!fromTeam) {
                       // eslint-disable-next-line max-len
