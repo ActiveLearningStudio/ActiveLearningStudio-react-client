@@ -354,9 +354,11 @@ const searchLtiTool = (subOrgId, query, page) =>
       Promise.reject(err.response.data);
     });
 
-const cloneLtiTool = (subOrgId, id) =>
+const cloneLtiTool = (subOrgId, id, user_id) =>
   httpService
-    .post(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}/clone`)
+    .post(`/${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings/${id}/clone`, {
+      user_id: user_id,
+    })
     .then((res) => Swal.fire(res.data.message))
     .catch((err) => {
       if (err.response.data.errors) {

@@ -28,6 +28,7 @@ import {
   setCurrentUser,
   showRemoveUser,
   getActivityLayout,
+  cloneLtiTool,
 } from 'store/actions/admin';
 import { deleteBrightCove } from 'store/actions/videos';
 
@@ -1346,6 +1347,7 @@ const AdminDropdown = (props) => {
                       payload: row,
                     });
                     dispatch(setActiveAdminForm('clone_lti_tool'));
+                    // dispatch(cloneLtiTool(activeOrganization?.id, row.id, auth?.user?.id));
                   }}
                 >
                   {/* <img src={Clone} alt="Preview" className="menue-img" /> */}
