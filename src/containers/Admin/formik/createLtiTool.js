@@ -20,10 +20,17 @@ export default function CreateLtiTool(prop) {
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
-  const [ltiToolTypes, setLtiToolTypes] = useState([]);
+  const [ltiToolTypeGroup, setLtiToolTypesGroup] = useState([]);
   const { ltiToolsTypes } = useSelector((state) => state.admin);
   useEffect(() => {
-    setLtiToolTypes(ltiToolsTypes);
+    // setLtiToolTypesGroup(ltiToolsTypes);
+    setLtiToolTypesGroup(
+      ltiToolsTypes.filter((type) => {
+        if (type.name !== 'My device' && type.name !== 'BrightCove') {
+          return type;
+        }
+      }),
+    );
   }, [ltiToolsTypes]);
   return (
     <div className="create-form lms-admin-form">
@@ -37,7 +44,13 @@ export default function CreateLtiTool(prop) {
           tool_consumer_key: editMode ? activeEdit?.tool_consumer_key : '',
           tool_description: editMode ? activeEdit?.tool_description : '',
           // tool_type: editMode ? activeEdit?.tool_type : '',media_source_id
-          media_source_id: editMode ? activeEdit?.media_source_id : '',
+
+          media_source_id: editMode
+            ? activeEdit?.media_source_id
+            : ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x).length > 0
+            ? ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x)['0'].id
+            : '',
+
           tool_secret_key: editMode ? activeEdit?.tool_secret_key : '',
           organization_id: organization?.activeOrganization?.id,
           user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
@@ -190,8 +203,17 @@ export default function CreateLtiTool(prop) {
                   <div className="form-group-create">
                     <h3>Tool type</h3>
                     <select name="media_source_id" onChange={handleChange} onBlur={handleBlur} value={values.media_source_id}>
-                      {values.media_source_id === '' && <option value={null}> </option>}
-                      {ltiToolTypes.map((type) => {
+                      {/* {values.media_source_id === '' && (
+                        <option selected value={null}>
+                          Select
+                        </option>
+                      )} */}
+                      {ltiToolTypeGroup.map((type) => (
+                        <>
+                          <option value={type.id}>{type.name}</option>
+                        </>
+                      ))}
+                      {/* {ltiToolTypeGroup.map((type) => {
                         if (type.name !== 'My device' && type.name !== 'BrightCove') {
                           return (
                             <>
@@ -199,7 +221,7 @@ export default function CreateLtiTool(prop) {
                             </>
                           );
                         }
-                      })}
+                      })} */}
                     </select>
                     <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
                   </div>
