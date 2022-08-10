@@ -112,6 +112,7 @@ export default function Pills(props) {
   const [searchEducationLevelQuery, setSearchEducationLevelQuery] = useState('');
   const [searchActivityTypesQuery, setSearchActivityTypesQuery] = useState('');
   const [searchActivityItemsQuery, setSearchActivityItemsQuery] = useState('');
+  const [filterLtiSettings, setfilterLtiSettings] = useState('All');
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -954,9 +955,13 @@ export default function Pills(props) {
         setSubTypeState(key);
         setKey(key);
         setActivePage(1);
+        setfilterLtiSettings('All');
         setSearchQueryProject('');
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
+        if (key === 'LTI Tools') {
+          dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+        }
         setSearchQueryStats('');
         if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
@@ -1404,6 +1409,8 @@ export default function Pills(props) {
                   activePage={activePage}
                   searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
                   filteredItems={filterLtiTool}
+                  filterLtiSettings={filterLtiSettings}
+                  setfilterLtiSettings={setfilterLtiSettings}
                 />
               )}
               {type === 'Teams' && (
