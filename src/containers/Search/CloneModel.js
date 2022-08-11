@@ -16,6 +16,10 @@ import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/p
 import Buttons from 'utils/Buttons/buttons';
 import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import loader from 'assets/images/loader.svg';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import RightAngleSmSvg from 'iconLibrary/dropDown/RightAngleSmSvg';
+import AngleDownSmSvg from 'iconLibrary/mainContainer/AngleDownSmSvg';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 const ImgLoader = () => <img src={loader} alt="loader" />;
 function LtiProjectShared(props) {
   const { clone, searchView } = props;
@@ -113,30 +117,16 @@ function LtiProjectShared(props) {
                       // handlerSearchResult(e.target.value);
                     }}
                   />
-
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    // onClick={searchQueryHandler}
+                  <SearchInputMdSvg
+                    primaryColor={primaryColor}
+                    style={{ cursor: 'pointer' }}
                     onClick={() =>
                       dispatch(
                         loadMyCloneProjectsAction(page, defaultSize, searchQuery),
                         // loadMyProjectsAction(),
                       )
                     }
-                  >
-                    <path
-                      d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                      stroke={primaryColor}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  />
                 </div>
 
                 <div>
@@ -151,7 +141,7 @@ function LtiProjectShared(props) {
         {setShowProjectCard && (
           <div className=" information-clone-model information-clone-model-project ">
             <div onClick={() => setShowCreateProject(false)} className="clone-back-option-project">
-              <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} /> <span>Back</span>
+              <BackToSmSvg primaryColor={primaryColor} /> <span>Back</span>
             </div>
             <h3 className="clone-create-project-headng">Create New Project</h3>
             <MyProjectsCreate project={project} activity={clone} searchView={searchView} addtoProject selectedProjectstoAdd={clone.selectedProjectstoAdd} />
@@ -208,21 +198,13 @@ function LtiProjectShared(props) {
                                             <span>View playlists</span>
                                             {(clone.clone.model === 'Activity' || clone.ind) &&
                                               (activeProject === counterTop + 1 ? (
-                                                <FontAwesomeIcon
-                                                  icon="chevron-right"
-                                                  color={primaryColor}
-                                                  // style={{
-                                                  //   marginLeft: '12px',
-                                                  // }}
-                                                />
+                                                <>
+                                                  <RightAngleSmSvg primaryColor={primaryColor} />
+                                                </>
                                               ) : (
-                                                <FontAwesomeIcon
-                                                  icon="chevron-down"
-                                                  color={primaryColor}
-                                                  // style={{
-                                                  //   marginLeft: '12px',
-                                                  // }}
-                                                />
+                                                <>
+                                                  <AngleDownSmSvg primaryColor={primaryColor} />
+                                                </>
                                               ))}
                                           </div>
                                         </>

@@ -23,6 +23,8 @@ import H5PPreview from '../../H5PPreview';
 import AddVideo from '../../Videos/formik/addvideo';
 import DescribeVideo from '../../Videos/formik/describevideo';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import UploadSmSvg from 'iconLibrary/mainContainer/UploadSmSvg';
+import SearchSmSvg from 'iconLibrary/mainContainer/SearchSmSvg';
 
 const ImgLoader = () => <img style={{ width: '100px' }} src={loader} />;
 const ActivityLayout = (props) => {
@@ -133,17 +135,7 @@ const ActivityLayout = (props) => {
               }}
             >
               {/* <img src={SearchImage} alt="Search" /> */}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
-                  stroke={primaryColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M21.0004 21.0004L16.6504 16.6504" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-
+              <SearchSmSvg primaryColor={primaryColor} />
               <p className="">Show All Activities</p>
             </div>
             <div
@@ -158,18 +150,7 @@ const ActivityLayout = (props) => {
               }}
             >
               {/* <img src={UpLoadImage} alt="UpLoad" /> */}
-              <svg width="15" height="12" viewBox="0 0 15 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M1.5 7V10.2C1.5 10.4122 1.65804 10.6157 1.93934 10.7657C2.22064 10.9157 2.60218 11 3 11H12C12.3978 11 12.7794 10.9157 13.0607 10.7657C13.342 10.6157 13.5 10.4122 13.5 10.2V7"
-                  stroke={primaryColor}
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M10.1499 3.39999L7.5249 1L4.8999 3.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M7.5 1V8.79997" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-
+              <UploadSmSvg primaryColor={primaryColor} />
               <p className="">Upload </p>
             </div>
           </div>

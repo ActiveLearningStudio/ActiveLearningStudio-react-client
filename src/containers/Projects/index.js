@@ -45,6 +45,8 @@ import { Dropdown } from 'react-bootstrap';
 import './style.scss';
 // import StartingPage from 'utils/StartingPage/startingpage';
 import StartingPageTwo from 'utils/StartingPage/startingpageTwo';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import PlusXlSvg from 'iconLibrary/mainContainer/PlusXlSvg';
 // import MyProjects from "./MyProjects";
 const ImgLoader = () => <img src={loader} alt="loader" />;
 export const ProjectsPage = (props) => {
@@ -398,29 +400,15 @@ export const ProjectsPage = (props) => {
                             }
                           }}
                         />
-
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                        <SearchInputMdSvg
+                          primaryColor={primaryColor}
                           style={{ cursor: 'pointer' }}
                           onClick={() => {
                             dispatch({ type: 'SHOW_SKELETON' });
 
                             loadMyProjects(activePage, defaultSize, searchQuery);
                           }}
-                        >
-                          <path
-                            d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        />
                       </div>
                       {/* <div className="activity-counter">
                         <div className="pagination-counter drop-counter ">
@@ -522,22 +510,7 @@ export const ProjectsPage = (props) => {
                                                       setCreateProject(true);
                                                     }}
                                                   >
-                                                    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                      <path
-                                                        d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005"
-                                                        stroke={primaryColor}
-                                                        stroke-width="4"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                      />
-                                                      <path
-                                                        d="M26 50C26 49.9656 26 17.9857 26 2"
-                                                        stroke={primaryColor}
-                                                        stroke-width="4"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                      />
-                                                    </svg>
+                                                    <PlusXlSvg primaryColor={primaryColor} />
                                                     <span>Create New Project</span>
                                                   </div>
                                                 )
