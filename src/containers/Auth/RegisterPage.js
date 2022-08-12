@@ -22,13 +22,16 @@ import Logo from './Logo';
 import eye from 'assets/images/eye.svg';
 
 import './style.scss';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { validLowerCase, validNumber, validUpperCase } from './Regex';
+import PasswordValidImage from '../../assets/images/svg/password_valid.svg';
+import PasswordInValidImage from '../../assets/images/svg/password_invalid.svg';
 // eslint-disable-next-line no-restricted-globals
 const query = QueryString.parse(location.search);
 
 class RegisterPage extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       firstName: '',
       lastName: '',
@@ -72,6 +75,60 @@ class RegisterPage extends React.Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+
+    // Password Validation check
+
+    if (e.target.name == 'password') {
+      if (e.target.value?.length >= 8) {
+        this.setState({
+          passChar: true,
+        });
+      }
+      if (e.target.value?.length < 8) {
+        this.setState({
+          passChar: false,
+        });
+      }
+      if (validUpperCase.test(e.target.value)) {
+        this.setState({
+          passUpperChar: true,
+        });
+      }
+      if (!validUpperCase.test(e.target.value)) {
+        this.setState({
+          passUpperChar: false,
+        });
+      }
+      if (validLowerCase.test(e.target.value)) {
+        this.setState({
+          passLowerChar: true,
+        });
+      }
+      if (!validLowerCase.test(e.target.value)) {
+        this.setState({
+          passLowerChar: false,
+        });
+      }
+      if (validNumber.test(e.target.value)) {
+        this.setState({
+          passNumberChar: true,
+        });
+      }
+      if (!validNumber.test(e.target.value)) {
+        this.setState({
+          passNumberChar: false,
+        });
+      }
+      if (validUpperCase.test(e.target.value) && validLowerCase.test(e.target.value) && validNumber.test(e.target.value)) {
+        this.setState({
+          allPassValid: true,
+        });
+      } else {
+        this.setState({
+          allPassValid: false,
+        });
+      }
+    }
   };
 
   onSubmit = async (e) => {
@@ -191,7 +248,7 @@ class RegisterPage extends React.Component {
 
             <div className="auth-container">
               <div className="d-flex align-items-center justify-content-between">
-                <h1 className="auth-title mb2">
+                <h1 className="auth-title mb2 mb-5">
                   Welcome
                   {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
                 </h1>
@@ -207,11 +264,11 @@ class RegisterPage extends React.Component {
                 </button> */}
               </div>
 
-              <p className="auth-Pdescrip text-left">
+              {/* <p className="auth-Pdescrip text-left">
                 {!clicked
                   ? 'Start making a difference in the way learning experiences are created.'
                   : 'Before start creating awesome content, please let us know the usage your are giving to Curriki. '}
-              </p>
+              </p> */}
               <div className="content-section">
                 <Tabs
                   defaultActiveKey={activeTab}
@@ -223,35 +280,11 @@ class RegisterPage extends React.Component {
                     if (key === 'Log in') this.goToLogin();
                   }}
                 >
-                  <Tab eventKey="Log in" title="Log in" />
-                  <Tab eventKey="Sign up" title="Sign up" style={{ display: stepper ? 'none' : 'flex' }}>
+                  <Tab eventKey="Log in" title="Log In" />
+                  <Tab eventKey="Sign up" title="Register Here!" style={{ display: stepper ? 'none' : 'flex' }}>
                     <form onSubmit={this.onSubmit} autoComplete="off" className="auth-form">
                       {!clicked && (
                         <>
-                          <div className="form-group text-center mb-2">
-                            <GoogleLogin
-                              clientId={global.config.gapiClientId}
-                              theme="dark"
-                              render={(renderProps) => (
-                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
-                                  <img src={googleIcon} alt="googleIcon" />
-                                  <div>Sign up with Google</div>
-                                </button>
-                              )}
-                              onSuccess={async (response) => {
-                                const emailCheckResponse = await authService.checkEmail(response.profileObj.email);
-                                if (emailCheckResponse?.exists === true) return this.setState({ error: emailCheckResponse.message });
-
-                                return this.setState({ stepper: true, googleResponse: response });
-                                // this.onGoogleLoginSuccess(response);
-                              }}
-                              onFailure={this.onGoogleLoginFailure}
-                              cookiePolicy="single_host_origin"
-                            />
-                          </div>
-                          <div className="hr-spacer">
-                            <span>OR</span>
-                          </div>
                           <div className="form-group d-flex">
                             <div className="input-wrapper">
                               <span>Name</span>
@@ -264,11 +297,12 @@ class RegisterPage extends React.Component {
                             </div>
                           </div>
 
-                          <div className="form-group">
+                          <div className="form-group" id={this.state.emailError && 'email_error_input_field_div'}>
                             <span>Email</span>
                             <input
-                              className="input-box"
+                              className="input-box "
                               // type="email"
+
                               name="email"
                               required
                               maxLength="250"
@@ -276,6 +310,7 @@ class RegisterPage extends React.Component {
                               value={email}
                               onChange={this.onChangeField}
                             />
+                            {this.state.emailError && <span className="email-error">{this.state.emailError}</span>}
                           </div>
 
                           <div className="form-group">
@@ -283,7 +318,7 @@ class RegisterPage extends React.Component {
                               Password
                               <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
                                 <img src={eye} alt="show-password" />
-                                Show
+                                Show Password
                               </div>
                             </span>
                             <input
@@ -293,13 +328,38 @@ class RegisterPage extends React.Component {
                               required
                               maxLength="250"
                               value={password}
+                              placeholder="********"
                               onChange={this.onChangeField}
                             />
                           </div>
-                          <div className="form-group">
-                            <Error error={error} />
+                          <div className="password_detail">
+                            <div className="password_icon_detial_div">
+                              <img className="icon_check" src={this.state.passChar ? PasswordValidImage : PasswordInValidImage} />
+                              {/* <FontAwesomeIcon icon={faCheck} size="sm" className="icon_check" color={this.state.passChar ? '#34e369' : '#515151'} /> */}
+                              <span>At least 8 characters long</span>
+                            </div>
+                            <div>
+                              <img className="icon_check" src={this.state.allPassValid ? PasswordValidImage : PasswordInValidImage} />
+                              {/* <FontAwesomeIcon icon={faCheck} size="sm" className="icon_check" color={this.state.allPassValid ? '#34e369' : '#515151'} /> */}
+                              <span>Should contain at least:</span>
+                            </div>
+
+                            <ul>
+                              <li>
+                                <img className="icon_check" src={this.state.passUpperChar ? PasswordValidImage : PasswordInValidImage} />1 uppercase letter
+                              </li>
+                              <li>
+                                {' '}
+                                <img className="icon_check" src={this.state.passLowerChar ? PasswordValidImage : PasswordInValidImage} />1 lowercase letter
+                              </li>
+                              <li>
+                                {' '}
+                                <img className="icon_check" src={this.state.passNumberChar ? PasswordValidImage : PasswordInValidImage} />1 number
+                              </li>
+                            </ul>
                           </div>
-                          <div className="form-group mb-0" style={{ marginTop: '48px' }}>
+                          <div className="form-group">{/* <Error error={error} /> */}</div>
+                          <div className="form-group mb-3" style={{ marginTop: '48px' }}>
                             <button
                               type="button"
                               className="signUp-btn submit"
@@ -311,20 +371,28 @@ class RegisterPage extends React.Component {
                                     clicked: true,
                                     error: null,
                                     stepper: true,
+                                    emailError: null,
                                   });
-                                } else if (!passwordValidator) {
+                                }
+                                if (!passwordValidator) {
                                   this.setState({
                                     error: 'Password must be 8 or more characters long,should contain at least 1 Uppercase, 1 Lowercase and 1 Numeric character.',
                                   });
-                                } else if (!emailValidator) {
+                                }
+                                if (!emailValidator) {
                                   this.setState({
                                     error: 'Please input valid email.',
+                                    emailError: 'Please enter a valid email address.',
+                                  });
+                                } else {
+                                  this.setState({
+                                    emailError: null,
                                   });
                                 }
                               }}
                               disabled={isLoading || this.isDisabledSignUp()}
                             >
-                              {isLoading ? <img src={loader} alt="" /> : 'Sign up with Email'}
+                              {isLoading ? <img src={loader} alt="" /> : 'Sign Up with Email'}
                             </button>
                           </div>
                           {/* <div className="vertical-line">
@@ -338,7 +406,32 @@ class RegisterPage extends React.Component {
                                 Login
                               </a>
                             </p> */}
+                          <div className="login-separator-box">
+                            <div className="login-separator"></div>
+                            <div className="text-separator">or</div>
+                            <div className="login-separator"></div>
+                          </div>
+                          <div className="form-group text-center mb-5">
+                            <GoogleLogin
+                              clientId={global.config.gapiClientId}
+                              theme="dark"
+                              render={(renderProps) => (
+                                <button type="button" className="google-button" onClick={renderProps.onClick} disabled={renderProps.disabled}>
+                                  <img src={googleIcon} alt="googleIcon" />
+                                  <div>Sign Up with Google</div>
+                                </button>
+                              )}
+                              onSuccess={async (response) => {
+                                const emailCheckResponse = await authService.checkEmail(response.profileObj.email);
+                                if (emailCheckResponse?.exists === true) return this.setState({ error: emailCheckResponse.message });
 
+                                return this.setState({ stepper: true, googleResponse: response });
+                                // this.onGoogleLoginSuccess(response);
+                              }}
+                              onFailure={this.onGoogleLoginFailure}
+                              cookiePolicy="single_host_origin"
+                            />
+                          </div>
                           <div className="termsandcondition">
                             By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
                             <a
@@ -368,17 +461,17 @@ class RegisterPage extends React.Component {
               {stepper && (
                 <>
                   <div className="form-group">
-                    <div className="bkbtn">
+                    <div className="bkbtn" onClick={() => this.setState({ clicked: false, stepper: false })}>
                       {/* <button type="button" onClick={() => this.setState({ clicked: false, stepper: false })}> */}
                       <img src={leftArrow} alt="arrow-left" />
-                      <a onClick={() => this.setState({ clicked: false, stepper: false })}> Back </a>
+                      <a> Back </a>
                       {/* </button> */}
                     </div>
                   </div>
                   <div className="form-group">
                     <div className="using-curriki">
                       <div className="curriki-line">You are using Curriki for:</div>
-                      <div className="line-horizontal" />
+                      {/* <div className="line-horizontal" /> */}
                     </div>
                   </div>
                   <div className="form-group ">
@@ -413,7 +506,7 @@ class RegisterPage extends React.Component {
                   <div className="form-group mb-0" style={{ marginTop: '50px' }}>
                     <button
                       type="submit"
-                      className="btn-primary submit get-started-btn"
+                      className="btn-primary submit get-started-btn mb-5"
                       onClick={(e) => {
                         this.setState({ clicked: true });
                         this.onSubmit(e);
@@ -422,6 +515,23 @@ class RegisterPage extends React.Component {
                     >
                       {isLoading ? <img src={loader} alt="" /> : 'Complete Registration'}
                     </button>
+                  </div>
+                  <div className="termsandcondition">
+                    By clicking the &quot;Sign Up&quot; button, you are creating a CurrikiStudio account, and you agree to Curriki&apos;s{' '}
+                    <a target="_blank" href={domain?.tos_type == 'URL' || domain?.tos_url != null ? domain?.tos_url : `/org/${domain?.domain}/terms-policy-content/tos_content`}>
+                      Terms of Use
+                    </a>{' '}
+                    and{' '}
+                    <a
+                      target="_blank"
+                      href={
+                        domain?.privacy_policy_type == 'URL' || domain?.privacy_policy_url != null
+                          ? domain?.privacy_policy_url
+                          : `/org/${domain?.domain}/terms-policy-content/privacy_policy_content`
+                      }
+                    >
+                      Privacy Policy.
+                    </a>
                   </div>
                 </>
               )}

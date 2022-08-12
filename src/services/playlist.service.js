@@ -36,7 +36,9 @@ const remove = (projectId, id) =>
 
 const reorder = (projectId, playlists) =>
   httpService
-    .post(`/${apiVersion}/projects/${projectId}/playlists/reorder`, { playlists })
+    .post(`/${apiVersion}/projects/${projectId}/playlists/reorder`, {
+      playlists,
+    })
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -85,6 +87,18 @@ const searchPreviewPlaylist = (subOrgId, playlistId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const addActivityPlaylistSearch = (org_id, ind_id, playlist_id) =>
+  httpService
+    .post(`${apiVersion}/suborganization/${org_id}/independent-activities/${ind_id}/playlist/${playlist_id}/copy-to-playlist`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
+const moveActivityPlaylist = (org_id, playlist_id, playlistData) =>
+  httpService
+    .post(`${apiVersion}/suborganization/${org_id}/independent-activities/playlist/${playlist_id}/move-to-playlist`, playlistData)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -99,4 +113,6 @@ export default {
   loadSingleSharedPlaylist,
   loadAllSharedPlaylists,
   searchPreviewPlaylist,
+  addActivityPlaylistSearch,
+  moveActivityPlaylist,
 };

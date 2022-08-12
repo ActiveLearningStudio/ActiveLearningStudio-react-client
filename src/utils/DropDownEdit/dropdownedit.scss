@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .curriki-utility-activity-dropdown {
   .activity-dropdown {
@@ -27,12 +27,13 @@
 
   .activity-dropdown.check {
     .dropdown-menu {
-      min-width: 130px;
+      min-width: 190px;
       margin: 0;
       padding: 0;
       border: none;
+
       box-shadow: 0 3px 20px #00000029;
-      display: flex;
+
       flex-direction: column;
       border-radius: 5px;
 
@@ -41,7 +42,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 19px;
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Open Sans', sans-serif;
         letter-spacing: 0;
         color: $curriki-main-blue;
         padding: 5px 12px;
@@ -62,4 +63,13 @@
   .mr-2 {
     margin-right: 10px;
   }
+}
+.dropdown-right-angle {
+  display: flex;
+  justify-content: space-between;
+}
+.faAngleRight-dropdown {
+  position: absolute;
+  top: 4px;
+  right: 10px;
 }

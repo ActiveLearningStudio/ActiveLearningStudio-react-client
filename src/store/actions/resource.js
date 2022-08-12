@@ -4,11 +4,13 @@ import Swal from 'sweetalert2';
 //import Echo from 'laravel-echo';
 import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
+import indResourceService from 'services/indActivities.service';
 import videoService from 'services/videos.services';
 import socketConnection from 'services/http.service';
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 import store from '../index';
+import { unescape } from 'lodash';
 
 // global variable for h5p object
 let h5pid;
@@ -242,7 +244,7 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       playlist_id: playlistId,
       thumb_url: metadata?.thumb_url,
       action: 'create',
-      title: metadata?.title,
+      title: unescape(metadata?.title),
       type: 'h5p',
       content: 'place_holder',
       subject_id: metadata?.subject_id,
@@ -492,14 +494,11 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
   }
 };
 
-export const createResourceByH5PUploadAction = (
-  playlistId,
-  editor,
-  editorType,
-  payload,
-  metadata
-  // projectId,
-) => async (dispatch) => {
+export const createResourceByH5PUploadAction = (playlistId, editor, editorType, payload, metadata, activityPreview) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     toast.info('Uploading Activity ...', {
       className: 'project-loading',
@@ -514,43 +513,80 @@ export const createResourceByH5PUploadAction = (
     formData.append('action', 'upload');
 
     const responseUpload = await resourceService.h5pToken(formData);
+    metadata.subject_id = formatSelectBoxData(metadata.subject_id);
+    metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
+    metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
 
     if (responseUpload.id) {
-      const createActivityUpload = {
-        h5p_content_id: responseUpload.id,
-        playlist_id: playlistId,
-        thumb_url: metadata.thumb_url,
-        action: 'create',
-        title: metadata.title,
-        type: 'h5p',
-        content: 'place_holder',
-        subject_id: formatSelectBoxData(metadata.subject_id),
-        education_level_id: formatSelectBoxData(metadata.education_level_id),
-        author_tag_id: formatSelectBoxData(metadata.author_tag_id),
-        description: metadata?.description || undefined,
-      };
+      if (activityPreview) {
+        const activity = {
+          h5p_content_id: responseUpload.id,
+          thumb_url: metadata?.thumb_url,
+          action: 'create',
+          title: metadata?.title,
+          type: 'h5p',
+          content: 'place_holder',
+          subject_id: metadata?.subject_id,
+          education_level_id: metadata?.education_level_id,
+          author_tag_id: metadata?.author_tag_id,
+          description: metadata?.description || undefined,
+          source_type: metadata?.source_type || undefined,
+          source_url: metadata?.source_url || undefined,
+          organization_visibility_type_id: 1,
+        };
 
-      const responseActivity = await resourceService.create(createActivityUpload, playlistId);
-      toast.dismiss();
-      dispatch({
-        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-        payload: '',
-      });
-      toast.success('Activity Uploaded', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: 4000,
-      });
+        const result = await indResourceService.create(activeOrganization.id, activity);
+        toast.dismiss();
+        toast.success('Activity Created', {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+        dispatch({
+          type: actionTypes.ADD_IND_ACTIVITIES,
+          payload: result['independent-activity'],
+        });
 
-      dispatch({
-        type: actionTypes.CREATE_RESOURCE,
-        playlistId,
-        resource: responseActivity,
-        editor,
-        editorType,
-      });
-      dispatch({
-        type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
-      });
+        dispatch({
+          type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+          payload: '',
+        });
+      } else {
+        const createActivityUpload = {
+          h5p_content_id: responseUpload.id,
+          playlist_id: playlistId,
+          thumb_url: metadata.thumb_url,
+          action: 'create',
+          title: metadata.title,
+          type: 'h5p',
+          content: 'place_holder',
+          subject_id: formatSelectBoxData(metadata.subject_id),
+          education_level_id: formatSelectBoxData(metadata.education_level_id),
+          author_tag_id: formatSelectBoxData(metadata.author_tag_id),
+          description: metadata?.description || undefined,
+        };
+
+        const responseActivity = await resourceService.create(createActivityUpload, playlistId);
+        toast.dismiss();
+        dispatch({
+          type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+          payload: '',
+        });
+        toast.success('Activity Uploaded', {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: 4000,
+        });
+
+        dispatch({
+          type: actionTypes.CREATE_RESOURCE,
+          playlistId,
+          resource: responseActivity,
+          editor,
+          editorType,
+        });
+        dispatch({
+          type: actionTypes.CLEAR_FORM_DATA_IN_CREATION,
+        });
+      }
     } else {
       throw new Error('Error occurred while creating resource');
     }
@@ -583,7 +619,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     playlist_id: playlistId,
     thumb_url: metadata?.thumb_url,
     action: 'create',
-    title: metadata?.title,
+    title: unescape(metadata?.title),
     type: 'h5p',
     content: 'place_holder',
     subject_id: metadata.subject_id,
@@ -656,7 +692,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
     playlist_id: activity.playlist.id,
     thumb_url: metadata?.thumb_url,
     action: 'create',
-    title: metadata?.title,
+    title: unescape(metadata?.title),
     type: 'h5p',
     content: 'place_holder',
     subject_id: formatSelectBoxData(metadata.subject_id),
@@ -820,10 +856,23 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   return result;
 };
 
+export const searchPreviewIndependentActivityAction = (activityId) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await resourceService.searchPreviewIndependentActivity(activeOrganization?.id, activityId);
+  dispatch({
+    type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
+    payload: result,
+  });
+  return result;
+};
+
 export const formatSelectBoxData = (data) => {
   let ids = [];
-  if(data.length > 0){
-    data?.map(datum=>{
+  if (data.length > 0) {
+    data?.map((datum) => {
       ids.push(datum.value);
     });
   }

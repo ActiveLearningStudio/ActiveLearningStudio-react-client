@@ -1,0 +1,27 @@
+@import "assets/css/index";
+.curriki-utility-overlay-card {
+  cursor: pointer;
+}
+.button-tooltip_style {
+  .tooltip-inner {
+    text-align: left;
+    background: #e5eeff !important;
+    border-radius: 4px;
+    color: $curriki-main-blue;
+    max-width: max-content !important;
+    height: max-content;
+    font-family: "Open Sans", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+.bs-tooltip-bottom .arrow::before,
+.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: #e5eeff !important;
+}
+.bs-tooltip-right .arrow::before,
+.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: #e5eeff !important;
+}

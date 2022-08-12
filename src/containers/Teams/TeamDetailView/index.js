@@ -13,9 +13,13 @@ import EditDetailImage from "assets/images/svg/detailEdit.svg";
 import searchimg from "assets/images/svg/search-icon-admin-panel.svg";
 import "./style.scss";
 
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Buttons from "utils/Buttons/buttons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import UserIcon from "assets/images/svg/user.svg";
 import InviteDialog from "components/InviteDialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +32,7 @@ import {
   getWhiteBoardUrl,
   inviteMembersAction,
   loadTeamAction,
+  loadTeamsAction,
   removeMemberAction,
   removeProjectAction,
   setNewTeamData,
@@ -90,7 +95,13 @@ const TeamDetail = ({
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
+
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
+  useEffect(() => {
+    (async () => {
+      await loadTeam(team?.id);
+    })();
+  }, [createProject]);
   useEffect(() => {
     if (team?.projects) {
       setAllPersonalProjects(team.projects);
@@ -350,7 +361,22 @@ const TeamDetail = ({
         <div className="inner-content">
           <div className="add-team-page">
             <div className={`${toggleLeft ? "width90" : ""} left`}>
-              <div className="organization-name">{organization?.name}</div>
+              <div className="team-organization-back-link">
+                <div className="organization-name">{organization?.name}</div>
+                <div className="team-back-to-option">
+                  <Link
+                    to={`/org/${organization?.currentOrganization?.domain}/teams`}
+                    className="team-back-to-option-link"
+                  >
+                    <FontAwesomeIcon
+                      icon={faArrowLeft}
+                      className="mr-8"
+                      color={primaryColor}
+                    />
+                    <span>Back To</span>
+                  </Link>
+                </div>
+              </div>
               <div className="title-image">
                 <div>
                   {!editTeam.editName && (
@@ -369,7 +395,7 @@ const TeamDetail = ({
                 </div>
                 <div>
                   {!editTeam.editName &&
-                    teamPermission?.activeRole === "admin" && (
+                    teamPermission?.Team?.includes("team:edit") && (
                       // <img
                       //   className="editimage-tag"
                       //   src={EditTeamImage}
@@ -428,7 +454,7 @@ const TeamDetail = ({
                 </div>
                 <div className="team-edit-detail">
                   {!editTeam.editDescription &&
-                    teamPermission?.activeRole === "admin" && (
+                    teamPermission?.Team?.includes("team:edit") && (
                       <img
                         className="editimage-tag"
                         src={EditDetailImage}
@@ -460,7 +486,7 @@ const TeamDetail = ({
                   />
                 )}
                 {!editTeam.editNoovoTitle &&
-                  teamPermission?.activeRole === "admin" && (
+                  teamPermission?.Team?.includes("team:edit") && (
                     <img
                       className="editimage-tag"
                       src={EditDetailImage}
@@ -472,6 +498,7 @@ const TeamDetail = ({
                     />
                   )}
               </div>
+
               <div className="flex-button-top">
                 <div className="team-controller">
                   {team?.id && (
@@ -612,7 +639,7 @@ const TeamDetail = ({
                         ))
                       ) : (
                         team?.id && (
-                          <Alert variant="danger" className="alert">
+                          <Alert variant="danger" mt="20px" className="alert">
                             {" "}
                             No project found.
                           </Alert>

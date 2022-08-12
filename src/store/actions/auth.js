@@ -386,12 +386,59 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
 
     await dispatch(getAllOrganizationforSSO());
     console.log('SSOLoginAction success');
+    return response;
   } catch (e) {
     console.log('SSOLoginAction failed');
     dispatch({
       type: actionTypes.LOGIN_FAIL,
     });
 
+    throw e;
+  }
+};
+
+export const WordpressSSOLoginAction = (code, clientId) => async (dispatch) => {
+  try {
+    const response = await authService.wordpressSSO(code, clientId);
+    const userOrganization = typeof response.user.user_organization !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
+    storageService.setItem(USER_TOKEN_KEY, response.access_token);
+    storageService.setItem(CURRENT_ORG, userOrganization);
+
+    const allOrganizations = await dispatch(getAllOrganizationforSSO());
+    dispatch({
+      type: actionTypes.LOGIN_SUCCESS,
+      payload: { user: response.user },
+    });
+    dispatch({
+      type: actionTypes.ADD_ACTIVE_ORG,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+    });
+    dispatch({
+      type: actionTypes.ADD_CURRENT_ORG,
+      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+    });
+    // dispatch({ type: actionTypes.WP_SSO_LOGIN_SUCCESS });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.WP_SSO_LOGIN_FAIL,
+      error: e.errors ? e.errors[0] : 'Login action failed.',
+    });
+    throw e;
+  }
+};
+
+export const getWordpressSSODefaultSettingsAction = (clientId) => async (dispatch) => {
+  try {
+    const response = await authService.getWordpressSSODefaultSettings(clientId);
+    dispatch({
+      type: actionTypes.WP_SSO_GET_SETTINGS,
+      response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.WP_SSO_LOGIN_FAIL,
+      error: e.errors ? e.errors[0] : 'Login action failed.',
+    });
     throw e;
   }
 };

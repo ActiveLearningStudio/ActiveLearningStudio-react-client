@@ -52,6 +52,10 @@
 .admin-panel .form-new-popup-admin .cross-all-pop {
   color: var(--main-paragraph-text-color) !important;
 }
+.admin-panel .table-data table .admin-panel-rows .view-all {
+  color: var(--main-paragraph-text-color) !important;
+}
+
 /* sidebar branding */
 
 .sidebar-all .sidebar-headings {
@@ -145,7 +149,9 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.top-header .notification-bar .user-dropdown .scroll-notification p {
+.top-header .notification-bar .user-dropdown .scroll-notification p,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-discription,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .lists .list-text {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -154,7 +160,8 @@ p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.notification-area .user-detail p a {
+.notification-area .user-detail p a,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-use-project {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -171,7 +178,10 @@ p {
 }
 /* My Profile branding */
 
-.user-dropdown-item-name .name {
+.user-dropdown-item-name .name,
+.curriki-utility-startpage .startpage-section .section-detail ul li,
+.curriki-utility-startpage .startpage-section .section-detail h6,
+.curriki-utility-startpage .startpage-section .section-detail .help-text {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -183,6 +193,7 @@ p {
 
 .user-dropdown-item {
   color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
 }
 
 .noovo-group-title label {
@@ -197,7 +208,10 @@ p {
   font-family: var(--main-heading-font) !important;
 }
 
-.footer-img-section span {
+.footer-img-section span,
+.curriki-utility-startpage .startpage-section .section-detail .section-heading-one,
+.curriki-utility-startpage .startpage-section .section-detail .create-section-h2-space,
+.curriki-utility-startpage .startpage-section .section-detail h2 {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
 }
@@ -209,7 +223,8 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.curriki-utility-headings {
+.curriki-utility-headings,
+.curriki-utility-startpage .startpage-section .create-project-card .create-project-popup .popup-heading {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -267,12 +282,41 @@ p {
   background-color: var(--main-primary-color) !important;
   opacity: 0.7 !important;
 }
-.form-new-popup-myvideo .add-video-form .add-video-form-tabs .main-tabs .nav-item.active,
-.form-new-popup-myvideo .add-video-form .add-video-form-tabs .nav-tabs .nav-link:hover {
-  border-bottom-color: var(--main-primary-color) !important;
-}
+
 .form-new-popup-myvideo svg {
   color: var(--main-paragraph-text-color) !important;
+}
+
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section span {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.myvideomain .inner-content .video-cards-detail .Add-video-interaction-section {
+  /* background-color: var(--main-primary-color) !important;
+  opacity: 0.1; */
+}
+
+.curriki-utility-startpage .startpage-section .section-btn {
+  /* background-color: var(--main-primary-color) !important;
+  opacity: 0.1; */
+}
+.curriki-utility-startpage .startpage-section .section-btn span {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities .move_text {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.curriki-utility-addvideo-card .apply-check-video:before {
+  background: var(--main-primary-color);
+}
+.myvideomain .inner-content .video-cards-top-search-filter .move_activities input {
+  accent-color: var(--main-primary-color) !important;
+}
+.curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-dropdown input {
+  accent-color: var(--main-primary-color) !important;
 }
 /* My Projects Search Library branding */
 
@@ -310,6 +354,7 @@ p {
   color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
 }
+
 .activity-layout-form .layout-cards-process-btn .explore-upload-buttons .ex-up-button p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
@@ -323,7 +368,8 @@ p {
 }
 
 .main-myproject-card .myproject-card-top .myproject-card-title h2:hover {
-  color: var(--main-heading-border) !important;
+  /* color: var(--main-heading-border) !important; */
+  color: var(--main-secondary-color) !important;
 }
 
 .main-myproject-card .myproject-card-detail p {
@@ -523,6 +569,41 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
+.organization-name {
+  color: var(--main-primary-color) !important;
+}
+.activity-header .title-activity {
+  color: var(--main-primary-color) !important;
+}
+.activity-header .back-to-project {
+  color: var(--main-primary-color) !important;
+}
+.team-controller .search-and-filters .search-bar input {
+  color: var(--main-paragraph-text-color) !important;
+  border-bottom: 2px solid var(--main-primary-color) !important;
+}
+.curriki-utility-teamproject-card .select-project-status:before {
+  background: linear-gradient(180deg, var(--main-primary-color) 0%, var(--main-primary-color) 100%) !important;
+  opacity: 0.8;
+}
+.update-title-tag {
+  color: var(--main-paragraph-text-color) !important;
+}
+#layout-formik-select-id-btn button {
+  /* color: var(--main-paragraph-text-color) !important; */  
+  color: var(--main-search-input-color) !important;
+  border: 1px solid var(--main-paragraph-text-color) !important;
+}
+.css-1vr111p-option {
+  color: var(--main-paragraph-text-color) !important;
+}
+.css-1vr111p-option input[type='checkbox'] {
+  border-color: var(--main-paragraph-text-color) !important;
+}
+.css-1qprcsu-option input[type='checkbox'] {
+  accent-color: var(--main-paragraph-text-color) !important;
+  /* border-color: var(--main-paragraph-text-color) !important; */
+}
 /* playlist preview */
 
 .preview.iframe-height-resource .container-flex-upper {
@@ -908,12 +989,12 @@ ul.pagination .page-item.active .page-link {
   font-family: var(--main-heading-font) !important;
 }
 .tab_inner_color_section .tab_inner_color > div input[type='text'] {
-  color: var(--main-black-color) !important;
+  color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-paragraph-text-color) !important;
 }
 .tab_inner_font_section .tab_inner_font_primary select {
-  color: var(--main-black-color) !important;
+  color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-paragraph-text-color) !important;
 }
@@ -944,6 +1025,28 @@ ul.pagination .page-item.active .page-link {
 .tab_inner_font_section .tab_inner_font_primary h4 {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
+}
+.media-section .sources-section h3 {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.media-section .sources-section .sources-options .media-field-checkbox .span-heading {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.checkbox_section_media .bg-minus:checked + span {
+  background-color: var(--main-primary-color) !important;
+}
+.media-section .sources-section .sources-options .media-field-checkbox .span-sub {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
+#span-sub-selected {
+  color: var(--main-primary-color) !important;
+}
+.checkbox_section_media .bg-tick:checked + span {
+  background-color: var(--main-primary-color) !important;
 }
 /* Edit organization */
 
@@ -981,7 +1084,8 @@ textarea,
 .create-program-wrapper .create-playlist-form .project-name input,
 .form-control,
 .add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField input {
-  color: var(--main-black-color) !important;
+  /* color: var(--main-black-color) !important; */
+  color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-paragraph-text-color) !important;
 }
@@ -1160,9 +1264,25 @@ textarea,
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField input,
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select select,
 .add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-formik-select .formik-select select {
-  color: var(--main-black-color) !important;
+  /* color: var(--main-black-color) !important; */
+  color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
   border-color: var(--main-paragraph-text-color) !important;
+}
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select .css-1r4vtzz {
+  /* color: var(--main-paragraph-text-color) !important; */
+  color: var(--main-search-input-color);
+  border-color: var(--main-paragraph-text-color) !important;
+}
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField .textField-title h3 {
+  color: var(--main-paragraph-text-color) !important;
+}
+/* .curriki-utility-addvideo-card .addvideo-activity-menu-option .activity-request-tag svg{
+  color: var(--main-paragraph-text-color) !important;
+} */
+.curriki-utility-addvideo-card .addvideo-activity-menu-option .activity-request-tag span {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 
 .add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .dec-title-formik-textField ::placeholder,
@@ -1189,6 +1309,11 @@ textarea,
 .curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-title h2 {
   font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
+  cursor: pointer;
+}
+.curriki-utility-addvideo-card .addvideo-card-top .addvideo-card-title:hover h2 {
+  color: var(--main-secondary-color) !important;
+  text-decoration: underline;
 }
 .curriki-utility-addvideo-card .addvideo-card-detail p {
   font-family: var(--main-text-font) !important;
@@ -1219,6 +1344,22 @@ textarea,
 .alert-warning {
   color: var(--main-alert-warning-color) !important;
   font-family: var(--main-heading-font) !important;
+}
+
+.curriki-utility-addvideo-card .activity-update-lib .activity-update {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.curriki-utility-addvideo-card .activity-update-lib .activity-lib {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.curriki-utility-addvideo-card .activity-update-lib .activity-lib span {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+.addvideo-card-add-share-options .textinButton {
+  color: var(--main-primary-color) !important;
 }
 
 /* Swal Popup */
@@ -1257,7 +1398,7 @@ textarea,
 
 .preview-layout-model .video-model-tab .nav-menu-heading h3,
 .preview-layout-model .video-model-tab-row #role-permission-tab-id .nav-link.active {
-  color: var(--main-primary-color) !important;
+  /* color: var(--main-primary-color) !important; */
   font-family: var(--main-text-font) !important;
 }
 
@@ -1287,6 +1428,12 @@ textarea,
 }
 
 /* 8 - Team branding Start */
+.library-status .approved {
+  color: var(--main-primary-color) !important;
+}
+/* .add-team-page .right .toggle_btn svg :hover{
+  background-color: var(--main-secondary-color) !important;
+} */
 .teams-page .title {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
@@ -1315,10 +1462,10 @@ textarea,
 }
 
 .curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio {
-  border-color: var(--main-primary-color) !important;
+  /* border-color: var(--main-primary-color) !important; */
 }
 .curriki-utility-teamproject-card .project-checkbox-select .checkbox_section .assign-project-radio .checkmark {
-  background-color: var(--main-primary-color) !important;
+  /* background-color: var(--main-primary-color) !important; */
 }
 .teams-page .btn-top-page {
   background-color: var(--main-primary-color) !important;
@@ -1503,14 +1650,14 @@ textarea,
   border-color: var(--main-primary-color) !important;
 }
 .auth-page .auth-container nav .nav-link.active {
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
   background-color: var(--main-white-color) !important;
   border-color: var(--main-primary-color) !important;
 }
 .auth-page .auth-container .auth-title {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .auth-page .auth-container .auth-Pdescrip {
   color: var(--main-paragraph-text-color);
@@ -1528,7 +1675,7 @@ textarea,
 }
 .auth-page .auth-container .form-button .submit,
 .auth-page .auth-container .form-group .signUp-btn {
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }
@@ -1551,9 +1698,15 @@ textarea,
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
+
 .search-result-main .search-library .card-body input {
   font-family: var(--main-text-font) !important;
-  color: var(--main-search-input-color) !important;
+  color: var(--main-paragraph-text-color) !important;
+  border: 2px solid var(--main-search-input-color) !important;
+}
+.search-result-main .search-library .card-body input[type='text']:focus {
+  box-shadow: 0px 0px 4px 2px var(--main-primary-color) !important;
+  border: 1px solid var(--main-primary-color) !important;
 }
 .search-result-main .search-library .card-body .src-btn {
   font-family: var(--main-text-font) !important;
@@ -1596,12 +1749,33 @@ textarea,
 }
 .search-result-main .right-search .results_search .box h2 {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .search-result-main .right-search .results_search .box .search-content ul li {
   font-family: var(--main-heading-font) !important;
   color: var(--main-paragraph-text-color) !important;
 }
+.search-result-main .main-tabs .nav-item {
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
+.search-result-main .nav-tabs .nav-link {
+  border: 1px solid var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+.search-result-main .right-search .results_search .contentbox .btn-fav {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-paragraph-text-color) !important;
+}
+.search-result-main .main-tabs .nav-item.active {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+  background-color: var(--main-white-color) !important;
+}
+.search-result-main .main-tabs .nav-item.active:after {
+  display: none !important;
+}
+
 .search-result-main .right-search .results_search .box .search-content ul li span {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
@@ -1612,6 +1786,24 @@ textarea,
 .search-div .overlay-search-form .form-group .radio-btns label input[type='radio']:checked:after {
   background-color: var(--main-primary-color) !important;
   border: 2px solid var(--main-primary-color) !important;
+}
+.search-result-main .search-library .card-body .radio-btns label span {
+  color: var(--main-primary-color) !important;
+}
+.search-result-main .search-library .card-body .radio-btns input[type='radio'] {
+  accent-color: var(--main-primary-color) !important;
+}
+.search-result-main .exp-lib-cnt span {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.curriki-utility-subsearch .subsearch-top-search-filter .activity-counter .drop-counter {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.dropDown-item-name-icon span {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
 }
 
 /* Button Icons */
@@ -1636,4 +1828,48 @@ textarea,
 }
 .search-result-main .search-library .card-body .src-btn svg {
   color: var(--main-secondary-color) !important;
+}
+.button-submit {
+  font-family: var(--main-text-font) !important;
+  background-color: var(--main-primary-color) !important;
+  color: var(--main-white-color) !important;
+}
+
+.Add-my-project-section span {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.my-project-cards-top-search-filter .activity-counter .drop-counter {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.search-result-main .total-count {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.myvideomain .inner-content .video-cards-top-search-filter .activity-counter .drop-counter {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+
+.curriki-utility-addvideo-card .addvideo-card-add-share .btn-box {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-secondary-color) !important;
+}
+
+.account-page .form-group label {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.account-page .form-group input,
+.account-page .form-group select {
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-paragraph-text-color) !important;
+}
+
+.add-team-page .team-back-to-option .team-back-to-option-link {
+  font-family: var(--main-text-font) !important;
+  color: var(--main-paragraph-text-color) !important;
 }

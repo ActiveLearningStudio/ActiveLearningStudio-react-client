@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .preview-layout-model {
   //   z-index: 999999;
   position: fixed;
@@ -130,6 +130,9 @@
     margin-left: 0 !important;
   }
   .video-model-tab {
+    @media (max-width: 1200px) {
+      padding-left: 0px !important;
+    }
     // border: 1px solid #ccc;
     padding-left: 24px !important;
     border-right: 1px solid #ccc;
@@ -143,6 +146,9 @@
     }
   }
   .detail-permission-tab {
+    @media (max-width: 1200px) {
+      padding-left: 0px !important;
+    }
     // background: #f7faff;
     // border-top: 1px solid #ccc;
     // border-right: 1px solid #ccc;
@@ -171,6 +177,9 @@
 
   .role-permission-tab-name {
     .nav-link {
+      @media (max-width: 1200px) {
+        padding-left: 0px !important;
+      }
       font-family: $rubik !important;
       font-style: normal !important;
       font-weight: normal !important;
@@ -189,7 +198,7 @@
       position: absolute;
       right: 5px;
       top: 15px;
-      content: url('../../../assets/images/svg/sideAngle.svg');
+      content: url("../../../assets/images/svg/sideAngle.svg");
     }
   }
   // .video-model-tab {
@@ -232,6 +241,13 @@
     // border-bottom: 1px solid #ccc;
     .for-NetSuite-section {
       .NetSuite-section-top-header {
+        @media (max-width: 1200px) {
+          display: flex;
+          flex-direction: column;
+          .NetSuite-heading {
+            margin-bottom: 16px;
+          }
+        }
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -334,6 +350,15 @@
             color: #767676;
           }
           td.firstname {
+            @media (max-width: 1200px) {
+              // display: flex;
+              // flex-direction: column;
+              .first-col-image-name {
+                img {
+                  margin-bottom: 8px;
+                }
+              }
+            }
             display: flex;
             align-items: center;
             input {

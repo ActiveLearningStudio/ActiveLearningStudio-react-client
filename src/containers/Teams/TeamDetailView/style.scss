@@ -127,6 +127,21 @@
       cursor: pointer;
     }
   }
+  .team-organization-back-link{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .team-back-to-option{
+    margin-right: 30px;
+    .team-back-to-option-link{
+      color: #084892;
+    }
+    .mr-8{
+      margin-right: 8px;
+    }
+    
+  }
   .flex-button-top {
     display: flex;
     margin-right: 10px;
@@ -524,6 +539,8 @@
 .customModalSize {
   max-width: 100% !important;
   width: 100%;
+  min-height: 500px;
+  min-width: 500px;
   height: auto;
   height: 100%;
   resize: both;

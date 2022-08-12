@@ -1,26 +1,42 @@
 /* eslint-disable  */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Buttons from 'utils/Buttons/buttons';
-import { Tabs, Tab, Alert } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import Buttons from "utils/Buttons/buttons";
+import { Tabs, Tab, Alert } from "react-bootstrap";
 // import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import './style.scss';
-import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useHistory } from 'react-router-dom';
-import TeamProjectCard from 'utils/TeamProjectCard/teamprojectcard';
+import "./style.scss";
+import { faAngleLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from "react-router-dom";
+import TeamProjectCard from "utils/TeamProjectCard/teamprojectcard";
 // import Project1 from 'assets/images/teamprojects/project1.png';
 // import Project2 from 'assets/images/teamprojects/project2.png';
 // import Project3 from 'assets/images/teamprojects/project3.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SearchInterface from 'containers/Search';
-import { useSelector, useDispatch, connect } from 'react-redux';
-import { loadMyProjectsAction } from 'store/actions/project';
-import { createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction } from 'store/actions/team';
-import Swal from 'sweetalert2';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SearchInterface from "containers/Search";
+import { useSelector, useDispatch, connect } from "react-redux";
+import { loadMyProjectsAction } from "store/actions/project";
+import {
+  createTeamAction,
+  loadTeamAction,
+  setNewTeamData,
+  addProjectsAction,
+  loadTeamsAction,
+} from "store/actions/team";
+import Swal from "sweetalert2";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 const AddTeamProjects = (props) => {
-  const { location, organization, team, newTeam, newTeamData, createTeam, loadTeam, loadTeams, addProjectToTeam } = props;
+  const {
+    location,
+    organization,
+    team,
+    newTeam,
+    newTeamData,
+    createTeam,
+    loadTeam,
+    loadTeams,
+    addProjectToTeam,
+  } = props;
   const dispatch = useDispatch();
   const history = useHistory();
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
@@ -30,10 +46,14 @@ const AddTeamProjects = (props) => {
   const { teamPermission } = useSelector((state) => state.team);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
-    if (location.pathname.includes('/teams/add-projects') && !newTeam?.name && organization?.domain) {
+    if (
+      location.pathname.includes("/teams/add-projects") &&
+      !newTeam?.name &&
+      organization?.domain
+    ) {
       history.push(`/org/${organization?.domain}/teams`);
     } else if (!team?.id && !newTeam?.name && organization?.domain) {
-      const teamId = parseInt(location.pathname.split('teams/')[1], 10);
+      const teamId = parseInt(location.pathname.split("teams/")[1], 10);
       loadTeam(teamId);
     }
   }, [organization]);
@@ -50,34 +70,52 @@ const AddTeamProjects = (props) => {
   useEffect(() => {
     // Edit mode
     if (team?.id && projectReduxState?.projects?.length > 0) {
-      const allProjects = projectReduxState?.projects.filter((project) => !team?.projects.includes(project.id));
+      const allProjects = projectReduxState?.projects.filter(
+        (project) => !team?.projects.includes(project.id)
+      );
       setAllPersonalProjects(allProjects);
       setLoading(false);
-    } else if (team?.id && projectReduxState?.projects?.length === 0 && organization?.id) {
+    } else if (
+      team?.id &&
+      projectReduxState?.projects?.length === 0 &&
+      organization?.id
+    ) {
       dispatch(loadMyProjectsAction());
     }
     // Creation mode
     if (!team?.id && projectReduxState?.projects?.length > 0) {
       setAllPersonalProjects(projectReduxState?.projects);
       setLoading(false);
-    } else if (!team?.id && projectReduxState?.projects?.length === 0 && organization?.id) {
+    } else if (
+      !team?.id &&
+      projectReduxState?.projects?.length === 0 &&
+      organization?.id
+    ) {
       dispatch(loadMyProjectsAction());
     }
   }, [dispatch, projectReduxState?.projects, team, organization?.id]);
   const searchProjects = ({ target }) => {
     const { value } = target;
     if (value.length > 0) {
-      const filteredProjects = allPersonalProjects.filter((project) => project.name.toLowerCase().includes(value.toLowerCase()));
+      const filteredProjects = allPersonalProjects.filter((project) =>
+        project.name.toLowerCase().includes(value.toLowerCase())
+      );
       setAllPersonalProjects(filteredProjects);
     } else if (team?.id) {
-      const allProjects = projectReduxState?.projects.filter((project) => !team?.projects.includes(project.id));
+      const allProjects = projectReduxState?.projects.filter(
+        (project) => !team?.projects.includes(project.id)
+      );
       setAllPersonalProjects(allProjects);
     } else if (!team?.id) {
       setAllPersonalProjects(projectReduxState?.projects);
       setLoading(false);
     }
   };
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
+
+  const updateTeamProject = async (id) => {
+    await loadTeam(id);
+  };
   return (
     <div className="team-project-page">
       <div className="content">
@@ -96,7 +134,9 @@ const AddTeamProjects = (props) => {
                 className="back-to-section"
                 onClick={() => {
                   if (team?.id) {
-                    history.push(`/org/${organization?.domain}/teams/${team?.id}`);
+                    history.push(
+                      `/org/${organization?.domain}/teams/${team?.id}`
+                    );
                   } else {
                     history.push(`/org/${organization?.domain}/teams`);
                   }
@@ -108,16 +148,32 @@ const AddTeamProjects = (props) => {
             </div>
 
             <div className="project-tabs">
-              <Tabs className="main-tabs" defaultActiveKey="Projects" id="uncontrolled-tab-example">
+              <Tabs
+                className="main-tabs"
+                defaultActiveKey="Projects"
+                id="uncontrolled-tab-example"
+              >
                 <Tab eventKey="Projects" title="Projects">
                   <div className="flex-button-top">
                     <div className="team-controller">
                       {team?.id && (
                         <div className="search-and-filters">
                           <div className="search-bar">
-                            <input type="text" className="search-input" placeholder="Search project" onChange={searchProjects} />
+                            <input
+                              type="text"
+                              className="search-input"
+                              placeholder="Search project"
+                              onChange={searchProjects}
+                            />
                             {/* <img src={searchimg} alt="search" /> */}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" css-inspector-installed="true">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              css-inspector-installed="true"
+                            >
                               <path
                                 d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
                                 stroke={primaryColor}
@@ -125,7 +181,13 @@ const AddTeamProjects = (props) => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                               />
-                              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                              <path
+                                d="M21 20.9984L16.65 16.6484"
+                                stroke={primaryColor}
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                           </div>
                         </div>
@@ -133,37 +195,45 @@ const AddTeamProjects = (props) => {
 
                       <div className="team-project-btns">
                         <div className="project-selection">
-                          <p>{selectProject?.length} projects have been selected. </p>
+                          <p>
+                            {selectProject?.length} projects have been selected.{" "}
+                          </p>
                         </div>
-                        {teamPermission?.Team?.includes('team:add-project') && team?.id && (
-                          <Buttons
-                            icon={faPlus}
-                            type="button"
-                            text="Add projects to team"
-                            primary
-                            width="188px"
-                            height="32px"
-                            hover
-                            onClick={() => {
-                              if (selectProject.length > 0) {
-                                addProjectToTeam(team?.id, selectProject)
-                                  .then((result) => {
-                                    Swal.fire({
-                                      icon: 'success',
-                                      title: result?.message,
+                        {teamPermission?.Team?.includes("team:add-project") &&
+                          team?.id && (
+                            <Buttons
+                              icon={faPlus}
+                              type="button"
+                              text="Add project to team"
+                              primary
+                              width="188px"
+                              height="32px"
+                              hover
+                              onClick={async () => {
+                                if (selectProject.length > 0) {
+                                  addProjectToTeam(team?.id, selectProject)
+                                    .then((result) => {
+                                      // loadTeam(team?.id);
+                                      // updateTeamProject(team?.id);
+                                      Swal.fire({
+                                        icon: "success",
+                                        title: result?.message,
+                                      });
+                                      loadTeam(team?.id);
+                                      history.push(
+                                        `/org/${organization?.domain}/teams/${team?.id}`
+                                      );
+                                    })
+                                    .catch((err) => {
+                                      Swal.fire({
+                                        icon: "error",
+                                        title: err?.message,
+                                      });
                                     });
-                                    loadTeam(team?.id);
-                                    history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                                  }).catch((err) => {
-                                    Swal.fire({
-                                      icon: 'error',
-                                      title: err?.message,
-                                    });
-                                  });
-                              }
-                            }}
-                          />
-                        )}
+                                }
+                              }}
+                            />
+                          )}
                         {newTeam?.name && (
                           <Buttons
                             type="button"
@@ -174,21 +244,27 @@ const AddTeamProjects = (props) => {
                             hover
                             onClick={() => {
                               Swal.showLoading();
-                              createTeam({ ...newTeam, organization_id: organization?.id })
+                              createTeam({
+                                ...newTeam,
+                                organization_id: organization?.id,
+                              })
                                 .then(() => {
                                   Swal.fire({
-                                    icon: 'success',
-                                    title: 'Team added successfully.',
+                                    icon: "success",
+                                    title: "Team added successfully.",
                                   });
                                   loadTeams();
-                                  history.push(`/org/${organization?.domain}/teams`);
+                                  history.push(
+                                    `/org/${organization?.domain}/teams`
+                                  );
                                 })
                                 .catch((err) => {
                                   console.log(err);
                                   Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: 'Create Team failed, kindly try again.',
+                                    icon: "error",
+                                    title: "Error",
+                                    text:
+                                      "Create Team failed, kindly try again.",
                                   });
                                 });
                             }}
@@ -226,30 +302,49 @@ const AddTeamProjects = (props) => {
                     <div className="team-controller">
                       <div className="team-project-btns">
                         <div className="project-selection">
-                          <p>{selectProject?.length} projects have been selected. </p>
+                          <p>
+                            {selectProject?.length} projects have been selected.{" "}
+                          </p>
                         </div>
-                        <Buttons icon={faPlus} text="Add projects to team" type="button" primary width="188px" height="32px" hover disabled={selectProject?.length === 0} onClick={() => {
-                          if (selectProject.length > 0) {
-                            addProjectToTeam(team?.id, selectProject)
-                              .then((result) => {
-                                Swal.fire({
-                                  icon: 'success',
-                                  title: result?.message,
+                        <Buttons
+                          icon={faPlus}
+                          text="Add project to team"
+                          type="button"
+                          primary
+                          width="188px"
+                          height="32px"
+                          hover
+                          disabled={selectProject?.length === 0}
+                          onClick={() => {
+                            if (selectProject.length > 0) {
+                              addProjectToTeam(team?.id, selectProject)
+                                .then((result) => {
+                                  Swal.fire({
+                                    icon: "success",
+                                    title: result?.message,
+                                  });
+                                  loadTeam(team?.id);
+                                  history.push(
+                                    `/org/${organization?.domain}/teams/${team?.id}`
+                                  );
+                                })
+                                .catch((err) => {
+                                  Swal.fire({
+                                    icon: "error",
+                                    title: err?.message,
+                                  });
                                 });
-                                loadTeam(team?.id);
-                                history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                              }).catch((err) => {
-                                Swal.fire({
-                                  icon: 'error',
-                                  title: err?.message,
-                                });
-                              });
-                          }
-                        }} />
+                            }
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
-                  <SearchInterface fromTeam selectProject={selectProject} setSelectProject={setSelectProject} />
+                  <SearchInterface
+                    fromTeam
+                    selectProject={selectProject}
+                    setSelectProject={setSelectProject}
+                  />
                 </Tab>
               </Tabs>
             </div>
@@ -282,6 +377,7 @@ const mapDispatchToProps = (dispatch) => ({
   createTeam: (data) => dispatch(createTeamAction(data)),
   loadTeam: (teamId) => dispatch(loadTeamAction(teamId)),
   loadTeams: () => dispatch(loadTeamsAction()),
-  addProjectToTeam: (teamId, projectId) => dispatch(addProjectsAction(teamId, projectId)),
+  addProjectToTeam: (teamId, projectId) =>
+    dispatch(addProjectsAction(teamId, projectId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AddTeamProjects);

@@ -6,6 +6,7 @@ import store from '../index';
 import socketConnection from 'services/http.service';
 import playlistService from 'services/playlist.service';
 import * as actionTypes from '../actionTypes';
+import { toast } from 'react-toastify';
 
 export const createPlaylistAction = (projectId, title) => async (dispatch) => {
   try {
@@ -385,4 +386,49 @@ export const searchPreviewPlaylistAction = (playlistId) => async (dispatch) => {
     type: actionTypes.SEARCH_PREVIEW_PLAYLIST,
     payload: playlist,
   });
+};
+
+export const addActivityPlaylistSearch = (ind_id, playlist_id) => async (dispatch) => {
+  toast.info('Adding new Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    icon: '',
+  });
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const addActivityResult = await playlistService.addActivityPlaylistSearch(activeOrganization?.id, ind_id, playlist_id);
+  toast.dismiss();
+  toast.success('Activity Added', {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
+  return addActivityResult;
+};
+
+// Move Playlist
+export const moveActivityPlaylist = (playlist_id, playlistData) => async (dispatch) => {
+  toast.info('Adding new Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 10000,
+    icon: '',
+  });
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const addActivityResult = await playlistService.moveActivityPlaylist(activeOrganization?.id, playlist_id, { independentActivityIds: playlistData });
+  toast.dismiss();
+  toast.success('Activity Added', {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 4000,
+  });
+  return addActivityResult;
 };

@@ -22,26 +22,19 @@ export default function Headline({ setCreateProject }) {
             <Headings text={`${currentOrganization?.name}`} headingType="body2" color="#084892" />
             <div className="heading-image">
               {/* <img src={foldericon} alt="" /> */}
-              <svg width="35" height="35" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clipPath="url(#clip0)">
-                  <path
-                    d="M4 9.60938V24.6094C4 25.2998 4.55965 25.8594 5.25 25.8594H25.25C25.9404 25.8594 26.5 25.2998 26.5 24.6094V11.3402C26.5 10.6498 25.9404 10.0902 25.25 10.0902H16.4038"
-                    stroke={primaryColor}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M16.4038 10.0902L12.933 6.04244C12.8159 5.92523 12.6569 5.85938 12.4911 5.85938H4.625C4.27983 5.85938 4 6.1392 4 6.48437V9.60937"
-                    stroke={primaryColor}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0">
-                    <rect width="30" height="30" fill="white" transform="translate(0 0.859375)" />
-                  </clipPath>
-                </defs>
+              <svg width="36" height="33" viewBox="0 0 36 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M2 7.4375V29.1875C2 30.1885 2.81149 31 3.8125 31H32.8125C33.8136 31 34.625 30.1885 34.625 29.1875V9.94715C34.625 8.94614 33.8136 8.13465 32.8125 8.13465H19.9856"
+                  stroke={primaryColor}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M19.9856 8.13465L14.9529 2.26544C14.783 2.09548 14.5525 2 14.3121 2H2.90625C2.40575 2 2 2.40575 2 2.90625V7.4375"
+                  stroke={primaryColor}
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
               </svg>
 
               {/* Projects */}
@@ -49,10 +42,8 @@ export default function Headline({ setCreateProject }) {
             </div>
           </div>
           <div className="search-main-relaced">
-            <div className="search-div">
-              <SearchForm />
-            </div>
-            {permission?.Project?.includes('project:create') && (
+            <div className="search-div">{/* <SearchForm /> */}</div>
+            {/* {permission?.Project?.includes('project:create') && (
               <Buttons
                 primary
                 text="Create a project"
@@ -66,10 +57,10 @@ export default function Headline({ setCreateProject }) {
                 }}
                 hover
               />
-            )}
+            )} */}
           </div>
         </div>
-        <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" />
+        {/* <Headings text="Create and organize your activities into projects to create complete courses." headingType="body2" color="#515151" className="top-heading-detail" /> */}
       </div>
     </>
   );

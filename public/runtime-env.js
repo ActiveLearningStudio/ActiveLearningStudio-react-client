@@ -4,6 +4,8 @@ window.__RUNTIME_CONFIG__ = {
   REACT_APP_API_URL: 'https://dev.currikistudio.org/api/api',
   REACT_DOMAIN_URL: 'https://dev.currikistudio.org/',
 
+  REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
+
   REACT_APP_RESOURCE_URL: 'https://dev.currikistudio.org/api',
 
   REACT_APP_GOOGLE_CAPTCHA: '6LdImbgZAAAAAN4s1eEi53-ul7uJfLONrFuBcKS0',
