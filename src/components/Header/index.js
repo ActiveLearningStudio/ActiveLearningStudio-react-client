@@ -15,6 +15,9 @@ import MultitenancyDropdown from './multitenancyDropdown';
 import './style.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import HelpSvg from 'iconLibrary/header/HelpSvg';
+import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
+import ChangePasswordMdSvg from 'iconLibrary/header/ChangePasswordMdSvg';
+import LogoutMdSvg from 'iconLibrary/header/LogoutMdSvg';
 
 function Header(props) {
   const { logout } = props;
@@ -100,23 +103,7 @@ function Header(props) {
                     <hr />
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
                       <div className="user-dropdown-item">
-                        {/* <img src={edit} alt="edit" /> */}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M11.0512 4.89746H4.78915C4.31464 4.89746 3.85956 5.08596 3.52403 5.42149C3.1885 5.75702 3 6.2121 3 6.68661V19.2106C3 19.6851 3.1885 20.1402 3.52403 20.4757C3.85956 20.8113 4.31464 20.9998 4.78915 20.9998H17.3132C17.7877 20.9998 18.2428 20.8113 18.5783 20.4757C18.9138 20.1402 19.1023 19.6851 19.1023 19.2106V12.9486"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M17.7602 3.55582C18.1161 3.19993 18.5988 3 19.1021 3C19.6054 3 20.088 3.19993 20.4439 3.55582C20.7998 3.9117 20.9997 4.39438 20.9997 4.89768C20.9997 5.40097 20.7998 5.88365 20.4439 6.23954L11.9455 14.738L8.36719 15.6326L9.26176 12.0543L17.7602 3.55582Z"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <EditMdSvg primaryColor={primaryColor} />
                         My Account
                       </div>
                     </Dropdown.Item>
@@ -128,22 +115,7 @@ function Header(props) {
                           src={changePassword}
                           alt="changePassword"
                         /> */}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M18.2222 11.1025H5.77778C4.79594 11.1025 4 11.9082 4 12.9021V19.2005C4 20.1944 4.79594 21.0001 5.77778 21.0001H18.2222C19.2041 21.0001 20 20.1944 20 19.2005V12.9021C20 11.9082 19.2041 11.1025 18.2222 11.1025Z"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M7.55567 11.1025V7.50342C7.55456 6.38774 7.96303 5.31144 8.70178 4.48347C9.44052 3.65549 10.4568 3.13491 11.5534 3.02279C12.65 2.91066 13.7487 3.21499 14.6361 3.8767C15.5235 4.5384 16.1363 5.51028 16.3557 6.60365"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                        <ChangePasswordMdSvg primaryColor={primaryColor} />
                         Change Password
                       </div>
                     </Dropdown.Item>
@@ -156,18 +128,7 @@ function Header(props) {
                       }}
                     >
                       <div className="user-dropdown-item">
-                        {/* <img src={logoutIcon} alt="logoutIcon" /> */}
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path d="M10 17L15 12L10 7" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M15 12H3" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        <LogoutMdSvg primaryColor={primaryColor} />
                         Logout
                       </div>
                     </Dropdown.Item>

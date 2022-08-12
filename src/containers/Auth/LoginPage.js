@@ -19,6 +19,7 @@ import eye from 'assets/images/eye.svg';
 import Error from './Error';
 import Logo from './Logo';
 import './style.scss';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -235,7 +236,8 @@ class LoginPage extends React.Component {
                         <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                           Password
                           <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
-                            <img src={eye} alt="show-password" />
+                            {/* <img src={eye} alt="show-password" /> */}
+                            <PreviewSmSvg primaryColor={'#515151'} />
                             Show Password
                           </div>
                         </span>
