@@ -62,6 +62,7 @@ function Controller(props) {
     resetProjectFilter,
     filteredItems,
     setSearchKey,
+    setfilterLtiSettings,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ function Controller(props) {
   // const secondaryColor = getGlobalColor('--main-secondary-color');
 
   useEffect(() => {
-    setLtiToolTypes(ltiToolsTypes);
+    setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
   }, [ltiToolsTypes]);
   return (
     <div className="controller">
@@ -995,6 +996,7 @@ function Controller(props) {
                     onClick={() => {
                       filteredItems(null);
                       setSelectedFilterItem(null);
+                      setfilterLtiSettings('All');
                     }}
                   >
                     All
@@ -1010,18 +1012,17 @@ function Controller(props) {
                     </Dropdown.Item>
                   ))} */}
                   {ltiToolTypes?.map((t) => {
-                    if (t.name != 'My device' && t.name != 'BrightCove') {
-                      return (
-                        <Dropdown.Item
-                          onClick={() => {
-                            filteredItems(t.id);
-                            setSelectedFilterItem(t);
-                          }}
-                        >
-                          {t.name}
-                        </Dropdown.Item>
-                      );
-                    }
+                    return (
+                      <Dropdown.Item
+                        onClick={() => {
+                          filteredItems(t.id);
+                          setSelectedFilterItem(t);
+                          setfilterLtiSettings('');
+                        }}
+                      >
+                        {t.name}
+                      </Dropdown.Item>
+                    );
                   })}
                 </Dropdown.Menu>
               </Dropdown>

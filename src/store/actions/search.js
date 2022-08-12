@@ -49,7 +49,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   let sendData;
   if (values.standardArray && values.standardArray.length > 0) {
     sendData = {
-      query: values.phrase,
+      query: values.phrase || undefined,
       h5pLibraries: values.standardArray,
       from: values.from,
       size: values.size,
@@ -124,7 +124,7 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
   let sendData;
   if (values.standardArray && values.standardArray.length > 0) {
     sendData = {
-      query: values.query || values.phrase,
+      query: values.query || values.phrase || undefined,
       subjectArray: values.subjectArray,
       gradeArray: values.gradeArray,
       author: values.authors || undefined,
@@ -141,7 +141,7 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
     };
   } else {
     sendData = {
-      query: values.query || values.phrase,
+      query: values.query || values.phrase || undefined,
       subjectArray: values.subjectArray,
       gradeArray: values.gradeArray,
       authorTagsIds: activeAuthTags,

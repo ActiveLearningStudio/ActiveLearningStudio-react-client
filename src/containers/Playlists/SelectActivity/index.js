@@ -84,7 +84,7 @@ const SelectActivity = ({ setSelectSearchModule, playlistIdForSearchingTab, setR
                 </div>
               </div>
               <Tabs onSelect={(eventKey) => {}} className="main-tabs" defaultActiveKey={activeTab} id="uncontrolled-tab-example">
-                <Tab eventKey="Ind. Activities" title="Ind. Activities">
+                <Tab eventKey="Ind. Activities" title="My Activities">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="flex-button-top">
