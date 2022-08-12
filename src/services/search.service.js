@@ -1,7 +1,7 @@
-/*eslint-disable */
+/* eslint-disable */
 import Swal from 'sweetalert2';
-import { errorCatcher } from './errors';
 import config from 'config';
+import { errorCatcher } from './errors';
 import httpService from './http.service';
 
 const { apiVersion } = config;
@@ -156,6 +156,26 @@ const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, ac
       return Promise.reject(err.response.data);
     });
 
+const googleClassPublishIndependentActivity = (courseId, topicId, activityId, token, OrgId) =>
+  httpService
+    .post(`/${apiVersion}/google-classroom/activities/${activityId}/publish`, {
+      course_id: courseId,
+      topic_id: topicId,
+      access_token: token,
+      publisher_org: OrgId,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const searchIndependentActivities = (searchType, searchData) =>
+  httpService
+    .get(`/${apiVersion}/search/independent-activities?searchType=${searchType}`, '', { ...searchData })
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 export default {
   searchResult,
   cloneProject,
@@ -168,4 +188,6 @@ export default {
   getCourseTopics,
   googleClassPublishPlaylist,
   googleClassPublishActivity,
+  googleClassPublishIndependentActivity,
+  searchIndependentActivities,
 };

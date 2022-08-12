@@ -1,11 +1,11 @@
 /*eslint-disable*/
-import { Formik } from "formik";
-import React, { setState } from "react";
-import Buttons from "utils/Buttons/buttons";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import InputLabel from "utils/InputLabel/inputlabel";
-import InputTextField from "utils/InputTextField/inputtextfield";
-import UploadImage from "utils/UploadImage/uploadimage";
+import { Formik } from 'formik';
+import React, { setState } from 'react';
+import Buttons from 'utils/Buttons/buttons';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import InputLabel from 'utils/InputLabel/inputlabel';
+import InputTextField from 'utils/InputTextField/inputtextfield';
+import UploadImage from 'utils/UploadImage/uploadimage';
 
 const MyProjectsCreate = ({ setUploadImageStatus }) => {
   return (
@@ -18,21 +18,12 @@ const MyProjectsCreate = ({ setUploadImageStatus }) => {
           <form>
             <div className="layout-formik-input">
               <InputLabel text="Project Name" className="input-label">
-                <InputTextField
-                  placeholder="e.g Course Name"
-                  className="input-field"
-                />
+                <InputTextField placeholder="e.g Course Name" className="input-field" />
               </InputLabel>
             </div>
             <div className="layout-formik-input">
-              <InputLabel
-                text="What is your project about?"
-                className="input-label"
-              >
-                <InputTextField
-                  placeholder="Write a brief description of your project"
-                  className="input-field"
-                />
+              <InputLabel text="What is your project about?" className="input-label">
+                <InputTextField placeholder="Write a brief description of your project" className="input-field" />
               </InputLabel>
             </div>
             <div className="layout-formik-input">
@@ -49,13 +40,7 @@ const MyProjectsCreate = ({ setUploadImageStatus }) => {
         </Formik>
       </div>
       <div className="myproject-button">
-        <Buttons
-          text="Create Project"
-          primary={true}
-          width="189px"
-          height="43px"
-          hover={true}
-        />
+        <Buttons text="Create Project" primary={true} width="189px" height="43px" hover={true} />
       </div>
     </div>
   );

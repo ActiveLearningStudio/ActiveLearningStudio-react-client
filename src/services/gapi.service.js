@@ -103,6 +103,48 @@ const h5pResourceSettings = (activityId, studentId = null, submissionId = null) 
     });
   });
 
+  const getGoogleSlides = (token, query) => axios({
+    method: 'get',
+    url: 'https://www.googleapis.com/drive/v3/files',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    params: {
+      q: query.length > 0 ? `name contains '${query}' and mimeType='application/vnd.google-apps.presentation'` : "mimeType='application/vnd.google-apps.presentation'",
+      fields: 'files(id, name, mimeType, iconLink, size, createdTime, lastModifyingUser)',
+    },
+  })
+  .then((response) => response)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong while trying to communicate with Google Drive.',
+    });
+  });
+
+  const getGoogleSlidesPDF = (token, fileId) => axios({
+    method: 'get',
+    url: `https://www.googleapis.com/drive/v3/files/${fileId}/export`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: 'arraybuffer',
+    params: {
+      fileId,
+      mimeType: 'application/pdf',
+    },
+  }).then((response) => response)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong while trying to communicate with Google Drive.',
+    });
+  });
+
 export default {
   getStudentProfile,
   getStudentCourses,
@@ -112,4 +154,6 @@ export default {
   turnIn,
   getSummaryAuth,
   getOutcomeSummary,
+  getGoogleSlides,
+  getGoogleSlidesPDF,
 };

@@ -5,7 +5,7 @@ import { Modal } from "react-bootstrap";
 import "./previewlayout.scss";
 import Tabs from "utils/Tabs/tabs";
 import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
-import ExistingActivitySearchContainer from 'components/ExistingActivitySearchContainer';
+import ExistingActivitySearchContainer from "components/ExistingActivitySearchContainer";
 import cross from "assets/images/cross-icon.png";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,6 +28,8 @@ const PreviewLayoutModel = (props) => {
     reverseType,
     onHide,
     formData,
+    activityPreview,
+    setisSubmitActivty,
   } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
@@ -37,7 +39,7 @@ const PreviewLayoutModel = (props) => {
 
   // useEffect(() => {
   //   if (type === "videoModal" && props.show) {
-  //     dispatch(loadH5pSettingsActivity("H5P.InteractiveVideo 1.22"));
+  //     dispatch(loadH5pSettingsActivity("H5P.InteractiveVideo 1.24"));
   //   }
   // }, []);
   const submitForm = useRef(null);
@@ -58,7 +60,7 @@ const PreviewLayoutModel = (props) => {
               path: videoId,
             },
           ];
-        } else if (platform === "Kaltura") {
+        } else if (platform === "Kaltura" || platform === "Komodo") {
           replaceH5p.params.interactiveVideo.video.files = [
             {
               copyright: { license: "U" },
@@ -126,7 +128,7 @@ const PreviewLayoutModel = (props) => {
   }, [platform, formData, editVideo]);
 
   const handleExistingActivitySearchEvent = (e) => {
-    if (e === 'close') return setShowActivitySearch(false);
+    if (e === "close") return setShowActivitySearch(false);
 
     setInsertActivityCallback(() => (data) => e.detail.callback(data));
     setInsertActivityLibraries(e.detail.libraries);
@@ -134,9 +136,15 @@ const PreviewLayoutModel = (props) => {
   };
 
   useEffect(() => {
-    window.addEventListener('launchExistingActivitySearch', handleExistingActivitySearchEvent);
+    window.addEventListener(
+      "launchExistingActivitySearch",
+      handleExistingActivitySearchEvent
+    );
     return () => {
-      window.removeEventListener('launchExistingActivitySearch', handleExistingActivitySearchEvent);
+      window.removeEventListener(
+        "launchExistingActivitySearch",
+        handleExistingActivitySearchEvent
+      );
     };
   }, []);
 
@@ -207,15 +215,24 @@ const PreviewLayoutModel = (props) => {
                     style={{ display: "flex", justifyContent: "center" }}
                   >
                     <Tabs
-                      text="1. Add a video"
+                      text={
+                        activityPreview
+                          ? "1. Add an activity"
+                          : "1. Add a video"
+                      }
                       className="m-2"
                       tabActive={true}
                     />
                     <Tabs
-                      text="2. Describe video"
+                      text={
+                        activityPreview
+                          ? "1. Describe activity"
+                          : "2. Describe video"
+                      }
                       className="m-2"
                       tabActive={true}
                     />
+
                     <Tabs
                       text="3. Add interaction"
                       className="m-2"
@@ -230,7 +247,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/YouTube"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.InteractiveVideo 1.24"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -239,6 +256,8 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
+                    setisSubmitActivty={setisSubmitActivty}
                   />
                 )}
                 {platform === "Brightcove" && !editVideo && (
@@ -255,7 +274,7 @@ const PreviewLayoutModel = (props) => {
                           ? props.editVideo.h5p
                           : `{"params":{"interactiveVideo":{ "video" :{"brightcoveVideoID": "${video}"}}},"metadata":{"title":"${title}"}}`
                       }
-                      h5pLib="H5P.BrightcoveInteractiveVideo 1.0"
+                      h5pLib="H5P.BrightcoveInteractiveVideo 1.1"
                       hide={props.onHide}
                       type={type}
                       formData={props?.formData}
@@ -266,6 +285,8 @@ const PreviewLayoutModel = (props) => {
                       reverseType={reverseType}
                       playlistId={playlist?.id || undefined}
                       submitForm={submitForm}
+                      activityPreview={activityPreview}
+                      setisSubmitActivty={setisSubmitActivty}
                     />
                   </div>
                 )}
@@ -276,7 +297,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.CurrikiInteractiveVideo 1.0"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -285,6 +306,28 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
+                    setisSubmitActivty={setisSubmitActivty}
+                  />
+                )}
+                {platform === "Komodo" && !editVideo && (
+                  <H5PEditor
+                    h5pParams={
+                      props.editVideo.h5p
+                        ? props.editVideo.h5p
+                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
+                    }
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
+                    hide={props.onHide}
+                    type={type}
+                    formData={props?.formData}
+                    editVideo={editVideo}
+                    setOpenVideo={setOpenVideo}
+                    reverseType={reverseType}
+                    playlistId={playlist?.id || undefined}
+                    submitForm={submitForm}
+                    activityPreview={activityPreview}
+                    setisSubmitActivty={setisSubmitActivty}
                   />
                 )}
                 {/* Vimeo */}
@@ -293,9 +336,9 @@ const PreviewLayoutModel = (props) => {
                     h5pParams={
                       props.editVideo.h5p
                         ? props.editVideo.h5p
-                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/vimeo"}]}}},"metadata":{"title":"${title}"}}`
+                        : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/unknown"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.CurrikiInteractiveVideo 1.1"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -304,6 +347,8 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
+                    setisSubmitActivty={setisSubmitActivty}
                   />
                 )}
 
@@ -314,7 +359,7 @@ const PreviewLayoutModel = (props) => {
                         ? props.editVideo.h5p
                         : `{"params":{"interactiveVideo":{ "video" : {"files": [{"path":"${video}","mime":"video/mp4"}]}}},"metadata":{"title":"${title}"}}`
                     }
-                    h5pLib="H5P.InteractiveVideo 1.22"
+                    h5pLib="H5P.InteractiveVideo 1.24"
                     hide={props.onHide}
                     type={type}
                     formData={props?.formData}
@@ -323,6 +368,8 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
+                    setisSubmitActivty={setisSubmitActivty}
                   />
                 )}
                 {editVideo && (
@@ -343,6 +390,7 @@ const PreviewLayoutModel = (props) => {
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
                     submitForm={submitForm}
+                    activityPreview={activityPreview}
                   />
                 )}
               </>
@@ -408,13 +456,20 @@ const PreviewLayoutModel = (props) => {
                   editActivity={activity ? true : false}
                   activityId={activity?.id}
                   submitForm={submitForm}
+                  activityPreview={activityPreview}
                 />
               </>
             )}
           </div>
         </Modal.Body>
       </Modal>
-      {showActivitySearch && <ExistingActivitySearchContainer insertActivityCallback={insertActivityCallback} libraries={insertActivityLibraries} closeModal={() => handleExistingActivitySearchEvent('close') }/>}
+      {showActivitySearch && (
+        <ExistingActivitySearchContainer
+          insertActivityCallback={insertActivityCallback}
+          libraries={insertActivityLibraries}
+          closeModal={() => handleExistingActivitySearchEvent("close")}
+        />
+      )}
     </>
   );
 };

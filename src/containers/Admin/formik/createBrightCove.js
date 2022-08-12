@@ -134,7 +134,7 @@ export default function CreateBrightCove({ editMode }) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove Entry' : 'Add New BrightCove Entry'}</h2>
+              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove entry' : 'Add new BrightCove entry'}</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}

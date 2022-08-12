@@ -1,15 +1,13 @@
 /* eslint-disable */
 import axios from 'axios';
 import Swal from 'sweetalert2';
-// import Echo from 'laravel-echo';
+
 import { toast } from 'react-toastify';
 
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
-// import groupService from 'services/group.service';
-// import teamService from 'services/team.service';
-// import socketConnection from 'services/http.service';
+
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
@@ -27,21 +25,7 @@ export const setCurrentVisibilityType = (data) => async (dispatch) => {
     payload: data,
   });
 };
-// export const allSidebarProjects = () => async (dispatch) => {
-//   const centralizedState = store.getState();
-//   const { organization: { activeOrganization } } = centralizedState;
-//   const { projects } = await projectService.getAll(activeOrganization.id);
-//   // const { teams } = await teamService.getAll(activeOrganization.id);
-//   const { groups } = await groupService.getAll(activeOrganization.id);
-//   dispatch({
-//     type: actionTypes.SIDEBAR_ALL_PROJECT,
-//     data: {
-//       projects,
-//       // teams,
-//       groups,
-//     },
-//   });
-// };
+
 export const createProjectAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
@@ -49,15 +33,15 @@ export const createProjectAction = (data) => async (dispatch) => {
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_PROJECT_REQUEST });
-    toast.info('creating project ...', {
-      position: 'top-center',
-      hideProgressBar: false,
-      icon: '',
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
+    // toast.info('creating project ...', {
+    //   position: 'top-center',
+    //   hideProgressBar: false,
+    //   icon: '',
+    //   closeOnClick: true,
+    //   pauseOnHover: false,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
     const { project } = await projectService.create(data, activeOrganization.id);
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
@@ -65,14 +49,14 @@ export const createProjectAction = (data) => async (dispatch) => {
     });
     toast.dismiss();
     if (project) {
-      toast.success('New Project Created', {
-        position: 'top-center',
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.success('New Project Created', {
+      //   position: 'top-center',
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       return project;
     }
     // dispatch(allSidebarProjects());
@@ -228,8 +212,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   });
   return thumbUrl;
 };
-
-export const loadMyProjectsAction = () => async (dispatch) => {
+export const addMyproject = (page, size, searchQuery) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { currentOrganization },
@@ -238,13 +221,36 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(currentOrganization?.id);
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+
+    dispatch({
+      type: actionTypes.ADD_MY_PROJECTS,
+      payload: response,
+    });
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  }
+};
+export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
-      payload: { projects },
+      payload: response,
     });
-
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -267,7 +273,6 @@ export const loadMyFavProjectsAction = () => async (dispatch) => {
   });
 };
 
-/* eslint-disable */
 export const loadMyReorderProjectsAction = (projectId, projectDivider) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
@@ -294,16 +299,68 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
   dispatch(loadMyProjectsAction());
 };
 
-export const loadMyCloneProjectsAction = () => async (dispatch) => {
+export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization },
+    organization: { currentOrganization },
   } = centralizedState;
-  const projects = await projectService.getClone(activeOrganization?.id);
-  dispatch({
-    type: actionTypes.LOAD_MY_CLONE_PROJECTS,
-    payload: projects,
-  });
+
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    dispatch({
+      type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+    window.scrollTo(0, 0);
+  }
+};
+
+export const addCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    dispatch({
+      type: actionTypes.ADD_MY_CLONE_PROJECTS,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+    window.scrollTo(0, 0);
+  }
 };
 
 export const sampleProjects = () => async (dispatch) => {
@@ -317,14 +374,6 @@ export const sampleProjects = () => async (dispatch) => {
     data: { projects },
   });
 };
-
-// export const allUpdateProject = () => async (dispatch) => {
-//   const { projects } = await projectService.getUpdatedProjects();
-//   dispatch({
-//     type: actionTypes.SIDEBAR_UPDATE_PROJECT,
-//     data: { projects },
-//   });
-// };
 
 export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -355,14 +404,12 @@ export const loadMyProjectsActionPreview = (projectId) => async (dispatch) => {
   }
 };
 
-export const toggleProjectShareAction =
-  (projectId, ProjectName, adminPanel = false) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    const { project } = await projectService.share(projectId, activeOrganization?.id);
+export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = false) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const { project } = await projectService.share(projectId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.SHARE_PROJECT,
@@ -374,14 +421,12 @@ export const toggleProjectShareAction =
     return SharePreviewPopup(url, ProjectName);
   };
 
-export const toggleProjectShareRemovedAction =
-  (projectId, projectName, adminPanel = false) =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
+export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
     dispatch({
       type: actionTypes.SHARE_PROJECT,
@@ -577,7 +622,7 @@ export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lms
       autoClose: 10000,
       closeOnClick: false,
       closeButton: false,
-    }
+    },
   );
   const globalStoreClone = getState();
   if (response) {
@@ -604,10 +649,11 @@ export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lms
           allowOutsideClick: false,
         });
         const globalStoreCloneUpdated = getState();
+
         // eslint-disable-next-line no-inner-declarations
         async function asyncFunc() {
           for (let x = 0; x < playlist.length; x += 1) {
-            // eslint-disable-next-line no-await-in-loop
+            // eslint-disable-next-line operator-linebreak
             const counter =
               !!globalStoreCloneUpdated.project.lmsCourse && globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter.length > 0
                 ? globalStoreCloneUpdated.project.lmsCourse.playlistsCopyCounter[x].counter
@@ -772,7 +818,9 @@ export const searchPreviewProjectAction = (projectId) => async (dispatch) => {
 
 export const exportProjectsToNoovo = (projectId, teamId) => async () => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     const result = await projectService.exportProjectsToNoovo(activeOrganization?.id, projectId, teamId);
     return result.message;

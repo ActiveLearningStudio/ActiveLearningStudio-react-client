@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveAdminForm } from 'store/actions/admin';
+import { ltiToolType, setActiveAdminForm } from 'store/actions/admin';
 import EditProjectModel from './model/editprojectmodel';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
 import CreateActivityItem from './formik/createActivityItem';
@@ -32,6 +32,8 @@ import CreateAuthorTag from './formik/createAuthorTag';
 import CreateActivityLayout from './formik/createActivityLayout';
 import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
+import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -41,12 +43,14 @@ function AdminPanel({ showSSO }) {
   const [users, setUsers] = useState(null);
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
+  const [modalShowh5p, setModalShowh5p] = useState(false);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
   const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
+  const [currentActivity, setCurrentActivity] = useState(null);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -66,10 +70,17 @@ function AdminPanel({ showSSO }) {
         payload: [currentOrganization || []],
       });
     }
-  }, [currentOrganization]);
+    dispatch(getAllMediaSources());
+    if (activeOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    }
+  }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
-
+  // ltiToolType calling
+  useEffect(() => {
+    dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+  }, [activeOrganization, currentOrganization]);
   return (
     <div className="admin-panel">
       {true ? (
@@ -127,7 +138,7 @@ function AdminPanel({ showSSO }) {
                         )}
                       </div>
                       <div className="module-content">
-                        <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
+                        <Pills modules={['Organizations']} type="Organization" subType="All Organizations" />
                       </div>
                     </Tab>
                   )}
@@ -149,10 +160,28 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
+                  {/* Ind.Activity Start */}
+                  {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
+                    permission?.['Independent Activity']?.includes('independent-activity:view-export')) && (
+                    <Tab eventKey="IndActivities" title="Ind. activities">
+                      <div className="module-content">
+                        <Pills
+                          setCurrentActivity={setCurrentActivity}
+                          setModalShowh5p={setModalShowh5p}
+                          modules={[
+                            permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
+                            permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
+                          ]}
+                          type="IndActivities"
+                        />
+                      </div>
+                    </Tab>
+                  )}
+                  {/* Ind.Activity End*/}
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
                     permission?.Organization?.includes('organization:view-activity-type')) && (
-                    <Tab eventKey="Activities" title="Activities">
+                    <Tab eventKey="Activities" title="Ref. tables">
                       <div className="module-content">
                         <Pills
                           modules={[
@@ -199,6 +228,7 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
+                            'Media',
                           ]}
                           type="LMS"
                         />
@@ -474,6 +504,7 @@ function AdminPanel({ showSSO }) {
           <Alert variant="danger">You are not authorized to view this page.</Alert>
         </div>
       )}
+      <MyVerticallyCenteredModal show={modalShowh5p} onHide={() => setModalShowh5p(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={true} />
     </div>
   );
 }

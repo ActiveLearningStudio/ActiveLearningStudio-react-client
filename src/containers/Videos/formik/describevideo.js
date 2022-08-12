@@ -15,10 +15,32 @@ import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
-const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, showback, changeScreenHandler, reverseType, playlistPreview }) => {
+const DescribeVideo = ({
+  setUploadImageStatus,
+  setScreenStatus,
+  setOpenVideo,
+  showback,
+  changeScreenHandler,
+  reverseType,
+  playlistPreview,
+  activityPreview,
+  setVideoTitle,
+  videoTitle,
+  setvideodesc,
+  videodesc,
+  setsubName,
+  subName,
+  authortagName,
+  setauthortagName,
+  eduLevel,
+  seteduLevel,
+  isbackHide,
+}) => {
   const [modalShow, setModalShow] = useState(false);
-  const [videoTitle, setVideoTitle] = useState('');
+
   const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -28,7 +50,8 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
-  const parser = new DOMParser()
+  const [isSubmitActivty, setisSubmitActivty] = useState(false);
+  const parser = new DOMParser();
 
   const formatApiData = (data) => {
     let ids = [];
@@ -95,9 +118,23 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
       setSelectedEducationLevel(output);
     }
   });
-
+  useEffect(() => {
+    if (isSubmitActivty) {
+      setVideoTitle('');
+      setvideodesc('');
+      seteduLevel('');
+      setauthortagName('');
+      setsubName('');
+      dispatch({
+        type: 'ADD_VIDEO_URL',
+        payload: '',
+      });
+    }
+  }, [isSubmitActivty]);
   const primaryColor = getGlobalColor('--main-primary-color');
+  console.log('siback', isbackHide);
   const formRef = useRef();
+
   return (
     <>
       <PreviewLayoutModel
@@ -106,6 +143,7 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
           setModalShow(false);
         }}
         type={playlistPreview ? '' : 'videoModal'}
+        activityPreview={activityPreview}
         title={videoTitle}
         video={videoId}
         formData={formRef.current?.values}
@@ -114,35 +152,64 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
         accountId={activecms?.account_id}
         settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
         reverseType={reverseType}
+        setisSubmitActivty={setisSubmitActivty}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading text="1. Add a video" tabActive={true} />
-          <TabsHeading text="2. Describe video" className="ml-10" tabActive={true} />
+          <TabsHeading text={activityPreview ? '1. Add an activity' : '1. Add a video'} tabActive={true} />
+          <TabsHeading text={activityPreview ? '2. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
           <div className="add-video-title">
-            <HeadingTwo text="Interactive Video" color="#084892" />
+            <HeadingTwo
+              // text={
+              //   activityPreview
+              //     ? editVideo?.h5p_content?.library?.title
+              //     : "Interactive Video"
+              // }
+              text={editVideo?.h5p_content?.library?.title || 'Interactive Video'}
+              color="#084892"
+            />
           </div>
-          <div
-            className="back-button"
-            id="back-button-none-bg"
-            onClick={() => {
-              if (showback) {
-                changeScreenHandler('addvideo');
-              } else {
-                setScreenStatus('AddVideo');
-              }
-            }}
-          >
-            {/* <img src={BackButton} alt="back button " /> */}
-            <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-              <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <p className="">Back to options</p>
-          </div>
+          {isbackHide &&
+            (!activityPreview ? (
+              <div
+                className="back-button"
+                id="back-button-none-bg"
+                onClick={() => {
+                  if (showback) {
+                    changeScreenHandler('addvideo');
+                  } else {
+                    setScreenStatus('AddVideo');
+                  }
+                }}
+              >
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                  <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p className="">Back to options</p>
+              </div>
+            ) : (
+              <div
+                className="back-button"
+                id="back-button-none-bg"
+                onClick={() => {
+                  if (showback) {
+                    changeScreenHandler('addvideo');
+                  } else {
+                    setScreenStatus('AddVideo');
+                  }
+                }}
+              >
+                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
+                  <path d="M13 5L1 5" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M5 1L1 5L5 9" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <p className="">Back to options</p>
+              </div>
+            ))}
           {/* <div className="add-describevideo-tour">
             <span>
               <FontAwesomeIcon icon={faClock} color="#084892" className="ml-9" />
@@ -156,11 +223,11 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
               innerRef={formRef}
               enableReinitialize
               initialValues={{
-                title: editVideo ? editVideo.title : '',
-                description: editVideo ? editVideo.description || undefined : undefined,
-                author_tag_id: selecteAuthorTags || "",
-                education_level_id: selectedEducationLevel ||"",
-                subject_id: selectedSubjects || "",
+                title: editVideo ? editVideo.title : videoTitle,
+                description: editVideo ? editVideo.description || undefined : videodesc,
+                author_tag_id: selecteAuthorTags || authortagName,
+                education_level_id: selectedEducationLevel || eduLevel,
+                subject_id: selectedSubjects || subName,
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
@@ -188,8 +255,14 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                   <h4 className="interactive-video-heading-two">Describe layout</h4>
                   <div>
                     <div className="dec-title-formik-textField">
-                      <HeadingThree text="Title" color="#515151" className="textField-title" />
-                      <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
+                      <div className="d-flex">
+                        <HeadingThree text="Title" color="#515151" className="textField-title text-title-mr" />
+                        <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
+                          Used for searching, reports and copyright information
+                        </OverlayTriggerPop>
+                      </div>
+                      {/* <HeadingThree text="Title" color="#515151" className="textField-title" /> */}
+                      {/* <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" /> */}
                       <input
                         type="text"
                         name="title"
@@ -212,23 +285,28 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                         cols="4"
                         name="description"
                         placeholder="What is this video about"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          handleChange;
+                          setFieldValue('description', e.target.value);
+                          setvideodesc(e.target.value);
+                        }}
                         onBlur={handleBlur}
                         value={values.description}
                       />
                     </div>
-                    <div className="layout-formik-select">
+                    <div className="layout-formik-select" id="layout-formik-select-id-style">
                       <div className="formik-select mr-16">
                         <HeadingText text="Subject" className="formik-select-title" />
                         <ReactMultiSelectCheckboxes
                           name="subject_id"
                           hideSearch
                           options={subjects}
-                          onChange={(e)=>{
-                            setFieldValue("subject_id", e)
+                          onChange={(e) => {
+                            setFieldValue('subject_id', e);
+                            setsubName(e);
                           }}
                           value={values.subject_id}
-                          />
+                        />
                       </div>
 
                       <div className="formik-select mr-16">
@@ -237,9 +315,10 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
-                          onChange={(e)=>{
-                            setFieldValue("education_level_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('education_level_id', e);
+                            seteduLevel(e);
+                          }}
                           value={values.education_level_id}
                         />
                       </div>
@@ -250,11 +329,12 @@ const DescribeVideo = ({ setUploadImageStatus, setScreenStatus, setOpenVideo, sh
                           name="author_tag_id"
                           hideSearch
                           options={authorTags}
-                          onChange={(e)=>{
-                            setFieldValue("author_tag_id", e)
-                            }}
+                          onChange={(e) => {
+                            setFieldValue('author_tag_id', e);
+                            setauthortagName(e);
+                          }}
                           value={values.author_tag_id}
-                          />
+                        />
                       </div>
                     </div>
 

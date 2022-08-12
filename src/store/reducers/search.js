@@ -1,14 +1,11 @@
-import {
-  SEARCH_REDUX,
-  CLEAR_SEARCH,
-  SELECT_EXISTING_ACTIVITY,
-  RESET_EXISTING_ACTIVITY,
-} from '../actionTypes';
+// eslint-disable-next-line object-curly-newline
+import { SEARCH_REDUX, CLEAR_SEARCH, SELECT_EXISTING_ACTIVITY, RESET_EXISTING_ACTIVITY, SET_SEARCH_TYPE } from '../actionTypes';
 
 const INITIAL_STATE = {
   searchResult: {},
   searchQuery: '',
   searchMeta: {},
+  searchType: 'Independent activities',
   existingActivitySearchSelected: null,
 };
 
@@ -39,7 +36,11 @@ const SearchReducer = (state = INITIAL_STATE, action) => {
         ...state,
         existingActivitySearchSelected: null,
       };
-
+    case SET_SEARCH_TYPE:
+      return {
+        ...state,
+        searchType: action.searchType,
+      };
     default:
       return state;
   }

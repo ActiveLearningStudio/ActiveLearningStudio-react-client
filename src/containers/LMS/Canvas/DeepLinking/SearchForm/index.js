@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 import SearchImg from '../../../../../assets/images/Search.svg';
 import Arrow from '../../../../../assets/images/arrow-right.svg';
 import { showResultsAction, updateParamsAction } from 'store/actions/canvas';
@@ -17,6 +18,7 @@ const SearchForm = (props) => {
   const userEmail = searchParams.get('user_email'); // LMS user email
   const [advanced, setAdvanced] = useState(false);
   const [formValues, setformValues] = useState({});
+  const [invalidFields, setInvalidFields] = useState([]);
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,6 +36,26 @@ const SearchForm = (props) => {
   useEffect(() => {
     setformValues(params);
   }, [params]);
+
+  useEffect(() => {
+    const invalidFields = [];
+    const tomorrow = new Date().setDate(new Date().getDate() + 1);
+    if (formValues.start && formValues.start !== '') {
+      const timestamp = Date.parse(formValues.start);
+      if (isNaN(timestamp) || timestamp < 0 || timestamp > tomorrow) {
+        invalidFields.push('start');
+      }
+    }
+
+    if (formValues.end && formValues.end !== '') {
+      const timestamp = Date.parse(formValues.end);
+      if (isNaN(timestamp) || timestamp < 0 || timestamp > tomorrow) {
+        invalidFields.push('end');
+      }
+    }
+
+    setInvalidFields(invalidFields);
+  }, [formValues]);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -53,7 +75,7 @@ const SearchForm = (props) => {
       <div className="row mt-2">
         <div className="col">
           <div className="form-group">
-            <label>Search *</label>
+            <label>Search</label>
             <input
               type="text"
               className="form-control"
@@ -91,6 +113,8 @@ const SearchForm = (props) => {
               className="form-control"
               name="subjectIds"
               onChange={(e) => {
+                if (formValues.subjectIds.indexOf(e.target.value) !== -1) return;
+
                 setformValues({
                   ...formValues,
                   subjectIds: [...formValues.subjectIds, e.target.value],
@@ -138,6 +162,8 @@ const SearchForm = (props) => {
               className="form-control"
               name="educationLevelIds"
               onChange={(e) => {
+                if (formValues.educationLevelIds.indexOf(e.target.value) !== -1) return;
+
                 setformValues({
                   ...formValues,
                   educationLevelIds: [...formValues.educationLevelIds, e.target.value],
@@ -200,7 +226,7 @@ const SearchForm = (props) => {
           </div>
         </div>
       </div>
-      <p>Updated</p>
+      {(invalidFields.indexOf('start') !== -1 || invalidFields.indexOf('end') !== -1) && <Alert variant="warning">Invalid date.</Alert>}
       <div className="row">
         <div className="col">
           <div className="form-group">
@@ -257,7 +283,7 @@ const SearchForm = (props) => {
         <div className="col text-right">
           <div className="form-group search-btn">
             <img src={SearchImg} alt="logo" />
-            <button className="btn btn-primary search-submit-button" type="submit">
+            <button className="btn btn-primary search-submit-button" type="submit" disabled={invalidFields.length > 0}>
               Search
             </button>
           </div>

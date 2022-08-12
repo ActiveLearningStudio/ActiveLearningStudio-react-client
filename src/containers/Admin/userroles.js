@@ -9,7 +9,7 @@ import updateImg from '../../assets/images/update.svg';
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
-  const AdminList = ['Organization', 'Projects', 'Activities', 'Integrations', 'Users'];
+  const AdminList = ['Organizations', 'Projects', 'Ind. activities', 'Ref. tables', 'Users', 'Integrations'];
 
   // organization all projects
   const projectEditName = [
@@ -124,11 +124,30 @@ function UserRoles() {
   const [authorVideoEdit, setauthorVideoEdit] = useState([]);
   const [authorVideoView, setauthorVideoView] = useState([]);
 
+  // author ind activity
+  const authorIndActivityEditName = ['independent-activity:edit-author'];
+  const authorIndActivityViewName = ['independent-activity:view-author'];
+  const [authorIndActivityEdit, setAuthorIndActivityEdit] = useState([]);
+  const [authorIndActivityView, setAuthorIndActivityView] = useState([]);
+
   // organization Independent activities
-  const independentactivitiesEditName = ['independent-activity:create', 'independent-activity:edit', 'independent-activity:delete'];
-  const independentactivitiesViewName = ['independent-activity:view', 'independent-activity:share', 'independent-activity:duplicate'];
+  const independentactivitiesEditName = [
+    'independent-activity:create',
+    'independent-activity:edit',
+    'independent-activity:delete',
+    'independent-activity:share',
+    'independent-activity:duplicate',
+  ];
+  const independentactivitiesViewName = ['independent-activity:view'];
+
+  const independentactivitiesExportEditName = ['independent-activity:export', 'independent-activity:import'];
+  const independentactivitiesExportViewName = ['independent-activity:view-export'];
+
   const [independentactivitiesEdit, setIndependentactivitiesEdit] = useState([]);
   const [independentactivitiesView, setIndependentactivitiesView] = useState([]);
+
+  const [independentactivitiesExportEdit, setIndependentactivitiesExportEdit] = useState([]);
+  const [independentactivitiesExportView, setIndependentactivitiesExportView] = useState([]);
 
   const [checkRoles, setCheckRoles] = useState('');
 
@@ -222,6 +241,22 @@ function UserRoles() {
     setOrgBrightCoveView(permissionIdArray);
     permissionIdArray = [];
 
+    // indpendent activtiies
+    if (permissionsId) {
+      permissionsId['Independent Activity']?.filter((data) => independentactivitiesEditName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesEdit(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity']?.filter((data) => independentactivitiesExportEditName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesExportEdit(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity'].filter((data) => independentactivitiesViewName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesView(permissionIdArray);
+      permissionIdArray = [];
+      permissionsId['Independent Activity'].filter((data) => independentactivitiesExportViewName.includes(data.name) && permissionIdArray.push(data.id));
+      setIndependentactivitiesExportView(permissionIdArray);
+      permissionIdArray = [];
+    }
+
     // author project
     permissionsId?.Project.filter((data) => authorProjectEditName.includes(data.name) && permissionIdArray.push(data.id));
     setAuthorProjectEdit(permissionIdArray);
@@ -252,6 +287,14 @@ function UserRoles() {
     permissionIdArray = [];
     permissionsId?.Team.filter((data) => authorteamViewName.includes(data.name) && permissionIdArray.push(data.id));
     setTeamView(permissionIdArray);
+    permissionIdArray = [];
+
+    // author ind activity
+    permissionsId?.['Independent Activity'].filter((data) => authorIndActivityEditName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityEdit(permissionIdArray);
+    permissionIdArray = [];
+    permissionsId?.['Independent Activity'].filter((data) => authorIndActivityViewName.includes(data.name) && permissionIdArray.push(data.id));
+    setAuthorIndActivityView(permissionIdArray);
     permissionIdArray = [];
 
     // video team
@@ -363,7 +406,7 @@ function UserRoles() {
                               <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={'Organization'}
+                                  type={'Organiziation'}
                                   permissions={values.permissions}
                                   currentFeatureView={orgView}
                                   currentFeatureEdit={orgEdit}
@@ -378,8 +421,8 @@ function UserRoles() {
                                       setFieldValue={setFieldValue}
                                       type={'Independent activities'}
                                       permissions={values.permissions}
-                                      currentFeatureView={[independentactivitiesView]}
-                                      currentFeatureEdit={[independentactivitiesEdit]}
+                                      currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
+                                      currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
                                       bold
                                     />
                                   </div>
@@ -395,10 +438,10 @@ function UserRoles() {
                                   />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
-                                    type={'Exported activities'}
+                                    type={'Export / Import activities'}
                                     permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesView}
-                                    currentFeatureEdit={independentactivitiesEdit}
+                                    currentFeatureView={independentactivitiesExportView}
+                                    currentFeatureEdit={independentactivitiesExportEdit}
                                   />
                                 </div>
                               </div> */}
@@ -585,6 +628,14 @@ function UserRoles() {
                                   <br />
                                   <NewEdit
                                     setFieldValue={setFieldValue}
+                                    type={'Independent activities'}
+                                    permissions={values.permissions}
+                                    currentFeatureView={authorIndActivityView}
+                                    currentFeatureEdit={authorIndActivityEdit}
+                                  />
+                                  <br />
+                                  <NewEdit
+                                    setFieldValue={setFieldValue}
                                     type={'My interactive video'}
                                     permissions={values.permissions}
                                     currentFeatureView={authorVideoView}
@@ -650,6 +701,15 @@ function UserRoles() {
                                 <br />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
+                                  type={'Independent activities'}
+                                  permissions={values.permissions}
+                                  currentFeatureView={authorIndActivityView}
+                                  currentFeatureEdit={authorIndActivityEdit}
+                                />
+                                <br />
+
+                                <NewEdit
+                                  setFieldValue={setFieldValue}
                                   type={'My interactive video'}
                                   permissions={values.permissions}
                                   currentFeatureView={authorVideoView}
@@ -670,7 +730,7 @@ function UserRoles() {
                             >
                               <NewEdit
                                 setFieldValue={setFieldValue}
-                                type={'Organization'}
+                                type={'Organiziation'}
                                 permissions={values.permissions}
                                 currentFeatureView={orgView}
                                 currentFeatureEdit={orgEdit}
@@ -856,28 +916,28 @@ function UserRoles() {
                                     setFieldValue={setFieldValue}
                                     type={'Independent activities'}
                                     permissions={values.permissions}
-                                    currentFeatureView={[independentactivitiesView]}
-                                    currentFeatureEdit={[independentactivitiesEdit]}
+                                    currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
+                                    currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
                                     bold
                                   />
                                 </div>
                               </div>
                               {/* <h6>User</h6> */}
                               <div className="permission-about d-flex">
-                                {/* <NewEdit
+                                <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={"Users"}
+                                  type={'All independent activities'}
                                   permissions={values.permissions}
-                                  currentFeatureView={userView}
-                                  currentFeatureEdit={userEdit}
+                                  currentFeatureView={independentactivitiesView}
+                                  currentFeatureEdit={independentactivitiesEdit}
                                 />
                                 <NewEdit
                                   setFieldValue={setFieldValue}
-                                  type={"Manage Roles"}
+                                  type={'Export / Import activities'}
                                   permissions={values.permissions}
-                                  currentFeatureView={userRoleView}
-                                  currentFeatureEdit={userRolesEdit}
-                                /> */}
+                                  currentFeatureView={independentactivitiesExportView}
+                                  currentFeatureEdit={independentactivitiesExportEdit}
+                                />
                               </div>
                             </Card.Body>
                           </Tab.Pane>
@@ -903,20 +963,7 @@ function UserRoles() {
   );
 }
 
-export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit }) => {
-  // const [viewOption, setViewOption] = useState(false);
-  // const [editOption, setEditOption] = useState(false);
-  // const [noneOption, setnoneOption] = useState(false);
-  // useEffect(() => {
-  //   console.log(type);
-  //   setViewOption(currentFeatureView.some((i) => permissions.includes(String(i))));
-  //   console.log(currentFeatureView.some((i) => permissions.includes(String(i))));
-  //   setEditOption(currentFeatureEdit.some((i) => permissions.includes(String(i))));
-  //   console.log(currentFeatureEdit.some((i) => permissions.includes(String(i))));
-  //   setnoneOption(!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i))));
-  //   console.log(!currentFeatureEdit.some((i) => permissions.includes(String(i))) && !currentFeatureView.some((i) => permissions.includes(String(i))));
-  // }, [currentFeatureEdit, currentFeatureView]);
-
+export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, currentFeatureView, bold, hideEdit, hideView }) => {
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
@@ -978,9 +1025,11 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
           }
         }}
       >
-        <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
-          View
-        </option>
+        {!hideView && (
+          <option value="view" selected={currentFeatureView.some((i) => permissions.includes(String(i)))}>
+            View
+          </option>
+        )}
         {!hideEdit && (
           <option selected={currentFeatureEdit.some((i) => permissions.includes(String(i)))} value="edit">
             Edit

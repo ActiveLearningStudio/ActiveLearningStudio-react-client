@@ -81,7 +81,7 @@ function Header(props) {
                     <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
                       {user?.first_name[0]}
                     </div>
-                    <p className="header-icon-text">My Profile</p>
+                    <p className="header-icon-text">Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
