@@ -95,11 +95,10 @@ const Media = () => {
                               let updatedMediasSource = [];
                               let media_ids = [];
                               orgVideoSource?.map((videoSource) => {
-                                return media_ids.push(videoSource.id);
+                                return media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) });
                               });
                               orgImageSource?.map((imgSource) => {
-                                console.log('ids', media_ids);
-                                return media_ids.push(imgSource.id);
+                                return media_ids.push({ media_source_id: imgSource.id });
                               });
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgVideoSource.length === 0) {
@@ -203,10 +202,10 @@ const Media = () => {
                               var updatedMediasSource = [];
                               var media_ids = [];
                               orgImageSource?.map((imgSource) => {
-                                return media_ids.push(imgSource.id);
+                                return media_ids.push({ media_source_id: imgSource.id });
                               });
                               orgVideoSource?.map((videoSource) => {
-                                return media_ids.push(videoSource.id);
+                                return media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) });
                               });
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgImageSource.length === 0) {
