@@ -114,7 +114,7 @@ class LoginPage extends React.Component {
     const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
     console.log('domain', domain);
-    if (window.location.host.includes('')) {
+    if (window.location.host.includes('my.currikistudio.org')) {
       window.location.replace('https://currikistudio.org');
     }
 
