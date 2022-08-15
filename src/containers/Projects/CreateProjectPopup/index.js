@@ -18,6 +18,8 @@ import PexelsAPI from 'components/models/pexels';
 import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
+import PexelsSmSvg from 'iconLibrary/mainContainer/PexelsSmSvg';
+import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
 import { getMediaSources } from 'store/actions/admin';
 
 const maxLength80 = maxLength(80);
@@ -295,7 +297,7 @@ let CreateProjectPopup = (props) => {
             <div className="button-flex ">
               {mediaSources?.some((obj) => obj.name === 'Pexels' && obj.media_type === 'Image') && (
                 <div className="pexel" onClick={() => setModalShow(true)}>
-                  <img src={pexel} alt="pexel" />
+                  <PexelsSmSvg primaryColor={'#515151'} />
                   <p>Select from Pexels</p>
                 </div>
               )}
@@ -306,7 +308,7 @@ let CreateProjectPopup = (props) => {
                     openFile.current.click();
                   }}
                 >
-                  <img src={computer} alt="" />
+                  <MyDeviceSmSvg primaryColor={'#515151'} />
                   <p>Upload from My Device</p>
                 </div>
               )}

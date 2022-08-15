@@ -69,6 +69,10 @@ import CreatePlaylistPopup from './CreatePlaylistPopup';
 import SearchInterface from 'containers/Search';
 import SelectActivity from './SelectActivity';
 import { faCheckSquare, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
+import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
+import ApprovedSmSvg from 'iconLibrary/mainContainer/ApprovedSmSvg';
+import PlusSmSvg from 'iconLibrary/mainContainer/PlusSmSvg';
 
 function PlaylistsPage(props) {
   const dispatch = useDispatch();
@@ -642,34 +646,15 @@ function PlaylistsPage(props) {
                                     titleRef.current.focus();
                                   }}
                                 /> */}
-                                  <svg
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 14 14"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                  <EditSmSvg
+                                    primaryColor={primaryColor}
                                     className="ml-3"
                                     onClick={() => {
                                       setEditName(true);
                                       console.log(titleRef);
                                       titleRef.current.focus();
                                     }}
-                                  >
-                                    <path
-                                      d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
-                                      stroke={primaryColor}
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                    <path
-                                      d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
-                                      stroke={primaryColor}
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
+                                  />
                                 </>
                               )}
                           </div>
@@ -698,33 +683,16 @@ function PlaylistsPage(props) {
                                 //     descriptionRef.current.focus();
                                 //   }}
                                 // />
-                                <svg
-                                  width="14"
-                                  height="14"
-                                  viewBox="0 0 14 14"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="ml-4"
-                                  onClick={() => {
-                                    setEditDescription(true);
-                                    descriptionRef.current.focus();
-                                  }}
-                                >
-                                  <path
-                                    d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
-                                    stroke={primaryColor}
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
+                                <>
+                                  <EditSmSvg
+                                    primaryColor={primaryColor}
+                                    className="ml-4"
+                                    onClick={() => {
+                                      setEditDescription(true);
+                                      descriptionRef.current.focus();
+                                    }}
                                   />
-                                  <path
-                                    d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
-                                    stroke={primaryColor}
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </svg>
+                                </>
                               )}
                           </div>
                           <div className="new-playlist status-pref">
@@ -758,23 +726,7 @@ function PlaylistsPage(props) {
                                     <FontAwesomeIcon icon="exclamation-circle" color={primaryColor} />
                                   ) : selectedProject?.indexing_text === 'APPROVED' ? (
                                     <>
-                                      {/* <img src={Correct} alt="approved" /> */}
-                                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                          d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
-                                          stroke={primaryColor}
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                        <path
-                                          d="M10.836 6.2002L7.23597 9.8002L5.59961 8.16383"
-                                          stroke={primaryColor}
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                        />
-                                      </svg>
+                                      <ApprovedSmSvg primaryColor={primaryColor} />
                                     </>
                                   ) : (
                                     <FontAwesomeIcon icon="times-circle" color={primaryColor} />
@@ -804,11 +756,7 @@ function PlaylistsPage(props) {
                     <div className="new-playlister">
                       {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-playlist') : permission?.Playlist?.includes('playlist:create')) && (
                         <button style={{ whiteSpace: 'nowrap' }} type="button" className="create-playlist-btn" onClick={handleShowCreatePlaylistModal}>
-                          {/* <img src={AddBtn} alt="add" className="mr-2" /> */}
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-2">
-                            <path d="M1 5C1.00573 5 6.33572 5.00005 9 5.00008" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M5 9C5 8.99427 5 3.66428 5 1" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
+                          <PlusSmSvg primaryColor={primaryColor} className="mr-2" />
                           Create new playlist
                         </button>
                       )}

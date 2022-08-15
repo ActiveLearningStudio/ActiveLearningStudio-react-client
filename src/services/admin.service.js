@@ -559,7 +559,7 @@ const deleteActivityLayout = (subOrgId, id) =>
     });
 
 // eslint-disable-next-line camelcase
-const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, order_by_type) =>
+const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') =>
   httpService
     // eslint-disable-next-line camelcase
     .get(
@@ -572,7 +572,6 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, ord
       errorCatcher(err.response.data);
       return Promise.reject();
     });
-
 //media sources for organizations
 const getAllMediaSources = () =>
   httpService

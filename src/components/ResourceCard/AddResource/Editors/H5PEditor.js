@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable max-len */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -9,7 +9,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
-  const { match, h5pParams, resource, loadH5pSettings, handleCreateResourceSubmit, upload } = props;
+  const {
+ match, h5pParams, resource, loadH5pSettings, handleCreateResourceSubmit, upload,
+} = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -54,7 +56,7 @@ const H5PEditor = (props) => {
         resource.newResource.activity.h5pLibType,
         payload,
         resource.newResource.metadata,
-        match.params.projectId
+        match.params.projectId,
       );
       return;
     }
@@ -82,7 +84,7 @@ const H5PEditor = (props) => {
           payload,
           resource.newResource.metadata,
           match.params.projectId,
-          props
+          props,
         );
       }
     }

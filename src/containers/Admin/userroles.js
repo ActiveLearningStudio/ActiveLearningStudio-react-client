@@ -414,7 +414,7 @@ function UserRoles() {
                                 />
                               </div>
                               {/* Independent activities Start */}
-                              <div className="permission">
+                              {/* <div className="permission">
                                 <div className="selection-tab-custom">
                                   <div className="form-group custom-select-style-for-sub">
                                     <NewEdit
@@ -427,7 +427,7 @@ function UserRoles() {
                                     />
                                   </div>
                                 </div>
-                                {/* <h6>Project</h6> */}
+
                                 <div className="permission-about">
                                   <NewEdit
                                     setFieldValue={setFieldValue}
@@ -444,7 +444,7 @@ function UserRoles() {
                                     currentFeatureEdit={independentactivitiesExportEdit}
                                   />
                                 </div>
-                              </div>
+                              </div> */}
                               {/* Independent activities End */}
                               <div className="permission">
                                 <div className="selection-tab-custom">
