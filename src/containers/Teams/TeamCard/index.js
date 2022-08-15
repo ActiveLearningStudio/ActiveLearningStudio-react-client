@@ -59,11 +59,12 @@ function TeamCard(props) {
                 projects,
                 noovo_group_title,
                 // eslint-disable-next-line comma-dangle
-              })
+              }),
             );
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
           to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+          // className="title m-0"
         >
           {name}
         </Link>
@@ -87,7 +88,7 @@ function TeamCard(props) {
                       projects,
                       noovo_group_title,
                       // eslint-disable-next-line comma-dangle
-                    })
+                    }),
                   );
                 }}
               >

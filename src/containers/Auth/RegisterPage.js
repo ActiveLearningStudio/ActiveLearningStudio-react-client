@@ -250,7 +250,7 @@ class RegisterPage extends React.Component {
               <div className="d-flex align-items-center justify-content-between">
                 <h1 className="auth-title mb2 mb-5">
                   Welcome
-                  {!clicked ? ' to Curriki' : `, ${firstName}`}
+                  {!clicked ? ` to ${window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}` : `, ${firstName}`}
                 </h1>
 
                 {/* <strong>OR</strong> */}

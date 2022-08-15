@@ -72,9 +72,7 @@ export const getOrganizationFirstTime = (id) => async (dispatch) => {
 export const getAllOrganizationforSSO = () => async (dispatch) => {
   const result = await organization.getAll();
 
-  const permissionsResult = await organization.allPermission(
-    result?.data[0].id
-  );
+  const permissionsResult = await organization.allPermission(result?.data[0].id);
   dispatch({
     type: actionTypes.SET_ALL_PERSMISSION,
     payload: permissionsResult.permissions,
@@ -148,8 +146,7 @@ export const clearSuborgList = () => (dispatch) => {
   });
 };
 
-export const uploadImage = (id, formData) => () =>
-  organization.upload(id, formData);
+export const uploadImage = (id, formData) => () => organization.upload(id, formData);
 
 export const uploadFaviconIcon = (id, formData) => () =>
   organization.uploadFavicon(id, formData);
@@ -198,7 +195,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
       payload: newOrg.suborganization,
     });
     dispatch({
-      type: "CLEAR_ACTIVE_FORM",
+      type: 'CLEAR_ACTIVE_FORM',
     });
   });
   return result;
@@ -223,9 +220,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     favicon: data.favicon,
     parent_id: parent,
     domain: data.domain,
-    account_id: data.account_id || "",
-    api_key: data.api_key || "",
-    unit_path: data.unit_path || "",
+    account_id: data.account_id || '',
+    api_key: data.api_key || '',
+    unit_path: data.unit_path || '',
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || undefined,
     gcr_project_visibility: data?.gcr_project_visibility || false,
@@ -264,7 +261,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       });
     }
     dispatch({
-      type: "CLEAR_ACTIVE_FORM",
+      type: 'CLEAR_ACTIVE_FORM',
     });
   });
   return result;
@@ -437,8 +434,8 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
 
 export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
   Swal.fire({
-    title: "Please Wait !",
-    html: "Updating Role ...",
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();
@@ -450,7 +447,7 @@ export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
       dispatch(getAllPermission(id));
     }
     Swal.fire({
-      icon: "success",
+      icon: 'success',
       title: res?.message,
     });
   });
@@ -458,8 +455,8 @@ export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
 
 export const addRole = (id, data) => async () => {
   Swal.fire({
-    title: "Please Wait !",
-    html: "Updating Role ...",
+    title: 'Please Wait !',
+    html: 'Updating Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();
@@ -468,7 +465,7 @@ export const addRole = (id, data) => async () => {
   const result = organization.addRole(id, data);
   result.then((res) => {
     Swal.fire({
-      icon: "success",
+      icon: 'success',
       title: res?.message,
     });
   });

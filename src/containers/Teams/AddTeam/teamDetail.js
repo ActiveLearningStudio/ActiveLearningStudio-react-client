@@ -23,7 +23,7 @@ const TeamDetail = ({ setPageLoad }) => {
   return (
     <div className="add-team-page">
       <div className={`${toggleLeft ? 'width90' : ''} left`}>
-        <div className="organization-name">Curriki Studio</div>
+        <div className="organization-name">CurrikiStudio</div>
         <div className="title-image">
           <div>
             <h1 className="title">Team #1</h1>

@@ -64,24 +64,11 @@ function Header(props) {
                   }}
                 >
                   {/* <img src={help} alt="help" /> */}
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
-                      stroke={primaryColor}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M9.38086 9.30012C9.59245 8.69862 10.0101 8.19142 10.5598 7.86834C11.1095 7.54527 11.7559 7.42717 12.3843 7.53496C13.0128 7.64276 13.5828 7.96949 13.9934 8.4573C14.4041 8.9451 14.6288 9.56249 14.6279 10.2001C14.6279 12.0001 11.9279 12.9001 11.9279 12.9001"
-                      stroke={primaryColor}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M12 16.5H12.0094" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 21C17.4706 21 21.5 16.9706 21.5 12C21.5 7.02944 17.4706 3 12.5 3C7.52944 3 3.5 7.02944 3.5 12C3.5 16.9706 7.52944 21 12.5 21Z" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.88086 9.30012C10.0925 8.69862 10.5101 8.19142 11.0598 7.86834C11.6095 7.54527 12.2559 7.42717 12.8843 7.53496C13.5128 7.64276 14.0828 7.96949 14.4934 8.4573C14.9041 8.9451 15.1288 9.56249 15.1279 10.2001C15.1279 12.0001 12.4279 12.9001 12.4279 12.9001" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12.5 16.5H12.5094" stroke={primaryColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-
                   <p className="header-icon-text">Help</p>
                 </div>
               </li>
