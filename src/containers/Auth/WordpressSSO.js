@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, connect } from 'react-redux';
 import QueryString from 'query-string';
@@ -13,6 +13,7 @@ import './style.scss';
 function WordpressSSO(props) {
 	const { error, settings } = props;
   const { clientid, code, state } = QueryString.parse(window.location.search);
+  const form = useRef(null);
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -20,6 +21,12 @@ function WordpressSSO(props) {
 
     dispatch(WordpressSSOLoginAction(code, state)).then(() => window.location = window.location.host);
   }, [code]);
+
+  useEffect(() => {
+    if (settings === null || form.current === null) return;
+
+    form.current.submit();
+  }, [settings]);
 
 	return (
 		<div className="auth-page">
@@ -33,7 +40,7 @@ function WordpressSSO(props) {
             <h1 className="auth-title">Welcome To CurrikiStudio</h1>
             {settings && (
               <div className="text-center mt-3">
-                <form action={`${settings.lms_url}/authorize`} method="GET">
+                <form action={`${settings.lms_url}/authorize`} method="GET" ref={form}>
                   <input type="hidden" name="state" value={clientid} />
                   <input type="hidden" name="scope" value="basic" />
                   <input type="hidden" name="response_type" value="code" />
