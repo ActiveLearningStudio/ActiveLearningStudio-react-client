@@ -15,6 +15,8 @@ import { useHistory } from 'react-router-dom';
 import { getSingleLayoutActivities, loadResourceTypesAction } from 'store/actions/resource';
 import * as actionTypes from 'store/actionTypes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 
 const ActivityLayout = (props) => {
   const [allActivitiesSingle, setAllSingleActivities] = useState(null);
@@ -79,12 +81,8 @@ const ActivityLayout = (props) => {
           <HeadingOne text="Select Activity" color="#084892" />
         </div>
         <div className="back-button" id="back-button-none-bg" onClick={() => changeScreenHandler('layout')}>
-          {/* <img src={BackButton} alt="back button " /> */}
-          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
-            <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <p className="">Cancel</p>
+          <BackToSmSvg primaryColor={primaryColor} />
+          <p style={{ marginLeft: '8px' }}>Cancel</p>
         </div>
       </div>
       <div className="activity-layout-paragraph">
@@ -108,7 +106,8 @@ const ActivityLayout = (props) => {
                 }
               }}
             />
-            <img src={searchicon} className="search-icon" alt="" />
+
+            <SearchInputMdSvg primaryColor={primaryColor} className="search-icon" />
           </div>
           <div class="dropdown-activity-select filter_ml_50">
             <div className="dropdown-activity-select-inner-div">

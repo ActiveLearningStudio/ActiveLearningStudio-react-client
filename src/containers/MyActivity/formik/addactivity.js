@@ -19,6 +19,7 @@ import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admi
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
 // const withOutExplore = [
 //   "Interactive Video",
@@ -199,12 +200,8 @@ const AddActivity = (props) => {
                 changeScreenHandler('layout', 'create');
               }}
             >
-              {/* <img src={BackButton} alt="back button " /> */}
-              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
-                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <p className="">Cancel</p>
+              <BackToSmSvg primaryColor={primaryColor} />
+              <p style={{ marginLeft: '8px' }}>Cancel</p>
             </div>
             {/* {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">

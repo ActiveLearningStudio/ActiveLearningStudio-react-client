@@ -36,6 +36,7 @@ import {
   faVideoSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
 const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide, isbackHide }) => {
   const dispatch = useDispatch();
@@ -106,12 +107,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
               }}
               onClick={() => changeScreenHandler('layout')}
             >
-              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-
-              <p style={{ margin: 0 }} className="">
+              <BackToSmSvg primaryColor={primaryColor} />
+              <p style={{ margin: 0, marginLeft: '8px' }} className="">
                 Back to options
               </p>
             </div>

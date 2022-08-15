@@ -26,6 +26,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { validLowerCase, validNumber, validUpperCase } from './Regex';
 import PasswordValidImage from '../../assets/images/svg/password_valid.svg';
 import PasswordInValidImage from '../../assets/images/svg/password_invalid.svg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 // eslint-disable-next-line no-restricted-globals
 const query = QueryString.parse(location.search);
 
@@ -317,7 +318,8 @@ class RegisterPage extends React.Component {
                             <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                               Password
                               <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
-                                <img src={eye} alt="show-password" />
+                                {/* <img src={eye} alt="show-password" /> */}
+                                <PreviewSmSvg primaryColor={'#515151'} />
                                 Show Password
                               </div>
                             </span>
