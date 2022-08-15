@@ -68,6 +68,7 @@ function TeamCard(props) {
             dispatch(getTeamPermission(organization.currentOrganization.id, id));
           }}
           to={`/org/${organization.currentOrganization?.domain}/teams/${id}`}
+          // className="title m-0"
         >
           {name}
         </Link>

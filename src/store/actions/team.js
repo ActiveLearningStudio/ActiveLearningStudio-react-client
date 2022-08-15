@@ -1,3 +1,4 @@
+/* eslint-disable */
 import teamService from 'services/team.service';
 import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
@@ -40,36 +41,42 @@ export const showAssigningAction = () => async (dispatch) => {
   });
 };
 
-export const loadTeamsAction = (query = '') => async (dispatch) => {
-  const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
-  try {
-    dispatch({
-      type: actionTypes.PAGE_LOADING,
-    });
+export const loadTeamsAction =
+  (query = '') =>
+  async (dispatch) => {
+    const centralizedState = store.getState();
+    const {
+      organization: { activeOrganization },
+    } = centralizedState;
+    try {
+      dispatch({
+        type: actionTypes.PAGE_LOADING,
+      });
 
-    const { teams } = await teamService.getAll(activeOrganization?.id, query);
+      const { teams } = await teamService.getAll(activeOrganization?.id, query);
 
-    dispatch({
-      type: actionTypes.LOAD_TEAMS,
-      payload: { teams },
-    });
+      dispatch({
+        type: actionTypes.LOAD_TEAMS,
+        payload: { teams },
+      });
 
-    dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
-    });
-  } catch (e) {
-    dispatch({
-      type: actionTypes.PAGE_LOADING_COMPLETE,
-    });
+      dispatch({
+        type: actionTypes.PAGE_LOADING_COMPLETE,
+      });
+    } catch (e) {
+      dispatch({
+        type: actionTypes.PAGE_LOADING_COMPLETE,
+      });
 
-    throw e;
-  }
-};
+      throw e;
+    }
+  };
 
 export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
@@ -96,7 +103,9 @@ export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
 
 export const createTeamAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
     const {
@@ -112,22 +121,23 @@ export const createTeamAction = (data) => async (dispatch) => {
     } = data;
     // eslint-disable-next-line camelcase
     if (noovo_group_title) {
-      const { team } = await teamService.create(
-        data, activeOrganization?.id,
-      );
+      const { team } = await teamService.create(data, activeOrganization?.id);
       dispatch({
         type: actionTypes.CREATE_TEAM_SUCCESS,
         payload: { team },
       });
       return team;
     }
-    const { team } = await teamService.create({
-      name,
-      description,
-      users,
-      projects,
-      organization_id,
-    }, activeOrganization?.id);
+    const { team } = await teamService.create(
+      {
+        name,
+        description,
+        users,
+        projects,
+        organization_id,
+      },
+      activeOrganization?.id
+    );
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
       payload: { team },
@@ -149,7 +159,9 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
 
 export const loadTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_TEAM_REQUEST,
@@ -170,7 +182,9 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
 
 export const updateTeamAction = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_TEAM_REQUEST });
 
@@ -189,7 +203,9 @@ export const updateTeamAction = (teamId, data) => async (dispatch) => {
 
 export const deleteTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_TEAM_REQUEST });
 
@@ -256,7 +272,9 @@ export const inviteMemberAction = (teamId, email) => async (dispatch) => {
 
 export const inviteMembersAction = (teamId, users, note) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   try {
     dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 
@@ -392,7 +410,9 @@ export const clearTeamPermissions = () => (dispatch) => {
 
 export const getTeamProject = (query, page) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { currentOrganization } } = centralizedState;
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
   const result = await teamService.getTeamProject(currentOrganization?.id, query, page);
   dispatch({
     type: actionTypes.GET_TEAM_PROJECTS,
@@ -403,7 +423,9 @@ export const getTeamProject = (query, page) => async (dispatch) => {
 
 export const changeUserRole = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   await teamService.changeUserRole(activeOrganization?.id, teamId, data);
   Swal.fire({
     icon: 'success',

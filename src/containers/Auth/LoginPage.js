@@ -114,6 +114,7 @@ class LoginPage extends React.Component {
   render() {
     const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
+    console.log('domain', domain);
 
     return (
       <div className="auth-page">
@@ -121,7 +122,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title ">Welcome to Curriki</h1>
+              <h1 className="auth-title ">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -198,7 +199,7 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title">Welcome to Curriki</h1>
+              <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
             </div>
             {/* <p className='auth-Pdescrip'>Start making a difference in the way learning experiences are created.</p> */}
             <p className="auth-Pdescrip"></p>
