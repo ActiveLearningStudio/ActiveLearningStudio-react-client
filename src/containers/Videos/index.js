@@ -55,7 +55,7 @@ const Index = ({ activities }) => {
   const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
 
   const videos = useSelector((state) => state.videos);
-  const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { activeOrganization, currentOrganization, permission } = useSelector((state) => state.organization);
   const { allActivities, isLoading, islazyLoader } = useSelector((state) => state.activities);
   const [activescreenType, setActiveScreenPage] = useState(null);
   const { allVideos } = videos;
@@ -70,13 +70,13 @@ const Index = ({ activities }) => {
   const [isbackHide, setisbackHide] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (activeOrganization && !activities) {
-      dispatch(getAllVideos(activeOrganization.id));
+    if (currentOrganization && !activities) {
+      dispatch(getAllVideos(currentOrganization.id));
     }
-    if (activeOrganization && activities) {
-      dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize));
+    if (currentOrganization && activities) {
+      dispatch(allIndActivity(currentOrganization.id, ActivePage, defaultSize));
     }
-  }, [activeOrganization, activities]);
+  }, [currentOrganization, activities]);
 
   useEffect(() => {
     if (activities) {
@@ -124,7 +124,7 @@ const Index = ({ activities }) => {
 
   useEffect(() => {
     if (ActivePage !== 1) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
+      dispatch(allIndActivity(currentOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
@@ -190,7 +190,7 @@ const Index = ({ activities }) => {
                   <div className="topHeading">
                     <div>
                       <TopHeading
-                        description={activeOrganization.name}
+                        description={currentOrganization.name}
                         image={VideoImage}
                         svgImage={
                           activities ? (
@@ -203,7 +203,7 @@ const Index = ({ activities }) => {
                         }
                         heading={activities ? 'My Activities' : 'My interactive videos'}
                         color="#084892"
-                        className={activeOrganization && 'video-top-heading-custom'}
+                        className={currentOrganization && 'video-top-heading-custom'}
                       />
                     </div>
                     <div className="search-bar-btn">
@@ -283,10 +283,10 @@ const Index = ({ activities }) => {
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           setActivePage(1);
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             if (!e.target.value.trim()) {
                               setActiveScreenPage(null);
-                              dispatch(getAllVideos(activeOrganization.id));
+                              dispatch(getAllVideos(currentOrganization.id));
                             }
                           }
                         }}
@@ -296,9 +296,9 @@ const Index = ({ activities }) => {
                         primaryColor={primaryColor}
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             setActiveScreenPage(null);
-                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                            dispatch(getSearchVideoCard(currentOrganization.id, searchQuery));
                           }
                         }}
                       />
@@ -335,7 +335,7 @@ const Index = ({ activities }) => {
                               setActivePage(1);
                               if (!e.target.value) {
                                 setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
+                                dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
                               }
                             }}
                             placeholder="Search My Activities..."
@@ -343,9 +343,9 @@ const Index = ({ activities }) => {
                           <SearchInputMdSvg
                             primaryColor={primaryColor}
                             onClick={() => {
-                              if (activeOrganization) {
+                              if (currentOrganization) {
                                 setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
+                                dispatch(allIndActivity(currentOrganization?.id, ActivePage, defaultSize, searchQuery));
                               }
                             }}
                             style={{ cursor: 'pointer' }}
@@ -548,7 +548,7 @@ const Index = ({ activities }) => {
                               totalItemsCount={allVideos?.meta?.total}
                               onChange={(e) => {
                                 setActivePage(e);
-                                dispatch(getAllVideos(activeOrganization.id, e));
+                                dispatch(getAllVideos(currentOrganization.id, e));
                               }}
                             />
                           </div>
