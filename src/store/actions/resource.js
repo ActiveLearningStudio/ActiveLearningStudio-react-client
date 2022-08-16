@@ -22,9 +22,9 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     });
     const centralizedState = store.getState();
     const {
-      organization: { activeOrganization },
+      organization: { activeOrganization, currentOrganization },
     } = centralizedState;
-    const result = await resourceService.getTypes(activeOrganization?.id);
+    const result = await resourceService.getTypes(currentOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
