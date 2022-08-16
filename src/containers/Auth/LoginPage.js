@@ -115,7 +115,9 @@ class LoginPage extends React.Component {
     const { isLoading, domain } = this.props;
     console.log('domain', domain);
     if (window.location.host.includes('my.currikistudio.org')) {
-      window.location.replace('https://currikistudio.org');
+      if (window.location.pathname === '/login/' || window.location.pathname === '/login') {
+        window.location.replace('https://currikistudio.org');
+      }
     }
 
     return (
