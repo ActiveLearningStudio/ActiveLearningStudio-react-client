@@ -74,7 +74,9 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
           setModalShow(false);
         }}
         setSelectedVideoId={setSelectedVideoId}
+        selectedVideoId={selectedVideoId}
         setSelectedVideoIdKaltura={setSelectedVideoIdKaltura}
+        selectedVideoIdKaltura={selectedVideoIdKaltura}
         setSelectedVideoIdVimeo={setSelectedVideoIdVimeo}
         selectedVideoIdVimeo={selectedVideoIdVimeo}
         showSidebar={showSidebar}
@@ -533,8 +535,27 @@ const FormikVideo = ({
         innerRef={formRef}
         validate={(values) => {
           const errors = {};
+          let youtubeLinkformat = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/;
+          let komodoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(komododecks\.com\/recordings\/)([A-Za-z0-9]+)$/;
+          let kalturaformat = /^[0-9]+$/;
           if (!values.videoUrl) {
             errors.videoUrl = 'Required';
+          }
+          if (values.videoUrl && platformName === 'Brightcove' && !values.videoUrl?.match(kalturaformat)) {
+            errors.videoUrl = 'Not a Valid ID';
+          }
+          if (values.videoUrl && platformName === 'Youtube' && !values.videoUrl?.match(youtubeLinkformat)) {
+            errors.videoUrl = 'Not a youtube link';
+          }
+          if (values.videoUrl && platformName === 'Vimeo' && !values.videoUrl?.match(vimeoLinkformat)) {
+            errors.videoUrl = 'Not a Vimeo url';
+          }
+          if (values.videoUrl && platformName === 'Komodo' && !values.videoUrl?.match(komodoLinkformat)) {
+            errors.videoUrl = 'Not a komodo url';
+          }
+          if (values.videoUrl && platformName === 'Kaltura' && !values.videoUrl?.includes('kaltura.com')) {
+            errors.videoUrl = 'Not a kaltura url';
           }
           return errors;
         }}

@@ -15,7 +15,7 @@ import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos,
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platformName, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo } = props;
+  const { platformName, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo, selectedVideoIdKaltura, selectedVideoId } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [vimeo, setVimeo] = useState(null);
@@ -55,6 +55,8 @@ const BrightcoveModel = (props) => {
       }
     })();
   }, [platformName]);
+
+  console.log('cmsVideo', cmsVideo);
   useEffect(() => {
     (async () => {
       if (activeCms) {
@@ -129,7 +131,7 @@ const BrightcoveModel = (props) => {
                     </div>
                     <div className="NetSuite-section-searching">
                       <div className="section-input-search">
-                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or id..." />
+                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or video id..." />
                         <button
                           onClick={async () => {
                             if (platformName == 'Brightcove') {
@@ -220,7 +222,7 @@ const BrightcoveModel = (props) => {
                                   <tr>
                                     <th>Name</th>
                                     <th>Created</th>
-                                    <th>Video</th>
+                                    <th>Video Id</th>
                                     <th>Updated At</th>
                                   </tr>
                                 </thead>
@@ -233,9 +235,10 @@ const BrightcoveModel = (props) => {
                                             <input
                                               name="video"
                                               onChange={() => {
-                                                props.setSelectedVideoId(data.id);
+                                                props?.setSelectedVideoId(data.id);
                                               }}
                                               type="radio"
+                                              // checked={selectedVideoId === data.id ? true : false}
                                             />
                                             <div className="first-col-image-name">
                                               <img src={data?.images?.thumbnail?.src} className="image-size" />
@@ -274,9 +277,12 @@ const BrightcoveModel = (props) => {
                                   pageRangeDisplayed={7}
                                   itemsCountPerPage={6}
                                   totalItemsCount={totalCount}
-                                  onChange={(e) => {
+                                  onChange={async (e) => {
                                     //const newOffset = offset + 1;
+                                    // setPaginationCounter(e);
                                     setOffset(e - 1);
+                                    // const result = await dispatch(getBrightVideos('', e, 6));
+                                    // setcmsVideo(result);
                                   }}
                                 />
                               )}
@@ -313,6 +319,7 @@ const BrightcoveModel = (props) => {
                                                 setSelectedVideoIdKaltura(data.dataUrl);
                                               }}
                                               type="radio"
+                                              checked={selectedVideoIdKaltura === data.dataUrl ? true : false}
                                             />
                                             <img src={data?.thumbnailUrl} className="image-size" />
                                             <span>{data.name}</span>
