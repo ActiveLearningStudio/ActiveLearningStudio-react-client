@@ -75,7 +75,7 @@ function LtiProjectShared(props) {
           <div className="information-clone-model">
             {!clone.selectedProjectstoAdd && (
               <>
-                <p>
+                <p id="information-clone-model-parap">
                   Select a {clone.clone.model === 'Activity' ? 'Playlist' : 'Project'} from your library that you would like to place this {clone.clone.model}.
                 </p>
 
@@ -276,7 +276,7 @@ function LtiProjectShared(props) {
                                                     }}
                                                     className={`copy-here ${activePlaylist === counterPlaylist + counterTop + 1 ? 'copy-here-selected' : 'copy-here-unselected'}`}
                                                   >
-                                                    <span>Move Here</span>
+                                                    <span className="copy-here-span">Move Here</span>
                                                   </div>
                                                 </div>
                                               </span>
