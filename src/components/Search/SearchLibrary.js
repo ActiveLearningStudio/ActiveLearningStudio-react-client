@@ -44,6 +44,156 @@ const SearchLibrary = (props) => {
     setisLoader,
   } = props;
 
+  const onSubmit = async () => {
+    setisLoader(true);
+    setFromDate(undefined);
+    setToDate(undefined);
+    setSearch(null);
+    setActiveTab(fromTeam ? 'projects' : 'total');
+    if (searchInput?.length > 255) {
+      Swal.fire('Character limit should be less than 255.');
+    } else if (activeMainSearchType === 'Projects') {
+      // Swal.fire({
+      //   title: 'Searching...', // add html attribute if you want or remove
+      //   html: 'We are fetching results for you!',
+      //   allowOutsideClick: false,
+      //   onBeforeOpen: () => {
+      //     Swal.showLoading();
+      //   },
+      // });
+      const dataSend = {
+        phrase: searchInput?.trim(),
+        subjectArray: activeSubject,
+        gradeArray: activeEducation,
+        authorTagsArray: activeAuthorTag,
+        standardArray: activeType,
+        author: authorName || undefined,
+        fromDate: fromdate || undefined,
+        toDate: todate || undefined,
+        type: searchType,
+        from: 0,
+        size: 20,
+        no_words: noWords || undefined,
+      };
+      console.log(dataSend);
+      const result = await dispatch(simpleSearchAction(dataSend));
+      setTotalCount(result.meta?.total);
+      const tempEducation = [];
+      const tempSubject = [];
+      const tempTag = [];
+      const tempAuthor = [];
+      if (activeEducation) {
+        activeEducation.forEach((edu) => {
+          if (String(edu).includes('&')) {
+            const temp = String(edu).replace('&', 'and');
+            tempEducation.push(temp);
+          } else {
+            tempEducation.push(edu);
+          }
+        });
+        setActiveEducation(tempEducation);
+      }
+      if (activeSubject) {
+        activeSubject.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempSubject.push(temp);
+          } else {
+            tempSubject.push(sub);
+          }
+        });
+        setActiveSubject(tempSubject);
+      }
+      if (activeAuthorTag) {
+        activeAuthorTag.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempAuthor.push(temp);
+          } else {
+            tempAuthor.push(sub);
+          }
+        });
+        setActiveAuthorTag(tempAuthor);
+      }
+      if (!fromTeam) {
+        // eslint-disable-next-line max-len
+        // history.push(
+        //   `/org/${
+        //     currentOrganization?.domain
+        //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+        // );
+      }
+    } else if (activeMainSearchType === 'Independent activities') {
+      // Swal.fire({
+      //   title: 'Searching...', // add html attribute if you want or remove
+      //   html: 'We are fetching results for you!',
+      //   allowOutsideClick: false,
+      //   onBeforeOpen: () => {
+      //     Swal.showLoading();
+      //   },
+      // });
+      let dataSend;
+      // eslint-disable-next-line prefer-const
+      dataSend = {
+        query: searchInput?.trim(),
+        subjectArray: activeSubject,
+        gradeArray: activeEducation,
+        authorTagsArray: activeAuthorTag,
+        authors: authorName || undefined,
+        standardArray: activeType,
+        from: 0,
+        size: 20,
+        no_words: noWords || undefined,
+      };
+      const result = await dispatch(searchIndependentActivitiesAction(dataSend, 'showcase_activities'));
+      setTotalCount(result?.meta?.total);
+      const tempEducation = [];
+      const tempSubject = [];
+      const tempTag = [];
+      if (activeEducation) {
+        activeEducation.forEach((edu) => {
+          if (String(edu).includes('&')) {
+            const temp = String(edu).replace('&', 'and');
+            tempEducation.push(temp);
+          } else {
+            tempEducation.push(edu);
+          }
+        });
+        setActiveEducation(tempEducation);
+      }
+      if (activeSubject) {
+        activeSubject.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempSubject.push(temp);
+          } else {
+            tempSubject.push(sub);
+          }
+        });
+        setActiveSubject(tempSubject);
+      }
+      if (activeAuthorTag) {
+        activeAuthorTag.forEach((sub) => {
+          if (String(sub).includes('&')) {
+            const temp = String(sub).replace('&', 'and');
+            tempTag.push(temp);
+          } else {
+            tempTag.push(sub);
+          }
+        });
+        setActiveAuthorTag(tempTag);
+      }
+      if (!fromTeam) {
+        // eslint-disable-next-line max-len
+        // history.push(
+        //   `/org/${
+        //     currentOrganization?.domain
+        //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+        // );
+      }
+    }
+    // setModalShow(true);
+  };
   return (
     <Accordion defaultActiveKey="0">
       <Card>
@@ -64,6 +214,11 @@ const SearchLibrary = (props) => {
                 }}
                 type="search"
                 placeholder="Search"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    onSubmit();
+                  }
+                }}
               />
 
               <div className="author-label">Does not contain</div>
@@ -77,6 +232,11 @@ const SearchLibrary = (props) => {
                       setNoWords(target.value);
                     } else {
                       setNoWords('');
+                    }
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      onSubmit();
                     }
                   }}
                 />
@@ -94,161 +254,14 @@ const SearchLibrary = (props) => {
                       setAuthor('');
                     }
                   }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      onSubmit();
+                    }
+                  }}
                 />
               </div>
-              <div
-                className="src-btn"
-                onClick={async () => {
-                  setisLoader(true);
-                  setFromDate(undefined);
-                  setToDate(undefined);
-                  setSearch(null);
-                  setActiveTab(fromTeam ? 'projects' : 'total');
-                  if (searchInput?.length > 255) {
-                    Swal.fire('Character limit should be less than 255.');
-                  } else if (activeMainSearchType === 'Projects') {
-                    // Swal.fire({
-                    //   title: 'Searching...', // add html attribute if you want or remove
-                    //   html: 'We are fetching results for you!',
-                    //   allowOutsideClick: false,
-                    //   onBeforeOpen: () => {
-                    //     Swal.showLoading();
-                    //   },
-                    // });
-                    const dataSend = {
-                      phrase: searchInput?.trim(),
-                      subjectArray: activeSubject,
-                      gradeArray: activeEducation,
-                      authorTagsArray: activeAuthorTag,
-                      standardArray: activeType,
-                      author: authorName || undefined,
-                      fromDate: fromdate || undefined,
-                      toDate: todate || undefined,
-                      type: searchType,
-                      from: 0,
-                      size: 20,
-                      no_words: noWords || undefined,
-                    };
-                    console.log(dataSend);
-                    const result = await dispatch(simpleSearchAction(dataSend));
-                    setTotalCount(result.meta?.total);
-                    const tempEducation = [];
-                    const tempSubject = [];
-                    const tempTag = [];
-                    const tempAuthor = [];
-                    if (activeEducation) {
-                      activeEducation.forEach((edu) => {
-                        if (String(edu).includes('&')) {
-                          const temp = String(edu).replace('&', 'and');
-                          tempEducation.push(temp);
-                        } else {
-                          tempEducation.push(edu);
-                        }
-                      });
-                      setActiveEducation(tempEducation);
-                    }
-                    if (activeSubject) {
-                      activeSubject.forEach((sub) => {
-                        if (String(sub).includes('&')) {
-                          const temp = String(sub).replace('&', 'and');
-                          tempSubject.push(temp);
-                        } else {
-                          tempSubject.push(sub);
-                        }
-                      });
-                      setActiveSubject(tempSubject);
-                    }
-                    if (activeAuthorTag) {
-                      activeAuthorTag.forEach((sub) => {
-                        if (String(sub).includes('&')) {
-                          const temp = String(sub).replace('&', 'and');
-                          tempAuthor.push(temp);
-                        } else {
-                          tempAuthor.push(sub);
-                        }
-                      });
-                      setActiveAuthorTag(tempAuthor);
-                    }
-                    if (!fromTeam) {
-                      // eslint-disable-next-line max-len
-                      // history.push(
-                      //   `/org/${
-                      //     currentOrganization?.domain
-                      //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                      // );
-                    }
-                  } else if (activeMainSearchType === 'Independent activities') {
-                    // Swal.fire({
-                    //   title: 'Searching...', // add html attribute if you want or remove
-                    //   html: 'We are fetching results for you!',
-                    //   allowOutsideClick: false,
-                    //   onBeforeOpen: () => {
-                    //     Swal.showLoading();
-                    //   },
-                    // });
-                    let dataSend;
-                    // eslint-disable-next-line prefer-const
-                    dataSend = {
-                      query: searchInput?.trim(),
-                      subjectArray: activeSubject,
-                      gradeArray: activeEducation,
-                      authorTagsArray: activeAuthorTag,
-                      authors: authorName || undefined,
-                      standardArray: activeType,
-                      from: 0,
-                      size: 20,
-                      no_words: noWords || undefined,
-                    };
-                    const result = await dispatch(searchIndependentActivitiesAction(dataSend, 'showcase_activities'));
-                    setTotalCount(result?.meta?.total);
-                    const tempEducation = [];
-                    const tempSubject = [];
-                    const tempTag = [];
-                    if (activeEducation) {
-                      activeEducation.forEach((edu) => {
-                        if (String(edu).includes('&')) {
-                          const temp = String(edu).replace('&', 'and');
-                          tempEducation.push(temp);
-                        } else {
-                          tempEducation.push(edu);
-                        }
-                      });
-                      setActiveEducation(tempEducation);
-                    }
-                    if (activeSubject) {
-                      activeSubject.forEach((sub) => {
-                        if (String(sub).includes('&')) {
-                          const temp = String(sub).replace('&', 'and');
-                          tempSubject.push(temp);
-                        } else {
-                          tempSubject.push(sub);
-                        }
-                      });
-                      setActiveSubject(tempSubject);
-                    }
-                    if (activeAuthorTag) {
-                      activeAuthorTag.forEach((sub) => {
-                        if (String(sub).includes('&')) {
-                          const temp = String(sub).replace('&', 'and');
-                          tempTag.push(temp);
-                        } else {
-                          tempTag.push(sub);
-                        }
-                      });
-                      setActiveAuthorTag(tempTag);
-                    }
-                    if (!fromTeam) {
-                      // eslint-disable-next-line max-len
-                      // history.push(
-                      //   `/org/${
-                      //     currentOrganization?.domain
-                      //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-                      // );
-                    }
-                  }
-                  // setModalShow(true);
-                }}
-              >
+              <div className="src-btn" onClick={() => onSubmit()}>
                 <FontAwesomeIcon icon="search" />
                 Search
               </div>
