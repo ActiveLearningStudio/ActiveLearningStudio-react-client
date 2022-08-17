@@ -37,8 +37,7 @@ import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 import MyProjectSmSvg from 'iconLibrary/dropDown/MyProjectSmSvg';
 import MyActivitySmSvg from 'iconLibrary/mainContainer/MyActivitySmSvg';
 import SearchLibraryLgSvg from 'iconLibrary/mainContainer/SearchLibraryLgSvg';
-
-let paginationStarter = true;
+import MyActivitySvg from 'iconLibrary/sideBar/MyActivitySvg';
 
 export function MyVerticallyCenteredModal(props) {
   return (
@@ -703,20 +702,6 @@ function SearchInterface(props) {
                                                         </div>
                                                       </a>
                                                       <Dropdown.Item
-                                                        onClick={() => {
-                                                          setIndClone(true);
-                                                          setModalShow(true);
-                                                          setClone(res);
-                                                        }}
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
-                                                      Add to Projects */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg primaryColor={primaryColor} />
-                                                          Copy to My projects
-                                                        </div>
-                                                      </Dropdown.Item>
-                                                      <Dropdown.Item
                                                         onClick={async () => {
                                                           toast.info('Duplicating Activity...', {
                                                             className: 'project-loading',
@@ -736,8 +721,24 @@ function SearchInterface(props) {
                                                           });
                                                         }}
                                                       >
-                                                        <FontAwesomeIcon className="mr-2" icon={faPlus} />
-                                                        Add to My Ind.Activities
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyActivitySvg primaryColor={primaryColor} />
+                                                          Copy to My Activities
+                                                        </div>
+                                                      </Dropdown.Item>
+                                                      <Dropdown.Item
+                                                        onClick={() => {
+                                                          setIndClone(true);
+                                                          setModalShow(true);
+                                                          setClone(res);
+                                                        }}
+                                                      >
+                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
+                                                      Add to Projects */}
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyProjectSmSvg primaryColor={primaryColor} />
+                                                          Copy to My projects
+                                                        </div>
                                                       </Dropdown.Item>
 
                                                       {/* {permission?.Activity?.includes(
