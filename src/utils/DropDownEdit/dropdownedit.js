@@ -489,17 +489,10 @@ const DropDownEdit = ({
             </Dropdown.Item>
           )}
 
-          {/* {data?.gcr_activity_visibility && (
+          {isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="menue-img"
-                >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
                   <path
                     d="M10.583 4.52941C11.5495 4.52941 12.333 3.73933 12.333 2.76471C12.333 1.79009 11.5495 1 10.583 1C9.61651 1 8.83301 1.79009 8.83301 2.76471C8.83301 3.73933 9.61651 4.52941 10.583 4.52941Z"
                     stroke={primaryColor}
@@ -521,20 +514,8 @@ const DropDownEdit = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
-                  <path
-                    d="M5.27148 7.96411L9.06593 10.3722"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M9.06037 3.72876L5.27148 6.13683"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+                  <path d="M5.27148 7.96411L9.06593 10.3722" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9.06037 3.72876L5.27148 6.13683" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 &nbsp; Publish
               </a>
@@ -550,7 +531,7 @@ const DropDownEdit = ({
                 </li>
               </ul>
             </li>
-          )} */}
+          )}
         </Dropdown.Menu>
       </Dropdown>
     </div>
