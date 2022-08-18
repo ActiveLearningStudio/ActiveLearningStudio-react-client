@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import './style.scss';
 import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
@@ -56,7 +56,6 @@ const BrightcoveModel = (props) => {
     })();
   }, [platformName]);
 
-  console.log('cmsVideo', cmsVideo);
   useEffect(() => {
     (async () => {
       if (activeCms) {
@@ -232,13 +231,13 @@ const BrightcoveModel = (props) => {
                                       cmsVideo?.map((data) => (
                                         <tr>
                                           <td className="firstname">
-                                            <input
-                                              name="video"
+                                            <Form.Check
+                                              type="radio"
+                                              id={`default-${data.id}`}
                                               onChange={() => {
                                                 props?.setSelectedVideoId(data.id);
                                               }}
-                                              type="radio"
-                                              // checked={selectedVideoId === data.id ? true : false}
+                                              checked={selectedVideoId === data.id ? true : false}
                                             />
                                             <div className="first-col-image-name">
                                               <img src={data?.images?.thumbnail?.src} className="image-size" />
