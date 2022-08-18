@@ -106,13 +106,14 @@ export default function Pills(props) {
   const [authorTag, setAuthorTag] = useState(null);
   const [activityLayout, setActivityLayout] = useState(null);
   const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState('');
+  const [searchLtiquery, setsearchLtiquery] = useState('');
   const [searchLayoutQuery, setSearchLayoutQuery] = useState('');
   const [searchSubjectsQuery, setSearchSubjectsQuery] = useState('');
   const [searchAuthorTagQuery, setSearchAuthorTagQuery] = useState('');
   const [searchEducationLevelQuery, setSearchEducationLevelQuery] = useState('');
   const [searchActivityTypesQuery, setSearchActivityTypesQuery] = useState('');
   const [searchActivityItemsQuery, setSearchActivityItemsQuery] = useState('');
-  const [filterLtiSettings, setfilterLtiSettings] = useState('All');
+  const [filterLtiSettings, setfilterLtiSettings] = useState(null);
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
   }, [activeTab]);
@@ -137,6 +138,7 @@ export default function Pills(props) {
       if (!!alphaNumeric(target.value)) {
         setSearchQuery(target.value);
       }
+
       searchUsersFromOrganization(target.value, activePage);
       setActivePage(searchUsers ? activePage : 1);
       if (target.value.trim().length > 1) setUsers(null);
@@ -491,11 +493,14 @@ export default function Pills(props) {
     });
   };
 
-  const searchQueryChangeHandlerLtiTool = (search) => {
+  const searchQueryChangeHandlerLtiTool = ({ target }) => {
+    if (!!alphaNumeric(target.value)) {
+      setsearchLtiquery(target.value);
+    }
     setLtiTool(null);
     setActivePage(1);
-    const encodeQuery = encodeURI(search.target.value);
-    setSearchQuery(encodeQuery);
+    const encodeQuery = encodeURI(target.value);
+    setsearchLtiquery(encodeQuery);
     const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, ltiToolFilterBy);
     result.then((data) => {
       setLtiTool(data);
@@ -540,7 +545,7 @@ export default function Pills(props) {
     setActivePage(1);
     setLtiToolFilterBy(item);
     // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
-    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, searchQuery, item);
+    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchQuery, item);
 
     result.then((data) => {
       setLtiTool(data);
@@ -952,15 +957,18 @@ export default function Pills(props) {
       id="controlled-tab-example"
       activeKey={key}
       onSelect={(key) => {
+        setSearchQuery('');
         setSubTypeState(key);
         setKey(key);
         setActivePage(1);
-        setfilterLtiSettings('All');
         setSearchQueryProject('');
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         if (key === 'LTI Tools') {
-          dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy));
+          const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, '', filterLtiSettings?.id || '');
+          result.then((data) => {
+            setLtiTool(data);
+          });
         }
         setSearchQueryStats('');
         if (key === 'Exported Projects') {
@@ -1407,7 +1415,8 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  searchQueryChangeHandler={searchQueryChangeHandlerLtiTool}
+                  searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+                  searchLtiquery={searchLtiquery}
                   filteredItems={filterLtiTool}
                   filterLtiSettings={filterLtiSettings}
                   setfilterLtiSettings={setfilterLtiSettings}
