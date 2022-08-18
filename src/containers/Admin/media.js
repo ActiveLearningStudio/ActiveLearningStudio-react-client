@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable array-callback-return */
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
@@ -10,7 +11,7 @@ import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
 const Media = () => {
   const dispatch = useDispatch();
-  const { allMediaSources, orgMediaSources } = useSelector((state) => state.admin);
+  const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
   const [allImageSource, setallImageSource] = useState([]);
@@ -140,8 +141,7 @@ const Media = () => {
                                     </span>
                                   </div>
                                   <div className="h5p-title-formik-textField">
-                                    <input
-                                      type="text"
+                                    <select
                                       name={source.name}
                                       onChange={(e) => {
                                         setUpdateLibrary(
@@ -155,7 +155,14 @@ const Media = () => {
                                       }}
                                       onBlur={handleBlur}
                                       value={mediaLibrary(source.name)}
-                                    />
+                                    >
+                                      {allIv?.map((src) => (
+                                        <option value={`${src.name} ${src.majorVersion}.${src.minorVersion}`}>
+                                          {src.name}&nbsp;
+                                          {src.majorVersion}.{src.minorVersion}
+                                        </option>
+                                      ))}
+                                    </select>
                                   </div>
                                 </div>
                               );
