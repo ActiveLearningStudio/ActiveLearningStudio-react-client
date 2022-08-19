@@ -36,6 +36,10 @@ const ActivityLayout = (props) => {
   const [key, setKey] = useState('layout');
 
   useMemo(() => {
+    // Clearing course presentation pdf import storage every time activity creation
+    // flow starts to avoid accidentally importing residual data from previous
+    // attempts
+    localStorage.removeItem('coursePresentationFromFile');
     toast.info('Loading Activities ...', {
       className: 'project-loading',
       closeOnClick: false,
