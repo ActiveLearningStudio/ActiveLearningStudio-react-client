@@ -616,11 +616,11 @@ function SearchInterface(props) {
                                                 </a>
                                                 <p>{res.description}</p>
                                                 {res.user && (
-                                                  <div>
+                                                  <div className="search-content-by">
                                                     By: <span>{res.user.first_name}</span>
                                                   </div>
                                                 )}
-                                                <div>
+                                                <div className="search-content-type">
                                                   Type: <span className="type">{res.activity_type}</span>
                                                 </div>
                                                 {/* <p>{res.description}</p> */}

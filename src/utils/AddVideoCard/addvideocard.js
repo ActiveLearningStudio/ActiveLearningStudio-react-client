@@ -360,6 +360,7 @@ const AddVideoCard = ({
                   }}
                 />
                 <div
+                  className="addvideo-card-add-share-options-ind"
                   onClick={async () => {
                     toast.dismiss();
                     toast.info('Loading Activity ...', {
