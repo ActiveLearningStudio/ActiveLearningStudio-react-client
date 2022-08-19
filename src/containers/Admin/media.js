@@ -43,7 +43,7 @@ const Media = () => {
     }
   }, [allMediaSources]);
 
-  const mediaLibrary = (sourceName) => updateLibrary.filter((data) => data.name === sourceName)[0]?.pivot.h5p_library;
+  const mediaLibrary = (sourceName) => updateLibrary?.filter((data) => data.name === sourceName)[0]?.pivot?.h5p_library;
   return (
     <>
       <div className="media-section">

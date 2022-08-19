@@ -353,7 +353,7 @@ export default function Pills(props) {
       dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, lmsProjectFilterBy));
     }
     if (type === 'LMS') {
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, ltiToolFilterBy));
+      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, ltiToolFilterBy));
     }
     if (type === 'LMS') {
       dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
@@ -494,17 +494,25 @@ export default function Pills(props) {
   };
 
   const searchQueryChangeHandlerLtiTool = ({ target }) => {
-    if (!!alphaNumeric(target.value)) {
-      setsearchLtiquery(target.value);
+    if (target.value.trim().length) {
+      if (!!alphaNumeric(target.value)) {
+        setsearchLtiquery(target.value);
+        setLtiTool(null);
+        setActivePage(1);
+        const encodeQuery = encodeURI(target.value);
+        // setsearchLtiquery(encodeQuery);
+        const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+        result.then((data) => {
+          setLtiTool(data);
+        });
+      }
+    } else {
+      setsearchLtiquery('');
+      const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+      result.then((data) => {
+        setLtiTool(data);
+      });
     }
-    setLtiTool(null);
-    setActivePage(1);
-    const encodeQuery = encodeURI(target.value);
-    setsearchLtiquery(encodeQuery);
-    const result = adminService.getLtiTools(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, ltiToolFilterBy);
-    result.then((data) => {
-      setLtiTool(data);
-    });
   };
 
   const searchQueryChangeHandlerSubjects = (search) => {
@@ -545,7 +553,7 @@ export default function Pills(props) {
     setActivePage(1);
     setLtiToolFilterBy(item);
     // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
-    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchQuery, item);
+    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
 
     result.then((data) => {
       setLtiTool(data);
@@ -965,7 +973,7 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         if (key === 'LTI Tools') {
-          const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, '', filterLtiSettings?.id || '');
+          const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, filterLtiSettings?.id || '');
           result.then((data) => {
             setLtiTool(data);
           });
