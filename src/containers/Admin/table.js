@@ -200,7 +200,7 @@ function Table(props) {
   }, [ltiToolsTypes]);
   return (
     <div className="table-data">
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
@@ -1394,7 +1394,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}

@@ -311,9 +311,9 @@ const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) =>
       Promise.reject(err.response.data);
     });
 
-const getLtiToolsMedia = (subOrgId, page, query, filterBy) =>
+const getLtiToolsMedia = (subOrgId, page, size, query, filterBy) =>
   httpService
-    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${query}&filter=${filterBy}`)
+    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&size=${size}&query=${query}&filter=${filterBy}`)
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);

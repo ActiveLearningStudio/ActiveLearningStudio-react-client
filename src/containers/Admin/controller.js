@@ -50,6 +50,8 @@ function Controller(props) {
     // searchUserReportQueryHandler,
     size,
     setSize,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     // tableHead,
     roles,
     // inviteUser,
@@ -66,6 +68,7 @@ function Controller(props) {
     filteredItems,
     setSearchKey,
     setfilterLtiSettings,
+    filterLtiSettings,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -205,7 +208,7 @@ function Controller(props) {
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search" value={searchLtiquery} onChange={searchQueryChangeHandlerLtiTool} />
             {/* <img src={searchimg} alt="search" /> */}
             <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
@@ -794,14 +797,14 @@ function Controller(props) {
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.name ? selectedFilterItem?.name : 'All'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{filterLtiSettings?.name ? filterLtiSettings?.name : 'All'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
                       filteredItems(null);
                       setSelectedFilterItem(null);
-                      setfilterLtiSettings('All');
+                      setfilterLtiSettings(null);
                     }}
                   >
                     All
@@ -822,7 +825,7 @@ function Controller(props) {
                         onClick={() => {
                           filteredItems(t.id);
                           setSelectedFilterItem(t);
-                          setfilterLtiSettings('');
+                          setfilterLtiSettings(t);
                         }}
                       >
                         {t.name}

@@ -49,6 +49,8 @@ function Starter(props) {
     searchAlertToggler,
     searchAlertTogglerStats,
     setActivePage,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     setSearchQueryTeam,
     subType,
     inviteUser,
@@ -129,6 +131,9 @@ function Starter(props) {
         filteredItems={filteredItems}
         setSearchKey={setSearchKey}
         setfilterLtiSettings={setfilterLtiSettings}
+        filterLtiSettings={filterLtiSettings}
+        searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+        searchLtiquery={searchLtiquery}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
       {/* {subTypeState === "Media" && <Media />} */}

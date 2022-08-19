@@ -28,6 +28,7 @@ const BrightcoveModel = (props) => {
   const [error, setError] = useState(null);
   useEffect(() => {
     (async () => {
+      setSearchId('');
       if (platformName == 'Brightcove') {
         const result = await dispatch(getBrightCMS());
 
