@@ -1776,6 +1776,7 @@ textarea,
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .auth-page .auth-container nav .nav-link.active {
   font-family: var(--main-heading-font) !important;
@@ -1807,7 +1808,30 @@ textarea,
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }
-
+.auth-page .auth-container .form-group span{
+  font-family: var(--main-heading-font) !important;
+}
+.auth-page .auth-container .form-group .show-password{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .remember-me a, .auth-page .auth-container .remember-me label{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .login-separator-box .text-separator{
+  font-family: var(--main-heading-font) !important;
+}
+.auth-page .auth-container .termsandcondition{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .google-button div{
+  font-family: var(--main-heading-font) !important;
+}
+.password_detail span{
+  font-family: var(--main-text-font) !important;
+}
+.password_detail ul li{
+  font-family: var(--main-text-font) !important;
+}
 /* Searching */
 .search-result-main .current-org-search {
   font-family: var(--main-text-font) !important;
