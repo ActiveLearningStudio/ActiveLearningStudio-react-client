@@ -61,7 +61,7 @@ export const ProjectsPage = (props) => {
   const [customCardWidth, setCustomCardWidth] = useState('customcard20');
   const [sampleProject, setSampleProjects] = useState([]);
   const [favProject, setFavProjects] = useState([]);
-  const [teamProjects, setTeamProjects] = useState([]);
+  const [teamProjectsdata, setTeamProjectsdata] = useState([]);
   const [activeTab, setActiveTab] = useState('My Projects');
   const [showSampleSort, setShowSampleSort] = useState(true);
   const [activePage, setActivePage] = useState(1);
@@ -92,7 +92,7 @@ export const ProjectsPage = (props) => {
   } = props;
 
   const allState = useSelector((state) => state);
-  const { organization } = allState;
+  const { organization, team } = allState;
   const { permission } = organization;
   useEffect(() => {
     const query = QueryString.parse(location.search);
@@ -118,29 +118,28 @@ export const ProjectsPage = (props) => {
   }, [window.innerWidth]);
 
   useEffect(() => {
-    if (!searchTeamQuery) {
+    if (!searchTeamQuery && activePage === 1) {
       if (organization?.currentOrganization && tabToggle === 'Team Projects') {
-        getTeamProjects('', activePage).then((data) => {
-          setTeamProjects(data.data);
-          setMeta(data.meta);
-        });
+        getTeamProjects('', activePage, defaultSize);
       }
-    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
-      getTeamProjects(searchTeamQuery, activePage).then((data) => {
-        setTeamProjects(data.data);
-        setMeta(data.meta);
-      });
+    } else if (searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects' && activePage === 1) {
+      getTeamProjects(searchTeamQuery, activePage, defaultSize);
     }
-  }, [searchTeamQuery, organization?.currentOrganization, tabToggle, getTeamProjects, activePage]);
-  console.log('tabToggle', tabToggle);
+  }, [organization?.currentOrganization, tabToggle, getTeamProjects, activePage]);
+
   useEffect(() => {
-    if (!searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
-      getTeamProjects('', activePage).then((data) => {
-        setTeamProjects(data.data);
-        setMeta(data.meta);
-      });
+    if (organization?.currentOrganization) {
+      setTeamProjectsdata(team);
     }
-  }, [activePage, getTeamProjects, organization?.currentOrganization, searchTeamQuery]);
+  }, [team?.teamProjects, team?.isTeamProjectLoading]);
+  // useEffect(() => {
+  //   if (!searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects') {
+  //     getTeamProjects('', activePage, defaultSize).then((data) => {
+  //       setTeamProjects(data.data);
+  //       setMeta(data.meta);
+  //     });
+  //   }
+  // }, [activePage, getTeamProjects, organization?.currentOrganization, searchTeamQuery]);
   useEffect(() => {
     if (organization?.currentOrganization) {
       sampleProjectsData();
@@ -165,10 +164,10 @@ export const ProjectsPage = (props) => {
     }
   }, [allState.sidebar.sampleProject]);
   const handleSearchQueryTeams = () => {
-    getTeamProjects(searchTeamQuery || '', activePage).then((data) => {
-      setTeamProjects(data.data);
-      setMeta(data.meta);
-    });
+    if (searchTeamQuery) {
+      dispatch({ type: 'SHOW_SKELETON' });
+      getTeamProjects(searchTeamQuery || '', activePage, defaultSize);
+    }
   };
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -310,6 +309,15 @@ export const ProjectsPage = (props) => {
         }
       }
     }
+    if (teamProjectsdata?.teamProjects?.length > 0 && tabToggle === 'Team Projects' && activePage < team?.teamProjectMeta?.last_page) {
+      if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
+        if (activePage === 1) {
+          setActivePage(activePage + 4);
+        } else {
+          setActivePage(activePage + 1);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -317,6 +325,13 @@ export const ProjectsPage = (props) => {
       if (organization.activeOrganization && !allState.projects) {
         if (organization?.currentOrganization) {
           dispatch(addMyproject(activePage, 10, searchQuery));
+        }
+      }
+    }
+    if (activePage > 1 && tabToggle === 'Team Projects') {
+      if (organization.activeOrganization && teamProjectsdata?.teamProjects) {
+        if (organization?.currentOrganization) {
+          getTeamProjects(searchTeamQuery, activePage, 10);
         }
       }
     }
@@ -732,32 +747,60 @@ export const ProjectsPage = (props) => {
                     <div className="col-md-12">
                       {showSampleSort && (
                         <div className="search-bar-team-tab">
-                          <input type="text" placeholder="Search team projects" value={searchTeamQuery} onChange={({ target }) => SetSearchTeamQuery(target.value)} />
+                          <input
+                            type="text"
+                            placeholder="Search team projects"
+                            value={searchTeamQuery}
+                            onChange={({ target }) => {
+                              SetSearchTeamQuery(target.value);
+                              setActivePage(1);
+                              if (!target.value) {
+                                dispatch({ type: 'SHOW_SKELETON' });
+                                getTeamProjects('', 1, defaultSize);
+                              }
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.keyCode === 13) {
+                                handleSearchQueryTeams();
+                              }
+                            }}
+                          />
                           <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
                         </div>
                       )}
                       <div className="flex-smaple">
-                        {teamProjects.length > 0 ? (
-                          <SampleProjectCard
-                            projects={teamProjects}
-                            type={type}
-                            setType={setType}
-                            setTabToggle={setTabToggle}
-                            activeTab={tabToggle}
-                            setShowSampleSort={setShowSampleSort}
-                            handleShow={handleShow}
-                            handleClose={handleClose}
-                            setProjectId={setProjectId}
-                          />
+                        {teamProjectsdata?.isTeamProjectLoading ? (
+                          teamProjectsdata?.teamProjects?.length > 0 ? (
+                            <SampleProjectCard
+                              projects={teamProjectsdata?.teamProjects}
+                              type={type}
+                              setType={setType}
+                              setTabToggle={setTabToggle}
+                              activeTab={tabToggle}
+                              setShowSampleSort={setShowSampleSort}
+                              handleShow={handleShow}
+                              handleClose={handleClose}
+                              setProjectId={setProjectId}
+                            />
+                          ) : (
+                            <Alert variant="warning" style={{ width: '100%' }}>
+                              No Team Project found.
+                            </Alert>
+                          )
                         ) : (
                           <Alert variant="warning" style={{ width: '100%' }}>
-                            No Team Project found.
+                            Loading...
                           </Alert>
                         )}
                       </div>
                     </div>
+                    {team?.islazyLoader && activePage !== 1 && teamProjectsdata?.teamProjects?.length > 0 && (
+                      <div className="col-md-12 text-center">
+                        <ImgLoader />
+                      </div>
+                    )}
                   </div>
-                  <div className="pagination-top-team">
+                  {/* <div className="pagination-top-team">
                     <div className="pagination_state">
                       {showSampleSort && teamProjects.length > 0 && (
                         <Pagination
@@ -773,7 +816,7 @@ export const ProjectsPage = (props) => {
                         />
                       )}
                     </div>
-                  </div>
+                  </div> */}
                 </Tab>
               </Tabs>
             ) : (
@@ -843,7 +886,7 @@ const mapDispatchToProps = (dispatch) => ({
   // allSidebarProjectsUpdate: () => dispatch(allSidebarProjects()),
   sampleProjectsData: () => dispatch(sampleProjects()),
   loadMyFavProjectsActionData: () => dispatch(loadMyFavProjectsAction()),
-  getTeamProjects: (query, page) => dispatch(getTeamProject(query, page)),
+  getTeamProjects: (query, page, defaultSize) => dispatch(getTeamProject(query, page, defaultSize)),
 });
 
 export default memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectsPage)));

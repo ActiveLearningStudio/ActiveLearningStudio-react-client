@@ -543,19 +543,19 @@ const FormikVideo = ({
             errors.videoUrl = 'Required';
           }
           if (values.videoUrl && platformName === 'Brightcove' && !values.videoUrl?.match(kalturaformat)) {
-            errors.videoUrl = 'Not a Valid ID';
+            errors.videoUrl = 'Invalid Video Id';
           }
           if (values.videoUrl && platformName === 'Youtube' && !values.videoUrl?.match(youtubeLinkformat)) {
-            errors.videoUrl = 'Not a youtube link';
+            errors.videoUrl = 'Invalid Video Url';
           }
           if (values.videoUrl && platformName === 'Vimeo' && !values.videoUrl?.match(vimeoLinkformat)) {
-            errors.videoUrl = 'Not a Vimeo url';
+            errors.videoUrl = 'Invalid Video Url';
           }
           if (values.videoUrl && platformName === 'Komodo' && !values.videoUrl?.match(komodoLinkformat)) {
-            errors.videoUrl = 'Not a komodo url';
+            errors.videoUrl = 'Invalid Video Url';
           }
           if (values.videoUrl && platformName === 'Kaltura' && !values.videoUrl?.includes('kaltura.com')) {
-            errors.videoUrl = 'Not a kaltura url';
+            errors.videoUrl = 'Invalid Video Url';
           }
           return errors;
         }}
