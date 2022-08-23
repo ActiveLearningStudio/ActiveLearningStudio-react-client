@@ -56,6 +56,9 @@
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.admin-panel .table-data table #filter-dropdown-table-id .dropdown button{
+  font-family: var(--main-text-font) !important;
+}
 
 /* sidebar branding */
 
@@ -732,12 +735,24 @@ p {
   font-family: var(--main-heading-font) !important; 
 }
 
-.modal-content .modal-body h5,
-.modal-content .modal-body p {
+.modal-content .modal-body h5{
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
+.modal-content .modal-body p {
+  color: var(--main-paragraph-text-color) !important;
+  /* font-family: var(--main-heading-font) !important; */
+}
+.img-upload-form p{
+  font-family: var(--main-heading-font) !important;
+}
+.swal2-popup .swal2-html-container p{
+  font-family: var(--main-heading-font) !important;
+}
 
+.add-team-page .add-team-detail .team-detail p{
+  font-family: var(--main-text-font) !important;
+}
 /* Admin Panel branding */
 
 .utility.curriki-Breadcrump a {
@@ -967,30 +982,49 @@ ul.pagination .page-item.active .page-link {
 
 .admin-panel .user-roles h2 {
   color: var(--main-paragraph-text-color) !important;
-  font-family: var(--main-text-font) !important;
+  font-family: var(--main-heading-font) !important;
 }
 
 .role-permission-tab-name .nav-item .nav-link {
   color: var(--main-paragraph-text-color) !important;
-  font-family: var(--main-text-font) !important;
+  /* font-family: var(--main-text-font) !important; */
+  font-family: var(--main-heading-font) !important; 
 }
 
 .roles-permission-tab #role-permission-tab-id .nav-link.active {
-  font-family: var(--main-text-font) !important;
+  /* font-family: var(--main-text-font) !important; */
+  font-family: var(--main-heading-font) !important; 
   color: var(--main-primary-color) !important;
 }
 
-.detail-permission-tab .all-permission-heading h6,
-.dynamic-roles .card-body .permission h6,
-.custom-select-style-for-sub p,
-.custom-select-style-for-sub h6 {
+
+
+.custom-select-style-for-sub p{
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
+.custom-select-style-for-sub h6{
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.dynamic-roles .card-body .permission h6{
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.detail-permission-tab .all-permission-heading h6{
+  font-family: var(--main-heading-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.media-section .sources-section .sources-options .sources-sub .media-version-options .h5p-title-formik-textField select{
+  font-family: var(--main-text-font) !important;
+}
 
-.custom-select-style-for-sub select,
 .admin-panel .form-new-popup-admin .inner-form-content .create-form .form-group-create .roles-permission-tab-row select {
   font-family: var(--main-text-font) !important;
+  color: var(--main-primary-color) !important;
+}
+.custom-select-style-for-sub select{
+  font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
 
@@ -1048,7 +1082,7 @@ ul.pagination .page-item.active .page-link {
 }
 .model-footer-detail .detail-auther p {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-heading-font) !important;
+  font-family: var(--main-text-font) !important;
 }
 .model-footer-detail .detail-auther span {
   color: var(--main-paragraph-text-color) !important;
@@ -1102,8 +1136,19 @@ ul.pagination .page-item.active .page-link {
   font-family: var(--main-heading-font) !important;
   
 }
+#meta-style-td-id span{
+  font-family: var(--main-heading-font) !important;
+}
+#filter-dropdown-user-id-style button{
+  font-family: var(--main-text-font) !important;
+}
+.remove-user-modal h1{
+  font-family: var(--main-heading-font) !important;
+}
 /* Edit organization */
-
+#custom-toggle-button-id-br-style h3{
+  font-family: var(--main-text-font) !important;
+}
 .admin-panel .form-new-popup-admin .inner-form-content .create-form h2,
 .create-user-modal-header .modal-title,
 .add-video-form .add-video-title-select .add-video-title h2,
@@ -1776,6 +1821,7 @@ textarea,
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
   border-color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
 }
 .auth-page .auth-container nav .nav-link.active {
   font-family: var(--main-heading-font) !important;
@@ -1807,7 +1853,30 @@ textarea,
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }
-
+.auth-page .auth-container .form-group span{
+  font-family: var(--main-heading-font) !important;
+}
+.auth-page .auth-container .form-group .show-password{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .remember-me a, .auth-page .auth-container .remember-me label{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .login-separator-box .text-separator{
+  font-family: var(--main-heading-font) !important;
+}
+.auth-page .auth-container .termsandcondition{
+  font-family: var(--main-text-font) !important;
+}
+.auth-page .auth-container .google-button div{
+  font-family: var(--main-heading-font) !important;
+}
+.password_detail span{
+  font-family: var(--main-text-font) !important;
+}
+.password_detail ul li{
+  font-family: var(--main-text-font) !important;
+}
 /* Searching */
 .search-result-main .current-org-search {
   font-family: var(--main-text-font) !important;
