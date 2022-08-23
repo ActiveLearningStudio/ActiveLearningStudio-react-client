@@ -1322,7 +1322,7 @@ function Table(props) {
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
-                      {filterLtiSettings === 'All' ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
+                      {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
 
                       <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
                       <td>{row.tool_description}</td>
