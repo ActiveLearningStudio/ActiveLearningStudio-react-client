@@ -73,7 +73,7 @@ export const ProjectsPage = (props) => {
   const [searchTeamQuery, SetSearchTeamQuery] = useState('');
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
-  const [startSearching, setStartSearching] = useState(true);
+  const [startSearching, setStartSearching] = useState('');
   const dispatch = useDispatch();
   const samplerRef = useRef();
   const {
@@ -125,7 +125,7 @@ export const ProjectsPage = (props) => {
     } else if (searchTeamQuery && organization?.currentOrganization && tabToggle === 'Team Projects' && activePage === 1) {
       getTeamProjects(searchTeamQuery, activePage, defaultSize);
     }
-  }, [organization?.currentOrganization, tabToggle, getTeamProjects, activePage]);
+  }, [organization?.currentOrganization, tabToggle, getTeamProjects]);
 
   useEffect(() => {
     if (organization?.currentOrganization) {
@@ -163,12 +163,13 @@ export const ProjectsPage = (props) => {
       setSampleProjects(allState.sidebar.sampleProject);
     }
   }, [allState.sidebar.sampleProject]);
-  const handleSearchQueryTeams = () => {
-    if (searchTeamQuery) {
-      dispatch({ type: 'SHOW_SKELETON' });
-      getTeamProjects(searchTeamQuery || '', activePage, defaultSize);
-    }
-  };
+  // const handleSearchQueryTeams = () => {
+  //   if (searchTeamQuery) {
+  //     setActivePage(1);
+  //     dispatch({ type: 'SHOW_SKELETON' });
+  //     getTeamProjects(searchTeamQuery || '', activePage, defaultSize);
+  //   }
+  // };
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -384,6 +385,8 @@ export const ProjectsPage = (props) => {
               <Tabs
                 onSelect={(eventKey) => {
                   setShowSampleSort(true);
+                  setStartSearching('');
+                  setsearchQuery('');
                   setActivePage(1);
                   setTabToggle(eventKey);
                   if (eventKey === 'Sample Projects') {
@@ -406,14 +409,22 @@ export const ProjectsPage = (props) => {
                           className=""
                           type="text"
                           placeholder="Search"
-                          value={searchQuery}
+                          value={startSearching}
                           onChange={(e) => {
-                            setsearchQuery(e.target.value);
-                            setActivePage(1);
+                            setStartSearching(e.target.value);
                             if (!e.target.value) {
+                              setActivePage(1);
                               dispatch({ type: 'SHOW_SKELETON' });
-
+                              setsearchQuery('');
                               loadMyProjects(1, defaultSize, e.target.value);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.keyCode === 13) {
+                              setActivePage(1);
+                              SetSearchTeamQuery(startSearching);
+                              dispatch({ type: 'SHOW_SKELETON' });
+                              loadMyProjects(1, defaultSize, startSearching);
                             }
                           }}
                         />
@@ -421,9 +432,10 @@ export const ProjectsPage = (props) => {
                           primaryColor={primaryColor}
                           style={{ cursor: 'pointer' }}
                           onClick={() => {
+                            setActivePage(1);
+                            setsearchQuery(startSearching);
                             dispatch({ type: 'SHOW_SKELETON' });
-
-                            loadMyProjects(activePage, defaultSize, searchQuery);
+                            loadMyProjects(1, defaultSize, startSearching);
                           }}
                         />
                       </div>
@@ -752,22 +764,39 @@ export const ProjectsPage = (props) => {
                           <input
                             type="text"
                             placeholder="Search team projects"
-                            value={searchTeamQuery}
+                            value={startSearching}
                             onChange={({ target }) => {
-                              SetSearchTeamQuery(target.value);
-                              setActivePage(1);
+                              setStartSearching(target.value);
+
                               if (!target.value) {
+                                SetSearchTeamQuery('');
                                 dispatch({ type: 'SHOW_SKELETON' });
                                 getTeamProjects('', 1, defaultSize);
                               }
                             }}
                             onKeyDown={(e) => {
                               if (e.keyCode === 13) {
-                                handleSearchQueryTeams();
+                                if (startSearching) {
+                                  SetSearchTeamQuery(startSearching);
+                                  setActivePage(1);
+                                  dispatch({ type: 'SHOW_SKELETON' });
+                                  getTeamProjects(startSearching || '', 1, defaultSize);
+                                }
                               }
                             }}
                           />
-                          <img src={searchimg} alt="search" onClick={handleSearchQueryTeams} />
+                          <img
+                            src={searchimg}
+                            alt="search"
+                            onClick={() => {
+                              if (startSearching) {
+                                SetSearchTeamQuery(startSearching);
+                                setActivePage(1);
+                                dispatch({ type: 'SHOW_SKELETON' });
+                                getTeamProjects(startSearching || '', 1, defaultSize);
+                              }
+                            }}
+                          />
                         </div>
                       )}
                       <div className="flex-smaple">
