@@ -288,16 +288,18 @@ export const ProjectsPage = (props) => {
     loadLms();
   }, [loadLms]);
   useEffect(() => {
-    // scroll to top
-    window.scrollTo(0, 0);
-    document.body.classList.remove('mobile-responsive');
+    if (activePage === 1 && tabToggle === 'My Projects') {
+      // scroll to top
+      window.scrollTo(0, 0);
+      document.body.classList.remove('mobile-responsive');
 
-    if (organization.activeOrganization && !allState.projects) {
-      if (organization?.currentOrganization) {
-        loadMyProjects(1, defaultSize, searchQuery);
+      if (organization.activeOrganization && !allState.projects) {
+        if (organization?.currentOrganization) {
+          loadMyProjects(1, defaultSize, searchQuery);
+        }
       }
     }
-  }, [allState.projects, loadMyProjects, organization.activeOrganization, organization?.currentOrganization, defaultSize]);
+  }, [allState.projects, loadMyProjects, organization.activeOrganization, tabToggle, organization?.currentOrganization, defaultSize]);
 
   window.onscroll = function () {
     if (allProjects?.length > 0 && tabToggle === 'My Projects' && activePage < allStateProject?.projectMeta?.last_page) {
