@@ -416,7 +416,7 @@ export default function CreateOrg(prop) {
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
                               <div className="create-form-inputs-toggles">
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_activity_visibility}
                                     onChange={() => {
@@ -442,7 +442,7 @@ export default function CreateOrg(prop) {
                         setFieldValue("published", !checked);
                       }}
                     /> */}
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_playlist_visibility}
                                     onChange={() => {
@@ -460,7 +460,7 @@ export default function CreateOrg(prop) {
                                   />
                                   <h3>Playlist</h3>
                                 </div>
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_project_visibility}
                                     onChange={() => {

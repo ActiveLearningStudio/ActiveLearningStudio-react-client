@@ -571,7 +571,7 @@ function Table(props) {
                         <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
                           {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {row.indexing_text}
@@ -616,7 +616,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
@@ -651,7 +651,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {row.shared ? 'Enabled' : 'Disabled'}
@@ -803,7 +803,7 @@ function Table(props) {
 
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {row.indexing_text}
@@ -831,7 +831,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
@@ -866,7 +866,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
-                            <div className="filter-dropdown-table">
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {row.shared ? 'Enabled' : 'Disabled'}
@@ -1069,15 +1069,15 @@ function Table(props) {
                       <td>
                         <div className="admin-panel-dropdown">
                           <div className="">
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Type:</h6>
                               <span>{item?.activityType?.title}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Item Type:</h6>
                               <span>{item.type}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Item Value:</h6>
                               <span>{item.h5pLib}</span>
                             </div>
