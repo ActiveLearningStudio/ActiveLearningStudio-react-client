@@ -156,10 +156,22 @@ const TeamDetail = ({
     [removeProject, team?.id],
   );
   // User Role change handler for current team
-  const roleChangeHandler = async (roleId, userId) => {
-    await changeUserRoleAction(team?.id, { user_id: userId, role_id: roleId });
-    await loadTeam(team?.id);
-    await getTeamPermissionAction(organization?.id, team?.id);
+  const roleChangeHandler = (roleId, userId) => {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Are you sure you want to update permisission for this User?',
+      // eslint-disable-next-line max-len
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await changeUserRoleAction(team?.id, { user_id: userId, role_id: roleId });
+        await loadTeam(team?.id);
+        await getTeamPermissionAction(organization?.id, team?.id);
+      }
+    });
   };
   // Invite handler for new team
   const handleInviteNewTeam = useCallback(
@@ -173,21 +185,33 @@ const TeamDetail = ({
   // Invite handler for current team
   const handleInvite = useCallback(
     (selectedUsers, emailNote) => {
-      inviteMembers(team?.id, selectedUsers, emailNote)
-        .then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Successfully invited.',
-          });
-          setShowInvite(false);
-        })
-        .catch(() => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to invite user.',
-          });
-        });
+      Swal.fire({
+        icon: 'warning',
+        title: 'Are you sure you want to Invite this User?',
+        // eslint-disable-next-line max-len
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          inviteMembers(team?.id, selectedUsers, emailNote)
+            .then(() => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Successfully invited.',
+              });
+              setShowInvite(false);
+            })
+            .catch(() => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to invite user.',
+              });
+            });
+        }
+      });
     },
     [inviteMembers, team?.id],
   );
@@ -458,7 +482,7 @@ const TeamDetail = ({
                         className="mr-16"
                         hover
                         onClick={() => {
-                          assignWhiteBoardUrl(organization?.id, 1, auth.user?.id, 'team');
+                          assignWhiteBoardUrl(organization?.id, team?.id, auth.user?.id, 'team');
                           handleShowWhiteBoard();
                         }}
                       />
