@@ -18,7 +18,9 @@ import HelpSvg from 'iconLibrary/header/HelpSvg';
 import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
 import ChangePasswordMdSvg from 'iconLibrary/header/ChangePasswordMdSvg';
 import LogoutMdSvg from 'iconLibrary/header/LogoutMdSvg';
-
+import Forum from 'iconLibrary/header/Forum';
+import Community from 'iconLibrary/header/Community';
+import Group from 'iconLibrary/header/Group';
 function Header(props) {
   const { logout } = props;
   const dispatch = useDispatch();
@@ -57,20 +59,46 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
+              <li className="menu-user-settings d-flex align-items-center">
+                <Dropdown>
+                  <Dropdown.Toggle className="align-items-center">
+                    <Community primaryColor={primaryColor} />
+                    <p className="header-icon-text">Community</p>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu className="user-dropdown">
+                    <Dropdown.Item target="_blank" href={`https://www.currikistudio.org/groups/`}>
+                      <div className="user-dropdown-item">
+                        <Group primaryColor={primaryColor} />
+                        Groups
+                      </div>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item target="_blank" href={`https://www.currikistudio.org/forums/`}>
+                      <div className="user-dropdown-item">
+                        <Forum primaryColor={primaryColor} />
+                        Forums
+                      </div>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
               <li>
-                <div
+                <a
                   style={{ cursor: 'pointer', textAlign: 'center' }}
-                  onClick={() => {
-                    dispatch({
-                      type: SHOW_HELP,
-                      payload: true,
-                    });
-                  }}
+                  // onClick={() => {
+                  //   dispatch({
+                  //     type: SHOW_HELP,
+                  //     payload: true,
+                  //   });
+                  // }}
+                  href="https://www.currikistudio.org/help/"
+                  target="_blank"
                 >
                   <HelpSvg primaryColor={primaryColor} />
 
                   <p className="header-icon-text">Help</p>
-                </div>
+                </a>
               </li>
 
               <HeaderNotification />
@@ -107,7 +135,7 @@ function Header(props) {
                         My Account
                       </div>
                     </Dropdown.Item>
-                    <hr />
+
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
                       <div className="user-dropdown-item">
                         {/* <img
@@ -119,7 +147,7 @@ function Header(props) {
                         Change Password
                       </div>
                     </Dropdown.Item>
-                    <hr />
+
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
