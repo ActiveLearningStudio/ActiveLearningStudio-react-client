@@ -461,6 +461,8 @@ const BrightcoveModel = (props) => {
             <Buttons
               onClick={() => {
                 props.setSelectedVideoId('');
+                setSelectedVideoIdKaltura('');
+                props.setSelectedVideoIdVimeo('');
                 props.onHide();
               }}
               secondary={true}

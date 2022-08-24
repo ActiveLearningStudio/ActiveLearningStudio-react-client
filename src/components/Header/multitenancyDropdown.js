@@ -65,6 +65,10 @@ export default function MultitenancyDropdown() {
                 onClick={async () => {
                   DynamicBrandingApply(org);
                   setSelectOrg(org.name);
+                  dispatch({
+                    type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                    payload: '',
+                  });
                   await dispatch(setCurrentOrganization(org));
                   await dispatch(setActiveOrganization(org));
                   await dispatch(getAllPermission(org.id));

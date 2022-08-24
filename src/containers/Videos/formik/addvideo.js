@@ -517,19 +517,32 @@ const FormikVideo = ({
   const [selectTab, setSelectTab] = useState('enterscreen');
   const [play, setPlay] = useState(false);
   const [startRecord, setStartRecord] = useState(false);
-
+  const [videoUrlId, setvideoUrlId] = useState('');
   const formRef = useRef();
   useEffect(() => {
     if (editVideo && platformName === 'Mydevice') {
       setUploadedFile(editVideo);
     }
   }, [editVideo, platformName]);
+
+  useEffect(() => {
+    if (editVideo) {
+      formRef?.current.setValues({ videoUrl: editVideo });
+    } else {
+      if (selectedVideoId) {
+        formRef?.current.setValues({ videoUrl: selectedVideoId });
+      } else {
+        formRef?.current.setValues({ videoUrl: '' });
+      }
+    }
+  }, [selectedVideoId]);
+
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="add-video-layout-formik">
       <Formik
         initialValues={{
-          videoUrl: selectedVideoId || editVideo,
+          videoUrl: '',
         }}
         enableReinitialize
         innerRef={formRef}
@@ -632,6 +645,9 @@ const FormikVideo = ({
                             Add with a link
                           </label>
                           <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
+                        </div>
+                        <div className="error mt-1" style={{ color: 'red' }}>
+                          {errors.videoUrl && touched.videoUrl && errors.videoUrl}
                         </div>
                         <div class="komodo-parent-div">
                           <p>or</p>
@@ -976,9 +992,11 @@ const FormikVideo = ({
                 </div>
               </div>
             )}
-            <div className="error" style={{ color: 'red' }}>
-              {errors.videoUrl && touched.videoUrl && errors.videoUrl}
-            </div>
+            {!komodo && (
+              <div className="error mt-1" style={{ color: 'red' }}>
+                {errors.videoUrl && touched.videoUrl && errors.videoUrl}
+              </div>
+            )}
 
             <div className="describe-video">
               <Buttons className="describe-btn" type="submit" primary text="Describe Video" width="149px" height="35px" hover />
