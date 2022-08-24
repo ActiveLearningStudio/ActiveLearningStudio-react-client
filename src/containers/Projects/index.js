@@ -422,7 +422,7 @@ export const ProjectsPage = (props) => {
                           onKeyDown={(e) => {
                             if (e.keyCode === 13) {
                               setActivePage(1);
-                              SetSearchTeamQuery(startSearching);
+                              setsearchQuery(startSearching);
                               dispatch({ type: 'SHOW_SKELETON' });
                               loadMyProjects(1, defaultSize, startSearching);
                             }
@@ -814,7 +814,7 @@ export const ProjectsPage = (props) => {
                               setProjectId={setProjectId}
                             />
                           ) : (
-                            <Alert variant="warning" style={{ width: '100%' }}>
+                            <Alert variant="danger" style={{ width: '100%' }}>
                               No Team Project found.
                             </Alert>
                           )
