@@ -6,9 +6,10 @@ ARG DOMAIN
 ENV DOMAIN_URL=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
-#RUN apt-get install git -y
-#RUN git --no-pager log > log.txt
+RUN apt-get install git -y
+
 COPY . .
+RUN git --no-pager log -10 > log.txt
 
 RUN npm install --no-package-lock
 RUN npm run build
