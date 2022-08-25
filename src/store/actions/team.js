@@ -44,14 +44,14 @@ export const showAssigningAction = () => async (dispatch) => {
 export const loadTeamsAction = (query = '') => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAll(currentOrganization?.id, query);
+    const { teams } = await teamService.getAll(activeOrganization?.id, query);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,
@@ -73,14 +73,14 @@ export const loadTeamsAction = (query = '') => async (dispatch) => {
 export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
 
-    const { teams } = await teamService.getAllSubOrganizationTeams(currentOrganization?.id);
+    const { teams } = await teamService.getAllSubOrganizationTeams(activeOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_TEAMS,
@@ -102,7 +102,7 @@ export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
 export const createTeamAction = (data) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.CREATE_TEAM_REQUEST });
@@ -119,7 +119,7 @@ export const createTeamAction = (data) => async (dispatch) => {
     } = data;
     // eslint-disable-next-line camelcase
     if (noovo_group_title) {
-      const { team } = await teamService.create(data, currentOrganization?.id);
+      const { team } = await teamService.create(data, activeOrganization?.id);
       dispatch({
         type: actionTypes.CREATE_TEAM_SUCCESS,
         payload: { team },
@@ -134,7 +134,7 @@ export const createTeamAction = (data) => async (dispatch) => {
         projects,
         organization_id,
       },
-      currentOrganization?.id,
+      activeOrganization?.id,
     );
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
@@ -158,15 +158,15 @@ export const getTeamPermission = (orgId, TeamId) => async (dispatch) => {
 export const loadTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({
       type: actionTypes.LOAD_TEAM_REQUEST,
     });
 
-    const { team } = await teamService.get(teamId, currentOrganization?.id);
-    dispatch(getTeamPermission(currentOrganization?.id, teamId));
+    const { team } = await teamService.get(teamId, activeOrganization?.id);
+    dispatch(getTeamPermission(activeOrganization?.id, teamId));
     dispatch({
       type: actionTypes.LOAD_TEAM_SUCCESS,
       payload: { team },
@@ -181,12 +181,12 @@ export const loadTeamAction = (teamId) => async (dispatch) => {
 export const updateTeamAction = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.UPDATE_TEAM_REQUEST });
 
-    const { team } = await teamService.update(teamId, data, currentOrganization?.id);
+    const { team } = await teamService.update(teamId, data, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.UPDATE_TEAM_SUCCESS,
@@ -202,12 +202,12 @@ export const updateTeamAction = (teamId, data) => async (dispatch) => {
 export const deleteTeamAction = (teamId) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.DELETE_TEAM_REQUEST });
 
-    await teamService.remove(teamId, currentOrganization?.id);
+    await teamService.remove(teamId, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.DELETE_TEAM_SUCCESS,
@@ -271,12 +271,12 @@ export const inviteMemberAction = (teamId, email) => async (dispatch) => {
 export const inviteMembersAction = (teamId, users, note) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
   try {
     dispatch({ type: actionTypes.INVITE_MEMBERS_REQUEST });
 
-    await teamService.inviteMembers(teamId, users, note, currentOrganization?.id);
+    await teamService.inviteMembers(teamId, users, note, activeOrganization?.id);
 
     dispatch({
       type: actionTypes.INVITE_MEMBERS_SUCCESS,
@@ -443,9 +443,9 @@ export const getTeamProject = (query, page, size) => async (dispatch) => {
 export const changeUserRole = (teamId, data) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization, currentOrganization },
+    organization: { activeOrganization },
   } = centralizedState;
-  await teamService.changeUserRole(currentOrganization?.id, teamId, data);
+  await teamService.changeUserRole(activeOrganization?.id, teamId, data);
   Swal.fire({
     icon: 'success',
     title: 'Permission Updated',
