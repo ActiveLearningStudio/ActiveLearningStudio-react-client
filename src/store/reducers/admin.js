@@ -32,7 +32,6 @@ const INITIAL_STATE = {
   allMediaSources: {},
   orgMediaSources: {},
   ltiToolsTypes: [],
-  allIv: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -41,11 +40,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeForm: action.payload,
-      };
-    case actionTypes.SET_ALL_IV:
-      return {
-        ...state,
-        allIv: action.payload.filter((data) => data.name?.includes('InteractiveVideo')),
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {

@@ -357,16 +357,6 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
   return image;
 };
 
-export const getAllIV = () => async (dispatch) => {
-  const result = await resourceService.getAllTypesIV();
-
-  dispatch({
-    type: actionTypes.SET_ALL_IV,
-    payload: result,
-  });
-  return result;
-};
-
 export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
   const { image } = await resourceService.uploadActivityLayoutThumb(formData);
   dispatch({

@@ -34,8 +34,6 @@ import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
 import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
-import { getAllIV } from 'store/actions/resource';
-
 import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
 
 function AdminPanel({ showSSO }) {
@@ -65,7 +63,6 @@ function AdminPanel({ showSSO }) {
     if (tab) {
       dispatch(setActiveTab(tab));
     }
-    dispatch(getAllIV());
   }, []);
   useEffect(() => {
     if (paginations?.length <= 1 || !paginations) {
