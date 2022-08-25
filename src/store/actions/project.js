@@ -298,7 +298,6 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
   await projectService.getReorderAll(projectId, activeOrganization?.id, choosenProject[0]?.order);
   dispatch(loadMyProjectsAction());
 };
-/* eslint-enable */
 
 export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
   // const centralizedState = store.getState();
@@ -412,15 +411,15 @@ export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = fa
   } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
 
-  dispatch({
-    type: actionTypes.SHARE_PROJECT,
-    payload: { project },
-  });
-  if (adminPanel) return project;
-  const protocol = `${window.location.href.split('/')[0]}//`;
-  const url = `${protocol + window.location.host}/project/${projectId}/shared`;
-  return SharePreviewPopup(url, ProjectName);
-};
+    dispatch({
+      type: actionTypes.SHARE_PROJECT,
+      payload: { project },
+    });
+    if (adminPanel) return project;
+    const protocol = `${window.location.href.split('/')[0]}//`;
+    const url = `${protocol + window.location.host}/project/${projectId}/shared`;
+    return SharePreviewPopup(url, ProjectName);
+  };
 
 export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -429,16 +428,16 @@ export const toggleProjectShareRemovedAction = (projectId, projectName, adminPan
   } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
-  dispatch({
-    type: actionTypes.SHARE_PROJECT,
-    payload: { project },
-  });
-  if (adminPanel) return project;
-  Swal.fire({
-    title: `You stopped sharing <strong>"${projectName}"</strong> !`,
-    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
-  });
-};
+    dispatch({
+      type: actionTypes.SHARE_PROJECT,
+      payload: { project },
+    });
+    if (adminPanel) return project;
+    Swal.fire({
+      title: `You stopped sharing <strong>"${projectName}"</strong> !`,
+      html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+    });
+  };
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -524,7 +523,7 @@ export const shareProjectAction = (projectId) => async () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     )
     .then((response) => {
       if (response.data.status === 'error' || response.status !== 200) {
@@ -585,7 +584,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, 
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
+          }
         )
         .then((res) => {
           if (res.data.status === 'success') {

@@ -311,9 +311,9 @@ const getLtiTools = (subOrgId, page, size, query, column, orderBy, filterBy) =>
       Promise.reject(err.response.data);
     });
 
-const getLtiToolsMedia = (subOrgId, page, query, filterBy) =>
+const getLtiToolsMedia = (subOrgId, page, size, query, filterBy) =>
   httpService
-    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&query=${query}&filter=${filterBy}`)
+    .get(`${apiVersion}/suborganizations/${subOrgId}/lti-tool-settings?page=${page}&size=${size}&query=${query}&filter=${filterBy}`)
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);
@@ -559,7 +559,7 @@ const deleteActivityLayout = (subOrgId, id) =>
     });
 
 // eslint-disable-next-line camelcase
-const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, order_by_type) =>
+const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column = '', order_by_type = '') =>
   httpService
     // eslint-disable-next-line camelcase
     .get(
@@ -572,7 +572,6 @@ const teamsActionAdminPanel = (subOrgId, query, page, size, order_by_column, ord
       errorCatcher(err.response.data);
       return Promise.reject();
     });
-
 //media sources for organizations
 const getAllMediaSources = () =>
   httpService

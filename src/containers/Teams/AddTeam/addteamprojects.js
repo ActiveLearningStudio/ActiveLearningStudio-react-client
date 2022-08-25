@@ -18,7 +18,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
     <div className="add-team-projects">
       <div className="team-projects-top-section">
         <div>
-          <div className="organization-name">Curriki Studio</div>
+          <div className="organization-name">CurrikiStudio</div>
           <div className="title-image">
             <div>
               <h1 className="title">Add projects</h1>

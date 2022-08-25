@@ -18,6 +18,9 @@ import PexelsAPI from 'components/models/pexels';
 import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import { clonePlaylist, cloneActivity } from 'store/actions/search';
+import PexelsSmSvg from 'iconLibrary/mainContainer/PexelsSmSvg';
+import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
+import { getMediaSources } from 'store/actions/admin';
 
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
@@ -159,8 +162,9 @@ let CreateProjectPopup = (props) => {
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
   const { teamPermission } = useSelector((state) => state.team);
-  const { permission, currentOrganization } = stateHeader;
+  const { permission, currentOrganization, activeOrganization } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
+  const [mediaSources, setMediaSources] = useState([]);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   // remove popup when escape is pressed
@@ -186,6 +190,15 @@ let CreateProjectPopup = (props) => {
       setVisibilityTypeArray(data.data);
     })();
   }, [getProjectVisibilityTypes]);
+
+  useEffect(() => {
+    if (mediaSources.length === 0) {
+      const result = dispatch(getMediaSources(activeOrganization?.id));
+      result.then((data) => {
+        setMediaSources(data.mediaSources);
+      });
+    }
+  }, [mediaSources]);
 
   return permission?.Project?.includes('project:create') ? (
     <div className="create-program-wrapper">
@@ -282,19 +295,23 @@ let CreateProjectPopup = (props) => {
             </div>
 
             <div className="button-flex ">
-              <div className="pexel" onClick={() => setModalShow(true)}>
-                <img src={pexel} alt="pexel" />
-                <p>Select from Pexels</p>
-              </div>
-              <div
-                className="gallery"
-                onClick={() => {
-                  openFile.current.click();
-                }}
-              >
-                <img src={computer} alt="" />
-                <p>Upload from My Device</p>
-              </div>
+              {mediaSources?.some((obj) => obj.name === 'Pexels' && obj.media_type === 'Image') && (
+                <div className="pexel" onClick={() => setModalShow(true)}>
+                  <PexelsSmSvg primaryColor={'#515151'} />
+                  <p>Select from Pexels</p>
+                </div>
+              )}
+              {mediaSources?.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && (
+                <div
+                  className="gallery"
+                  onClick={() => {
+                    openFile.current.click();
+                  }}
+                >
+                  <MyDeviceSmSvg primaryColor={'#515151'} />
+                  <p>Upload from My Device</p>
+                </div>
+              )}
             </div>
           </div>
 

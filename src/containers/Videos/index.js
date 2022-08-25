@@ -34,6 +34,10 @@ import Buttons from 'utils/Buttons/buttons';
 import DescribeVideo from './formik/describevideo';
 import AddVideo from './formik/addvideo';
 import loader from 'assets/images/loader.svg';
+import MyActivityLgSvg from 'iconLibrary/mainContainer/MyActivityLgSvg';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import PlusXlSvg from 'iconLibrary/mainContainer/PlusXlSvg';
+import MyInteractiveVideoLgSvg from 'iconLibrary/mainContainer/MyInteractiveVideoLgSvg';
 const ImgLoader = () => <img src={loader} alt="loader" />;
 // eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
@@ -51,7 +55,7 @@ const Index = ({ activities }) => {
   const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
 
   const videos = useSelector((state) => state.videos);
-  const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { activeOrganization, currentOrganization, permission } = useSelector((state) => state.organization);
   const { allActivities, isLoading, islazyLoader } = useSelector((state) => state.activities);
   const [activescreenType, setActiveScreenPage] = useState(null);
   const { allVideos } = videos;
@@ -66,13 +70,13 @@ const Index = ({ activities }) => {
   const [isbackHide, setisbackHide] = useState(true);
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (activeOrganization && !activities) {
-      dispatch(getAllVideos(activeOrganization.id));
+    if (currentOrganization && !activities) {
+      dispatch(getAllVideos(currentOrganization.id));
     }
-    if (activeOrganization && activities) {
-      dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize));
+    if (currentOrganization && activities) {
+      dispatch(allIndActivity(currentOrganization.id, ActivePage, defaultSize));
     }
-  }, [activeOrganization, activities]);
+  }, [currentOrganization, activities]);
 
   useEffect(() => {
     if (activities) {
@@ -120,7 +124,7 @@ const Index = ({ activities }) => {
 
   useEffect(() => {
     if (ActivePage !== 1) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
+      dispatch(allIndActivity(currentOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
@@ -186,47 +190,20 @@ const Index = ({ activities }) => {
                   <div className="topHeading">
                     <div>
                       <TopHeading
-                        description={activeOrganization.name}
+                        description={currentOrganization.name}
                         image={VideoImage}
                         svgImage={
                           activities ? (
                             <>
-                              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                  d="M27.2 2H4.8C3.2536 2 2 3.2536 2 4.8V10.4C2 11.9464 3.2536 13.2 4.8 13.2H27.2C28.7464 13.2 30 11.9464 30 10.4V4.8C30 3.2536 28.7464 2 27.2 2Z"
-                                  stroke={primaryColor}
-                                  strokeWidth="2.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M27.2 18.8H4.8C3.2536 18.8 2 20.0536 2 21.6V27.2C2 28.7464 3.2536 30 4.8 30H27.2C28.7464 30 30 28.7464 30 27.2V21.6C30 20.0536 28.7464 18.8 27.2 18.8Z"
-                                  stroke={primaryColor}
-                                  strokeWidth="2.5"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path d="M7.6001 7.59967H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M7.6001 24.3997H7.6148" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
+                              <MyActivityLgSvg primaryColor={primaryColor} />
                             </>
                           ) : (
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="1" y="1.5" width="20" height="12" rx="2" stroke={primaryColor} strokeWidth="2" />
-                              <path d="M1 18.5H21" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" />
-                              <circle cx="15" cy="18.5" r="2" fill="white" stroke={primaryColor} strokeWidth="2" />
-                              <path
-                                d="M9 9.66667V5.43426C9 5.03491 9.44507 4.79672 9.77735 5.01823L13.3044 7.36957C13.619 7.5793 13.5959 8.04885 13.2623 8.22677L9.73529 10.1078C9.40224 10.2855 9 10.0441 9 9.66667Z"
-                                stroke={primaryColor}
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                              />
-                            </svg>
+                            <MyInteractiveVideoLgSvg primaryColor={primaryColor} />
                           )
                         }
                         heading={activities ? 'My Activities' : 'My interactive videos'}
                         color="#084892"
-                        className={activeOrganization && 'video-top-heading-custom'}
+                        className={currentOrganization && 'video-top-heading-custom'}
                       />
                     </div>
                     <div className="search-bar-btn">
@@ -306,39 +283,25 @@ const Index = ({ activities }) => {
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           setActivePage(1);
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             if (!e.target.value.trim()) {
                               setActiveScreenPage(null);
-                              dispatch(getAllVideos(activeOrganization.id));
+                              dispatch(getAllVideos(currentOrganization.id));
                             }
                           }
                         }}
                         placeholder="Search My Videos..."
                       />
-
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <SearchInputMdSvg
+                        primaryColor={primaryColor}
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             setActiveScreenPage(null);
-                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                            dispatch(getSearchVideoCard(currentOrganization.id, searchQuery));
                           }
                         }}
-                      >
-                        <path
-                          d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                          stroke={primaryColor}
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      />
                     </div>
                     <div className="activity-counter">
                       <div className="pagination-counter drop-counter ">
@@ -372,35 +335,21 @@ const Index = ({ activities }) => {
                               setActivePage(1);
                               if (!e.target.value) {
                                 setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
+                                dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
                               }
                             }}
                             placeholder="Search My Activities..."
                           />
-
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            style={{ cursor: 'pointer' }}
+                          <SearchInputMdSvg
+                            primaryColor={primaryColor}
                             onClick={() => {
-                              if (activeOrganization) {
+                              if (currentOrganization) {
                                 setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
+                                dispatch(allIndActivity(currentOrganization?.id, ActivePage, defaultSize, searchQuery));
                               }
                             }}
-                          >
-                            <path
-                              d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                              stroke={primaryColor}
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
+                            style={{ cursor: 'pointer' }}
+                          />
                         </div>
 
                         <div className="searc_bar_move_activities">
@@ -530,10 +479,7 @@ const Index = ({ activities }) => {
                                   });
                                 }}
                               >
-                                <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                                  <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
+                                <PlusXlSvg primaryColor={primaryColor} />
                                 <span>Create New Activity</span>
                               </div>
                             )
@@ -550,10 +496,7 @@ const Index = ({ activities }) => {
                                 });
                               }}
                             >
-                              <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 26C2.03441 26 34.0143 26.0003 50 26.0005" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M26 50C26 49.9656 26 17.9857 26 2" stroke={primaryColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
+                              <PlusXlSvg primaryColor={primaryColor} />
                               <span>Create a video</span>
                             </div>
                           )}
@@ -605,7 +548,7 @@ const Index = ({ activities }) => {
                               totalItemsCount={allVideos?.meta?.total}
                               onChange={(e) => {
                                 setActivePage(e);
-                                dispatch(getAllVideos(activeOrganization.id, e));
+                                dispatch(getAllVideos(currentOrganization.id, e));
                               }}
                             />
                           </div>

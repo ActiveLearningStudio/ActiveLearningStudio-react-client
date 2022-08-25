@@ -33,8 +33,11 @@ import MyVerticallyCenteredModalForActivity from 'components/models/videoH5pmoda
 import CloneModel from './CloneModel';
 import './style.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
-
-let paginationStarter = true;
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
+import MyProjectSmSvg from 'iconLibrary/dropDown/MyProjectSmSvg';
+import MyActivitySmSvg from 'iconLibrary/mainContainer/MyActivitySmSvg';
+import SearchLibraryLgSvg from 'iconLibrary/mainContainer/SearchLibraryLgSvg';
+import MyActivitySvg from 'iconLibrary/sideBar/MyActivitySvg';
 
 export function MyVerticallyCenteredModal(props) {
   return (
@@ -436,16 +439,7 @@ function SearchInterface(props) {
                 {!fromTeam && (
                   <div className="search-top-header">
                     <div className="exp-lib-cnt">
-                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M14.4444 26.8889C21.3173 26.8889 26.8889 21.3173 26.8889 14.4444C26.8889 7.57157 21.3173 2 14.4444 2C7.57157 2 2 7.57157 2 14.4444C2 21.3173 7.57157 26.8889 14.4444 26.8889Z"
-                          stroke={primaryColor}
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path d="M29.9998 29.9999L23.2332 23.2333" stroke={primaryColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <SearchLibraryLgSvg primaryColor={primaryColor} />
                       <span> Search library</span>
                     </div>
                     {showBackOption && (
@@ -622,11 +616,11 @@ function SearchInterface(props) {
                                                 </a>
                                                 <p>{res.description}</p>
                                                 {res.user && (
-                                                  <div>
+                                                  <div className="search-content-by">
                                                     By: <span>{res.user.first_name}</span>
                                                   </div>
                                                 )}
-                                                <div>
+                                                <div className="search-content-type">
                                                   Type: <span className="type">{res.activity_type}</span>
                                                 </div>
                                                 {/* <p>{res.description}</p> */}
@@ -703,52 +697,10 @@ function SearchInterface(props) {
                                                         {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                                       Preview */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                              d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                              strokeLinejoin="round"
-                                                            />
-                                                            <path
-                                                              d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                              strokeLinejoin="round"
-                                                            />
-                                                          </svg>
+                                                          <PreviewSmSvg primaryColor={primaryColor} />
                                                           <span>Preview</span>
                                                         </div>
                                                       </a>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          setIndClone(true);
-                                                          setModalShow(true);
-                                                          setClone(res);
-                                                        }}
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
-                                                      Add to Projects */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                              d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                            />
-                                                            <path
-                                                              d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                            />
-                                                          </svg>
-                                                          Copy to My projects
-                                                        </div>
-                                                      </Dropdown.Item>
                                                       <Dropdown.Item
                                                         onClick={async () => {
                                                           toast.info('Duplicating Activity...', {
@@ -769,8 +721,24 @@ function SearchInterface(props) {
                                                           });
                                                         }}
                                                       >
-                                                        <FontAwesomeIcon className="mr-2" icon={faPlus} />
-                                                        Add to My Ind.Activities
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyActivitySvg primaryColor={primaryColor} />
+                                                          Copy to My Activities
+                                                        </div>
+                                                      </Dropdown.Item>
+                                                      <Dropdown.Item
+                                                        onClick={() => {
+                                                          setIndClone(true);
+                                                          setModalShow(true);
+                                                          setClone(res);
+                                                        }}
+                                                      >
+                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
+                                                      Add to Projects */}
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyProjectSmSvg primaryColor={primaryColor} />
+                                                          Copy to My projects
+                                                        </div>
                                                       </Dropdown.Item>
 
                                                       {/* {permission?.Activity?.includes(
@@ -1123,22 +1091,7 @@ function SearchInterface(props) {
                                                   {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                                 Preview */}
                                                   <div className="dropDown-item-name-icon">
-                                                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                      <path
-                                                        d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                      <path
-                                                        d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                    </svg>
+                                                    <PreviewSmSvg primaryColor={primaryColor} />
                                                     <span>Preview</span>
                                                   </div>
                                                 </Dropdown.Item>
@@ -1161,20 +1114,7 @@ function SearchInterface(props) {
                                                     {/* <FontAwesomeIcon className="mr-2" icon="clone" />
                                                   Add to projects */}
                                                     <div className="dropDown-item-name-icon">
-                                                      <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                          d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                          stroke={primaryColor}
-                                                          strokeWidth="1.5"
-                                                          strokeLinecap="round"
-                                                        />
-                                                        <path
-                                                          d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                          stroke={primaryColor}
-                                                          strokeWidth="1.5"
-                                                          strokeLinecap="round"
-                                                        />
-                                                      </svg>
+                                                      <MyProjectSmSvg primaryColor={primaryColor} />
                                                       Copy to My projects
                                                     </div>
                                                   </Dropdown.Item>
@@ -1284,22 +1224,7 @@ function SearchInterface(props) {
                                                 {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                               Preview */}
                                                 <div className="dropDown-item-name-icon">
-                                                  <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                      d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                      stroke={primaryColor}
-                                                      strokeWidth="1.5"
-                                                      strokeLinecap="round"
-                                                      strokeLinejoin="round"
-                                                    />
-                                                    <path
-                                                      d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                      stroke={primaryColor}
-                                                      strokeWidth="1.5"
-                                                      strokeLinecap="round"
-                                                      strokeLinejoin="round"
-                                                    />
-                                                  </svg>
+                                                  <PreviewSmSvg primaryColor={primaryColor} />
                                                   <span>Preview</span>
                                                 </div>
                                               </Dropdown.Item>
@@ -1313,20 +1238,7 @@ function SearchInterface(props) {
                                                 {/* <FontAwesomeIcon className="mr-2" icon="clone" />
                                               Add to projects */}
                                                 <div className="dropDown-item-name-icon">
-                                                  <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                      d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                      stroke={primaryColor}
-                                                      strokeWidth="1.5"
-                                                      strokeLinecap="round"
-                                                    />
-                                                    <path
-                                                      d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                      stroke={primaryColor}
-                                                      strokeWidth="1.5"
-                                                      strokeLinecap="round"
-                                                    />
-                                                  </svg>
+                                                  <MyProjectSmSvg primaryColor={primaryColor} />
                                                   Copy to My projects
                                                 </div>
                                               </Dropdown.Item>
@@ -1371,22 +1283,7 @@ function SearchInterface(props) {
                                                   {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                                 Preview */}
                                                   <div className="dropDown-item-name-icon">
-                                                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                      <path
-                                                        d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                      <path
-                                                        d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                    </svg>
+                                                    <PreviewSmSvg primaryColor={primaryColor} />
                                                     <span>Preview</span>
                                                   </div>
                                                 </Dropdown.Item>
@@ -1409,24 +1306,8 @@ function SearchInterface(props) {
                                                   }}
                                                 >
                                                   <div className="dropDown-item-name-icon">
-                                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                      <path
-                                                        d="M13.6 1H2.4C1.6268 1 1 1.6268 1 2.4V5.2C1 5.9732 1.6268 6.6 2.4 6.6H13.6C14.3732 6.6 15 5.9732 15 5.2V2.4C15 1.6268 14.3732 1 13.6 1Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                      <path
-                                                        d="M13.6 9.40015H2.4C1.6268 9.40015 1 10.0269 1 10.8001V13.6001C1 14.3733 1.6268 15.0001 2.4 15.0001H13.6C14.3732 15.0001 15 14.3733 15 13.6001V10.8001C15 10.0269 14.3732 9.40015 13.6 9.40015Z"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                      />
-                                                      <path d="M3.7998 3.7998H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                      <path d="M3.7998 12.1997H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
+                                                    <MyActivitySmSvg primaryColor={primaryColor} />
+
                                                     <span>Copy to My Activities</span>
                                                   </div>
                                                 </Dropdown.Item>
@@ -1440,20 +1321,7 @@ function SearchInterface(props) {
                                                   {/* <FontAwesomeIcon className="mr-2" icon="clone" />
                                                 Add to projects */}
                                                   <div className="dropDown-item-name-icon">
-                                                    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                      <path
-                                                        d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                      />
-                                                      <path
-                                                        d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                        stroke={primaryColor}
-                                                        strokeWidth="1.5"
-                                                        strokeLinecap="round"
-                                                      />
-                                                    </svg>
+                                                    <MyProjectSmSvg primaryColor={primaryColor} />
                                                     Copy to My projects
                                                   </div>
                                                 </Dropdown.Item>
@@ -1662,22 +1530,7 @@ function SearchInterface(props) {
                                                       >
                                                         {/* <FontAwesomeIcon className="mr-2" icon={faEye} /> */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                              d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                              strokeLinejoin="round"
-                                                            />
-                                                            <path
-                                                              d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                              strokeLinejoin="round"
-                                                            />
-                                                          </svg>
+                                                          <PreviewSmSvg primaryColor={primaryColor} />
                                                           <span>Preview</span>
                                                         </div>
                                                       </Dropdown.Item>
@@ -1698,20 +1551,7 @@ function SearchInterface(props) {
                                                       >
                                                         {/* <FontAwesomeIcon className="mr-2" icon="clone" /> */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                              d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                            />
-                                                            <path
-                                                              d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                              stroke={primaryColor}
-                                                              strokeWidth="1.5"
-                                                              strokeLinecap="round"
-                                                            />
-                                                          </svg>
+                                                          <MyProjectSmSvg primaryColor={primaryColor} />
                                                           Copy to My projects
                                                         </div>
                                                       </Dropdown.Item>
@@ -1952,22 +1792,7 @@ function SearchInterface(props) {
                                                       }
                                                     >
                                                       <div className="dropDown-item-name-icon">
-                                                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-                                                            d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                            stroke={primaryColor}
-                                                            strokeWidth="1.5"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                          />
-                                                          <path
-                                                            d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                            stroke={primaryColor}
-                                                            strokeWidth="1.5"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                          />
-                                                        </svg>
+                                                        <PreviewSmSvg primaryColor={primaryColor} />
                                                         <span>Preview</span>
                                                       </div>
                                                     </Dropdown.Item>
@@ -1981,20 +1806,7 @@ function SearchInterface(props) {
                                                       {/* <FontAwesomeIcon className="mr-2" icon="clone" />
                                                     Add to projects */}
                                                       <div className="dropDown-item-name-icon">
-                                                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                          <path
-                                                            d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                            stroke={primaryColor}
-                                                            strokeWidth="1.5"
-                                                            strokeLinecap="round"
-                                                          />
-                                                          <path
-                                                            d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                            stroke={primaryColor}
-                                                            strokeWidth="1.5"
-                                                            strokeLinecap="round"
-                                                          />
-                                                        </svg>
+                                                        <MyProjectSmSvg primaryColor={primaryColor} />
                                                         Copy to My projects
                                                       </div>
                                                     </Dropdown.Item>
@@ -2136,22 +1948,7 @@ function SearchInterface(props) {
                                                               }
                                                             >
                                                               <div className="dropDown-item-name-icon">
-                                                                <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                  <path
-                                                                    d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                  <path
-                                                                    d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                </svg>
+                                                                <PreviewSmSvg primaryColor={primaryColor} />
                                                                 <span>Preview</span>
                                                               </div>
                                                             </Dropdown.Item>
@@ -2174,36 +1971,7 @@ function SearchInterface(props) {
                                                               }}
                                                             >
                                                               <div className="dropDown-item-name-icon">
-                                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                  <path
-                                                                    d="M13.6 1H2.4C1.6268 1 1 1.6268 1 2.4V5.2C1 5.9732 1.6268 6.6 2.4 6.6H13.6C14.3732 6.6 15 5.9732 15 5.2V2.4C15 1.6268 14.3732 1 13.6 1Z"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                  <path
-                                                                    d="M13.6 9.40015H2.4C1.6268 9.40015 1 10.0269 1 10.8001V13.6001C1 14.3733 1.6268 15.0001 2.4 15.0001H13.6C14.3732 15.0001 15 14.3733 15 13.6001V10.8001C15 10.0269 14.3732 9.40015 13.6 9.40015Z"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                  <path
-                                                                    d="M3.7998 3.7998H3.80925"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                  <path
-                                                                    d="M3.7998 12.1997H3.80925"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                  />
-                                                                </svg>
+                                                                <MyActivitySmSvg primaryColor={primaryColor} />
                                                                 <span>Copy to My Activities</span>
                                                               </div>
                                                             </Dropdown.Item>
@@ -2215,20 +1983,7 @@ function SearchInterface(props) {
                                                               }}
                                                             >
                                                               <div className="dropDown-item-name-icon">
-                                                                <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                  <path
-                                                                    d="M1 3.11108V12.4444C1 12.874 1.34823 13.2222 1.77778 13.2222H14.2222C14.6518 13.2222 15 12.874 15 12.4444V4.18802C15 3.75847 14.6518 3.41024 14.2222 3.41024H8.71795"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                  />
-                                                                  <path
-                                                                    d="M8.71795 3.41032L6.55831 0.891738C6.48543 0.818805 6.3865 0.777832 6.28336 0.777832H1.38889C1.17411 0.777832 1 0.951945 1 1.16672V3.11116"
-                                                                    stroke={primaryColor}
-                                                                    strokeWidth="1.5"
-                                                                    strokeLinecap="round"
-                                                                  />
-                                                                </svg>
+                                                                <MyProjectSmSvg primaryColor={primaryColor} />
                                                                 Copy to My projects
                                                               </div>
                                                             </Dropdown.Item>

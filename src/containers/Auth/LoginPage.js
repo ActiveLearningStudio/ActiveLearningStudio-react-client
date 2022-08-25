@@ -19,6 +19,7 @@ import eye from 'assets/images/eye.svg';
 import Error from './Error';
 import Logo from './Logo';
 import './style.scss';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -113,6 +114,12 @@ class LoginPage extends React.Component {
   render() {
     const { email, password, rememberMe, error, clicked, activeTab, showPassword } = this.state;
     const { isLoading, domain } = this.props;
+    console.log('domain', domain);
+    if (window.location.host.includes('my.currikistudio.org')) {
+      if (window.location.pathname === '/login/' || window.location.pathname === '/login') {
+        window.location.replace('https://currikistudio.org');
+      }
+    }
 
     return (
       <div className="auth-page">
@@ -120,7 +127,7 @@ class LoginPage extends React.Component {
         {!clicked ? (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title ">Welcome to Curriki</h1>
+              <h1 className="auth-title ">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
 
               {/* <strong>OR</strong> */}
 
@@ -197,7 +204,7 @@ class LoginPage extends React.Component {
         ) : (
           <div className="auth-container">
             <div className="d-flex align-items-center justify-content-between">
-              <h1 className="auth-title">Welcome to Curriki</h1>
+              <h1 className="auth-title">Welcome to {window.__RUNTIME_CONFIG__.REACT_APP_INSTANT_NAME || 'Curriki'}</h1>
             </div>
             {/* <p className='auth-Pdescrip'>Start making a difference in the way learning experiences are created.</p> */}
             <p className="auth-Pdescrip"></p>
@@ -235,7 +242,8 @@ class LoginPage extends React.Component {
                         <span style={{ display: 'flex', justifyContent: 'space-between' }}>
                           Password
                           <div className="show-password" onClick={() => this.setState({ showPassword: !showPassword })}>
-                            <img src={eye} alt="show-password" />
+                            {/* <img src={eye} alt="show-password" /> */}
+                            <PreviewSmSvg primaryColor={'#515151'} />
                             Show Password
                           </div>
                         </span>
