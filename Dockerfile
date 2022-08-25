@@ -14,6 +14,8 @@ RUN git --no-pager log -10 > log.txt
 RUN npm install --no-package-lock
 RUN npm run build
 
+COPY log.txt build/
+
 # -- RELEASE --
 FROM nginx:stable-alpine as release
 
