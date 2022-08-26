@@ -95,7 +95,7 @@ function SearchInterface(props) {
   const [clone, setClone] = useState();
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [activeModel, setActiveModel] = useState('');
+  const [activeModel, setActiveModel] = useState(fromTeam ? 'projects' : '');
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
@@ -516,7 +516,7 @@ function SearchInterface(props) {
                     //   dispatch(simpleSearchAction(searchData));
                     // }
                   }}
-                  defaultActiveKey={allState.searchType}
+                  defaultActiveKey={!fromTeam ? allState.searchType : 'Projects'}
                 >
                   {!fromTeam && (
                     <Tab eventKey="Independent activities" title="Learning activities">
@@ -894,6 +894,7 @@ function SearchInterface(props) {
                             noWords={noWords}
                             setNoWords={setNoWords}
                             setisLoader={setisLoader}
+                            activeModel={activeModel}
                           />
                         </div>
                         <RefineSearch
@@ -1702,7 +1703,7 @@ function SearchInterface(props) {
                                   <Alert variant="danger">No result found !</Alert>
                                 )
                               ) : (
-                                <Skeleton count="3" />
+                                <>{!isLoader ? <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert> : <Skeleton count="3" />}</>
                               )}
                             </div>
                           </Tab>

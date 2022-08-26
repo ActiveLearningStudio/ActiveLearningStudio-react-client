@@ -16,6 +16,7 @@ import SearchInterface from 'containers/Search';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import { loadMyProjectsAction } from 'store/actions/project';
 import { createTeamAction, loadTeamAction, setNewTeamData, addProjectsAction, loadTeamsAction } from 'store/actions/team';
+import { setSearchTypeAction } from 'store/actions/search';
 import Swal from 'sweetalert2';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
@@ -50,6 +51,7 @@ const AddTeamProjects = (props) => {
   useEffect(() => {
     if (organization?.id) {
       dispatch(loadMyProjectsAction(1, 40, searchQuery));
+      dispatch(setSearchTypeAction('Projects'));
     }
   }, [organization?.id]);
   // USE EFFECT FOR FETCHING ALL PROJECTS IF COMPONENT IS NOT FETCHED IN CREATION STAGE
@@ -277,21 +279,33 @@ const AddTeamProjects = (props) => {
                           disabled={selectProject?.length === 0}
                           onClick={() => {
                             if (selectProject.length > 0) {
-                              addProjectToTeam(team?.id, selectProject)
-                                .then((result) => {
-                                  Swal.fire({
-                                    icon: 'success',
-                                    title: result?.message,
-                                  });
-                                  loadTeam(team?.id);
-                                  history.push(`/org/${organization?.domain}/teams/${team?.id}`);
-                                })
-                                .catch((err) => {
-                                  Swal.fire({
-                                    icon: 'error',
-                                    title: err?.message,
-                                  });
-                                });
+                              Swal.fire({
+                                icon: 'warning',
+                                title: 'Are you sure you want to add this project?',
+                                // eslint-disable-next-line max-len
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes',
+                                denyButtonText: 'No',
+                              }).then(async (result) => {
+                                if (result.isConfirmed) {
+                                  addProjectToTeam(team?.id, selectProject)
+                                    .then((result) => {
+                                      Swal.fire({
+                                        icon: 'success',
+                                        title: result?.message,
+                                      });
+                                      loadTeam(team?.id);
+                                      history.push(`/org/${organization?.domain}/teams/${team?.id}`);
+                                    })
+                                    .catch((err) => {
+                                      Swal.fire({
+                                        icon: 'error',
+                                        title: err?.message,
+                                      });
+                                    });
+                                }
+                              });
                             }
                           }}
                         />
