@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable eqeqeq */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
@@ -174,11 +175,12 @@ export default function CreateDefaultSso(prop) {
             <div className="create-form-inputs-group">
               {/* Left container */}
               <div>
-
                 <div className="form-group-create">
                   <h3>
                     Organization
-                    <div><small>Search org from dropdown list only</small></div>
+                    <div>
+                      <small>Search org from dropdown list only</small>
+                    </div>
                   </h3>
                   <input
                     type="text"
@@ -201,7 +203,11 @@ export default function CreateDefaultSso(prop) {
                     value={values.name}
                   />
 
-                  {loaderlmsImgUser && <div><img src={loader} alt="" style={{ width: '25px' }} className="loader" /></div>}
+                  {loaderlmsImgUser && (
+                    <div>
+                      <img src={loader} alt="" style={{ width: '25px' }} className="loader" />
+                    </div>
+                  )}
 
                   {stateOrgSearch?.length > 0 && (
                     <ul className="all-users-list">
@@ -233,14 +239,15 @@ export default function CreateDefaultSso(prop) {
                     <h3>Select Role</h3>
                     <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
                       <option defaultValue="">Nothing selected</option>
-                      {organizationRole.length > 0 && (
+                      {organizationRole.length > 0 &&
                         organizationRole?.map((role) => (
                           <>
                             {setSelectedRole(typeof values.role_id !== 'undefined' && values.role_id == role.id ? 'selected' : '')}
-                            <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
+                            <option value={role.id} key={role.id} selected={selectedRole}>
+                              {role.display_name}
+                            </option>
                           </>
-                        ))
-                      )}
+                        ))}
                     </select>
                     <div className="error">{errors.role_id && touched.role_id && errors.role_id}</div>
                   </div>
@@ -312,7 +319,7 @@ export default function CreateDefaultSso(prop) {
                 <div className="form-group-create">
                   <h3>Visibility</h3>
                   <div className="create-form-inputs-toggles">
-                    <div className="custom-toggle-button">
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedActivity}
                         onChange={() => {
@@ -330,7 +337,7 @@ export default function CreateDefaultSso(prop) {
                       />
                       <h3>Activity</h3>
                     </div>
-                    <div className="custom-toggle-button">
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedPlaylist}
                         onChange={() => {
@@ -348,7 +355,7 @@ export default function CreateDefaultSso(prop) {
                       />
                       <h3>Playlist</h3>
                     </div>
-                    <div className="custom-toggle-button">
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedProject}
                         onChange={() => {
@@ -372,9 +379,7 @@ export default function CreateDefaultSso(prop) {
             </div>
 
             <div className="button-group">
-              <button type="submit">
-                Save
-              </button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 className="cancel"

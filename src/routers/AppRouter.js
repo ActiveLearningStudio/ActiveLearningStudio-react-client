@@ -103,6 +103,7 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
+        {history?.location?.pathname?.includes('/login') && window.location?.host?.includes('my.currikistudio.org') && window.location.replace('https://currikistudio.org')}
         <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
         <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />

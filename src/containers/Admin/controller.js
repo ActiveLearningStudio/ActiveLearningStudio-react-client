@@ -16,6 +16,9 @@ import { toolTypeArray } from 'utils';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
 import Filter from './filter';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import FilterMdSvg from 'iconLibrary/mainContainer/FilterMdSvg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 
 function Controller(props) {
   const {
@@ -47,6 +50,8 @@ function Controller(props) {
     // searchUserReportQueryHandler,
     size,
     setSize,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     // tableHead,
     roles,
     // inviteUser,
@@ -63,6 +68,7 @@ function Controller(props) {
     filteredItems,
     setSearchKey,
     setfilterLtiSettings,
+    filterLtiSettings,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -183,16 +189,7 @@ function Controller(props) {
                 onChange={searchQueryChangeHandler}
               />
               {/* <img src={searchimg} alt="search" /> */}
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                  stroke={primaryColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <SearchInputMdSvg primaryColor={primaryColor} />
               {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
                 <label className="flex" style={{ color: 'red' }}>
                   Enter at least 2 characters
@@ -205,82 +202,35 @@ function Controller(props) {
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            <input className="" type="text" placeholder="Search" value={searchLtiquery} onChange={searchQueryChangeHandlerLtiTool} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {!!search && type === 'LMS' && subType === 'BrightCove' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
         {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search by Site name,URL or Client id" onChange={searchQueryChangeHandler} />
-            {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {!!search && type === 'Teams' && (
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
-            {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {/* {!!search && type === 'Stats' && (
@@ -333,23 +283,7 @@ function Controller(props) {
                 )
               }
             /> */}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
-            >
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
           </div>
         )}
 
@@ -378,70 +312,26 @@ function Controller(props) {
                 }
               }}
             />
-
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)}
-            >
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
           </div>
         )}
 
         {!!search && type === 'Organization' && (
           <div className="search-bar">
             <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {!!search && type === 'Activities' && subType === 'Activity Types' && (
           <div className="search-bar">
             <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
             <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
@@ -449,16 +339,7 @@ function Controller(props) {
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
@@ -466,16 +347,7 @@ function Controller(props) {
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
@@ -483,16 +355,7 @@ function Controller(props) {
           <div className="search-bar">
             <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
@@ -500,16 +363,7 @@ function Controller(props) {
           <div className="search-bar">
             <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} value={setSearchKey} />
             {/* <img src={searchimg} alt="search" /> */}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                stroke={primaryColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {paginationCounter && (
@@ -575,15 +429,7 @@ function Controller(props) {
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
                 {/* <img src={filterImg} alt="filter" /> */}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <FilterMdSvg primaryColor={primaryColor} />
                 Filter
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -791,15 +637,7 @@ function Controller(props) {
                 </div>
                 <div className="filter-btn-project" onClick={() => filterSearch()}>
                   {/* <img src={filterImg} alt="filter" /> */}
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M13.8334 3H2.16669L6.83335 8.25556V11.8889L9.16669 13V8.25556L13.8334 3Z"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <FilterMdSvg primaryColor={primaryColor} />
                   Apply Filters
                 </div>
                 <div
@@ -827,22 +665,7 @@ function Controller(props) {
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
-              <path
-                d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
             Library request to review
           </button>
         )}
@@ -857,22 +680,7 @@ function Controller(props) {
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px' }}>
-              <path
-                d="M1.125 8C1.125 8 3.625 3 8 3C12.375 3 14.875 8 14.875 8C14.875 8 12.375 13 8 13C3.625 13 1.125 8 1.125 8Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8 9.875C9.03553 9.875 9.875 9.03553 9.875 8C9.875 6.96447 9.03553 6.125 8 6.125C6.96447 6.125 6.125 6.96447 6.125 8C6.125 9.03553 6.96447 9.875 8 9.875Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
             Library request to review
           </button>
         )}
@@ -989,14 +797,14 @@ function Controller(props) {
             Filter by type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.name ? selectedFilterItem?.name : 'All'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{filterLtiSettings?.name ? filterLtiSettings?.name : 'All'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
                     onClick={() => {
                       filteredItems(null);
                       setSelectedFilterItem(null);
-                      setfilterLtiSettings('All');
+                      setfilterLtiSettings(null);
                     }}
                   >
                     All
@@ -1017,7 +825,7 @@ function Controller(props) {
                         onClick={() => {
                           filteredItems(t.id);
                           setSelectedFilterItem(t);
-                          setfilterLtiSettings('');
+                          setfilterLtiSettings(t);
                         }}
                       >
                         {t.name}

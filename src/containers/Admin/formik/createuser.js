@@ -188,7 +188,7 @@ export default function CreateUser(prop) {
                 </div>
                 <div className="form-group-create">
                   <h3>Role</h3>
-                  <div className="filter-dropdown-user">
+                  <div className="filter-dropdown-user" id="filter-dropdown-user-id-style">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">{roles?.length > 0 && roles?.find((role) => role.id === values.role_id)?.display_name}</Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -205,7 +205,7 @@ export default function CreateUser(prop) {
                 </div>
                 <div className="form-group-create">
                   <h3>Organization type</h3>
-                  <div className="filter-dropdown-user">
+                  <div className="filter-dropdown-user" id="filter-dropdown-user-id-style">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
                         {organizationTypes?.length > 0 && organizationTypes?.find((type) => type.label === values.organization_type)?.label}

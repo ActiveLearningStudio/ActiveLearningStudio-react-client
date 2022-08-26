@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { uploadResourceThumbnailAction } from 'store/actions/resource';
 import computer from 'assets/images/computer1.svg';
 import { getMediaSources } from 'store/actions/admin';
+import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
+import PexelsSmSvg from 'iconLibrary/mainContainer/PexelsSmSvg';
 
 const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) => {
   const project = useSelector((state) => state.project);
@@ -23,7 +25,6 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
   const openFile = useRef();
   const [uploadImage, setUploadImage] = useState(thumb_url);
   const [mediaSources, setMediaSources] = useState([]);
-
 
   const uploadThumb = async (e) => {
     const formData = new FormData();
@@ -111,7 +112,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
             <span>Upload</span>
           </label>
 
-          {mediaSources.some((obj) => (obj.name === 'Pexels' && obj.media_type === 'Image')) && 
+          {mediaSources.some((obj) => obj.name === 'Pexels' && obj.media_type === 'Image') && (
             <button
               type="button"
               onClick={() => {
@@ -120,24 +121,22 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url }) 
               }}
               className="btn-mr-27"
             >
-              <img src={PixelUpload} className="mr-20" />
+              <PexelsSmSvg primaryColor={'#515151'} className="mr-20" />
               Select from Pexels
             </button>
-          }
+          )}
 
-          {mediaSources.some((obj) => (obj.name === 'My device' && obj.media_type === 'Image')) && 
+          {mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && (
             <button
               type="button"
               onClick={() => {
                 openFile.current.click();
               }}
-            
             >
-              <img src={computer} className="mr-20" />
+              <MyDeviceSmSvg primaryColor={'#515151'} className="mr-20" />
               Upload from My device
             </button>
-          }
-         
+          )}
         </div>
       </div>
     </>

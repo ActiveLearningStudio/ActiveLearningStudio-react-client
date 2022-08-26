@@ -41,36 +41,34 @@ export const showAssigningAction = () => async (dispatch) => {
   });
 };
 
-export const loadTeamsAction =
-  (query = '') =>
-  async (dispatch) => {
-    const centralizedState = store.getState();
-    const {
-      organization: { activeOrganization },
-    } = centralizedState;
-    try {
-      dispatch({
-        type: actionTypes.PAGE_LOADING,
-      });
+export const loadTeamsAction = (query = '') => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
 
-      const { teams } = await teamService.getAll(activeOrganization?.id, query);
+    const { teams } = await teamService.getAll(activeOrganization?.id, query);
 
-      dispatch({
-        type: actionTypes.LOAD_TEAMS,
-        payload: { teams },
-      });
+    dispatch({
+      type: actionTypes.LOAD_TEAMS,
+      payload: { teams },
+    });
 
-      dispatch({
-        type: actionTypes.PAGE_LOADING_COMPLETE,
-      });
-    } catch (e) {
-      dispatch({
-        type: actionTypes.PAGE_LOADING_COMPLETE,
-      });
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
 
-      throw e;
-    }
-  };
+    throw e;
+  }
+};
 
 export const loadSubOrganizationTeamsAction = () => async (dispatch) => {
   const centralizedState = store.getState();
@@ -136,7 +134,7 @@ export const createTeamAction = (data) => async (dispatch) => {
         projects,
         organization_id,
       },
-      activeOrganization?.id
+      activeOrganization?.id,
     );
     dispatch({
       type: actionTypes.CREATE_TEAM_SUCCESS,
@@ -408,17 +406,38 @@ export const clearTeamPermissions = () => (dispatch) => {
   });
 };
 
-export const getTeamProject = (query, page) => async (dispatch) => {
+export const getTeamProject = (query, page, size) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { currentOrganization },
   } = centralizedState;
-  const result = await teamService.getTeamProject(currentOrganization?.id, query, page);
-  dispatch({
-    type: actionTypes.GET_TEAM_PROJECTS,
-    payload: result.data,
-  });
-  return result;
+  if (page !== 1) {
+    try {
+      dispatch({
+        type: actionTypes.PAGE_LOADING,
+      });
+      const result = await teamService.getTeamProject(currentOrganization?.id, query, page, size);
+
+      dispatch({
+        type: actionTypes.GET_TEAM_PROJECTS,
+        payload: result,
+      });
+      dispatch({
+        type: actionTypes.PAGE_LOADING_COMPLETE,
+      });
+    } catch (e) {
+      dispatch({
+        type: actionTypes.PAGE_LOADING_COMPLETE,
+      });
+    }
+  } else {
+    const result = await teamService.getTeamProject(currentOrganization?.id, query, page, size);
+    dispatch({
+      type: actionTypes.LOAD_TEAM_PROJECTS,
+      payload: result,
+    });
+    return result;
+  }
 };
 
 export const changeUserRole = (teamId, data) => async (dispatch) => {

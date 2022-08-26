@@ -1,4 +1,5 @@
-/* eslint-disable */
+/* eslint-disable array-callback-return */
+/* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
@@ -9,15 +10,16 @@ import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
 const Media = () => {
   const dispatch = useDispatch();
-  const h5plib = ['H5P.InteractiveVideo 1.24', 'H5P.InteractiveVideo 1.25', 'H5P.InteractiveVideo 1.26', 'H5P.InteractiveVideo 1.27', 'H5P.InteractiveVideo 1.28'];
   const { allMediaSources, orgMediaSources } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
+
   const { activeOrganization } = organization;
-  const [h5pVersion, seth5pVersion] = useState(h5plib);
+
+  const [updateLibrary, setUpdateLibrary] = useState([]);
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -34,21 +36,13 @@ const Media = () => {
     setallImageSource(allMediaSources?.mediaSources?.Image);
   }, [orgMediaSources, allMediaSources]);
 
-  const mediaLibrary = (sourceName) => {
-    switch (sourceName) {
-      case 'Kaltura':
-        return 'H5P.CurrikiInteractiveVideo 1.1';
-      case 'Vimeo':
-        return 'H5P.CurrikiInteractiveVideo 1.1';
-      case 'Komodo':
-        return 'H5P.CurrikiInteractiveVideo 1.1';
-      case 'BrightCove':
-        return 'H5P.BrightcoveInteractiveVideo 1.1';
-      default:
-        return 'H5P.InteractiveVideo 1.24';
+  useEffect(() => {
+    if (orgMediaSources?.mediaSources?.length > 0) {
+      setUpdateLibrary(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
     }
-  };
+  }, [allMediaSources]);
 
+  const mediaLibrary = (sourceName) => updateLibrary?.filter((data) => data.name === sourceName)[0]?.pivot?.h5p_library;
   return (
     <>
       <div className="media-section">
@@ -73,7 +67,7 @@ const Media = () => {
                               name="videoall"
                               type="checkbox"
                               label="Selectall"
-                              checked={orgVideoSource?.length === 6 ? true : false}
+                              checked={orgVideoSource?.length === 6}
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   setorgVideoSource(allVideoSource.filter((source) => source.name !== 'Safari Montage'));
@@ -90,17 +84,13 @@ const Media = () => {
                         </div>
                         <div className="btn-text">
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.preventDefault();
                               let updatedMediasSource = [];
-                              let media_ids = [];
-                              orgVideoSource?.map((videoSource) => {
-                                return media_ids.push(videoSource.id);
-                              });
-                              orgImageSource?.map((imgSource) => {
-                                console.log('ids', media_ids);
-                                return media_ids.push(imgSource.id);
-                              });
+                              const media_ids = [];
+                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
+                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgVideoSource.length === 0) {
                                 // updatedMediasSource = orgImageSource;
@@ -110,14 +100,13 @@ const Media = () => {
                                   allowOutsideClick: false,
                                 });
                                 return false;
-                              } else {
-                                Swal.fire({
-                                  title: 'Please Wait !',
-                                  text: 'Updating view...!!!',
-                                  allowOutsideClick: false,
-                                });
-                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                               }
+                              Swal.fire({
+                                title: 'Please Wait !',
+                                text: 'Updating view...!!!',
+                                allowOutsideClick: false,
+                              });
+                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
                             }}
                           >
                             Update
@@ -136,7 +125,7 @@ const Media = () => {
                                       name={source.name}
                                       type="checkbox"
                                       className="media-sources-checkboxes "
-                                      checked={isVideoSource?.length > 0 ? true : false}
+                                      checked={isVideoSource?.length > 0}
                                       onChange={(e) => {
                                         if (e.target.checked) {
                                           setorgVideoSource([...orgVideoSource, source]);
@@ -144,7 +133,7 @@ const Media = () => {
                                           setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
                                         }
                                       }}
-                                      disabled={source.name === 'Safari Montage' ? true : false}
+                                      disabled={source.name === 'Safari Montage'}
                                     />
                                     <span id={isVideoSource.length > 0 && 'span-sub-selected'} className="span-sub">
                                       {source.name}
@@ -154,13 +143,18 @@ const Media = () => {
                                     <input
                                       type="text"
                                       name={source.name}
-                                      placeholder={mediaLibrary(source.name)}
                                       onChange={(e) => {
-                                        seth5pVersion([h5pVersion, e.target.value]);
+                                        setUpdateLibrary(
+                                          updateLibrary.map((data) => {
+                                            if (data.name === source.name) {
+                                              return { ...data, pivot: { ...data.pivot, h5p_library: e.target.value } };
+                                            }
+                                            return data;
+                                          }),
+                                        );
                                       }}
                                       onBlur={handleBlur}
                                       value={mediaLibrary(source.name)}
-                                      readOnly
                                     />
                                   </div>
                                 </div>
@@ -184,7 +178,7 @@ const Media = () => {
                             name="imageall"
                             type="checkbox"
                             label="Selectall"
-                            checked={orgImageSource?.length === 2 ? true : false}
+                            checked={orgImageSource?.length === 2}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource.filter((source) => source.name !== 'Safari Montage'));
@@ -197,17 +191,14 @@ const Media = () => {
                         </div>
                         <div className="btn-text">
                           <button
+                            type="button"
                             name="update"
                             onClick={(e) => {
                               e.preventDefault();
-                              var updatedMediasSource = [];
-                              var media_ids = [];
-                              orgImageSource?.map((imgSource) => {
-                                return media_ids.push(imgSource.id);
-                              });
-                              orgVideoSource?.map((videoSource) => {
-                                return media_ids.push(videoSource.id);
-                              });
+                              let updatedMediasSource = [];
+                              const media_ids = [];
+                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
+                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
                               updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                               if (orgImageSource.length === 0) {
                                 // updatedMediasSource = orgVideoSource;
@@ -235,7 +226,7 @@ const Media = () => {
                                   <input
                                     name={source.name}
                                     type="checkbox"
-                                    checked={isImageSource?.length > 0 ? true : false}
+                                    checked={isImageSource?.length > 0}
                                     onChange={(e) => {
                                       if (e.target.checked) {
                                         setorgImageSource([...orgImageSource, source]);
@@ -243,7 +234,7 @@ const Media = () => {
                                         setorgImageSource(orgImageSource?.filter((imageSource) => imageSource.name !== source.name));
                                       }
                                     }}
-                                    disabled={source.name === 'Safari Montage' ? true : false}
+                                    disabled={source.name === 'Safari Montage'}
                                   />
                                   <span id={isImageSource.length > 0 && 'span-sub-selected'} className="span-sub">
                                     {source.name}

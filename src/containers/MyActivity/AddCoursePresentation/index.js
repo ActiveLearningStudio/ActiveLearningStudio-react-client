@@ -10,6 +10,7 @@ import UploadCoursePresentation from 'containers/MyActivity/AddCoursePresentatio
 import DriveCoursePresentation from 'containers/MyActivity/AddCoursePresentation/DriveCoursePresentation';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import './style.scss';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
 const AddCoursePresentation = ({ changeScreenHandler }) => {
   const primaryColor = getGlobalColor('--main-primary-color');
@@ -38,18 +39,14 @@ const AddCoursePresentation = ({ changeScreenHandler }) => {
         <div className="add-video-title">
           <HeadingTwo text="Add Presentation" color="#084892" />
         </div>
-        <div onClick={() => changeScreenHandler('layout')}>
-          <p style={{ color: primaryColor }}>
-            <FontAwesomeIcon icon="arrow-left" />
-            Back to options
-          </p>
+        <div className="d-flex align-items-center" style={{ cursor: 'pointer' }} onClick={() => changeScreenHandler('layout')}>
+          <BackToSmSvg primaryColor={primaryColor} />
+          <p style={{ color: primaryColor, marginBottom: '0px', marginLeft: '8px' }}>Back to options</p>
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <p>
-            You can start with a blank template or load an existing presentation
-          </p>
+          <p>You can start with a blank template or load an existing presentation</p>
         </div>
       </div>
       <div className="add-video-form-tabs">
@@ -71,18 +68,13 @@ const AddCoursePresentation = ({ changeScreenHandler }) => {
             {activeKey === 'drive' && <DriveCoursePresentation setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading} />}
           </Tab>
         </Tabs>
-        <div className={`loading ${(loading) ? '' : 'hide'}`}><FontAwesomeIcon icon="spinner" /></div>
+        <div className={`loading ${loading ? '' : 'hide'}`}>
+          <FontAwesomeIcon icon="spinner" />
+        </div>
       </div>
       <div className="row mt-2">
         <div className="col">
-          <Buttons
-            primary
-            text="Describe Layout"
-            className="cp-describe-layout-btn"
-            hover
-            onClick={() => changeScreenHandler('addactivity')}
-            disabled={!enableDescribeBtn}
-          />
+          <Buttons primary text="Describe Layout" className="cp-describe-layout-btn" hover onClick={() => changeScreenHandler('addactivity')} disabled={!enableDescribeBtn} />
         </div>
       </div>
     </div>
