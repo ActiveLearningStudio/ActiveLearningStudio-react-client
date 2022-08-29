@@ -39,7 +39,15 @@ const ProjectCardDropdown = (props) => {
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
-    setAllLms(AllLms);
+    const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
+    // QUICK FIX: filtering out wordpress integration from this component
+    // find better solution
+    setAllLms({
+      ...AllLms,
+      shareVendors: filteredShareVendors,
+    });
+
+    // setAllLms(AllLms);
   }, [AllLms]);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
