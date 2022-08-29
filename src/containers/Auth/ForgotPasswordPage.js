@@ -71,7 +71,7 @@ function ForgotPasswordPage(props) {
           Please enter your CurrikiStudio account&apos;s email and click the button below, then check your email for instructions on how to reset your password.
         </h3>
 
-        <form onSubmit={onSubmit} autoComplete="off" className='auth-form'>
+        <form onSubmit={onSubmit} autoComplete="off" className="auth-form">
           <div className="form-group">
             <span>Email</span>
             <input
@@ -88,7 +88,7 @@ function ForgotPasswordPage(props) {
           <Error error={error} />
 
           <div className="form-group">
-            <button type="submit" align="center" className="signUp-btn submit" disabled={isLoading || isDisabled}>
+            <button type="submit" className="signUp-btn submit" disabled={isLoading || isDisabled}>
               {isLoading ? <img src={loader} alt="" /> : 'Send'}
             </button>
           </div>
