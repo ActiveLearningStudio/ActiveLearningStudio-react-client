@@ -231,6 +231,37 @@
       line-height: 44px;
       margin-bottom: 0px;
     }
+    .reset-title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 24px 24px 24px 64px;
+      gap: 48px;
+      height: 92px;
+      background: #084892;
+      flex: none;
+      order: 0;
+      align-self: stretch;
+      flex-grow: 0;
+      color: #F8AF2C;
+      font-family: 'Montserrat';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 44px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .login-back {
+      color: #204892;
+    }
+    .reset-close {
+      color: #FFFFFF;
+      float: left;
+      margin-left: 65px;
+      cursor: pointer;
+      text-decoration: none;
+    }
     .termsandcondition {
       margin-top: 26.45px;
       width: 411.27px;
@@ -406,6 +437,30 @@
         text-align: center;
         color: #ffffff;
         margin-bottom: 15px;
+        &:disabled {
+          background: grey;
+          border-color: grey;
+        }
+      }
+
+      .reset-btn {
+        height: 36px;
+        width: 400px;
+        left: 0px;
+        top: 0px;
+        border-radius: 20px;
+        padding: 10px 24px 10px 24px;
+        background: #084892;
+        border: 1px solid #084892;
+        box-sizing: border-box;
+        border-radius: 16px;
+        font-family: 'Rubic';
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 20px;
+
         &:disabled {
           background: grey;
           border-color: grey;

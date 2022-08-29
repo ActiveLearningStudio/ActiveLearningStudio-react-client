@@ -63,12 +63,15 @@ function ForgotPasswordPage(props) {
       <Logo />
 
       <div className="auth-container">
-        <h1 className="auth-title">Reset Password</h1>
+        <h1 className="reset-title">Reset Password <Link className="reset-close" to="/login">&#215;</Link></h1>
+        <div className="form-group">
+          <Link to="/login" className="login-back"> &lt; &nbsp; Back to Log In</Link>
+        </div>
         <h3 className="auth-Pdescrip">
           Please enter your CurrikiStudio account&apos;s email and click the button below, then check your email for instructions on how to reset your password.
         </h3>
 
-        <form onSubmit={onSubmit} autoComplete="off" className="auth-form">
+        <form onSubmit={onSubmit} autoComplete="off" className='auth-form'>
           <div className="form-group">
             <span>Email</span>
             <input
@@ -85,14 +88,12 @@ function ForgotPasswordPage(props) {
           <Error error={error} />
 
           <div className="form-group">
-            <button type="submit" className="signUp-btn submit" disabled={isLoading || isDisabled}>
-              {isLoading ? <img src={loader} alt="" /> : 'Send Reset Password Link'}
+            <button type="submit" align="center" className="signUp-btn submit" disabled={isLoading || isDisabled}>
+              {isLoading ? <img src={loader} alt="" /> : 'Send'}
             </button>
           </div>
 
-          <div className="form-group text-center">
-            <Link to="/login">Back to Login</Link>
-          </div>
+
         </form>
       </div>
 
