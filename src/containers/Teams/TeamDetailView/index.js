@@ -525,7 +525,6 @@ const TeamDetail = ({
                           iconColor={secondaryColor}
                           text="Create Project"
                           primary
-                          width="148px"
                           height="32px"
                           hover
                           // className="mr-16"
