@@ -212,8 +212,7 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   });
   return thumbUrl;
 };
-
-export const loadMyProjectsAction = () => async (dispatch) => {
+export const addMyproject = (page, size, searchQuery) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { currentOrganization },
@@ -222,13 +221,36 @@ export const loadMyProjectsAction = () => async (dispatch) => {
     dispatch({
       type: actionTypes.PAGE_LOADING,
     });
-    const { projects } = await projectService.getAll(currentOrganization?.id);
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+
+    dispatch({
+      type: actionTypes.ADD_MY_PROJECTS,
+      payload: response,
+    });
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+  }
+};
+export const loadMyProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
 
     dispatch({
       type: actionTypes.LOAD_MY_PROJECTS,
-      payload: { projects },
+      payload: response,
     });
-
     dispatch({
       type: actionTypes.PAGE_LOADING_COMPLETE,
     });
@@ -276,18 +298,69 @@ export const loadMyReorderProjectsAction = (projectId, projectDivider) => async 
   await projectService.getReorderAll(projectId, activeOrganization?.id, choosenProject[0]?.order);
   dispatch(loadMyProjectsAction());
 };
-/* eslint-enable */
 
-export const loadMyCloneProjectsAction = () => async (dispatch) => {
+export const loadMyCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
   const centralizedState = store.getState();
   const {
-    organization: { activeOrganization },
+    organization: { currentOrganization },
   } = centralizedState;
-  const projects = await projectService.getClone(activeOrganization?.id);
-  dispatch({
-    type: actionTypes.LOAD_MY_CLONE_PROJECTS,
-    payload: projects,
-  });
+
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    dispatch({
+      type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+    window.scrollTo(0, 0);
+  }
+};
+
+export const addCloneProjectsAction = (page, size, searchQuery) => async (dispatch) => {
+  // const centralizedState = store.getState();
+  // const {
+  //   organization: { activeOrganization },
+  // } = centralizedState;
+  // const projects = await projectService.getClone(activeOrganization?.id);
+  // dispatch({
+  //   type: actionTypes.LOAD_MY_CLONE_PROJECTS,
+  //   payload: projects,
+  // });
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization },
+  } = centralizedState;
+
+  try {
+    dispatch({
+      type: actionTypes.PAGE_LOADING,
+    });
+    const response = await projectService.getAll(currentOrganization?.id, page, size, searchQuery);
+    dispatch({
+      type: actionTypes.ADD_MY_CLONE_PROJECTS,
+      payload: response,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.PAGE_LOADING_COMPLETE,
+    });
+    window.scrollTo(0, 0);
+  }
 };
 
 export const sampleProjects = () => async (dispatch) => {
@@ -338,15 +411,15 @@ export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = fa
   } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
 
-  dispatch({
-    type: actionTypes.SHARE_PROJECT,
-    payload: { project },
-  });
-  if (adminPanel) return project;
-  const protocol = `${window.location.href.split('/')[0]}//`;
-  const url = `${protocol + window.location.host}/project/${projectId}/shared`;
-  return SharePreviewPopup(url, ProjectName);
-};
+    dispatch({
+      type: actionTypes.SHARE_PROJECT,
+      payload: { project },
+    });
+    if (adminPanel) return project;
+    const protocol = `${window.location.href.split('/')[0]}//`;
+    const url = `${protocol + window.location.host}/project/${projectId}/shared`;
+    return SharePreviewPopup(url, ProjectName);
+  };
 
 export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -355,16 +428,16 @@ export const toggleProjectShareRemovedAction = (projectId, projectName, adminPan
   } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
-  dispatch({
-    type: actionTypes.SHARE_PROJECT,
-    payload: { project },
-  });
-  if (adminPanel) return project;
-  Swal.fire({
-    title: `You stopped sharing <strong>"${projectName}"</strong> !`,
-    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
-  });
-};
+    dispatch({
+      type: actionTypes.SHARE_PROJECT,
+      payload: { project },
+    });
+    if (adminPanel) return project;
+    Swal.fire({
+      title: `You stopped sharing <strong>"${projectName}"</strong> !`,
+      html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+    });
+  };
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -450,7 +523,7 @@ export const shareProjectAction = (projectId) => async () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },
+      }
     )
     .then((response) => {
       if (response.data.status === 'error' || response.status !== 200) {
@@ -511,7 +584,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, 
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
+          }
         )
         .then((res) => {
           if (res.data.status === 'success') {

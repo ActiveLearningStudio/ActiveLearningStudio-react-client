@@ -150,7 +150,7 @@ export default function CreateOrg(prop) {
         activeEdit?.branding.secondary_color,
         activeEdit?.branding.tertiary_color,
         activeEdit?.branding.primary_font_family,
-        activeEdit?.branding.secondary_font_family
+        activeEdit?.branding.secondary_font_family,
       );
     }
   }, [activeEdit, editMode]);
@@ -327,7 +327,7 @@ export default function CreateOrg(prop) {
                       <div className="tab-form-section">
                         <div className="tab-form-section-left">
                           <div className="form-group-create">
-                            <h3>Organization Name</h3>
+                            <h3>Organization name</h3>
                             <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} />
                             <div className="error">{errors.name && touched.name && errors.name}</div>
                           </div>
@@ -416,7 +416,7 @@ export default function CreateOrg(prop) {
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
                               <div className="create-form-inputs-toggles">
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_activity_visibility}
                                     onChange={() => {
@@ -442,7 +442,7 @@ export default function CreateOrg(prop) {
                         setFieldValue("published", !checked);
                       }}
                     /> */}
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_playlist_visibility}
                                     onChange={() => {
@@ -460,7 +460,7 @@ export default function CreateOrg(prop) {
                                   />
                                   <h3>Playlist</h3>
                                 </div>
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_project_visibility}
                                     onChange={() => {
@@ -990,7 +990,7 @@ export default function CreateOrg(prop) {
                                   activeEdit?.parent?.branding.secondary_color,
                                   activeEdit?.parent?.branding.tertiary_color,
                                   values.primary_font_family,
-                                  values.secondary_font_family
+                                  values.secondary_font_family,
                                 );
                             } else {
                               updatePreviewScreen(
@@ -998,7 +998,7 @@ export default function CreateOrg(prop) {
                                 activeOrganization?.branding.secondary_color,
                                 activeOrganization?.branding.tertiary_color,
                                 values.primary_font_family,
-                                values.secondary_font_family
+                                values.secondary_font_family,
                               );
                               activeOrganization?.branding && setFieldValue('primary_color', activeOrganization?.branding.primary_color);
                               activeOrganization?.branding && setFieldValue('secondary_color', activeOrganization?.branding.secondary_color);
@@ -1029,7 +1029,7 @@ export default function CreateOrg(prop) {
                                 activeEdit?.branding.secondary_color,
                                 activeEdit?.branding.tertiary_color,
                                 values.primary_font_family,
-                                values.secondary_font_family
+                                values.secondary_font_family,
                               );
                             } else {
                               setFieldValue('primary_color', saveAddOwnprimaryColor);
@@ -1118,7 +1118,7 @@ export default function CreateOrg(prop) {
                   </div>
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
-                      <h1>Font</h1>
+                      <h1>Fonts</h1>
                       <button
                         type="button"
                         onClick={() => {
@@ -1161,7 +1161,7 @@ export default function CreateOrg(prop) {
                                   values.secondary_color,
                                   values.tertiary_color,
                                   activeEdit?.parent?.branding.primary_font_family,
-                                  activeEdit?.parent?.branding.secondary_font_family
+                                  activeEdit?.parent?.branding.secondary_font_family,
                                 );
                             } else {
                               updatePreviewScreen(
@@ -1169,7 +1169,7 @@ export default function CreateOrg(prop) {
                                 values.secondary_color,
                                 values.tertiary_color,
                                 activeOrganization?.branding.primary_font_family,
-                                activeOrganization?.branding.secondary_font_family
+                                activeOrganization?.branding.secondary_font_family,
                               );
                               activeOrganization?.branding && setFieldValue('primary_font_family', activeOrganization?.branding.primary_font_family);
                               activeOrganization?.branding && setFieldValue('secondary_font_family', activeOrganization?.branding.secondary_font_family);
@@ -1198,7 +1198,7 @@ export default function CreateOrg(prop) {
                                 values.secondary_color,
                                 values.tertiary_color,
                                 activeEdit?.branding.primary_font_family,
-                                activeEdit?.branding.secondary_font_family
+                                activeEdit?.branding.secondary_font_family,
                               );
                             } else {
                               updatePreviewScreen(values.primary_color, values.secondary_color, values.tertiary_color, saveAddOwnprimaryFont, saveAddOwnsecondaryFont);
@@ -1231,7 +1231,7 @@ export default function CreateOrg(prop) {
                             >
                               <option value="rubic">Rubic</option>
                               <option value="SmoochSans">SmoochSans</option>
-                              <option value="Open Sans">Open Sans</option>
+                              <option value="Open Sans, sans-serif">Open Sans</option>
                               <option value="Fredoka">Fredoka</option>
                               {/*<option value="BhuTukaExpandedOne">BhuTukaExpandedOne</option>*/}
                             </select>
@@ -1249,7 +1249,7 @@ export default function CreateOrg(prop) {
                             >
                               <option value="rubic">Rubic</option>
                               <option value="SmoochSans">SmoochSans</option>
-                              <option value="Open Sans">Open Sans</option>
+                              <option value="Open Sans, sans-serif">Open Sans</option>
                               <option value="Fredoka">Fredoka</option>
                               {/*<option value="BhuTukaExpandedOne">BhuTukaExpandedOne</option>*/}
                             </select>
@@ -1314,7 +1314,7 @@ export default function CreateOrg(prop) {
                     setFieldValue('privacy_policy_content', ppContentValue);
                   }}
                 >
-                  {editMode ? 'Save ' : 'Save'} Organization
+                  {editMode ? 'Save ' : 'Save'} changes
                 </button>
               </div>
             </div>

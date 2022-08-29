@@ -9,7 +9,7 @@ import HeadingThree from 'utils/HeadingThree/headingthree';
 import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import UploadImageV2 from 'utils/uploadimagev2/uploadimagev2';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleUp, faExclamationCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import BackButton from '../../../assets/images/left-arrow.svg';
 import UploadFile from 'utils/uploadselectfile/uploadfile';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +18,8 @@ import * as actionTypes from 'store/actionTypes';
 import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
 // const withOutExplore = [
 //   "Interactive Video",
@@ -161,7 +163,7 @@ const AddActivity = (props) => {
           </div>
         ) : (
           <div className="add-activity-tabs">
-            <Tabs text="1. Select  layout" tabActive={true} />
+            <Tabs text="1. Select Activity" tabActive={true} />
             {
               ((counter = 0),
               layout?.map((data) => {
@@ -177,8 +179,8 @@ const AddActivity = (props) => {
             }
             {counter === 0 && (
               <>
-                <Tabs text="2. Select activity" className="ml-10" tabActive={true} />
-                <Tabs text="3. Describe and  create activity" className="ml-10" tabActive={true} />
+                {/* <Tabs text="2. Select activity" className="ml-10" tabActive={true} /> */}
+                <Tabs text="2. Describe and Create Activity" className="ml-10" tabActive={true} />
               </>
             )}
           </div>
@@ -188,7 +190,7 @@ const AddActivity = (props) => {
           <div className="add-activity-title-select upload-back-button">
             <div className="add-activity-title ">
               <div>
-                <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" />
+                <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" className="add_activity_title_h2_style" />
               </div>
             </div>
             <div
@@ -198,14 +200,10 @@ const AddActivity = (props) => {
                 changeScreenHandler('layout', 'create');
               }}
             >
-              {/* <img src={BackButton} alt="back button " /> */}
-              <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginRight: '8px', marginTop: '4px' }}>
-                <path d="M13 5L1 5" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M5 1L1 5L5 9" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <p className="">Back to options</p>
+              <BackToSmSvg primaryColor={primaryColor} />
+              <p style={{ marginLeft: '8px' }}>Cancel</p>
             </div>
-            {activtyMethod !== 'upload' && singleLayout === null && (
+            {/* {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">
                 <select
                   onChange={(e) => {
@@ -215,7 +213,7 @@ const AddActivity = (props) => {
                     });
                   }}
                 >
-                  {/* <option value="">Change Layout</option> */}
+                
                   {layout?.map((data) => {
                     return (
                       <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>
@@ -225,7 +223,7 @@ const AddActivity = (props) => {
                   })}
                 </select>
               </div>
-            )}
+            )} */}
           </div>
         )}
         {/* {!activity && (
@@ -302,15 +300,20 @@ const AddActivity = (props) => {
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">Describe {exploreCheck ? 'Activity' : 'layout'}</h4>
-
+                  {/* <h4 className="interactive-video-heading-two">Describe {exploreCheck ? 'Activity' : 'layout'}</h4> */}
+                  <h4 className="interactive-video-heading-two">Activity Details</h4>
                   <div className="layout-title-formik-textField">
-                    <HeadingThree text="Title" color="#515151" className="textField-title" />
-                    <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" />
+                    <div className="d-flex">
+                      <HeadingThree text="Title" color="#515151" className="textField-title" />
+                      <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
+                        Used for searching, reports and copyright information
+                      </OverlayTriggerPop>
+                    </div>
+                    {/* <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" /> */}
                     <input
                       type="text"
                       name="title"
-                      placeholder="Give your layout a name..."
+                      placeholder="Give your activity a name..."
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={parser.parseFromString(values.title, 'text/html').body.textContent}
@@ -319,7 +322,15 @@ const AddActivity = (props) => {
                   </div>
                   <div className="dec-title-formik-textField">
                     <span>Description</span>
-                    <textarea rows="4" cols="4" name="description" placeholder="What is this layout about" onChange={handleChange} onBlur={handleBlur} value={values.description} />
+                    <textarea
+                      rows="4"
+                      cols="4"
+                      name="description"
+                      placeholder="Enter a brief description of your activity"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.description}
+                    />
                   </div>
                   <div className="layout-formik-select" id="layout-formik-select-id-btn">
                     <div className="formik-select mr-16">
@@ -336,7 +347,7 @@ const AddActivity = (props) => {
                     </div>
 
                     <div className="formik-select mr-16">
-                      <HeadingText text="Education level" className="formik-select-title" />
+                      <HeadingText text="Education Level" className="formik-select-title" />
                       <ReactMultiSelectCheckboxes
                         name="education_level_id"
                         hideSearch
@@ -370,19 +381,21 @@ const AddActivity = (props) => {
           </div>
           <div className="add-activity-layout-videoTag">
             <HeadingThree
-              text={activtyMethod === 'upload' ? 'Upload existing activity' : activity ? 'Edit layout' : `Create ${exploreCheck ? 'Activity' : 'layout'}`}
+              // text={activtyMethod === 'upload' ? 'Upload existing activity' : activity ? 'Edit layout' : `Create ${exploreCheck ? 'Activity' : 'layout'}`}
+              text="Launch Activity Editor"
               color="#084892"
               className="layout-add-activity-title"
             />
 
             <HeadingText
-              text={
-                activtyMethod === 'upload'
-                  ? 'Upload an activity from an existing H5P file. '
-                  : activity
-                  ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
-                  : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
-              }
+              // text={
+              //   activtyMethod === 'upload'
+              //     ? 'Upload an activity from an existing H5P file. '
+              //     : activity
+              //     ? 'Start editing activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
+              //     : 'Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results.'
+              // }
+              text={`It's time to create your activity! Follow the on-screen prompts by adding content, media, and learner feedback.`}
               color="#515151"
             />
             <div className="d-flex">

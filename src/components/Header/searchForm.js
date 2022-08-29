@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -8,13 +9,8 @@ import { Formik } from 'formik';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Buttons from 'utils/Buttons/buttons';
 import { searchIndependentActivitiesAction, setSearchTypeAction, simpleSearchAction } from 'store/actions/search';
-import {
-  getActivityItems,
-  loadResourceTypesAction,
-} from 'store/actions/resource';
-import {
-  getSubjects, getEducationLevel, getAuthorTag, getUserReport,
-} from 'store/actions/admin';
+import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
+import { getSubjects, getEducationLevel, getAuthorTag, getUserReport } from 'store/actions/admin';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 function SearchForm(props) {
@@ -34,7 +30,7 @@ function SearchForm(props) {
   const { currentOrganization, permission } = useSelector((state) => state.organization);
 
   useEffect(() => {
-    if ((activityTypesState?.length === 0) && auth?.user && currentOrganization?.id) {
+    if (activityTypesState?.length === 0 && auth?.user && currentOrganization?.id) {
       dispatcher(loadResourceTypesAction());
       dispatcher(getActivityItems(currentOrganization?.id));
       dispatcher(getUserReport('all'));
@@ -108,24 +104,19 @@ function SearchForm(props) {
                 };
                 dispatcher(simpleSearchAction(searchData));
                 localStorage.setItem('loading', 'true');
-                history.push(
-                  `/org/${currentOrganization?.domain
-                  }/search?q=${simpleSearch.trim()}&type=public`,
-                );
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
                 localStorage.setItem('refreshPage', false);
               } else if (activities) {
                 const searchData = {
                   query: simpleSearch.trim(),
                   from: 0,
                   size: 20,
+                  no_words,
                 };
                 dispatcher(setSearchTypeAction('Independent activities'));
                 dispatcher(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
                 localStorage.setItem('loading', 'true');
-                history.push(
-                  `/org/${currentOrganization?.domain
-                  }/search?q=${simpleSearch.trim()}&type=showcase_activities`,
-                );
+                history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=showcase_activities`);
               }
             }
           }}
@@ -152,10 +143,7 @@ function SearchForm(props) {
               };
               dispatcher(simpleSearchAction(searchData));
               localStorage.setItem('loading', 'true');
-              history.push(
-                `/org/${currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=public`,
-              );
+              history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=public`);
               localStorage.setItem('refreshPage', false);
             } else if (activities) {
               const searchData = {
@@ -166,10 +154,7 @@ function SearchForm(props) {
               dispatcher(setSearchTypeAction('Independent activities'));
               dispatcher(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
               localStorage.setItem('loading', 'true');
-              history.push(
-                `/org/${currentOrganization?.domain
-                }/search?q=${simpleSearch.trim()}&type=showcase_activities`,
-              );
+              history.push(`/org/${currentOrganization?.domain}/search?q=${simpleSearch.trim()}&type=showcase_activities`);
             }
           }}
         >
@@ -180,13 +165,7 @@ function SearchForm(props) {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          <path
-            d="M21.0004 21.0004L16.6504 16.6504"
-            stroke={primaryColor}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+          <path d="M21.0004 21.0004L16.6504 16.6504" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
 
         <Dropdown.Toggle variant="" id="dropdown-basic">
@@ -251,14 +230,7 @@ function SearchForm(props) {
               }
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-            }) => (
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <div className="radio-btns">
@@ -271,11 +243,7 @@ function SearchForm(props) {
                         checked={values.type === 'private' || values.type === 'my_activities'}
                         type="radio"
                       />
-                      <span>
-                        Search My
-                        {' '}
-                        {activities ? 'Activities' : 'Projects'}
-                      </span>
+                      <span>Search My {activities ? 'Activities' : 'Projects'}</span>
                     </label>
                     <label>
                       <input
@@ -286,11 +254,7 @@ function SearchForm(props) {
                         checked={values.type === 'public' || values.type === 'showcase_activities'}
                         type="radio"
                       />
-                      <span>
-                        Search All Shared
-                        {' '}
-                        {activities ? 'Activities' : 'Projects'}
-                      </span>
+                      <span>Search All Shared {activities ? 'Activities' : 'Projects'}</span>
                     </label>
                     <label>
                       <input
@@ -301,33 +265,19 @@ function SearchForm(props) {
                         checked={values.type === 'orgSearch' || values.type === 'org_activities'}
                         type="radio"
                       />
-                      <span>
-                        Search All Shared
-                        {' '}
-                        {activities ? 'Activities' : 'Projects'}
-                        {' '}
-                        In My Org
-                      </span>
+                      <span>Search All Shared {activities ? 'Activities' : 'Projects'} In My Org</span>
                     </label>
                   </div>
                 </div>
 
                 <div
                   className="form-group"
-                // style={{
-                //   display: values.type === 'orgSearch' ? 'none' : 'block',
-                // }}
+                  // style={{
+                  //   display: values.type === 'orgSearch' ? 'none' : 'block',
+                  // }}
                 >
-                  <input
-                    name="phrase"
-                    placeholder="Enter search phrase"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.phrase}
-                  />
-                  <div className="error">
-                    {errors.phrase && touched.phrase && errors.phrase}
-                  </div>
+                  <input name="phrase" placeholder="Enter search phrase" onChange={handleChange} onBlur={handleBlur} value={values.phrase} />
+                  <div className="error">{errors.phrase && touched.phrase && errors.phrase}</div>
                 </div>
 
                 <div className="form-group">
@@ -367,9 +317,7 @@ function SearchForm(props) {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.subjectArray = values.subjectArray.filter(
-                              (index) => index !== data,
-                            );
+                            values.subjectArray = values.subjectArray.filter((index) => index !== data);
                             setValue(value + 1);
                           }}
                         >
@@ -416,9 +364,7 @@ function SearchForm(props) {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.gradeArray = values.gradeArray.filter(
-                              (index) => index !== data,
-                            );
+                            values.gradeArray = values.gradeArray.filter((index) => index !== data);
                             setValue(value + 1);
                           }}
                         >
@@ -465,9 +411,7 @@ function SearchForm(props) {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.authorTagsArray = values.authorTagsArray.filter(
-                              (index) => index !== data,
-                            );
+                            values.authorTagsArray = values.authorTagsArray.filter((index) => index !== data);
                             setValue(value + 1);
                           }}
                         >
@@ -490,9 +434,7 @@ function SearchForm(props) {
                         if (!values.standardArray.includes(updateValue)) {
                           values.standardArray.push(updateValue);
                         }
-                      } else if (
-                        !values.standardArray.includes(e.target.value)
-                      ) {
+                      } else if (!values.standardArray.includes(e.target.value)) {
                         values.standardArray.push(e.target.value);
                       }
                     }}
@@ -518,9 +460,7 @@ function SearchForm(props) {
                           className="iocns"
                           onClick={() => {
                             // eslint-disable-next-line no-param-reassign
-                            values.standardArray = values.standardArray.filter(
-                              (index) => index !== data,
-                            );
+                            values.standardArray = values.standardArray.filter((index) => index !== data);
                             setValue(value + 1);
                           }}
                         >
@@ -557,10 +497,7 @@ function SearchForm(props) {
                     }}
                   />
                 </div>
-                <div
-                  className="error"
-                  style={{ color: 'red', marginTop: '-15px' }}
-                >
+                <div className="error" style={{ color: 'red', marginTop: '-15px' }}>
                   {errors.toDate && errors.toDate && errors.toDate}
                   {errors.dateError}
                 </div>
@@ -568,40 +505,16 @@ function SearchForm(props) {
                 <div
                   className="form-group"
                   style={{
-                    display:
-                      permission?.Organization?.includes(
-                        'organization:view-user',
-                      ) && values.type !== 'private'
-                        ? 'block'
-                        : 'none',
+                    display: permission?.Organization?.includes('organization:view-user') && values.type !== 'private' ? 'block' : 'none',
                   }}
                 >
-                  <input
-                    name="author"
-                    placeholder="Enter author name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.author}
-                  />
+                  <input name="author" placeholder="Enter author name" onChange={handleChange} onBlur={handleBlur} value={values.author} />
                 </div>
                 <div className="form-group">
-                  <input
-                    name="no_words"
-                    placeholder="Do not have the words"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.no_words}
-                  />
+                  <input name="no_words" placeholder="Do not have the words" onChange={handleChange} onBlur={handleBlur} value={values.no_words} />
                 </div>
                 <div className="dual_activity">
-                  <Buttons
-                    type="submit"
-                    primary
-                    text="Search"
-                    width="165px"
-                    height="35px"
-                    hover
-                  />
+                  <Buttons type="submit" primary text="Search" width="165px" height="35px" hover />
                 </div>
               </form>
             )}

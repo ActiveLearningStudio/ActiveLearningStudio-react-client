@@ -29,6 +29,7 @@
 
   &.left .modal-content,
   &.right .modal-content {
+    width: 550px;
     height: 100%;
     overflow-y: auto;
     border: 0;
@@ -779,6 +780,9 @@ body {
 aside.sidebar-all {
   min-height: 100%;
   margin-top: 32px;
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 50px;
 }
 aside.sidebar-all:first-child {
   border-top: none;

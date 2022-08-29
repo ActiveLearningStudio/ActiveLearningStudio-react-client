@@ -1,16 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import StartingPage from './startingpage';
+import StartingPageTwo from './startingpage';
 
 export default {
   title: 'Utilities/StartingPage',
-  component: StartingPage,
+  component: StartingPageTwo(),
   argTypes: {
     primaryColor: '#2E68BF',
   },
 };
 
-const Template = (args) => <StartingPage {...args} />;
+const Template = (args) => <StartingPageTwo {...args} />;
 
 export const StartingPageProps = Template.bind({});
 

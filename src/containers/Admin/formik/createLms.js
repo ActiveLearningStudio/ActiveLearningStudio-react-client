@@ -248,7 +248,12 @@ export default function CreateUser(prop) {
                   </div>
 
                   <div className="form-group-create">
-                    <h3>User <div><small>Search users from dropdown list only</small></div></h3>
+                    <h3>
+                      User{' '}
+                      <div>
+                        <small>Search users from dropdown list only</small>
+                      </div>
+                    </h3>
                     <input
                       type="text"
                       name="name"
@@ -298,7 +303,7 @@ export default function CreateUser(prop) {
                   <div className="form-group-create">
                     <h3>Visibility</h3>
                     <div className="create-form-inputs-toggles">
-                      <div className="custom-toggle-button">
+                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                         <Switch
                           checked={checkedActivity}
                           onChange={() => {
@@ -316,7 +321,7 @@ export default function CreateUser(prop) {
                         />
                         <h3>Activity</h3>
                       </div>
-                      <div className="custom-toggle-button">
+                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                         <Switch
                           checked={checkedPlaylist}
                           onChange={() => {
@@ -334,7 +339,7 @@ export default function CreateUser(prop) {
                         />
                         <h3>Playlist</h3>
                       </div>
-                      <div className="custom-toggle-button">
+                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                         <Switch
                           checked={checkedProject}
                           onChange={() => {
@@ -354,11 +359,10 @@ export default function CreateUser(prop) {
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div className="button-group">
-                <button type="submit">Save</button>
+                <button type="submit">{editMode ? (clone ? 'Save' : 'Edit LMS setting ') : 'Save '}</button>
                 <button
                   type="button"
                   className="cancel"

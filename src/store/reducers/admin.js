@@ -31,6 +31,8 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
+  ltiToolsTypes: [],
+  allIv: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -39,6 +41,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeForm: action.payload,
+      };
+    case actionTypes.SET_ALL_IV:
+      return {
+        ...state,
+        allIv: action.payload.filter((data) => data.name?.includes('InteractiveVideo')),
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {
@@ -272,15 +279,33 @@ export default (state = INITIAL_STATE, action) => {
         orgMediaSources: action.payload,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
       return {
         ...state,
         orgMediaSources: action.payload,
+        ltiToolsTypes: updateLtiTools,
       };
 
     case actionTypes.GET_MEDIA_SOURCES:
       return {
         ...state,
         mediaSources: action.payload,
+      };
+
+    case actionTypes.GET_LTI_TOOLS_TYPES_REQUEST:
+      return {
+        ...state,
+        ltiToolsTypes: [],
+      };
+    case actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+        ltiToolsTypes: action.payload,
+      };
+
+    case actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
       };
     default:
       return state;

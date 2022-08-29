@@ -7,13 +7,13 @@ import './overlaytiggerpop.scss';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const OverlayTriggerPop = ({ className, icon, children, iconColor, onClick = () => {} }) => {
+const OverlayTriggerPop = ({ className, icon, children, iconColor, showMessage = 'bottom', onClick = () => {} }) => {
   const currikiUtility = classNames('curriki-utility-overlay-card', className);
   return (
     <>
       <div className={currikiUtility} onClick={onClick}>
         <OverlayTrigger
-          placement="bottom"
+          placement={showMessage}
           className="curriki-tooltip"
           delay={{ show: 250, hide: 400 }}
           overlay={(props) => (

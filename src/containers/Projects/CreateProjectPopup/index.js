@@ -15,9 +15,12 @@ import { createProjectAction, updateProjectAction, uploadProjectThumbnailAction,
 import InputField from 'components/InputField';
 import TextareaField from 'components/TextareaField';
 import PexelsAPI from 'components/models/pexels';
-import { addActivityPlaylistSearch } from 'store/actions/playlist';
+import { addActivityPlaylistSearch, moveActivityPlaylist } from 'store/actions/playlist';
 import './style.scss';
-import { result } from 'lodash';
+import { clonePlaylist, cloneActivity } from 'store/actions/search';
+import PexelsSmSvg from 'iconLibrary/mainContainer/PexelsSmSvg';
+import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
+import { getMediaSources } from 'store/actions/admin';
 
 const maxLength80 = maxLength(80);
 const maxLength1000 = maxLength(1000);
@@ -26,8 +29,9 @@ let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, project, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
-  const { name, description, vType } = values;
+  const { history, activity, project, searchView, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
+
+  const { name, description } = values;
   var result;
   if (addtoProject) {
     Swal.fire({
@@ -61,20 +65,43 @@ const onSubmit = async (values, dispatch, props) => {
               }),
         );
         if (result) {
-          selectedProjectstoAdd?.map((id) => {
-            dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
-          });
-          Swal.fire({
-            title: 'Your request is being processed.',
-            text: 'Please refresh after a moment.',
-            icon: 'success',
-            showCancelButton: false,
-            confirmButtonText: 'Close',
-            customClass: {
-              confirmButton: 'confirmation-close-btn',
-            },
-          });
-          history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          if (searchView) {
+            if (activity.clone.model == 'Playlist') {
+              clonePlaylist(result.id, activity.clone?.id);
+            } else if (activity.ind) {
+              dispatch(addActivityPlaylistSearch(activity.clone?.id, result.playlists[0].id));
+            } else {
+              cloneActivity(result.playlists[0].id, activity.clone?.id);
+            }
+            Swal.fire({
+              title: 'Your request is being processed.',
+              text: 'Please refresh after a moment.',
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',
+              },
+            });
+            history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          } else {
+            dispatch(moveActivityPlaylist(result.playlists[0].id, selectedProjectstoAdd));
+            Swal.fire({
+              title: 'Your request is being processed.',
+              text: 'Please refresh after a moment.',
+              icon: 'success',
+              showCancelButton: false,
+              confirmButtonText: 'Close',
+              customClass: {
+                confirmButton: 'confirmation-close-btn',
+              },
+            });
+            history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+          }
+
+          // selectedProjectstoAdd?.map((id) => {
+          //   dispatch(addActivityPlaylistSearch(id, result.playlists[0].id));
+          // });
         }
       }
     });
@@ -129,13 +156,15 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch) =
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, project, searchView, handleSubmit, addtoProject, handleCloseProjectModal, showCreateProjectModal, getProjectVisibilityTypes, vType } = props;
+
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const projectState = useSelector((state) => state.project);
   const { teamPermission } = useSelector((state) => state.team);
-  const { permission, currentOrganization } = stateHeader;
+  const { permission, currentOrganization, activeOrganization } = stateHeader;
   const [modalShow, setModalShow] = useState(false);
+  const [mediaSources, setMediaSources] = useState([]);
   const openFile = useRef();
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   // remove popup when escape is pressed
@@ -147,6 +176,7 @@ let CreateProjectPopup = (props) => {
     },
     [handleCloseProjectModal],
   );
+  console.log(props);
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, false);
@@ -160,6 +190,15 @@ let CreateProjectPopup = (props) => {
       setVisibilityTypeArray(data.data);
     })();
   }, [getProjectVisibilityTypes]);
+
+  useEffect(() => {
+    if (mediaSources.length === 0) {
+      const result = dispatch(getMediaSources(activeOrganization?.id));
+      result.then((data) => {
+        setMediaSources(data.mediaSources);
+      });
+    }
+  }, [mediaSources]);
 
   return permission?.Project?.includes('project:create') ? (
     <div className="create-program-wrapper">
@@ -181,13 +220,13 @@ let CreateProjectPopup = (props) => {
             validate={[required, maxLength80]}
             autoComplete="new-password"
             className="reduxlabel"
-            label="Project name"
+            label="Project Name"
             placeholder="e.g Course Name"
           />
         </div>
 
         <div className="project-description">
-          <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="Project Description" />
+          <Field name="description" component={TextareaField} validate={[required, maxLength1000]} autoComplete="new-password" label="What is your project about?" />
         </div>
         <div className="upload-thumbnail check">
           <div className="upload_placeholder">
@@ -233,7 +272,7 @@ let CreateProjectPopup = (props) => {
               {project?.thumbUrl ? (
                 <div className="thumb-display">
                   <label>
-                    <h2>Upload Image</h2>
+                    <h2>Project Thumbnail Image</h2>
                   </label>
                   <div
                     className="imgbox"
@@ -245,7 +284,7 @@ let CreateProjectPopup = (props) => {
               ) : (
                 <div className="new-box">
                   <label>
-                    <h2>Upload Image</h2>
+                    <h2>Project Thumbnail Image</h2>
                   </label>
                   <div className="imgbox">
                     {/* eslint-disable-next-line max-len */}
@@ -256,30 +295,34 @@ let CreateProjectPopup = (props) => {
             </div>
 
             <div className="button-flex ">
-              <div className="pexel" onClick={() => setModalShow(true)}>
-                <img src={pexel} alt="pexel" />
-                <p>Pexels</p>
-              </div>
-              <div
-                className="gallery"
-                onClick={() => {
-                  openFile.current.click();
-                }}
-              >
-                <img src={computer} alt="" />
-                <p>My device</p>
-              </div>
+              {mediaSources?.some((obj) => obj.name === 'Pexels' && obj.media_type === 'Image') && (
+                <div className="pexel" onClick={() => setModalShow(true)}>
+                  <PexelsSmSvg primaryColor={'#515151'} />
+                  <p>Select from Pexels</p>
+                </div>
+              )}
+              {mediaSources?.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && (
+                <div
+                  className="gallery"
+                  onClick={() => {
+                    openFile.current.click();
+                  }}
+                >
+                  <MyDeviceSmSvg primaryColor={'#515151'} />
+                  <p>Upload from My Device</p>
+                </div>
+              )}
             </div>
           </div>
 
-          <p className="disclaimer">
+          {/* <p className="disclaimer">
             Project Image dimension should be <strong>280px width and 200px height. </strong>
             Maximum File size allowed is <strong>100MB.</strong>
-          </p>
+          </p> */}
         </div>
         <div className="create-project-template-wrapper">
           <button type="submit" className="create-project-submit-btn" disabled={isLoading}>
-            {isLoading ? <img src={loader} alt="" /> : addtoProject ? 'Save & Continue' : 'Create Project'}
+            {isLoading ? <img src={loader} alt="" /> : addtoProject ? 'Save Project' : 'Create Project'}
           </button>
         </div>
       </form>

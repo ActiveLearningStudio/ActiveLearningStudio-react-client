@@ -22,9 +22,9 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     });
     const centralizedState = store.getState();
     const {
-      organization: { activeOrganization },
+      organization: { activeOrganization, currentOrganization },
     } = centralizedState;
-    const result = await resourceService.getTypes(activeOrganization?.id);
+    const result = await resourceService.getTypes(currentOrganization?.id);
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
@@ -355,6 +355,16 @@ export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
     payload: { image },
   });
   return image;
+};
+
+export const getAllIV = () => async (dispatch) => {
+  const result = await resourceService.getAllTypesIV();
+
+  dispatch({
+    type: actionTypes.SET_ALL_IV,
+    payload: result,
+  });
+  return result;
 };
 
 export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
@@ -867,7 +877,7 @@ export const searchPreviewIndependentActivityAction = (activityId) => async (dis
     payload: result,
   });
   return result;
-}
+};
 
 export const formatSelectBoxData = (data) => {
   let ids = [];

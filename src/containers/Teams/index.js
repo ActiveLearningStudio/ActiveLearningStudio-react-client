@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -13,6 +14,7 @@ import TeamView from './TeamCard';
 import ChannelPanel from './Channel';
 import './style.scss';
 import CreateTeamPopup from './CreateTeamPopup';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 
 function TeamsPage(props) {
   // eslint-disable-next-line object-curly-newline
@@ -79,19 +81,15 @@ function TeamsPage(props) {
                           value={searchQuery}
                           onChange={(e) => {
                             setSearchQuery(e.target.value);
-                            searchQueryHandler();
+                            // searchQueryHandler();
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.keyCode === 13) {
+                              searchQueryHandler();
+                            }
                           }}
                         />
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={searchQueryHandler}>
-                          <path
-                            d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
-                            stroke={primaryColor}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path d="M21 20.9984L16.65 16.6484" stroke={primaryColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        <SearchInputMdSvg primaryColor={primaryColor} onClick={searchQueryHandler} style={{ cursor: 'pointer' }} />
                       </div>
                     </div>
 

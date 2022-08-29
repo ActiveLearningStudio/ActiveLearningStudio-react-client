@@ -276,3 +276,30 @@ export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMedias
 
   return result;
 };
+
+export const ltiToolType = (subOrgId) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.GET_LTI_TOOLS_TYPES_REQUEST,
+  });
+  try {
+    const { data } = await adminService.ltiToolType(subOrgId);
+    dispatch({
+      type: actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.GET_LTI_TOOLS_TYPES_REQUEST,
+    });
+  }
+};
+
+export const cloneLtiTool = (subOrgId, id, user_id) => async (dispatch) => {
+  try {
+    const { data } = await adminService.cloneLtiTool(subOrgId, id, user_id);
+    dispatch({
+      type: actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {}
+};

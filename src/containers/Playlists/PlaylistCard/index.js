@@ -18,6 +18,9 @@ import './style.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { faPlus, faServer, faUpload } from '@fortawesome/free-solid-svg-icons';
 import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import PlusSmSvg from 'iconLibrary/mainContainer/PlusSmSvg';
+import MyActivitySmSvg from 'iconLibrary/mainContainer/MyActivitySmSvg';
+import UploadSmSvg from 'iconLibrary/mainContainer/UploadSmSvg';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -169,7 +172,19 @@ class PlaylistCard extends React.Component {
                   ? teamPermission?.Team?.includes('team:add-activity')
                   : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
                   <div className="mr-30 hover-text">
-                    <FontAwesomeIcon
+                    <PlusSmSvg
+                      primaryColor={primaryColor}
+                      onClick={() => {
+                        const { clearSearchform } = this.props;
+
+                        this.props.clear();
+                        this.props.openActivity(playlist, projectId);
+                        clearSearchform();
+
+                        this.props.clearEditState();
+                      }}
+                    />
+                    {/* <FontAwesomeIcon
                       icon={faPlus}
                       color={primaryColor}
                       onClick={() => {
@@ -181,46 +196,25 @@ class PlaylistCard extends React.Component {
 
                         this.props.clearEditState();
                       }}
-                    />
+                    /> */}
                     <span className="span-show">Create</span>
                   </div>
                 )}
                 <div className="mr-30-add hover-text">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <MyActivitySmSvg
+                    primaryColor={primaryColor}
                     onClick={() => {
                       this.props.setPlaylistIdForSearchingTab(playlist.id);
                       this.props.setSelectSearchModule(true);
                     }}
-                  >
-                    <path
-                      d="M13.6 1H2.4C1.6268 1 1 1.6268 1 2.4V5.2C1 5.9732 1.6268 6.6 2.4 6.6H13.6C14.3732 6.6 15 5.9732 15 5.2V2.4C15 1.6268 14.3732 1 13.6 1Z"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M13.6 9.40039H2.4C1.6268 9.40039 1 10.0272 1 10.8004V13.6004C1 14.3736 1.6268 15.0004 2.4 15.0004H13.6C14.3732 15.0004 15 14.3736 15 13.6004V10.8004C15 10.0272 14.3732 9.40039 13.6 9.40039Z"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M3.7998 3.79883H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M3.7998 12.1992H3.80925" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  />
+
                   <span className="span-show">Add existing</span>
                 </div>
 
                 <div className="mr-30  hover-text">
-                  {/* <OverlayTriggerPop
-                    icon={faUpload}
-                    iconColor={primaryColor}
+                  <UploadSmSvg
+                    primaryColor={primaryColor}
                     onClick={() => {
                       const { clearSearchform } = this.props;
 
@@ -230,36 +224,7 @@ class PlaylistCard extends React.Component {
 
                       this.props.clearEditState();
                     }}
-                  >
-                    Upload Activity
-                  </OverlayTriggerPop> */}
-
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    onClick={() => {
-                      const { clearSearchform } = this.props;
-
-                      this.props.clear();
-                      this.props.openActivityUpload(playlist, projectId);
-                      clearSearchform();
-
-                      this.props.clearEditState();
-                    }}
-                  >
-                    <path
-                      d="M2 9V12.2C2 12.4122 2.15804 12.6157 2.43934 12.7657C2.72064 12.9157 3.10218 13 3.5 13H12.5C12.8978 13 13.2794 12.9157 13.5607 12.7657C13.842 12.6157 14 12.4122 14 12.2V9"
-                      stroke={primaryColor}
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path d="M10.6504 5.39999L8.02539 3L5.40039 5.39999" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M8 3V10.8" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  />
                   <span className="span-show">Upload</span>
                 </div>
               </div>

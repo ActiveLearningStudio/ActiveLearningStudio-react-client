@@ -1,14 +1,9 @@
+/* eslint-disable object-curly-newline */
 import Swal from 'sweetalert2';
 
 import searchService from 'services/search.service';
 import resourceService from 'services/resource.service';
-import {
-  SEARCH_REDUX,
-  CLEAR_SEARCH,
-  SELECT_EXISTING_ACTIVITY,
-  RESET_EXISTING_ACTIVITY,
-  SET_SEARCH_TYPE,
-} from '../actionTypes';
+import { SEARCH_REDUX, CLEAR_SEARCH, SELECT_EXISTING_ACTIVITY, RESET_EXISTING_ACTIVITY, SET_SEARCH_TYPE } from '../actionTypes';
 import store from '../index';
 
 export const searchRedux = (data, searchQuery, meta) => ({
@@ -20,7 +15,9 @@ export const searchRedux = (data, searchQuery, meta) => ({
 
 export const simpleSearchAction = (values) => async (dispatch) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   // const activityType = [];
   // if (values.standardArray) {
   //   values.standardArray.map((data) => {
@@ -30,6 +27,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   //     return true;
   //   });
   // }
+  console.log(values);
   const activeGrades = [];
   if (values.gradeArray) {
     values.gradeArray.forEach((grade) => {
@@ -50,85 +48,44 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   }
   let sendData;
   if (values.standardArray && values.standardArray.length > 0) {
-    if (values.type === 'orgSearch') {
-      sendData = {
-        query: values.phrase || undefined,
-        h5pLibraries: values.standardArray,
-        from: values.from,
-        size: values.size,
-        author: values.author || undefined,
-        model: values.model || undefined,
-        negativeQuery: values.no_words || undefined,
-        subjectIds: activeSubjects,
-        educationLevelIds: activeGrades,
-        authorTagIds: activeAuthTags,
-        startDate: values.fromDate || undefined,
-        endDate: values.toDate || undefined,
-        organization_id: activeOrganization?.id,
-        searchType: 'org_projects',
-      };
-    } else {
-      sendData = {
-        query: values.phrase,
-        h5pLibraries: values.standardArray,
-        from: values.from,
-        size: values.size,
-        model: values.model || undefined,
-        negativeQuery: values.no_words || undefined,
-        subjectIds: activeSubjects,
-        author: values.author || undefined,
-        educationLevelIds: activeGrades,
-        authorTagIds: activeAuthTags,
-        startDate: values.fromDate || undefined,
-        endDate: values.toDate || undefined,
-        organization_id: activeOrganization?.id,
-        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
-      };
-    }
+    sendData = {
+      query: values.phrase || undefined,
+      h5pLibraries: values.standardArray,
+      from: values.from,
+      size: values.size,
+      model: values.model || undefined,
+      negativeQuery: values.no_words || undefined,
+      subjectIds: activeSubjects,
+      author: values.author || undefined,
+      educationLevelIds: activeGrades,
+      authorTagsIds: activeAuthTags,
+      startDate: values.fromDate || undefined,
+      endDate: values.toDate || undefined,
+      organization_id: activeOrganization?.id,
+      searchType: 'showcase_projects',
+    };
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (values.type === 'orgSearch') {
-      sendData = {
-        query: values.phrase || undefined,
-        h5pLibraries: values.standardArray,
-        from: values.from,
-        size: values.size,
-        author: values.author || undefined,
-        model: values.model || undefined,
-        negativeQuery: values.no_words || undefined,
-        subjectIds: activeSubjects,
-        educationLevelIds: activeGrades,
-        authorTagIds: activeAuthTags,
-        startDate: values.fromDate || undefined,
-        endDate: values.toDate || undefined,
-        organization_id: activeOrganization?.id,
-        searchType: 'org_projects',
-      };
-    } else {
-      sendData = {
-        query: values.phrase,
-        h5pLibraries: values.standardArray,
-        from: values.from,
-        size: values.size,
-        author: values.author || undefined,
-        model: values.model || undefined,
-        negativeQuery: values.no_words || undefined,
-        subjectIds: activeSubjects,
-        educationLevelIds: activeGrades,
-        authorTagIds: activeAuthTags,
-        startDate: values.fromDate || undefined,
-        endDate: values.toDate || undefined,
-        organization_id: activeOrganization?.id,
-        searchType: values.type === 'public' ? 'showcase_projects' : 'my_projects',
-      };
-    }
+
+    sendData = {
+      query: values.phrase || undefined,
+      h5pLibraries: values.standardArray,
+      from: values.from,
+      size: values.size,
+      author: values.author || undefined,
+      model: values.model || undefined,
+      negativeQuery: values.no_words || undefined,
+      subjectIds: activeSubjects,
+      educationLevelIds: activeGrades,
+      authorTagsIds: activeAuthTags,
+      startDate: values.fromDate || undefined,
+      endDate: values.toDate || undefined,
+      organization_id: activeOrganization?.id,
+      searchType: 'showcase_projects',
+    };
   }
-  let response;
-  if (values.type === 'public' || values.type === 'orgSearch') {
-    response = await searchService.searchResult(sendData);
-  } else {
-    response = await searchService.advancedSearch(sendData);
-  }
+
+  const response = await searchService.searchResult(sendData);
 
   if (response?.errors) {
     if (response?.errors.query) {
@@ -142,9 +99,10 @@ export const simpleSearchAction = (values) => async (dispatch) => {
 };
 
 export const searchIndependentActivitiesAction = (values, searchType) => async (dispatch) => {
-  console.log(values);
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   const activeGrades = [];
   if (values.gradeArray) {
     values.gradeArray.forEach((grade) => {
@@ -166,12 +124,12 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
   let sendData;
   if (values.standardArray && values.standardArray.length > 0) {
     sendData = {
-      query: values.query || values.phrase,
+      query: values.query || values.phrase || undefined,
       subjectArray: values.subjectArray,
       gradeArray: values.gradeArray,
-      author: values.author || undefined,
+      author: values.authors || undefined,
       subjectIds: activeSubjects,
-      authorTagIds: activeAuthTags,
+      authorTagsIds: activeAuthTags,
       negativeQuery: values.no_words || undefined,
       h5pLibraries: values.standardArray,
       startDate: values.fromDate || undefined,
@@ -183,13 +141,13 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
     };
   } else {
     sendData = {
-      query: values.query || values.phrase,
+      query: values.query || values.phrase || undefined,
       subjectArray: values.subjectArray,
       gradeArray: values.gradeArray,
-      authorTagIds: activeAuthTags,
+      authorTagsIds: activeAuthTags,
       subjectIds: activeSubjects,
       educationLevelIds: activeGrades,
-      author: values.author || undefined,
+      author: values.authors || undefined,
       negativeQuery: values.no_words || undefined,
       startDate: values.fromDate || undefined,
       organization_id: activeOrganization?.id,
@@ -198,6 +156,7 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
       size: values.size,
     };
   }
+
   const result = await searchService.searchIndependentActivities(searchType, sendData);
   dispatch(searchRedux(result?.data, values?.query, result?.meta));
   return result;
@@ -212,7 +171,9 @@ export const setSearchTypeAction = (type) => async (dispatch) => {
 
 export const cloneProject = (projectID) => {
   const centralizedState = store.getState();
-  const { organization: { activeOrganization } } = centralizedState;
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
   searchService.cloneProject(projectID, activeOrganization.id);
 };
 

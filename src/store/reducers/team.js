@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -12,13 +13,16 @@ const INITIAL_STATE = {
   selectedTeam: {},
   roles: null,
   teamPermission: {},
+  isTeamProjectLoading: false,
   teamProjects: [],
+  teamProjectMeta: null,
+  islazyLoader: false,
   selectedForClone: '',
   whiteBoardUrl: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { teams } = state;
+  const { teams, teamProjects } = state;
 
   switch (action.type) {
     case actionTypes.RESET_SELECTED_TEAM:
@@ -26,7 +30,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         selectedTeam: {},
       };
-
+    case actionTypes.SHOW_SKELETON:
+      return {
+        ...state,
+        isTeamProjectLoading: false,
+      };
     case actionTypes.UPDATE_SELECTED_TEAM:
       return {
         ...state,
@@ -56,7 +64,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         teamPermission: {},
       };
-
+    case actionTypes.PAGE_LOADING:
+      return {
+        ...state,
+        islazyLoader: true,
+      };
+    case actionTypes.PAGE_LOADING_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
+      };
     case actionTypes.SHOW_INVITE_MEMBER:
       return {
         ...state,
@@ -253,11 +270,27 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
       };
-    case actionTypes.GET_TEAM_PROJECTS:
+
+    case actionTypes.LOAD_TEAM_PROJECTS:
       return {
         ...state,
-        teamProjects: action.payload,
+        teamProjects: action.payload.data,
+        teamProjectMeta: action.payload.meta,
+        isTeamProjectLoading: true,
       };
+
+    case actionTypes.GET_TEAM_PROJECTS:
+      if (teamProjects) {
+        const newteamProjects = teamProjects.concat(action.payload.data);
+        return {
+          ...state,
+          teamProjects: newteamProjects,
+          islazyLoader: false,
+          teamProjectMeta: action.payload.meta,
+          isTeamProjectLoading: true,
+        };
+      }
+
     case actionTypes.PROJECT_SELECTED_FOR_CLONE:
       return {
         ...state,

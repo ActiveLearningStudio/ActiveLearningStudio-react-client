@@ -37,6 +37,7 @@ const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
 const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
+const Library = loadable(() => import('../containers/Search'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const termsPolicyContent = loadable(() => import('../components/Footer/termsPolicyContent'));
 const CanvasLtiLogin = loadable(() => import('../containers/Auth/CanvasLtiLogin'));
@@ -74,6 +75,7 @@ const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/S
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
+const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -101,6 +103,8 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
+        {history?.location?.pathname?.includes('/login') && window.location?.host?.includes('my.currikistudio.org') && window.location.replace('https://currikistudio.org')}
+        <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
         <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
@@ -172,7 +176,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/activities" component={VideoPage} overview activities />
                   <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
-
+                  <PrivateRoute exact path="/org/:organization/library" showSSO component={Library} />
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
@@ -205,7 +209,7 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
 
-                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
+                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}/activities`} />
                 </Switch>
                 <Footer />
               </div>
