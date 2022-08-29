@@ -83,6 +83,11 @@ function TeamsPage(props) {
                             setSearchQuery(e.target.value);
                             // searchQueryHandler();
                           }}
+                          onKeyDown={(e) => {
+                            if (e.keyCode === 13) {
+                              searchQueryHandler();
+                            }
+                          }}
                         />
                         <SearchInputMdSvg primaryColor={primaryColor} onClick={searchQueryHandler} style={{ cursor: 'pointer' }} />
                       </div>
