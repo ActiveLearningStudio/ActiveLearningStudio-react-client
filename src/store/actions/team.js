@@ -345,6 +345,11 @@ export const removeProjectAction = (teamId, id) => async (dispatch) => {
     });
 
     dispatch(loadTeamAction(teamId));
+    Swal.fire({
+      icon: 'success',
+      title: 'Deleted',
+      text: 'Your project has been deleted.',
+    });
   } catch (e) {
     dispatch({ type: actionTypes.REMOVE_PROJECT_FAIL });
 
