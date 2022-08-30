@@ -156,7 +156,7 @@ const H5PEditor = (props) => {
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
         <input type="hidden" name="contentId" id="laravel-h5p-contentId" value={contentId} />
-        <input type="hidden" name="brightcoveApiSettingId" id="laravel-h5p-brightcoveApiSettingId" value={ settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null} />
+        <input type="hidden" name="brightcoveApiSettingId" id="laravel-h5p-brightcove-api-settingId" value={ settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null} />
 
         <fieldset>
           <div id="laravel-h5p-create" className="form-group ">
