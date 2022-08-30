@@ -389,6 +389,7 @@ const PreviewLayoutModel = (props) => {
                     setOpenVideo={setOpenVideo}
                     reverseType={reverseType}
                     playlistId={playlist?.id || undefined}
+                    contentId={editVideo?.h5p_content?.id}
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                   />
@@ -455,6 +456,7 @@ const PreviewLayoutModel = (props) => {
                   hide={props.onHide}
                   editActivity={activity ? true : false}
                   activityId={activity?.id}
+                  contentId={activity?.h5p_content?.id}
                   submitForm={submitForm}
                   activityPreview={activityPreview}
                 />
