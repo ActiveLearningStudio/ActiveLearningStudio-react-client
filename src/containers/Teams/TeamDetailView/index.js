@@ -491,7 +491,7 @@ const TeamDetail = ({
                         secondary
                         width="168px"
                         height="32px"
-                        className="mr-16"
+                        className="mr-16 team_search_btn"
                         hover
                         onClick={() => {
                           assignWhiteBoardUrl(organization?.id, team?.id, auth.user?.id, 'team');
@@ -504,7 +504,7 @@ const TeamDetail = ({
                           secondary
                           width="128px"
                           height="32px"
-                          className="mr-16"
+                          className="mr-16 team_search_btn"
                           hover
                           onClick={() => {
                             if (team?.id) {
@@ -539,7 +539,7 @@ const TeamDetail = ({
                           primary
                           height="32px"
                           hover
-                          // className="mr-16"
+                          className="team_search_btn"
                           onClick={() => {
                             setCreateProject(true);
                           }}
