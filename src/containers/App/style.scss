@@ -10,6 +10,10 @@
   overflow: hidden;
 }
 
+.container-fluid {
+  padding: 0 !important;
+}
+
 .modal {
   padding-top: 15px !important;
   padding-right: 15px !important;
@@ -558,7 +562,6 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 80px;
   // padding-bottom: 45px;
   // display: flex;
   float: left;
@@ -1243,6 +1246,7 @@ header {
   .flex-div {
     flex-wrap: nowrap;
   }
+  height: 80px;
 }
 
 .menuoverlay:before {
@@ -3433,7 +3437,7 @@ a:hover {
   display: none;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .mobile-app-alert {
     background-color: #eee;
     color: #333;
