@@ -307,6 +307,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
       };
+    case actionTypes.LTI_TOOLS_PAGINATION_UPDATE:
+      let setUpdateTotal = state.ltiTools.meta.total;
+
+      if (action.payload == 'INCREMENT') {
+        setUpdateTotal = setUpdateTotal + 1;
+      } else if (action.payload == 'DECREMENT') {
+        setUpdateTotal = setUpdateTotal - 1;
+        state.ltiTools.data = state.ltiTools.data.filter((item) => item.id != action.id);
+      }
+      state.ltiTools.meta.total = setUpdateTotal = setUpdateTotal;
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+
     default:
       return state;
   }
