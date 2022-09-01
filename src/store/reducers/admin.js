@@ -33,6 +33,7 @@ const INITIAL_STATE = {
   orgMediaSources: {},
   ltiToolsTypes: [],
   allIv: [],
+  selectedFIlterLti: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -162,6 +163,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiTools: action.payload,
+        selectedFIlterLti: action.filterLti,
       };
     case actionTypes.GET_DEFAULT_SSO:
       return {
@@ -310,25 +312,18 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.LTI_TOOLS_PAGINATION_UPDATE:
       let setUpdateTotal = state.ltiTools.meta.total;
       let updatedTo = state.ltiTools.meta.to;
-      if (action.payload == 'INCREMENT') {
+      if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === action.ltitoolType)) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
         if (setUpdateTotal < 10) {
           state.ltiTools.meta.to = updatedTo + 1;
         }
       } else if (action.payload == 'DECREMENT') {
         state.ltiTools.meta.total = setUpdateTotal - 1;
+        state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
         if (setUpdateTotal < 10) {
           state.ltiTools.meta.to = updatedTo - 1;
         }
       }
-
-      // if (action.payload == 'INCREMENT') {
-      //   setUpdateTotal = setUpdateTotal + 1;
-      // } else if (action.payload == 'DECREMENT') {
-      //   setUpdateTotal = setUpdateTotal - 1;
-      //   state.ltiTools.data = state.ltiTools.data.filter((item) => item.id != action.id);
-      // }
-      // state.ltiTools.meta.total = setUpdateTotal = setUpdateTotal;
       return {
         ...state,
         ltiTools: { ...state.ltiTools },
