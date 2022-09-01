@@ -314,13 +314,13 @@ export default (state = INITIAL_STATE, action) => {
       let updatedTo = state.ltiTools.meta.to;
       if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === action.ltitoolType)) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
-        if (setUpdateTotal < 10) {
+        if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo + 1;
         }
       } else if (action.payload == 'DECREMENT') {
         state.ltiTools.meta.total = setUpdateTotal - 1;
         state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
-        if (setUpdateTotal < 10) {
+        if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo - 1;
         }
       }
