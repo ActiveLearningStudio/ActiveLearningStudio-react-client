@@ -77,6 +77,7 @@ const AdminDropdown = (props) => {
 
   const [projectID, setProjectID] = useState('');
   const primaryColor = getGlobalColor('--main-primary-color');
+
   return (
     <>
       <Dropdown drop="start" className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
@@ -991,8 +992,16 @@ const AdminDropdown = (props) => {
                                 confirmButton: 'confirmation-close-btn',
                               },
                             });
+
                             const filterLMS = localStateData.filter((each) => each.id != row.id);
+
                             setLocalStateData(filterLMS);
+
+                            dispatch({
+                              type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                              payload: 'DECREMENT',
+                              id: row.id,
+                            });
                           })
                           .catch((err) => console.log(err));
                       }

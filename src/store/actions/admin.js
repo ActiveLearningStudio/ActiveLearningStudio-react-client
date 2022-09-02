@@ -156,6 +156,7 @@ export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filter
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,
+    filterLti: filterBy,
   });
   return result;
 };

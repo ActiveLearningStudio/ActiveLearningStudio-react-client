@@ -136,6 +136,12 @@ export default function CreateLtiTool(prop) {
                 },
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
+
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'INCREMENT',
+                ltitoolType: values.media_source_id,
+              });
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
