@@ -312,7 +312,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.LTI_TOOLS_PAGINATION_UPDATE:
       let setUpdateTotal = state.ltiTools.meta.total;
       let updatedTo = state.ltiTools.meta.to;
-      if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === action.ltitoolType)) {
+      if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo + 1;

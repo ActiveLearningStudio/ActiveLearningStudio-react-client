@@ -101,14 +101,14 @@ function Table(props) {
         );
       }
     }
-    dispatch({
-      type: actionTypes.NEWLY_EDIT_RESOURCE,
-      payload: null,
-    });
-    dispatch({
-      type: actionTypes.NEWLY_CREATED_RESOURCE,
-      payload: null,
-    });
+    // dispatch({
+    //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+    //   payload: null,
+    // });
+    // dispatch({
+    //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+    //   payload: null,
+    // });
   }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
