@@ -572,43 +572,47 @@ function Table(props) {
                         <td>
                           {permission?.Organization.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
-                              <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
-                                  {row.indexing_text}
-                                  <FontAwesomeIcon icon="chevron-down" />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {indexingArray.map(
-                                    (element) =>
-                                      element.indexing_text !== 'NOT REQUESTED' && (
-                                        <Dropdown.Item
-                                          onClick={async () => {
-                                            const result = await adminService.updateIndex(row.id, element.indexing);
-                                            if (result?.message) {
-                                              const editRow = {
-                                                ...row,
-                                                indexing: element.indexing,
-                                                indexing_text: element.indexing_text,
-                                              };
-                                              setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                              Swal.fire({
-                                                icon: 'success',
-                                                text: result.message,
-                                              });
-                                            } else {
-                                              Swal.fire({
-                                                icon: 'error',
-                                                text: 'Error',
-                                              });
-                                            }
-                                          }}
-                                        >
-                                          {element.indexing_text}
-                                        </Dropdown.Item>
-                                      ),
-                                  )}
-                                </Dropdown.Menu>
-                              </Dropdown>
+                              {row.organization_visibility_type_id != 1 && (
+                                <>
+                                  <Dropdown>
+                                    <Dropdown.Toggle id="dropdown-basic">
+                                      {row.indexing_text}
+                                      <FontAwesomeIcon icon="chevron-down" />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      {indexingArray.map(
+                                        (element) =>
+                                          element.indexing_text !== 'NOT REQUESTED' && (
+                                            <Dropdown.Item
+                                              onClick={async () => {
+                                                const result = await adminService.updateIndex(row.id, element.indexing);
+                                                if (result?.message) {
+                                                  const editRow = {
+                                                    ...row,
+                                                    indexing: element.indexing,
+                                                    indexing_text: element.indexing_text,
+                                                  };
+                                                  setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                                  Swal.fire({
+                                                    icon: 'success',
+                                                    text: result.message,
+                                                  });
+                                                } else {
+                                                  Swal.fire({
+                                                    icon: 'error',
+                                                    text: 'Error',
+                                                  });
+                                                }
+                                              }}
+                                            >
+                                              {element.indexing_text}
+                                            </Dropdown.Item>
+                                          ),
+                                      )}
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </>
+                              )}
                             </div>
                           ) : (
                             row.indexing_text

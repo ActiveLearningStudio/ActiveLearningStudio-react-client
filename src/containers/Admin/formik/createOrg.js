@@ -183,7 +183,8 @@ export default function CreateOrg(prop) {
           // lp_my_org_parent: editMode ? activeEdit?.lp_my_org_parent : false,
           // lp_all: editMode ? activeEdit?.lp_all : false,
 
-          lp_private: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 1) : true,
+          // lp_private: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 1) : true,
+          lp_private: true,
           lp_my_org: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 2) : false,
           lp_my_org_parent: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 3) : false,
           lp_all: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 4) : false,
@@ -520,8 +521,11 @@ export default function CreateOrg(prop) {
                                   <Switch
                                     checked={values.lp_private}
                                     onChange={() => {
-                                      setcheckedPrivate(!checkedPrivate);
-                                      setFieldValue('lp_private', !checkedPrivate);
+                                      // it will be alawys ture
+                                      setcheckedPrivate(true);
+                                      setFieldValue('lp_private', true);
+                                      // setcheckedPrivate(!checkedPrivate);
+                                      // setFieldValue('lp_private', !checkedPrivate);
                                     }}
                                     className="react-switch"
                                     handleDiameter={30}
