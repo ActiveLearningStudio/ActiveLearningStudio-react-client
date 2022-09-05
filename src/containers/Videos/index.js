@@ -183,7 +183,7 @@ const Index = ({ activities }) => {
       )}
       <div className="myvideomain">
         <div className="content-wrapper">
-          <div style={{ paddingBottom: ' 66px' }} className="inner-content">
+          <div style={{ paddingBottom: ' 66px' }} className="inner-content m-auto">
             {permission?.[activities ? 'Independent Activity' : 'Video']?.includes(activities ? 'independent-activity:view-author' : 'video:view') ? (
               <>
                 <div className="topHeading-video-detail">
@@ -453,6 +453,7 @@ const Index = ({ activities }) => {
                     ) : (
                       <div className="video-cards-contianer">
                         <div className="video-cards-detail">
+                          <div className='row m-auto'>
                           {/* Adding New Design Add  */}
 
                           {activities ? (
@@ -553,6 +554,7 @@ const Index = ({ activities }) => {
                             />
                           </div>
                         )}
+                        </div>
                       </div>
                     )
                   ) : (
