@@ -101,14 +101,14 @@ function Table(props) {
         );
       }
     }
-    dispatch({
-      type: actionTypes.NEWLY_EDIT_RESOURCE,
-      payload: null,
-    });
-    dispatch({
-      type: actionTypes.NEWLY_CREATED_RESOURCE,
-      payload: null,
-    });
+    // dispatch({
+    //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+    //   payload: null,
+    // });
+    // dispatch({
+    //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+    //   payload: null,
+    // });
   }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
@@ -1317,32 +1317,42 @@ function Table(props) {
               subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
-                      <td>{row.tool_name}</td>
-                      <td>{row.tool_url}</td>
-                      {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
-                      {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
+                  localStateData
+                    ?.filter((item) => {
+                      if (filterLtiSettings) {
+                        if (item?.media_sources?.name === filterLtiSettings?.name) {
+                          return item;
+                        }
+                      } else {
+                        return item;
+                      }
+                    })
+                    ?.map((row, counter) => (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>{row.tool_name}</td>
+                        <td>{row.tool_url}</td>
+                        {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
+                        {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
 
-                      <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
-                      <td>{row.tool_description}</td>
-                      <td>
-                        <div className="admin-panel-dropdown">
-                          {row.lti_version}
-                          <div>
-                            <AdminDropdown
-                              type={type}
-                              subType="LTI Tools"
-                              row={row}
-                              activePage={activePage}
-                              localStateData={localStateData}
-                              setLocalStateData={setLocalStateData}
-                            />
+                        <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
+                        <td>{row.tool_description}</td>
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {row.lti_version}
+                            <div>
+                              <AdminDropdown
+                                type={type}
+                                subType="LTI Tools"
+                                row={row}
+                                activePage={activePage}
+                                localStateData={localStateData}
+                                setLocalStateData={setLocalStateData}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                      </tr>
+                    ))
                 ) : (
                   <tr>
                     <td colSpan="11">

@@ -501,14 +501,16 @@ export default function Pills(props) {
         setActivePage(1);
         const encodeQuery = encodeURI(target.value);
         // setsearchLtiquery(encodeQuery);
-        const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+        // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+        const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
         result.then((data) => {
           setLtiTool(data);
         });
       }
     } else {
       setsearchLtiquery('');
-      const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+      // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+      const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
       result.then((data) => {
         setLtiTool(data);
       });
@@ -553,9 +555,10 @@ export default function Pills(props) {
     setActivePage(1);
     setLtiToolFilterBy(item);
     // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
-    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
-
+    // const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
+    const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, item));
     result.then((data) => {
+      console.log('res', data);
       setLtiTool(data);
     });
   };
