@@ -182,6 +182,9 @@
       }
     }
   }
+  @media (max-width: 1024px){
+    width: 30%;
+  }
 }
 .hover-apply {
   &:hover {

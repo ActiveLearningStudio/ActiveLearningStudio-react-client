@@ -536,6 +536,9 @@
           letter-spacing: 0.02em;
           color: #2e68bf;
         }
+        @media (max-width: 1024px){
+          width: 30%;
+        }
       }
       display: flex;
       flex-wrap: wrap;
