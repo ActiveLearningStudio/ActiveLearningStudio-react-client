@@ -69,16 +69,19 @@ function Table(props) {
     { indexing: 3, indexing_text: 'Approved' },
     { indexing: 2, indexing_text: 'Rejected' },
   ];
+  // useEffect(() => {
+  //   (async () => {
+  //     if (project?.visibilityTypes.length === 0) {
+  //       const { data } = await dispatch(visibilityTypes());
+  //       setVisibilityTypeArray(data.data);
+  //     } else {
+  //       setVisibilityTypeArray(project?.visibilityTypes?.data);
+  //     }
+  //   })();
+  // }, [project?.visibilityTypes]);
   useEffect(() => {
-    (async () => {
-      if (project?.visibilityTypes.length === 0) {
-        const { data } = await dispatch(visibilityTypes());
-        setVisibilityTypeArray(data.data);
-      } else {
-        setVisibilityTypeArray(project?.visibilityTypes?.data);
-      }
-    })();
-  }, [project?.visibilityTypes]);
+    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+  }, [activeOrganization]);
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -808,26 +811,30 @@ function Table(props) {
                         <td>
                           {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
-                              <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
-                                  {row.indexing_text}
-                                  <FontAwesomeIcon icon="chevron-down" />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {indexingArray.map(
-                                    (element) =>
-                                      element.indexing_text !== 'NOT REQUESTED' && (
-                                        <Dropdown.Item
-                                          onClick={() => {
-                                            dispatch(getIndex(row.id, element, 'admin'));
-                                          }}
-                                        >
-                                          {element.indexing_text}
-                                        </Dropdown.Item>
-                                      ),
-                                  )}
-                                </Dropdown.Menu>
-                              </Dropdown>
+                              {row.organization_visibility_type_id != 1 && (
+                                <>
+                                  <Dropdown>
+                                    <Dropdown.Toggle id="dropdown-basic">
+                                      {row.indexing_text}
+                                      <FontAwesomeIcon icon="chevron-down" />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      {indexingArray.map(
+                                        (element) =>
+                                          element.indexing_text !== 'NOT REQUESTED' && (
+                                            <Dropdown.Item
+                                              onClick={() => {
+                                                dispatch(getIndex(row.id, element, 'admin'));
+                                              }}
+                                            >
+                                              {element.indexing_text}
+                                            </Dropdown.Item>
+                                          ),
+                                      )}
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </>
+                              )}
                             </div>
                           ) : (
                             row.indexing_text
