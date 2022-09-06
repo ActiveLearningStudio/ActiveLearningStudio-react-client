@@ -1,9 +1,9 @@
 /* eslint-disable */
-import organization from "services/organizations.services";
-import store from "store";
-import Swal from "sweetalert2";
-import * as actionTypes from "../actionTypes";
-import { DynamicBrandingApply } from "containers/App/DynamicBrandingApply";
+import organization from 'services/organizations.services';
+import store from 'store';
+import Swal from 'sweetalert2';
+import * as actionTypes from '../actionTypes';
+import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
 
 export const updateOrganizationScreen = (screen) => (dispatch) => {
   dispatch({
@@ -27,17 +27,13 @@ export const getAllOrganization = () => async (dispatch) => {
   });
 };
 
-export const getOrgsForDeepLinkingAction =
-  (userEmail, ltiClientId) => async (dispatch) => {
-    const result = await organization.getOrgsForDeepLinking(
-      userEmail,
-      ltiClientId
-    );
-    dispatch({
-      type: actionTypes.ADD_ALL_ORG,
-      payload: result.organizations,
-    });
-  };
+export const getOrgsForDeepLinkingAction = (userEmail, ltiClientId) => async (dispatch) => {
+  const result = await organization.getOrgsForDeepLinking(userEmail, ltiClientId);
+  dispatch({
+    type: actionTypes.ADD_ALL_ORG,
+    payload: result.organizations,
+  });
+};
 
 export const getAllOrganizationSearch = (id, search) => async (dispatch) => {
   const result = await organization.getOrganizationSearch(id, search);
@@ -148,8 +144,7 @@ export const clearSuborgList = () => (dispatch) => {
 
 export const uploadImage = (id, formData) => () => organization.upload(id, formData);
 
-export const uploadFaviconIcon = (id, formData) => () =>
-  organization.uploadFavicon(id, formData);
+export const uploadFaviconIcon = (id, formData) => () => organization.uploadFavicon(id, formData);
 
 export const deleteOrganization = (data) => async (dispatch) => {
   const result = await organization.deleteOrganization(data.id);
@@ -161,6 +156,20 @@ export const deleteOrganization = (data) => async (dispatch) => {
 };
 
 export const createOrganizationNew = (id, data) => async (dispatch) => {
+  const libraryPreferences = [];
+
+  if (data.lp_private || !data.lp_private) {
+    libraryPreferences.push(1);
+  }
+  if (data.lp_my_org) {
+    libraryPreferences.push(2);
+  }
+  if (data.lp_my_org_parent) {
+    libraryPreferences.push(3);
+  }
+  if (data.lp_all) {
+    libraryPreferences.push(4);
+  }
   const details = {
     name: data.name,
     description: data.description,
@@ -187,6 +196,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     tertiary_color: data.tertiary_color,
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
+    visibility_type_id: libraryPreferences,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -209,6 +219,20 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   //     role_id: user?.role?.id,
   //   }
   // ));
+  const libraryPreferences = [];
+
+  if (data.lp_private || !data.lp_private) {
+    libraryPreferences.push(1);
+  }
+  if (data.lp_my_org) {
+    libraryPreferences.push(2);
+  }
+  if (data.lp_my_org_parent) {
+    libraryPreferences.push(3);
+  }
+  if (data.lp_all) {
+    libraryPreferences.push(4);
+  }
   const centralizedState = store.getState();
   const {
     organization: { currentOrganization },
@@ -239,11 +263,13 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     tertiary_color: data.tertiary_color,
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
+    visibility_type_id: libraryPreferences,
     // admins: adminUsers,
     // users: usersList,
   };
   const result = organization.updateOrganization(details, id);
   result.then((newOrg) => {
+    console.log('newOrg', newOrg);
     dispatch({
       type: actionTypes.ADD_SUBORG_EDIT,
       payload: newOrg.suborganization,
@@ -251,6 +277,10 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     dispatch({
       type: actionTypes.UPDATE_ALL_ORG,
       payload: newOrg.suborganization,
+    });
+    dispatch({
+      type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
+      payload: newOrg?.suborganization?.allowed_visibility_type_id,
     });
 
     if (newOrg.suborganization.id === currentOrganization.id) {
@@ -317,7 +347,7 @@ export const clearHistory = () => async (dispatch) => {
 };
 
 export const getOrgUsers = (id, page, activeRole, size, query = '', column = '', orderBy = '') => async (dispatch) => {
-  let result = "";
+  let result = '';
   // const centralizedState = store.getState();
   // const { organization: { activeOrganization, currentOrganization } } = centralizedState;
   // if (activeOrganization?.id !== currentOrganization?.id) {
@@ -335,61 +365,44 @@ export const getOrgUsers = (id, page, activeRole, size, query = '', column = '',
   return result;
 };
 
-export const deleteUserFromOrganization =
-  (id, preserveData) => async (dispatch) => {
-    const {
-      organization: { activeOrganization, users, searchUsers },
-    } = store.getState();
-    const result = await organization.deleteUserFromOrganization(
-      activeOrganization?.id,
-      { user_id: id, preserve_data: preserveData }
-    );
-    if (result) {
-      users.data = users.data?.filter((user) => user.id !== id);
-      searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
-      dispatch({
-        type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
-        payload: { users, searchUsers },
-      });
-    }
-  };
-
-export const removeUserFromOrganization =
-  (id, preserveData) => async (dispatch) => {
-    const {
-      organization: { activeOrganization, users, searchUsers },
-    } = store.getState();
-    const result = await organization.removeUserFromOrganization(
-      activeOrganization?.id,
-      { user_id: id, preserve_data: preserveData }
-    );
-    if (result) {
-      users.data = users.data?.filter((user) => user.id !== id);
-      searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
-      dispatch({
-        type: actionTypes.REMOVE_USER_FROM_ORGANIZATION,
-        payload: { users, searchUsers },
-      });
-    }
-  };
-
-export const searchUserInOrganization =
-  (id, query, page, role, size, column, orderBy) => async (dispatch) => {
-    const result = await organization.searchUserInOrganization(
-      id,
-      query,
-      page,
-      role,
-      size,
-      column,
-      orderBy
-    );
+export const deleteUserFromOrganization = (id, preserveData) => async (dispatch) => {
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
+  const result = await organization.deleteUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
+  if (result) {
+    users.data = users.data?.filter((user) => user.id !== id);
+    searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
     dispatch({
-      type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
-      payload: result,
+      type: actionTypes.DELETE_USER_FROM_ORGANIZATION,
+      payload: { users, searchUsers },
     });
-    return result;
-  };
+  }
+};
+
+export const removeUserFromOrganization = (id, preserveData) => async (dispatch) => {
+  const {
+    organization: { activeOrganization, users, searchUsers },
+  } = store.getState();
+  const result = await organization.removeUserFromOrganization(activeOrganization?.id, { user_id: id, preserve_data: preserveData });
+  if (result) {
+    users.data = users.data?.filter((user) => user.id !== id);
+    searchUsers.data = searchUsers.data?.filter((user) => user.id !== id);
+    dispatch({
+      type: actionTypes.REMOVE_USER_FROM_ORGANIZATION,
+      payload: { users, searchUsers },
+    });
+  }
+};
+
+export const searchUserInOrganization = (id, query, page, role, size, column, orderBy) => async (dispatch) => {
+  const result = await organization.searchUserInOrganization(id, query, page, role, size, column, orderBy);
+  dispatch({
+    type: actionTypes.SEARCH_USER_IN_ORGANIZATION,
+    payload: result,
+  });
+  return result;
+};
 
 export const clearSearchUserInOrganization = () => (dispatch) => {
   dispatch({

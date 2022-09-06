@@ -202,6 +202,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activePage: 1,
       };
+    case actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE:
+      state.activeOrganization.allowed_visibility_type_id = action.payload;
+      return {
+        ...state,
+        activeOrganization: { ...state.activeOrganization },
+      };
     default:
       return state;
   }

@@ -104,6 +104,7 @@ function PlaylistsPage(props) {
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const { screenState } = useSelector((s) => s.myactivities);
+
   const {
     match,
     history,
@@ -471,6 +472,10 @@ function PlaylistsPage(props) {
   };
   const primaryColor = getGlobalColor('--main-primary-color');
   const secondaryColor = getGlobalColor('--main-secondary-color');
+  const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
+  useEffect(() => {
+    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+  }, [activeOrganization]);
   return (
     <>
       {selectSearchModule ? (
@@ -702,7 +707,7 @@ function PlaylistsPage(props) {
                               <Dropdown className="d-inline mx-2" autoClose="outside">
                                 <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {projectState.visibilityTypes?.data?.map((type) => (
+                                  {visibilityTypeArray?.map((type) => (
                                     <Dropdown.Item>
                                       <div
                                         onClick={() => {
@@ -714,6 +719,18 @@ function PlaylistsPage(props) {
                                       </div>
                                     </Dropdown.Item>
                                   ))}
+                                  {/* {projectState.visibilityTypes?.data?.map((type) => (
+                                    <Dropdown.Item>
+                                      <div
+                                        onClick={() => {
+                                          editVisibility(type.id);
+                                          setVisibility(type.display_name);
+                                        }}
+                                      >
+                                        {type.display_name}
+                                      </div>
+                                    </Dropdown.Item>
+                                  ))} */}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>

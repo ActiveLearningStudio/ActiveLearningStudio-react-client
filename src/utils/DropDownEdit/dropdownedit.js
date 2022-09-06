@@ -43,16 +43,20 @@ const DropDownEdit = ({
   const dispatch = useDispatch();
   // console.log("activities", data);
   const primaryColor = getGlobalColor('--main-primary-color');
+  // useEffect(() => {
+  //   (async () => {
+  //     if (project?.visibilityTypes.length === 0) {
+  //       const { data } = await dispatch(visibilityTypes());
+  //       setVisibilityTypeArray(data.data);
+  //     } else {
+  //       setVisibilityTypeArray(project?.visibilityTypes?.data);
+  //     }
+  //   })();
+  // }, [project?.visibilityTypes]);
+
   useEffect(() => {
-    (async () => {
-      if (project?.visibilityTypes.length === 0) {
-        const { data } = await dispatch(visibilityTypes());
-        setVisibilityTypeArray(data.data);
-      } else {
-        setVisibilityTypeArray(project?.visibilityTypes?.data);
-      }
-    })();
-  }, [project?.visibilityTypes]);
+    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+  }, [activeOrganization]);
   return (
     <div className="curriki-utility-activity-dropdown">
       <Dropdown className="activity-dropdown check ">
