@@ -71,6 +71,11 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
+        overflow:hidden;
+        white-space:nowrap;
+        display:inline-block;
+        text-overflow:ellipsis;
+        width:100%;
       }
     }
   }
@@ -84,6 +89,11 @@
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
+      overflow:hidden;
+      white-space:nowrap;
+      display:inline-block;
+      text-overflow:ellipsis;
+      width:100%;
     }
   }
   .addvideo-activity-menu-option {
