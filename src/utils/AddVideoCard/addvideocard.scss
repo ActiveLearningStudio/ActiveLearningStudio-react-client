@@ -71,11 +71,13 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
-        overflow:hidden;
-        white-space:nowrap;
-        display:inline-block;
-        text-overflow:ellipsis;
-        width:100%;
+         @media (max-width: 1024px){
+          overflow:hidden;
+          white-space:nowrap;
+          display:inline-block;
+          text-overflow:ellipsis; 
+          width: 140px;
+        }
       }
     }
   }
