@@ -235,7 +235,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   }
   const centralizedState = store.getState();
   const {
-    organization: { currentOrganization },
+    organization: { currentOrganization, activeOrganization },
   } = centralizedState;
   const details = {
     name: data.name,
@@ -278,10 +278,13 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       type: actionTypes.UPDATE_ALL_ORG,
       payload: newOrg.suborganization,
     });
-    dispatch({
-      type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
-      payload: newOrg?.suborganization?.allowed_visibility_type_id,
-    });
+
+    if (activeOrganization?.id == newOrg.suborganization.id) {
+      dispatch({
+        type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
+        payload: newOrg?.suborganization?.allowed_visibility_type_id,
+      });
+    }
 
     if (newOrg.suborganization.id === currentOrganization.id) {
       DynamicBrandingApply(newOrg?.suborganization);
