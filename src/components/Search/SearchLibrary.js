@@ -74,7 +74,7 @@ const SearchLibrary = (props) => {
         type: searchType,
         from: 0,
         size: 20,
-        model: activeModel || undefined,
+        model: activeModel === 'total' ? undefined : activeModel || undefined,
         no_words: noWords || undefined,
       };
       console.log('dataSend', dataSend);
@@ -144,7 +144,7 @@ const SearchLibrary = (props) => {
         authors: authorName || undefined,
         standardArray: activeType,
         from: 0,
-        model: activeModel || undefined,
+        model: activeModel === 'total' ? undefined : activeModel || undefined,
         size: 20,
         no_words: noWords || undefined,
       };
