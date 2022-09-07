@@ -19,6 +19,17 @@ const loadH5PSettings = (activityId, studentId = null) => httpService
     Promise.reject(err.response.data);
   });
 
+const loadH5PSettingsIndependentActivity = (independentActivityId, studentId = null) => httpService
+  .get(
+    `/${apiVersion}/independent-activities/${independentActivityId}/h5p-resource-settings`,
+    {},
+    { gcuid: studentId },
+  )
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+  });
+
 const loadSafariMontagePublishTool = (projectId, playlistId, activityId, lmsSettingId) => httpService
   .post(
     `/${apiVersion}/go/safarimontage/projects/${projectId}/playlists/${playlistId}/activities/${activityId}/publish`,
@@ -30,5 +41,6 @@ const loadSafariMontagePublishTool = (projectId, playlistId, activityId, lmsSett
 export default {
   login,
   loadH5PSettings,
+  loadH5PSettingsIndependentActivity,
   loadSafariMontagePublishTool,
 };

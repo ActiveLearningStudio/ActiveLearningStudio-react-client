@@ -103,6 +103,25 @@ const h5pResourceSettings = (activityId, studentId = null, submissionId = null) 
     });
   });
 
+const h5pResourceSettingsInpendentActivity = (independentActivityId, studentId = null, submissionId = null) => httpService
+  .get(
+    `/${apiVersion}/independent-activities/${independentActivityId}/h5p-resource-settings`,
+    {},
+    {
+      gcuid: studentId,
+      submissionid: submissionId,
+    },
+  )
+  .then(({ data }) => data)
+  .catch((err) => {
+    Promise.reject(err.response.data);
+    Swal.fire({
+      title: 'Error',
+      icon: 'error',
+      html: err.message || 'Something went wrong! We are unable to load independent activity.',
+    });
+  });
+
   const getGoogleSlides = (token, query) => axios({
     method: 'get',
     url: 'https://www.googleapis.com/drive/v3/files',
@@ -150,6 +169,7 @@ export default {
   getStudentCourses,
   getCourse,
   h5pResourceSettings,
+  h5pResourceSettingsInpendentActivity,
   getSubmission,
   turnIn,
   getSummaryAuth,
