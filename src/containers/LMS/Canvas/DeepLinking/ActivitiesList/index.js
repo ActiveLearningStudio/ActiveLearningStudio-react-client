@@ -23,7 +23,7 @@ const ActivitiesList = (props) => {
     const activityId = parseInt(id, 10);
     if (!activityId) return;
 
-    const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
+    const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=independent_activity&id=${activity.id}`;
     Swal.fire({
       icon: 'warning',
       html: `You have selected <strong>Activity: ${activity.title}</strong><br>Do you want to continue ?`,
