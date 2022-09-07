@@ -121,13 +121,23 @@ const getCourses = () =>
     .get(`/${apiVersion}/google-classroom/courses`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
+const getCanvasCourses = (setting_id) =>
+  httpService
+    .get(`/${apiVersion}/go/canvas/fetch-all-courses?setting_id=${setting_id}`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
+const getCanvasCourseAssignmentsTopic = (courseId, sid) =>
+  httpService
+    .get(`/${apiVersion}/go/canvas/${courseId}/fetch-assignment-groups?setting_id=${sid}`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
 
 const getCourseTopics = (courseId) =>
   httpService
     .get(`/${apiVersion}/google-classroom/topics`, '', { course_id: courseId })
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
-
 const googleClassPublishPlaylist = (projectId, courseId, topicId, playlistId, token, OrgId) =>
   httpService
     .post(`/${apiVersion}/google-classroom/projects/${projectId}/playlists/${playlistId}/publish`, {
@@ -149,6 +159,20 @@ const googleClassPublishActivity = (projectId, courseId, topicId, playlistId, ac
       topic_id: topicId,
       access_token: token,
       publisher_org: OrgId,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const canvasClassPublishActivity = (courseId, sid, playlistName, playlistId, activityId) =>
+  httpService
+    .post(`/${apiVersion}/go/canvas/${courseId}/create-assignment`, {
+      setting_id: sid,
+      assignment_name: playlistName,
+      assignment_group_id: playlistId,
+      curriki_activity_id: activityId,
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -190,4 +214,7 @@ export default {
   googleClassPublishActivity,
   googleClassPublishIndependentActivity,
   searchIndependentActivities,
+  getCanvasCourses,
+  getCanvasCourseAssignmentsTopic,
+  canvasClassPublishActivity,
 };

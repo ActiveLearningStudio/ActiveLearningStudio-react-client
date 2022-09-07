@@ -118,3 +118,33 @@ export const publishIdependentActivity = async (courseId, topicId, activityId, t
     });
   }
 };
+//publisher for canvas
+
+export const publishToCanvas = async (courseId, sid, playlistName, playlistId, activityId) => {
+  Swal.fire({
+    title: 'Publishing....',
+    showCancelButton: false,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+  });
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  const result = await searchService.canvasClassPublishActivity(courseId, sid, playlistName, playlistId, activityId);
+  if (result.Activity) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Shared!',
+      confirmButtonColor: '#5952c6',
+      html: 'Your Activity has been published to Canvas LMS',
+      // text: `Your playlist has been submitted to ${lmsUrl}`,
+    });
+  } else {
+    Swal.fire({
+      confirmButtonColor: '#5952c6',
+      icon: 'error',
+      text: 'Something went wrong, Kindly try again.',
+    });
+  }
+};
