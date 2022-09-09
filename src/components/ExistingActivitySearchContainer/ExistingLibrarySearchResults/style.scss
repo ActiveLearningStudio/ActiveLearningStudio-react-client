@@ -1,0 +1,28 @@
+.existing-activity-search-results .pagination-div {
+  list-style: none;
+  display: flex;
+}
+
+.existing-activity-search-results .pagination-div .page-link {
+  // color: var(--main-primary-color)!important;
+  color: #084892;
+}
+
+.existing-activity-search-results .pagination-div .active .page-link {
+  color: white;
+  background-color: #084892;
+}
+
+.existing-activity-search-results .nav-link {
+  background-color: transparent !important;
+  color: #084892 !important;
+  border: none;
+}
+
+.existing-activity-search-results .main-tabs .nav-item.active {
+  border-bottom: solid 4px #084892 !important;
+}
+
+.existing-activity-search-results .nav-tabs {
+  border-bottom: solid 1px #084892 !important;
+}
