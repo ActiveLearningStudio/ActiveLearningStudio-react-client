@@ -9,7 +9,7 @@ import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
-import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
+import { exportProjectsToNoovo, getProjectCourseFromLMS, publishProjectToCanvas } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import loader from 'assets/images/loader.svg';
@@ -191,7 +191,11 @@ const ProjectCardDropdown = (props) => {
                           onClick={async () => {
                             const allPlaylist = await dispatch(lmsPlaylist(project.id));
                             if (allPlaylist) {
-                              dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              if (data.lms_name === 'canvas') {
+                                dispatch(publishProjectToCanvas(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              } else {
+                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              }
                             }
                           }}
                         >

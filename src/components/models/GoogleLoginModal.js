@@ -18,9 +18,19 @@ import {
   fetchCanvasCourses,
   fetchCanvasAssignmentGroups,
 } from 'store/actions/gapi';
-import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity, publishToCanvas } from 'store/actions/share';
+import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity, publishToCanvas, createAssignmentGroup } from 'store/actions/share';
 
-const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomLoginFailure, googleClassRoomCourseTopics, projectId, playlistId, activityId }) => {
+const GoogleLoginModal = ({
+  show,
+  onHide,
+  googleClassRoomLogin,
+  googleClassRoomLoginFailure,
+  googleClassRoomCourseTopics,
+  projectId,
+  playlistId,
+  activityId,
+  selectedProjectPlaylistName,
+}) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -77,7 +87,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
     } else {
       googleClassRoomCourseTopics(e.target.value);
     }
-
+    setLoading(true);
     setIsShowPlaylistSelector(true);
   };
   const onTopicChange = (e) => {
@@ -87,11 +97,14 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   };
   useEffect(() => {
     if (isCanvas && show) {
+      setShowForm(true);
       setLoading(true);
-      // setCourses([]);
+      setCourses([]);
+      setTopics([]);
+      setIsShowPlaylistSelector(false);
       dispatch(fetchCanvasCourses(canvasSettingId));
     }
-  }, [show]);
+  }, [show, isCanvas]);
   const callPublishingMethod = (params) => {
     if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {
@@ -128,9 +141,12 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
     }
   };
   const callPublishToCanvas = (params) => {
-    if (params.values.course === 'Create a new Course') {
+    console.log('values', params);
+    if (typeof params.values.course == 'undefined') {
+      alert('select any topic');
+    } else if (typeof params.values.playlist == 'undefined' && params.values.course !== 'Create a new Course') {
+      dispatch(createAssignmentGroup(params.values.course, canvasSettingId, selectedProjectPlaylistName, params.activityId));
     } else {
-      console.log('values', params);
       dispatch(publishToCanvas(params.values.course, canvasSettingId, params.values.playlist, selectedAssignmentId, params.activityId));
     }
   };
@@ -185,9 +201,8 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                 <div>
                   {isCanvas ? <h1>Are you sure you want to Publish Activities as Assignments?</h1> : <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>}
 
-                  {loading && isCanvas && <p className="loading-classes">Loading Courses....</p>}
-
-                  {loading && !isCanvas && <p className="loading-classes">Loading Classes....</p>}
+                  {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
+                  {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
                   <Formik
                     initialValues={{
                       course: undefined,

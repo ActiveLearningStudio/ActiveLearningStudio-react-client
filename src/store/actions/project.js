@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import loaderImg from 'assets/images/loader.svg';
 import SharePreviewPopup from 'components/SharePreviewPopup';
 import projectService from 'services/project.service';
+import searchService from 'services/search.service';
 
 import * as actionTypes from '../actionTypes';
 import store from '../index';
@@ -411,15 +412,15 @@ export const toggleProjectShareAction = (projectId, ProjectName, adminPanel = fa
   } = centralizedState;
   const { project } = await projectService.share(projectId, activeOrganization?.id);
 
-    dispatch({
-      type: actionTypes.SHARE_PROJECT,
-      payload: { project },
-    });
-    if (adminPanel) return project;
-    const protocol = `${window.location.href.split('/')[0]}//`;
-    const url = `${protocol + window.location.host}/project/${projectId}/shared`;
-    return SharePreviewPopup(url, ProjectName);
-  };
+  dispatch({
+    type: actionTypes.SHARE_PROJECT,
+    payload: { project },
+  });
+  if (adminPanel) return project;
+  const protocol = `${window.location.href.split('/')[0]}//`;
+  const url = `${protocol + window.location.host}/project/${projectId}/shared`;
+  return SharePreviewPopup(url, ProjectName);
+};
 
 export const toggleProjectShareRemovedAction = (projectId, projectName, adminPanel = false) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -428,16 +429,16 @@ export const toggleProjectShareRemovedAction = (projectId, projectName, adminPan
   } = centralizedState;
   const { project } = await projectService.removeShared(activeOrganization?.id, projectId);
 
-    dispatch({
-      type: actionTypes.SHARE_PROJECT,
-      payload: { project },
-    });
-    if (adminPanel) return project;
-    Swal.fire({
-      title: `You stopped sharing <strong>"${projectName}"</strong> !`,
-      html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
-    });
-  };
+  dispatch({
+    type: actionTypes.SHARE_PROJECT,
+    payload: { project },
+  });
+  if (adminPanel) return project;
+  Swal.fire({
+    title: `You stopped sharing <strong>"${projectName}"</strong> !`,
+    html: 'Please remember that anyone you have shared this project with, will no longer have access to its contents.',
+  });
+};
 
 export const deleteFavObj = (projectId) => async (dispatch) => {
   const centralizedState = store.getState();
@@ -523,7 +524,7 @@ export const shareProjectAction = (projectId) => async () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     )
     .then((response) => {
       if (response.data.status === 'error' || response.status !== 200) {
@@ -584,7 +585,7 @@ export const ShareLMS = (playlistId, LmsTokenId, lmsName, lmsUrl, playlistName, 
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         )
         .then((res) => {
           if (res.data.status === 'success') {
@@ -689,7 +690,59 @@ export const getProjectCourseFromLMS = (lms, settingId, projectId, playlist, lms
   //   Swal.fire("Unable to share")
   // }
 };
+//publish project to canvas
+export const publishProjectToCanvas = (lms, settingId, projectId, playlist, lmsUrl) => async (dispatch, getState) => {
+  Swal.fire({
+    title: `This Project will be added to ${lms}. If the Project does not exist, it will be created.`,
+    text: 'Would you like to proceed?',
+    showCancelButton: true,
+    confirmButtonColor: '#5952c6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Continue',
+  }).then((result) => {
+    if (result.value) {
+      Swal.fire({
+        icon: loaderImg,
+        title: 'Publishing....',
+        showCancelButton: false,
+        showConfirmButton: false,
+        allowOutsideClick: false,
+      });
+      const globalStoreCloneUpdated = getState();
 
+      // eslint-disable-next-line no-inner-declarations
+      async function asyncFunc() {
+        for (let x = 0; x < playlist.length; x += 1) {
+          // eslint-disable-next-line no-await-in-loop
+          await searchService.publishPlaylisttoCanvas(projectId, playlist[x].id, lms, settingId, 'modules');
+
+          if (x + 1 === playlist.length) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Published!',
+              confirmButtonColor: '#5952c6',
+              html: `Your Project has been published to <a target="_blank" href="${lmsUrl}">${lmsUrl}</a>`,
+              // text: `Your playlist has been submitted to ${lmsUrl}`,
+            });
+          }
+        }
+      }
+      if (playlist.length > 0) {
+        asyncFunc();
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'No playlist available',
+          confirmButtonColor: '#5952c6',
+        });
+      }
+    }
+  });
+
+  // else{
+  //   Swal.fire("Unable to share")
+  // }
+};
 export const setLmsCourse = (course, allstate) => ({
   type: actionTypes.SET_LMS_COURSE,
   lmsCourse: course,

@@ -179,7 +179,17 @@ const canvasClassPublishActivity = (courseId, sid, playlistName, playlistId, act
       errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
-
+const canvasCreateNewAssignmentGroup = (courseId, sid, playlistName) =>
+  httpService
+    .post(`/${apiVersion}/go/canvas/${courseId}/create-assignment-group`, {
+      setting_id: sid,
+      assignment_group_name: playlistName,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
 const googleClassPublishIndependentActivity = (courseId, topicId, activityId, token, OrgId) =>
   httpService
     .post(`/${apiVersion}/google-classroom/activities/${activityId}/publish`, {
@@ -200,6 +210,15 @@ const searchIndependentActivities = (searchType, searchData) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+//publish playlist
+const publishPlaylisttoCanvas = (projectId, playlistId, lms, settingId, creationType) =>
+  httpService
+    .post(`/${apiVersion}/go/${lms}/projects/${projectId}/playlists/${playlistId}/publish`, {
+      setting_id: settingId,
+      creation_type: creationType,
+    })
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
 export default {
   searchResult,
   cloneProject,
@@ -217,4 +236,6 @@ export default {
   getCanvasCourses,
   getCanvasCourseAssignmentsTopic,
   canvasClassPublishActivity,
+  canvasCreateNewAssignmentGroup,
+  publishPlaylisttoCanvas,
 };

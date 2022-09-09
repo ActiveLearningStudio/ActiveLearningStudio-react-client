@@ -50,6 +50,7 @@ const ResourceCardDropdown = (props) => {
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
+    setselectedProjectPlaylistName,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
@@ -162,7 +163,7 @@ const ResourceCardDropdown = (props) => {
                       handleShow();
                       getProjectId(match.params.projectId);
                       setProjectId(match.params.projectId);
-                      setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistId(playlist);
                       setProjectPlaylistActivityId(resource.id);
                       dispatch(googleShare(false));
                       dispatch(shareToCanvas(false));
@@ -177,6 +178,7 @@ const ResourceCardDropdown = (props) => {
                     getProjectId(match.params.projectId);
                     setProjectId(match.params.projectId);
                     setProjectPlaylistId(playlist.id);
+                    setselectedProjectPlaylistName(playlist.title);
                     setProjectPlaylistActivityId(resource.id);
                     dispatch(googleShare(true));
                     dispatch(shareToCanvas(true));

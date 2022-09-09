@@ -101,8 +101,10 @@ function PlaylistsPage(props) {
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [selectedProjectPlaylistName, setselectedProjectPlaylistName] = useState('');
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
+
   const { screenState } = useSelector((s) => s.myactivities);
 
   const {
@@ -798,6 +800,7 @@ function PlaylistsPage(props) {
                                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                                     setSelectSearchModule={setSelectSearchModule}
                                     setPlaylistIdForSearchingTab={setPlaylistIdForSearchingTab}
+                                    setselectedProjectPlaylistName={setselectedProjectPlaylistName}
                                   />
                                 ))}
                               {provided.placeholder}
@@ -874,6 +877,7 @@ function PlaylistsPage(props) {
         activityId={selectedProjectPlaylistActivityId}
         show={show} // {props.show}
         onHide={handleClose}
+        selectedProjectPlaylistName={selectedProjectPlaylistName}
       />
     </>
   );

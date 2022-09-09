@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { publishPlaylistToCanvas } from 'store/actions/share';
+import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 
@@ -74,7 +75,11 @@ function ShareLink(props) {
                   <a
                     href="#"
                     onClick={async () => {
-                      dispatch(getProjectCourseFromLMSPlaylist(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                      if (data.lms_name === 'canvas') {
+                        dispatch(publishPlaylistToCanvas(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                      } else {
+                        dispatch(getProjectCourseFromLMSPlaylist(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                      }
                     }}
                   >
                     {data.site_name}
