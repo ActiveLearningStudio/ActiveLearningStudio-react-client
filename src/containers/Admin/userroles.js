@@ -4,13 +4,24 @@ import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { updateRole, getAllPermissionId, roleDetail } from 'store/actions/organization';
+import { gettAllDynamicPermisison, updateAllDynamicPermisison } from 'store/actions/admin';
 import updateImg from '../../assets/images/update.svg';
 
 function UserRoles() {
   const dispatch = useDispatch();
   const { permission, activeOrganization, activePermission, permissionsId, roles, currentOrganization } = useSelector((state) => state.organization);
+  const { dynamicPermission } = useSelector((state) => state.admin);
   const AdminList = ['Organizations', 'Projects', 'Ref. tables', 'Integrations', 'Users', ' Ind. activities'];
 
+  const [allActivePermission, setAllActivePermission] = useState([]);
+
+  useEffect(() => {
+    const activeIds = [];
+
+    dynamicPermission?.map((data) => data.ui_sub_modules?.map((sub) => sub.ui_module_permissions?.map((mod) => mod.selected && activeIds.push(mod.id)))),
+      console.log('active', activeIds);
+    setAllActivePermission(activeIds);
+  }, [dynamicPermission]);
   // organization all projects
   const projectEditName = [
     'organization:upload-thumb',
@@ -169,6 +180,12 @@ function UserRoles() {
   }, [activeOrganization]);
 
   useEffect(() => {
+    if (!dynamicPermission) {
+      dispatch(gettAllDynamicPermisison(activeOrganization?.id, roles[0]?.id));
+    }
+  }, [activeOrganization, roles]);
+
+  useEffect(() => {
     var permissionIdArray = [];
     console.log('permissionsId?.Organization:', permissionsId?.Organization);
     permissionsId?.Organization.filter((data) => projectEditName.includes(data.name) && permissionIdArray.push(data.id));
@@ -315,7 +332,8 @@ function UserRoles() {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              dispatch(updateRole(activeOrganization.id, values, currentOrganization.id));
+              // dispatch(updateRole(activeOrganization.id, values, currentOrganization.id));
+              dispatch(updateAllDynamicPermisison(activeOrganization.id, { role_id: activePermission?.[0]?.id, permissions: allActivePermission }));
             }}
           >
             {({
@@ -363,12 +381,12 @@ function UserRoles() {
                             )}
                           </div>
                           {!!permissionsId &&
-                            AdminList.map((data, counter) => {
+                            dynamicPermission?.map((data, counter) => {
                               return (
                                 <div className="role-permission-tab-name" id="role-permission-tab-id">
                                   <Nav.Item>
                                     <Nav.Link eventKey={String(counter)}>
-                                      {data}
+                                      {data.title}
 
                                       <img className="image-tag" />
                                     </Nav.Link>
@@ -377,7 +395,7 @@ function UserRoles() {
                               );
                             })}
 
-                          <div className="role-permission-tab-name" id="role-permission-tab-id">
+                          {/* <div className="role-permission-tab-name" id="role-permission-tab-id">
                             {!!permissionsId && (
                               <Nav.Item>
                                 <Nav.Link eventKey="manual-2">
@@ -386,7 +404,7 @@ function UserRoles() {
                                 </Nav.Link>
                               </Nav.Item>
                             )}
-                          </div>
+                          </div> */}
                         </Nav>
                       </Col>
                       <Col className="detail-permission-tab" sm={10}>
@@ -403,7 +421,7 @@ function UserRoles() {
                                 margin: '8px 32px 32px 10px',
                               }}
                             >
-                              <div className="permission">
+                              {/* <div className="permission">
                                 <NewEdit
                                   setFieldValue={setFieldValue}
                                   type={'Organiziation'}
@@ -412,239 +430,48 @@ function UserRoles() {
                                   currentFeatureEdit={orgEdit}
                                   bold
                                 />
-                              </div>
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Projects'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...projectView, ...projectExportView]}
-                                      currentFeatureEdit={[...projectEdit, ...projectExportEdit]}
-                                      bold
-                                    />
+                              </div> */}
+                              {dynamicPermission?.map((data, counter) => {
+                                return (
+                                  <div className="permission">
+                                    <div className="selection-tab-custom">
+                                      <div className="form-group custom-select-style-for-sub">
+                                        <DynamicEdit
+                                          bold
+                                          subData={
+                                            (data.ui_sub_modules?.length === 1 && data.ui_sub_modules[0].ui_module_permissions) || [
+                                              {
+                                                id: 'View',
+                                                title: 'View',
+                                                selected: true,
+                                              },
+                                              { id: 'Edit', title: 'Edit', selected: true },
+                                              { id: 'None', title: 'None', selected: true },
+                                            ]
+                                          }
+                                          title={data.title}
+                                          allActivePermission={allActivePermission}
+                                          setAllActivePermission={setAllActivePermission}
+                                          dynamicPermission={dynamicPermission}
+                                          dispatch={dispatch}
+                                        />
+                                      </div>
+                                    </div>
+                                    {data.ui_sub_modules?.length > 1 &&
+                                      data.ui_sub_modules?.map((sub, countersub) => (
+                                        <div className="permission-about" key={countersub}>
+                                          <DynamicEdit
+                                            subData={sub.ui_module_permissions}
+                                            title={sub.title}
+                                            allActivePermission={allActivePermission}
+                                            setAllActivePermission={setAllActivePermission}
+                                            dispatch={dispatch}
+                                          />
+                                        </div>
+                                      ))}
                                   </div>
-                                </div>
-                                {/* <h6>Project</h6> */}
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'All Project'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={projectView}
-                                    currentFeatureEdit={projectEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'import/export Projects'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={projectExportView}
-                                    currentFeatureEdit={projectExportEdit}
-                                  />
-                                </div>
-                              </div>
-                              {/* Independent activities Start */}
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Independent activities'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...independentactivitiesView, ...independentactivitiesExportView]}
-                                      currentFeatureEdit={[...independentactivitiesEdit, ...independentactivitiesExportEdit]}
-                                      bold
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'All independent activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesView}
-                                    currentFeatureEdit={independentactivitiesEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Export / Import activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={independentactivitiesExportView}
-                                    currentFeatureEdit={independentactivitiesExportEdit}
-                                  />
-                                </div>
-                              </div>
-                              {/* Independent activities End */}
-
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Reference tables'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...activityTypeView, ...activityItemView]}
-                                      currentFeatureEdit={[...activityTypeEdit, ...activityItemEdit]}
-                                      bold
-                                    />
-                                  </div>
-                                </div>
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Activity types'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={activityTypeView}
-                                    currentFeatureEdit={activityTypeEdit}
-                                  />
-
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Activity Items'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={activityItemView}
-                                    currentFeatureEdit={activityItemEdit}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Users'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...userView, ...userRoleView]}
-                                      currentFeatureEdit={[...userEdit, ...userRolesEdit]}
-                                      bold
-                                    />
-                                  </div>
-                                </div>
-                                {/* <h6>User</h6> */}
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Users'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={userView}
-                                    currentFeatureEdit={userEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Roles'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={userRoleView}
-                                    currentFeatureEdit={userRolesEdit}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Integrations'}
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...lmsSettingView, ...ltiSettingView, ...orgBrightCoveView]}
-                                      currentFeatureEdit={[...lmsSettingEdit, ...ltiSettingEdit, ...orgBrightCoveEdit]}
-                                      bold
-                                    />
-                                  </div>
-                                </div>
-
-                                <div className="permission-about">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'LMS Settings'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={lmsSettingView}
-                                    currentFeatureEdit={lmsSettingEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'LTI Tools'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={ltiSettingView}
-                                    currentFeatureEdit={ltiSettingEdit}
-                                  />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'BrightCove'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={orgBrightCoveView}
-                                    currentFeatureEdit={orgBrightCoveEdit}
-                                  />
-                                </div>
-                              </div>
-                              <div className="permission">
-                                <div className="selection-tab-custom">
-                                  <div className="form-group custom-select-style-for-sub">
-                                    <NewEdit
-                                      setFieldValue={setFieldValue}
-                                      type={'Authoring'}
-                                      bold
-                                      permissions={values.permissions}
-                                      currentFeatureView={[...AuthorProjectView, ...AuthorplayListView, ...authorActivityView, ...teamView]}
-                                      currentFeatureEdit={[...AuthorProjectEdit, ...AuthorplayListEdit, ...authorActivityEdit, ...teamEdit]}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="for-authoring">
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Project'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={AuthorProjectView}
-                                    currentFeatureEdit={AuthorProjectEdit}
-                                  />
-
-                                  <br />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Playlist'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={AuthorplayListView}
-                                    currentFeatureEdit={AuthorplayListEdit}
-                                  />
-                                  <br />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={authorActivityView}
-                                    currentFeatureEdit={authorActivityEdit}
-                                  />
-                                  <br />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Teams'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={teamView}
-                                    currentFeatureEdit={teamEdit}
-                                  />
-                                  <br />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'Independent activities'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={authorIndActivityView}
-                                    currentFeatureEdit={authorIndActivityEdit}
-                                  />
-                                  <br />
-                                  <NewEdit
-                                    setFieldValue={setFieldValue}
-                                    type={'My interactive video'}
-                                    permissions={values.permissions}
-                                    currentFeatureView={authorVideoView}
-                                    currentFeatureEdit={authorVideoEdit}
-                                    hideEdit
-                                  />
-                                </div>
-                              </div>
+                                );
+                              })}
                             </Card.Body>
                           </Tab.Pane>
                           <Tab.Pane eventKey="manual-2">
@@ -1042,6 +869,59 @@ export const NewEdit = ({ type, permissions, setFieldValue, currentFeatureEdit, 
         </option>
       </select>
       {bold ? <h6>{type}</h6> : <p> {type}</p>}
+    </div>
+  );
+};
+
+export const DynamicEdit = ({ subData, title, bold, allActivePermission, setAllActivePermission, dynamicPermission, dispatch }) => {
+  return (
+    <div className="form-group custom-select-style-for-sub">
+      <select
+        onChange={(e) => {
+          if (e.target.value === 'View' || e.target.value === 'Edit' || e.target.value === 'None') {
+            dispatch({
+              type: 'SET_ALL_PERMISSION',
+              payload: dynamicPermission.map((data) => {
+                if (data.title === title) {
+                  return {
+                    ...data,
+                    ui_sub_modules: data.ui_sub_modules.map((mod) => {
+                      return {
+                        ...mod,
+                        ui_module_permissions: mod.ui_module_permissions.map((per) => {
+                          if (per.title === e.target.value) {
+                            return { ...per, selected: true };
+                          } else {
+                            return { ...per, selected: false };
+                          }
+                        }),
+                      };
+                    }),
+                  };
+                } else {
+                  return data;
+                }
+              }),
+            });
+          } else {
+            const allIdsInSet = [];
+            for (var i = 0; i < e.target.options.length; i++) {
+              allIdsInSet.push(e.target.options[i].value);
+            }
+
+            setAllActivePermission([...allActivePermission.filter((data) => !allIdsInSet.includes(data)), e.target.value]);
+          }
+        }}
+      >
+        {subData?.map((subData, counter) => {
+          return (
+            <option key={counter} selected={subData.selected} value={subData.id}>
+              {subData.title}
+            </option>
+          );
+        })}
+      </select>
+      {bold ? <h6>{title}</h6> : <p> {title}</p>}
     </div>
   );
 };
