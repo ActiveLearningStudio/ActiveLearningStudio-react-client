@@ -27,8 +27,9 @@ const INITIAL_STATE = {
   independentActivitiesTotal: 0,
   projectActivities: [],
   projectActivitiesTotal: 0,
-  loading: false,
   compatibleLibraries: [],
+  loading: false,
+  library: false,
 };
 
 export default (state = INITIAL_STATE, action) => {

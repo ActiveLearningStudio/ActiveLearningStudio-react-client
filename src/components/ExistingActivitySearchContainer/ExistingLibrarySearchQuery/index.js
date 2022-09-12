@@ -22,6 +22,7 @@ const ExistingLibrarySearchQuery = (props) => {
     query: '',
     negativeQuery: '',
     author: '',
+    library: false,
   });
 
   useEffect(() => {
@@ -131,7 +132,15 @@ const ExistingLibrarySearchQuery = (props) => {
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Card.Header} variant="link" eventKey="0">
-                    {filterKey}
+                    {(() => {
+                      if (filterKey === 'levels') {
+                        return 'Education Levels';
+                      } else if (filterKey === 'tags') {
+                        return 'Author Tags';
+                      } else {
+                        return filterKey;
+                      }
+                    })()}
                     <FontAwesomeIcon className="ml-2" icon="chevron-down" />
                   </Accordion.Toggle>
                 </Card.Header>
