@@ -159,23 +159,6 @@ export const loadH5pResourceSettings = (activityId, studentId = null, submission
   window.brightcoveVideoId = h5pSettings?.brightcoveData?.videoId;
 };
 
-export const loadH5pResourceSettingsIndependentActivity = (indActivityActivityId, studentId = null, submissionId = null) => async (dispatch) => {
-  const h5pSettings = await gapiService.h5pResourceSettingsInpendentActivity(indActivityActivityId, studentId, submissionId);
-  console.log(h5pSettings?.brightcoveData?.accountId);
-  try {
-    localStorage.setItem('brightcoveAccountId', h5pSettings?.brightcoveData?.accountId);
-    localStorage.setItem('brightcoveVideoId', h5pSettings?.brightcoveData?.videoId);
-  } catch (e) {
-    console.log(e);
-  }
-  dispatch({
-    type: GET_H5P_SETTINGS,
-    h5pSettings,
-  });
-  window.brightcoveAccountId = h5pSettings?.brightcoveData?.accountId;
-  window.brightcoveVideoId = h5pSettings?.brightcoveData?.videoId;
-};
-
 export const getSubmissionAction = (classworkId, courseId, auth) => async (dispatch) => {
   const submission = await gapiService.getSubmission(classworkId, courseId, JSON.stringify(auth.tokenObj)).catch((err) => err);
 

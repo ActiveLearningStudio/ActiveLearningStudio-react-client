@@ -1,13 +1,13 @@
 /*eslint-disable*/
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 import './styles.scss';
-import cross from 'assets/images/cross-icon.png';
-import ExistingActivitySearch from 'components/ExistingActivitySearchContainer/ExistingActivitySearch';
+import ExistingLibrarySearch from 'components/ExistingActivitySearchContainer/ExistingLibrarySearch';
 import { existingActivitySearchGetAction, existingActivitySearchResetAction } from 'store/actions/search';
+import { clearSearchAction } from 'store/actions/existingActivitySearch';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ExistingActivitySearchContainer = (props) => {
   const {
@@ -17,10 +17,16 @@ const ExistingActivitySearchContainer = (props) => {
     getActivityData,
     selectedActivity,
     resetActivityData,
+    clearSearch,
   } = props;
 
   const handleAddActivity = (activity) => {
     getActivityData(activity.id);
+  };
+
+  const handleCloseModal = () => {
+    clearSearch();
+    closeModal();
   };
 
   useEffect(() => {
@@ -39,21 +45,26 @@ const ExistingActivitySearchContainer = (props) => {
     };
     insertActivityCallback(data);
     resetActivityData();
+    clearSearch();
     closeModal();
   }, [selectedActivity])
 
   return (
-    <Modal {...props} show backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="existing-activity-search-modal">
+    <Modal show backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="existing-activity-search-modal">
       <Modal.Header>
-          <h2 className="curriki-utility-headings">Add existing activities</h2>
-          <img
-            src={cross}
-            alt="cross"
-            onClick={closeModal}
-          />
+        <div className="title">
+          <p>CurrikiStudio</p>
+          <h2 className="curriki-utility-headings">
+            <FontAwesomeIcon className="mr-2" icon="search" />
+            Explore Library Content
+          </h2>
+        </div>
+        <div className="close">
+          <FontAwesomeIcon className="ml-2" icon="times" onClick={handleCloseModal} />
+        </div>
       </Modal.Header>
       <Modal.Body>
-          <ExistingActivitySearch addActivity={handleAddActivity} libraries={libraries} />
+          <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} />
       </Modal.Body>
     </Modal>
   );
@@ -72,6 +83,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getActivityData: (activityId) => dispatch(existingActivitySearchGetAction(activityId)),
   resetActivityData: () => dispatch(existingActivitySearchResetAction()),
+  clearSearch: () => dispatch(clearSearchAction()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ExistingActivitySearchContainer));

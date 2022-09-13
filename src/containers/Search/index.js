@@ -1036,7 +1036,7 @@ function SearchInterface(props) {
                                               )}
                                               {res?.team_name && (
                                                 <li>
-                                                  By: <span> `(T) ${res?.team_name}</span>
+                                                  Team: <span> {res?.team_name}</span>
                                                 </li>
                                               )}
                                               <li>

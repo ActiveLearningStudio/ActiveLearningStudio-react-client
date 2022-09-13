@@ -10,17 +10,23 @@
 
 .existing-activity-search-modal .modal-header {
   background-color: white;
-  display: flex;
-  justify-content: space-between;
 }
 
-.existing-activity-search-modal .modal-header img {
-  width: 20px;
+.existing-activity-search-modal .modal-header svg {
   cursor: pointer;
 }
+
 iframe.h5p-editor-iframe {
   height: 997px !important;
 }
 body #root {
   display: block !important;
+}
+
+.existing-activity-search-modal .modal-header .title {
+  background-color: white;
+}
+
+.existing-activity-search-modal .modal-header .close {
+  background-color: white;
 }
