@@ -17,8 +17,18 @@ import {
   googleClassRoomCourseTopicAction,
   fetchCanvasCourses,
   fetchCanvasAssignmentGroups,
+  shareToCanvas,
 } from 'store/actions/gapi';
-import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity, publishToCanvas, createAssignmentGroup } from 'store/actions/share';
+import {
+  copyProject,
+  publishPlaylist,
+  publishActivity,
+  publistActivity,
+  publishIdependentActivity,
+  publishToCanvas,
+  createAssignmentGroup,
+  createNewCoursetoCanvas,
+} from 'store/actions/share';
 
 const GoogleLoginModal = ({
   show,
@@ -30,6 +40,10 @@ const GoogleLoginModal = ({
   playlistId,
   activityId,
   selectedProjectPlaylistName,
+  setprojectPlaylistPublishtoCanvas,
+  projectPlaylistPublishtoCanvas,
+  setcanvasProjectName,
+  canvasProjectName,
 }) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
@@ -48,8 +62,6 @@ const GoogleLoginModal = ({
       setShowForm(true);
     } else if (dataRedux.share.googleShare === false) {
       setShowForm(false);
-    } else if (dataRedux?.share?.isCanvas) {
-      setShowForm(true);
     } else if (dataRedux.share.googleShare === 'close') {
       onHide();
     }
@@ -63,8 +75,10 @@ const GoogleLoginModal = ({
   }, [dataRedux, onHide]);
   useEffect(() => {
     if (dataRedux?.share.isCanvas) {
-      setisCanvas(dataRedux?.share.isCanvas);
-      setcanvasSettingId(dataRedux?.share?.shareVendors[0]?.id);
+      setisCanvas(true);
+      setcanvasSettingId(dataRedux?.share?.shareVendors[0]);
+    } else {
+      setisCanvas(false);
     }
   }, [dataRedux?.share.isCanvas]);
   useEffect(() => {
@@ -83,9 +97,13 @@ const GoogleLoginModal = ({
 
   const onCourseChange = (e) => {
     if (!!isCanvas) {
-      dispatch(fetchCanvasAssignmentGroups(e.target.value, canvasSettingId));
+      if (e.target.value !== 'Create a new Course') {
+        dispatch(fetchCanvasAssignmentGroups(e.target.value, canvasSettingId?.id));
+      } else {
+        return false;
+      }
     } else {
-      googleClassRoomCourseTopics(e.target.value);
+      setIsShowPlaylistSelector(true);
     }
     setLoading(true);
     setIsShowPlaylistSelector(true);
@@ -102,7 +120,7 @@ const GoogleLoginModal = ({
       setCourses([]);
       setTopics([]);
       setIsShowPlaylistSelector(false);
-      dispatch(fetchCanvasCourses(canvasSettingId));
+      dispatch(fetchCanvasCourses(canvasSettingId?.id));
     }
   }, [show, isCanvas]);
   const callPublishingMethod = (params) => {
@@ -142,13 +160,45 @@ const GoogleLoginModal = ({
   };
   const callPublishToCanvas = (params) => {
     console.log('values', params);
-    if (typeof params.values.course == 'undefined') {
-      alert('select any topic');
-    } else if (typeof params.values.playlist == 'undefined' && params.values.course !== 'Create a new Course') {
+    if ((typeof params.values.course === 'undefined' && !projectPlaylistPublishtoCanvas) || (params.values.course === 'Create a new Course' && !projectPlaylistPublishtoCanvas)) {
+      dispatch(
+        createNewCoursetoCanvas(
+          canvasProjectName,
+          params.values.course,
+          params.projectId,
+          canvasSettingId,
+          selectedProjectPlaylistName,
+          selectedAssignmentId || params.playlistId,
+          params.activityId,
+          projectPlaylistPublishtoCanvas,
+        ),
+      );
+    } else if (
+      (typeof params.values.playlist == 'undefined' && params.values.course !== 'Create a new Course' && !projectPlaylistPublishtoCanvas) ||
+      (params.values.playlist == 'Create a new topic' && params.values.course !== 'Create a new Course' && !projectPlaylistPublishtoCanvas)
+    ) {
       dispatch(createAssignmentGroup(params.values.course, canvasSettingId, selectedProjectPlaylistName, params.activityId));
+    } else if (
+      (typeof params.values.course === 'undefined' && projectPlaylistPublishtoCanvas) ||
+      (params.values.course === 'Create a new Course' && projectPlaylistPublishtoCanvas) ||
+      (params.values.course && projectPlaylistPublishtoCanvas)
+    ) {
+      dispatch(
+        createNewCoursetoCanvas(
+          canvasProjectName,
+          params.values.course,
+          params.projectId,
+          canvasSettingId,
+          selectedProjectPlaylistName,
+          selectedAssignmentId || params.playlistId,
+          params.activityId,
+          projectPlaylistPublishtoCanvas,
+        ),
+      );
     } else {
       dispatch(publishToCanvas(params.values.course, canvasSettingId, params.values.playlist, selectedAssignmentId, params.activityId));
     }
+    setprojectPlaylistPublishtoCanvas(false);
   };
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
@@ -198,161 +248,164 @@ const GoogleLoginModal = ({
               </div>
             ) : (
               <div className="classroom-form">
-                <div>
-                  {isCanvas ? <h1>Are you sure you want to Publish Activities as Assignments?</h1> : <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>}
+                {projectPlaylistPublishtoCanvas ? (
+                  <div>
+                    {isCanvas ? (
+                      <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
+                    ) : (
+                      <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>
+                    )}
 
-                  {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
-                  {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
-                  <Formik
-                    initialValues={{
-                      course: undefined,
-                      playlist: undefined,
-                      heading: 'test',
-                      description: 'test',
-                      room: 'test',
-                    }}
-                    onSubmit={(values) => {
-                      if (isCanvas) {
-                        callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
-                      } else {
-                        callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
-                      }
+                    {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
+                    {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
+                    <Formik
+                      initialValues={{
+                        course: undefined,
+                        playlist: undefined,
+                        heading: 'test',
+                        description: 'test',
+                        room: 'test',
+                      }}
+                      onSubmit={(values) => {
+                        if (isCanvas) {
+                          callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
+                        } else {
+                          callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
+                        }
 
-                      setLoading(false);
-                      onHide();
-                    }}
-                  >
-                    {({
-                      values,
-                      // errors,
-                      // touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      // isSubmitting,
-                      /* and other goodies */
-                    }) => (
-                      <form onSubmit={handleSubmit}>
-                        <select
-                          className="form-control select-dropdown"
-                          name="course"
-                          value={values.course}
-                          onChange={(e) => {
-                            handleChange(e);
-                            onCourseChange(e);
-                          }}
-                          onBlur={handleBlur}
-                        >
-                          {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
-                          {!!courses &&
-                            courses.map((item) => (
-                              <option key={item.id} value={item.id}>
-                                {item.name}
-                              </option>
-                            ))}
-                        </select>
-                        {isShowPlaylistSelector && playlistId > 0 && (
+                        setLoading(false);
+                        onHide();
+                      }}
+                    >
+                      {({
+                        values,
+                        // errors,
+                        // touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        // isSubmitting,
+                        /* and other goodies */
+                      }) => (
+                        <form onSubmit={handleSubmit}>
                           <select
                             className="form-control select-dropdown"
-                            name="playlist"
-                            value={values.playlist}
+                            name="course"
+                            value={values.course}
                             onChange={(e) => {
                               handleChange(e);
-                              onTopicChange(e);
                             }}
                             onBlur={handleBlur}
                           >
-                            <option>Create a new topic</option>
-                            {!!topics &&
-                              topics.map((topic) => {
-                                if (isCanvas) {
-                                  return (
-                                    <option key={topic.id} value={topic.id}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                } else {
-                                  return (
-                                    <option key={topic.topicId} value={topic.topicId}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                }
-                              })}
+                            {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
+                            {!!courses &&
+                              courses.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                  {item.name}
+                                </option>
+                              ))}
                           </select>
-                        )}
 
-                        {/* <input
-                          type="text"
-                          name="course"
-                          class="form-control"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.course}
-                          placeholder="Course Name"
-                        /> */}
-
-                        {/* {errors.course && touched.course && (
-                          <div className="form-error">{errors.course}</div>
-                        )} */}
-
-                        {/* <select
-                          class="form-control"
-                          name="room"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.room}
-                          placeholder="Course Name"
-                        >
-                          <option>Select your room</option>
-                          {rooms.map((data) => (
-                            <option key={data.id}>{data}</option>
-                          ))}
-                        </select> */}
-
-                        {/* {errors.room && touched.room && (
-                          <div className="form-error">{errors.room}</div>
-                        )} */}
-
-                        {/* <input
-                          type="text"
-                          name="heading"
-                          class="form-control"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.heading}
-                          placeholder="Heading"
-                        /> */}
-
-                        {/* {errors.heading && touched.heading && (
-                          <div className="form-error">{errors.heading}</div>
-                        )} */}
-
-                        {/* <textarea
-                          class="form-control"
-                          rows="5"
-                          type="text"
-                          name="description"
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={values.description}
-                          placeholder="Description"
-                        /> */}
-
-                        {/* {errors.description && touched.description && (
-                          <div className="form-error">{errors.description}</div>
-                        )} */}
-
-                        {/*
-                        <p>
-                          Are you sure you want to share this Project to Google Classroom?
-                        </p>
-                        */}
-                        {!loading && <button type="submit">Confirm</button>}
-                      </form>
+                          {<button type="submit">Confirm</button>}
+                        </form>
+                      )}
+                    </Formik>
+                  </div>
+                ) : (
+                  <div>
+                    {isCanvas ? (
+                      <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
+                    ) : (
+                      <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>
                     )}
-                  </Formik>
-                </div>
+
+                    {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
+                    {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
+                    <Formik
+                      initialValues={{
+                        course: undefined,
+                        playlist: undefined,
+                        heading: 'test',
+                        description: 'test',
+                        room: 'test',
+                      }}
+                      onSubmit={(values) => {
+                        if (isCanvas) {
+                          callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
+                        } else {
+                          callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
+                        }
+
+                        setLoading(false);
+                        onHide();
+                      }}
+                    >
+                      {({
+                        values,
+                        // errors,
+                        // touched,
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        // isSubmitting,
+                        /* and other goodies */
+                      }) => (
+                        <form onSubmit={handleSubmit}>
+                          <select
+                            className="form-control select-dropdown"
+                            name="course"
+                            value={values.course}
+                            onChange={(e) => {
+                              handleChange(e);
+                              onCourseChange(e);
+                            }}
+                            onBlur={handleBlur}
+                          >
+                            {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
+                            {!!courses &&
+                              courses.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                  {item.name}
+                                </option>
+                              ))}
+                          </select>
+                          {isShowPlaylistSelector && playlistId > 0 && (
+                            <select
+                              className="form-control select-dropdown"
+                              name="playlist"
+                              value={values.playlist}
+                              onChange={(e) => {
+                                handleChange(e);
+                                onTopicChange(e);
+                              }}
+                              onBlur={handleBlur}
+                            >
+                              <option>Create a new topic</option>
+                              {!!topics &&
+                                topics.map((topic) => {
+                                  if (isCanvas) {
+                                    return (
+                                      <option key={topic.id} value={topic.id}>
+                                        {topic.name}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={topic.topicId} value={topic.topicId}>
+                                        {topic.name}
+                                      </option>
+                                    );
+                                  }
+                                })}
+                            </select>
+                          )}
+
+                          {<button type="submit">Confirm</button>}
+                        </form>
+                      )}
+                    </Formik>
+                  </div>
+                )}
               </div>
             )}
           </div>

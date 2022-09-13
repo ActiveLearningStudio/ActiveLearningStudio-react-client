@@ -129,7 +129,18 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
+    const {
+      index,
+      playlist,
+      projectId,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
+      setProjectPlaylistActivityId,
+      setprojectPlaylistPublishtoCanvas,
+    } = this.props;
     const { permission } = organization;
     const primaryColor = getGlobalColor('--main-primary-color');
     return (
@@ -165,6 +176,7 @@ class PlaylistCard extends React.Component {
                     setProjectId={setProjectId}
                     setProjectPlaylistId={setProjectPlaylistId}
                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                    setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
                   />
                 </h2>
               </div>

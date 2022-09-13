@@ -74,6 +74,8 @@ export const ProjectsPage = (props) => {
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
   const [startSearching, setStartSearching] = useState('');
+  const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
+  const [canvasProjectName, setcanvasProjectName] = useState('');
   const dispatch = useDispatch();
   const samplerRef = useRef();
   const {
@@ -359,6 +361,8 @@ export const ProjectsPage = (props) => {
 
   const handleClose = () => {
     setShow(false);
+    setprojectPlaylistPublishtoCanvas(false);
+    setcanvasProjectName('');
   };
 
   const handleDeleteProject = (projectId) => {
@@ -560,6 +564,8 @@ export const ProjectsPage = (props) => {
                                                         setProjectId={setProjectId}
                                                         activeFilter={activeFilter}
                                                         setCreateProject={setCreateProject}
+                                                        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                                                        setcanvasProjectName={setcanvasProjectName}
                                                       />
                                                     </div>
                                                   )}
@@ -864,6 +870,10 @@ export const ProjectsPage = (props) => {
         projectId={selectedProjectId}
         show={show} // {props.show}
         onHide={handleClose}
+        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+        projectPlaylistPublishtoCanvas={projectPlaylistPublishtoCanvas}
+        setcanvasProjectName={setcanvasProjectName}
+        canvasProjectName={canvasProjectName}
       />
     </>
   );

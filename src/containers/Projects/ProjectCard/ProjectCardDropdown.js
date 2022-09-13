@@ -1,15 +1,16 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
-import { exportProjectsToNoovo, getProjectCourseFromLMS, publishProjectToCanvas } from 'store/actions/project';
+import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import loader from 'assets/images/loader.svg';
@@ -30,6 +31,8 @@ const ProjectCardDropdown = (props) => {
     teamPermission,
     // text,
     iconColor,
+    setprojectPublishtoCanvas,
+    setcanvasProjectName,
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
@@ -171,6 +174,7 @@ const ProjectCardDropdown = (props) => {
                 <li
                   key={`googleclassroom +${project.id}`}
                   onClick={() => {
+                    dispatch(shareToCanvas(false));
                     handleShow();
                     getProjectId(project.id);
                     // eslint-disable-next-line react/destructuring-assignment
@@ -192,9 +196,15 @@ const ProjectCardDropdown = (props) => {
                             const allPlaylist = await dispatch(lmsPlaylist(project.id));
                             if (allPlaylist) {
                               if (data.lms_name === 'canvas') {
-                                dispatch(publishProjectToCanvas(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                                setprojectPublishtoCanvas(true);
+                                handleShow();
+                                dispatch(googleShare(true));
+                                dispatch(shareToCanvas(true));
+                                setProjectId(props.project.id);
+                                setcanvasProjectName(project.name);
+                                // dispatch(publishProjectToCanvas(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
                               } else {
-                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, data.lms_url));
                               }
                             }
                           }}
@@ -244,6 +254,7 @@ ProjectCardDropdown.propTypes = {
   setProjectId: PropTypes.func.isRequired,
   teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
+  // setprojectPublishtoCanvas: PropTypes.func.isRequired,
   // text: propTypes.string,
 };
 

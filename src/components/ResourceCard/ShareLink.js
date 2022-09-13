@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
-import { publishPlaylistToCanvas } from 'store/actions/share';
+import { publishProjectPlaylistToCanvas } from 'store/actions/share';
 import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
@@ -15,7 +15,7 @@ import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 function ShareLink(props) {
   const dispatch = useDispatch();
 
-  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = props;
+  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId, setprojectPlaylistPublishtoCanvas } = props;
 
   const AllLms = useSelector((state) => state.share);
 
@@ -76,7 +76,10 @@ function ShareLink(props) {
                     href="#"
                     onClick={async () => {
                       if (data.lms_name === 'canvas') {
-                        dispatch(publishPlaylistToCanvas(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                        dispatch(shareToCanvas(true));
+                        setprojectPlaylistPublishtoCanvas(true);
+                        handleShow();
+                        // dispatch(publishProjectPlaylistToCanvas(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
                       } else {
                         dispatch(getProjectCourseFromLMSPlaylist(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
                       }

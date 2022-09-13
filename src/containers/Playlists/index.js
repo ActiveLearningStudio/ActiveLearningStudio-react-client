@@ -104,7 +104,7 @@ function PlaylistsPage(props) {
   const [selectedProjectPlaylistName, setselectedProjectPlaylistName] = useState('');
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
-
+  const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
   const { screenState } = useSelector((s) => s.myactivities);
 
   const {
@@ -459,6 +459,7 @@ function PlaylistsPage(props) {
 
   const handleClose = () => {
     setShow(false);
+    setprojectPlaylistPublishtoCanvas(false);
   };
 
   const setProjectId = (projectId) => {
@@ -801,6 +802,7 @@ function PlaylistsPage(props) {
                                     setSelectSearchModule={setSelectSearchModule}
                                     setPlaylistIdForSearchingTab={setPlaylistIdForSearchingTab}
                                     setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+                                    setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
                                   />
                                 ))}
                               {provided.placeholder}
@@ -878,6 +880,8 @@ function PlaylistsPage(props) {
         show={show} // {props.show}
         onHide={handleClose}
         selectedProjectPlaylistName={selectedProjectPlaylistName}
+        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+        projectPlaylistPublishtoCanvas={projectPlaylistPublishtoCanvas}
       />
     </>
   );

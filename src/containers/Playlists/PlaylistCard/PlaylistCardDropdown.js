@@ -49,6 +49,7 @@ class PlaylistCardDropdown extends React.Component {
       setProjectPlaylistActivityId,
       enablePlaylistShared,
       selectedProject,
+      setprojectPlaylistPublishtoCanvas,
     } = this.props;
     const { permission } = organization;
     const primaryColor = getGlobalColor('--main-primary-color');
@@ -129,6 +130,7 @@ class PlaylistCardDropdown extends React.Component {
                 setProjectId={setProjectId}
                 setProjectPlaylistId={setProjectPlaylistId}
                 setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
               />
             )}
             {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
