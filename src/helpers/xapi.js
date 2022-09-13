@@ -3,7 +3,6 @@ export function allowedH5PActvityPaths() {
   return [
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
     '/lti-tools/activity/:activityId',
-    '/lti-tools/independent_activity/:independentActivityId',
     '/activity/:activityId/shared',
     '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
   ];
@@ -16,7 +15,6 @@ export function H5PActvityPathMapToPlatform() {
     { '/activity/:activityId/shared': 'CurrikiStudio' },
     { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
     { '/lti-tools/activity/:activityId': 'LTI client' },
-    { '/lti-tools/independent_activity/:independentActivityId': 'LTI client' },
     { '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId': 'GenericLMS' },
   ];
 }
