@@ -51,6 +51,7 @@ const ResourceCardDropdown = (props) => {
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
     setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
@@ -175,6 +176,8 @@ const ResourceCardDropdown = (props) => {
                 <li
                   onClick={() => {
                     handleShow();
+                    console.log('res', resource);
+                    setselectedPlaylistActivityName(resource.title);
                     getProjectId(match.params.projectId);
                     setProjectId(match.params.projectId);
                     setProjectPlaylistId(playlist.id);

@@ -121,7 +121,7 @@ export const publishIdependentActivity = async (courseId, topicId, activityId, t
 };
 //publisher for canvas
 
-export const publishToCanvas = async (courseId, settings, playlistName, playlistId, activityId) => {
+export const publishToCanvas = async (courseId, settings, activityName, playlistId, activityId) => {
   const { id, lms_url } = settings;
   Swal.fire({
     title: 'Publishing....',
@@ -133,7 +133,7 @@ export const publishToCanvas = async (courseId, settings, playlistName, playlist
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await searchService.canvasClassPublishActivity(courseId, id, playlistName, playlistId, activityId);
+  const result = await searchService.canvasClassPublishActivity(courseId, id, activityName, playlistId, activityId);
   if (result.Activity) {
     Swal.fire({
       icon: 'success',
@@ -151,7 +151,7 @@ export const publishToCanvas = async (courseId, settings, playlistName, playlist
   }
 };
 
-export const createAssignmentGroup = async (courseId, settings, playlistName, activityId) => {
+export const createAssignmentGroup = async (courseId, settings, playlistName, activityId, ActivityName) => {
   const { id } = settings;
   Swal.fire({
     title: 'Creating New Module....',
@@ -162,10 +162,10 @@ export const createAssignmentGroup = async (courseId, settings, playlistName, ac
 
   const res = await searchService.canvasCreateNewAssignmentGroup(courseId, id, playlistName);
   if (res.response_code === 200) {
-    publishToCanvas(courseId, settings, res.data.name, res.data.id, activityId);
+    publishToCanvas(courseId, settings, ActivityName, res.data.id, activityId);
   }
 };
-export const createNewCoursetoCanvas = async (canvasProjectName, courseId, projectId, settings, playlistName, playlistId, activityId, projectPlaylistPublish) => {
+export const createNewCoursetoCanvas = async (canvasProjectName, courseId, projectId, settings, playlistName, playlistId, activityId, projectPlaylistPublish, ActivityName) => {
   const { id, lms_name, lms_url } = settings;
   if (courseId && courseId !== 'Create a new Course') {
     Swal.fire({
@@ -188,7 +188,7 @@ export const createNewCoursetoCanvas = async (canvasProjectName, courseId, proje
       if (!!projectPlaylistPublish) {
         publishProjectPlaylistToCanvas(projectId, playlistId, settings, res.data.id, canvasProjectName);
       } else {
-        createAssignmentGroup(res.data.id, settings, res.data.name, activityId);
+        createAssignmentGroup(res.data.id, settings, res.data.name, activityId, ActivityName);
       }
     }
   }

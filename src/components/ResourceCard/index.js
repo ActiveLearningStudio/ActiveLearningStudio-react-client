@@ -25,6 +25,7 @@ const ResourceCard = (props) => {
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
     setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
     // wizard,
   } = props;
   const organization = useSelector((state) => state.organization);
@@ -100,6 +101,7 @@ const ResourceCard = (props) => {
                 setProjectPlaylistId={setProjectPlaylistId}
                 setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                 setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+                setselectedPlaylistActivityName={setselectedPlaylistActivityName}
                 // wizard
               />
             </div>

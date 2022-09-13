@@ -103,6 +103,7 @@ function PlaylistsPage(props) {
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
   const [selectedProjectPlaylistName, setselectedProjectPlaylistName] = useState('');
+  const [selectedPlaylistActivityName, setselectedPlaylistActivityName] = useState('');
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
@@ -805,6 +806,7 @@ function PlaylistsPage(props) {
                                     setPlaylistIdForSearchingTab={setPlaylistIdForSearchingTab}
                                     setselectedProjectPlaylistName={setselectedProjectPlaylistName}
                                     setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                                    setselectedPlaylistActivityName={setselectedPlaylistActivityName}
                                   />
                                 ))}
                               {provided.placeholder}
@@ -884,6 +886,7 @@ function PlaylistsPage(props) {
         selectedProjectPlaylistName={selectedProjectPlaylistName}
         setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
         projectPlaylistPublishtoCanvas={projectPlaylistPublishtoCanvas}
+        selectedPlaylistActivityName={selectedPlaylistActivityName}
       />
     </>
   );

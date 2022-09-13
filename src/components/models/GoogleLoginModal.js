@@ -44,6 +44,7 @@ const GoogleLoginModal = ({
   projectPlaylistPublishtoCanvas,
   setcanvasProjectName,
   canvasProjectName,
+  selectedPlaylistActivityName,
 }) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
@@ -174,13 +175,14 @@ const GoogleLoginModal = ({
           selectedAssignmentId || params.playlistId,
           params.activityId,
           projectPlaylistPublishtoCanvas,
+          selectedPlaylistActivityName,
         ),
       );
     } else if (
       (typeof params.values.playlist == 'undefined' && params.values.course !== 'Create a new Course' && !projectPlaylistPublishtoCanvas) ||
       (params.values.playlist == 'Create a new topic' && params.values.course !== 'Create a new Course' && !projectPlaylistPublishtoCanvas)
     ) {
-      dispatch(createAssignmentGroup(params.values.course, canvasSettingId, selectedProjectPlaylistName, params.activityId));
+      dispatch(createAssignmentGroup(params.values.course, canvasSettingId, selectedProjectPlaylistName, params.activityId, selectedPlaylistActivityName));
     } else if (
       (typeof params.values.course === 'undefined' && projectPlaylistPublishtoCanvas) ||
       (params.values.course === 'Create a new Course' && projectPlaylistPublishtoCanvas) ||
@@ -196,10 +198,11 @@ const GoogleLoginModal = ({
           selectedAssignmentId || params.playlistId,
           params.activityId,
           projectPlaylistPublishtoCanvas,
+          selectedPlaylistActivityName,
         ),
       );
     } else {
-      dispatch(publishToCanvas(params.values.course, canvasSettingId, params.values.playlist, selectedAssignmentId, params.activityId));
+      dispatch(publishToCanvas(params.values.course, canvasSettingId, selectedPlaylistActivityName, selectedAssignmentId, params.activityId));
     }
     setprojectPlaylistPublishtoCanvas(false);
   };

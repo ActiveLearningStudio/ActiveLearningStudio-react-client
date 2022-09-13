@@ -50,7 +50,17 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId, setselectedProjectPlaylistName } = this.props;
+    const {
+      playlist,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
+      setProjectPlaylistActivityId,
+      setselectedProjectPlaylistName,
+      setselectedPlaylistActivityName,
+    } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="playlist-no-resource">No activities yet.</div>;
@@ -70,6 +80,7 @@ class PlaylistCard extends React.Component {
             setProjectPlaylistId={setProjectPlaylistId}
             setProjectPlaylistActivityId={setProjectPlaylistActivityId}
             setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+            setselectedPlaylistActivityName={setselectedPlaylistActivityName}
           />
         ),
     );
