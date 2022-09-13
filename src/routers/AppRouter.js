@@ -73,7 +73,6 @@ const GclassSummaryPage = loadable(() => import('../containers/LMS/GoogleClassro
 const CanvasSummaryPage = loadable(() => import('../containers/LMS/Canvas/CanvasSummaryPage'));
 const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/SearchPage'));
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
-const LtiIndependentActivity = loadable(() => import('../containers/LMS/LTI/IndependentActivity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
@@ -115,7 +114,6 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/project/:projectId/secure/shared" component={SecureProjectPreview} />
         <OpenRoute exact path="/opensearch" component={Searchnetlify} />
         <OpenRoute exact path="/lti-tools/activity/:activityId" component={LtiActivity} />
-        <OpenRoute exact path="/lti-tools/independent_activity/:independentActivityId" component={LtiIndependentActivity} />
         <PrivateRoute exact path="/activity/:activityId/preview" component={LtiPreviewPage} previewType="activityShared" />
         <OpenRoute exact path="/activity/:activityId/shared" component={LtiPreviewPage} previewType="activityShared" />
         <OpenRoute exact path="/h5p/embed/:activityId" component={LtiPreviewPage} previewType="activitySharedEmbed" />
@@ -141,7 +139,6 @@ const AppRouter = (props) => {
         <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/preview" component={PreviewPage} previewType="playlist" />
 
         <OpenRoute exact path="/lti-tools/activity/:activityId" component={LtiActivity} />
-        <OpenRoute exact path="/lti-tools/independent_activity/:independentActivityId" component={LtiIndependentActivity} />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
