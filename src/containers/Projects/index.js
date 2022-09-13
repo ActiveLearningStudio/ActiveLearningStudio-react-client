@@ -11,7 +11,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 
 import ProjectCardSkeleton from 'components/Skeletons/projectCard';
-
+import { shareToCanvas } from 'store/actions/gapi';
 import searchimg from 'assets/images/search-icon.png';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import { toast } from 'react-toastify';
@@ -360,6 +360,7 @@ export const ProjectsPage = (props) => {
   };
 
   const handleClose = () => {
+    dispatch(shareToCanvas(false));
     setShow(false);
     setprojectPlaylistPublishtoCanvas(false);
     setcanvasProjectName('');

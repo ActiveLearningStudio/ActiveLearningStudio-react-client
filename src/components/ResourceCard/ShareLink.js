@@ -57,11 +57,12 @@ function ShareLink(props) {
           <li
             onClick={() => {
               handleShow();
+              dispatch(googleShare(false));
+              // dispatch(shareToCanvas(false));
               getProjectId(projectId);
               setProjectId(projectId);
               setProjectPlaylistId(playlistId);
               setProjectPlaylistActivityId(0);
-              dispatch(googleShare(false));
             }}
           >
             <a>Google Classroom</a>

@@ -268,49 +268,4 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
       }
     });
   }
-
-  // const response = await projectService.fetchLmsDetails(lms, projectId, settingId);
-  // if (response.project) {
-  //   const globalStoreClone = store.getState();
-  //   dispatch(setLmsCourse(response.project, globalStoreClone));
-
-  //   Swal.fire({
-  //     title: `This Playlist will be added to ${lms}. If the Playlist does not exist, it will be created. `,
-  //     text: 'Would you like to proceed?',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#5952c6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Continue',
-  //   }).then(async (result) => {
-  //     if (result.value) {
-  //       Swal.fire({
-  //         icon: loaderImg,
-  //         title: 'Publishing....',
-  //         showCancelButton: false,
-  //         showConfirmButton: false,
-  //         allowOutsideClick: false,
-  //       });
-
-  //       const globalStore = store.getState();
-  //       const playlistCounter = !!globalStore.project.lmsCourse && globalStore.project.lmsCourse.playlistsCopyCounter ? globalStore.project.lmsCourse.playlistsCopyCounter : [];
-
-  //       let counterId = 0;
-  //       playlistCounter.forEach((p) => {
-  //         if (playlistId === p.playlist_id) {
-  //           counterId = p.counter;
-  //         }
-  //       });
-
-  //       await projectService.lmsPublish(lms, projectId, settingId, counterId, playlistId);
-
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Published!',
-  //         confirmButtonColor: '#5952c6',
-  //         html: `Your Project has been published to <a target="_blank" href="${lmsUrl}">${lmsUrl}</a>`,
-  //         // text: `Your playlist has been submitted to ${lmsUrl}`,
-  //       });
-  //     }
-  //   });
-  // }
 };

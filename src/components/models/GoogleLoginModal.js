@@ -58,7 +58,9 @@ const GoogleLoginModal = ({
   const [selectedAssignmentId, setselectedAssignmentId] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
-    if (dataRedux.share.googleShare === true) {
+    if (dataRedux.share.isCanvas === true) {
+      setShowForm(true);
+    } else if (dataRedux.share.googleShare === true) {
       setShowForm(true);
     } else if (dataRedux.share.googleShare === false) {
       setShowForm(false);
@@ -76,6 +78,7 @@ const GoogleLoginModal = ({
   useEffect(() => {
     if (dataRedux?.share.isCanvas) {
       setisCanvas(true);
+      setShowForm(true);
       setcanvasSettingId(dataRedux?.share?.shareVendors[0]);
     } else {
       setisCanvas(false);
