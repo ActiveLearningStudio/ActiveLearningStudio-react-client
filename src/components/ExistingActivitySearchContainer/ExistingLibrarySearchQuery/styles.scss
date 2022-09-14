@@ -1,0 +1,41 @@
+.existing-library-search-query .card-header {
+  color: #084892;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 0.5em;
+  text-transform: capitalize;
+}
+
+.existing-library-search-query .card-header svg {
+  float:right;
+}
+
+.existing-library-search-query .card-header, .existing-library-search-query .card-header:first-child {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.existing-library-search-query .card-body input[type='checkbox'] {
+  font-size: 0.25em;
+  float: right;
+  width: auto;
+}
+
+.existing-library-search-query .card-body .checkbox-group {
+  display: inline;
+}
+
+.existing-library-search-query .card-body button {
+  background-color: #084892;
+  border-radius: 16px;
+}
+
+.existing-library-search-query .refine {
+  background-color: #084892;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 5px;
+  padding: 1em;
+  color: white;
+}

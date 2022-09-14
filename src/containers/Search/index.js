@@ -353,6 +353,8 @@ function SearchInterface(props) {
         setMeta({});
         localStorage.setItem('loading', 'false');
         Swal.close();
+      } else if (allState.searchResult?.length === 0 && allState.searchMeta.total > 0) {
+        setSearch([]);
       }
     }
   }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
@@ -1034,7 +1036,7 @@ function SearchInterface(props) {
                                               )}
                                               {res?.team_name && (
                                                 <li>
-                                                  By: <span> `(T) ${res?.team_name}</span>
+                                                  Team: <span> {res?.team_name}</span>
                                                 </li>
                                               )}
                                               <li>
