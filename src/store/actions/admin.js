@@ -219,6 +219,21 @@ export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column 
   return result;
 };
 
+export const gettAllDynamicPermisison = (subOrgId, roleId) => async (dispatch) => {
+  const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId);
+  dispatch({
+    type: actionTypes.SET_ALL_PERMISSION,
+    payload: result?.data,
+  });
+};
+export const updateAllDynamicPermisison = (subOrgId, data) => async (dispatch) => {
+  const result = await adminService.updateAllDynamicPermisison(subOrgId, data);
+  // dispatch({
+  //   type: actionTypes.SET_ALL_PERMISSION,
+  //   payload: result?.data,
+  // });
+};
+gettAllDynamicPermisison;
 export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({

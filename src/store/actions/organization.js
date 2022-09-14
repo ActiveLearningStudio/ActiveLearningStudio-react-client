@@ -451,7 +451,7 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
 export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
   Swal.fire({
     title: 'Please Wait !',
-    html: 'Updating Role ...',
+    html: 'Creating New Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();
