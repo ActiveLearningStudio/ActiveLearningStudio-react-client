@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -5,22 +6,13 @@ import { Helmet } from 'react-helmet';
 import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
-import {
-  getSummaryAuthAction,
-} from 'store/actions/gapi';
+import { getSummaryAuthAction } from 'store/actions/gapi';
 import ActivitySummary from 'containers/LMS/GoogleClassroom/ActivitySummary';
 import './styles.scss';
 
 function GclassSummaryPage(props) {
-  const {
-    match,
-    student,
-    teacher,
-    errors,
-    summaryError,
-    getSummaryAuth,
-  } = props;
-  const studentName = (student) ? student.name : 'your student';
+  const { match, student, teacher, errors, summaryError, getSummaryAuth } = props;
+  const studentName = student ? student.name : 'your student';
 
   const handleLogin = (data) => {
     getSummaryAuth(data, match.params.courseId, match.params.gClassworkId, match.params.submissionId);
@@ -30,16 +22,13 @@ function GclassSummaryPage(props) {
     <div className="gclass-activity-container">
       <section className="main-page-content preview iframe-height-resource-shared">
         <Helmet>
-          <script
-            src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js"
-            charset="UTF-8"
-          />
+          <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
         </Helmet>
 
         <div className="container">
           <div className="row">
             <div className="col">
-              {student && !errors && <ActivitySummary /> }
+              {student && !errors && <ActivitySummary />}
 
               {(!student || errors || summaryError) && (
                 <div className="auth-container">
@@ -53,9 +42,7 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <p>
-                            {errors[0].msg}
-                          </p>
+                          <p>{errors[0].msg}</p>
                         </Alert>
                       </div>
                     </div>
@@ -65,9 +52,7 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <p>
-                            {summaryError}
-                          </p>
+                          <p>{summaryError}</p>
                         </Alert>
                       </div>
                     </div>
@@ -77,9 +62,7 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <h4>
-                            {`Oops! It looks like your submission isn't available at ${window.location.hostname}.`}
-                          </h4>
+                          <h4>{`Oops! It looks like your submission isn't available at ${window.location.hostname}.`}</h4>
                           <p>
                             To resubmit your assigment follow these steps:
                             <ul>
@@ -97,18 +80,10 @@ function GclassSummaryPage(props) {
                     <div className="row m-4">
                       <div className="col text-center">
                         <Alert variant="warning">
-                          <h4>
-                            {`Oops! It looks like the submission for ${studentName} is not available at ${window.location.hostname}.`}
-                          </h4>
-                          <p>
-                            {`You can return the assignment without a grade in the google classroom interface, so that ${studentName} can resume the assignment.`}
-                          </p>
-                          <p>
-                            {`Consider sending a message to ${studentName} about resubmitting the assignment.`}
-                          </p>
-                          <p>
-                            For further assistance use our support channels.
-                          </p>
+                          <h4>{`Oops! It looks like the submission for ${studentName} is not available at ${window.location.hostname}.`}</h4>
+                          <p>{`You can return the assignment without a grade in the google classroom interface, so that ${studentName} can resume the assignment.`}</p>
+                          <p>{`Consider sending a message to ${studentName} about resubmitting the assignment.`}</p>
+                          <p>For further assistance use our support channels.</p>
                         </Alert>
                       </div>
                     </div>
@@ -124,7 +99,6 @@ function GclassSummaryPage(props) {
                         onFailure={handleLogin}
                         scope="
                           https://www.googleapis.com/auth/classroom.courses.readonly
-                          https://www.googleapis.com/auth/classroom.courses
                           https://www.googleapis.com/auth/classroom.topics
                           https://www.googleapis.com/auth/classroom.coursework.me
                           https://www.googleapis.com/auth/classroom.coursework.students
