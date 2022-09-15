@@ -219,8 +219,8 @@ export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column 
   return result;
 };
 
-export const gettAllDynamicPermisison = (subOrgId, roleId) => async (dispatch) => {
-  const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId);
+export const gettAllDynamicPermisison = (subOrgId, roleId, add) => async (dispatch) => {
+  const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId, add);
   dispatch({
     type: actionTypes.SET_ALL_PERMISSION,
     payload: result?.data,

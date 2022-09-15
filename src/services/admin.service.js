@@ -612,9 +612,9 @@ const getMediaSources = (subOrgId, page, size, query, column, orderBy) =>
       Promise.reject(err.response.data);
     });
 
-const gettAllDynamicPermisison = (subOrgId, roleId) =>
+const gettAllDynamicPermisison = (subOrgId, roleId, add) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${subOrgId}/role/${roleId}/permissions`)
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/role/${roleId}/permissions${add ? '?view=all' : ''}`)
     .then(({ data }) => data)
     .catch((err) => {
       // errorCatcher(err.response.data);

@@ -19,8 +19,8 @@ export default function AddRole() {
   }, [dynamicPermission]);
 
   useMemo(() => {
-    dispatch(gettAllDynamicPermisison(activeOrganization?.id, 1));
-  }, [activeOrganization]);
+    dispatch(gettAllDynamicPermisison(1, 1, true));
+  }, []);
 
   return (
     <div className="create-form add-role-form">
