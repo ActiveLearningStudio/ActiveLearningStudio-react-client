@@ -453,27 +453,44 @@ const Index = ({ activities }) => {
                     ) : (
                       <div className="video-cards-contianer">
                         <div className="video-cards-detail">
-                          <div className='row m-auto'>
-                          {/* Adding New Design Add  */}
+                          <div className="row">
+                            {/* Adding New Design Add  */}
 
-                          {activities ? (
-                            permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                            {activities ? (
+                              permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                                <div
+                                  className="Add-video-interaction-section"
+                                  onClick={() => {
+                                    dispatch({
+                                      type: actionTypes.CLEAR_STATE,
+                                    });
+
+                                    dispatch({
+                                      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                      payload: 'layout',
+                                      playlist: {},
+                                      project: {},
+                                    });
+
+                                    dispatch(clearSearch());
+
+                                    dispatch({
+                                      type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                      payload: '',
+                                    });
+                                  }}
+                                >
+                                  <PlusXlSvg primaryColor={primaryColor} />
+                                  <span>Create New Activity</span>
+                                </div>
+                              )
+                            ) : (
                               <div
                                 className="Add-video-interaction-section"
                                 onClick={() => {
-                                  dispatch({
-                                    type: actionTypes.CLEAR_STATE,
-                                  });
-
-                                  dispatch({
-                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                    payload: 'layout',
-                                    playlist: {},
-                                    project: {},
-                                  });
-
-                                  dispatch(clearSearch());
-
+                                  setOpenVideo(!openMyVideo);
+                                  setScreenStatus('AddVideo');
+                                  setisbackHide(true);
                                   dispatch({
                                     type: 'SET_ACTIVE_VIDEO_SCREEN',
                                     payload: '',
@@ -481,79 +498,62 @@ const Index = ({ activities }) => {
                                 }}
                               >
                                 <PlusXlSvg primaryColor={primaryColor} />
-                                <span>Create New Activity</span>
+                                <span>Create a video</span>
                               </div>
-                            )
-                          ) : (
-                            <div
-                              className="Add-video-interaction-section"
-                              onClick={() => {
-                                setOpenVideo(!openMyVideo);
-                                setScreenStatus('AddVideo');
-                                setisbackHide(true);
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            >
-                              <PlusXlSvg primaryColor={primaryColor} />
-                              <span>Create a video</span>
-                            </div>
-                          )}
+                            )}
 
-                          {activities
-                            ? allActivities?.data.map((activityData) => (
-                                <AddVideoCard
-                                  setModalShow={setModalShow}
-                                  setCurrentActivity={setCurrentActivity}
-                                  setScreenStatus={setScreenStatus}
-                                  setOpenVideo={setOpenVideo}
-                                  title={activityData.title}
-                                  data={activityData}
-                                  className="card-spacing"
-                                  activities={activities}
-                                  isActivityCard
-                                  permission={permission}
-                                  handleShow={handleShow}
-                                  setSelectedActivityId={setActivityId}
-                                  addToProjectCheckbox={addToProjectCheckbox}
-                                  selectedProjectstoAdd={selectedProjectstoAdd}
-                                  setSelectedProjectstoAdd={setSelectedProjectstoAdd}
-                                  sethideallothers={sethideallothers}
-                                  setisbackHide={setisbackHide}
-                                />
-                              ))
-                            : allVideos?.data?.map((video) => (
-                                <>
+                            {activities
+                              ? allActivities?.data.map((activityData) => (
                                   <AddVideoCard
                                     setModalShow={setModalShow}
                                     setCurrentActivity={setCurrentActivity}
                                     setScreenStatus={setScreenStatus}
                                     setOpenVideo={setOpenVideo}
-                                    title={video.title}
-                                    data={video}
+                                    title={activityData.title}
+                                    data={activityData}
                                     className="card-spacing"
+                                    activities={activities}
+                                    isActivityCard
+                                    permission={permission}
+                                    handleShow={handleShow}
+                                    setSelectedActivityId={setActivityId}
+                                    addToProjectCheckbox={addToProjectCheckbox}
+                                    selectedProjectstoAdd={selectedProjectstoAdd}
+                                    setSelectedProjectstoAdd={setSelectedProjectstoAdd}
                                     sethideallothers={sethideallothers}
                                     setisbackHide={setisbackHide}
                                   />
-                                </>
-                              ))}
-                        </div>
-                        {allVideos?.data && !activities && (
-                          <div style={{}} className="admin-panel ">
-                            <Pagination
-                              activePage={ActivePage}
-                              pageRangeDisplayed={5}
-                              itemsCountPerPage={allVideos?.meta?.per_page}
-                              totalItemsCount={allVideos?.meta?.total}
-                              onChange={(e) => {
-                                setActivePage(e);
-                                dispatch(getAllVideos(currentOrganization.id, e));
-                              }}
-                            />
+                                ))
+                              : allVideos?.data?.map((video) => (
+                                  <>
+                                    <AddVideoCard
+                                      setModalShow={setModalShow}
+                                      setCurrentActivity={setCurrentActivity}
+                                      setScreenStatus={setScreenStatus}
+                                      setOpenVideo={setOpenVideo}
+                                      title={video.title}
+                                      data={video}
+                                      className="card-spacing"
+                                      sethideallothers={sethideallothers}
+                                      setisbackHide={setisbackHide}
+                                    />
+                                  </>
+                                ))}
                           </div>
-                        )}
+                          {allVideos?.data && !activities && (
+                            <div style={{}} className="admin-panel ">
+                              <Pagination
+                                activePage={ActivePage}
+                                pageRangeDisplayed={5}
+                                itemsCountPerPage={allVideos?.meta?.per_page}
+                                totalItemsCount={allVideos?.meta?.total}
+                                onChange={(e) => {
+                                  setActivePage(e);
+                                  dispatch(getAllVideos(currentOrganization.id, e));
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     )

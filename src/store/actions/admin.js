@@ -226,14 +226,7 @@ export const gettAllDynamicPermisison = (subOrgId, roleId, add) => async (dispat
     payload: result?.data,
   });
 };
-export const updateAllDynamicPermisison = (subOrgId, data) => async (dispatch) => {
-  const result = await adminService.updateAllDynamicPermisison(subOrgId, data);
-  // dispatch({
-  //   type: actionTypes.SET_ALL_PERMISSION,
-  //   payload: result?.data,
-  // });
-};
-gettAllDynamicPermisison;
+
 export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({

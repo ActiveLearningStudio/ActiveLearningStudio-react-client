@@ -30,20 +30,20 @@ export default function AddRole() {
           display_name: '',
           permissions: allActivePermission,
         }}
-        enableReinitialize
+        // enableReinitialize
         validate={(values) => {
           const errors = {};
           if (!values.display_name) {
             errors.display_name = 'Required';
           }
-          if (values.permissions.length < 1) {
-            errors.permissions = 'please select atleast one permission';
-          }
+          // if (values.permissions.length < 1) {
+          //   errors.permissions = 'please select atleast one permission';
+          // }
 
           return errors;
         }}
         onSubmit={async (values) => {
-          const result = dispatch(addRole(activeOrganization.id, values));
+          const result = dispatch(addRole(activeOrganization.id, { ...values, permissions: allActivePermission }));
           result.then((res) => {
             dispatch(removeActiveAdminForm());
             dispatch({
