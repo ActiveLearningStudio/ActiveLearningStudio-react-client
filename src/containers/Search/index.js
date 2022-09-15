@@ -359,13 +359,29 @@ function SearchInterface(props) {
     }
   }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
+  // useEffect(() => {
+  //   if (allState.searchResult) {
+  //     if (allState.searchResult?.length > 0) {
+  //       setTotalCount(allState.searchMeta.total);
+  //     }
+  //   }
+  // }, [allState.searchMeta, allState.searchResult]);
   useEffect(() => {
+    console.log('activeModel', activeModel);
     if (allState.searchResult) {
       if (allState.searchResult?.length > 0) {
-        setTotalCount(allState.searchMeta.total);
+        // setTotalCount(allState.searchMeta.total);
+        if (activeModel == '' || activeModel == null) {
+          setTotalCount(allState.searchMeta.total);
+        } else if (activeModel == 'Independent activities') {
+          setTotalCount(allState.searchMeta.total);
+        } else {
+          setTotalCount(allState.searchMeta[activeModel]);
+          // setActivePage(1);
+        }
       }
     }
-  }, [allState.searchMeta, allState.searchResult]);
+  }, [allState.searchMeta, allState.searchResult, activeModel]);
 
   useEffect(() => {
     if (localStorage.getItem('loading') === 'true') {
@@ -480,11 +496,17 @@ function SearchInterface(props) {
                 <Tabs
                   className="main-tabs"
                   onSelect={(eventKey) => {
+                    if (eventKey === 'Independent activities') {
+                      setActiveModel('Independent activities');
+                    } else {
+                      setActiveModel('');
+                    }
                     dispatch(setSearchTypeAction(eventKey));
                     setSearchInput('');
                     setSearchType('');
                     setSearch(null);
                     setTotalCount(0);
+                    setActivePage(1);
                     setMeta({});
                     setToggleStates({
                       searchLibrary: true,
@@ -500,6 +522,7 @@ function SearchInterface(props) {
                     Settodate([]);
                     Setfromdate([]);
                     setisLoader(false);
+
                     // if (eventKey === 'Independent activities') {
                     //   const searchData = {
                     //     standardArray: activeType,
@@ -2152,7 +2175,7 @@ function SearchInterface(props) {
                           await dispatch(simpleSearchAction(searchData));
                           Swal.close();
                         }
-                      } else if (allState.searchType === 'Independent Activities') {
+                      } else if (allState.searchType === 'Independent activities') {
                         const searchData = {
                           query: searchInput?.trim(),
                           subjectArray: activeSubject,
