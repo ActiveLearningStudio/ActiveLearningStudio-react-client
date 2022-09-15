@@ -3,13 +3,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
-import { roleDetail } from 'store/actions/organization';
-import { gettAllDynamicPermisison, updateAllDynamicPermisison } from 'store/actions/admin';
+import { roleDetail, updateAllDynamicPermisison } from 'store/actions/organization';
+import { gettAllDynamicPermisison } from 'store/actions/admin';
 import updateImg from '../../assets/images/update.svg';
 
 function UserRoles() {
   const dispatch = useDispatch();
-  const { activeOrganization, activePermission, permissionsId, roles } = useSelector((state) => state.organization);
+  const { activeOrganization, activePermission, currentOrganization, roles } = useSelector((state) => state.organization);
   const { dynamicPermission } = useSelector((state) => state.admin);
 
   const [allActivePermission, setAllActivePermission] = useState([]);
@@ -42,7 +42,7 @@ function UserRoles() {
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              dispatch(updateAllDynamicPermisison(activeOrganization.id, { role_id: activePermission?.[0]?.id, permissions: allActivePermission }));
+              dispatch(updateAllDynamicPermisison(activeOrganization.id, { role_id: activePermission?.[0]?.id, permissions: allActivePermission }, currentOrganization.id));
             }}
           >
             {({
@@ -52,6 +52,7 @@ function UserRoles() {
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit}>
+                {!dynamicPermission && <Alert variant="primary">Loading</Alert>}
                 <div className="form-group-create dynamic-roles">
                   {true && (
                     <div className="dynamic-roles-title-btn">
