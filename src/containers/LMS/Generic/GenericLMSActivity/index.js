@@ -99,6 +99,9 @@ const Activity = (props) => {
     console.log('AE found dispatcher, trying to hook');
     x.H5P.externalDispatcher.on('xAPI', function (event) {
       console.log('AE running listener');
+      if (event.ignoreStatement) {
+        return;
+      }
       const params = {
         path: match.path,
         studentId: user.id,
