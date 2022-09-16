@@ -156,6 +156,9 @@ const ActivityShared = (props) => {
               stopXapi();
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
+                if (event.ignoreStatement) {
+                  return;
+                }
                 if (counter > 0) {
                   const extendedStatement = xAPIHelper.extendSharedActivityStatement(this, event.data.statement, { path: match.path, activityId: match.params.activityId });
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
