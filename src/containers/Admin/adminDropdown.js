@@ -1052,6 +1052,11 @@ const AdminDropdown = (props) => {
                         button: false,
                       });
                       const result = await dispatch(deleteBrightCove(activeOrganization?.id, row?.id));
+                      dispatch({
+                        type: actionTypes.BRIGHT_COVE_PAGINATION_UPDATE,
+                        payload: 'DECREMENT',
+                        id: row.id,
+                      });
                       if (result.message) {
                         Swal.fire({
                           icon: 'success',

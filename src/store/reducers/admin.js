@@ -196,6 +196,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: action.payload || [],
       };
+
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
@@ -333,6 +334,26 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiTools: { ...state.ltiTools },
+      };
+
+    case actionTypes.BRIGHT_COVE_PAGINATION_UPDATE:
+      let setUpdateTotalBrightCove = state.allbrightCove.meta.total;
+      let updatedToBrightCove = state.allbrightCove.meta.to;
+      if (action.payload === 'INCREMENT' && !state.selectedFIlterLti) {
+        state.allbrightCove.meta.total = setUpdateTotalBrightCove + 1;
+        if (updatedToBrightCove === setUpdateTotalBrightCove) {
+          state.allbrightCove.meta.to = updatedToBrightCove + 1;
+        }
+      } else if (action.payload == 'DECREMENT') {
+        state.allbrightCove.meta.total = setUpdateTotalBrightCove - 1;
+        state.allbrightCove.data = state.allbrightCove.data.filter((item) => item.id !== action.id);
+        if (updatedToBrightCove === setUpdateTotalBrightCove) {
+          state.allbrightCove.meta.to = updatedToBrightCove - 1;
+        }
+      }
+      return {
+        ...state,
+        allbrightCove: { ...state.allbrightCove },
       };
 
     default:

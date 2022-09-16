@@ -7,7 +7,7 @@ import { addBrightCove, editBrightCove } from 'store/actions/videos';
 import Swal from 'sweetalert2';
 import docAvatar from 'assets/images/upload-files.png';
 import pcIcon from 'assets/images/pc-icon.png';
-
+import * as actionTypes from 'store/actionTypes';
 import adminapi from '../../../services/videos.services';
 
 export default function CreateBrightCove({ editMode }) {
@@ -84,6 +84,7 @@ export default function CreateBrightCove({ editMode }) {
               button: false,
             });
             const result = await dispatch(editBrightCove(organization?.activeOrganization?.id, activeEdit?.id, values));
+
             if (result?.data) {
               dispatch(removeActiveAdminForm());
               Swal.fire({
@@ -110,6 +111,11 @@ export default function CreateBrightCove({ editMode }) {
 
             if (result?.data) {
               dispatch(removeActiveAdminForm());
+              dispatch({
+                type: actionTypes.BRIGHT_COVE_PAGINATION_UPDATE,
+                payload: 'INCREMENT',
+                ltitoolType: values.user_id,
+              });
               Swal.fire({
                 icon: 'success',
                 text: 'BrightCove settings created successfully',
