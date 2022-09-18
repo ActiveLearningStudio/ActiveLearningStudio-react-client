@@ -10,7 +10,7 @@ import Pagination from 'react-js-pagination';
 import Swal from 'sweetalert2';
 import './style.scss';
 import '../Admin/style.scss';
-import HeadingText from 'utils/HeadingText/headingtext';
+import { useHistory } from 'react-router-dom';
 
 import MyActivity from 'containers/MyActivity';
 import VideoImage from 'assets/images/svg/Interactivevideos.svg';
@@ -53,9 +53,8 @@ const Index = ({ activities }) => {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowClone, setModalShowClone] = useState(false);
   const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
-
   const videos = useSelector((state) => state.videos);
-  const { activeOrganization, permission } = useSelector((state) => state.organization);
+  const { currentOrganization, activeOrganization, permission } = useSelector((state) => state.organization);
   const { allActivities, isLoading, islazyLoader } = useSelector((state) => state.activities);
   const [activescreenType, setActiveScreenPage] = useState(null);
   const { allVideos } = videos;
@@ -68,6 +67,7 @@ const Index = ({ activities }) => {
   const [defaultSize, setdefaultSize] = useState(30);
   const [hideallothers, sethideallothers] = useState(true);
   const [isbackHide, setisbackHide] = useState(true);
+  const history = useHistory();
   useEffect(() => {
     window.scrollTo(0, 0);
     if (activeOrganization && !activities) {
@@ -127,6 +127,14 @@ const Index = ({ activities }) => {
       dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
+
+  useEffect(() => {
+    if (activities && Object.keys(permission)?.length) {
+      if (!permission?.['Independent Activity']?.includes('independent-activity:view-author')) {
+        history.push(`/org/${currentOrganization.domain}`);
+      }
+    }
+  }, [activities, permission]);
 
   return (
     <>
