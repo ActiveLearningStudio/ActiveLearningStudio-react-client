@@ -23,7 +23,14 @@ const ExistingActivityCard = (props) => {
       <div className='col-7'>
         <h3><a href={`/activity/${activity.id}/preview`} target="_blank" rel="noreferrer">{activity.title}</a></h3>
         <p>{activity.description}</p>
-        <p>{`By: ${activity.user.first_name} ${activity.user.first_name}`}</p>
+        <ul>
+          <li>{`Type: ${activity.activity_type}`}</li>
+          {activity.location && (
+            <li>{`Location: ${activity.location}`}</li>
+          )}
+          <li>{`Created: ${new Date(activity.created_at).toDateString()}`}</li>
+          <li>{`By: ${activity.user.first_name} ${activity.user.first_name}`}</li>
+        </ul>
       </div>
       <div className='col-2'>
         <button className="btn btn-primary" onClick={handleAddClick}>

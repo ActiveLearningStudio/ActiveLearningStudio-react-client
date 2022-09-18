@@ -18,7 +18,7 @@ const INITIAL_STATE = {
       gradeArray: [],
       educationLevelIds: [],
       authorTagsIds: [],
-      // h5pLibraries: [], //array of strings with library name H5P.Accordion 1.0
+      h5pLibraries: [], // array of strings with library name H5P.Accordion 1.0
       organization_id: 1,
       from: 0,
       size: 10,

@@ -11,6 +11,7 @@ import './style.scss';
 const ExistingActivitySearchResults = (props) => {
   const {
     params,
+    filters,
     loading,
     independentActivities,
     independentActivitiesTotal,
@@ -87,8 +88,10 @@ const ExistingActivitySearchResults = (props) => {
   };
 
   useEffect(() => {
+    if (filters.types.length === 0) return; // Activity type filters needed for compatibility
+
     getActivities(params, key);
-  }, [params]);
+  }, [params, filters]);
 
   useEffect(() => {
     var indieTitle = (params.library) ? 'Activities' : 'My Activities';
@@ -172,6 +175,7 @@ const mapStateToProps = (state) => ({
   projectActivities: state.existingActivitySearch.projectActivities,
   projectActivitiesTotal: state.existingActivitySearch.projectActivitiesTotal,
   params: state.existingActivitySearch.searchParams,
+  filters: state.existingActivitySearch.filters,
   loading: state.existingActivitySearch.loading,
 });
 

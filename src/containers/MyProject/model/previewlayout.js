@@ -466,6 +466,7 @@ const PreviewLayoutModel = (props) => {
       {showActivitySearch && (
         <ExistingActivitySearchContainer
           insertActivityCallback={insertActivityCallback}
+          layout={selectedLayout}
           libraries={insertActivityLibraries}
           closeModal={() => handleExistingActivitySearchEvent("close")}
         />
