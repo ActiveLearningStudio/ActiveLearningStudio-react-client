@@ -22,6 +22,7 @@ const ExistingLibrarySearchQuery = (props) => {
     query: '',
     negativeQuery: '',
     author: '',
+    library: false,
   });
 
   useEffect(() => {
@@ -39,7 +40,8 @@ const ExistingLibrarySearchQuery = (props) => {
     if (e.target.name === 'library') {
       return setInternalParams({
         ...internalParams,
-        [e.target.name]: e.target.checked,
+        library: e.target.checked,
+        author: e.target.checked ? internalParams.author : '',
       });
     }
 
@@ -58,8 +60,9 @@ const ExistingLibrarySearchQuery = (props) => {
 
     const newParams = { ...params };
     newParams.subjectArray = newParams.subjectIds = newFilters.subjects.filter((filter) => filter.checked).map((filter) => filter.id);
-    newParams.gradeArray = newParams.educationLevelIds = newFilters.levels.filter((filter) => filter.checked).map((filter) => filter.id);;
-    newParams.authorTagsIds = newFilters.tags.filter((filter) => filter.checked).map((filter) => filter.id);;
+    newParams.gradeArray = newParams.educationLevelIds = newFilters.levels.filter((filter) => filter.checked).map((filter) => filter.id);
+    newParams.authorTagsIds = newFilters.tags.filter((filter) => filter.checked).map((filter) => filter.id);
+    newParams.h5pLibraries = newFilters.types.filter((filter) => filter.checked).map((filter) => filter.lib);
 
     setFilters(newFilters);
     return setParams(newParams);
@@ -96,15 +99,13 @@ const ExistingLibrarySearchQuery = (props) => {
                     <input type="text" className='form-control' name="negativeQuery" value={internalParams.negativeQuery} onChange={queryChange} />
                   </div>
                   <div className='form-group checkbox-group'>
-                    <label>Include Library</label>
+                    <label>Include Items in Library</label>
                     <input type="checkbox" className='form-control' name="library" onChange={queryChange} checked={internalParams.library} />
                   </div>
-                  {params.library && (
-                    <div className='form-group'>
-                      <label>Author</label>
-                      <input type="text" className='form-control' name="author" value={internalParams.author} onChange={queryChange} />
-                    </div>
-                  )}
+                  <div className='form-group'>
+                    <label>Author</label>
+                    <input type="text" className='form-control' name="author" value={internalParams.author} onChange={queryChange} disabled={!internalParams.library} />
+                  </div>
                   <div className='form-group text-right'>
                     <button type="submit" className='btn btn-primary' onClick={handleSubmit}>
                       <FontAwesomeIcon icon="search" className="mr-1" />
@@ -131,7 +132,15 @@ const ExistingLibrarySearchQuery = (props) => {
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Card.Header} variant="link" eventKey="0">
-                    {filterKey}
+                    {(() => {
+                      if (filterKey === 'levels') {
+                        return 'Education Levels';
+                      } else if (filterKey === 'tags') {
+                        return 'Author Tags';
+                      } else {
+                        return filterKey;
+                      }
+                    })()}
                     <FontAwesomeIcon className="ml-2" icon="chevron-down" />
                   </Accordion.Toggle>
                 </Card.Header>

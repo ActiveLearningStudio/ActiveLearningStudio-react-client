@@ -14,6 +14,7 @@ const ExistingActivitySearchContainer = (props) => {
     closeModal,
     insertActivityCallback,
     libraries,
+    layout,
     getActivityData,
     selectedActivity,
     resetActivityData,
@@ -64,8 +65,16 @@ const ExistingActivitySearchContainer = (props) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-          <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} />
+        <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} />
       </Modal.Body>
+      <Modal.Footer>
+        <div className="row">
+          <div className="col footer-info">
+            <FontAwesomeIcon className="mr-2" icon="info-circle" />
+            {`You're searching for existing activities compatible with ${layout.title}`}
+          </div>
+        </div>
+      </Modal.Footer>
     </Modal>
   );
 };
