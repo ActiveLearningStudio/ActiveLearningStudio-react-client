@@ -258,9 +258,9 @@ const GoogleLoginModal = ({
                   <div style={{ marginBottom: '32px' }}>
                     <button
                       style={{ border: 'none', background: 'none' }}
-                      onClick={() => {
-                        openMicrsoftTeamLogi();
-                      }}
+                      // onClick={() => {
+                      //   openMicrsoftTeamLogi();
+                      // }}
                     >
                       <img src={msTeamLogo} alt="Microsoft team login Icon" />
                     </button>
