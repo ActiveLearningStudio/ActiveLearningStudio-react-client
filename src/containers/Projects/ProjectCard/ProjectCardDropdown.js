@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
 import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
@@ -185,7 +185,18 @@ const ProjectCardDropdown = (props) => {
                   <a>Google Classroom</a>
                 </li>
               )}
-
+              <li
+                onClick={() => {
+                  handleShow();
+                  setProjectId(props.project.id);
+                  setcanvasProjectName(project.name);
+                  dispatch(msTeamShare(true));
+                  dispatch(googleShare(true));
+                  dispatch(shareToCanvas(false));
+                }}
+              >
+                <a>Microsoft Team</a>
+              </li>
               {allLms.shareVendors &&
                 allLms.shareVendors.map(
                   (data) =>

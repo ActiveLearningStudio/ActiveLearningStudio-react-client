@@ -5,12 +5,11 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-
 import { Formik } from 'formik';
 import { GoogleLogin } from 'react-google-login';
-
 import logo from 'assets/images/GCLogo.png';
 import btnLogo from 'assets/images/googleBtnLogo.png';
+import msTeamLogo from 'assets/images/msTeamLogin.svg';
 import {
   googleClassRoomLoginAction,
   googleClassRoomLoginFailureAction,
@@ -18,17 +17,21 @@ import {
   fetchCanvasCourses,
   fetchCanvasAssignmentGroups,
   shareToCanvas,
+  getMSteamClasses,
+  msTeamShare,
 } from 'store/actions/gapi';
 import {
   copyProject,
   publishPlaylist,
-  publishActivity,
   publistActivity,
   publishIdependentActivity,
   publishToCanvas,
   createAssignmentGroup,
   createNewCoursetoCanvas,
+  createNewClasstoMicrosoftTeam,
+  publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
+import { set } from 'lodash';
 
 const GoogleLoginModal = ({
   show,
@@ -53,17 +56,23 @@ const GoogleLoginModal = ({
   const [isCanvas, setisCanvas] = useState(false);
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sharetoMS, setsharetoMS] = useState(false);
   const [canvasSettingId, setcanvasSettingId] = useState('');
   const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
   const [shareType, setShareType] = useState('Project');
   const [selectedAssignmentId, setselectedAssignmentId] = useState();
+  const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
   useEffect(() => {
     if (dataRedux.share.isCanvas === true) {
       setShowForm(true);
+    } else if (dataRedux.share.msTeamShare === true && dataRedux.share.googleShare === true) {
+      setsharetoMS(true);
+      setuserId(dataRedux?.auth?.user?.id);
     } else if (dataRedux.share.googleShare === true) {
       setShowForm(true);
     } else if (dataRedux.share.googleShare === false) {
+      setsharetoMS(false);
       setShowForm(false);
     } else if (dataRedux.share.googleShare === 'close') {
       onHide();
@@ -76,6 +85,14 @@ const GoogleLoginModal = ({
       setShareType('Playlist');
     }
   }, [dataRedux, onHide]);
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await axios.get(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`);
+  //     if (res) {
+  //       console.log('res', res);
+  //     }
+  //   })();
+  // }, [show]);
   useEffect(() => {
     if (dataRedux?.share.isCanvas) {
       setisCanvas(true);
@@ -163,7 +180,6 @@ const GoogleLoginModal = ({
     }
   };
   const callPublishToCanvas = (params) => {
-    console.log('values', params);
     if ((typeof params.values.course === 'undefined' && !projectPlaylistPublishtoCanvas) || (params.values.course === 'Create a new Course' && !projectPlaylistPublishtoCanvas)) {
       dispatch(
         createNewCoursetoCanvas(
@@ -206,6 +222,23 @@ const GoogleLoginModal = ({
     }
     setprojectPlaylistPublishtoCanvas(false);
   };
+  const callPublishToMicorsoftTeam = (params) => {
+    if (params.values.course === 'Create a new Course') {
+      dispatch(createNewClasstoMicrosoftTeam(params.projectId, canvasProjectName));
+    } else if (params.values.course !== 'Create a new Course' && params.projectId) {
+      dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
+    }
+  };
+  //open ms login window
+  function openMicrsoftTeamLogi() {
+    const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=${userId}`, 'mywin', 'width=500,height=500');
+    setTimeout(() => {
+      setLoading(true);
+      dispatch(getMSteamClasses());
+      setShowForm(true);
+      popWindow.close();
+    }, 3000);
+  }
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
@@ -216,202 +249,162 @@ const GoogleLoginModal = ({
           <div className="sign-in-google">
             <br />
             {!showForm ? (
-              <div className="content-authorization" style={{ textAlign: 'center' }}>
-                <div className="alert alert-warning" style={{ borderRadius: '8px' }}>
-                  With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
+              sharetoMS ? (
+                <div className="content-authorization" style={{ textAlign: 'center' }}>
+                  <div className="alert alert-warning" style={{ borderRadius: '8px' }}>
+                    With CurrikiStudio you can publish your {shareType} as a new Microsoft Team's Assignment.
+                  </div>
+                  <p>To start, please log into your Microsoft Account.</p>
+                  <div style={{ marginBottom: '32px' }}>
+                    <button
+                      style={{ border: 'none', background: 'none' }}
+                      onClick={() => {
+                        openMicrsoftTeamLogi();
+                      }}
+                    >
+                      <img src={msTeamLogo} alt="Microsoft team login Icon" />
+                    </button>
+                  </div>
                 </div>
-                <p>To start, please log into your Google account.</p>
-                <div style={{ marginBottom: '32px' }}>
-                  <GoogleLogin
-                    clientId={global.config.gapiClientId}
-                    render={(renderProps) => (
-                      <button
-                        onClick={renderProps.onClick}
-                        style={{
-                          width: '240px',
-                          height: '32px',
-                          borderRadius: '16px',
-                          background: '#FFFFFF',
-                          border: '1px solid #959595',
-                          boxShadow: '0px 2px 8px 1px rgba(81, 81, 81, 0.16)',
-                          padding: '6px 0',
-                        }}
-                        disabled={renderProps.disabled}
-                      >
-                        <img src={btnLogo} alt="" style={{ padding: '0px 6px 2px 0px' }} />
-                        Login with Google
-                      </button>
-                    )}
-                    onSuccess={(data) => {
-                      googleClassRoomLogin(data);
-                      setTokenTemp(JSON.stringify(data.tokenObj));
-                    }}
-                    // onFailure={googleClassRoomLoginFailure}
-                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
-                    cookiePolicy="single_host_origin"
-                  ></GoogleLogin>
+              ) : (
+                <div className="content-authorization" style={{ textAlign: 'center' }}>
+                  <div className="alert alert-warning" style={{ borderRadius: '8px' }}>
+                    With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
+                  </div>
+                  <p>To start, please log into your Google account.</p>
+                  <div style={{ marginBottom: '32px' }}>
+                    <GoogleLogin
+                      clientId={global.config.gapiClientId}
+                      render={(renderProps) => (
+                        <button
+                          onClick={renderProps.onClick}
+                          style={{
+                            width: '240px',
+                            height: '32px',
+                            borderRadius: '16px',
+                            background: '#FFFFFF',
+                            border: '1px solid #959595',
+                            boxShadow: '0px 2px 8px 1px rgba(81, 81, 81, 0.16)',
+                            padding: '6px 0',
+                          }}
+                          disabled={renderProps.disabled}
+                        >
+                          <img src={btnLogo} alt="" style={{ padding: '0px 6px 2px 0px' }} />
+                          Login with Google
+                        </button>
+                      )}
+                      onSuccess={(data) => {
+                        googleClassRoomLogin(data);
+                        setTokenTemp(JSON.stringify(data.tokenObj));
+                      }}
+                      // onFailure={googleClassRoomLoginFailure}
+                      scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                      cookiePolicy="single_host_origin"
+                    ></GoogleLogin>
+                  </div>
                 </div>
-              </div>
+              )
             ) : (
               <div className="classroom-form">
-                {projectPlaylistPublishtoCanvas ? (
-                  <div>
-                    {isCanvas ? (
-                      <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
-                    ) : (
-                      <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>
-                    )}
+                <div>
+                  {isCanvas ? <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1> : <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>}
+                  {loading ? isCanvas ? <p className="loading-classes">Loading Courses....</p> : <p className="loading-classes">Loading Classes....</p> : null}
+                  {/* {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>} */}
+                  {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
+                  <Formik
+                    initialValues={{
+                      course: 'Create a new Course' || undefined,
+                      playlist: undefined,
+                      heading: 'test',
+                      description: 'test',
+                      room: 'test',
+                    }}
+                    onSubmit={(values) => {
+                      if (isCanvas) {
+                        callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
+                      } else if (msTeamShare) {
+                        callPublishToMicorsoftTeam({ values, projectId, playlistId, activityId });
+                      } else {
+                        callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
+                      }
 
-                    {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
-                    {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
-                    <Formik
-                      initialValues={{
-                        course: undefined,
-                        playlist: undefined,
-                        heading: 'test',
-                        description: 'test',
-                        room: 'test',
-                      }}
-                      onSubmit={(values) => {
-                        if (isCanvas) {
-                          callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
-                        } else {
-                          callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
-                        }
-
-                        setLoading(false);
-                        onHide();
-                      }}
-                    >
-                      {({
-                        values,
-                        // errors,
-                        // touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        // isSubmitting,
-                        /* and other goodies */
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <select
-                            className="form-control select-dropdown"
-                            name="course"
-                            value={values.course}
-                            onChange={(e) => {
-                              handleChange(e);
-                            }}
-                            onBlur={handleBlur}
-                          >
-                            {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
-                            {!!courses &&
-                              courses.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                  {item.name}
-                                </option>
-                              ))}
-                          </select>
-
-                          {<button type="submit">Confirm</button>}
-                        </form>
-                      )}
-                    </Formik>
-                  </div>
-                ) : (
-                  <div>
-                    {isCanvas ? (
-                      <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
-                    ) : (
-                      <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>
-                    )}
-
-                    {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>}
-                    {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
-                    <Formik
-                      initialValues={{
-                        course: undefined,
-                        playlist: undefined,
-                        heading: 'test',
-                        description: 'test',
-                        room: 'test',
-                      }}
-                      onSubmit={(values) => {
-                        if (isCanvas) {
-                          callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
-                        } else {
-                          callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
-                        }
-
-                        setLoading(false);
-                        onHide();
-                      }}
-                    >
-                      {({
-                        values,
-                        // errors,
-                        // touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        // isSubmitting,
-                        /* and other goodies */
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <select
-                            className="form-control select-dropdown"
-                            name="course"
-                            value={values.course}
-                            onChange={(e) => {
-                              handleChange(e);
+                      setLoading(false);
+                      onHide();
+                    }}
+                  >
+                    {({
+                      values,
+                      // errors,
+                      // touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      // isSubmitting,
+                      /* and other goodies */
+                    }) => (
+                      <form onSubmit={handleSubmit}>
+                        <select
+                          className="form-control select-dropdown"
+                          name="course"
+                          value={values.course}
+                          onChange={(e) => {
+                            handleChange(e);
+                            if (!msTeamShare) {
                               onCourseChange(e);
-                            }}
-                            onBlur={handleBlur}
-                          >
-                            {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
-                            {!!courses &&
-                              courses.map((item) => (
+                            }
+                          }}
+                          onBlur={handleBlur}
+                        >
+                          {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
+                          {!!courses &&
+                            courses.map((item) =>
+                              msTeamShare ? (
+                                <option key={item.id} value={item.id}>
+                                  {item.displayName}
+                                </option>
+                              ) : (
                                 <option key={item.id} value={item.id}>
                                   {item.name}
                                 </option>
-                              ))}
+                              ),
+                            )}
+                        </select>
+                        {isShowPlaylistSelector && playlistId > 0 && !projectPlaylistPublishtoCanvas && (
+                          <select
+                            className="form-control select-dropdown"
+                            name="playlist"
+                            value={values.playlist}
+                            onChange={(e) => {
+                              handleChange(e);
+                              onTopicChange(e);
+                            }}
+                            onBlur={handleBlur}
+                          >
+                            <option>Create a new topic</option>
+                            {!!topics &&
+                              topics.map((topic) => {
+                                if (isCanvas) {
+                                  return (
+                                    <option key={topic.id} value={topic.id}>
+                                      {topic.name}
+                                    </option>
+                                  );
+                                } else {
+                                  return (
+                                    <option key={topic.topicId} value={topic.topicId}>
+                                      {topic.name}
+                                    </option>
+                                  );
+                                }
+                              })}
                           </select>
-                          {isShowPlaylistSelector && playlistId > 0 && (
-                            <select
-                              className="form-control select-dropdown"
-                              name="playlist"
-                              value={values.playlist}
-                              onChange={(e) => {
-                                handleChange(e);
-                                onTopicChange(e);
-                              }}
-                              onBlur={handleBlur}
-                            >
-                              <option>Create a new topic</option>
-                              {!!topics &&
-                                topics.map((topic) => {
-                                  if (isCanvas) {
-                                    return (
-                                      <option key={topic.id} value={topic.id}>
-                                        {topic.name}
-                                      </option>
-                                    );
-                                  } else {
-                                    return (
-                                      <option key={topic.topicId} value={topic.topicId}>
-                                        {topic.name}
-                                      </option>
-                                    );
-                                  }
-                                })}
-                            </select>
-                          )}
+                        )}
 
-                          {<button type="submit">Confirm</button>}
-                        </form>
-                      )}
-                    </Formik>
-                  </div>
-                )}
+                        {<button type="submit">Confirm</button>}
+                      </form>
+                    )}
+                  </Formik>
+                </div>
               </div>
             )}
           </div>

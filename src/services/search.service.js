@@ -231,6 +231,30 @@ const publishPlaylisttoCanvas = (projectId, playlistId, lms, settingId, cid, cre
     })
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
+//pblish ms team
+const getmsTeamclasses = () =>
+  httpService
+    .get(`/${apiVersion}/microsoft-team/classes`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
+const createNewClasstoMicrosoftTeam = (playlistName) =>
+  httpService
+    .post(`/${apiVersion}/microsoft-team/classes`, {
+      displayName: playlistName,
+    })
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+const publishActivitytoMSteam = (projectId, class_id) =>
+  httpService
+    .post(`/${apiVersion}/microsoft-team/projects/${projectId}/publish`, {
+      classId: class_id,
+    })
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
 export default {
   searchResult,
   cloneProject,
@@ -251,4 +275,7 @@ export default {
   canvasCreateNewAssignmentGroup,
   publishPlaylisttoCanvas,
   canvasCreateNewCourse,
+  getmsTeamclasses,
+  createNewClasstoMicrosoftTeam,
+  publishActivitytoMSteam,
 };
