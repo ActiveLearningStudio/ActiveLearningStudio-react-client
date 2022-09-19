@@ -80,6 +80,7 @@ export const getFiltersAction = (org) => async (dispatch, getState) => {
           name: type.title,
           description: type.description,
           checked: false,
+          lib: type.h5pLib,
         });
       }));
       types.sort((a, b) => a.name.localeCompare(b.name));
@@ -99,6 +100,7 @@ export const getFiltersAction = (org) => async (dispatch, getState) => {
 };
 
 export const getActivitiesAction = (params, type) => async (dispatch, getState) => {
+  const state = getState();
   const newParams = { ...params };
   Object.keys(newParams).forEach((key) => {
     if (typeof newParams[key] === 'string' && newParams[key].length === 0) {
@@ -108,8 +110,12 @@ export const getActivitiesAction = (params, type) => async (dispatch, getState) 
 
   // If we're not searching the library, all requests use the current user as author
   if (!newParams.library) {
-    const state = getState();
     newParams.author = state.auth.user.email;
+  }
+
+  // If we're not filtering by activity type, we use all compatible activities as our filter
+  if (newParams.h5pLibraries.length === 0) {
+    newParams.h5pLibraries = state.existingActivitySearch.filters.types.map((filter) => filter.lib);
   }
 
   dispatch({

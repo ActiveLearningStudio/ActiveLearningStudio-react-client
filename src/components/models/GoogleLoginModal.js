@@ -331,11 +331,19 @@ const GoogleLoginModal = ({
                       setLoading(false);
                       onHide();
                     }}
+                    validate={(values) => {
+                      const errors = {};
+                      if (!values.course) {
+                        errors.course = 'Please select a course from a dropdown or create a new one manually.';
+                      }
+
+                      return errors;
+                    }}
                   >
                     {({
                       values,
-                      // errors,
-                      // touched,
+                      errors,
+                      touched,
                       handleChange,
                       handleBlur,
                       handleSubmit,
