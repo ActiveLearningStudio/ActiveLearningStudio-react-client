@@ -11,14 +11,8 @@ import { GoogleLogin } from 'react-google-login';
 
 import logo from 'assets/images/GCLogo.png';
 import btnLogo from 'assets/images/googleBtnLogo.png';
-import {
-  googleClassRoomLoginAction,
-  googleClassRoomLoginFailureAction,
-  googleClassRoomCourseTopicAction,
-  fetchCanvasCourses,
-  fetchCanvasAssignmentGroups,
-} from 'store/actions/gapi';
-import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity, publishToCanvas } from 'store/actions/share';
+import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction, googleClassRoomCourseTopicAction } from 'store/actions/gapi';
+import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity } from 'store/actions/share';
 
 const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomLoginFailure, googleClassRoomCourseTopics, projectId, playlistId, activityId }) => {
   const dataRedux = useSelector((state) => state);
@@ -127,13 +121,6 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-  const callPublishToCanvas = (params) => {
-    if (params.values.course === 'Create a new Course') {
-    } else {
-      console.log('values', params);
-      dispatch(publishToCanvas(params.values.course, canvasSettingId, params.values.playlist, selectedAssignmentId, params.activityId));
-    }
-  };
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
@@ -175,7 +162,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                       setTokenTemp(JSON.stringify(data.tokenObj));
                     }}
                     // onFailure={googleClassRoomLoginFailure}
-                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
+                    scope="https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.topics https://www.googleapis.com/auth/classroom.coursework.me https://www.googleapis.com/auth/classroom.coursework.students"
                     cookiePolicy="single_host_origin"
                   ></GoogleLogin>
                 </div>
@@ -185,7 +172,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                 <div>
                   {isCanvas ? <h1>Are you sure you want to Publish Activities as Assignments?</h1> : <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>}
 
-                  {loading && isCanvas && <p className="loading-classes">Loading Courses....</p>}
+                  {loading && <p className="loading-classes">Loading Classes....</p>}
 
                   {loading && !isCanvas && <p className="loading-classes">Loading Classes....</p>}
                   <Formik
@@ -197,20 +184,23 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                       room: 'test',
                     }}
                     onSubmit={(values) => {
-                      if (isCanvas) {
-                        callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
-                      } else {
-                        callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
-                      }
-
+                      callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
                       setLoading(false);
                       onHide();
+                    }}
+                    validate={(values) => {
+                      const errors = {};
+                      if (!values.course) {
+                        errors.course = 'Please select a course from a dropdown or create a new one manually.';
+                      }
+
+                      return errors;
                     }}
                   >
                     {({
                       values,
-                      // errors,
-                      // touched,
+                      errors,
+                      touched,
                       handleChange,
                       handleBlur,
                       handleSubmit,
@@ -228,7 +218,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                           }}
                           onBlur={handleBlur}
                         >
-                          {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
+                          <option value="">Please Select a Course</option>
                           {!!courses &&
                             courses.map((item) => (
                               <option key={item.id} value={item.id}>
@@ -237,33 +227,14 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                             ))}
                         </select>
                         {isShowPlaylistSelector && playlistId > 0 && (
-                          <select
-                            className="form-control select-dropdown"
-                            name="playlist"
-                            value={values.playlist}
-                            onChange={(e) => {
-                              handleChange(e);
-                              onTopicChange(e);
-                            }}
-                            onBlur={handleBlur}
-                          >
+                          <select className="form-control select-dropdown" name="playlist" value={values.playlist} onChange={handleChange} onBlur={handleBlur}>
                             <option>Create a new topic</option>
                             {!!topics &&
-                              topics.map((topic) => {
-                                if (isCanvas) {
-                                  return (
-                                    <option key={topic.id} value={topic.id}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                } else {
-                                  return (
-                                    <option key={topic.topicId} value={topic.topicId}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                }
-                              })}
+                              topics.map((topic) => (
+                                <option key={topic.topicId} value={topic.topicId}>
+                                  {topic.name}
+                                </option>
+                              ))}
                           </select>
                         )}
 
@@ -333,6 +304,10 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                           Are you sure you want to share this Project to Google Classroom?
                         </p>
                         */}
+                        <div className="error" style={{ color: 'red' }}>
+                          {errors.course && touched.course && errors.course}
+                        </div>
+                        <br />
                         {!loading && <button type="submit">Confirm</button>}
                       </form>
                     )}

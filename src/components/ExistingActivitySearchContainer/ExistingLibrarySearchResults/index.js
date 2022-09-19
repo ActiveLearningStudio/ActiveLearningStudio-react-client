@@ -11,6 +11,7 @@ import './style.scss';
 const ExistingActivitySearchResults = (props) => {
   const {
     params,
+    filters,
     loading,
     independentActivities,
     independentActivitiesTotal,
@@ -21,6 +22,8 @@ const ExistingActivitySearchResults = (props) => {
   } = props;
 
   const [key, setKey] = useState('independent-activities');
+  const [independentActivitiesTabTitle, setIndependentActivitiesTabTitle] = useState('My Activities');
+  const [projectActivitiesTabTitle, setProjectActivitiesTabTitle] = useState('My Project Activities');
 
   const paginate = (from, size, total) => {
     if (total <= size) return;
@@ -85,8 +88,24 @@ const ExistingActivitySearchResults = (props) => {
   };
 
   useEffect(() => {
+    if (filters.types.length === 0) return; // Activity type filters needed for compatibility
+
     getActivities(params, key);
-  }, [params]);
+  }, [params, filters]);
+
+  useEffect(() => {
+    var indieTitle = (params.library) ? 'Activities' : 'My Activities';
+    var projectTitle = (params.library) ? 'Project Activities' : 'My Project Activities';
+
+    if (key === 'independent-activities') {
+      indieTitle += ` (${independentActivitiesTotal})`;
+    } else {
+      projectTitle += ` (${projectActivitiesTotal})`;
+    }
+
+    setIndependentActivitiesTabTitle(indieTitle);
+    setProjectActivitiesTabTitle(projectTitle);
+  }, [key, params, independentActivitiesTotal, projectActivitiesTotal]);
 
   return (
     <div className='row existing-activity-search-results'>
@@ -96,7 +115,7 @@ const ExistingActivitySearchResults = (props) => {
           className="main-tabs"
           onSelect={handleTabChange}
         >
-          <Tab eventKey="independent-activities" title={`Independent Activities (${independentActivitiesTotal})`}>
+          <Tab eventKey="independent-activities" title={independentActivitiesTabTitle}>
             {loading && (
               <Spinner animation="border" role="status" />
             )}
@@ -116,7 +135,7 @@ const ExistingActivitySearchResults = (props) => {
             )}
 
           </Tab>
-          <Tab eventKey="projects" title={`Project Activities (${projectActivitiesTotal})`}>
+          <Tab eventKey="projects" title={projectActivitiesTabTitle}>
             {loading && (
               <Spinner animation="border" role="status" />
             )}
@@ -156,6 +175,7 @@ const mapStateToProps = (state) => ({
   projectActivities: state.existingActivitySearch.projectActivities,
   projectActivitiesTotal: state.existingActivitySearch.projectActivitiesTotal,
   params: state.existingActivitySearch.searchParams,
+  filters: state.existingActivitySearch.filters,
   loading: state.existingActivitySearch.loading,
 });
 
