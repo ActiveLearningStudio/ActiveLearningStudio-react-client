@@ -222,17 +222,9 @@ function AdminPanel({ showSSO }) {
                           ]}
                           type="LMS"
                         />
-                        {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
                       </div>
                     </Tab>
                   )}
-
-                  {/* <Tab eventKey="Settings" title="Settings">
-                  <div className="module-content">
-                    <h2>Settings</h2>
-                    <Pills modules={["All settings"]} type="Settings" />
-                  </div>
-                </Tab> */}
                 </Tabs>
               ) : (
                 <Tabs
@@ -359,6 +351,13 @@ function AdminPanel({ showSSO }) {
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
                 <BrightCove mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === 'clone_brightcove' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} clone />
               </div>
             </div>
           )}
