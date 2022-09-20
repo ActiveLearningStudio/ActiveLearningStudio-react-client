@@ -23,6 +23,7 @@ import admin from './admin';
 import myactivities from './myactivities';
 import videos from './videos';
 import activities from './indActivities';
+import existingActivitySearch from './existingActivitySearch';
 
 export default combineReducers({
   auth,
@@ -48,4 +49,5 @@ export default combineReducers({
   myactivities,
   videos,
   activities,
+  existingActivitySearch,
 });

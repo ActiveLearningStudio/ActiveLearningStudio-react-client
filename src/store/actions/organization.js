@@ -4,6 +4,7 @@ import store from 'store';
 import Swal from 'sweetalert2';
 import * as actionTypes from '../actionTypes';
 import { DynamicBrandingApply } from 'containers/App/DynamicBrandingApply';
+import adminService from 'services/admin.service';
 
 export const updateOrganizationScreen = (screen) => (dispatch) => {
   dispatch({
@@ -235,7 +236,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   }
   const centralizedState = store.getState();
   const {
-    organization: { currentOrganization },
+    organization: { currentOrganization, activeOrganization },
   } = centralizedState;
   const details = {
     name: data.name,
@@ -278,10 +279,13 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       type: actionTypes.UPDATE_ALL_ORG,
       payload: newOrg.suborganization,
     });
-    dispatch({
-      type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
-      payload: newOrg?.suborganization?.allowed_visibility_type_id,
-    });
+
+    if (activeOrganization?.id == newOrg.suborganization.id) {
+      dispatch({
+        type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
+        payload: newOrg?.suborganization?.allowed_visibility_type_id,
+      });
+    }
 
     if (newOrg.suborganization.id === currentOrganization.id) {
       DynamicBrandingApply(newOrg?.suborganization);
@@ -444,11 +448,30 @@ export const roleDetail = (id, roleId) => async (dispatch) => {
     payload: result?.data,
   });
 };
-
-export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
+export const updateAllDynamicPermisison = (subOrgId, data, currentOrg) => async (dispatch) => {
   Swal.fire({
     title: 'Please Wait !',
     html: 'Updating Role ...',
+    allowOutsideClick: false,
+    onBeforeOpen: () => {
+      Swal.showLoading();
+    },
+  });
+  const result = adminService.updateAllDynamicPermisison(subOrgId, data);
+  result.then((res) => {
+    if (subOrgId === currentOrg) {
+      dispatch(getAllPermission(subOrgId));
+    }
+    Swal.fire({
+      icon: 'success',
+      title: res?.message,
+    });
+  });
+};
+export const updateRole = (id, roleId, currentOrg) => async (dispatch) => {
+  Swal.fire({
+    title: 'Please Wait !',
+    html: 'Creating New Role ...',
     allowOutsideClick: false,
     onBeforeOpen: () => {
       Swal.showLoading();

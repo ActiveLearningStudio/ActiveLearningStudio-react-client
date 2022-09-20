@@ -9,7 +9,7 @@ RUN npm install
 RUN apt-get install git -y
 
 COPY . .
-RUN git --no-pager log -10 > log.txt
+RUN git log --graph -10 --decorate --pretty > log.txt
 
 RUN npm install --no-package-lock
 RUN npm run build
