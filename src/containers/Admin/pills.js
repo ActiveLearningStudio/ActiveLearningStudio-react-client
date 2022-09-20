@@ -824,6 +824,24 @@ export default function Pills(props) {
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
       setOrderByColumn(col);
+    } else if (subType == 'BrightCove') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+
+      switch (column) {
+        case 'Type':
+          col = 'account_name';
+          break;
+        default:
+          col = 'account_name';
+      }
+
+      dispatch(allBrightCoveSearch(activeOrganization?.id, searchQuery, size, activePage || 1, col, orderBy));
+
+      setCurrentOrderBy(orderBy);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+      setOrderByColumn(col);
     } else if (subType == 'All Users') {
       //mapping column with db column for making it dynamic
       let col = '';
@@ -1106,7 +1124,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
-                  sortCol={[]}
+                  sortCol={columnData.sortIntegrationBrightCove}
                   handleSort={handleSort}
                   data={lmsBrightCove}
                   type={type}
