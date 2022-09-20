@@ -35,6 +35,7 @@ const INITIAL_STATE = {
   allIv: [],
   selectedFIlterLti: '',
   dynamicPermission: null,
+  roleAddDynamicPermission: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -53,6 +54,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dynamicPermission: action.payload,
+      };
+    case actionTypes.SET_ALL_DEFAULT_PERMISSION:
+      return {
+        ...state,
+        roleAddDynamicPermission: action.payload,
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {

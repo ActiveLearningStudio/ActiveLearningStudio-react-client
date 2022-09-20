@@ -268,15 +268,37 @@ export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission,
               type: 'SET_ALL_PERMISSION',
               payload: dynamicPermission.map((data) => {
                 if (data.title === parent) {
+                  const updateGeneric = data.ui_sub_modules.map((mod) => {
+                    return mod.ui_module_permissions.map((per) => {
+                      if (mod.title === title || mod.title === 'Organiziation') {
+                        if (String(per.id) === String(e.target.value)) {
+                          return { ...per, selected: true };
+                        }
+                      } else {
+                        if (per.selected) {
+                          return per;
+                        }
+                      }
+                    });
+                  });
+
                   return {
                     ...data,
+                    general: [].concat
+                      .apply([], updateGeneric)
+                      .filter((data) => data !== undefined)
+                      .map((data) => data.title)
+                      .every((val, i, arr) => val === arr[0])
+                      ? [].concat
+                          .apply([], updateGeneric)
+                          .filter((data) => data !== undefined)
+                          .map((data) => data.title)?.[0]
+                      : '',
                     ui_sub_modules: data.ui_sub_modules.map((mod) => {
                       return {
                         ...mod,
                         ui_module_permissions: mod.ui_module_permissions.map((per) => {
-                          console.log(mod.title, title);
                           if (mod.title === title || mod.title === 'Organiziation') {
-                            console.log(String(per.id), String(e.target.value));
                             if (String(per.id) === String(e.target.value)) {
                               return { ...per, selected: true };
                             } else {
