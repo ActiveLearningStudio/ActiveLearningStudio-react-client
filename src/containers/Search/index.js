@@ -113,97 +113,14 @@ function SearchInterface(props) {
   const [isLoader, setisLoader] = useState(false);
 
   useEffect(() => {
-    // window.onscroll = function () {
-    //   if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-    //     console.log('reached');
-    //   }
-    // };
     if (currentOrganization) {
       const searchData = {
         standardArray: activeType,
         from: 0,
         size: 20,
       };
-
-      // dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
     }
   }, [currentOrganization]);
-
-  // useEffect(() => {
-  //   window.onscroll = function () {
-  //     if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
-  //       console.log('reached', activeModel);
-  //       alert(allState.searchType);
-  //       if (allState.searchType === 'Projects') {
-  //         alert();
-  //         if (activeModel === 'total') {
-  //           const searchData = {
-  //             phrase: searchQueries?.trim() || undefined,
-  //             from: e * 20 - 20,
-  //             size: 20,
-  //             type: searchType,
-  //             subjectArray: activeSubject || undefined,
-  //             gradeArray: activeEducation || undefined,
-  //             authorTagsArray: activeAuthorTag || undefined,
-  //             standardArray: activeType || undefined,
-  //             author: authorName || undefined,
-  //             no_words: noWords || undefined,
-  //           };
-  //           setSearch(null);
-  //           dispatch(simpleSearchAction(searchData));
-  //           Swal.close();
-  //         } else {
-  //           const searchData = {
-  //             phrase: searchQueries?.trim() || undefined,
-  //             from: e * 20 - 20,
-  //             size: 20,
-  //             type: searchType,
-  //             model: activeModel,
-  //             subjectArray: activeSubject || undefined,
-  //             gradeArray: activeEducation || undefined,
-  //             authorTagsArray: activeAuthorTag || undefined,
-  //             standardArray: activeType || undefined,
-  //             author: authorName || undefined,
-  //             no_words: noWords || undefined,
-  //           };
-  //           setSearch(null);
-
-  //           dispatch(simpleSearchAction(searchData));
-  //           Swal.close();
-  //         }
-  //       } else if (allState.searchType === 'Independent Activities') {
-  //         const searchData = {
-  //           query: searchInput?.trim() || undefined,
-  //           subjectArray: activeSubject,
-  //           gradeArray: activeEducation,
-  //           authorTagsArray: activeAuthorTag,
-  //           authors: authorName || undefined,
-  //           standardArray: activeType,
-  //           from: e * 20 - 20,
-  //           size: 20,
-  //           no_words: noWords || undefined,
-  //         };
-
-  //         setSearch(null);
-  //         dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
-  //       }
-  //     }
-  //   };
-  // }, []);
-
-  // const projectVisibilityLMS = allLms?.shareVendors?.map((data) => {
-  //   if (data.project_visibility === true) {
-  //     return true;
-  //   }
-  //   return false;
-  // });
-  // const playlistVisibilityLMS = allLms?.shareVendors?.filter((data) => data.playlist_visibility === true);
-  // const activityVisibilityLMS = allLms?.shareVendors?.map((data) => {
-  //   if (data.activity_visibility === true) {
-  //     return true;
-  //   }
-  //   return false;
-  // });
 
   useMemo(() => {
     dispatch(loadLmsAction());
@@ -222,15 +139,9 @@ function SearchInterface(props) {
       setActiveType(query.h5p.split(','));
     }
     if (query.grade) {
-      // if (query.grade.includes('and')) {
-      //   query.grade = query.grade.replace('and', '&');
-      // }
       setActiveSubject(query?.grade?.split(',').map(Number));
     }
     if (query.education) {
-      // if (query.education.includes('and')) {
-      //   query.education = query.education.replace('and', '&');
-      // }
       setActiveEducation(query?.education?.split(',').map(Number));
     }
     if (query.authorTag) {
@@ -257,86 +168,7 @@ function SearchInterface(props) {
   window.onbeforeunload = () => {
     localStorage.setItem('refreshPage', 'true');
   };
-  // useEffect(() => {
-  //   if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
-  //     let dataSend;
-  //     if (searchType === 'orgSearch') {
-  //       dataSend = {
-  //         phrase: searchInput.trim(),
-  //         subjectArray: activeSubject,
-  //         gradeArray: activeEducation,
-  //         authorTagsArray: activeAuthorTag,
-  //         standardArray: activeType,
-  //         author: authorName || undefined,
-  //         type: searchType,
-  //         from: 0,
-  //         size: 20,
-  //       };
-  //     } else {
-  //       dataSend = {
-  //         phrase: searchInput.trim(),
-  //         subjectArray: activeSubject,
-  //         gradeArray: activeEducation,
-  //         authorTagsArray: activeAuthorTag,
-  //         standardArray: activeType,
-  //         author: authorName || undefined,
-  //         type: searchType,
-  //         from: 0,
-  //         size: 20,
-  //       };
-  //     }
-  //     let result;
-  //     (async () => {
-  //       result = await dispatch(simpleSearchAction(dataSend));
-  //     })();
-  //     setTotalCount(result?.meta?.total);
-  //     const tempEducation = [];
-  //     const tempSubject = [];
-  //     const tempTag = [];
-  //     if (activeEducation) {
-  //       activeEducation.forEach((edu) => {
-  //         if (String(edu).includes('&')) {
-  //           const temp = String(edu).replace('&', 'and');
-  //           tempEducation.push(temp);
-  //         } else {
-  //           tempEducation.push(edu);
-  //         }
-  //       });
-  //       setActiveEducation(tempEducation);
-  //     }
-  //     if (activeSubject) {
-  //       activeSubject.forEach((sub) => {
-  //         if (String(sub).includes('&')) {
-  //           const temp = String(sub).replace('&', 'and');
-  //           tempSubject.push(temp);
-  //         } else {
-  //           tempSubject.push(sub);
-  //         }
-  //       });
-  //       setActiveSubject(tempSubject);
-  //     }
-  //     if (activeAuthorTag) {
-  //       activeAuthorTag.forEach((sub) => {
-  //         if (String(sub).includes('&')) {
-  //           const temp = String(sub).replace('&', 'and');
-  //           tempTag.push(temp);
-  //         } else {
-  //           tempTag.push(sub);
-  //         }
-  //       });
-  //       setActiveAuthorTag(tempTag);
-  //     }
-  //     // eslint-disable-next-line max-len
-  //     // if (!fromTeam) {
-  //     //   // eslint-disable-next-line max-len
-  //     //   history.push(
-  //     //     `/org/${
-  //     //       currentOrganization?.domain
-  //     //     }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-  //     //   );
-  //     // }
-  //   }
-  // }, [currentOrganization]);
+
   useEffect(() => {
     if (allState.searchResult) {
       if (allState.searchResult?.length > 0) {
@@ -359,13 +191,6 @@ function SearchInterface(props) {
     }
   }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
 
-  // useEffect(() => {
-  //   if (allState.searchResult) {
-  //     if (allState.searchResult?.length > 0) {
-  //       setTotalCount(allState.searchMeta.total);
-  //     }
-  //   }
-  // }, [allState.searchMeta, allState.searchResult]);
   useEffect(() => {
     console.log('activeModel', activeModel);
     if (allState.searchResult) {
@@ -393,13 +218,6 @@ function SearchInterface(props) {
         },
       });
     }
-  });
-
-  useEffect(() => {
-    // setTimeout(() => {
-    //   Swal.close();
-    //   localStorage.setItem('loading', 'false');
-    // }, 5000);
   });
 
   useEffect(() => {
@@ -476,23 +294,7 @@ function SearchInterface(props) {
                     )}
                   </div>
                 )}
-                {/* <div
-                  className="total-count"
-                  style={{
-                    display: totalCount > 1000 || !!searchQueries ? 'block' : 'none',
-                  }}
-                >
-                  {totalCount > 10000 ? (
-                    <div>
-                      Your search returned more than <span>10,000</span> results. Please refine your search criteria.
-                    </div>
-                  ) : null}
-                  {!!searchQueries && (
-                    <div>
-                      Showing {search ? meta.total : '0'} results For <span>{searchQueries}</span>
-                    </div>
-                  )}
-                </div> */}
+
                 <Tabs
                   className="main-tabs"
                   onSelect={(eventKey) => {
@@ -503,6 +305,8 @@ function SearchInterface(props) {
                     }
                     dispatch(setSearchTypeAction(eventKey));
                     setSearchInput('');
+
+                    setNoWords('');
                     setSearchType('');
                     setSearch(null);
                     setTotalCount(0);
@@ -522,24 +326,7 @@ function SearchInterface(props) {
                     Settodate([]);
                     Setfromdate([]);
                     setisLoader(false);
-
-                    // if (eventKey === 'Independent activities') {
-                    //   const searchData = {
-                    //     standardArray: activeType,
-                    //     from: 0,
-                    //     size: 20,
-                    //   };
-
-                    //   dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
-                    // } else {
-                    //   const searchData = {
-                    //     standardArray: activeType,
-                    //     from: 0,
-                    //     size: 20,
-                    //   };
-
-                    //   dispatch(simpleSearchAction(searchData));
-                    // }
+                    setActiveType([]);
                   }}
                   defaultActiveKey={!fromTeam ? allState.searchType : 'Projects'}
                 >
@@ -650,67 +437,7 @@ function SearchInterface(props) {
                                                 </div>
                                                 {/* <p>{res.description}</p> */}
                                               </div>
-                                              {/* <Dropdown className="playlist-dropdown check">
-                                              <Dropdown.Toggle>
-                                                <FontAwesomeIcon icon="ellipsis-v" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <>
-                                                  <Dropdown.Item
-                                                    onClick={() => {}}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      className="mr-2"
-                                                      icon={faEye}
-                                                    />
-                                                    Preview
-                                                  </Dropdown.Item>
-                                                  <Dropdown.Item
-                                                    onClick={() => {}}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      className="mr-2"
-                                                      icon={faPlus}
-                                                    />
-                                                    Add to My Projects
-                                                  </Dropdown.Item>
-                                                  <Dropdown.Item
-                                                    onClick={async () => {
-                                                      toast.info(
-                                                        "Duplicating Activity...",
-                                                        {
-                                                          className:
-                                                            "project-loading",
-                                                          closeOnClick: false,
-                                                          closeButton: false,
-                                                          position:
-                                                            toast.POSITION
-                                                              .BOTTOM_RIGHT,
-                                                          autoClose: 10000,
-                                                          icon: "",
-                                                        }
-                                                      );
-                                                      const result = await intActivityServices.indActivityClone(
-                                                        currentOrganization?.id,
-                                                        res.id
-                                                      );
 
-                                                      toast.dismiss();
-                                                      Swal.fire({
-                                                        html: result.message,
-                                                        icon: "success",
-                                                      });
-                                                    }}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      className="mr-2"
-                                                      icon={faPlus}
-                                                    />
-                                                    Add to My Ind.Activities
-                                                  </Dropdown.Item>
-                                                </>
-                                              </Dropdown.Menu>
-                                            </Dropdown> */}
                                               {true && (
                                                 <Dropdown className="playlist-dropdown check learning_activity_tab">
                                                   <Dropdown.Toggle>
@@ -765,98 +492,6 @@ function SearchInterface(props) {
                                                           Copy to My projects
                                                         </div>
                                                       </Dropdown.Item>
-
-                                                      {/* {permission?.Activity?.includes(
-                                                        "activity:share"
-                                                      ) &&
-                                                        allLms?.length !==
-                                                          0 && (
-                                                          <li
-                                                            className="dropdown-submenu send"
-                                                            style={{
-                                                              display:
-                                                                activityVisibilityLMS.includes(
-                                                                  true
-                                                                ) &&
-                                                                safariMontageActivity.includes(
-                                                                  true
-                                                                )
-                                                                  ? "block"
-                                                                  : "none",
-                                                            }}
-                                                          >
-                                                            <a
-                                                              tabIndex="-1"
-                                                              className="dropdown-item"
-                                                            >
-                                                              <FontAwesomeIcon
-                                                                icon="newspaper"
-                                                                className="mr-2"
-                                                              />
-                                                              Publish
-                                                            </a>
-                                                            <ul className="dropdown-menu check">
-                                                              {allLms?.shareVendors.map(
-                                                                (data) => {
-                                                                  if (
-                                                                    data.lms_name !==
-                                                                    "safarimontage"
-                                                                  )
-                                                                    return false;
-                                                                  return (
-                                                                    data?.activity_visibility && (
-                                                                      <li>
-                                                                        <a
-                                                                          onClick={() => {
-                                                                            dispatch(
-                                                                              loadSafariMontagePublishToolAction(
-                                                                                res.project_id,
-                                                                                res.playlist_id,
-                                                                                res.id,
-                                                                                data.id
-                                                                              )
-                                                                            );
-                                                                          }}
-                                                                        >
-                                                                          {
-                                                                            data.site_name
-                                                                          }
-                                                                        </a>
-                                                                      </li>
-                                                                    )
-                                                                  );
-                                                                }
-                                                              )}
-                                                              <Modal
-                                                                dialogClassName="safari-modal"
-                                                                show={
-                                                                  safariMontagePublishTool
-                                                                }
-                                                                onHide={() =>
-                                                                  dispatch(
-                                                                    closeSafariMontageToolAction()
-                                                                  )
-                                                                }
-                                                                aria-labelledby="example-modal-sizes-title-lg"
-                                                              >
-                                                                <Modal.Header
-                                                                  closeButton
-                                                                >
-                                                                  <Modal.Title id="example-modal-sizes-title-lg">
-                                                                    Safari
-                                                                    Montage
-                                                                  </Modal.Title>
-                                                                </Modal.Header>
-                                                                <Modal.Body>
-                                                                  <iframe
-                                                                    title="Safari Montage"
-                                                                    src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
-                                                                  />
-                                                                </Modal.Body>
-                                                              </Modal>
-                                                            </ul>
-                                                          </li>
-                                                        )} */}
                                                     </>
                                                   </Dropdown.Menu>
                                                 </Dropdown>
@@ -1145,86 +780,6 @@ function SearchInterface(props) {
                                                     </div>
                                                   </Dropdown.Item>
                                                 )}
-
-                                                {/* {permission?.Project?.includes(
-                                                  "project:publish"
-                                                ) && (
-                                                  <li
-                                                    className="dropdown-submenu send"
-                                                    style={{
-                                                      display:
-                                                        projectVisibilityLMS[0] ||
-                                                        currentOrganization?.gcr_project_visibility
-                                                          ? "block"
-                                                          : "none",
-                                                    }}
-                                                  >
-                                                    <a tabIndex="-1">
-                                                      <FontAwesomeIcon
-                                                        icon="newspaper"
-                                                        className="mr-2"
-                                                      />
-                                                      Publish
-                                                    </a>
-                                                    <ul className="dropdown-menu check">
-                                                      {currentOrganization?.gcr_project_visibility && (
-                                                        // eslint-disable-next-line react/jsx-indent
-                                                        <li
-                                                          onClick={() => {
-                                                            setShow(true);
-                                                            getProjectId(
-                                                              res.id
-                                                            );
-                                                            setSelectedProjectId(
-                                                              res.id
-                                                            );
-                                                            dispatch(
-                                                              googleShare(false)
-                                                            );
-                                                          }}
-                                                        >
-                                                          <a>
-                                                            Google Classroom
-                                                          </a>
-                                                        </li>
-                                                      )}
-                                                      {allLms.shareVendors &&
-                                                        allLms.shareVendors.map(
-                                                          (data) =>
-                                                            data?.project_visibility && (
-                                                              <li>
-                                                                <a
-                                                                  onClick={async () => {
-                                                                    const allPlaylist = await dispatch(
-                                                                      lmsPlaylist(
-                                                                        res.id
-                                                                      )
-                                                                    );
-                                                                    if (
-                                                                      allPlaylist
-                                                                    ) {
-                                                                      dispatch(
-                                                                        getProjectCourseFromLMS(
-                                                                          data.lms_name.toLowerCase(),
-                                                                          data.id,
-                                                                          res.id,
-                                                                          allPlaylist.playlists,
-                                                                          data.lms_url
-                                                                        )
-                                                                      );
-                                                                    }
-                                                                  }}
-                                                                >
-                                                                  {
-                                                                    data.site_name
-                                                                  }
-                                                                </a>
-                                                              </li>
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                  </li>
-                                                )} */}
                                               </Dropdown.Menu>
                                             </Dropdown>
                                           )}
@@ -1268,22 +823,6 @@ function SearchInterface(props) {
                                                   Copy to My projects
                                                 </div>
                                               </Dropdown.Item>
-                                              {/* {permission?.Playlist?.includes(
-                                                "playlist:publish"
-                                              ) && (
-                                                <ShareLink
-                                                  playlistId={res.id}
-                                                  projectId={res.project_id}
-                                                  setProjectId={setProjectId}
-                                                  handleShow={handleShow}
-                                                  gcr_playlist_visibility={
-                                                    currentOrganization.gcr_playlist_visibility
-                                                  }
-                                                  setProjectPlaylistId={
-                                                    setProjectPlaylistId
-                                                  }
-                                                />
-                                              )} */}
                                             </Dropdown.Menu>
                                           </Dropdown>
                                         )}
@@ -1351,92 +890,6 @@ function SearchInterface(props) {
                                                     Copy to My projects
                                                   </div>
                                                 </Dropdown.Item>
-                                                {/* {permission?.Activity?.includes(
-                                                  "activity:share"
-                                                ) &&
-                                                  allLms?.length !== 0 && (
-                                                    <li
-                                                      className="dropdown-submenu send"
-                                                      style={{
-                                                        display:
-                                                          activityVisibilityLMS.includes(
-                                                            true
-                                                          ) &&
-                                                          safariMontageActivity.includes(
-                                                            true
-                                                          )
-                                                            ? "block"
-                                                            : "none",
-                                                      }}
-                                                    >
-                                                      <a
-                                                        tabIndex="-1"
-                                                        className="dropdown-item"
-                                                      >
-                                                        <FontAwesomeIcon
-                                                          icon="newspaper"
-                                                          className="mr-2"
-                                                        />
-                                                        Publish
-                                                      </a>
-                                                      <ul className="dropdown-menu check">
-                                                        {allLms?.shareVendors.map(
-                                                          (data) =>
-                                                            data.lms_name !==
-                                                            "safarimontage" ? null : (
-                                                              <>
-                                                                {data?.activity_visibility && (
-                                                                  <li>
-                                                                    <a
-                                                                      onClick={() => {
-                                                                        dispatch(
-                                                                          loadSafariMontagePublishToolAction(
-                                                                            res.project_id,
-                                                                            res.playlist_id,
-                                                                            res.id,
-                                                                            data.id
-                                                                          )
-                                                                        );
-                                                                      }}
-                                                                    >
-                                                                      {
-                                                                        data.site_name
-                                                                      }
-                                                                    </a>
-                                                                  </li>
-                                                                )}
-                                                              </>
-                                                            )
-                                                        )}
-                                                        <Modal
-                                                          dialogClassName="safari-modal"
-                                                          show={
-                                                            safariMontagePublishTool
-                                                          }
-                                                          onHide={() =>
-                                                            dispatch(
-                                                              closeSafariMontageToolAction()
-                                                            )
-                                                          }
-                                                          aria-labelledby="example-modal-sizes-title-lg"
-                                                        >
-                                                          <Modal.Header
-                                                            closeButton
-                                                          >
-                                                            <Modal.Title id="example-modal-sizes-title-lg">
-                                                              Safari Montage
-                                                            </Modal.Title>
-                                                          </Modal.Header>
-                                                          <Modal.Body>
-                                                            <iframe
-                                                              title="Safari Montage"
-                                                              src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
-                                                            />
-                                                          </Modal.Body>
-                                                        </Modal>
-                                                      </ul>
-                                                    </li>
-                                                  )} */}
                                               </>
                                             </Dropdown.Menu>
                                           </Dropdown>
@@ -1583,118 +1036,7 @@ function SearchInterface(props) {
                                                       </Dropdown.Item>
                                                     </>
                                                   )}
-                                                  {/* <Dropdown.Item>
-                                                    <div className="dropDown-item-name-icon">
-                                                      <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                          d="M5.11676 8.35535C7.1477 8.35535 8.79406 6.70899 8.79406 4.67804C8.79406 2.64712 7.1477 1.00073 5.11676 1.00073C3.08584 1.00073 1.43945 2.64712 1.43945 4.67804C1.43945 6.70899 3.08584 8.35535 5.11676 8.35535Z"
-                                                          stroke="#2E68BF"
-                                                          strokeWidth="1.5"
-                                                          stroke-miterlimit="10"
-                                                        />
-                                                        <path
-                                                          d="M9.88477 1.13782C10.3905 0.995317 10.921 0.962853 11.4404 1.04262C11.9598 1.12238 12.4561 1.31252 12.8957 1.60023C13.3355 1.88794 13.7084 2.26653 13.9895 2.71052C14.2705 3.1545 14.4532 3.65356 14.5252 4.17409C14.5972 4.69462 14.5568 5.22452 14.4067 5.72812C14.2566 6.23173 14.0003 6.69732 13.6552 7.09347C13.31 7.48969 12.8839 7.80733 12.4056 8.02506C11.9274 8.24272 11.408 8.35537 10.8825 8.35546"
-                                                          stroke={primaryColor}
-                                                          strokeWidth="1.5"
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                        />
-                                                        <path
-                                                          d="M0.0253906 11.0001C0.599713 10.1831 1.36216 9.51641 2.24837 9.05608C3.13457 8.59584 4.11851 8.35547 5.11712 8.35547C6.11572 8.35547 7.09968 8.59567 7.98592 9.05592C8.87217 9.51608 9.63467 10.1828 10.209 10.9997"
-                                                          stroke={primaryColor}
-                                                          strokeWidth="1.5"
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                        />
-                                                        <path
-                                                          d="M10.8828 8.35547C11.8815 8.35473 12.8657 8.59469 13.752 9.05493C14.6383 9.51526 15.4007 10.1823 15.9745 10.9997"
-                                                          stroke={primaryColor}
-                                                          strokeWidth="1.5"
-                                                          strokeLinecap="round"
-                                                          strokeLinejoin="round"
-                                                        />
-                                                      </svg>
-                                                      Copy to My teams
-                                                    </div>
-                                                  </Dropdown.Item> */}
-                                                  {/* {permission?.Project?.includes(
-                                                  "project:publish"
-                                                ) && (
-                                                  <li
-                                                    className="dropdown-submenu send"
-                                                    style={{
-                                                      display:
-                                                        projectVisibilityLMS[0] ||
-                                                        currentOrganization?.gcr_project_visibility
-                                                          ? "block"
-                                                          : "none",
-                                                    }}
-                                                  >
-                                                    <a tabIndex="-1">
-                                                      <FontAwesomeIcon
-                                                        icon="newspaper"
-                                                        className="mr-2"
-                                                      />
-                                                      Publish
-                                                    </a>
-                                                    <ul className="dropdown-menu check">
-                                                      {currentOrganization.gcr_project_visibility && (
-                                                        <li
-                                                          onClick={() => {
-                                                            setShow(true);
-                                                            getProjectId(
-                                                              res.id
-                                                            );
-                                                            setSelectedProjectId(
-                                                              res.id
-                                                            );
-                                                            dispatch(
-                                                              googleShare(false)
-                                                            );
-                                                          }}
-                                                        >
-                                                          <a>
-                                                            Google Classroom
-                                                          </a>
-                                                        </li>
-                                                      )}
-                                                      {allLms.shareVendors &&
-                                                        allLms.shareVendors.map(
-                                                          (data) =>
-                                                            data.project_visibility && (
-                                                              <li>
-                                                                <a
-                                                                  onClick={async () => {
-                                                                    const allPlaylist = await dispatch(
-                                                                      lmsPlaylist(
-                                                                        res.id
-                                                                      )
-                                                                    );
-                                                                    if (
-                                                                      allPlaylist
-                                                                    ) {
-                                                                      dispatch(
-                                                                        getProjectCourseFromLMS(
-                                                                          data.lms_name.toLowerCase(),
-                                                                          data.id,
-                                                                          res.id,
-                                                                          allPlaylist.playlists,
-                                                                          data.lms_url
-                                                                        )
-                                                                      );
-                                                                    }
-                                                                  }}
-                                                                >
-                                                                  {
-                                                                    data.site_name
-                                                                  }
-                                                                </a>
-                                                              </li>
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                  </li>
-                                                )} */}
+
                                                   {fromTeam && (
                                                     <Dropdown.Item
                                                       onClick={() => {
@@ -1829,31 +1171,11 @@ function SearchInterface(props) {
                                                         setClone(res);
                                                       }}
                                                     >
-                                                      {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                    Add to projects */}
                                                       <div className="dropDown-item-name-icon">
                                                         <MyProjectSmSvg primaryColor={primaryColor} />
                                                         Copy to My projects
                                                       </div>
                                                     </Dropdown.Item>
-                                                    {/* {permission?.Playlist?.includes(
-                                                    "playlist:publish"
-                                                  ) && (
-                                                    <ShareLink
-                                                      playlistId={res.id}
-                                                      projectId={res.project_id}
-                                                      setProjectId={
-                                                        setSelectedProjectId
-                                                      }
-                                                      handleShow={handleShow}
-                                                      gcr_playlist_visibility={
-                                                        currentOrganization.gcr_playlist_visibility
-                                                      }
-                                                      setProjectPlaylistId={
-                                                        setSelectedProjectPlaylistId
-                                                      }
-                                                    />
-                                                  )} */}
                                                   </Dropdown.Menu>
                                                 </Dropdown>
                                               )}
@@ -2013,99 +1335,6 @@ function SearchInterface(props) {
                                                                 Copy to My projects
                                                               </div>
                                                             </Dropdown.Item>
-                                                            {/* {permission?.Activity?.includes(
-                                                              "activity:share"
-                                                            ) &&
-                                                              allLms?.length !==
-                                                                0 && (
-                                                                <li
-                                                                  className="dropdown-submenu send"
-                                                                  style={{
-                                                                    display:
-                                                                      activityVisibilityLMS.includes(
-                                                                        true
-                                                                      ) &&
-                                                                      safariMontageActivity.includes(
-                                                                        true
-                                                                      )
-                                                                        ? "block"
-                                                                        : "none",
-                                                                  }}
-                                                                >
-                                                                  <a
-                                                                    tabIndex="-1"
-                                                                    className="dropdown-item"
-                                                                  >
-                                                                    <FontAwesomeIcon
-                                                                      icon="newspaper"
-                                                                      className="mr-2"
-                                                                    />
-                                                                    Publish
-                                                                  </a>
-                                                                  <ul className="dropdown-menu check">
-                                                                    {allLms?.shareVendors.map(
-                                                                      (
-                                                                        data
-                                                                      ) => {
-                                                                        if (
-                                                                          data.lms_name !==
-                                                                          "safarimontage"
-                                                                        )
-                                                                          return false;
-                                                                        return (
-                                                                          data?.activity_visibility && (
-                                                                            <li>
-                                                                              <a
-                                                                                onClick={() => {
-                                                                                  dispatch(
-                                                                                    loadSafariMontagePublishToolAction(
-                                                                                      res.project_id,
-                                                                                      res.playlist_id,
-                                                                                      res.id,
-                                                                                      data.id
-                                                                                    )
-                                                                                  );
-                                                                                }}
-                                                                              >
-                                                                                {
-                                                                                  data.site_name
-                                                                                }
-                                                                              </a>
-                                                                            </li>
-                                                                          )
-                                                                        );
-                                                                      }
-                                                                    )}
-                                                                    <Modal
-                                                                      dialogClassName="safari-modal"
-                                                                      show={
-                                                                        safariMontagePublishTool
-                                                                      }
-                                                                      onHide={() =>
-                                                                        dispatch(
-                                                                          closeSafariMontageToolAction()
-                                                                        )
-                                                                      }
-                                                                      aria-labelledby="example-modal-sizes-title-lg"
-                                                                    >
-                                                                      <Modal.Header
-                                                                        closeButton
-                                                                      >
-                                                                        <Modal.Title id="example-modal-sizes-title-lg">
-                                                                          Safari
-                                                                          Montage
-                                                                        </Modal.Title>
-                                                                      </Modal.Header>
-                                                                      <Modal.Body>
-                                                                        <iframe
-                                                                          title="Safari Montage"
-                                                                          src={`data:text/html;charset=utf-8,${safariMontagePublishTool}`}
-                                                                        />
-                                                                      </Modal.Body>
-                                                                    </Modal>
-                                                                  </ul>
-                                                                </li>
-                                                              )} */}
                                                           </>
                                                         </Dropdown.Menu>
                                                       </Dropdown>
