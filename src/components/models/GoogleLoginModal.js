@@ -24,7 +24,6 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
   const [shareType, setShareType] = useState('Project');
   const [msbodyText, setmsbodyText] = useState('');
-  let popWindow;
   useEffect(() => {
     if (dataRedux.share.googleShare === true) {
       setShowForm(true);
@@ -96,30 +95,43 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-  function openMicrsoftTeamLogi() {
-    popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
-    console.log('popWindow', popWindow);
-    popWindow.addEventListener('load', () => {
-      console.log('inner2', popWindow.document.body.innerText);
-      const bodyText = popWindow.document.body.innerText;
-      setmsbodyText(popWindow.document.body.innerText);
-      // if (bodyText == '{"message":"Access token has been saved successfully."}') {
-      //   popWindow.close();
-      //   setShowForm(true);
-      // }
-    });
-  }
-  useEffect(() => {
-    if (msbodyText) {
-      popWindow.close();
-      setShowForm(true);
+  const openMicrsoftTeamLogi = async () => {
+    try {
+      const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
+      const data = await popWindow.document.body.innerHTML;
+      if (data) {
+        console.log('popWindow', popWindow.document.body.innerText);
+        console.log('popupwindow');
+      }
+      console.log('bodytex', popWindow.document.body.innerText);
+      popWindow.addEventListener('load', () => {
+        console.log('inner2', popWindow.document.body.innerText);
+        const bodyText = popWindow.document.body.innerText;
+        if (bodyText) {
+          popWindow.close();
+          setShowForm(true);
+        }
+        if (bodyText == '{"message":"Access token has been saved successfully."}') {
+          popWindow.close();
+          setShowForm(true);
+          console.log('2nd condition');
+        }
+      });
+    } catch (err) {
+      console.log('err', err);
     }
-    if (msbodyText.includes('{"message":"Access token has been saved successfully."}')) {
-      alert('login success');
-      popWindow.close();
-      setShowForm(true);
-    }
-  }, [msbodyText]);
+  };
+  // useEffect(() => {
+  //   if (msbodyText) {
+  //     popWindow.close();
+  //     setShowForm(true);
+  //   }
+  //   if (msbodyText.includes('{"message":"Access token has been saved successfully."}')) {
+  //     alert('login success');
+  //     popWindow.close();
+  //     setShowForm(true);
+  //   }
+  // }, [msbodyText]);
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
