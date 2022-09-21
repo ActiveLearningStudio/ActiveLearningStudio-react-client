@@ -1040,7 +1040,7 @@ const AdminDropdown = (props) => {
                 }}
               >
                 <CloneSmSvg primaryColor={primaryColor} className="menue-img" />
-                &nbsp;&nbsp;Clone&nbsp;&nbsp;
+                Clone
               </Dropdown.Item>
 
               <Dropdown.Item
