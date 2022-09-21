@@ -95,7 +95,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-  // const openMicrsoftTeamLogi = () => () => {
+  // const openMicrsoftTeamLogi = ()  => {
   //   try {
   //     const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
   //     console.log('popWindow', popWindow);
@@ -116,7 +116,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   //     console.log('err', err);
   //   }
   // };
-  const openMicrsoftTeamLogi = () => () => {
+  const openMicrsoftTeamLogi = () => {
     const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
     console.log('popWindow', popWindow);
     if (popWindow.document.body.innerText) {
