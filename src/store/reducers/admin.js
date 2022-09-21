@@ -35,6 +35,7 @@ const INITIAL_STATE = {
   allIv: [],
   selectedFIlterLti: '',
   dynamicPermission: null,
+  roleAddDynamicPermission: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -53,6 +54,20 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dynamicPermission: action.payload,
+      };
+    case actionTypes.UPDATE_PAGINATION_COUNT:
+      return {
+        ...state,
+        [action.reducer]: {
+          ...state[action.reducer],
+          meta: { ...state[action.reducer]?.meta, total: state[action.reducer]?.meta?.total + action.payload, to: state[action.reducer]?.meta?.to + action.payload },
+        },
+      };
+
+    case actionTypes.SET_ALL_DEFAULT_PERMISSION:
+      return {
+        ...state,
+        roleAddDynamicPermission: action.payload,
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {
