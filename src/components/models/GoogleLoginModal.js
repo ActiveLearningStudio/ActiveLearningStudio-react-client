@@ -98,12 +98,17 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   const openMicrsoftTeamLogi = async () => {
     try {
       const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
-      const data = await popWindow.document.body.innerHTML;
-      if (data) {
-        console.log('popWindow', popWindow.document.body.innerText);
-        console.log('popupwindow');
-      }
-      console.log('bodytex', popWindow.document.body.innerText);
+      console.log('popWindow', popWindow);
+      console.log('bodytex', popWindow.window);
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('inner1', popWindow.document.body.innerText);
+        const bodyText = popWindow.document.body.innerText;
+        if (bodyText == '{"message":"Access token has been saved successfully."}') {
+          popWindow.close();
+          setShowForm(true);
+          console.log('2nd condition');
+        }
+      });
       popWindow.addEventListener('load', () => {
         console.log('inner2', popWindow.document.body.innerText);
         const bodyText = popWindow.document.body.innerText;
