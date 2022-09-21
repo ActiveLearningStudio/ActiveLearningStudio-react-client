@@ -98,12 +98,19 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   function openMicrsoftTeamLogi() {
     const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
     console.log('popWindow', popWindow);
-    const closer = popWindow.document.body.innerText;
-    console.log('dom', popWindow.document.body.innerText);
-    console.log('dom', popWindow.document.body.innerHTML);
-    if (closer) {
+    popWindow.addEventListener('load', () => {
+      console.log('inner1', popWindow.document.body.innerHTML);
+      // or
+      console.log('inner2', popWindow.document.body.innerText);
+      if (popWindow.document.body.innerHTML) {
+        popWindow.close();
+      }
+    });
+    if (popWindow.document.body.innerHTML) {
       popWindow.close();
     }
+    console.log('dom1', popWindow.document.body.innerText);
+    console.log('dom2', popWindow.document.body.innerHTML);
   }
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
