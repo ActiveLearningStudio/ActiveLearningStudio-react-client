@@ -216,7 +216,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: {
           ...state.allbrightCove,
-          data: [...state.allbrightCove.data, action.payload],
+          data: [action.payload, ...state.allbrightCove.data],
         },
       };
     case actionTypes.DEL_BRIGHTCOVE:
