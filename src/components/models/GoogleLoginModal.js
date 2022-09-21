@@ -95,8 +95,8 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-  async function openMicrsoftTeamLogi() {
-    const popWindow = await window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
+  function openMicrsoftTeamLogi() {
+    const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
     console.log('popWindow', popWindow);
     const closer = popWindow.document.body.innerText;
     console.log('dom', popWindow.document.body.innerText);
