@@ -1030,6 +1030,20 @@ const AdminDropdown = (props) => {
               </Dropdown.Item>
 
               <Dropdown.Item
+                to="#"
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('clone_brightcove'));
+                }}
+              >
+                <CloneSmSvg primaryColor={primaryColor} className="menue-img" />
+                Clone
+              </Dropdown.Item>
+
+              <Dropdown.Item
                 onClick={() => {
                   Swal.fire({
                     title: 'Are you sure?',
