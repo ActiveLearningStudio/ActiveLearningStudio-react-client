@@ -101,7 +101,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
     popWindow.addEventListener('load', () => {
       console.log('inner2', popWindow.document.body.innerText);
       const bodyText = popWindow.document.body.innerText;
-      if (bodyText == '"message":"Access token has been saved successfully."') {
+      if (bodyText == '{"message":"Access token has been saved successfully."}') {
         popWindow.close();
         setShowForm(true);
       }
