@@ -99,18 +99,13 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
     const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
     console.log('popWindow', popWindow);
     popWindow.addEventListener('load', () => {
-      console.log('inner1', popWindow.document.body.innerHTML);
-      // or
       console.log('inner2', popWindow.document.body.innerText);
-      if (popWindow.document.body.innerHTML) {
+      const bodyText = popWindow.document.body.innerText;
+      if (bodyText == '"message":"Access token has been saved successfully."') {
         popWindow.close();
+        setShowForm(true);
       }
     });
-    if (popWindow.document.body.innerHTML) {
-      popWindow.close();
-    }
-    console.log('dom1', popWindow.document.body.innerText);
-    console.log('dom2', popWindow.document.body.innerHTML);
   }
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
