@@ -23,7 +23,8 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   const [loading, setLoading] = useState(true);
   const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
   const [shareType, setShareType] = useState('Project');
-
+  const [msbodyText, setmsbodyText] = useState('');
+  let popWindow;
   useEffect(() => {
     if (dataRedux.share.googleShare === true) {
       setShowForm(true);
@@ -96,17 +97,29 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
     }
   };
   function openMicrsoftTeamLogi() {
-    const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
+    popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
     console.log('popWindow', popWindow);
     popWindow.addEventListener('load', () => {
       console.log('inner2', popWindow.document.body.innerText);
       const bodyText = popWindow.document.body.innerText;
-      if (bodyText == '{"message":"Access token has been saved successfully."}') {
-        popWindow.close();
-        setShowForm(true);
-      }
+      setmsbodyText(popWindow.document.body.innerText);
+      // if (bodyText == '{"message":"Access token has been saved successfully."}') {
+      //   popWindow.close();
+      //   setShowForm(true);
+      // }
     });
   }
+  useEffect(() => {
+    if (msbodyText) {
+      popWindow.close();
+      setShowForm(true);
+    }
+    if (msbodyText.includes('{"message":"Access token has been saved successfully."}')) {
+      alert('login success');
+      popWindow.close();
+      setShowForm(true);
+    }
+  }, [msbodyText]);
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
