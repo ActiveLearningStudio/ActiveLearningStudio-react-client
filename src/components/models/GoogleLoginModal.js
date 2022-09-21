@@ -95,7 +95,23 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-
+  function openMicrsoftTeamLogi() {
+    const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
+    console.log('popWindow', popWindow);
+    popWindow.addEventListener('load', () => {
+      console.log(popWindow.document.body.innerHTML);
+      // or
+      console.log(popWindow.document.body.innerText);
+    });
+    console.log('dom', popWindow.document.body.innerText);
+    console.log('dom', popWindow.document.body.innerHTML);
+    // setTimeout(() => {
+    //   setLoading(true);
+    //   dispatch(getMSteamClasses());
+    //   setShowForm(true);
+    //   popWindow.close();
+    // }, 3000);
+  }
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
@@ -111,6 +127,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                   With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
                 </div>
                 <p>To start, please log into your Google account.</p>
+                <button onClick={() => openMicrsoftTeamLogi()}> ms login</button>
                 <div style={{ marginBottom: '32px' }}>
                   <GoogleLogin
                     clientId={global.config.gapiClientId}
