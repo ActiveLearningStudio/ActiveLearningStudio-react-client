@@ -5,7 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
-import { PublicClientApplication } from '@azure/msal-browser';
+
 import { Formik } from 'formik';
 import { GoogleLogin } from 'react-google-login';
 
@@ -13,12 +13,7 @@ import logo from 'assets/images/GCLogo.png';
 import btnLogo from 'assets/images/googleBtnLogo.png';
 import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction, googleClassRoomCourseTopicAction } from 'store/actions/gapi';
 import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity } from 'store/actions/share';
-const config = {
-  appId: '5e0ea881-693a-4f0a-94a7-dcef7b5accd6',
-  redirectUri: 'https://dev.currikistudio.org/org/currikistudio',
-  scopes: ['user.read'],
-  authority: 'https://login.microsoftonline.com/75f881ff-c83b-44de-a964-f0f9ee64c60c',
-};
+
 const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomLoginFailure, googleClassRoomCourseTopics, projectId, playlistId, activityId }) => {
   const dataRedux = useSelector((state) => state);
   const [tokenTemp, setTokenTemp] = useState('');
@@ -28,18 +23,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   const [loading, setLoading] = useState(true);
   const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
   const [shareType, setShareType] = useState('Project');
-  const [msbodyText, setmsbodyText] = useState('');
-  const publicClientApplication = new PublicClientApplication({
-    auth: {
-      clientId: config.appId,
-      redirectUri: config.redirectUri,
-      authority: config.authority,
-    },
-    cache: {
-      cacheLocation: 'sessionStorage',
-      storeAuthStateInCookie: true,
-    },
-  });
+
   useEffect(() => {
     if (dataRedux.share.googleShare === true) {
       setShowForm(true);
@@ -111,70 +95,7 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
       }
     }
   };
-  // const openMicrsoftTeamLogin = ()  => {
-  //   try {
-  //     const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
-  //     console.log('popWindow', popWindow);
-  //     popWindow.addEventListener('load', () => {
-  //       console.log('inner2', popWindow.document.body.innerText);
-  //       const bodyText = popWindow.document.body.innerText;
-  //       if (bodyText) {
-  //         popWindow.close();
-  //         setShowForm(true);
-  //       }
-  //       if (bodyText == '{"message":"Access token has been saved successfully."}') {
-  //         popWindow.close();
-  //         setShowForm(true);
-  //         console.log('2nd condition');
-  //       }
-  //     });
-  //   } catch (err) {
-  //     console.log('err', err);
-  //   }
-  // };
-  // const openMicrsoftTeamLogin = () => {
-  //   const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`, '_blank', 'width=500,height=500');
-  //   console.log('popWindow', popWindow);
-  //   if (popWindow.document.body.innerText) {
-  //     popWindow.close();
-  //     setShowForm(true);
-  //     console.log('outer condition');
-  //   }
-  //   popWindow.addEventListener('load', () => {
-  //     console.log('inner2', popWindow.document.body.innerText);
 
-  //     if (popWindow.document.body.innerText) {
-  //       popWindow.close();
-  //       setShowForm(true);
-  //       console.log('1nd condition');
-  //     }
-  //     if (popWindow.document.body.innerText == '{"message":"Access token has been saved successfully."}') {
-  //       popWindow.close();
-  //       setShowForm(true);
-  //       console.log('2nd condition');
-  //     }
-  //   });
-  // };
-  const openMicrsoftTeamLogin = async () => {
-    try {
-      await publicClientApplication
-        .loginPopup({
-          scopes: config.scopes,
-          prompt: 'select_account',
-        })
-        .then((data) => {
-          console.log('data', data);
-          setTokenTemp(data.accessToken);
-          setShowForm(true);
-        });
-    } catch (err) {
-      setShowForm(false);
-      console.log('err'.err);
-    }
-  };
-  function logout() {
-    publicClientApplication.logout();
-  }
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
@@ -190,7 +111,6 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
                   With CurrikiStudio you can publish your {shareType} as a new Google Classroom course.
                 </div>
                 <p>To start, please log into your Google account.</p>
-                <button onClick={() => openMicrsoftTeamLogin()}> ms login</button>
                 <div style={{ marginBottom: '32px' }}>
                   <GoogleLogin
                     clientId={global.config.gapiClientId}
