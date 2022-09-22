@@ -11,7 +11,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import QueryString from 'query-string';
 
 import ProjectCardSkeleton from 'components/Skeletons/projectCard';
-
+import { shareToCanvas, msTeamShare, googleShare } from 'store/actions/gapi';
 import searchimg from 'assets/images/search-icon.png';
 import { showDeletePopupAction, hideDeletePopupAction } from 'store/actions/ui';
 import { toast } from 'react-toastify';
@@ -74,6 +74,8 @@ export const ProjectsPage = (props) => {
   const [createProject, setCreateProject] = useState(false);
   const [searchQuery, setsearchQuery] = useState('');
   const [startSearching, setStartSearching] = useState('');
+  const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
+  const [canvasProjectName, setcanvasProjectName] = useState('');
   const dispatch = useDispatch();
   const samplerRef = useRef();
   const {
@@ -358,7 +360,12 @@ export const ProjectsPage = (props) => {
   };
 
   const handleClose = () => {
+    dispatch(shareToCanvas(false));
+    dispatch(msTeamShare(false));
+    dispatch(googleShare(false));
     setShow(false);
+    setprojectPlaylistPublishtoCanvas(false);
+    setcanvasProjectName('');
   };
 
   const handleDeleteProject = (projectId) => {
@@ -560,6 +567,8 @@ export const ProjectsPage = (props) => {
                                                         setProjectId={setProjectId}
                                                         activeFilter={activeFilter}
                                                         setCreateProject={setCreateProject}
+                                                        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                                                        setcanvasProjectName={setcanvasProjectName}
                                                       />
                                                     </div>
                                                   )}
@@ -864,6 +873,10 @@ export const ProjectsPage = (props) => {
         projectId={selectedProjectId}
         show={show} // {props.show}
         onHide={handleClose}
+        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+        projectPlaylistPublishtoCanvas={projectPlaylistPublishtoCanvas}
+        setcanvasProjectName={setcanvasProjectName}
+        canvasProjectName={canvasProjectName}
       />
     </>
   );

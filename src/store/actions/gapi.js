@@ -17,6 +17,8 @@ import {
   TURNED_IN_ACTIVITY,
   GET_SUMMARY_AUTH,
   GET_OUTCOME_SUMMARY,
+  SHARE_CANAVS,
+  SHARE_MS_TEAM,
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -28,7 +30,14 @@ export const googleShare = (value) => ({
   type: GOOGLE_SHARE,
   value,
 });
-
+export const shareToCanvas = (value) => ({
+  type: SHARE_CANAVS,
+  value,
+});
+export const msTeamShare = (value) => ({
+  type: SHARE_MS_TEAM,
+  value,
+});
 export const loadCourses = (value) => ({
   type: LOAD_GOOGLE_CLASSROOM_COURSES,
   value,
@@ -67,7 +76,23 @@ export const googleClassRoomLoginAction = (response) => async (dispatch) => {
     console.log(e);
   }
 };
+//fetch canvas courses
+export const fetchCanvasCourses = (sid) => async (dispatch) => {
+  try {
+    // save access token
 
+    const getCourses = await searchService.getCanvasCourses(sid);
+    console.log(getCourses);
+    dispatch({
+      type: ALL_COURSES,
+      payload: getCourses.data,
+    });
+
+    // dispatch(googleClassRoomLogin(response));
+  } catch (e) {
+    console.log(e);
+  }
+};
 export const googleClassRoomLoginFailure = (id) => ({
   type: GOOGLE_CLASSROOM_LOGIN_FAILURE,
   id,
@@ -180,6 +205,44 @@ export const googleClassRoomCourseTopicAction = (courseId) => async (dispatch) =
       type: GET_COURSE_TOPICS,
       payload: getTopics.topics,
     });
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const fetchCanvasAssignmentGroups = (courseId, setting_id) => async (dispatch) => {
+  try {
+    const getTopics = await searchService.getCanvasCourseAssignmentsTopic(courseId, setting_id);
+    dispatch({
+      type: GET_COURSE_TOPICS,
+      payload: getTopics.data,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+//publish to ms team
+
+export const saveMicrosoftAccesstoken = (accessTokenId) => async (dispatch) => {
+  try {
+    // save access token
+    const getClasses = await searchService.saveMicrosoftAccessToken(accessTokenId);
+    console.log(getClasses);
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const getMSteamClasses = () => async (dispatch) => {
+  try {
+    // save access token
+
+    const getClasses = await searchService.getmsTeamclasses();
+    dispatch({
+      type: ALL_COURSES,
+      payload: getClasses.classes,
+    });
+
+    // dispatch(googleClassRoomLogin(response));
   } catch (e) {
     console.log(e);
   }
