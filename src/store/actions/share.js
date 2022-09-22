@@ -282,7 +282,9 @@ export const createNewClasstoMicrosoftTeam = async (projectId, msTeamClassName) 
 
   const res = await searchService.createNewClasstoMicrosoftTeam(msTeamClassName);
   if (res.classId) {
-    publishActivitytoMicrosoftTeam(projectId, res.classId);
+    setTimeout(() => {
+      publishActivitytoMicrosoftTeam(projectId, res.classId);
+    }, 10000);
   }
 };
 
