@@ -37,7 +37,7 @@ const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
 const config = {
   appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
-  redirectUri: `${domainName}/org/currikistudio`,
+  redirectUri: `${domainName}org/currikistudio`,
   scopes: ['user.read'],
   authority: `https://login.microsoftonline.com/${tenantId}`,
 };
