@@ -15,7 +15,7 @@ import { googleClassRoomLoginAction, googleClassRoomLoginFailureAction, googleCl
 import { copyProject, publishPlaylist, publishActivity, publistActivity, publishIdependentActivity } from 'store/actions/share';
 const config = {
   appId: '5e0ea881-693a-4f0a-94a7-dcef7b5accd6',
-  redirectUri: 'https://dev.currikistudio.org/api/api/microsoft-team/get-access-token',
+  redirectUri: 'https://dev.currikistudio.org/org/currikistudio',
   scopes: ['user.read'],
   authority: 'https://login.microsoftonline.com/75f881ff-c83b-44de-a964-f0f9ee64c60c',
 };
@@ -29,7 +29,6 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   const [isShowPlaylistSelector, setIsShowPlaylistSelector] = useState(false);
   const [shareType, setShareType] = useState('Project');
   const [msbodyText, setmsbodyText] = useState('');
-  const [isMsLogin, setisMsLogin] = useState(false);
   const publicClientApplication = new PublicClientApplication({
     auth: {
       clientId: config.appId,
@@ -158,14 +157,18 @@ const GoogleLoginModal = ({ show, onHide, googleClassRoomLogin, googleClassRoomL
   // };
   const openMicrsoftTeamLogin = async () => {
     try {
-      await publicClientApplication.loginPopup({
-        scopes: config.scopes,
-        prompt: 'select_account',
-      });
-      setisMsLogin(true);
-      setShowForm(true);
+      await publicClientApplication
+        .loginPopup({
+          scopes: config.scopes,
+          prompt: 'select_account',
+        })
+        .then((data) => {
+          console.log('data', data);
+          setTokenTemp(data.accessToken);
+          setShowForm(true);
+        });
     } catch (err) {
-      setisMsLogin(false);
+      setShowForm(false);
       console.log('err'.err);
     }
   };
