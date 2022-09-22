@@ -221,14 +221,22 @@ export const fetchCanvasAssignmentGroups = (courseId, setting_id) => async (disp
   }
 };
 
-//publish ot ms team
+//publish to ms team
 
+export const saveMicrosoftAccesstoken = (accessTokenId) => async (dispatch) => {
+  try {
+    // save access token
+    const getClasses = await searchService.saveMicrosoftAccessToken(accessTokenId);
+    console.log(getClasses);
+  } catch (e) {
+    console.log(e);
+  }
+};
 export const getMSteamClasses = () => async (dispatch) => {
   try {
     // save access token
 
     const getClasses = await searchService.getmsTeamclasses();
-    console.log(getClasses);
     dispatch({
       type: ALL_COURSES,
       payload: getClasses.classes,

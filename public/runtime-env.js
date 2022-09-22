@@ -4,7 +4,7 @@ window.__RUNTIME_CONFIG__ = {
   REACT_APP_API_URL: 'https://dev.currikistudio.org/api/api',
   REACT_DOMAIN_URL: 'https://dev.currikistudio.org/',
 
-  REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
+  // REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
 
   REACT_APP_RESOURCE_URL: 'https://dev.currikistudio.org/api',
 
@@ -45,4 +45,6 @@ window.__RUNTIME_CONFIG__ = {
   SKIP_PREFLIGHT_CHECK: true,
 
   REACT_APP_INSTANT_NAME: 'asdasdsad',
+  REACT_MS_APP_ID: '5e0ea881-693a-4f0a-94a7-dcef7b5accd6',
+  REACT_MS_TENANT_ID: '75f881ff-c83b-44de-a964-f0f9ee64c60c',
 };

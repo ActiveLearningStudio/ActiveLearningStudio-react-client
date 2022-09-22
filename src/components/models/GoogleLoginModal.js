@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { PublicClientApplication } from '@azure/msal-browser';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { Formik } from 'formik';
@@ -17,6 +18,7 @@ import {
   fetchCanvasCourses,
   fetchCanvasAssignmentGroups,
   shareToCanvas,
+  saveMicrosoftAccesstoken,
   getMSteamClasses,
   msTeamShare,
 } from 'store/actions/gapi';
@@ -31,7 +33,14 @@ import {
   createNewClasstoMicrosoftTeam,
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
-import { set } from 'lodash';
+const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
+const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
+const config = {
+  appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
+  redirectUri: `${domainName}/org/currikistudio`,
+  scopes: ['user.read'],
+  authority: `https://login.microsoftonline.com/${tenantId}`,
+};
 
 const GoogleLoginModal = ({
   show,
@@ -63,6 +72,18 @@ const GoogleLoginModal = ({
   const [selectedAssignmentId, setselectedAssignmentId] = useState();
   const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
+
+  const publicClientApplication = new PublicClientApplication({
+    auth: {
+      clientId: config.appId,
+      redirectUri: config.redirectUri,
+      authority: config.authority,
+    },
+    cache: {
+      cacheLocation: 'sessionStorage',
+      storeAuthStateInCookie: true,
+    },
+  });
   useEffect(() => {
     if (dataRedux.share.isCanvas === true) {
       setShowForm(true);
@@ -230,15 +251,35 @@ const GoogleLoginModal = ({
     }
   };
   //open ms login window
-  function openMicrsoftTeamLogi() {
-    const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=${userId}`, 'mywin', 'width=500,height=500');
-    setTimeout(() => {
-      setLoading(true);
-      dispatch(getMSteamClasses());
-      setShowForm(true);
-      popWindow.close();
-    }, 3000);
-  }
+  // function openMicrsoftTeamLogi() {
+  //   const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=${userId}`, 'mywin', 'width=500,height=500');
+  //   setTimeout(() => {
+  //     setLoading(true);
+  //     dispatch(getMSteamClasses());
+  //     setShowForm(true);
+  //     popWindow.close();
+  //   }, 3000);
+  // }
+  const openMicrsoftTeamLogin = async () => {
+    try {
+      await publicClientApplication
+        .loginPopup({
+          scopes: config.scopes,
+          prompt: 'select_account',
+        })
+        .then((data) => {
+          setShowForm(true);
+          setLoading(true);
+          (async () => {
+            await dispatch(saveMicrosoftAccesstoken(data.accessToken));
+            await dispatch(getMSteamClasses());
+          })();
+        });
+    } catch (err) {
+      setShowForm(false);
+      console.log('err'.err);
+    }
+  };
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
       <div className="model-box-google model-box-view">
@@ -258,9 +299,9 @@ const GoogleLoginModal = ({
                   <div style={{ marginBottom: '32px' }}>
                     <button
                       style={{ border: 'none', background: 'none' }}
-                      // onClick={() => {
-                      //   openMicrsoftTeamLogi();
-                      // }}
+                      onClick={() => {
+                        openMicrsoftTeamLogin();
+                      }}
                     >
                       <img src={msTeamLogo} alt="Microsoft team login Icon" />
                     </button>
@@ -307,7 +348,13 @@ const GoogleLoginModal = ({
             ) : (
               <div className="classroom-form">
                 <div>
-                  {isCanvas ? <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1> : <h1>Are you sure you want to share this {shareType} to Google Classroom?</h1>}
+                  {isCanvas ? (
+                    <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
+                  ) : (
+                    <h1>
+                      Are you sure you want to share this {shareType} to {!!msTeamShare ? 'Microsoft Team' : 'Google Classroom'}?
+                    </h1>
+                  )}
                   {loading ? isCanvas ? <p className="loading-classes">Loading Courses....</p> : <p className="loading-classes">Loading Classes....</p> : null}
                   {/* {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>} */}
                   {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}

@@ -237,6 +237,11 @@ const getmsTeamclasses = () =>
     .get(`/${apiVersion}/microsoft-team/classes`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
+const saveMicrosoftAccessToken = (tokenId) =>
+  httpService
+    .post(`/${apiVersion}/microsoft-team/save-access-token`, { access_token: tokenId })
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
 
 const createNewClasstoMicrosoftTeam = (playlistName) =>
   httpService
@@ -278,4 +283,5 @@ export default {
   getmsTeamclasses,
   createNewClasstoMicrosoftTeam,
   publishActivitytoMSteam,
+  saveMicrosoftAccessToken,
 };
