@@ -350,6 +350,25 @@ export default (state = INITIAL_STATE, action) => {
         ltiTools: { ...state.ltiTools },
       };
 
+    // Add New Lti Tool in redux
+    case actionTypes.LTI_TOOLS_ADD_NEW:
+      state.ltiTools.data = [action.payload, ...state?.ltiTools?.data];
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+    case actionTypes.LTI_TOOLS_ADD_EDIT:
+      state.ltiTools.data = state?.ltiTools?.data?.map((data) => {
+        if (data.id == action.payload.id) {
+          data = action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+
     default:
       return state;
   }
