@@ -562,6 +562,19 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+  useEffect(() => {
+    if (admin.ltiToolsReloadStatus == true) {
+      if(admin.selectedFIlterLti != null && admin.selectedFIlterLti != ''){
+        filterLtiTool(admin.selectedFIlterLti);
+      }else{
+        filterLtiTool(null);
+      }
+     
+      dispatch({
+        type: actionTypes.LTI_TOOLS_RELOAD_STATUS,
+      });
+    }
+  }, [admin.ltiToolsReloadStatus]);
 
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);

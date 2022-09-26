@@ -89,30 +89,36 @@ function Table(props) {
   }, [allSuborgList]);
   //update table after crud
   useEffect(() => {
-    if (type === 'LMS') {
-      if (newlyCreated) {
-        setLocalStateData([newlyCreated, ...data?.data]);
-      } else if (newlyEdit) {
-        setLocalStateData(
-          data?.data.map((lms) => {
-            if (lms.id === newlyEdit?.id) {
-              return newlyEdit;
-            } else {
-              return lms;
-            }
-          }),
-        );
-      }
-    }
-    // dispatch({
-    //   type: actionTypes.NEWLY_EDIT_RESOURCE,
-    //   payload: null,
-    // });
-    // dispatch({
-    //   type: actionTypes.NEWLY_CREATED_RESOURCE,
-    //   payload: null,
-    // });
-  }, [newlyCreated, newlyEdit]);
+    setLocalStateData(data?.data);
+  }, [data?.data]);
+
+  // useEffect(() => {
+  //   if (type === 'LMS') {
+  //     if (newlyCreated) {
+  //       setLocalStateData([newlyCreated, ...data?.data]);
+  //     } else if (newlyEdit) {
+  //       console.log('newlyEdit');
+  //       setLocalStateData(
+  //         data?.data.map((lms) => {
+  //           console.log('lms', lms);
+  //           if (lms.id === newlyEdit?.id) {
+  //             return newlyEdit;
+  //           } else {
+  //             return lms;
+  //           }
+  //         }),
+  //       );
+  //     }
+  //   }
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  // }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
   useEffect(() => {
