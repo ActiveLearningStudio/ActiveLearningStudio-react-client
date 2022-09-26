@@ -3,6 +3,7 @@ export function allowedH5PActvityPaths() {
   return [
     '/gclass/launch/:userId/:courseId/:activityId/:classworkId',
     '/lti-tools/activity/:activityId',
+    '/lti-tools/independent_activity/:independentActivityId',
     '/activity/:activityId/shared',
     '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
   ];
@@ -15,6 +16,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/activity/:activityId/shared': 'CurrikiStudio' },
     { '/gclass/launch/:userId/:courseId/:activityId/:classworkId': 'Google Classroom' },
     { '/lti-tools/activity/:activityId': 'LTI client' },
+    { '/lti-tools/independent_activity/:independentActivityId': 'LTI client' },
     { '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId': 'GenericLMS' },
   ];
 }
@@ -111,11 +113,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
 
     // Some skipped statements come with score.min = 0 and score.max = 0
     // This causes an error in the backend
-    if (
-      statementExtended.result
-      && statementExtended.result.score
-      && statementExtended.result.score.min === statementExtended.result.score.max
-    ) {
+    if (statementExtended.result && statementExtended.result.score && statementExtended.result.score.min === statementExtended.result.score.max) {
       statementExtended.result.score.max += 1;
     }
   }
@@ -146,10 +144,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
 // Extends the xAPI statements for activities being directly shared through studio
 // instead of published to an LMS
 export function extendSharedActivityStatement(h5pObj, statement, params) {
-  const {
-    path,
-    activityId,
-  } = params;
+  const { path, activityId } = params;
   const statementExtended = { ...statement };
 
   // We fake these values for reporting features on anonymous routes
