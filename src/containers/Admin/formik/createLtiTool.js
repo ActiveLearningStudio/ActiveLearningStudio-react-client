@@ -116,6 +116,12 @@ export default function CreateLtiTool(prop) {
                 type: actionTypes.LTI_TOOLS_ADD_EDIT,
                 payload: res?.data,
               });
+              console.log('values.media_source_id', values.media_source_id);
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'DECREMENT_TYPE_CHANGED',
+                ltitoolType: values.media_source_id,
+              });
             });
           } else {
             Swal.fire({
