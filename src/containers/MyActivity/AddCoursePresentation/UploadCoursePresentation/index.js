@@ -6,8 +6,8 @@ import FilePreviewAndStore from '../FilePreviewAndStore';
 const UploadCoursePresentation = ({ setEnableDescribeBtn, setLoading }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+  const handleFileChange = (file) => {
+    setSelectedFile(file);
   };
 
   return (
