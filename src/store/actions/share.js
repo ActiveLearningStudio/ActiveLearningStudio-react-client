@@ -272,21 +272,21 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
 
 //publish to mas team
 
-export const createNewClasstoMicrosoftTeam = async (projectId, msTeamClassName) => {
-  Swal.fire({
-    title: 'Creating New Class....',
-    showCancelButton: false,
-    showConfirmButton: false,
-    allowOutsideClick: false,
-  });
+// export const createNewClasstoMicrosoftTeam = async (projectId, msTeamClassName) => {
+//   Swal.fire({
+//     title: 'Creating New Class....',
+//     showCancelButton: false,
+//     showConfirmButton: false,
+//     allowOutsideClick: false,
+//   });
 
-  const res = await searchService.createNewClasstoMicrosoftTeam(msTeamClassName);
-  if (res.classId) {
-    setTimeout(() => {
-      publishActivitytoMicrosoftTeam(projectId, res.classId);
-    }, 10000);
-  }
-};
+//   const res = await searchService.createNewClasstoMicrosoftTeam(msTeamClassName);
+//   if (res.classId) {
+//     setTimeout(() => {
+//       publishActivitytoMicrosoftTeam(projectId, res.classId);
+//     }, 10000);
+//   }
+// };
 
 export const publishActivitytoMicrosoftTeam = async (projectId, classId) => {
   Swal.fire({
@@ -298,13 +298,15 @@ export const publishActivitytoMicrosoftTeam = async (projectId, classId) => {
   try {
     const result = await searchService.publishActivitytoMSteam(projectId, classId);
     if (result) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Published!',
-        confirmButtonColor: '#5952c6',
-        html: `Your Project has been published to Microsoft Team`,
-        // text: `Your playlist has been submitted to ${lmsUrl}`,
-      });
+      {
+        Swal.fire({
+          icon: 'success',
+          title: 'Published!',
+          confirmButtonColor: '#5952c6',
+          html: result.message,
+          // text: `Your playlist has been submitted to ${lmsUrl}`,
+        });
+      }
     } else {
       Swal.fire({
         confirmButtonColor: '#5952c6',
