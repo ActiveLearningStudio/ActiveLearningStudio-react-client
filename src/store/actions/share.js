@@ -154,7 +154,7 @@ export const publishToCanvas = async (courseId, settings, activityName, playlist
 export const createAssignmentGroup = async (courseId, settings, playlistName, activityId, ActivityName) => {
   const { id } = settings;
   Swal.fire({
-    title: 'Creating New Module....',
+    title: 'Creating New Assignment Group....',
     showCancelButton: false,
     showConfirmButton: false,
     allowOutsideClick: false,
