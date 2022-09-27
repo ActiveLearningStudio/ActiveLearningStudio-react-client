@@ -30,7 +30,6 @@ import {
   publishToCanvas,
   createAssignmentGroup,
   createNewCoursetoCanvas,
-  createNewClasstoMicrosoftTeam,
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
@@ -106,14 +105,7 @@ const GoogleLoginModal = ({
       setShareType('Playlist');
     }
   }, [dataRedux, onHide]);
-  // useEffect(() => {
-  //   (async () => {
-  //     const res = await axios.get(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=2`);
-  //     if (res) {
-  //       console.log('res', res);
-  //     }
-  //   })();
-  // }, [show]);
+
   useEffect(() => {
     if (dataRedux?.share.isCanvas) {
       setisCanvas(true);
@@ -245,21 +237,12 @@ const GoogleLoginModal = ({
   };
   const callPublishToMicorsoftTeam = (params) => {
     if (params.values.course === 'Create a new Course') {
-      dispatch(createNewClasstoMicrosoftTeam(params.projectId, canvasProjectName));
+      dispatch(publishActivitytoMicrosoftTeam(params.projectId));
     } else if (params.values.course !== 'Create a new Course' && params.projectId) {
       dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
     }
   };
-  //open ms login window
-  // function openMicrsoftTeamLogi() {
-  //   const popWindow = window.open(`https://dev.currikistudio.org/api/api/microsoft-team/get-access-token?gid=${userId}`, 'mywin', 'width=500,height=500');
-  //   setTimeout(() => {
-  //     setLoading(true);
-  //     dispatch(getMSteamClasses());
-  //     setShowForm(true);
-  //     popWindow.close();
-  //   }, 3000);
-  // }
+
   const openMicrsoftTeamLogin = async () => {
     try {
       await publicClientApplication
