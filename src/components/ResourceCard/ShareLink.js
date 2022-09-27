@@ -15,10 +15,21 @@ import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 function ShareLink(props) {
   const dispatch = useDispatch();
 
-  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId, setprojectPlaylistPublishtoCanvas } = props;
+  const {
+    projectId,
+    playlistId,
+    gcr_playlist_visibility,
+    handleShow,
+    setProjectId,
+    setProjectPlaylistId,
+    setselectedProjectPlaylistName,
+    playlistName,
+    setProjectPlaylistActivityId,
+    setprojectPlaylistPublishtoCanvas,
+  } = props;
 
   const AllLms = useSelector((state) => state.share);
-
+  console.log('raja', playlistId);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
@@ -79,6 +90,9 @@ function ShareLink(props) {
                       if (data.lms_name === 'canvas') {
                         dispatch(shareToCanvas(true));
                         setprojectPlaylistPublishtoCanvas(true);
+                        setProjectPlaylistId(playlistId);
+                        setProjectId(projectId);
+                        setselectedProjectPlaylistName(playlistName);
                         handleShow();
                         // dispatch(publishProjectPlaylistToCanvas(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
                       } else {

@@ -151,6 +151,7 @@ class PlaylistCard extends React.Component {
       setProjectPlaylistId,
       setProjectPlaylistActivityId,
       setprojectPlaylistPublishtoCanvas,
+      setselectedProjectPlaylistName,
     } = this.props;
     const { permission } = organization;
     const primaryColor = getGlobalColor('--main-primary-color');
@@ -188,6 +189,7 @@ class PlaylistCard extends React.Component {
                     setProjectPlaylistId={setProjectPlaylistId}
                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                     setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                    setselectedProjectPlaylistName={setselectedProjectPlaylistName}
                   />
                 </h2>
               </div>

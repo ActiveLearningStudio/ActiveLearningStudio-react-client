@@ -86,6 +86,7 @@ const GoogleLoginModal = ({
   useEffect(() => {
     if (dataRedux.share.isCanvas === true) {
       setShowForm(true);
+      setsharetoMS(false);
     } else if (dataRedux.share.msTeamShare === true && dataRedux.share.googleShare === true) {
       setsharetoMS(true);
       setuserId(dataRedux?.auth?.user?.id);
@@ -338,7 +339,13 @@ const GoogleLoginModal = ({
                       Are you sure you want to share this {shareType} to {!!msTeamShare ? 'Microsoft Team' : 'Google Classroom'}?
                     </h1>
                   )}
-                  {loading ? isCanvas ? <p className="loading-classes">Loading Courses....</p> : <p className="loading-classes">Loading Classes....</p> : null}
+                  {!isShowPlaylistSelector && loading ? (
+                    isCanvas ? (
+                      <p className="loading-classes">Loading Courses....</p>
+                    ) : (
+                      <p className="loading-classes">Loading Classes....</p>
+                    )
+                  ) : null}
                   {/* {loading && isCanvas && !isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Courses....' : 'Loading Classes....'}</p>} */}
                   {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
                   <Formik
@@ -387,7 +394,7 @@ const GoogleLoginModal = ({
                           value={values.course}
                           onChange={(e) => {
                             handleChange(e);
-                            if (!msTeamShare) {
+                            if (!sharetoMS && !projectPlaylistPublishtoCanvas) {
                               onCourseChange(e);
                             }
                           }}
