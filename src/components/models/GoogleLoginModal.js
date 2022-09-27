@@ -36,7 +36,7 @@ const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
 const config = {
   appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
-  redirectUri: `${domainName}org/currikistudio`,
+  redirectUri: `http://localhost:3000/org/currikistudio`,
   scopes: ['user.read'],
   authority: `https://login.microsoftonline.com/${tenantId}`,
 };
@@ -237,7 +237,8 @@ const GoogleLoginModal = ({
     setprojectPlaylistPublishtoCanvas(false);
   };
   const callPublishToMicorsoftTeam = (params) => {
-    if (params.values.course === 'Create a new Course') {
+    console.log('params', params);
+    if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class') {
       dispatch(publishActivitytoMicrosoftTeam(params.projectId));
     } else if (params.values.course !== 'Create a new Course' && params.projectId) {
       dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
