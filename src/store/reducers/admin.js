@@ -335,7 +335,10 @@ export default (state = INITIAL_STATE, action) => {
       let reloadStatus = false;
       let setUpdateTotal = state.ltiTools.meta.total;
       let updatedTo = state.ltiTools.meta.to;
-      if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
+      // let updatedTo = state.ltiTools.meta.to != null ? state.ltiTools.meta.to : 0;
+      if (state.ltiTools.meta.to == null || state.ltiTools.meta.to == 0) {
+        reloadStatus = true;
+      } else if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo + 1;
@@ -345,7 +348,11 @@ export default (state = INITIAL_STATE, action) => {
         state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo - 1;
-          reloadStatus = false;
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
         } else if (state.selectedFIlterLti == '' || state.selectedFIlterLti == null) {
           reloadStatus = true;
         } else {
