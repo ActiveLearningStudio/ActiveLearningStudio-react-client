@@ -29,7 +29,6 @@ function ShareLink(props) {
   } = props;
 
   const AllLms = useSelector((state) => state.share);
-  console.log('raja', playlistId);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));

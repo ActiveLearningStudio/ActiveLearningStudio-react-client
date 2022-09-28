@@ -200,6 +200,12 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
   const globalStore = store.getState();
   const allplaylist = globalStore?.playlist.playlists;
   async function asyncFunc(ccid, creationtype) {
+    Swal.fire({
+      title: 'Publishing....',
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
     for (let x = 0; x < allplaylist.length; x += 1) {
       const result = await searchService.publishPlaylisttoCanvas(projectId, allplaylist[x].id, lms_name, id, ccid, creationtype);
       if (x + 1 === allplaylist.length) {
@@ -221,12 +227,6 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
       confirmButtonText: 'As Module',
       denyButtonText: `As Assignment`,
     }).then(async (result) => {
-      Swal.fire({
-        title: 'Publishing....',
-        showCancelButton: false,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      });
       if (result.isConfirmed) {
         asyncFunc(ccid, 'modules');
       } else if (result.isDenied) {
@@ -241,13 +241,13 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
       confirmButtonText: 'As Module',
       denyButtonText: `As Assignment`,
     }).then(async (result) => {
-      Swal.fire({
-        title: 'Publishing....',
-        showCancelButton: false,
-        showConfirmButton: false,
-        allowOutsideClick: false,
-      });
       if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Publishing....',
+          showCancelButton: false,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+        });
         const result = await searchService.publishPlaylisttoCanvas(projectId, playlistId, lms_name, id, ccid, 'modules');
         Swal.fire({
           icon: 'success',
@@ -257,6 +257,12 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
           // text: `Your playlist has been submitted to ${lmsUrl}`,
         });
       } else if (result.isDenied) {
+        Swal.fire({
+          title: 'Publishing....',
+          showCancelButton: false,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+        });
         const result = await searchService.publishPlaylisttoCanvas(projectId, playlistId, lms_name, id, ccid, 'assignments');
         Swal.fire({
           icon: 'success',
