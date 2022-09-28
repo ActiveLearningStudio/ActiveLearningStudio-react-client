@@ -213,9 +213,8 @@ const ProjectCardDropdown = (props) => {
                                 dispatch(shareToCanvas(true));
                                 setProjectId(props.project.id);
                                 setcanvasProjectName(project.name);
-                                // dispatch(publishProjectToCanvas(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
                               } else {
-                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, data.lms_url));
+                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
                               }
                             }
                           }}
