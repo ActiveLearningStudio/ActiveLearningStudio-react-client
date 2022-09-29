@@ -138,6 +138,7 @@ const GoogleLoginModal = ({
         return false;
       }
     } else {
+      googleClassRoomCourseTopics(e.target.value);
       setIsShowPlaylistSelector(true);
     }
     setLoading(true);
