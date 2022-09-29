@@ -35,7 +35,7 @@ const ModalImage = (props) => {
               }
             }}
           >
-            <Tab eventKey="Pexels" title="Pexels" icon={<FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />}>
+            <Tab eventKey="Pexels" title="Pexels">
               <Pexels {...props} loader={loader} setLoader={setLoader} />
             </Tab>
             <Tab eventKey="Simthsonian" title="Simthsonian">
