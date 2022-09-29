@@ -200,6 +200,11 @@ export default function CreateOrg(prop) {
           tertiary_color: editMode ? (activeEdit?.branding.tertiary_color ? activeEdit?.branding.tertiary_color : '#515151') : '#515151',
           primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'rubic',
           secondary_font_family: editMode ? activeEdit?.branding.secondary_font_family : 'Open Sans',
+          lti_client_id: '',
+          lms_name: '',
+          access_key: '',
+          scret_key: '',
+          teneant_id: '',
         }}
         validate={(values) => {
           const errors = {};
@@ -427,7 +432,7 @@ export default function CreateOrg(prop) {
                           </div>
                         </div>
                         <div className="tab-form-section-right">
-                          <div className="toggle-group-button">
+                          {/* <div className="toggle-group-button">
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
                               <div className="create-form-inputs-toggles">
@@ -450,13 +455,7 @@ export default function CreateOrg(prop) {
                                   <h3>Activity</h3>
                                 </div>
 
-                                {/* <Switch
-                      checked={checked}
-                      onChange={() => {
-                        setChecked(!checked);
-                        setFieldValue("published", !checked);
-                      }}
-                    /> */}
+                      
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_playlist_visibility}
@@ -495,7 +494,7 @@ export default function CreateOrg(prop) {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="form-group-create">
                             <h3>Self Registration</h3>
                             <div className="custom-toggle-button">
@@ -1395,6 +1394,164 @@ export default function CreateOrg(prop) {
 
                       <div style={{ width: '100%' }}>
                         <BrandingPage getShow={true} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Tab>
+              <Tab eventKey="Permissions to publish" title="Permissions to publish">
+                <div className="tab-section">
+                  <div className="tab-inner-section">
+                    <div className="update-Form-style">
+                      <div className="tab-form-section">
+                        <div className="tab-form-section-left">
+                          <div className="toggle-group-button">
+                            <div className="form-group-create">
+                              <h3>Google classroom publishing</h3>
+                              <div className="create-form-inputs-toggles">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_activity_visibility}
+                                    onChange={() => {
+                                      setCheckedActivty(!checkedActivity);
+                                      setFieldValue('gcr_activity_visibility', !checkedActivity);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Activity</h3>
+                                </div>
+
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_playlist_visibility}
+                                    onChange={() => {
+                                      setCheckedPlaylist(!checkedPlaylist);
+                                      setFieldValue('gcr_playlist_visibility', !checkedPlaylist);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Playlist</h3>
+                                </div>
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_project_visibility}
+                                    onChange={() => {
+                                      setCheckedProject(!checkedProject);
+                                      setFieldValue('gcr_project_visibility', !checkedProject);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Project</h3>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="tab-form-section-right tab-form-section-right-border">
+                          <div className="toggle-group-button">
+                            <div className="form-group-create">
+                              <h3>Microsoft teams</h3>
+                              <div className="create-form-inputs-toggles">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_activity_visibility}
+                                    onChange={() => {
+                                      setCheckedActivty(!checkedActivity);
+                                      setFieldValue('gcr_activity_visibility', !checkedActivity);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Activity</h3>
+                                </div>
+
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_playlist_visibility}
+                                    onChange={() => {
+                                      setCheckedPlaylist(!checkedPlaylist);
+                                      setFieldValue('gcr_playlist_visibility', !checkedPlaylist);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Playlist</h3>
+                                </div>
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.gcr_project_visibility}
+                                    onChange={() => {
+                                      setCheckedProject(!checkedProject);
+                                      setFieldValue('gcr_project_visibility', !checkedProject);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Project</h3>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="form-group-create">
+                            <h3>LTI client ID</h3>
+                            <input type="text" name="lti_client_id" onChange={handleChange} onBlur={handleBlur} value={values.lti_client_id} />
+                          </div>
+                          <div className="form-group-create">
+                            <h3>LMS name </h3>
+                            <input type="text" name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name} />
+                          </div>
+                          <div className="form-group-create">
+                            <h3>Access key</h3>
+                            <input type="text" name="access_key" onChange={handleChange} onBlur={handleBlur} value={values.access_key} />
+                          </div>
+                          <div className="form-group-create">
+                            <h3>Secret key</h3>
+                            <input type="text" name="scret_key" onChange={handleChange} onBlur={handleBlur} value={values.scret_key} />
+                          </div>
+                          <div className="form-group-create">
+                            <h3>Teneant ID</h3>
+                            <input type="text" name="teneant_id" onChange={handleChange} onBlur={handleBlur} value={values.teneant_id} />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
