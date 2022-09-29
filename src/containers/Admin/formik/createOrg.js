@@ -64,6 +64,11 @@ export default function CreateOrg(prop) {
 
   const [saveAddOwnprimaryFont, setSaveAddOwnprimaryFont] = useState('rubic');
   const [saveAddOwnsecondaryFont, setSaveAddOwnsecondaryFont] = useState('Open Sans');
+
+  // MS Team Switch Cases
+  const [checkedActivityMS, setCheckedActivtyMS] = useState(false);
+  const [checkedPlaylistMS, setCheckedPlaylistMS] = useState(false);
+  const [checkedProjectMS, setCheckedProjectMS] = useState(false);
   useEffect(() => {
     if (editMode) {
       console.log('Edit Mode', editMode);
@@ -76,6 +81,11 @@ export default function CreateOrg(prop) {
       setCheckedProject(activeEdit?.gcr_project_visibility);
       setTosContentValue(activeEdit?.tos_content);
       setPpContentValue(activeEdit?.privacy_policy_content);
+
+      setCheckedActivtyMS(activeEdit?.msteam_activity_visibility);
+      setCheckedPlaylistMS(activeEdit?.msteam_playlist_visibility);
+      setCheckedProjectMS(activeEdit?.msteam_project_visibility);
+
       if (activeEdit.tos_type == 'Parent') {
         setCheckedTosUrl(false);
         setCheckedTosParent(true);
@@ -200,11 +210,17 @@ export default function CreateOrg(prop) {
           tertiary_color: editMode ? (activeEdit?.branding.tertiary_color ? activeEdit?.branding.tertiary_color : '#515151') : '#515151',
           primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'rubic',
           secondary_font_family: editMode ? activeEdit?.branding.secondary_font_family : 'Open Sans',
-          lti_client_id: '',
+
           lms_name: '',
           access_key: '',
-          scret_key: '',
-          teneant_id: '',
+
+          msteam_client_id: editMode ? activeEdit?.msteam_client_id : '',
+          msteam_secret_id: editMode ? activeEdit?.msteam_secret_id : '',
+          msteam_tenant_id: editMode ? activeEdit?.msteam_tenant_id : '',
+
+          msteam_project_visibility: editMode ? activeEdit?.msteam_project_visibility : false,
+          msteam_playlist_visibility: editMode ? activeEdit?.msteam_playlist_visibility : false,
+          msteam_activity_visibility: editMode ? activeEdit?.msteam_activity_visibility : false,
         }}
         validate={(values) => {
           const errors = {};
@@ -1475,10 +1491,10 @@ export default function CreateOrg(prop) {
                               <div className="create-form-inputs-toggles">
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
-                                    checked={values.gcr_activity_visibility}
+                                    checked={values.msteam_activity_visibility}
                                     onChange={() => {
-                                      setCheckedActivty(!checkedActivity);
-                                      setFieldValue('gcr_activity_visibility', !checkedActivity);
+                                      setCheckedActivtyMS(!checkedActivityMS);
+                                      setFieldValue('msteam_activity_visibility', !checkedActivityMS);
                                     }}
                                     className="react-switch"
                                     handleDiameter={30}
@@ -1494,10 +1510,10 @@ export default function CreateOrg(prop) {
 
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
-                                    checked={values.gcr_playlist_visibility}
+                                    checked={values.msteam_playlist_visibility}
                                     onChange={() => {
-                                      setCheckedPlaylist(!checkedPlaylist);
-                                      setFieldValue('gcr_playlist_visibility', !checkedPlaylist);
+                                      setCheckedPlaylistMS(!checkedPlaylistMS);
+                                      setFieldValue('msteam_playlist_visibility', !checkedPlaylistMS);
                                     }}
                                     className="react-switch"
                                     handleDiameter={30}
@@ -1512,10 +1528,10 @@ export default function CreateOrg(prop) {
                                 </div>
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
-                                    checked={values.gcr_project_visibility}
+                                    checked={values.msteam_project_visibility}
                                     onChange={() => {
-                                      setCheckedProject(!checkedProject);
-                                      setFieldValue('gcr_project_visibility', !checkedProject);
+                                      setCheckedProjectMS(!checkedProjectMS);
+                                      setFieldValue('msteam_project_visibility', !checkedProjectMS);
                                     }}
                                     className="react-switch"
                                     handleDiameter={30}
@@ -1533,7 +1549,7 @@ export default function CreateOrg(prop) {
                           </div>
                           <div className="form-group-create">
                             <h3>LTI client ID</h3>
-                            <input type="text" name="lti_client_id" onChange={handleChange} onBlur={handleBlur} value={values.lti_client_id} />
+                            <input type="text" name="msteam_client_id" onChange={handleChange} onBlur={handleBlur} value={values.msteam_client_id} />
                           </div>
                           <div className="form-group-create">
                             <h3>LMS name </h3>
@@ -1545,11 +1561,11 @@ export default function CreateOrg(prop) {
                           </div>
                           <div className="form-group-create">
                             <h3>Secret key</h3>
-                            <input type="text" name="scret_key" onChange={handleChange} onBlur={handleBlur} value={values.scret_key} />
+                            <input type="text" name="msteam_secret_id" onChange={handleChange} onBlur={handleBlur} value={values.msteam_secret_id} />
                           </div>
                           <div className="form-group-create">
                             <h3>Teneant ID</h3>
-                            <input type="text" name="teneant_id" onChange={handleChange} onBlur={handleBlur} value={values.teneant_id} />
+                            <input type="text" name="msteam_tenant_id" onChange={handleChange} onBlur={handleBlur} value={values.msteam_tenant_id} />
                           </div>
                         </div>
                       </div>

@@ -198,6 +198,14 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+
+    msteam_client_id: data.msteam_client_id,
+    msteam_secret_id: data.msteam_secret_id,
+    msteam_tenant_id: data.msteam_tenant_id,
+
+    msteam_project_visibility: data.msteam_project_visibility,
+    msteam_playlist_visibility: data.msteam_playlist_visibility,
+    msteam_activity_visibility: data.msteam_activity_visibility,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -265,6 +273,14 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+
+    msteam_client_id: data.msteam_client_id,
+    msteam_secret_id: data.msteam_secret_id,
+    msteam_tenant_id: data.msteam_tenant_id,
+
+    msteam_project_visibility: data.msteam_project_visibility,
+    msteam_playlist_visibility: data.msteam_playlist_visibility,
+    msteam_activity_visibility: data.msteam_activity_visibility,
     // admins: adminUsers,
     // users: usersList,
   };
