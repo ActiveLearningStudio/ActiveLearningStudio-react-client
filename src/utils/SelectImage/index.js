@@ -4,6 +4,8 @@ import Buttons from 'utils/Buttons/buttons';
 import Modal from './modal';
 import './style.scss';
 
+import dragImage from '../../assets/images/Icons-explanatory-activity.png';
+
 const SelectImage = (props) => {
   const { containerType = 'Project', image } = props;
   const [show, setShow] = useState(false);
@@ -20,14 +22,10 @@ const SelectImage = (props) => {
             className="thumbnail"
           />
           <div className="overlay">
-            <img src="" alt="" />
-            <p>
-              <b>Drag & drop Image</b>
-            </p>
-            <p>
-              <b>----- Or -----</b>
-            </p>
-            <Buttons text="Browse" onClick={() => setShow(true)} />
+            <img className="overlay-drag-image" src={dragImage} alt="drag" />
+            <h6 className="overlay-drag-image-title">Drag & drop Image</h6>
+            <h6 className="overlay-drag-image-or">Or</h6>
+            <Buttons className="overlay-drag-brows-btn" text="Browse" onClick={() => setShow(true)} />
           </div>
         </div>
       </div>

@@ -13,24 +13,20 @@ const ModalImage = (props) => {
   const openFile = useRef();
   return (
     <>
-      <Modal show={show} backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered>
-        <Modal.Header>
-          <div className="title">
-            <p>CurrikiStudio</p>
-            <h2 className="curriki-utility-headings">
-              <FontAwesomeIcon className="mr-2" icon="search" />
-              Explore Library Content
-            </h2>
+      <Modal className="thumbnails-modal" show={show} backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered>
+        <Modal.Body className="thumbnails-modal-body">
+          <div className="thumbnails-close">
+            <h4 className="thumbnails-heading">Browse Images</h4>
+            <div className="thumb-close-button">
+              <FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />
+            </div>
           </div>
-          <div className="close">
-            <FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />
-          </div>
-        </Modal.Header>
-        <Modal.Body>
+          <p className="thumbnails-text">You are currently viewing Thumbnails form Category. You can search other thumbnails below as well.</p>
+
           <Tabs
             defaultActiveKey="Pexels"
             id="uncontrolled-tab-example"
-            className="mb-3"
+            className="thumbnails-tabs"
             onSelect={(k) => {
               if (k === 'device') {
                 openFile.current?.click();
@@ -39,7 +35,7 @@ const ModalImage = (props) => {
               }
             }}
           >
-            <Tab eventKey="Pexels" title="Pexels">
+            <Tab eventKey="Pexels" title="Pexels" icon={<FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />}>
               <Pexels {...props} loader={loader} setLoader={setLoader} />
             </Tab>
             <Tab eventKey="Simthsonian" title="Simthsonian">
@@ -48,11 +44,6 @@ const ModalImage = (props) => {
             <Tab eventKey="device" title="My Device"></Tab>
           </Tabs>
         </Modal.Body>
-        <Modal.Footer>
-          <div className="row">
-            <div className="col footer-info"></div>
-          </div>
-        </Modal.Footer>
       </Modal>
       <FileUpload openFile={openFile} {...props} />
     </>

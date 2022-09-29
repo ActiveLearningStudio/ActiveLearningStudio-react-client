@@ -20,7 +20,7 @@ function Pexels(props) {
 
   useEffect(() => {
     if (smythsonian) {
-      resourceService.smithsonian({ rows: 15, start: smythCount, q: searchValue }).then((data) => {
+      resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
         setLoader(false);
         setPexels(data?.response?.rows);
       });
@@ -40,54 +40,58 @@ function Pexels(props) {
   }, [smythsonian, smythCount]);
   return (
     <>
-      <div className="search-pixels">
-        <input
-          type="text"
-          placeholder="Search Thumbnails..."
-          value={searchValue}
-          onChange={(e) => {
-            setSearchValue(e.target.value);
-          }}
-          onKeyPress={(event) => {
-            if (event.key === 'Enter') {
-              setLoader(true);
-              if (smythsonian) {
-                resourceService.smithsonian({ rows: 15, start: smythCount, q: searchValue }).then((data) => {
-                  setLoader(false);
-                  setPexels(data?.response?.rows);
-                });
-              } else {
-                pexelsClient
-                  .search(searchValue, 10, 1)
-                  .then((result) => {
+      <div className="search-box">
+        <div className=" thumbnails-search-pixels">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                setLoader(true);
+                if (smythsonian) {
+                  resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
                     setLoader(false);
-                    const allPhotos = !!result.photos && result.photos.map((data) => data);
-                    setPexels(allPhotos);
-                    setNextApi(result.next_page);
-                  })
-                  .catch(() => {
-                    // console.err(e);
+                    setPexels(data?.response?.rows);
                   });
+                } else {
+                  pexelsClient
+                    .search(searchValue, 10, 1)
+                    .then((result) => {
+                      setLoader(false);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
+                      setPexels(allPhotos);
+                      setNextApi(result.next_page);
+                    })
+                    .catch(() => {
+                      // console.err(e);
+                    });
+                }
               }
-            }
-          }}
-        />
-
-        <FontAwesomeIcon icon="search" />
+            }}
+          />
+          <div className="search-icon">
+            <FontAwesomeIcon icon="search" />
+          </div>
+        </div>
       </div>
 
-      <div className="img-box-pexels">
+      <div className="thumbnails-img-box-pexels">
         {loader ? (
-          <img src={dotsloader} className="loader" alt="loader" />
-        ) : pexelData.length === 0 ? (
-          'No result found. You can still search other thumbnails.'
+          <img src={dotsloader} className="thumbnails-loader" alt="loader" />
+        ) : pexelData?.length === 0 ? (
+          <h6 className="read-more-pexel">No result found. You can still search other thumbnails.</h6>
         ) : (
           <>
             {!!pexelData && (
               <>
                 {pexelData.map((images) => (
-                  <div className="watermark" key={images.id}>
+                  <div className="thumbnails-watermark" key={images.id}>
                     <img
+                      className="thumbnails-watermark-img"
                       src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail : images.src.tiny}
                       onClick={() => {
                         if (smythsonian) {
@@ -100,7 +104,7 @@ function Pexels(props) {
                       }}
                       alt="pexel"
                     />
-                    {smythsonian ? (
+                    {/* {smythsonian ? (
                       <a href="#" target="_blank" rel="noopener noreferrer">
                         {images.title}
                       </a>
@@ -110,7 +114,7 @@ function Pexels(props) {
                         {images.photographer}
                         /Pexels
                       </a>
-                    )}
+                    )}*/}
                   </div>
                 ))}
               </>
@@ -138,7 +142,7 @@ function Pexels(props) {
                     }
                   }}
                 >
-                  Load more
+                  Load more ...
                 </h6>
               ))}
           </>
