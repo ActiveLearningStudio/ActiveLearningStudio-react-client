@@ -134,15 +134,21 @@ const GoogleLoginModal = ({
     if (!!isCanvas) {
       if (e.target.value !== 'Create a new Course') {
         dispatch(fetchCanvasAssignmentGroups(e.target.value, canvasSettingId?.id));
+        setLoading(true);
+        setIsShowPlaylistSelector(true);
       } else {
         return false;
       }
     } else {
-      googleClassRoomCourseTopics(e.target.value);
-      setIsShowPlaylistSelector(true);
+      if (e.target.value !== 'Create a new class' && playlistId) {
+        googleClassRoomCourseTopics(e.target.value);
+        setLoading(true);
+        setIsShowPlaylistSelector(true);
+      } else {
+        setIsShowPlaylistSelector(false);
+        setLoading(false);
+      }
     }
-    setLoading(true);
-    setIsShowPlaylistSelector(true);
   };
   const onTopicChange = (e) => {
     if (isCanvas) {
@@ -160,7 +166,6 @@ const GoogleLoginModal = ({
     }
   }, [show, isCanvas]);
   const callPublishingMethod = (params) => {
-    console.log('raja', params.playlistId);
     if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {
         copyProject(params.projectId, null, params.tokenTemp);
@@ -171,24 +176,33 @@ const GoogleLoginModal = ({
       if (params.playlistId === 999999) {
         if (typeof params.values.course == 'undefined') {
           publishIdependentActivity(null, null, params.activityId, params.tokenTemp);
-        } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
+        } else if (
+          (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+          (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+        ) {
           publishIdependentActivity(params.values.course, null, params.activityId, params.tokenTemp);
         } else {
           publishIdependentActivity(params.values.course, params.values.playlist, params.activityId, params.tokenTemp);
         }
       } else {
-        if (typeof params.values.course == 'undefined') {
-          publistActivity(params.projectId, null, null, params.playlistId.id, params.activityId, params.tokenTemp);
-        } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
-          publistActivity(params.projectId, params.values.course, null, params.playlistId.id, params.activityId, params.tokenTemp);
+        if (typeof params.values.course == 'undefined' || params.values.course === 'Create a new class') {
+          publistActivity(params.projectId, null, null, params.playlistId, params.activityId, params.tokenTemp);
+        } else if (
+          (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+          (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+        ) {
+          publistActivity(params.projectId, params.values.course, null, params.playlistId, params.activityId, params.tokenTemp);
         } else {
-          publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId.id, params.activityId, params.tokenTemp);
+          publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.activityId, params.tokenTemp);
         }
       }
     } else if (params.playlistId != 0 && params.activityId == 0) {
       if (typeof params.values.course == 'undefined') {
         publishPlaylist(params.projectId, null, null, params.playlistId, params.tokenTemp);
-      } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
+      } else if (
+        (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+        (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+      ) {
         publishPlaylist(params.projectId, params.values.course, null, params.playlistId, params.tokenTemp);
       } else {
         publishPlaylist(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.tokenTemp);
