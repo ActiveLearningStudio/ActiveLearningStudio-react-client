@@ -405,7 +405,7 @@ const GoogleLoginModal = ({
                           {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
                           {!!courses &&
                             courses.map((item) =>
-                              !isCanvas ? (
+                              sharetoMS ? (
                                 <option key={item.id} value={item.id}>
                                   {item.displayName}
                                 </option>
