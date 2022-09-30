@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tab from 'react-bootstrap/Tab';
@@ -8,7 +8,7 @@ import FileUpload from './fileUpload';
 import Pexels from './pexels';
 
 const ModalImage = (props) => {
-  const { show, handleClose } = props;
+  const { show, handleClose, mediaSources } = props;
   const [loader, setLoader] = useState(false);
   const openFile = useRef();
   return (
@@ -35,13 +35,17 @@ const ModalImage = (props) => {
               }
             }}
           >
-            <Tab eventKey="Pexels" title="Pexels">
-              <Pexels {...props} loader={loader} setLoader={setLoader} />
-            </Tab>
-            <Tab eventKey="Simthsonian" title="Simthsonian">
-              <Pexels {...props} smythsonian={true} loader={loader} setLoader={setLoader} />
-            </Tab>
-            <Tab eventKey="device" title="My Device"></Tab>
+            {mediaSources.some((obj) => obj.name === 'Pexels' && obj.media_type === 'Image') && (
+              <Tab eventKey="Pexels" title="Pexels">
+                <Pexels {...props} loader={loader} setLoader={setLoader} />
+              </Tab>
+            )}
+            {mediaSources.some((obj) => obj.name === 'Smithsonian' && obj.media_type === 'Image') && (
+              <Tab eventKey="Simthsonian" title="Simthsonian">
+                <Pexels {...props} smythsonian={true} loader={loader} setLoader={setLoader} />
+              </Tab>
+            )}
+            {mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && <Tab eventKey="device" title="My Device"></Tab>}
           </Tabs>
         </Modal.Body>
       </Modal>

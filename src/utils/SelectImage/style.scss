@@ -93,6 +93,7 @@
 }
 
 .thumbnails-modal {
+  z-index: 1061;
   .modal-dialog.modal-xl.modal-dialog-centered {
     max-width: 992px !important;
   }

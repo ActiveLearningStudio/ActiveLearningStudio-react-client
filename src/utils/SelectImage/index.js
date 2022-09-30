@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Buttons from 'utils/Buttons/buttons';
 import Modal from './modal';
 import './style.scss';
@@ -7,9 +7,13 @@ import './style.scss';
 import dragImage from '../../assets/images/Icons-explanatory-activity.png';
 
 const SelectImage = (props) => {
-  const { containerType = 'Project', image } = props;
+  const { containerType = 'Project', image, setshowSmythsonianModal, mediaSources } = props;
   const [show, setShow] = useState(false);
-
+  useEffect(() => {
+    if (show) {
+      setshowSmythsonianModal(true);
+    }
+  }, [show]);
   return (
     <>
       <div className="curriki-image-update-util">
@@ -29,7 +33,14 @@ const SelectImage = (props) => {
           </div>
         </div>
       </div>
-      <Modal show={show} handleClose={() => setShow(false)} {...props} />
+      <Modal
+        show={show}
+        handleClose={() => {
+          setShow(false);
+          setshowSmythsonianModal(false);
+        }}
+        {...props}
+      />
     </>
   );
 };
