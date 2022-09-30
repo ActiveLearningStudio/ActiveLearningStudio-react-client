@@ -346,7 +346,7 @@ function LtiProjectShared(props) {
                                       icon: 'info',
                                     }).then(async (result) => {
                                       if (result.isConfirmed) {
-                                        clonePlaylist(currentProject.id, clone?.clone?.id);
+                                        clonePlaylist(data.id, clone?.clone?.id);
                                       }
                                     });
                                   }}
