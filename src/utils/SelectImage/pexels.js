@@ -16,7 +16,7 @@ function Pexels(props) {
   const [nextApi, setNextApi] = useState('');
   const [smythCount, setSmythCount] = useState(1);
 
-  const { returnImagePexel, handleClose, smythsonian, loader, setLoader } = props;
+  const { returnImagePexel, handleClose, smythsonian, loader, setLoader, formRef } = props;
 
   useEffect(() => {
     if (smythsonian) {
@@ -95,8 +95,14 @@ function Pexels(props) {
                       src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail : images.src.tiny}
                       onClick={() => {
                         if (smythsonian) {
+                          if (formRef) {
+                            formRef?.current.setFieldValue('thumb_url', images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
+                          }
                           returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
                         } else {
+                          if (formRef) {
+                            formRef?.current.setFieldValue('thumb_url', images.src.tiny);
+                          }
                           returnImagePexel(images.src.tiny);
                         }
 

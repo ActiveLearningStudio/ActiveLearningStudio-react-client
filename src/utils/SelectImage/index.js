@@ -1,19 +1,33 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import Buttons from 'utils/Buttons/buttons';
+import { useDispatch, useSelector } from 'react-redux';
 import Modal from './modal';
+import { getMediaSources } from 'store/actions/admin';
 import './style.scss';
 
 import dragImage from '../../assets/images/Icons-explanatory-activity.png';
 
 const SelectImage = (props) => {
-  const { containerType = 'Project', image, setshowSmythsonianModal, mediaSources } = props;
+  const { containerType = 'Project', image, setshowSmythsonianModal } = props;
   const [show, setShow] = useState(false);
+  const [mediaSources, setMediaSources] = useState([]);
+  const organization = useSelector((state) => state.organization);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (show) {
+    if (show && containerType === 'activity') {
       setshowSmythsonianModal(true);
     }
   }, [show]);
+  useEffect(() => {
+    if (mediaSources.length === 0) {
+      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
+      result.then((data) => {
+        setMediaSources(data.mediaSources);
+      });
+    }
+  }, [mediaSources]);
   return (
     <>
       <div className="curriki-image-update-util">
@@ -37,9 +51,12 @@ const SelectImage = (props) => {
         show={show}
         handleClose={() => {
           setShow(false);
-          setshowSmythsonianModal(false);
+          if (containerType === 'activity') {
+            setshowSmythsonianModal(false);
+          }
         }}
         {...props}
+        mediaSources={mediaSources}
       />
     </>
   );

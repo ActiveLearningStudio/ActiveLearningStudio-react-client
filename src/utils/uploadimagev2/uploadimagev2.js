@@ -12,11 +12,11 @@ import SelectImage from 'utils/SelectImage';
 import { toast } from 'react-toastify';
 import { uploadResourceThumbnailAction } from 'store/actions/resource';
 import computer from 'assets/images/computer1.svg';
-import { getMediaSources } from 'store/actions/admin';
+
 // import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
 // import PexelsSmSvg from 'iconLibrary/mainContainer/PexelsSmSvg';
 
-const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, setshowSmythsonianModal }) => {
+const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, setshowSmythsonianModal, containerType }) => {
   const project = useSelector((state) => state.project);
   const organization = useSelector((state) => state.organization);
 
@@ -25,7 +25,6 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, se
   const dispatch = useDispatch();
   // const openFile = useRef();
   const [uploadImage, setUploadImage] = useState(thumb_url);
-  const [mediaSources, setMediaSources] = useState([]);
 
   const uploadThumb = async (e) => {
     const formData = new FormData();
@@ -43,21 +42,14 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, se
     }
   };
 
-  useEffect(() => {
-    if (mediaSources.length === 0) {
-      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
-      result.then((data) => {
-        setMediaSources(data.mediaSources);
-      });
-    }
-  }, [mediaSources]);
   return (
     <SelectImage
       image={uploadImage || 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'}
       returnImage={(e) => uploadThumb(e)}
       returnImagePexel={(e) => setUploadImage(e)}
       setshowSmythsonianModal={setshowSmythsonianModal}
-      mediaSources={mediaSources}
+      formRef={formRef}
+      containerType={containerType}
     />
   );
   //   <PexelsAPI
