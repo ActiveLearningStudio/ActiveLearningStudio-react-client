@@ -195,7 +195,7 @@ const ProjectCardDropdown = (props) => {
                   dispatch(shareToCanvas(false));
                 }}
               >
-                <a>Microsoft Team</a>
+                <a>Microsoft Teams</a>
               </li>
               {allLms.shareVendors &&
                 allLms.shareVendors.map(
