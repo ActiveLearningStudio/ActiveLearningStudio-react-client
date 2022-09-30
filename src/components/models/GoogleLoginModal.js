@@ -134,14 +134,21 @@ const GoogleLoginModal = ({
     if (!!isCanvas) {
       if (e.target.value !== 'Create a new Course') {
         dispatch(fetchCanvasAssignmentGroups(e.target.value, canvasSettingId?.id));
+        setLoading(true);
+        setIsShowPlaylistSelector(true);
       } else {
         return false;
       }
     } else {
-      setIsShowPlaylistSelector(true);
+      if (e.target.value !== 'Create a new class' && playlistId) {
+        googleClassRoomCourseTopics(e.target.value);
+        setLoading(true);
+        setIsShowPlaylistSelector(true);
+      } else {
+        setIsShowPlaylistSelector(false);
+        setLoading(false);
+      }
     }
-    setLoading(true);
-    setIsShowPlaylistSelector(true);
   };
   const onTopicChange = (e) => {
     if (isCanvas) {
@@ -169,15 +176,21 @@ const GoogleLoginModal = ({
       if (params.playlistId === 999999) {
         if (typeof params.values.course == 'undefined') {
           publishIdependentActivity(null, null, params.activityId, params.tokenTemp);
-        } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
+        } else if (
+          (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+          (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+        ) {
           publishIdependentActivity(params.values.course, null, params.activityId, params.tokenTemp);
         } else {
           publishIdependentActivity(params.values.course, params.values.playlist, params.activityId, params.tokenTemp);
         }
       } else {
-        if (typeof params.values.course == 'undefined') {
+        if (typeof params.values.course == 'undefined' || params.values.course === 'Create a new class') {
           publistActivity(params.projectId, null, null, params.playlistId, params.activityId, params.tokenTemp);
-        } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
+        } else if (
+          (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+          (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+        ) {
           publistActivity(params.projectId, params.values.course, null, params.playlistId, params.activityId, params.tokenTemp);
         } else {
           publistActivity(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.activityId, params.tokenTemp);
@@ -186,7 +199,10 @@ const GoogleLoginModal = ({
     } else if (params.playlistId != 0 && params.activityId == 0) {
       if (typeof params.values.course == 'undefined') {
         publishPlaylist(params.projectId, null, null, params.playlistId, params.tokenTemp);
-      } else if (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') {
+      } else if (
+        (typeof params.values.course == 'undefined' && typeof params.values.playlist == 'undefined') ||
+        (params.values.course !== 'Create a new class' && params.values.playlist == 'Create a new topic')
+      ) {
         publishPlaylist(params.projectId, params.values.course, null, params.playlistId, params.tokenTemp);
       } else {
         publishPlaylist(params.projectId, params.values.course, params.values.playlist, params.playlistId, params.tokenTemp);
@@ -238,7 +254,7 @@ const GoogleLoginModal = ({
   };
   const callPublishToMicorsoftTeam = (params) => {
     console.log('params', params);
-    if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class') {
+    if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
       dispatch(publishActivitytoMicrosoftTeam(params.projectId));
     } else if (params.values.course !== 'Create a new Course' && params.projectId) {
       dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
@@ -337,7 +353,7 @@ const GoogleLoginModal = ({
                     <h1>Are you sure you want to Publish this {shareType} to Canvas?</h1>
                   ) : (
                     <h1>
-                      Are you sure you want to share this {shareType} to {!!msTeamShare ? 'Microsoft Team' : 'Google Classroom'}?
+                      Are you sure you want to share this {shareType} to {!!sharetoMS ? 'Microsoft Team' : 'Google Classroom'}?
                     </h1>
                   )}
                   {!isShowPlaylistSelector && loading ? (
@@ -351,7 +367,7 @@ const GoogleLoginModal = ({
                   {loading && isShowPlaylistSelector && <p className="loading-classes">{isCanvas ? 'Loading Assignment Groups...' : 'Loading Topics...'}</p>}
                   <Formik
                     initialValues={{
-                      course: 'Create a new Course' || undefined,
+                      course: undefined,
                       playlist: undefined,
                       heading: 'test',
                       description: 'test',
@@ -360,7 +376,7 @@ const GoogleLoginModal = ({
                     onSubmit={(values) => {
                       if (isCanvas) {
                         callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
-                      } else if (msTeamShare) {
+                      } else if (sharetoMS) {
                         callPublishToMicorsoftTeam({ values, projectId, playlistId, activityId });
                       } else {
                         callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
@@ -369,14 +385,14 @@ const GoogleLoginModal = ({
                       setLoading(false);
                       onHide();
                     }}
-                    validate={(values) => {
-                      const errors = {};
-                      if (!values.course) {
-                        errors.course = 'Please select a course from a dropdown or create a new one manually.';
-                      }
+                    // validate={(values) => {
+                    //   const errors = {};
+                    //   if (!values.course) {
+                    //     errors.course = 'Please select a course from a dropdown or create a new one manually.';
+                    //   }
 
-                      return errors;
-                    }}
+                    //   return errors;
+                    // }}
                   >
                     {({
                       values,
@@ -404,7 +420,7 @@ const GoogleLoginModal = ({
                           {isCanvas ? <option>Create a new Course</option> : <option>Create a new class</option>}
                           {!!courses &&
                             courses.map((item) =>
-                              !isCanvas ? (
+                              sharetoMS ? (
                                 <option key={item.id} value={item.id}>
                                   {item.displayName}
                                 </option>

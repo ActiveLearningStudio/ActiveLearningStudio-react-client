@@ -54,7 +54,6 @@ class PlaylistCardDropdown extends React.Component {
     } = this.props;
     const { permission } = organization;
     const primaryColor = getGlobalColor('--main-primary-color');
-    console.log('plau', playlist);
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">

@@ -164,7 +164,7 @@ const ResourceCardDropdown = (props) => {
                       handleShow();
                       getProjectId(match.params.projectId);
                       setProjectId(match.params.projectId);
-                      setProjectPlaylistId(playlist);
+                      setProjectPlaylistId(playlist.id);
                       setProjectPlaylistActivityId(resource.id);
                       dispatch(googleShare(false));
                       dispatch(shareToCanvas(false));
