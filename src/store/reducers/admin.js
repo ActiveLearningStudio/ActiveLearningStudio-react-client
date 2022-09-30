@@ -368,7 +368,12 @@ export default (state = INITIAL_STATE, action) => {
         // state.ltiTools.meta.to = updatedTo - 1;
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo - 1;
-          reloadStatus = false;
+
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
         } else {
           reloadStatus = true;
         }
