@@ -13,7 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -173,6 +173,20 @@ const ResourceCardDropdown = (props) => {
                     <a>Google Classroom</a>
                   </li>
                 )}
+                <li
+                  onClick={() => {
+                    handleShow();
+                    // getProjectId(match.params.projectId);
+                    // setProjectId(match.params.projectId);
+                    // setProjectPlaylistId(playlist.id);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
+                </li>
                 <li
                   onClick={() => {
                     handleShow();
