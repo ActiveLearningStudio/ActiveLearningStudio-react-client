@@ -22,7 +22,8 @@ function Pexels(props) {
     if (smythsonian) {
       resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
         setLoader(false);
-        setPexels(data?.response?.rows);
+        const updatedPexels = pexelData.concat(data?.response?.rows);
+        setPexels(updatedPexels);
       });
     } else {
       pexelsClient
@@ -48,12 +49,22 @@ function Pexels(props) {
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value);
+              if (!e.target.value) {
+                setLoader(true);
+                if (smythsonian) {
+                  resourceService.smithsonian({ rows: 15, start: 1, q: `online_visual_material:true AND ${e.target.value}` }).then((data) => {
+                    setLoader(false);
+                    const updatedPexels = pexelData.concat(data?.response?.rows);
+                    setPexels(updatedPexels);
+                  });
+                }
+              }
             }}
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
                 setLoader(true);
                 if (smythsonian) {
-                  resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
+                  resourceService.smithsonian({ rows: 15, start: 1, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
                     setLoader(false);
                     setPexels(data?.response?.rows);
                   });
@@ -74,7 +85,18 @@ function Pexels(props) {
             }}
           />
           <div className="search-icon">
-            <FontAwesomeIcon icon="search" />
+            <FontAwesomeIcon
+              icon="search"
+              onClick={() => {
+                setLoader(true);
+                if (smythsonian) {
+                  resourceService.smithsonian({ rows: 15, start: 1, q: `online_visual_material:true AND ${searchValue}` }).then((data) => {
+                    setLoader(false);
+                    setPexels(data?.response?.rows);
+                  });
+                }
+              }}
+            />
           </div>
         </div>
       </div>
@@ -92,13 +114,13 @@ function Pexels(props) {
                   <div className="thumbnails-watermark" key={images.id}>
                     <img
                       className="thumbnails-watermark-img"
-                      src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail : images.src.tiny}
+                      src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail : images.src.tiny}
                       onClick={() => {
                         if (smythsonian) {
                           if (formRef) {
                             formRef?.current.setFieldValue('thumb_url', images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
                           }
-                          returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
+                          returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail);
                         } else {
                           if (formRef) {
                             formRef?.current.setFieldValue('thumb_url', images.src.tiny);

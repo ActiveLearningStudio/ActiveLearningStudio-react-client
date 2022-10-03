@@ -95,7 +95,7 @@
 .thumbnails-modal {
   z-index: 1061;
   .modal-dialog.modal-xl.modal-dialog-centered {
-    max-width: 992px !important;
+    max-width: 1012px !important;
   }
   .thumbnails-modal-body {
     border-radius: 16px !important;
@@ -203,9 +203,11 @@
 
 .thumbnails-img-box-pexels {
   display: flex;
+  height: 350px;
+  min-height: 350px;
   gap: 8px;
-  align-items: center;
   flex-wrap: wrap;
+  overflow-y: scroll;
   .thumbnails-watermark {
     .thumbnails-watermark-img {
       width: 182px;
