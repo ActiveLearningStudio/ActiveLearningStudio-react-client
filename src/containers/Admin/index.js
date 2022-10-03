@@ -91,7 +91,7 @@ function AdminPanel({ showSSO }) {
     <div className="admin-panel">
       {true ? (
         <>
-          <div className="content-wrapper">
+          <div id="content-wrapper-admin" className="content-wrapper ">
             <div className="inner-content">
               <Breadcrump />
               <Heading />

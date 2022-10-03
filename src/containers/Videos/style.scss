@@ -1,6 +1,14 @@
 @import "assets/css/index";
 
 .myvideomain {
+  // .content-wrapper {
+  //   margin-left: 300px !important;
+  //   margin-bottom: 65px;
+  // }
+  .content-wrapper {
+    margin-left: 136px !important;
+    padding: 25px;
+  }
   .inner-content {
     background: $white;
     // padding: 32px 30px 30px;
@@ -536,7 +544,7 @@
           letter-spacing: 0.02em;
           color: #2e68bf;
         }
-        @media (max-width: 1024px){
+        @media (max-width: 1024px) {
           width: 30%;
         }
       }

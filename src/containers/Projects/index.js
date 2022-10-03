@@ -384,7 +384,7 @@ export const ProjectsPage = (props) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
-      <div className={`content-wrapper ${activeFilter}`}>
+      <div id="content-wrapper-project" className={`content-wrapper  ${activeFilter}`}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="">
             <Headline setCreateProject={setCreateProject} />

@@ -1,5 +1,14 @@
 @import "assets/css/index";
-
+aside.sidebar-all {
+  min-height: 100%;
+  margin-top: 32px;
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 50px;
+}
+aside.sidebar-all:first-child {
+  border-top: none;
+}
 aside {
   // Toggle CSS styles
   div.toggleSidebar {
@@ -99,8 +108,7 @@ aside {
           margin-top: 20px;
           margin-bottom: 50px;
           padding: 5px 10px 5px 35px;
-          background: $silver-chalice
-            url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
+          background: $silver-chalice url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
           border: 1px solid $silver-chalice;
           border-radius: 2px;
           color: $dodger-blue;
@@ -129,8 +137,7 @@ aside {
   }
 
   .recent-resource-icon {
-    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0
-      7px;
+    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0 7px;
   }
 }
 
@@ -367,7 +374,7 @@ aside {
     opacity: 1;
   }
   .activeLink {
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
   }
   a:first-child .row-sidebar:first-child {
     border-top: none !important;
