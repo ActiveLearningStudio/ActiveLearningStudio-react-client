@@ -33,6 +33,15 @@ const create = (activity, playlistId) =>
       Promise.reject(err.response.data);
     });
 
+const smithsonian = (data) =>
+  httpService
+    .post(`/${apiVersion}/smithsonian/get-content-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const get = (id, playlistId) =>
   httpService
     .get(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
@@ -346,4 +355,5 @@ export default {
   searchPreviewActivity,
   searchPreviewIndependentActivity,
   getAllTypesIV,
+  smithsonian,
 };
