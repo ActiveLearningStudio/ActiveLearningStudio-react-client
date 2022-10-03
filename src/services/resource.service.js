@@ -225,6 +225,19 @@ const h5pSettingsUpdate = (activityId, dataUpload, playlistId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const independentH5pResourceSettings = (activityId) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
+      });
+      Promise.reject(err.response.data);
+    });
+
 const h5pResourceSettings = (activityId) =>
   httpService
     .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
@@ -332,6 +345,7 @@ export default {
   h5pSettings,
   h5pResource,
   h5pSettingsUpdate,
+  independentH5pResourceSettings,
   h5pResourceSettings,
   h5pResourceSettingsOpen,
   h5pResourceSettingsShared,

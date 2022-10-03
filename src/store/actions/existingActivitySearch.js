@@ -124,7 +124,7 @@ export const getActivitiesAction = (params, type) => async (dispatch, getState) 
   });
 
   if (type === 'independent-activities') {
-    searchService.searchIndependentActivities('showcase_activities', newParams)
+    searchService.searchIndependentActivities('lti_deep_linking', newParams)
     .then((results) => {
       dispatch({
         type: actionTypes.EXISTING_ACTIVITY_SEARCH_GET_INDEPENDENT_ACTIVITIES,
