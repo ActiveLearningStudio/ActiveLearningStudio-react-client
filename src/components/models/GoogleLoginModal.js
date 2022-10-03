@@ -36,7 +36,7 @@ const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
 const config = {
   appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
-  redirectUri: `${domainName}org/currikistudio`,
+  redirectUri: `http://localhost:3000/org/currikistudio`,
   scopes: ['user.read'],
   authority: `https://login.microsoftonline.com/${tenantId}`,
 };
@@ -254,10 +254,20 @@ const GoogleLoginModal = ({
   };
   const callPublishToMicorsoftTeam = (params) => {
     console.log('params', params);
-    if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
-      dispatch(publishActivitytoMicrosoftTeam(params.projectId));
-    } else if (params.values.course !== 'Create a new Course' && params.projectId) {
-      dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
+    if (params.projectId !== 0) {
+      if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
+        dispatch(publishActivitytoMicrosoftTeam(params.projectId, undefined, 'projects'));
+      } else if (params.values.course !== 'Create a new Course' && params.projectId) {
+        dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course, 'projects'));
+      }
+    } else {
+      if (params.activityId !== 0) {
+        if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
+          dispatch(publishActivitytoMicrosoftTeam(params.activityId, undefined, 'activities'));
+        } else if (params.values.course !== 'Create a new Course' && params.activityId) {
+          dispatch(publishActivitytoMicrosoftTeam(params.activityId, params.values.course, 'activities'));
+        }
+      }
     }
   };
 
