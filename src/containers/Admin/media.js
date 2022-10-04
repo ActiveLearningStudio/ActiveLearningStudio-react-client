@@ -11,6 +11,7 @@ import { updateOrganizationMedaiSource } from 'store/actions/admin';
 
 const Media = () => {
   const dispatch = useDispatch();
+
   const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
@@ -18,7 +19,7 @@ const Media = () => {
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
 
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
   useEffect(() => {
@@ -83,36 +84,38 @@ const Media = () => {
                             <HeadingThree text="H5P library" color="#515151" className="textField-title" />
                           </div>
                         </div>
-                        <div className="btn-text">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              let updatedMediasSource = [];
-                              const media_ids = [];
-                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                              if (orgVideoSource.length === 0) {
-                                // updatedMediasSource = orgImageSource;
+                        {permission?.Organization?.includes('organization:edit-media') && (
+                          <div className="btn-text">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                let updatedMediasSource = [];
+                                const media_ids = [];
+                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
+                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
+                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                if (orgVideoSource.length === 0) {
+                                  // updatedMediasSource = orgImageSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please Select Atleast One Media Source to Continue...!!',
+                                    allowOutsideClick: false,
+                                  });
+                                  return false;
+                                }
                                 Swal.fire({
-                                  icon: 'warning',
-                                  text: 'Please Select Atleast One Media Source to Continue...!!',
+                                  title: 'Please Wait !',
+                                  text: 'Updating view...!!!',
                                   allowOutsideClick: false,
                                 });
-                                return false;
-                              }
-                              Swal.fire({
-                                title: 'Please Wait !',
-                                text: 'Updating view...!!!',
-                                allowOutsideClick: false,
-                              });
-                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
-                            }}
-                          >
-                            Update
-                          </button>
-                        </div>
+                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                              }}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="sources-sub">
                         <div>
@@ -196,32 +199,34 @@ const Media = () => {
                           />
                           <span className="span-heading">Select all</span>
                         </div>
-                        <div className="btn-text">
-                          <button
-                            type="button"
-                            name="update"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              let updatedMediasSource = [];
-                              const media_ids = [];
-                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                              if (orgImageSource.length === 0) {
-                                // updatedMediasSource = orgVideoSource;
-                                Swal.fire({
-                                  icon: 'warning',
-                                  text: 'Please Select Atleast One Media Source to Continue...!!',
-                                  allowOutsideClick: false,
-                                });
-                              } else {
-                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
-                              }
-                            }}
-                          >
-                            Update
-                          </button>
-                        </div>
+                        {permission?.Organization?.includes('organization:edit-media') && (
+                          <div className="btn-text">
+                            <button
+                              type="button"
+                              name="update"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                let updatedMediasSource = [];
+                                const media_ids = [];
+                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
+                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
+                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                if (orgImageSource.length === 0) {
+                                  // updatedMediasSource = orgVideoSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please Select Atleast One Media Source to Continue...!!',
+                                    allowOutsideClick: false,
+                                  });
+                                } else {
+                                  dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                }
+                              }}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="sources-sub">
                         <div>
