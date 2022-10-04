@@ -27,7 +27,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
 import ProjectCardSkeleton from 'components/Skeletons/projectCard';
-
+import { googleShare, msTeamShare, shareToCanvas } from 'store/actions/gapi';
 import StartingPage from 'utils/StartingPage/startingpage';
 import { MyVerticallyCenteredModal } from 'containers/Search';
 import Buttons from 'utils/Buttons/buttons';
@@ -104,6 +104,9 @@ const Index = ({ activities }) => {
 
   const handleClose = () => {
     setShow(false);
+    dispatch(shareToCanvas(false));
+    dispatch(msTeamShare(false));
+    dispatch(googleShare(false));
   };
 
   const setActivityId = (activityId) => {

@@ -43,7 +43,7 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { shareToCanvas, googleShare } from 'store/actions/gapi';
+import { shareToCanvas, googleShare, msTeamShare } from 'store/actions/gapi';
 import {
   showCreateProjectModalAction,
   loadProjectAction,
@@ -463,6 +463,7 @@ function PlaylistsPage(props) {
   const handleClose = () => {
     dispatch(shareToCanvas(false));
     dispatch(googleShare(false));
+    dispatch(msTeamShare(false));
     setShow(false);
     setprojectPlaylistPublishtoCanvas(false);
   };
