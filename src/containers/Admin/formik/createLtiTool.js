@@ -108,9 +108,19 @@ export default function CreateLtiTool(prop) {
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
+              // dispatch({
+              //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+              //   payload: res?.data,
+              // });
               dispatch({
-                type: actionTypes.NEWLY_EDIT_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_EDIT,
                 payload: res?.data,
+              });
+              console.log('values.media_source_id', values.media_source_id);
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'DECREMENT_TYPE_CHANGED',
+                ltitoolType: values.media_source_id,
               });
             });
           } else {
@@ -144,9 +154,13 @@ export default function CreateLtiTool(prop) {
               });
               dispatch(removeActiveAdminForm());
               dispatch({
-                type: actionTypes.NEWLY_CREATED_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_NEW,
                 payload: res?.data,
               });
+              // dispatch({
+              //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+              //   payload: res?.data,
+              // });
             });
           }
         }}

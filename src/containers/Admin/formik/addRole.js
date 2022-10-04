@@ -9,14 +9,14 @@ import { gettAllDynamicPermisison } from 'store/actions/admin';
 export default function AddRole() {
   const dispatch = useDispatch();
   const { activeOrganization, roles } = useSelector((state) => state.organization);
-  const { dynamicPermission } = useSelector((state) => state.admin);
+  const { roleAddDynamicPermission } = useSelector((state) => state.admin);
 
   const [allActivePermission, setAllActivePermission] = useState([]);
   useEffect(() => {
     const activeIds = [];
-    dynamicPermission?.map((data) => data.ui_sub_modules?.map((sub) => sub.ui_module_permissions?.map((mod) => mod.selected && activeIds.push(mod.id)))),
+    roleAddDynamicPermission?.map((data) => data.ui_sub_modules?.map((sub) => sub.ui_module_permissions?.map((mod) => mod.selected && activeIds.push(mod.id)))),
       setAllActivePermission(activeIds);
-  }, [dynamicPermission]);
+  }, [roleAddDynamicPermission]);
 
   useMemo(() => {
     dispatch(gettAllDynamicPermisison(1, 1, true));
@@ -94,7 +94,7 @@ export default function AddRole() {
                           </Nav.Link>
                         </Nav.Item>
                       </div>
-                      {dynamicPermission?.map((data, counter) => {
+                      {roleAddDynamicPermission?.map((data, counter) => {
                         return (
                           <div className="role-permission-tab-name" id="role-permission-tab-id">
                             <Nav.Item>
@@ -123,7 +123,7 @@ export default function AddRole() {
                             margin: '8px 32px 32px 10px',
                           }}
                         >
-                          {dynamicPermission?.map((data, counter) => {
+                          {roleAddDynamicPermission?.map((data, counter) => {
                             return (
                               <div className="permission">
                                 <div className="selection-tab-custom">
@@ -145,7 +145,7 @@ export default function AddRole() {
                                       title={data.title}
                                       allActivePermission={allActivePermission}
                                       setAllActivePermission={setAllActivePermission}
-                                      dynamicPermission={dynamicPermission}
+                                      roleAddDynamicPermission={roleAddDynamicPermission}
                                       dispatch={dispatch}
                                       parent={data.title}
                                     />
@@ -162,7 +162,7 @@ export default function AddRole() {
                                         allActivePermission={allActivePermission}
                                         setAllActivePermission={setAllActivePermission}
                                         dispatch={dispatch}
-                                        dynamicPermission={dynamicPermission}
+                                        roleAddDynamicPermission={roleAddDynamicPermission}
                                       />
                                     ))}
                                 </div>
@@ -172,7 +172,7 @@ export default function AddRole() {
                         </Card.Body>
                       </Tab.Pane>
 
-                      {dynamicPermission?.map((data, counter) => {
+                      {roleAddDynamicPermission?.map((data, counter) => {
                         return (
                           <Tab.Pane eventKey={counter}>
                             <Card.Body
@@ -201,7 +201,7 @@ export default function AddRole() {
                                     title={data.title}
                                     allActivePermission={allActivePermission}
                                     setAllActivePermission={setAllActivePermission}
-                                    dynamicPermission={dynamicPermission}
+                                    roleAddDynamicPermission={roleAddDynamicPermission}
                                     dispatch={dispatch}
                                     parent={data.title}
                                   />
@@ -217,7 +217,7 @@ export default function AddRole() {
                                       allActivePermission={allActivePermission}
                                       setAllActivePermission={setAllActivePermission}
                                       dispatch={dispatch}
-                                      dynamicPermission={dynamicPermission}
+                                      roleAddDynamicPermission={roleAddDynamicPermission}
                                       parent={data.title}
                                     />
                                   ))}
@@ -251,15 +251,15 @@ export default function AddRole() {
   );
 }
 
-export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission, setAllActivePermission, dynamicPermission, dispatch }) => {
+export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission, setAllActivePermission, roleAddDynamicPermission, dispatch }) => {
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
         onChange={(e) => {
           if (e.target.value === 'View' || e.target.value === 'Edit' || e.target.value === 'None') {
             dispatch({
-              type: 'SET_ALL_PERMISSION',
-              payload: dynamicPermission.map((data) => {
+              type: 'SET_ALL_DEFAULT_PERMISSION',
+              payload: roleAddDynamicPermission.map((data) => {
                 if (data.title === title) {
                   return {
                     ...data,
@@ -283,11 +283,34 @@ export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission,
             });
           } else {
             dispatch({
-              type: 'SET_ALL_PERMISSION',
-              payload: dynamicPermission.map((data) => {
+              type: 'SET_ALL_DEFAULT_PERMISSION',
+              payload: roleAddDynamicPermission.map((data) => {
                 if (data.title === parent) {
+                  const updateGeneric = data.ui_sub_modules.map((mod) => {
+                    return mod.ui_module_permissions.map((per) => {
+                      if (mod.title === title || mod.title === 'Organiziation') {
+                        if (String(per.id) === String(e.target.value)) {
+                          return { ...per, selected: true };
+                        }
+                      } else {
+                        if (per.selected) {
+                          return per;
+                        }
+                      }
+                    });
+                  });
                   return {
                     ...data,
+                    general: [].concat
+                      .apply([], updateGeneric)
+                      .filter((data) => data !== undefined)
+                      .map((data) => data.title)
+                      .every((val, i, arr) => val === arr[0])
+                      ? [].concat
+                          .apply([], updateGeneric)
+                          .filter((data) => data !== undefined)
+                          .map((data) => data.title)?.[0]
+                      : '',
                     ui_sub_modules: data.ui_sub_modules.map((mod) => {
                       return {
                         ...mod,

@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .inner-content {
   background: $white;
   // padding: 32px 30px 30px;
@@ -157,7 +157,7 @@
     border-radius: 5px;
   }
   p {
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #515151;
@@ -179,9 +179,8 @@
     img {
       margin-right: 8px;
     }
-    svg{
+    svg {
       margin-right: 8px;
-
     }
   }
   .rejected {
@@ -256,7 +255,7 @@
     border-color: #084892 !important;
   }
   .dropdown-toggle::after {
-    background-image: url("../../assets/images/navigation - down.svg") !important;
+    background-image: url('../../assets/images/navigation - down.svg') !important;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -415,7 +414,7 @@ hr {
     .project-images {
       .on-hover-project-image {
         width: 422px;
-        height: 332px;
+        height: 410px;
         border-radius: 8px;
         display: none;
         position: fixed;

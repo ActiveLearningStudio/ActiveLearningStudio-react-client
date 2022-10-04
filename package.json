@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/msal-browser": "^2.28.3",
     "@babel/node": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@fortawesome/fontawesome-svg-core": "^1.2.29",

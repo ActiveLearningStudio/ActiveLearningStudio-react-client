@@ -50,7 +50,17 @@ class PlaylistCard extends React.Component {
   };
 
   renderResources = () => {
-    const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
+    const {
+      playlist,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
+      setProjectPlaylistActivityId,
+      setselectedProjectPlaylistName,
+      setselectedPlaylistActivityName,
+    } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
       return <div className="playlist-no-resource">No activities yet.</div>;
@@ -69,6 +79,8 @@ class PlaylistCard extends React.Component {
             setProjectId={setProjectId}
             setProjectPlaylistId={setProjectPlaylistId}
             setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+            setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+            setselectedPlaylistActivityName={setselectedPlaylistActivityName}
           />
         ),
     );
@@ -128,7 +140,19 @@ class PlaylistCard extends React.Component {
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
+    const {
+      index,
+      playlist,
+      projectId,
+      organization,
+      teamPermission,
+      handleShow,
+      setProjectId,
+      setProjectPlaylistId,
+      setProjectPlaylistActivityId,
+      setprojectPlaylistPublishtoCanvas,
+      setselectedProjectPlaylistName,
+    } = this.props;
     const { permission } = organization;
     const primaryColor = getGlobalColor('--main-primary-color');
     return (
@@ -164,6 +188,8 @@ class PlaylistCard extends React.Component {
                     setProjectId={setProjectId}
                     setProjectPlaylistId={setProjectPlaylistId}
                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                    setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                    setselectedProjectPlaylistName={setselectedProjectPlaylistName}
                   />
                 </h2>
               </div>

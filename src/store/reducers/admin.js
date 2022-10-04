@@ -35,6 +35,8 @@ const INITIAL_STATE = {
   allIv: [],
   selectedFIlterLti: '',
   dynamicPermission: null,
+  roleAddDynamicPermission: null,
+  ltiToolsReloadStatus: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -53,6 +55,20 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dynamicPermission: action.payload,
+      };
+    case actionTypes.UPDATE_PAGINATION_COUNT:
+      return {
+        ...state,
+        [action.reducer]: {
+          ...state[action.reducer],
+          meta: { ...state[action.reducer]?.meta, total: state[action.reducer]?.meta?.total + action.payload, to: state[action.reducer]?.meta?.to + action.payload },
+        },
+      };
+
+    case actionTypes.SET_ALL_DEFAULT_PERMISSION:
+      return {
+        ...state,
+        roleAddDynamicPermission: action.payload,
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {
@@ -201,7 +217,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: {
           ...state.allbrightCove,
-          data: [...state.allbrightCove.data, action.payload],
+          data: [action.payload, ...state.allbrightCove.data],
         },
       };
     case actionTypes.DEL_BRIGHTCOVE:
@@ -316,9 +332,13 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
       };
     case actionTypes.LTI_TOOLS_PAGINATION_UPDATE:
+      let reloadStatus = false;
       let setUpdateTotal = state.ltiTools.meta.total;
       let updatedTo = state.ltiTools.meta.to;
-      if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
+      // let updatedTo = state.ltiTools.meta.to != null ? state.ltiTools.meta.to : 0;
+      if (state.ltiTools.meta.to == null || state.ltiTools.meta.to == 0) {
+        reloadStatus = true;
+      } else if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo + 1;
@@ -328,11 +348,67 @@ export default (state = INITIAL_STATE, action) => {
         state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo - 1;
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
+        } else if (state.selectedFIlterLti == '' || state.selectedFIlterLti == null) {
+          reloadStatus = true;
+        } else {
+          reloadStatus = true;
+        }
+      } else if (
+        action.payload == 'DECREMENT_TYPE_CHANGED' &&
+        state.selectedFIlterLti != null &&
+        state.selectedFIlterLti != '' &&
+        state.selectedFIlterLti != parseInt(action.ltitoolType)
+      ) {
+        state.ltiTools.meta.total = setUpdateTotal - 1;
+        // state.ltiTools.meta.to = updatedTo - 1;
+        if (updatedTo === setUpdateTotal) {
+          state.ltiTools.meta.to = updatedTo - 1;
+
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
+        } else {
+          reloadStatus = true;
         }
       }
       return {
         ...state,
         ltiTools: { ...state.ltiTools },
+        ltiToolsReloadStatus: reloadStatus,
+      };
+
+    // Add New Lti Tool in redux
+    case actionTypes.LTI_TOOLS_ADD_NEW:
+      state.ltiTools.data = [action.payload, ...state?.ltiTools?.data];
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+    case actionTypes.LTI_TOOLS_ADD_EDIT:
+      state.ltiTools.data = state?.ltiTools?.data?.map((data) => {
+        if (data.id == action.payload.id) {
+          data = action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+
+    // Status Lti tool false
+
+    case actionTypes.LTI_TOOLS_RELOAD_STATUS:
+      return {
+        ...state,
+        ltiToolsReloadStatus: false,
       };
 
     default:

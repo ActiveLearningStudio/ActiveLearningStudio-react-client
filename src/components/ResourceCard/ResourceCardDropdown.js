@@ -13,7 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -50,6 +50,8 @@ const ResourceCardDropdown = (props) => {
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
+    setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
@@ -174,9 +176,26 @@ const ResourceCardDropdown = (props) => {
                 <li
                   onClick={() => {
                     handleShow();
+                    // getProjectId(match.params.projectId);
+                    // setProjectId(match.params.projectId);
+                    // setProjectPlaylistId(playlist.id);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
+                </li>
+                <li
+                  onClick={() => {
+                    handleShow();
+                    console.log('res', resource);
+                    setselectedPlaylistActivityName(resource.title);
                     getProjectId(match.params.projectId);
                     setProjectId(match.params.projectId);
                     setProjectPlaylistId(playlist.id);
+                    setselectedProjectPlaylistName(playlist.title);
                     setProjectPlaylistActivityId(resource.id);
                     dispatch(googleShare(true));
                     dispatch(shareToCanvas(true));

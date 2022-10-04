@@ -89,30 +89,36 @@ function Table(props) {
   }, [allSuborgList]);
   //update table after crud
   useEffect(() => {
-    if (type === 'LMS') {
-      if (newlyCreated) {
-        setLocalStateData([newlyCreated, ...data?.data]);
-      } else if (newlyEdit) {
-        setLocalStateData(
-          data?.data.map((lms) => {
-            if (lms.id === newlyEdit?.id) {
-              return newlyEdit;
-            } else {
-              return lms;
-            }
-          }),
-        );
-      }
-    }
-    // dispatch({
-    //   type: actionTypes.NEWLY_EDIT_RESOURCE,
-    //   payload: null,
-    // });
-    // dispatch({
-    //   type: actionTypes.NEWLY_CREATED_RESOURCE,
-    //   payload: null,
-    // });
-  }, [newlyCreated, newlyEdit]);
+    setLocalStateData(data?.data);
+  }, [data?.data]);
+
+  // useEffect(() => {
+  //   if (type === 'LMS') {
+  //     if (newlyCreated) {
+  //       setLocalStateData([newlyCreated, ...data?.data]);
+  //     } else if (newlyEdit) {
+  //       console.log('newlyEdit');
+  //       setLocalStateData(
+  //         data?.data.map((lms) => {
+  //           console.log('lms', lms);
+  //           if (lms.id === newlyEdit?.id) {
+  //             return newlyEdit;
+  //           } else {
+  //             return lms;
+  //           }
+  //         }),
+  //       );
+  //     }
+  //   }
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  // }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
   useEffect(() => {
@@ -551,7 +557,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -573,7 +579,7 @@ function Table(props) {
                         <td>{row.id}</td>
                         <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -618,7 +624,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -653,7 +659,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -788,7 +794,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',

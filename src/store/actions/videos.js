@@ -47,7 +47,7 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
       id: brightId,
       query_param: `query=-tags:curriki&limit=6&offset=${offset}`,
     },
-    offset
+    offset,
   );
   console.log('result', result);
   return result;
@@ -174,8 +174,8 @@ export const allBrightCove = (orgId, size, page) => async (dispatch) => {
     payload: result,
   });
 };
-export const allBrightCoveSearch = (orgId, search, size, page) => async (dispatch) => {
-  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page);
+export const allBrightCoveSearch = (orgId, search, size, page, col, order) => async (dispatch) => {
+  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page, col, order);
   dispatch({
     type: actionTypes.UP_ALL_BRIGHTCOVE,
     payload: result,
@@ -187,6 +187,11 @@ export const addBrightCove = (orgId, data) => async (dispatch) => {
     type: actionTypes.NEW_BRIGHTCOVE,
     payload: result.data,
   });
+  dispatch({
+    type: actionTypes.UPDATE_PAGINATION_COUNT,
+    payload: 1,
+    reducer: 'allbrightCove',
+  });
   return result;
 };
 
@@ -196,6 +201,11 @@ export const deleteBrightCove = (orgId, settingId) => async (dispatch) => {
     dispatch({
       type: actionTypes.DEL_BRIGHTCOVE,
       payload: settingId,
+    });
+    dispatch({
+      type: actionTypes.UPDATE_PAGINATION_COUNT,
+      payload: -1,
+      reducer: 'allbrightCove',
     });
   }
   return result;

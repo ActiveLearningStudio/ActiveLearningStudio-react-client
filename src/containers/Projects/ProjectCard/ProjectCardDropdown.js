@@ -1,13 +1,14 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
 import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
@@ -30,6 +31,8 @@ const ProjectCardDropdown = (props) => {
     teamPermission,
     // text,
     iconColor,
+    setprojectPublishtoCanvas,
+    setcanvasProjectName,
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
@@ -171,6 +174,7 @@ const ProjectCardDropdown = (props) => {
                 <li
                   key={`googleclassroom +${project.id}`}
                   onClick={() => {
+                    dispatch(shareToCanvas(false));
                     handleShow();
                     getProjectId(project.id);
                     // eslint-disable-next-line react/destructuring-assignment
@@ -181,7 +185,18 @@ const ProjectCardDropdown = (props) => {
                   <a>Google Classroom</a>
                 </li>
               )}
-
+              <li
+                onClick={() => {
+                  handleShow();
+                  setProjectId(props.project.id);
+                  setcanvasProjectName(project.name);
+                  dispatch(msTeamShare(true));
+                  dispatch(googleShare(true));
+                  dispatch(shareToCanvas(false));
+                }}
+              >
+                <a>Microsoft Teams</a>
+              </li>
               {allLms.shareVendors &&
                 allLms.shareVendors.map(
                   (data) =>
@@ -191,7 +206,16 @@ const ProjectCardDropdown = (props) => {
                           onClick={async () => {
                             const allPlaylist = await dispatch(lmsPlaylist(project.id));
                             if (allPlaylist) {
-                              dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              if (data.lms_name === 'canvas') {
+                                setprojectPublishtoCanvas(true);
+                                handleShow();
+                                dispatch(googleShare(true));
+                                dispatch(shareToCanvas(true));
+                                setProjectId(props.project.id);
+                                setcanvasProjectName(project.name);
+                              } else {
+                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              }
                             }
                           }}
                         >
@@ -240,6 +264,7 @@ ProjectCardDropdown.propTypes = {
   setProjectId: PropTypes.func.isRequired,
   teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
+  // setprojectPublishtoCanvas: PropTypes.func.isRequired,
   // text: propTypes.string,
 };
 

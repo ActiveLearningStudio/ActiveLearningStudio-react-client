@@ -221,10 +221,17 @@ export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column 
 
 export const gettAllDynamicPermisison = (subOrgId, roleId, add) => async (dispatch) => {
   const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId, add);
-  dispatch({
-    type: actionTypes.SET_ALL_PERMISSION,
-    payload: result?.data,
-  });
+  if (add) {
+    dispatch({
+      type: actionTypes.SET_ALL_DEFAULT_PERMISSION,
+      payload: result?.data,
+    });
+  } else {
+    dispatch({
+      type: actionTypes.SET_ALL_PERMISSION,
+      payload: result?.data,
+    });
+  }
 };
 
 export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {

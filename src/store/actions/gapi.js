@@ -18,6 +18,7 @@ import {
   GET_SUMMARY_AUTH,
   GET_OUTCOME_SUMMARY,
   SHARE_CANAVS,
+  SHARE_MS_TEAM,
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -31,6 +32,10 @@ export const googleShare = (value) => ({
 });
 export const shareToCanvas = (value) => ({
   type: SHARE_CANAVS,
+  value,
+});
+export const msTeamShare = (value) => ({
+  type: SHARE_MS_TEAM,
   value,
 });
 export const loadCourses = (value) => ({
@@ -211,6 +216,33 @@ export const fetchCanvasAssignmentGroups = (courseId, setting_id) => async (disp
       type: GET_COURSE_TOPICS,
       payload: getTopics.data,
     });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+//publish to ms team
+
+export const saveMicrosoftAccesstoken = (accessTokenId) => async (dispatch) => {
+  try {
+    // save access token
+    const getClasses = await searchService.saveMicrosoftAccessToken(accessTokenId);
+    console.log(getClasses);
+  } catch (e) {
+    console.log(e);
+  }
+};
+export const getMSteamClasses = () => async (dispatch) => {
+  try {
+    // save access token
+
+    const getClasses = await searchService.getmsTeamclasses();
+    dispatch({
+      type: ALL_COURSES,
+      payload: getClasses.classes,
+    });
+
+    // dispatch(googleClassRoomLogin(response));
   } catch (e) {
     console.log(e);
   }

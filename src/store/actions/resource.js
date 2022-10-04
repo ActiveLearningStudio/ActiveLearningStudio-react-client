@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import resourceService from 'services/resource.service';
 import indResourceService from 'services/indActivities.service';
 import videoService from 'services/videos.services';
-import socketConnection from 'services/http.service';
+
 import * as actionTypes from '../actionTypes';
 import { loadProjectPlaylistsAction } from 'store/actions/playlist';
 import store from '../index';

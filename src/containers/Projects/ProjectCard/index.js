@@ -22,7 +22,7 @@ import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
 import ShareLinkMdSvg from 'iconLibrary/mainContainer/ShareLinkMdSvg';
 
 const ProjectCard = (props) => {
-  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission, adminPanel } = props;
+  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission, adminPanel, setprojectPlaylistPublishtoCanvas, setcanvasProjectName } = props;
   const ImgLoader = () => <img src={loader} alt="" />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -49,6 +49,8 @@ const ProjectCard = (props) => {
                     iconColor="#ffffff"
                     setCreateProject={setCreateProject}
                     teamPermission={teamPermission || {}}
+                    setprojectPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                    setcanvasProjectName={setcanvasProjectName}
                   />
                 )}
               </div>

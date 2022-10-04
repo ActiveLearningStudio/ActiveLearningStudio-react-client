@@ -562,6 +562,19 @@ export default function Pills(props) {
       setLtiTool(data);
     });
   };
+  useEffect(() => {
+    if (admin.ltiToolsReloadStatus == true) {
+      if(admin.selectedFIlterLti != null && admin.selectedFIlterLti != ''){
+        filterLtiTool(admin.selectedFIlterLti);
+      }else{
+        filterLtiTool(null);
+      }
+     
+      dispatch({
+        type: actionTypes.LTI_TOOLS_RELOAD_STATUS,
+      });
+    }
+  }, [admin.ltiToolsReloadStatus]);
 
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
@@ -820,6 +833,24 @@ export default function Pills(props) {
           col = 'lms_name';
       }
       dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, lmsProjectFilterBy));
+      setCurrentOrderBy(orderBy);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+      setOrderByColumn(col);
+    } else if (subType == 'BrightCove') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+
+      switch (column) {
+        case 'Type':
+          col = 'account_name';
+          break;
+        default:
+          col = 'account_name';
+      }
+
+      dispatch(allBrightCoveSearch(activeOrganization?.id, searchQuery, size, activePage || 1, col, orderBy));
+
       setCurrentOrderBy(orderBy);
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
@@ -1106,7 +1137,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
-                  sortCol={[]}
+                  sortCol={columnData.sortIntegrationBrightCove}
                   handleSort={handleSort}
                   data={lmsBrightCove}
                   type={type}

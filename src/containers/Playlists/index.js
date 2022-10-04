@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import { Alert, Modal, Dropdown } from 'react-bootstrap';
 import { uploadThumb } from 'containers/Projects/CreateProjectPopup';
 import Headings from 'curriki-design-system/dist/utils/Headings/headings';
+import SelectImage from 'utils/SelectImage';
 import PexelsAPI from 'components/models/pexels';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import {
@@ -42,6 +43,7 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
+import { shareToCanvas, googleShare } from 'store/actions/gapi';
 import {
   showCreateProjectModalAction,
   loadProjectAction,
@@ -101,8 +103,11 @@ function PlaylistsPage(props) {
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [selectedProjectPlaylistName, setselectedProjectPlaylistName] = useState('');
+  const [selectedPlaylistActivityName, setselectedPlaylistActivityName] = useState('');
   const [selectedProjectPlaylistActivityId, setSelectedProjectPlaylistActivityId] = useState(0);
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
+  const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
   const { screenState } = useSelector((s) => s.myactivities);
 
   const {
@@ -456,7 +461,10 @@ function PlaylistsPage(props) {
   };
 
   const handleClose = () => {
+    dispatch(shareToCanvas(false));
+    dispatch(googleShare(false));
     setShow(false);
+    setprojectPlaylistPublishtoCanvas(false);
   };
 
   const setProjectId = (projectId) => {
@@ -574,7 +582,23 @@ function PlaylistsPage(props) {
                                 className="project-image-playlistpage"
                               />
                               <div className="on-hover-project-image">
-                                <div className="thumb-display">
+                                {(Object.keys(teamPermission).length
+                                  ? teamPermission?.Team?.includes('team:edit-project')
+                                  : permission?.Project?.includes('project:upload-thumb')) && (
+                                  <SelectImage
+                                    image={
+                                      selectedProject.thumb_url?.includes('pexels.com')
+                                        ? selectedProject.thumb_url
+                                        : global.config.resourceUrl + selectedProject.thumb_url ||
+                                          'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
+                                    }
+                                    returnImage={(e) => uploadThumb(e)}
+                                    returnImagePexel={(e) => setUploadImage(e)}
+                                    containerType="Project"
+                                  />
+                                )}
+
+                                {/* <div className="thumb-display">
                                   <div
                                     className="success"
                                     style={{
@@ -625,7 +649,7 @@ function PlaylistsPage(props) {
                                       <p>Pexels</p>
                                     </div>
                                   </div>
-                                )}
+                                )} */}
                               </div>
                             </div>
                             {!editName && <Headings text={selectedProject ? selectedProject.name : ''} headingType="h2" className="main-heading" color="#2E68BF" />}
@@ -798,6 +822,9 @@ function PlaylistsPage(props) {
                                     setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                                     setSelectSearchModule={setSelectSearchModule}
                                     setPlaylistIdForSearchingTab={setPlaylistIdForSearchingTab}
+                                    setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+                                    setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                                    setselectedPlaylistActivityName={setselectedPlaylistActivityName}
                                   />
                                 ))}
                               {provided.placeholder}
@@ -874,6 +901,10 @@ function PlaylistsPage(props) {
         activityId={selectedProjectPlaylistActivityId}
         show={show} // {props.show}
         onHide={handleClose}
+        selectedProjectPlaylistName={selectedProjectPlaylistName}
+        setprojectPlaylistPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+        projectPlaylistPublishtoCanvas={projectPlaylistPublishtoCanvas}
+        selectedPlaylistActivityName={selectedPlaylistActivityName}
       />
     </>
   );

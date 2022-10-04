@@ -41,7 +41,7 @@ const DescribeVideo = ({
   isbackHide,
 }) => {
   const [modalShow, setModalShow] = useState(false);
-
+  const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
   const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -237,7 +237,9 @@ const DescribeVideo = ({
                 return errors;
               }}
               onSubmit={(values) => {
-                setModalShow(true);
+                if (!showSmythsonianModal) {
+                  setModalShow(true);
+                }
               }}
             >
               {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
@@ -335,12 +337,14 @@ const DescribeVideo = ({
 
                     <div className="formik-uploadimage">
                       <UploadImage
-                        title="Upload poster (Optional)"
-                        defuaultImage={DefaultUpload}
-                        className="uploadImage-describe-video"
+                        // title="Upload poster (Optional)"
+                        // defuaultImage={DefaultUpload}
+                        // className="uploadImage-describe-video"
                         setUploadImageStatus={setUploadImageStatus}
                         formRef={formRef}
+                        setshowSmythsonianModal={setshowSmythsonianModal}
                         thumb_url={editVideo?.thumb_url}
+                        containerType="activity"
                       />
                     </div>
                   </div>

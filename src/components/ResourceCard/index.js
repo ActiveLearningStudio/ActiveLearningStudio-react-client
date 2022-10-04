@@ -24,11 +24,13 @@ const ResourceCard = (props) => {
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
+    setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
     // wizard,
   } = props;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
-  const parser = new DOMParser()
+  const parser = new DOMParser();
   let resourceTitle = parser.parseFromString(resource.metadata && resource.metadata.title !== undefined ? resource.metadata.title : resource.title, 'text/html').body.textContent;
   return (
     <Draggable key={resource.id} draggableId={`${resource.id}`} index={index}>
@@ -98,6 +100,8 @@ const ResourceCard = (props) => {
                 setProjectId={setProjectId}
                 setProjectPlaylistId={setProjectPlaylistId}
                 setProjectPlaylistActivityId={setProjectPlaylistActivityId}
+                setselectedProjectPlaylistName={setselectedProjectPlaylistName}
+                setselectedPlaylistActivityName={setselectedPlaylistActivityName}
                 // wizard
               />
             </div>
