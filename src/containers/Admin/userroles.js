@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
@@ -234,10 +234,17 @@ function UserRoles() {
 }
 
 export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission, setAllActivePermission, dynamicPermission, dispatch }) => {
+  const changeColor = useRef();
   return (
     <div className="form-group custom-select-style-for-sub">
       <select
         onChange={(e) => {
+          // console.log(e.target);
+          // if (e.target.value === 'None' || e.target.value === '3') {
+          //   e.target.classList.add('disableselect');
+          // } else {
+          //   e.target.classList.remove('disableselect');
+          // }
           if (e.target.value === 'View' || e.target.value === 'Edit' || e.target.value === 'None') {
             dispatch({
               type: 'SET_ALL_PERMISSION',
@@ -318,6 +325,7 @@ export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission,
             });
           }
         }}
+        className={subData?.filter((data) => data.title === 'None')[0]?.selected ? 'activeNone' : ''}
       >
         {subData?.map((subData, counter) => {
           return (

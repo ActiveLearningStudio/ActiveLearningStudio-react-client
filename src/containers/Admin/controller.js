@@ -1014,7 +1014,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+        {!!btnText && subType === 'Subjects' && permission?.Organization.includes('organization:edit-subject') && (
           <div className="btn-text">
             <button
               type="button"
@@ -1030,7 +1030,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+        {!!btnText && subType === 'Education Level' && permission?.Organization.includes('organization:edit-education-level') && (
           <div className="btn-text">
             <button
               type="button"
@@ -1046,7 +1046,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+        {!!btnText && subType === 'Author Tags' && permission?.Organization.includes('organization:edit-author-tag') && (
           <div className="btn-text">
             <button
               type="button"
@@ -1061,7 +1061,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+        {!!btnText && subType === 'Activity Layouts' && permission?.Organization.includes('organization:edit-activity-layout') && (
           <div className="btn-text">
             <button
               type="button"
