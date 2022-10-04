@@ -218,7 +218,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumbUrl: action.payload.thumbUrl,
+        selectedProject: { ...state.selectedProject, thumb_url: action.payload.thumbUrl },
         progress: null,
       };
 
