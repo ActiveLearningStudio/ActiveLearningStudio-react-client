@@ -176,7 +176,7 @@ function ProjectPreviewShared(props) {
               </div>
             ) : project.isSharedProject === false ? (
               <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
-                Project is not sharable.
+                Project is not shareable.
               </Alert>
             ) : (
               <Alert variant="primary" style={{ marginTop: '20px' }}>

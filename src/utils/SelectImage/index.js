@@ -16,7 +16,7 @@ const SelectImage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (show && containerType === 'activity') {
+    if (show && containerType === 'Activity') {
       setshowSmythsonianModal(true);
     }
   }, [show]);
@@ -28,6 +28,7 @@ const SelectImage = (props) => {
       });
     }
   }, [mediaSources]);
+  console.log('images', image);
   return (
     <>
       <div className="curriki-image-update-util">
@@ -35,7 +36,7 @@ const SelectImage = (props) => {
         <div className="box-section">
           <img
             style={{
-              backgroundImage: !image.includes('/storage/') ? `url(${image})` : `url(${global.config.resourceUrl}${image})`,
+              backgroundImage: image.includes('/storage/') ? `url(${image})` : `url(${image})`,
             }}
             className="thumbnail"
           />
@@ -51,7 +52,7 @@ const SelectImage = (props) => {
         show={show}
         handleClose={() => {
           setShow(false);
-          if (containerType === 'activity') {
+          if (containerType === 'Activity') {
             setshowSmythsonianModal(false);
           }
         }}

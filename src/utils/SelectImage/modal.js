@@ -9,8 +9,17 @@ import Pexels from './pexels';
 
 const ModalImage = (props) => {
   const { show, handleClose, mediaSources } = props;
+  const [activeKey, setactiveKey] = useState('Pexels');
   const [loader, setLoader] = useState(false);
   const openFile = useRef();
+  // useEffect(() => {
+  //   setactiveKey(mediaSources?.filter((source) => source.media_type === 'Image')[0]?.name);
+  // }, [mediaSources]);
+  // useEffect(() => {
+  //   if (activeKey === 'My device') {
+  //     openFile.current?.click();
+  //   }
+  // }, [activeKey]);
   return (
     <>
       <Modal className="thumbnails-modal" show={show} backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -21,14 +30,14 @@ const ModalImage = (props) => {
               <FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />
             </div>
           </div>
-          <p className="thumbnails-text">You are currently viewing Thumbnails form Category. You can search other thumbnails below as well.</p>
+          <p className="thumbnails-text">You are currently viewing Thumbnails form Smithsonian Library. You can search other thumbnails below as well.</p>
 
           <Tabs
-            defaultActiveKey="Pexels"
+            defaultActiveKey={activeKey}
             id="uncontrolled-tab-example"
             className="thumbnails-tabs"
             onSelect={(k) => {
-              if (k === 'device') {
+              if (k === 'My device') {
                 openFile.current?.click();
               } else {
                 setLoader(false);
@@ -41,11 +50,11 @@ const ModalImage = (props) => {
               </Tab>
             )}
             {mediaSources.some((obj) => obj.name === 'Smithsonian' && obj.media_type === 'Image') && (
-              <Tab eventKey="Simthsonian" title="Simthsonian">
+              <Tab eventKey="Smithsonian" title="Smithsonian">
                 <Pexels {...props} smythsonian={true} loader={loader} setLoader={setLoader} />
               </Tab>
             )}
-            {mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && <Tab eventKey="device" title="My Device"></Tab>}
+            {mediaSources.some((obj) => obj.name === 'My device' && obj.media_type === 'Image') && <Tab eventKey="My device" title="My Device"></Tab>}
           </Tabs>
         </Modal.Body>
       </Modal>

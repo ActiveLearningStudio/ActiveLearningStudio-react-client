@@ -575,9 +575,9 @@ function PlaylistsPage(props) {
                               <div
                                 title="project-img"
                                 style={{
-                                  backgroundImage: selectedProject.thumb_url?.includes('pexels.com')
-                                    ? `url(${selectedProject.thumb_url})`
-                                    : `url(${global.config.resourceUrl}${selectedProject.thumb_url})`,
+                                  backgroundImage: selectedProject.thumb_url?.includes('/storage/')
+                                    ? `url(${global.config.resourceUrl}${selectedProject.thumb_url})`
+                                    : `url(${selectedProject.thumb_url})`,
                                 }}
                                 className="project-image-playlistpage"
                               />
@@ -587,12 +587,12 @@ function PlaylistsPage(props) {
                                   : permission?.Project?.includes('project:upload-thumb')) && (
                                   <SelectImage
                                     image={
-                                      selectedProject.thumb_url?.includes('pexels.com')
-                                        ? selectedProject.thumb_url
-                                        : global.config.resourceUrl + selectedProject.thumb_url ||
+                                      selectedProject.thumb_url?.includes('/storage/')
+                                        ? global.config.resourceUrl + selectedProject.thumb_url
+                                        : selectedProject.thumb_url ||
                                           'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
                                     }
-                                    returnImage={(e) => uploadThumb(e)}
+                                    returnImage={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch)}
                                     returnImagePexel={(e) => setUploadImage(e)}
                                     containerType="Project"
                                   />

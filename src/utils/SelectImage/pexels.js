@@ -12,7 +12,7 @@ const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API
 function Pexels(props) {
   const [pexelData, setPexels] = useState([]);
 
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState('');
   const [nextApi, setNextApi] = useState('');
   const [smythCount, setSmythCount] = useState(1);
 
@@ -132,6 +132,7 @@ function Pexels(props) {
                       }}
                       alt="pexel"
                     />
+                    {smythsonian && <span>{images.title}</span>}
                     {/* {smythsonian ? (
                       <a href="#" target="_blank" rel="noopener noreferrer">
                         {images.title}
