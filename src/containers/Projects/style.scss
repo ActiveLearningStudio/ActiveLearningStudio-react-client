@@ -1,10 +1,66 @@
 @import "assets/css/index";
 
-#content-wrapper-project {
+// C-CSS-Start
+.container-fluid {
+  padding: 0 !important;
+}
+.content-wrapper-project {
   margin-left: 136px !important;
   padding: 25px;
 }
 
+.customcard30 .playlist-resource {
+  max-width: 33% !important;
+  width: 33% !important;
+}
+
+// For New Project
+.modal {
+  padding-top: 15px !important;
+  padding-right: 15px !important;
+  display: block !important;
+  background-color: #263b4eeb !important;
+  opacity: 1 !important;
+
+  &.left .modal-dialog,
+  &.right .modal-dialog {
+    position: relative;
+    max-width: none !important;
+    height: 100%;
+    margin-top: 0;
+    padding-left: 346px;
+    transform: translate3d(0%, 0, 0) !important;
+  }
+
+  &.left .modal-content,
+  &.right .modal-content {
+    width: 550px;
+    height: 100%;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0;
+  }
+
+  &.left .modal-body,
+  &.right .modal-body,
+  &.left .modal-title,
+  &.right .modal-title {
+    padding: 15px;
+  }
+
+  &.right.fade {
+    .modal-dialog {
+      right: 0;
+      padding-top: 0 !important;
+      transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
+
+    &.in .modal-dialog {
+      right: 0;
+    }
+  }
+}
+// C-CSS-End
 .project-list-all {
   // display: flex;
   // flex-wrap: wrap;
@@ -33,6 +89,40 @@
   // }
 }
 
+.main-tabs {
+  width: 100%;
+  margin-top: 0px;
+  margin-bottom: 16px !important;
+
+  .nav-item {
+    position: relative;
+    margin-right: 5px;
+    padding: 6px 24px;
+    background-color: #fff !important;
+    font-size: 14px;
+    font-weight: 400;
+    color: $curriki-main-blue !important;
+  }
+
+  .nav-item.active {
+    background-color: #6e6d6d !important;
+    color: #fff !important;
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #6e6d6d;
+      border-bottom-color: #6e6d6d;
+      transform: translate(-50%);
+    }
+  }
+}
 .nav-tabs .nav-link.hover :hover {
   background-color: $curriki-main-blue !important;
   color: $white !important;
@@ -60,6 +150,7 @@
 .main-tabs .nav-item.active:after {
   display: none !important;
 }
+
 // ***************************************************************
 
 .program-tile {
