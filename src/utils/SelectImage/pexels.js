@@ -60,7 +60,7 @@ function Pexels(props) {
             placeholder="Search..."
             value={searchValue}
             onChange={(e) => {
-              setSearchValue(e.target.value.trim());
+              setSearchValue(e.target.value);
               if (!e.target.value) {
                 setLoader(true);
                 if (smythsonian) {
