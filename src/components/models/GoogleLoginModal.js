@@ -384,6 +384,8 @@ const GoogleLoginModal = ({
                       room: 'test',
                     }}
                     onSubmit={(values) => {
+                      setLoading(false);
+                      onHide();
                       if (isCanvas) {
                         callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
                       } else if (sharetoMS) {
@@ -391,9 +393,6 @@ const GoogleLoginModal = ({
                       } else {
                         callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
                       }
-
-                      setLoading(false);
-                      onHide();
                     }}
                     // validate={(values) => {
                     //   const errors = {};
