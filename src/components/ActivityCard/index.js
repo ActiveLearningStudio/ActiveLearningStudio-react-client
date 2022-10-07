@@ -87,10 +87,10 @@ const ActivityCard = (props) => {
             <Link
               to={
                 shared
-                  ? `/project/${projectId}/playlist/${playlistId}/shared?view=activity`
+                  ? `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
                   : lti
-                    ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
-                    : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
+                  ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
+                  : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
               }
               onClick={() => localStorage.setItem('projectPreview', true)}
             >
@@ -102,21 +102,11 @@ const ActivityCard = (props) => {
                       !!activity.thumb_url && activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
                   }}
                 />
-                <div className="plydet plydet-update" id="plydet-update-id">
+                <div className=" plydet-update" id="plydet-update-id">
                   {activity.metadata ? activity.metadata.title : activity.title}
                 </div>
               </div>
             </Link>
-            {/* {!lti && (
-            <div className="activity-options-wrapper check">
-              <ResourceCardDropdown
-                playlist={playlist}
-                resource={activity}
-                teamPermission={teamPermission || {}}
-                previewPage="projectPreview"
-              />
-            </div>
-          )} */}
           </>
         )}
       </li>
@@ -139,8 +129,8 @@ ActivityCard.propTypes = {
 ActivityCard.defaultProps = {
   lti: false,
   sampleID: null,
-  setModalShow: () => { },
-  setCurrentActivity: () => { },
+  setModalShow: () => {},
+  setCurrentActivity: () => {},
 };
 
 export default ActivityCard;
