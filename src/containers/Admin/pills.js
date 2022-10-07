@@ -7,6 +7,7 @@ import adminService from 'services/admin.service';
 import indActivity from 'services/indActivities.service';
 import Starter from './starter';
 import { columnData } from './column';
+import Publishing from './publishing/index';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { adminIntActivities, allAdminExportActivity } from 'store/actions/indActivities';
@@ -564,12 +565,12 @@ export default function Pills(props) {
   };
   useEffect(() => {
     if (admin.ltiToolsReloadStatus == true) {
-      if(admin.selectedFIlterLti != null && admin.selectedFIlterLti != ''){
+      if (admin.selectedFIlterLti != null && admin.selectedFIlterLti != '') {
         filterLtiTool(admin.selectedFIlterLti);
-      }else{
+      } else {
         filterLtiTool(null);
       }
-     
+
       dispatch({
         type: actionTypes.LTI_TOOLS_RELOAD_STATUS,
       });
@@ -1149,6 +1150,7 @@ export default function Pills(props) {
               )}
               {/* Media Start */}
               {type === 'LMS' && subTypeState === 'Media' && <Media />}
+              {type === 'LMS' && subTypeState === 'Google Classroom' && <Publishing />}
               {/* Media End */}
 
               {type === 'Projects' && subTypeState === 'All Projects' && (

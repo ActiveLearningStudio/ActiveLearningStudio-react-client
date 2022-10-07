@@ -2718,7 +2718,27 @@
       line-height: 24px;
       color: $curriki-main-blue;
     }
-
+    .button-group {
+      .update-permission {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 16px;
+        width: 118px;
+        height: 32px;
+        background: #e5eeff;
+        border-radius: 4px;
+        border: none;
+      }
+      span {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        text-align: center;
+        color: #084892;
+      }
+    }
     .sources-options {
       padding: 19px 27px;
       background: #f7faff;
