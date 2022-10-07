@@ -344,7 +344,7 @@ const DescribeVideo = ({
                         formRef={formRef}
                         setshowSmythsonianModal={setshowSmythsonianModal}
                         thumb_url={editVideo?.thumb_url}
-                        containerType="activity"
+                        containerType="Activity"
                       />
                     </div>
                   </div>
