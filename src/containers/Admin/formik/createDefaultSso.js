@@ -1,42 +1,49 @@
-/* eslint-disable */
-import React, { useState, useRef, useEffect } from 'react';
+/* eslint-disable operator-linebreak */
+/* eslint-disable eqeqeq */
+import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
 
 import { getDefaultSso, removeActiveAdminForm } from 'store/actions/admin';
 import Swal from 'sweetalert2';
-import authapi from '../../../services/auth.service';
-import adminapi from '../../../services/admin.service';
 import loader from 'assets/images/dotsloader.gif';
 import Switch from 'react-switch';
+import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import organizationsServices from 'services/organizations.services';
+import adminapi from '../../../services/admin.service';
 
 export default function CreateDefaultSso(prop) {
-  const { editMode, method, clone } = prop;
+  const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeEdit } = organization;
+  const { activeEdit, activePage } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgSearch, setStateOrgSearch] = useState([]);
-  const [checked, setChecked] = useState(false);
   const [organizationRole, setOrganizationRole] = useState([]);
   const [selectedRole, setSelectedRole] = useState('');
+  const [checkedActivity, setCheckedActivty] = useState(false);
+  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
+  const [checkedProject, setCheckedProject] = useState(false);
+  const getOrganazationRoles = (orgId) => {
+    const result = organizationsServices.getRoles(orgId);
+    result.then((role) => {
+      setOrganizationRole(role.data);
+    });
+  };
   useEffect(() => {
     if (editMode && !clone) {
-      setChecked(activeEdit?.published);
+      setCheckedActivty(activeEdit?.activity_visibility);
+      setCheckedPlaylist(activeEdit?.playlist_visibility);
+      setCheckedProject(activeEdit?.project_visibility);
     }
     if (editMode) {
       getOrganazationRoles(activeEdit?.organization_id);
     }
   }, [activeEdit, editMode]);
 
-  const getOrganazationRoles = (orgId) => {
-    const result = organizationsServices.getRoles(orgId);
-    result.then((role) => {
-      setOrganizationRole(role.data);
-    });
-  }
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="create-form">
       <Formik
@@ -51,9 +58,10 @@ export default function CreateDefaultSso(prop) {
           lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
           description: editMode ? activeEdit?.description : '',
           name: editMode ? (clone ? '' : activeEdit?.organization?.name) : '',
-          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
-          published: editMode ? (clone ? false : activeEdit?.published) : false,
           role_id: editMode ? activeEdit?.role_id : '',
+          activity_visibility: editMode ? (clone ? false : activeEdit?.activity_visibility) : false,
+          playlist_visibility: editMode ? (clone ? false : activeEdit?.playlist_visibility) : false,
+          project_visibility: editMode ? (clone ? false : activeEdit?.project_visibility) : false,
         }}
         validate={(values) => {
           const errors = {};
@@ -80,7 +88,7 @@ export default function CreateDefaultSso(prop) {
           if (!values.organization_id) {
             errors.organization_id = 'required';
           }
-          
+
           if (!values.role_id) {
             errors.role_id = 'required';
           }
@@ -104,8 +112,12 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id));
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, activePage));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -129,8 +141,12 @@ export default function CreateDefaultSso(prop) {
               Swal.fire({
                 icon: 'success',
                 text: res?.message,
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
-              dispatch(getDefaultSso(organization?.activeOrganization?.id));
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -151,11 +167,94 @@ export default function CreateDefaultSso(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</h2>
+            <h2>
+              {editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}
+              SSO Integration
+            </h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
               <div>
+                <div className="form-group-create">
+                  <h3>
+                    Organization
+                    <div>
+                      <small>Search org from dropdown list only</small>
+                    </div>
+                  </h3>
+                  <input
+                    type="text"
+                    name="organization_id"
+                    autoComplete="off"
+                    onChange={async (e) => {
+                      setFieldValue('name', e.target.value);
+                      if (e.target.value == '') {
+                        setStateOrgSearch([]);
+                        return;
+                      }
+                      setLoaderlmsImgUser(true);
+                      const orgApi = organizationsServices.searchOrganization(e.target.value);
+                      orgApi.then((data) => {
+                        setLoaderlmsImgUser(false);
+                        setStateOrgSearch(data?.organization);
+                      });
+                    }}
+                    onBlur={handleBlur}
+                    value={values.name}
+                  />
+
+                  {loaderlmsImgUser && (
+                    <div>
+                      <img src={loader} alt="" style={{ width: '25px' }} className="loader" />
+                    </div>
+                  )}
+
+                  {stateOrgSearch?.length > 0 && (
+                    <ul className="all-users-list">
+                      {stateOrgSearch?.map((org) => (
+                        <li
+                          value={org}
+                          onClick={() => {
+                            setFieldValue('organization_id', org.id);
+                            setFieldValue('name', org.name);
+                            setStateOrgSearch([]);
+                            getOrganazationRoles(org.id);
+                          }}
+                          key={org.id}
+                        >
+                          {org.name}
+                          <p>
+                            Domain: &nbsp;
+                            {org.domain}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
+                </div>
+
+                {organizationRole.length > 0 && (
+                  <div className="form-group-create">
+                    <h3>Select Role</h3>
+                    <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
+                      <option defaultValue="">Nothing selected</option>
+                      {organizationRole.length > 0 &&
+                        organizationRole?.map((role) => (
+                          <>
+                            {setSelectedRole(typeof values.role_id !== 'undefined' && values.role_id == role.id ? 'selected' : '')}
+                            <option value={role.id} key={role.id} selected={selectedRole}>
+                              {role.display_name}
+                            </option>
+                          </>
+                        ))}
+                    </select>
+                    <div className="error">{errors.role_id && touched.role_id && errors.role_id}</div>
+                  </div>
+                )}
+
+                <hr />
+
                 <div className="form-group-create">
                   <h3>LMS URL</h3>
                   <input type="text" name="lms_url" onChange={handleChange} onBlur={handleBlur} value={values.lms_url} />
@@ -190,14 +289,11 @@ export default function CreateDefaultSso(prop) {
                           value={values.role}
                         /> */}
                   <select name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
-                    <option defaultValue="moodle" value="moodle">
-                      Moodle
-                    </option>
-                    <option value="canvas">Canvas</option>
-                    <option value="safarimontage">Safari Montage</option>
-                    <option value="schoology">Schoology</option>
-                    <option value="d2l">D2L</option>
-                    <option value="sakai">Sakai</option>
+                    {integratedLMS.map((data) => (
+                      <option key={data.value} value={data.value}>
+                        {data.name}
+                      </option>
+                    ))}
                   </select>
                   <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
                 </div>
@@ -221,86 +317,69 @@ export default function CreateDefaultSso(prop) {
                 </div>
 
                 <div className="form-group-create">
-                  <h3>Published</h3>
-                  <Switch
-                    checked={checked}
-                    onChange={() => {
-                      setChecked(!checked);
-                      setFieldValue('published', !checked);
-                    }}
-                  />
-                </div>
-                
-                <div className="form-group-create">
-                  <h3>Organization &nbsp;<small>(search organization from dropdown list only)</small></h3>
-                  <input
-                    type="text"
-                    name="organization_id"
-                    autoComplete="off"
-                    onChange={async (e) => {
-                      setFieldValue('name', e.target.value);
-                      if (e.target.value == '') {
-                        setStateOrgSearch([]);
-                        return;
-                      }
-                      setLoaderlmsImgUser(true);
-                      const orgApi = organizationsServices.searchOrganization(e.target.value);
-                      orgApi.then((data) => {
-                        setLoaderlmsImgUser(false);
-                        setStateOrgSearch(data?.organization);
-                      });
-                    }}
-                    onBlur={handleBlur}
-                    value={values.name}
-                  />
-
-                  {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
-                  {stateOrgSearch?.length > 0 && (
-                    <ul className="all-users-list">
-                      {stateOrgSearch?.map((org) => (
-                        <li
-                          value={org}
-                          onClick={() => {
-                            setFieldValue('organization_id', org.id);
-                            setFieldValue('name', org.name);
-                            setStateOrgSearch([]);
-                            getOrganazationRoles(org.id);
-                          }}
-                          key={org.id}
-                        >
-                          {org.name}
-                          <p>
-                            Domain: &nbsp;
-                            {org.domain}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="error">{errors.organization_id && touched.organization_id && errors.organization_id}</div>
-                </div>
-                {organizationRole.length > 0 && (
-                  <div className="form-group-create">
-                    <h3>Select Role</h3>
-                    <select name="role_id" onChange={handleChange} onBlur={handleBlur} value={values.role_id}>
-                    <option defaultValue="">Nothing selected</option>
-                      {organizationRole.length > 0 && (
-                        organizationRole?.map((role) => (<>
-                          { setSelectedRole(typeof values.role_id != 'undefined' && values.role_id == role.id ? 'selected' :'')}
-                          <option value={role.id} key={role.id} selected={selectedRole}>{role.display_name}</option>
-                          </>
-                        ))
-                      )}
-                    </select>
-                    <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
+                  <h3>Visibility</h3>
+                  <div className="create-form-inputs-toggles">
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <Switch
+                        checked={checkedActivity}
+                        onChange={() => {
+                          setCheckedActivty(!checkedActivity);
+                          setFieldValue('activity_visibility', !checkedActivity);
+                        }}
+                        className="react-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        offColor="#888"
+                        onColor={primaryColor}
+                        onHandleColor={primaryColor}
+                        offHandleColor="#666"
+                      />
+                      <h3>Activity</h3>
+                    </div>
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <Switch
+                        checked={checkedPlaylist}
+                        onChange={() => {
+                          setCheckedPlaylist(!checkedPlaylist);
+                          setFieldValue('playlist_visibility', !checkedPlaylist);
+                        }}
+                        className="react-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        offColor="#888"
+                        onColor={primaryColor}
+                        onHandleColor={primaryColor}
+                        offHandleColor="#666"
+                      />
+                      <h3>Playlist</h3>
+                    </div>
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <Switch
+                        checked={checkedProject}
+                        onChange={() => {
+                          setCheckedProject(!checkedProject);
+                          setFieldValue('project_visibility', !checkedProject);
+                        }}
+                        className="react-switch"
+                        handleDiameter={30}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        offColor="#888"
+                        onColor={primaryColor}
+                        onHandleColor={primaryColor}
+                        offHandleColor="#666"
+                      />
+                      <h3>Project</h3>
+                    </div>
                   </div>
-                )}
-
+                </div>
               </div>
             </div>
-            
+
             <div className="button-group">
-              <button type="submit">{editMode ? (clone ? 'Create ' : 'Edit ') : 'Create '}SSO Integration</button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 className="cancel"

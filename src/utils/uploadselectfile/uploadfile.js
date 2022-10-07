@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -10,9 +11,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import UploadImg from '../../assets/images/upload1.png';
 
-const UploadFile = ({ className, formRef }) => {
+const UploadFile = ({ className, formRef, activityPreview }) => {
   const { selectedLayout, playlist, project } = useSelector((state) => state.myactivities);
-  console.log('formRef', formRef);
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const currikiUtility = classNames('curriki-utility-uploadfile', className);
@@ -33,7 +33,7 @@ const UploadFile = ({ className, formRef }) => {
       h5pFile,
     };
     console.log(formRef.current.values, 'upload file');
-    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, project));
+    dispatch(createResourceByH5PUploadAction(playlist.id, selectedLayout?.h5pLib, 'h5p', payload, formRef.current.values, activityPreview));
   };
   return (
     <>
@@ -66,9 +66,10 @@ const UploadFile = ({ className, formRef }) => {
               ref={imgUpload}
               style={{
                 cursor: 'pointer',
-                background: 'transparent',
-                padding: '125px 41px 0px 41px',
-                border: '3px dashed #ddd',
+                background: '#F1F1F1',
+                padding: '160px 41px 0px 41px',
+                borderRadius: '8px',
+                border: 'none',
               }}
               onClick={(e) => {
                 e.target.value = '';
@@ -76,7 +77,21 @@ const UploadFile = ({ className, formRef }) => {
             />
             <div className="upload-holder">
               <img src={UploadImg} alt="upload" className="mr-2" />
-              <p>Drag & Drop File or click to upload</p>
+              <p>
+                Drag & drop file or &nbsp;
+                <span
+                  onClick={() => {
+                    formRef.current.handleSubmit();
+                    if (formRef.current.values.title && formRef.current.values.title.length < 255) {
+                      imgUpload.current.click();
+                    }
+                  }}
+                  style={{ color: '#2e8df5' }}
+                >
+                  browse
+                </span>
+                &nbsp;to upload
+              </p>
             </div>
           </div>
         </div>

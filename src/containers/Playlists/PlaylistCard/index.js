@@ -15,6 +15,12 @@ import PlaylistCardDropdown from './PlaylistCardDropdown';
 import UploadLogo from '../../../assets/images/upload-active.svg';
 
 import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { faPlus, faServer, faUpload } from '@fortawesome/free-solid-svg-icons';
+import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
+import PlusSmSvg from 'iconLibrary/mainContainer/PlusSmSvg';
+import MyActivitySmSvg from 'iconLibrary/mainContainer/MyActivitySmSvg';
+import UploadSmSvg from 'iconLibrary/mainContainer/UploadSmSvg';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -47,7 +53,7 @@ class PlaylistCard extends React.Component {
     const { playlist, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
 
     if (!playlist.activities || playlist.activities.length === 0) {
-      return <div className="alert alert-info">No resource yet.</div>;
+      return <div className="playlist-no-resource">No activities yet.</div>;
     }
 
     return playlist.activities.map(
@@ -64,7 +70,7 @@ class PlaylistCard extends React.Component {
             setProjectPlaylistId={setProjectPlaylistId}
             setProjectPlaylistActivityId={setProjectPlaylistActivityId}
           />
-        )
+        ),
     );
   };
 
@@ -77,7 +83,7 @@ class PlaylistCard extends React.Component {
   onBlur = (e) => {
     const title = e.target.value;
     if (title.length > 50) {
-      Swal.fire('Character limit should be less than 50.');
+      Swal.fire('The title may not be greater than 50 characters.');
       return;
     }
     const { playlist, projectId, changePlaylistTitle } = this.props;
@@ -115,15 +121,16 @@ class PlaylistCard extends React.Component {
         },
         () => {
           this.titleInput.focus();
-        }
+        },
       );
     }
   };
 
   render() {
     const { editMode } = this.state;
-    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId } = this.props;
+    const { index, playlist, projectId, organization, teamPermission, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = this.props;
     const { permission } = organization;
+    const primaryColor = getGlobalColor('--main-primary-color');
     return (
       <Draggable key={playlist.id} draggableId={`${playlist.id}`} index={index}>
         {(provided) => (
@@ -132,7 +139,7 @@ class PlaylistCard extends React.Component {
               <div className="list-header" {...provided.dragHandleProps}>
                 <h2 className="playlist-header-name d-flex align-items-center">
                   <div className={`playlist-title-wrapper d-flex align-items-center ${editMode ? 'hide' : 'show'}`} onClick={this.handleClickPlaylistTitle}>
-                    <span>{playlist.title}</span>
+                    <span title={playlist.title}>{playlist.title}</span>
                     {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
                       <FontAwesomeIcon icon="pencil-alt" className="ml-2 edit-icon" />
                     )}
@@ -156,8 +163,70 @@ class PlaylistCard extends React.Component {
                     handleShow={handleShow}
                     setProjectId={setProjectId}
                     setProjectPlaylistId={setProjectPlaylistId}
+                    setProjectPlaylistActivityId={setProjectPlaylistActivityId}
                   />
                 </h2>
+              </div>
+              <div className="playlist-header-icon-section">
+                {(Object.keys(teamPermission).length
+                  ? teamPermission?.Team?.includes('team:add-activity')
+                  : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+                  <div className="mr-30 hover-text">
+                    <PlusSmSvg
+                      primaryColor={primaryColor}
+                      onClick={() => {
+                        const { clearSearchform } = this.props;
+
+                        this.props.clear();
+                        this.props.openActivity(playlist, projectId);
+                        clearSearchform();
+
+                        this.props.clearEditState();
+                      }}
+                    />
+                    {/* <FontAwesomeIcon
+                      icon={faPlus}
+                      color={primaryColor}
+                      onClick={() => {
+                        const { clearSearchform } = this.props;
+
+                        this.props.clear();
+                        this.props.openActivity(playlist, projectId);
+                        clearSearchform();
+
+                        this.props.clearEditState();
+                      }}
+                    /> */}
+                    <span className="span-show">Create</span>
+                  </div>
+                )}
+                <div className="mr-30-add hover-text">
+                  <MyActivitySmSvg
+                    primaryColor={primaryColor}
+                    onClick={() => {
+                      this.props.setPlaylistIdForSearchingTab(playlist.id);
+                      this.props.setSelectSearchModule(true);
+                    }}
+                  />
+
+                  <span className="span-show">Add existing</span>
+                </div>
+
+                <div className="mr-30  hover-text">
+                  <UploadSmSvg
+                    primaryColor={primaryColor}
+                    onClick={() => {
+                      const { clearSearchform } = this.props;
+
+                      this.props.clear();
+                      this.props.openActivityUpload(playlist, projectId);
+                      clearSearchform();
+
+                      this.props.clearEditState();
+                    }}
+                  />
+                  <span className="span-show">Upload</span>
+                </div>
               </div>
 
               <Droppable key={playlist.id} droppableId={`${playlist.id}`} type="resource">
@@ -170,26 +239,52 @@ class PlaylistCard extends React.Component {
                   </div>
                 )}
               </Droppable>
-              {(Object.keys(teamPermission).length
-                ? teamPermission?.Team?.includes('team:add-activity')
-                : permission?.Activity?.includes('activity:create') || permission?.Activity?.includes('activity:upload')) && (
+              {/* {(Object.keys(teamPermission).length
+                ? teamPermission?.Team?.includes("team:add-activity")
+                : permission?.Activity?.includes("activity:create") ||
+                  permission?.Activity?.includes("activity:upload")) && (
                 <div className="playlist-add-res-button">
                   <button
                     type="button"
                     className="add-resource-to-playlist-btn"
                     onClick={() => {
                       const { clearSearchform } = this.props;
-                      // this.handleAddNewResourceClick();
+
                       this.props.clear();
                       this.props.openActivity(playlist, projectId);
                       clearSearchform();
+
+                      this.props.clearEditState();
                     }}
                   >
-                    <img src={UploadLogo} alt="logo" className="mr-2" />
+
+                    <svg
+                      width="17"
+                      height="16"
+                      viewBox="0 0 17 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="mr-2"
+                    >
+                      <path
+                        d="M1.5 8C1.51004 8 10.8375 8.00009 15.5 8.00014"
+                        stroke={primaryColor}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M8.5 15C8.5 14.99 8.5 5.66248 8.5 0.999999"
+                        stroke={primaryColor}
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     Create or upload activity
                   </button>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         )}
@@ -223,6 +318,11 @@ const mapDispatchToProps = (dispatch) => ({
   changePlaylistTitle: (projectId, id, title) => dispatch(changePlaylistTitleAction(projectId, id, title)),
   clearForm: () => dispatch(clearFormData()),
   clearSearchform: () => dispatch(clearSearch()),
+  clearEditState: () =>
+    dispatch({
+      type: 'SET_ACTIVE_VIDEO_SCREEN',
+      payload: '',
+    }),
   openActivity: (playlist, project) =>
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
@@ -230,6 +330,20 @@ const mapDispatchToProps = (dispatch) => ({
       playlist: playlist,
       project: project,
     }),
+  openActivityUpload: (playlist, project) =>
+    dispatch({
+      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+      payload: 'layoutActivityUpload',
+      playlist: playlist,
+      project: project,
+    }),
+  // openSearchActivity: (playlist, project) =>
+  //   dispatch({
+  //     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+  //     payload: "searchingModule",
+  //     playlist: playlist,
+  //     project: project,
+  //   }),
   clear: () => dispatch({ type: actionTypes.CLEAR_STATE }),
 });
 

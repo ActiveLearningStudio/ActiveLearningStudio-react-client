@@ -104,24 +104,14 @@ function InviteDialog(props) {
     <div className="invite-wrapper" ref={inviteRef}>
       <button type="button" className="invite-btn" onClick={() => setShowInvite(!visible)}>
         Invite a Team Member
+        <FontAwesomeIcon icon="chevron-down" />
       </button>
 
       {visible && (
         <div onFocus={() => toggleInvitableUsers(false)} className="invite-dialog">
-          <div className="popup-header">
-            <h2 className="font-weight-bold">
-              {mode === INPUT_MODE && 'Invite a Team Member'}
-              {mode === INVITE_MODE && 'Invite a Team Member with Custom Message'}
-              {mode === ADD_NOTE_MODE && `Invite ${selectedUsers[0].name || selectedUsers[0].email}...`}
-            </h2>
-
-            <span className="close-circle" onClick={() => setShowInvite(false)} />
-          </div>
-
           <div>
             <h2>
-              {mode === INPUT_MODE && 'Team Members'}
-              {mode === ADD_NOTE_MODE && 'Message'}
+              Email
             </h2>
 
             {mode === INPUT_MODE && (
@@ -144,17 +134,17 @@ function InviteDialog(props) {
                         // maxLength={15}
                         // size={email.length}
                         onChange={onChange}
-                        // onKeyPress={({ key }) => {
-                        //   if (validator.isEmail(email) && key === 'Enter') {
-                        //     setActiveSelectedMember({
-                        //       id: selectedUsers.length * -1,
-                        //       name: '',
-                        //       first_name: '',
-                        //       last_name: '',
-                        //       email,
-                        //     });
-                        //   }
-                        // }}
+                      // onKeyPress={({ key }) => {
+                      //   if (validator.isEmail(email) && key === 'Enter') {
+                      //     setActiveSelectedMember({
+                      //       id: selectedUsers.length * -1,
+                      //       name: '',
+                      //       first_name: '',
+                      //       last_name: '',
+                      //       email,
+                      //     });
+                      //   }
+                      // }}
                       />
                       <span
                         className="close-circle"
@@ -196,12 +186,12 @@ function InviteDialog(props) {
                     </div>
                   )}
                 </div>
-                <h2>{mode === INPUT_MODE && 'Select Role'}</h2>
+                <h2>{mode === INPUT_MODE && 'Role'}</h2>
                 <div>
-                  <div className="input-container">
+                  <div>
                     <select onChange={(e) => setActiveRole(e.target.value)}>
                       {roleUser?.map((roletype) => (
-                        <option key={roletype.id} value={roletype.id}>
+                        <option key={roletype.id} value={roletype.id} className="selected-option">
                           {roletype.name}
                         </option>
                       ))}
@@ -217,7 +207,7 @@ function InviteDialog(props) {
                       user_id: activeSelectedMember.id,
                     };
                     setbtnText('Adding ...');
-                    const result = teamService.checkUserBeforeAdd(stateOrg.currentOrganization.id, combine);
+                    const result = teamService.checkUserBeforeAdd(stateOrg?.activeOrganization?.id, combine);
                     result
                       .then((data) => {
                         setbtnText('Add Member');
@@ -255,10 +245,10 @@ function InviteDialog(props) {
 
             <h2 style={{ fontSize: '13px', marginBottom: mode === INVITE_MODE ? '2em' : '1em' }}>
               {mode === INPUT_MODE && (
-                <>
+                <div className="tip">
                   <span className="font-weight-bold">Tip: </span>
                   You can invite as many users you want, using multiple email address or user name
-                </>
+                </div>
               )}
 
               {mode === INVITE_MODE && `You can add a note to personalize your invitation to "${selectedUsers[0].name || selectedUsers[0].email}", ...`}

@@ -25,6 +25,14 @@ import Xapi from '../../assets/images/menu-xapi.svg';
 import MenuLogo from '../../assets/images/menu-logo-2.svg';
 import { toast } from 'react-toastify';
 import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MenuMdSvg from 'iconLibrary/dropDown/MenuMdSvg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
+import EditDpDnMdSvg from 'iconLibrary/dropDown/EditDpDnMdSvg';
+import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
+import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
+import DownloadSmSvg from 'iconLibrary/dropDown/DownloadSmSvg';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
 
 const ResourceCardDropdown = (props) => {
   const {
@@ -69,18 +77,18 @@ const ResourceCardDropdown = (props) => {
       }
     });
   };
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
-        <img src={MenuLogo} alt="logo" />
+        <MenuMdSvg primaryColor={primaryColor} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
         {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
           <Dropdown.Item
             as={Link}
-            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview`}
+            to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview?view=activity`}
             onClick={() => {
               if (previewPage === 'projectPreview') {
                 localStorage.setItem('projectPreview', true);
@@ -89,7 +97,7 @@ const ResourceCardDropdown = (props) => {
               }
             }}
           >
-            <img src={Preview} alt="Preview" className="menue-img" />
+            <PreviewSmSvg primaryColor={primaryColor} className="menue-img" />
             Preview
           </Dropdown.Item>
         )}
@@ -108,16 +116,23 @@ const ResourceCardDropdown = (props) => {
               });
               const result = await resourceService.activityH5p(resource.id);
               toast.dismiss();
+
               dispatch({
                 type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                payload: 'addactivity',
+                payload: result.activity?.source_type ? 'addvideo' : 'addactivity',
                 playlist: playlist,
                 project: match.params.projectId,
                 activity: result.activity,
               });
+              if (result.activity?.source_type) {
+                dispatch({
+                  type: 'SET_ACTIVE_VIDEO_SCREEN',
+                  payload: result.activity,
+                });
+              }
             }}
           >
-            <img src={Edit} alt="Preview" className="menue-img" />
+            <EditDpDnMdSvg primaryColor={primaryColor} className="menue-img" />
             Edit
           </Dropdown.Item>
         )}
@@ -129,7 +144,7 @@ const ResourceCardDropdown = (props) => {
               cloneActivity(playlist.id, resource.id);
             }}
           >
-            <img src={Duplicate} alt="Preview" className="menue-img" />
+            <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
             Duplicate
           </Dropdown.Item>
         )}
@@ -137,7 +152,7 @@ const ResourceCardDropdown = (props) => {
           lmsSettings.length !== 0 && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
-                <img src={Publish} alt="Preview" className="menue-img" />
+                <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
@@ -236,21 +251,21 @@ const ResourceCardDropdown = (props) => {
                   });
                 }}
               >
-                <FontAwesomeIcon icon="share" className="mr-2" />
-                Share
+                <FontAwesomeIcon icon="link" className="mr-2" />
+                Get link
               </Dropdown.Item>
             )}
           </>
         )}
         {permission?.Activity?.includes('activity:share') && (
-          <Dropdown.Item href={`${process.env.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
-            <img src={Xapi} alt="Preview" className="menue-img" />
+          <Dropdown.Item href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
+            <DownloadSmSvg primaryColor={primaryColor} className="menue-img" />
             xAPI Download
           </Dropdown.Item>
         )}
         {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
-            <img src={Delete} alt="Preview" className="menue-img" />
+            <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
             Delete
           </Dropdown.Item>
         )}

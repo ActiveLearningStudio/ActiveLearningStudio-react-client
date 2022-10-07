@@ -38,13 +38,13 @@
 
     .myproject-card-dropdown {
       position: absolute;
-      top: 17px;
-      right: 23px;
+      top: 5px;
+      right: 15px;
     }
     .myproject-card-title {
       position: absolute;
-      bottom: 10px;
-      left: 15px;
+      bottom: 0px;
+      left: 16px;
       h2 {
         font-family: $rubik;
         font-style: normal;
@@ -72,6 +72,16 @@
       margin-bottom: 0 !important;
       word-break: break-all;
     }
+  }
+  .updated-date {
+    padding-left: 16px;
+    padding-bottom: 8px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    color: #767676;
   }
   .myproject-card-status {
     padding: 4px 20px 0 20px;

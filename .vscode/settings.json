@@ -5,6 +5,8 @@
   "editor.tabSize": 2,
   "prettier.printWidth": 180,
   "editor.formatOnSave": true,
+  "prettier.trailingComma": "all",
+  "prettier.endOfLine": "auto",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

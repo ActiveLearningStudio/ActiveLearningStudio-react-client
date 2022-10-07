@@ -1,15 +1,15 @@
-@import "../../assets/css/index.scss";
+@import '../../assets/css/index.scss';
 * {
   padding: 0;
   margin: 0;
 }
 .curriki-utility-TopHeading {
   p {
-    margin-bottom: 13px;
+    margin-bottom: 0px !important;
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
   .curriki-imageHeading {
     display: flex;
@@ -24,6 +24,7 @@
       font-weight: 500;
       font-size: 31px;
       line-height: 30px;
+      margin-top: 11px;
     }
   }
 }

@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable  */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
@@ -7,48 +7,64 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function PreviousLink(props) {
-  const {
-    history,
-    showLti,
-    shared,
-    projectId,
-    playlistId,
-    previousResource,
-    allPlaylists,
-  } = props;
+  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType, setH5pCurrentActivity } = props;
   const organization = useSelector((state) => state.organization);
-  const currentPlaylistIndex = allPlaylists.findIndex((p) => (p.id === playlistId));
-  const prevPlaylist = currentPlaylistIndex > 0
-    ? allPlaylists[currentPlaylistIndex - 1]
-    : null;
+  const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
+  const prevPlaylist = currentPlaylistIndex > 0 ? allPlaylists[currentPlaylistIndex - 1] : null;
 
   let prevLink = '#';
   if (previousResource) {
     prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/playlist/${prevPlaylist.id}/preview`;
+    prevLink = `/playlist/${prevPlaylist.id}/activity/${prevPlaylist.activities[0]?.id}/preview`;
   }
   if (prevLink !== '#') {
     if (showLti) {
-      prevLink += '/lti';
+      if (viewType === 'activity') {
+        prevLink += '/lti?view=activity';
+      } else {
+        prevLink += '/lti';
+      }
     } else {
       prevLink = `/org/${organization.currentOrganization?.domain}/project/${projectId}${prevLink}`;
 
       if (shared) {
         prevLink += '/shared';
       }
+      if (viewType === 'activity') {
+        prevLink += '?view=activity';
+      }
+    }
+  } else {
+    if (viewType === 'activity') {
+      prevLink += '?view=activity';
     }
   }
 
   return (
     <div className="slider-hover-section">
-      <Link to={prevLink}>
+      <Link
+        onClick={() => {
+          if (setH5pCurrentActivity) {
+            setH5pCurrentActivity(previousResource);
+          }
+        }}
+        to={setH5pCurrentActivity ? void 0 : prevLink}
+      >
+        Previous
         <FontAwesomeIcon icon="chevron-left" />
       </Link>
 
       <div className={`hover-control-caption pointer-cursor${previousResource ? '' : ' no-data prev'}`}>
         {previousResource ? (
-          <Link to={prevLink}>
+          <Link
+            onClick={() => {
+              if (setH5pCurrentActivity) {
+                setH5pCurrentActivity(previousResource);
+              }
+            }}
+            to={setH5pCurrentActivity ? void 0 : prevLink}
+          >
             <div
               className="img-in-hover"
               style={{
@@ -64,18 +80,18 @@ function PreviousLink(props) {
         ) : (
           <div className="slider-end">
             <p>Welcome! You are at the beginning of this playlist.</p>
-            <Link
-              to={prevLink}
-              onClick={() => {
-                if (!prevPlaylist) {
-                  Swal.fire({
-                    text: 'You are at the beginning of this project. Would you like to return to the project preview?',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes',
-                  })
-                    .then((result) => {
+            {!setH5pCurrentActivity && (
+              <Link
+                to={prevLink}
+                onClick={() => {
+                  if (!prevPlaylist) {
+                    Swal.fire({
+                      text: 'You are at the beginning of this project. Would you like to return to the project preview?',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes',
+                    }).then((result) => {
                       if (result.value) {
                         if (showLti) {
                           history.push(`/project/${projectId}/shared`);
@@ -84,12 +100,13 @@ function PreviousLink(props) {
                         }
                       }
                     });
-                }
-              }}
-            >
-              <FontAwesomeIcon icon="chevron-left" className="mr-2" />
-              Switch to previous playlist
-            </Link>
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="chevron-left" className="mr-2" />
+                Switch to previous playlist
+              </Link>
+            )}
           </div>
         )}
       </div>

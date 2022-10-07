@@ -22,6 +22,7 @@ import genericLMS from './LMS/genericLMS';
 import admin from './admin';
 import myactivities from './myactivities';
 import videos from './videos';
+import activities from './indActivities';
 
 export default combineReducers({
   auth,
@@ -46,4 +47,5 @@ export default combineReducers({
   admin,
   myactivities,
   videos,
+  activities,
 });

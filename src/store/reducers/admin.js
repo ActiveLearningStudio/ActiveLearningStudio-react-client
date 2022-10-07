@@ -1,5 +1,5 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
-
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
@@ -21,7 +21,17 @@ const INITIAL_STATE = {
   defaultSso: [],
   lmsIntegration: [],
   removeUser: null,
+  teams: {},
   allbrightCove: null,
+  subjects: null,
+  education_level: null,
+  author_tags: null,
+  activity_layouts: null,
+  indActivities: null,
+  exportedActivities: null,
+  allMediaSources: {},
+  orgMediaSources: {},
+  ltiToolsTypes: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -75,12 +85,32 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.GET_ACTIVITY_TYPES:
       return {
         ...state,
-        activityTypes: action.payload.activityTypes,
+        activityTypes: action.payload,
       };
     case actionTypes.GET_ACTIVITY_ITEMS_ADMIN:
       return {
         ...state,
         activityItems: action.payload,
+      };
+    case actionTypes.GET_SUBECTS:
+      return {
+        ...state,
+        subjects: action.payload,
+      };
+    case actionTypes.GET_EDUCATION_LEVEL:
+      return {
+        ...state,
+        education_level: action.payload,
+      };
+    case actionTypes.GET_AUTHOR_TAGS:
+      return {
+        ...state,
+        author_tags: action.payload,
+      };
+    case actionTypes.GET_ACTIVITY_LAYOUTS:
+      return {
+        ...state,
+        activity_layouts: action.payload,
       };
     case actionTypes.GET_USERS_REPORT:
       return {
@@ -155,7 +185,10 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.NEW_BRIGHTCOVE:
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: [...state.allbrightCove.data, action.payload] },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: [...state.allbrightCove.data, action.payload],
+        },
       };
     case actionTypes.DEL_BRIGHTCOVE:
       const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
@@ -174,7 +207,100 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
       };
+    case actionTypes.GET_TEAMS_ADMIN:
+      return {
+        ...state,
+        teams: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: action.payload,
+      };
+    case actionTypes.CLEAR_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
+    case actionTypes.ALL_ADMIN_EXPORTED_ACTIVITIES:
+      return {
+        ...state,
+        exportedActivities: action.payload,
+      };
+    case actionTypes.EDIT_ADMIN_IND_ACTIVITIES:
+      const newIndActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.payload.id) {
+          return action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndActivityData },
+      };
+    case actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES:
+      const newIndIndexActivityData = state.indActivities.data.map((data) => {
+        if (data.id === action.activityId) {
+          return { ...data, indexing: action.payload.indexing, indexing_text: action.payload.indexing_text };
+        }
+        return data;
+      });
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: newIndIndexActivityData },
+      };
+    case actionTypes.DEL_ADMIN_IND_ACTIVITIES:
+      const delIndActivityData = state.indActivities.data.filter((data) => data.id !== action.payload);
+      return {
+        ...state,
+        indActivities: { ...state.indActivities, data: delIndActivityData },
+      };
 
+    case actionTypes.GET_ALL_MEDIA_SOURCE:
+      return {
+        ...state,
+        allMediaSources: action.payload,
+      };
+    case actionTypes.CLEAR_IND_ACTIVITIES:
+      return {
+        ...state,
+        indActivities: null,
+      };
+
+    case actionTypes.GET_ORG_MEDIA_SOURCE:
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+      };
+    case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
+      const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
+      return {
+        ...state,
+        orgMediaSources: action.payload,
+        ltiToolsTypes: updateLtiTools,
+      };
+
+    case actionTypes.GET_MEDIA_SOURCES:
+      return {
+        ...state,
+        mediaSources: action.payload,
+      };
+
+    case actionTypes.GET_LTI_TOOLS_TYPES_REQUEST:
+      return {
+        ...state,
+        ltiToolsTypes: [],
+      };
+    case actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+        ltiToolsTypes: action.payload,
+      };
+
+    case actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS:
+      return {
+        ...state,
+      };
     default:
       return state;
   }

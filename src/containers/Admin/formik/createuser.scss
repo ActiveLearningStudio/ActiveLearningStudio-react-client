@@ -1,3 +1,4 @@
+@import "assets/css/index";
 .create-user-confirm-btn {
   color: #084892 !important;
   background: #fff !important;
@@ -9,4 +10,114 @@
   color: #084892 !important;
   font-weight: normal !important;
   font-size: large !important;
+}
+.filter-dropdown-user {
+  display: flex;
+  align-items: center;
+  color: $fun-blue-1;
+  .dropdown .dropdown-toggle::after {
+    background-image: none !important;
+    margin-left: auto;
+  }
+  .show > .btn-primary.dropdown-toggle {
+    border-color: #888888;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    width: 360px;
+    background: none;
+    height: 36px;
+    color: black;
+    background-color: none;
+    box-shadow: none;
+    border: 1px solid #888888;
+    box-sizing: border-box;
+    border-radius: 4px;
+    &:hover {
+      color: black;
+      border: 1px solid #888888;
+    }
+    &:active {
+      color: black;
+      border: 1px solid #888888;
+    }
+    &:focus {
+      color: black;
+      box-shadow: none;
+    }
+    &:after {
+      background-image: none !important;
+      content: url(../../../assets/images/svg/angledown.svg) !important;
+      border: none;
+    }
+  }
+  .dropdown-menu {
+    min-width: 360px !important;
+    height: 200px;
+    overflow-y: auto;
+  }
+  a {
+    &:hover {
+      color: #2e68bf;
+      background: #f7faff;
+    }
+  }
+}
+.filter-dropdown-tooltype {
+  display: flex;
+  align-items: center;
+  color: $fun-blue-1;
+  .dropdown .dropdown-toggle::after {
+    background-image: none !important;
+    margin-left: auto;
+  }
+  .show > .btn-primary.dropdown-toggle {
+    border-color: #888888;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    width: 360px;
+    background: none;
+    height: 36px;
+    color: black;
+    background-color: none;
+    box-shadow: none;
+    border: 1px solid #888888;
+    box-sizing: border-box;
+    border-radius: 4px;
+    &:hover {
+      color: black;
+      border: 1px solid #888888;
+    }
+    &:active {
+      color: black;
+      border: 1px solid #888888;
+    }
+    &:focus {
+      color: black;
+      box-shadow: none;
+    }
+    &:after {
+      background-image: none !important;
+      content: url(../../../assets/images/svg/angledown.svg) !important;
+      border: none;
+    }
+  }
+  .dropdown-menu {
+    min-width: 360px !important;
+    height: 115px;
+    overflow-y: auto;
+  }
+  a {
+    &:hover {
+      color: #2e68bf;
+      background: #f7faff;
+    }
+  }
 }

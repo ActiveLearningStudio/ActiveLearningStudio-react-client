@@ -2,13 +2,11 @@
 export const prepareLmsCourse = (action, state) => {
   const lmsCourse = { ...action.lmsCourse };
   const playlistsCopyCounter = [];
-  const project = { ...state }.projects.find((p) => p.name === lmsCourse.course);
+  const project = { ...state }?.projects?.find((p) => p.name === lmsCourse.course);
   if (project !== undefined) {
     for (let index = 0; index < action.allstate.playlist.playlists.length; index += 1) {
       const playlist = action.allstate.playlist.playlists[index];
-      const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined
-        ? playlist.title
-        : null;
+      const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined ? playlist.title : null;
       const playlistCopyCounters = lmsCourse.playlists
         .map((lp) => {
           const playlistNameOrig = playlist.title;
@@ -42,9 +40,7 @@ export const prepareLmsCourse = (action, state) => {
 
     for (let index = 0; index < playlists.length; index += 1) {
       const playlist = playlists[index];
-      const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined
-        ? playlist.title
-        : null;
+      const playlistFound = lmsCourse.playlists.find((lp) => lp === playlist.title) !== undefined ? playlist.title : null;
       const playlistCopyCounters = lmsCourse.playlists
         .map((lp) => {
           const playlistNameOrig = playlist.title;

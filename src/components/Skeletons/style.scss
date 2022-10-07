@@ -1,0 +1,61 @@
+.main-myproject-card {
+  margin-bottom: 30px;
+  position: relative;
+  width: 100%;
+  height: 356px;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
+  border-radius: 8px;
+  &:hover {
+    box-shadow: 0px 0px 12px 3px #adadad;
+    border-color: transparent;
+  }
+  a.project-description {
+    text-decoration: none;
+  }
+  //   padding: 15px;
+  .myproject-card-top {
+    border-radius: 5px;
+    // background-image: url("../../assets/images/cardlistimg.png");
+    background-size: 100% 100%;
+    position: relative;
+    height: 156px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    &:before {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      // background-color: rgba(113, 117, 119, 0.7);
+      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      content: '';
+      display: block;
+      height: 100%;
+      position: absolute;
+      width: 100%;
+    }
+
+    .myproject-card-dropdown {
+      position: absolute;
+      top: 19px;
+      right: 26px;
+    }
+    .myproject-card-title {
+      position: absolute;
+      bottom: 0px;
+      left: 16px;
+      h2 {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: #ffffff;
+        word-break: break-all;
+        &:hover {
+          text-decoration: underline;
+          color: #ffc107;
+        }
+      }
+    }
+  }
+}

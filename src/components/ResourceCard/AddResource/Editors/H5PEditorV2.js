@@ -8,7 +8,9 @@ import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
+import { createIndResourceAction } from 'store/actions/indActivities';
 import { edith5pVideoActivity } from 'store/actions/videos';
+import { editIndActivityItem } from 'store/actions/indActivities';
 import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
   const {
@@ -27,6 +29,11 @@ const H5PEditor = (props) => {
     activityId,
     type,
     accountId,
+    settingId,
+    reverseType,
+    submitForm,
+    activityPreview,
+    setisSubmitActivty,
   } = props;
 
   const uploadFile = useRef();
@@ -41,11 +48,15 @@ const H5PEditor = (props) => {
   const setH5pFileUpload = (e) => {
     setH5pFile(e.target.files[0]);
   };
+  useEffect(() => {
+    submitForm.current = submitResource;
+  }, [formData]);
 
   useEffect(() => {
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
-      let bcAccountId = accountId ? accountId : (typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null);
-      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId);
+      let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
+      let apiSettingId = settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null;
+      loadH5pSettings('H5P.BrightcoveInteractiveVideo 1.0', bcAccountId, apiSettingId);
     } else {
       loadH5pSettings();
     }
@@ -55,31 +66,77 @@ const H5PEditor = (props) => {
     setSubmitAction(e.currentTarget.value);
   };
 
+  const formatSelectBoxData = (data) => {
+    let ids = [];
+    if (data.length > 0) {
+      data?.map((datum) => {
+        ids.push(datum.value);
+      });
+    }
+    return ids;
+  };
+
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
+
+    formData.subject_id = formatSelectBoxData(formData.subject_id);
+    formData.education_level_id = formatSelectBoxData(formData.education_level_id);
+    formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
     const { metadata } = parameters;
-    if (metadata.title !== undefined) {
+    if (metadata?.title !== undefined) {
       if (editActivity) {
-        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, formData, hide, projectId));
+        dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
       } else if (editVideo) {
-        await dispatch(edith5pVideoActivity(editVideo.id, formData));
-        setOpenVideo(false);
+        if (activityPreview) {
+          const h5pdata = {
+            library: window.h5peditorCopy.getLibrary(),
+            parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+            action: 'create',
+          };
+          await dispatch(
+            editIndActivityItem(editVideo.id, {
+              ...formData,
+              organization_visibility_type_id: editVideo.organization_visibility_type_id || 1,
+              data: h5pdata,
+              type: 'h5p',
+              content: 'place_holder',
+              title: metadata?.title || formData.title,
+            }),
+          );
+          setOpenVideo(false);
+        } else {
+          await dispatch(
+            edith5pVideoActivity(editVideo.id, {
+              ...formData,
+              title: metadata?.title || formData.title,
+            }),
+          );
+          setOpenVideo(false);
+        }
       } else {
         const payload = {
           event,
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, formData, projectId, hide);
+        if (activityPreview) {
+          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId));
+        } else {
+          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        }
       }
+      delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
   };
-  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide) => {
+  const handleCreateResourceSubmit = async (currentPlaylistId, editor, editorType, payload, formData, projectId, hide, reverseType) => {
     // try {
+
     if (payload.submitAction === 'create') {
-      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId));
+      await dispatch(createResourceAction(currentPlaylistId, editor, editorType, formData, hide, type, accountId, settingId, reverseType));
       if (type === 'videoModal') {
-        setOpenVideo(false);
+        if (setOpenVideo) {
+          setOpenVideo(false);
+        }
       }
     }
   };
@@ -121,7 +178,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                  // style={{ display: 'none' }}
+                    // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -164,13 +221,13 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your Changes will be lost.',
+                    text: 'All changes will be lost if you don’t save them',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#084892',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, Close it!',
+                    allowOutsideClick: false,
                   }).then(async (result) => {
                     if (result.isConfirmed) {
                       hide();
@@ -186,6 +243,11 @@ const H5PEditor = (props) => {
                 className="saveclosemodel"
                 onClick={() => {
                   submitResource();
+                  if (!editVideo) {
+                    if (setisSubmitActivty) {
+                      setisSubmitActivty(true);
+                    }
+                  }
                 }}
               >
                 Save & Close
@@ -223,7 +285,7 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library, accountId) => dispatch(loadH5pSettingsActivity(library, accountId)),
+  loadH5pSettings: (library, accountId, settingId) => dispatch(loadH5pSettingsActivity(library, accountId, settingId)),
 });
 
 export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));

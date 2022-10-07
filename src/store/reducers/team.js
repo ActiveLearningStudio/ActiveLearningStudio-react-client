@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
@@ -7,17 +8,21 @@ const INITIAL_STATE = {
   showCreation: false,
   showInviting: false,
   showAssigning: false,
+  newTeam: {},
   teams: [],
   selectedTeam: {},
   roles: null,
   teamPermission: {},
+  isTeamProjectLoading: false,
   teamProjects: [],
+  teamProjectMeta: null,
+  islazyLoader: false,
   selectedForClone: '',
   whiteBoardUrl: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { teams } = state;
+  const { teams, teamProjects } = state;
 
   switch (action.type) {
     case actionTypes.RESET_SELECTED_TEAM:
@@ -25,7 +30,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         selectedTeam: {},
       };
-
+    case actionTypes.SHOW_SKELETON:
+      return {
+        ...state,
+        isTeamProjectLoading: false,
+      };
     case actionTypes.UPDATE_SELECTED_TEAM:
       return {
         ...state,
@@ -33,6 +42,7 @@ export default (state = INITIAL_STATE, action) => {
           ...state.selectedTeam,
           ...action.payload,
         },
+        newTeam: {},
       };
 
     case actionTypes.SHOW_CREATE_TEAM:
@@ -46,7 +56,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TEAM_PERMISSION:
       return {
         ...state,
-        teamPermission: action.payload,
+        teamPermission: action.payload ? action.payload : {},
       };
 
     case actionTypes.CLEAR_TEAM_PERMISSIONS:
@@ -54,7 +64,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         teamPermission: {},
       };
-
+    case actionTypes.PAGE_LOADING:
+      return {
+        ...state,
+        islazyLoader: true,
+      };
+    case actionTypes.PAGE_LOADING_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
+      };
     case actionTypes.SHOW_INVITE_MEMBER:
       return {
         ...state,
@@ -101,6 +120,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
         teams: [...teams, action.payload.team],
+        selectedTeam: action.payload.team,
       };
     case actionTypes.CREATE_TEAM_FAIL:
       return {
@@ -148,6 +168,7 @@ export default (state = INITIAL_STATE, action) => {
         return {
           ...state,
           isLoading: false,
+          selectedTeam: action.payload.team,
           teams,
         };
       }
@@ -249,11 +270,27 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false,
       };
-    case actionTypes.GET_TEAM_PROJECTS:
+
+    case actionTypes.LOAD_TEAM_PROJECTS:
       return {
         ...state,
-        teamProjects: action.payload,
+        teamProjects: action.payload.data,
+        teamProjectMeta: action.payload.meta,
+        isTeamProjectLoading: true,
       };
+
+    case actionTypes.GET_TEAM_PROJECTS:
+      if (teamProjects) {
+        const newteamProjects = teamProjects.concat(action.payload.data);
+        return {
+          ...state,
+          teamProjects: newteamProjects,
+          islazyLoader: false,
+          teamProjectMeta: action.payload.meta,
+          isTeamProjectLoading: true,
+        };
+      }
+
     case actionTypes.PROJECT_SELECTED_FOR_CLONE:
       return {
         ...state,
@@ -263,6 +300,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         whiteBoardUrl: action.payload,
+      };
+    case actionTypes.NEW_TEAM:
+      return {
+        ...state,
+        newTeam: action.payload,
+        selectedTeam: {},
       };
     default:
       return state;

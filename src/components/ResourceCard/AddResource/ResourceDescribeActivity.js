@@ -251,7 +251,7 @@ let ResourceDescribeActivity = (props) => {
                       Activity Image dimension should be
                       {' '}
                       <strong>290px width and 200px height. </strong>
-                      Maximun File size allowed is
+                      Maximum File size allowed is
                       {' '}
                       <strong>100MB.</strong>
                     </p>
@@ -281,9 +281,9 @@ let ResourceDescribeActivity = (props) => {
         }
         searchName={
           resource
-          && resource.newResource
-          && resource.newResource.activity
-          && !!resource.newResource.activity.activity_thumbnail_text
+            && resource.newResource
+            && resource.newResource.activity
+            && !!resource.newResource.activity.activity_thumbnail_text
             ? resource.newResource.activity.activity_thumbnail_text
             : resource.newResource.activity.title
         }

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useRef, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,11 +36,34 @@ const NotificationArea = (props) => {
     <>
       {content.data?.message && (
         <div className="notification-area">
-          <div className="user-detail">
-            {/* <img src={flashCards} alt="" /> */}
-            <div className="user-icons">{userNameImg.toUpperCase()}</div>
-            <p ref={notificationText} />
-          </div>
+          {content.type.includes('ProjectExportNotification') || content.type.includes('ActivityExportNotification') ? (
+            <div className="user-detail">
+              {/* <img src={flashCards} alt="" /> */}
+              <div className="user-icons">{userNameImg.toUpperCase()}</div>
+              <p>
+                {content.type.includes('ProjectExportNotification') ? 'Project' : 'Activity'} &nbsp;
+                <b>{content.data.project}</b>
+                &nbsp; has been exported successfully.
+                <br />
+                Please&nbsp;
+                <a
+                  target="_blank"
+                  // eslint-disable-next-line max-len
+                  href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/users/notifications/${content.id}/download-export?token=${localStorage.auth_token}`}
+                  rel="noreferrer"
+                >
+                  Click here
+                </a>
+                &nbsp; to download the exported file
+              </p>
+            </div>
+          ) : (
+            <div className="user-detail">
+              {/* <img src={flashCards} alt="" /> */}
+              <div className="user-icons">{userNameImg.toUpperCase()}</div>
+              <p>{content.data?.message}</p>
+            </div>
+          )}
 
           <div className="settings-notification">
             {type === 'header' && (
@@ -55,9 +79,7 @@ const NotificationArea = (props) => {
                 </Dropdown.Menu>
               </Dropdown>
             )}
-            <div className="timer">
-              {content.created_at}
-            </div>
+            <div className="timer">{content.created_at}</div>
           </div>
         </div>
       )}

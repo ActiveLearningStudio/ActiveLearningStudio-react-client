@@ -1,8 +1,6 @@
-/* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import * as actionTypes from 'store/actionTypes';
 import PropTypes from 'prop-types';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import { addBrightCove, editBrightCove } from 'store/actions/videos';
@@ -12,11 +10,9 @@ import pcIcon from 'assets/images/pc-icon.png';
 
 import adminapi from '../../../services/videos.services';
 
-export default function CreateBrightCove(prop) {
-  const { editMode } = prop;
+export default function CreateBrightCove({ editMode }) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const selectedType = useSelector((state) => state.resource.selectedType);
   const { id } = useSelector((state) => state.auth.user);
   const { activeEdit, activeOrganization } = organization;
   const [fileActive, setFileActive] = useState(null);
@@ -93,6 +89,10 @@ export default function CreateBrightCove(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'BrightCove settings updated successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
             }
           } else {
@@ -113,6 +113,10 @@ export default function CreateBrightCove(prop) {
               Swal.fire({
                 icon: 'success',
                 text: 'BrightCove settings created successfully',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               });
             }
           }
@@ -130,7 +134,7 @@ export default function CreateBrightCove(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove Entry' : 'Add New BrightCove Entry'}</h2>
+              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove entry' : 'Add new BrightCove entry'}</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -225,7 +229,7 @@ export default function CreateBrightCove(prop) {
                             }}
                           >
                             <img src={docAvatar} alt="" height="34" />
-                            <p className="text-center">{fileActive?.replace(/^.*[\\\/]/, '')}</p>
+                            <p className="text-center">{fileActive?.replace(/^.*[\\/]/, '')}</p>
                           </div>
                           <div className="update-img">Update File</div>
                         </>
@@ -271,8 +275,8 @@ export default function CreateBrightCove(prop) {
   );
 }
 
-CreateBrightCove.propTypes = { editMode: false };
-
 CreateBrightCove.propTypes = {
   editMode: PropTypes.bool,
 };
+
+CreateBrightCove.defaultProps = { editMode: false };

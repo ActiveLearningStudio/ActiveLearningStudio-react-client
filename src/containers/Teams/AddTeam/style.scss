@@ -1,0 +1,370 @@
+@import 'assets/css/index';
+
+.inner-content {
+  background: $white;
+  // padding: 32px;
+  margin-top: 0px;
+  border-radius: 3px;
+}
+.add-team-page {
+  .organization-name {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: $fun-blue-1;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 4px 0px;
+  }
+  .title-image {
+    display: flex;
+    // align-items: center;
+    .title {
+      // margin-bottom: 8px;
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      color: #084892;
+    }
+    .editimage-tag {
+      margin-left: 30px;
+    }
+  }
+  .add-team-detail {
+    display: flex;
+    .team-detail {
+      max-width: 768px;
+      p {
+        font-family: 'Open Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #515151;
+      }
+    }
+    .team-edit-detail {
+      margin-left: 18px;
+    }
+  }
+
+  .flex-button-top {
+    display: flex;
+    margin-right: 10px;
+    a {
+      margin-left: 20px;
+    }
+    .team-controller {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      width: 100%;
+      height: 64px;
+      background: #f7faff;
+      border-radius: 4px;
+      // margin-bottom: 16px;
+      .search-and-filters {
+        display: flex;
+        justify-content: space-between;
+        .search-bar {
+          position: relative;
+          input {
+            margin-right: 39.17px;
+            width: 238px;
+            border: none;
+            background: none;
+            border-bottom: 2px solid #084892;
+            &::placeholder {
+              color: $fun-blue-1;
+            }
+          }
+          img {
+            position: absolute;
+            right: 40px;
+            bottom: 4px;
+          }
+        }
+      }
+    }
+    .team-project-btns {
+      display: flex;
+      align-items: center;
+      .mr-16 {
+        margin-right: 16px;
+      }
+    }
+  }
+  .team-cards {
+    display: flex;
+    flex-wrap: wrap;
+    // justify-content: space-evenly;
+    margin-right: 10px;
+    .mt-16 {
+      margin-top: 16px;
+      margin-right: 10px;
+    }
+  }
+}
+// //
+.add-team-page {
+  display: flex;
+  .left {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 70%;
+    padding: 32px;
+  }
+  .right {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    .toggle_btn {
+      img {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      background: #fff;
+      position: absolute;
+      border: none;
+      left: -22px;
+    }
+    box-shadow: 0px 6px 14px 3px rgba(81, 81, 81, 0.16);
+    padding: 40px 16px 0 16px;
+    position: relative;
+    z-index: 999;
+    width: 30%;
+    &::before {
+      box-shadow: -1px 2px 2px 0px rgba(81, 81, 81, 0.16);
+      border-radius: 0px 0px 0px 9px;
+      transform: rotate(45deg);
+      position: absolute;
+      background: #fff;
+      height: 50px;
+      content: '';
+      width: 50px;
+      left: -24px;
+      z-index: -9;
+      top: 27px;
+    }
+    .right_head {
+      justify-content: space-between;
+      align-items: center;
+      display: flex;
+      h1 {
+        color: #084892;
+        font-size: 24px;
+      }
+    }
+    .right_select {
+      border-bottom: 1px solid #dddddd;
+      padding: 16px 0;
+      select {
+        border-radius: 4px;
+        text-indent: 15px;
+        color: #767676;
+        font-size: 14px;
+        height: 36px;
+        width: 100%;
+      }
+    }
+    .right_card {
+      border-bottom: 1px solid #dddddd;
+      justify-content: space-between;
+      padding: 18px 0;
+      display: flex;
+    }
+    .right_info {
+      align-items: center;
+      display: flex;
+      img {
+        border-radius: 80%;
+        height: 48px;
+        width: 48px;
+      }
+      h6 {
+        padding: 0;
+        padding-left: 10px;
+        margin: 0;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+        padding-left: 10px;
+      }
+    }
+    .right_label {
+      button {
+        background: #f7faff;
+        border-radius: 4px;
+        margin-right: 10px;
+        color: #2e68bf;
+        outline: none;
+        border: none;
+        height: 24px;
+        width: 53px;
+      }
+    }
+  }
+}
+.width10 {
+  width: 7% !important;
+}
+.width90 {
+  width: 93% !important;
+}
+.none {
+  visibility: hidden;
+  display: none;
+  opacity: 0;
+}
+.image_rotate {
+  transform: rotate(180deg) !important;
+}
+
+// Add Team Projects Style
+.add-team-projects {
+  padding: 16px 24px;
+  .team-projects-top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .back-to-section {
+      cursor: pointer;
+      .back-icon {
+        color: #084892;
+        margin-right: 18px;
+      }
+      span {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #084892;
+      }
+    }
+  }
+
+  .organization-name {
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: $fun-blue-1;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    margin: 4px 0px;
+  }
+  .title-image {
+    display: flex;
+    .title {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      color: #084892;
+    }
+    .editimage-tag {
+      margin-left: 30px;
+    }
+  }
+  .project-tabs {
+    margin-top: 16px;
+    .main-tabs .nav-item {
+      background-color: $fun-blue-1 !important;
+      color: $white !important;
+      width: 160px;
+      height: 36px;
+      padding: 8px 0px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500 !important;
+      margin-right: 8px;
+      border: 1px solid $fun-blue-1;
+    }
+
+    .main-tabs .nav-item.active {
+      background-color: $white !important;
+      color: $fun-blue-1 !important;
+      border-bottom: #fff !important;
+    }
+    .main-tabs .nav-item.active:after {
+      display: none !important;
+    }
+  }
+  .flex-button-top {
+    display: flex;
+    margin-top: 24px;
+    .team-controller {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      width: 100%;
+      height: 64px;
+      background: #f7faff;
+      border-radius: 4px;
+      // margin-bottom: 16px;
+      .search-and-filters {
+        display: flex;
+        justify-content: space-between;
+        .search-bar {
+          position: relative;
+          input {
+            margin-right: 39.17px;
+            width: 321px;
+            border: none;
+            background: none;
+            border-bottom: 2px solid #084892;
+            &::placeholder {
+              color: $fun-blue-1;
+            }
+          }
+          img {
+            position: absolute;
+            right: 40px;
+            bottom: 4px;
+          }
+        }
+      }
+    }
+
+    .team-project-btns {
+      display: flex;
+      align-items: center;
+      .mr-16 {
+        margin-right: 16px;
+      }
+      .project-selection {
+        margin-right: 16px;
+        p {
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 20px;
+          color: #2e68bf;
+          margin-bottom: 0 !important;
+        }
+      }
+    }
+  }
+  .list-of-team-projects {
+    display: flex;
+    flex-wrap: wrap;
+    .mrt {
+      margin-top: 16px;
+      margin-right: 16px;
+    }
+  }
+}

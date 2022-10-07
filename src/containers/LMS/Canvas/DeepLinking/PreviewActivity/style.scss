@@ -1,7 +1,45 @@
 @import 'assets/css/index';
 
-.close-preview-button {
-  border-radius: 1.5rem;
-  background-color: $curriki-main-blue;
-  color: white;
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .close-preview-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 131px;
+    height: 32px;
+    background: #f7faff;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #084892 !important;
+    font-weight: normal;
+    &:hover {
+      color: #084892;
+    }
+
+    .add-Course {
+      padding: 0 !important;
+      border-radius: 4px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #084892 !important;
+      font-weight: normal;
+
+      &:hover {
+        color: #084892;
+      }
+    }
+    & img {
+      margin-right: 8px;
+    }
+  }
+
+  .close-Preview {
+    background: #fff;
+    text-decoration: underline;
+  }
 }

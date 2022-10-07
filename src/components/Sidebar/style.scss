@@ -1,10 +1,10 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 aside {
   // Toggle CSS styles
   div.toggleSidebar {
     padding: 20px;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid $mercury;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -14,7 +14,7 @@ aside {
       margin: auto;
       width: 52px;
       height: 52px;
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid $mercury;
     }
   }
   .collapsedown {
@@ -26,7 +26,7 @@ aside {
       position: absolute;
       white-space: nowrap;
       border: none;
-      background: #f8af2c;
+      background: $curriki-main-yellow;
 
       padding: 2px 15px;
       -webkit-clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 10% 100%, 0% 50%);
@@ -45,7 +45,7 @@ aside {
   min-height: 900px;
   padding-top: 30px;
   padding-right: 0;
-  background: #fff;
+  background: $white;
   .toggleButton {
     position: absolute;
     top: 10px;
@@ -59,10 +59,10 @@ aside {
     list-style: none;
 
     & > li {
-      border-top: 1px solid #e8e8e8;
+      border-top: 1px solid $mercury;
 
       a {
-        color: #607a9b;
+        color: $dodger-blue;
       }
 
       & > a {
@@ -99,10 +99,11 @@ aside {
           margin-top: 20px;
           margin-bottom: 50px;
           padding: 5px 10px 5px 35px;
-          background: #fafafa url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
-          border: 1px solid #bfbfbf;
+          background: $silver-chalice
+            url(../../assets/images/add-member-icon.png) no-repeat 10px 9px;
+          border: 1px solid $silver-chalice;
           border-radius: 2px;
-          color: #607a9b;
+          color: $dodger-blue;
           cursor: pointer;
         }
       }
@@ -128,7 +129,8 @@ aside {
   }
 
   .recent-resource-icon {
-    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0 7px;
+    background: url(../../assets/images/recent-resource-icon.png) no-repeat 0
+      7px;
   }
 }
 
@@ -137,7 +139,7 @@ aside {
   .expand {
     width: 100%;
     display: block;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid $mercury;
     font: normal normal normal 13px/22px $rubik;
     letter-spacing: 0;
     color: $curriki-main-blue;
@@ -155,8 +157,7 @@ aside {
       padding: 12px 52px;
       padding-top: 19px;
       padding-bottom: 17px;
-      border-top: 1px solid #e8e8e8;
-      button {
+      border-top: 1px solid $mercury button {
         display: flex;
         padding: 0px !important;
         box-shadow: none;
@@ -175,7 +176,7 @@ aside {
         }
       }
       .collapse {
-        border-left: 2px solid #084892;
+        border-left: 2px solid $fun-blue-1;
         margin-left: 35px;
       }
       a {
@@ -192,14 +193,14 @@ aside {
       }
 
       a::before {
-        content: '-';
-        color: #084892;
+        content: "-";
+        color: $fun-blue-1;
         padding-right: 5px;
         margin: 0px;
         padding-left: 0px;
       }
       .active {
-        background: #eaecee;
+        background: $mercury;
       }
       .org-icon {
         width: 21px;
@@ -226,7 +227,7 @@ aside {
     font-size: 16px;
     line-height: 130.9%;
     color: #515151;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid $mercury;
   }
   .row-sidebar {
     display: flex;
@@ -236,7 +237,7 @@ aside {
     padding-top: 20px;
     padding-bottom: 20px;
     // justify-content:flex-end;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid $mercury;
 
     &img {
       width: 24px;
@@ -249,7 +250,7 @@ aside {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.01em;
-    color: #1d59b4;
+    color: $fun-blue-1;
     padding-top: 3px;
     text-align: center;
     font-family: $sans;
@@ -275,7 +276,7 @@ aside {
 
   .team-item {
     margin: 12px 20px;
-    border: solid 1px #e6e6e6;
+    border: solid 1px $mercury;
 
     &:hover {
       cursor: pointer;
@@ -286,7 +287,7 @@ aside {
       padding: 10px 15px;
       display: flex;
       justify-content: space-between;
-      border-bottom: solid 1px #e6e6e6;
+      border-bottom: solid 1px $mercury;
       font-size: 14px;
     }
 
@@ -326,7 +327,7 @@ aside {
 
     &.collapsed {
       .team-label {
-        background: #eeeeee;
+        background: $mercury;
       }
 
       .team-detail-labels {
@@ -364,6 +365,9 @@ aside {
     color: $mine-shaft;
     text-align: left;
     opacity: 1;
+  }
+  .activeLink {
+    background-color: #F1F1F1;
   }
   a:first-child .row-sidebar:first-child {
     border-top: none !important;

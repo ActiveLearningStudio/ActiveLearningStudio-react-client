@@ -163,14 +163,21 @@ function GclassActivityPage(props) {
     </>
   );
 }
+
+GclassActivityPage.defaultProps = {
+  submissionError: null,
+  courses: null,
+  student: null,
+};
+
 GclassActivityPage.propTypes = {
   match: PropTypes.object.isRequired,
-  student: PropTypes.object.isRequired,
-  courses: PropTypes.array.isRequired,
+  student: PropTypes.object,
+  courses: PropTypes.array,
   getStudentCourses: PropTypes.func.isRequired,
   setStudentAuth: PropTypes.func.isRequired,
   refreshStudentAuthToken: PropTypes.func.isRequired,
-  submissionError: PropTypes.string.isRequired,
+  submissionError: PropTypes.string,
   // orientation: PropTypes.number.isRequired,
 };
 

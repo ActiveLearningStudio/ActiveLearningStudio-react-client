@@ -1,3 +1,6 @@
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable operator-linebreak */
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,15 +9,17 @@ import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
-import {
-  getProjectCourseFromLMS,
-} from 'store/actions/project';
+import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
 import './style.scss';
 import loader from 'assets/images/loader.svg';
-import Duplicate from '../../../assets/images/menu-dupli.svg';
-import Delete from '../../../assets/images/menu-dele.svg';
-import Publish from '../../../assets/images/menu-publish.svg';
+import { addProjectsAction } from 'store/actions/team';
+import Swal from 'sweetalert2';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
+import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
+import PublishSatelliteSmSvg from 'iconLibrary/dropDown/PublishSatelliteSmSvg';
 
 const ProjectCardDropdown = (props) => {
   const {
@@ -28,6 +33,7 @@ const ProjectCardDropdown = (props) => {
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
+  const { selectedTeam } = useSelector((state) => state.team);
   const { permission } = organization;
   const dispatch = useDispatch();
   const AllLms = useSelector((state) => state.share);
@@ -35,7 +41,7 @@ const ProjectCardDropdown = (props) => {
   useEffect(() => {
     setAllLms(AllLms);
   }, [AllLms]);
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
@@ -77,7 +83,7 @@ const ProjectCardDropdown = (props) => {
           </Dropdown.Item>
         )} */}
 
-        {permission?.Project?.includes('project:clone') && (
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-project') : permission?.Project?.includes('project:clone')) && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -89,11 +95,27 @@ const ProjectCardDropdown = (props) => {
                 autoClose: 10000,
                 icon: ImgLoader,
               });
-              cloneProject(project.id);
+              if (Object.keys(teamPermission).length && teamPermission?.Team?.includes('team:add-project')) {
+                dispatch(addProjectsAction(selectedTeam?.id, [project.id]))
+                  .then((result) => {
+                    Swal.fire({
+                      icon: 'success',
+                      title: result?.message,
+                    });
+                  })
+                  .catch((err) => {
+                    Swal.fire({
+                      icon: 'error',
+                      title: err?.message,
+                    });
+                  });
+              } else {
+                cloneProject(project.id);
+              }
               toast.dismiss();
             }}
           >
-            <img src={Duplicate} alt="Preview" className="menue-img" />
+            <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
             Duplicate
           </Dropdown.Item>
         )}
@@ -130,49 +152,38 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )} */}
-        {(teamPermission && Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes('team:publish-project')
-          : permission?.Project?.includes('project:publish')) && (
-            <li className="dropdown-submenu send">
-              <a tabIndex="-1">
-                <img src={Publish} alt="Preview" className="menue-img" />
-                Publish
-              </a>
-              <ul className="dropdown-menu check">
-                {project?.gcr_project_visibility && (
-                  <li
-                    key={`googleclassroom +${project.id}`}
-                    onClick={() => {
-                      handleShow();
-                      getProjectId(project.id);
-                      // eslint-disable-next-line react/destructuring-assignment
-                      setProjectId(props.project.id);
-                      dispatch(googleShare(false));
-                    }}
-                  >
-                    <a>Google Classroom</a>
-                  </li>
-                )}
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-project') : permission?.Project?.includes('project:publish')) && (
+          <li className="dropdown-submenu send">
+            <a tabIndex="-1">
+              <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
+              Publish
+            </a>
+            <ul className="dropdown-menu check">
+              {project?.gcr_project_visibility && (
+                <li
+                  key={`googleclassroom +${project.id}`}
+                  onClick={() => {
+                    handleShow();
+                    getProjectId(project.id);
+                    // eslint-disable-next-line react/destructuring-assignment
+                    setProjectId(props.project.id);
+                    dispatch(googleShare(false));
+                  }}
+                >
+                  <a>Google Classroom</a>
+                </li>
+              )}
 
-                {allLms.shareVendors
-                  && allLms.shareVendors.map(
-                    (data) => data.project_visibility && (
+              {allLms.shareVendors &&
+                allLms.shareVendors.map(
+                  (data) =>
+                    data.project_visibility && (
                       <li key={data.id}>
                         <a
                           onClick={async () => {
-                            const allPlaylist = await dispatch(
-                              lmsPlaylist(project.id),
-                            );
+                            const allPlaylist = await dispatch(lmsPlaylist(project.id));
                             if (allPlaylist) {
-                              dispatch(
-                                getProjectCourseFromLMS(
-                                  data.lms_name.toLowerCase(),
-                                  data.id,
-                                  project.id,
-                                  allPlaylist.playlists,
-                                  data.lms_url,
-                                ),
-                              );
+                              dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
                             }
                           }}
                         >
@@ -180,21 +191,35 @@ const ProjectCardDropdown = (props) => {
                         </a>
                       </li>
                     ),
-                  )}
-              </ul>
-            </li>
-          )}
-        {(teamPermission && Object.keys(teamPermission).length
-          ? teamPermission?.Team?.includes('team:remove-project')
-          : permission?.Project?.includes('project:delete')) && (
-            <Dropdown.Item
-              to="#"
-              onClick={() => showDeletePopup(project.id, project.name, 'Project')}
-            >
-              <img src={Delete} alt="Preview" className="menue-img" />
-              Delete
-            </Dropdown.Item>
-          )}
+                )}
+            </ul>
+          </li>
+        )}
+        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:remove-project') : permission?.Project?.includes('project:delete')) && (
+          <Dropdown.Item to="#" onClick={() => showDeletePopup(project.id, project.name, 'Project')}>
+            <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
+            Delete
+          </Dropdown.Item>
+        )}
+        {teamPermission && Object.keys(teamPermission).length > 0 && (
+          <Dropdown.Item
+            to="#"
+            onClick={async () => {
+              Swal.showLoading();
+              const result = await dispatch(exportProjectsToNoovo(project.id, selectedTeam.id));
+              if (result) {
+                Swal.fire({
+                  title: 'Publishing project to Noovo',
+                  text: `${result}`,
+                  showConfirmButton: false,
+                });
+              }
+            }}
+          >
+            <PublishSatelliteSmSvg primaryColor={primaryColor} className="menue-img" />
+            Publish to satellite
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -205,13 +230,13 @@ ProjectCardDropdown.propTypes = {
   showDeletePopup: PropTypes.func.isRequired,
   handleShow: PropTypes.func.isRequired,
   setProjectId: PropTypes.func.isRequired,
-  teamPermission: PropTypes.object.isRequired,
+  teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
   // text: propTypes.string,
 };
 
-// ProjectCardDropdown.defaultProps = {
-//   text: propTypes.string,
-// };
+ProjectCardDropdown.defaultProps = {
+  teamPermission: {},
+};
 
 export default ProjectCardDropdown;

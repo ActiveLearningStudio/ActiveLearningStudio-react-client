@@ -78,6 +78,16 @@ const checkEmail = (email) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const getWordpressSSODefaultSettings = (clientId) => httpService
+  .get(`/login/wordpress-sso-settings/${clientId}`)
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const wordpressSSO = (code, clientId) => httpService
+  .post('/login/wordpress-sso', { code, clientId })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 export default {
   me,
   login,
@@ -94,4 +104,6 @@ export default {
   loginSSO,
   canvasSsoLogin,
   checkEmail,
+  getWordpressSSODefaultSettings,
+  wordpressSSO,
 };

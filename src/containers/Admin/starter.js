@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 import Controller from './controller';
 import TableData from './table';
 import Userroles from './userroles';
-import Settings from './settings';
+// import Media from "./media";
+// import Settings from './settings';
 function Starter(props) {
   const {
     paginationCounter,
@@ -48,6 +49,9 @@ function Starter(props) {
     searchAlertToggler,
     searchAlertTogglerStats,
     setActivePage,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
+    setSearchQueryTeam,
     subType,
     inviteUser,
     setCurrentTab,
@@ -65,8 +69,15 @@ function Starter(props) {
     setAllProjectTab,
     resetProjectFilter,
     setModalShow,
+    setModalShowTeam,
     setrowData,
     setActivePageNumber,
+    filteredItems,
+    setCurrentActivity,
+    setModalShowh5p,
+    setSearchKey,
+    filterLtiSettings,
+    setfilterLtiSettings,
   } = props;
   return (
     <>
@@ -116,8 +127,16 @@ function Starter(props) {
         setProjectFilterObj={setProjectFilterObj}
         filterSearch={filterSearch}
         resetProjectFilter={resetProjectFilter}
+        setSearchQueryTeam={setSearchQueryTeam}
+        filteredItems={filteredItems}
+        setSearchKey={setSearchKey}
+        setfilterLtiSettings={setfilterLtiSettings}
+        filterLtiSettings={filterLtiSettings}
+        searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+        searchLtiquery={searchLtiquery}
       />
-      {subTypeState === 'All settings' && <Settings />}
+      {/* {subTypeState === 'All settings' && <Settings />} */}
+      {/* {subTypeState === "Media" && <Media />} */}
       {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
@@ -139,8 +158,12 @@ function Starter(props) {
           setCurrentTab={setCurrentTab}
           setAllProjectTab={setAllProjectTab}
           setModalShow={setModalShow}
+          setModalShowTeam={setModalShowTeam}
           setrowData={setrowData}
           setActivePageNumber={setActivePageNumber}
+          setCurrentActivity={setCurrentActivity}
+          setModalShowh5p={setModalShowh5p}
+          filterLtiSettings={filterLtiSettings}
         />
       )}
     </>

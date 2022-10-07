@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useRef, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -14,12 +14,47 @@ import { gradePassBackAction, activityInitAction, passLtiCourseDetails } from 's
 import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './style.scss';
 
-const reducer = (intervalPointer, action) => {
-  if (action.type === 'set') return action.intervalId;
+const reducer = (activityState, action) => {
+  switch (action.type) {
+    case 'SET_INTERVAL':
+      return {
+        ...activityState,
+        intervalId: action.intervalId,
+      };
 
-  if (action.type === 'clear') {
-    clearInterval(intervalPointer);
-    return null;
+    case 'ASSETS_LOADED':
+      return {
+        ...activityState,
+        assetsLoaded: [...activityState.assetsLoaded, action.asset],
+      };
+
+    case 'CHECK_ASSETS':
+      console.log('checking assets');
+      if (typeof window.H5P === 'undefined' || !window.H5P.externalDispatcher) {
+        console.log('H5P is not ready yet...');
+        return activityState;
+      }
+
+      if (activityState.assets.length !== activityState.assetsLoaded.length) {
+        console.log(`Assets not ready. ${activityState.assetsLoaded.length} of ${activityState.assets.length} loaded`);
+        return activityState;
+      }
+
+      clearInterval(activityState.intervalId);
+      return {
+        ...activityState,
+        h5pObject: window.H5P,
+        intervalId: null,
+      };
+
+    case 'SET_ASSETS':
+      return {
+        ...activityState,
+        assets: action.assets,
+      };
+
+    default:
+      return activityState;
   }
 };
 
@@ -40,9 +75,35 @@ const Activity = (props) => {
   const issuerClient = searchParams.get('issuer_client');
   const customPersonNameGiven = searchParams.get('custom_person_name_given');
   const customPersonNameFamily = searchParams.get('custom_person_name_family');
-  const [xAPILoaded, setXAPILoaded] = useState(false);
-  const [intervalPointer, dispatch] = useReducer(reducer, 0);
-  const [xAPIEventHooked, setXAPIEventHooked] = useState(false);
+  const currikiH5PWrapper = useRef(null);
+
+  /* eslint-disable-next-line no-unused-vars */
+  const [activityState, dispatch] = useReducer(reducer, {
+    intervalId: null,
+    assets: [],
+    assetsLoaded: [],
+    h5pObject: null,
+  });
+
+  const loadAssets = (styles, scripts) => {
+    styles.forEach((style) => {
+      const link = document.createElement('link');
+      link.href = style;
+      link.type = 'text/css';
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    });
+    scripts.forEach((script) => {
+      const element = document.createElement('script');
+      element.onload = () => {
+        dispatch({ type: 'ASSETS_LOADED', asset: element.src });
+        console.log(`Assets loaded: ${element.src}`);
+      };
+      element.src = script;
+      element.async = false;
+      document.body.appendChild(element);
+    });
+  };
 
   // Init
   useEffect(() => {
@@ -64,117 +125,109 @@ const Activity = (props) => {
   useEffect(() => {
     if (h5pSettings === null) return;
 
+    window.H5P = window.H5P || {};
+    window.H5P.preventInit = true;
     window.H5PIntegration = h5pSettings.h5p.settings;
     const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
     h5pWrapper.innerHTML = h5pSettings.h5p.embed_code.trim();
-    const newCss = h5pSettings.h5p.settings.core.styles.concat(h5pSettings.h5p.settings.loadedCss);
 
-    Promise.all(
-      newCss.map((value) => {
-        const link = document.createElement('link');
-        link.href = value;
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-        return true;
-      })
-    );
+    // Load H5P assets
+    const styles = h5pSettings.h5p.settings.core.styles.concat(h5pSettings.h5p.settings.loadedCss);
+    const scripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
+    dispatch({ type: 'SET_ASSETS', assets: scripts });
+    loadAssets(styles, scripts);
 
-    const newScripts = h5pSettings.h5p.settings.core.scripts.concat(h5pSettings.h5p.settings.loadedJs);
-
-    newScripts.forEach((value) => {
-      const script = document.createElement('script');
-      script.src = value;
-      script.async = false;
-      document.body.appendChild(script);
-    });
-  }, [h5pSettings]);
-
-  useEffect(() => {
-    // Loops until it finds H5P object
+    // Loops until H5P object and dispatcher are ready
     const intervalId = setInterval(() => {
-      const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
-      if (!x?.H5P?.externalDispatcher) return;
-
-      console.log('H5P dispatcher found');
-      setXAPILoaded(true);
-      console.log(`Clearing interval ${intervalPointer}`);
-      dispatch({ type: 'clear' });
+      dispatch({ type: 'CHECK_ASSETS' });
     }, 500);
-    dispatch({ type: 'set', intervalId });
-  }, []);
+    dispatch({ type: 'SET_INTERVAL', intervalId });
+  }, [h5pSettings]);
 
   // Patch into xAPI events
   useEffect(() => {
-    console.log('Patching into xAPI event dispatcher');
-    if (!xAPILoaded || !isLearner || xAPIEventHooked) {
-      console.log('Abort patching into xAPI event dispatcher');
+    if (!activityState.h5pObject) {
+      console.log('H5P object not ready');
       return;
     }
+    // Hook into H5P dispatcher only if xAPI is needed for this route
+    if (xAPIHelper.isxAPINeeded(match.path) === true) {
+      activityState.h5pObject.externalDispatcher.on('xAPI', function (event) {
+        console.log('Running xAPI listener callback');
+        const params = {
+          path: match.path,
+          studentId,
+          activityId,
+          submissionId,
+          attemptId,
+          homepage,
+          courseId,
+          toolPlatform,
+          customCourseName,
+          customApiDomainUrl,
+          customCourseCode,
+        };
 
-    const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
-    // if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) return;
-    if (!x.H5P.externalDispatcher || xAPIHelper.isxAPINeeded(match.path) === false) {
-      console.log('Missing H5P event dispatcher');
-      return;
-    }
+        // Extending the xAPI statement with our custom values and sending it off to LRS
+        const xapiData = xAPIHelper.extendStatement(this, event.data.statement, params);
 
-    x.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('Running xAPI listener callback');
-      const params = {
-        path: match.path,
-        studentId,
-        activityId,
-        submissionId,
-        attemptId,
-        homepage,
-        courseId,
-        toolPlatform,
-        customCourseName,
-        customApiDomainUrl,
-        customCourseCode,
-      };
+        if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
+          // Check if all questions/interactions have been accounted for in LRS
+          // If the user skips one of the questions, no xAPI statement is generated.
+          // We need statements for all questions for proper summary accounting.
+          // Fire off an artificial "answered" statement if necessary
+          if (this.parent === undefined && this.interactions) {
+            this.interactions.forEach((interaction) => {
+              if (interaction.getLastXAPIVerb()) return; // Already initialized
 
-      // Extending the xAPI statement with our custom values and sending it off to LRS
-      const xapiData = xAPIHelper.extendStatement(this, event.data.statement, params);
+              const xAPIData = interaction.getXAPIData();
+              if (!xAPIData) return; // Some interactions have no data to report
 
-      if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
-        // Check if all questions/interactions have been accounted for in LRS
-        // If the user skips one of the questions, no xAPI statement is generated.
-        // We need statements for all questions for proper summary accounting.
-        // Fire off an artificial "answered" statement if necessary
-        if (this.parent === undefined && this.interactions) {
-          this.interactions.forEach((interaction) => {
-            if (interaction.getLastXAPIVerb()) return; // Already initialized
+              const iXAPIStatement = JSON.stringify(xAPIHelper.extendStatement(this, xAPIData.statement, params, true));
+              sendStatement(iXAPIStatement);
+            }, this);
+          }
 
-            const xAPIData = interaction.getXAPIData();
-            if (!xAPIData) return; // Some interactions have no data to report
-
-            const iXAPIStatement = JSON.stringify(xAPIHelper.extendStatement(this, xAPIData.statement, params, true));
-            sendStatement(iXAPIStatement);
-          }, this);
+          sendStatement(JSON.stringify(xapiData));
+          Swal.fire({
+            title: 'Turn in results?',
+            confirmButtonText: 'OK',
+          }).then(() => {
+            const score = xapiData.result.score.scaled;
+            gradePassBack(session, 1, score);
+            Swal.fire('Saved!', '', 'success');
+          });
+        } else {
+          const jsonStatement = JSON.stringify(xapiData);
+          sendStatement(jsonStatement);
+          if (h5pSettings?.organization?.api_key) {
+            sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, params.studentId);
+          }
         }
+      });
+    }
 
-        sendStatement(JSON.stringify(xapiData));
-        Swal.fire({
-          title: 'Turn in results?',
-          confirmButtonText: 'OK',
-        }).then(() => {
-          const score = xapiData.result.score.scaled;
-          gradePassBack(session, 1, score, isLearner);
-          Swal.fire('Saved!', '', 'success');
-        });
+    activityState.h5pObject.init();
+  }, [activityState.h5pObject]);
+
+  useEffect(() => {
+    const h5pLibData = activityState.h5pObject && window.H5PIntegration ? Object.values(window.H5PIntegration.contents) : null;
+    const h5pLib = Array.isArray(h5pLibData) && h5pLibData.length > 0 ? h5pLibData[0].library.split(' ')[0] : null;
+    const resizeFor = ['H5P.InteractiveVideo', 'H5P.CurrikiInteractiveVideo', 'H5P.BrightcoveInteractiveVideo'];
+    const isActvityResizeable = resizeFor.find((lib) => lib === h5pLib) ? true : false;
+
+    if (currikiH5PWrapper && currikiH5PWrapper.current && isActvityResizeable) {
+      const aspectRatio = 1.778; // standard aspect ratio of video width and height
+      const currentHeight = currikiH5PWrapper.current.offsetHeight - 65; // current height with some margin
+      const adjustedWidthVal = currentHeight * aspectRatio;
+      const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
+      if (adjustedWidthVal < parentWidth) {
+        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
       } else {
-        const jsonStatement = JSON.stringify(xapiData);
-        sendStatement(jsonStatement);
-        if (h5pSettings?.organization?.api_key) {
-          sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, params.studentId);
-        }
+        currikiH5PWrapper.current.style.width = `${parentWidth - 10}px`; // eslint-disable-line no-param-reassign
       }
-    });
-    console.log('Patched into xAPI event dispatcher');
-    setXAPIEventHooked(true);
-  }, [xAPILoaded]);
+    }
+  }, [currikiH5PWrapper, activityState.h5pObject]);
 
   return (
     <div>
@@ -186,8 +239,17 @@ const Activity = (props) => {
       )}
 
       {!ltiFinished && (
-        <div id="curriki-h5p-wrapper" z>
-          <Alert variant="primary">Loading Activity</Alert>
+        <div className="curriki-activity-lti-share">
+          <div
+            id="curriki-h5p-wrapper"
+            ref={(el) => {
+              if (el) {
+                currikiH5PWrapper.current = el;
+              }
+            }}
+          >
+            <Alert variant="primary">Loading Activity</Alert>
+          </div>
         </div>
       )}
     </div>
@@ -222,7 +284,7 @@ const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   passCourseDetails: (params) => dispatch(passLtiCourseDetails(params)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score, isLearner)),
+  gradePassBack: (session, gpb, score, isLearner) => dispatch(gradePassBackAction(session, gpb, score)),
   activityInit: () => dispatch(activityInitAction()),
   sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
 });

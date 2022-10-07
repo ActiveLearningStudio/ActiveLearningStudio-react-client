@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Publish from '../../assets/images/menu-publish.svg'
+import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
-import { getProjectId, googleShare } from "store/actions/gapi";
+import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 
 function ShareLink(props) {
   const dispatch = useDispatch();
 
-  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId } = props;
+  const { projectId, playlistId, gcr_playlist_visibility, handleShow, setProjectId, setProjectPlaylistId, setProjectPlaylistActivityId } = props;
 
   const AllLms = useSelector((state) => state.share);
 
@@ -20,7 +22,7 @@ function ShareLink(props) {
   useEffect(() => {
     setAllLms(AllLms);
   }, [AllLms]);
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <li className="dropdown-submenu send">
       <a
@@ -37,7 +39,7 @@ function ShareLink(props) {
           }
         }}
       >
-        <img src={Publish} alt="Preview" className="menue-img" />
+        <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
         Publish
       </a>
 
@@ -49,31 +51,29 @@ function ShareLink(props) {
               getProjectId(projectId);
               setProjectId(projectId);
               setProjectPlaylistId(playlistId);
+              setProjectPlaylistActivityId(0);
               dispatch(googleShare(false));
             }}
           >
             <a>Google Classroom</a>
           </li>
         )}
-        {allLms.shareVendors && allLms.shareVendors.map((data) => (
-          data.playlist_visibility && (
-            <li key={data.id}>
-              <a
-                href="#"
-                onClick={async () => {
-                  dispatch(getProjectCourseFromLMSPlaylist(
-                    playlistId,
-                    data.id,
-                    data.lms_name.toLowerCase(),
-                    data.lms_url,
-                    projectId,
-                  ));
-                }}
-              >
-                {data.site_name}
-              </a>
-            </li>
-          )))}
+        {allLms.shareVendors &&
+          allLms.shareVendors.map(
+            (data) =>
+              data.playlist_visibility && (
+                <li key={data.id}>
+                  <a
+                    href="#"
+                    onClick={async () => {
+                      dispatch(getProjectCourseFromLMSPlaylist(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                    }}
+                  >
+                    {data.site_name}
+                  </a>
+                </li>
+              ),
+          )}
       </ul>
     </li>
   );

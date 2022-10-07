@@ -9,12 +9,12 @@ function Footer() {
   const [ppUrl, setPpUrl] = useState('');
 
   useEffect(() => {
-    if (currentOrganization?.tos_type === 'URL') {
+    if (currentOrganization?.tos_type === 'URL' || currentOrganization?.tos_url != null) {
       setTosUrl(currentOrganization?.tos_url);
     } else {
       setTosUrl(`/org/${currentOrganization?.domain}/terms-policy-content/tos_content`);
     }
-    if (currentOrganization?.privacy_policy_type === 'URL') {
+    if (currentOrganization?.privacy_policy_type === 'URL' || currentOrganization?.privacy_policy_url != null) {
       setPpUrl(currentOrganization?.privacy_policy_url);
     } else {
       setPpUrl(`/org/${currentOrganization?.domain}/terms-policy-content/privacy_policy_content`);
@@ -24,9 +24,8 @@ function Footer() {
   return (
     <div className="footer-img-section">
       <footer className="footer-all">
-
         <a target="_blank" href={tosUrl} rel="noopener noreferrer">
-          Terms of service
+          Terms of Use
         </a>
 
         <a target="_blank" href={ppUrl} rel="noopener noreferrer">
@@ -34,7 +33,7 @@ function Footer() {
         </a>
 
         <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer">
-          Help & Support
+          Help Center
         </a>
       </footer>
       <div className="img-">

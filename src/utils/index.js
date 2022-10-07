@@ -1,9 +1,10 @@
-import styled, { keyframes } from 'styled-components';
-import { fadeIn } from 'react-animations';
+/*eslint-disable*/
+import styled, { keyframes } from "styled-components";
+import { fadeIn } from "react-animations";
 
 export function getErrors(e) {
   if (e.errors) {
-    if (!Array.isArray(e.errors) && typeof e.errors === 'object') {
+    if (!Array.isArray(e.errors) && typeof e.errors === "object") {
       let errors = [];
       Object.keys(e.errors).forEach((key) => {
         if (Array.isArray(e.errors[key])) {
@@ -18,11 +19,13 @@ export function getErrors(e) {
   return e;
 }
 
-export const required = (value) => (!!value && value.trim() ? undefined : '* Required');
+export const required = (value) =>
+  !!value && value.trim() ? undefined : "* Required";
 
-export const maxLength = (max) => (value) => (value && value.length > max
-  ? `* Must be ${max} characters or less`
-  : undefined);
+export const maxLength = (max) => (value) =>
+  value && value.length > max
+    ? `* Must be ${max} characters or less`
+    : undefined;
 
 const fadeAnimation = keyframes`${fadeIn}`;
 export const FadeDiv = styled.div`
@@ -35,11 +38,19 @@ export const zeroFill = (value) => {
 };
 
 export const alphaNumeric = (value) => {
-  const alphaNumericRegex = new RegExp('[^0-9a-zA-Z@ ._-]');
+  const alphaNumericRegex = new RegExp("[^0-9a-zA-Z@ ._-]");
   return !alphaNumericRegex.test(value);
 };
 
 export const alphabetsOnly = (value) => {
-  const alphaNumericRegex = new RegExp('[^a-zA-Z]');
+  const alphaNumericRegex = new RegExp("[^a-zA-Z]");
   return !alphaNumericRegex.test(value);
 };
+
+export const toolTypeArray = [
+  { key: "kaltura", value: "Kaltura" },
+  // { key: "youtube", value: "Youtube" },
+  // { key: "vimeo", value: "Vimeo" },
+  { key: "safari_montage", value: "SAFARI" },
+  { key: "other", value: "Turnitin" },
+];

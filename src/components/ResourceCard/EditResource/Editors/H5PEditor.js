@@ -8,12 +8,8 @@ import Swal from 'sweetalert2';
 
 const H5PEditorEdit = (props) => {
   const {
-    h5pParams,
-    match,
-    resource,
-    loadH5pSettings,
-    handleEditResourceSubmit,
-  } = props;
+ h5pParams, match, resource, loadH5pSettings, handleEditResourceSubmit,
+} = props;
 
   const [submitAction, setSubmitAction] = useState('create');
   // const [h5pFile, setH5pFile] = useState(null);
@@ -36,30 +32,16 @@ const H5PEditorEdit = (props) => {
           Swal.showLoading();
         },
       });
-      handleEditResourceSubmit(
-        match.params.playlistId,
-        resource.editResource.h5pLib,
-        resource.editResource.h5pLibType,
-        match.params.activityId,
-        resource.newResource.metadata,
-      );
+      handleEditResourceSubmit(match.params.playlistId, resource.editResource.h5pLib, resource.editResource.h5pLibType, match.params.activityId, resource.newResource.metadata);
     }
   };
 
   if (h5pParams === '') {
-    return (
-      <>
-      </>
-    );
+    return <></>;
   }
 
   return (
-    <form
-      method="POST"
-      acceptCharset="UTF-8"
-      className="form-horizontal"
-      id="laravel-h5p-form"
-    >
+    <form method="POST" acceptCharset="UTF-8" className="form-horizontal" id="laravel-h5p-form">
       {/* <div className="form-group" style={{ position: 'inherit' }}>
         <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
           <button
@@ -72,23 +54,9 @@ const H5PEditorEdit = (props) => {
         </div>
       </div> */}
 
-      <input
-        name="_token"
-        type="hidden"
-        value={process.env.REACT_APP_H5P_KEY}
-      />
-      <input
-        type="hidden"
-        name="library"
-        id="laravel-h5p-library"
-        value={resource.editResource.editor}
-      />
-      <input
-        type="hidden"
-        name="parameters"
-        id="laravel-h5p-parameters"
-        value={resource.editResource.params}
-      />
+      <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
+      <input type="hidden" name="library" id="laravel-h5p-library" value={resource.editResource.editor} />
+      <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={resource.editResource.params} />
 
       <fieldset>
         <div id="laravel-h5p-create" className="form-group ">
@@ -103,26 +71,12 @@ const H5PEditorEdit = (props) => {
           <label className="control-label col-md-3">Method</label>
           <div className="col-md-6">
             <label className="radio-inline">
-              <input
-                type="radio"
-                name="action"
-                value="upload"
-                className="laravel-h5p-type"
-                checked={submitAction === 'upload'}
-                onChange={onSubmitActionRadioChange}
-              />
+              <input type="radio" name="action" value="upload" className="laravel-h5p-type" checked={submitAction === 'upload'} onChange={onSubmitActionRadioChange} />
               Upload
             </label>
 
             <label className="radio-inline">
-              <input
-                type="radio"
-                name="action"
-                value="create"
-                className="laravel-h5p-type"
-                checked={submitAction === 'create'}
-                onChange={onSubmitActionRadioChange}
-              />
+              <input type="radio" name="action" value="create" className="laravel-h5p-type" checked={submitAction === 'create'} onChange={onSubmitActionRadioChange} />
               Create
             </label>
           </div>

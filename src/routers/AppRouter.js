@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable operator-linebreak */
 import React, { useEffect } from 'react';
 import {
   // Route,
@@ -37,6 +37,7 @@ const NeafLogin = loadable(() => import('../containers/Auth/NeafLogin'));
 const VevensityRegister = loadable(() => import('../containers/Auth/VevinsityRegistration'));
 const VevensityLogin = loadable(() => import('../containers/Auth/VevinsityLogin'));
 const AdminPanel = loadable(() => import('../containers/Admin'));
+const Library = loadable(() => import('../containers/Search'));
 const LtiLogin = loadable(() => import('../containers/Auth/LtiLogin'));
 const termsPolicyContent = loadable(() => import('../components/Footer/termsPolicyContent'));
 const CanvasLtiLogin = loadable(() => import('../containers/Auth/CanvasLtiLogin'));
@@ -44,6 +45,8 @@ const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
+
+const BrandingPage = loadable(() => import('../containers/Branding'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
 const PlaylistsPage = loadable(() => import('../containers/Playlists'));
@@ -55,9 +58,9 @@ const SearchResult = loadable(() => import('../containers/Search'));
 const Searchnetlify = loadable(() => import('../containers/Search/SearchNetlify'));
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import('../containers/Teams'));
+const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
+const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
-const AddTeamProjectsPage = loadable(() => import('../containers/Teams/AddProjects'));
-const AddTeamProjectMemberPage = loadable(() => import('../containers/Teams/AddMembers'));
 
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
@@ -72,6 +75,7 @@ const SearchPage = loadable(() => import('../containers/LMS/Canvas/DeepLinking/S
 const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
+const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -93,11 +97,14 @@ const AppRouter = (props) => {
   return (
     <Router history={history}>
       <Switch>
+        <OpenRoute exact path="/branding" component={BrandingPage} />
         <OpenRoute
           exact
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
+        {history?.location?.pathname?.includes('/login') && window.location?.host?.includes('my.currikistudio.org') && window.location.replace('https://currikistudio.org')}
+        <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
         <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />
@@ -159,19 +166,17 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/change-password" component={ChangePasswordPage} />
 
                   {/* <PrivateRoute exact path="/org/:organization/dashboard" component={DashboardPage} /> */}
-                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
                   <PrivateRoute exact path="/org/:organization/notification" component={NotificationPage} />
                   <PrivateRoute exact path="/org/:organization/admin" component={AdminPanel} />
-                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO={true} component={AdminPanel} />
                   <PrivateRoute exact path="/org/:organization/teams" component={TeamsPage} overview />
-                  <PrivateRoute exact path="/org/:organization/teams/create-team" component={TeamsPage} creation />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamsPage} teamShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/edit" component={TeamsPage} editMode />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects" component={TeamsPage} projectShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/channel" component={TeamsPage} channelShow />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={AddTeamProjectsPage} />
-                  <PrivateRoute exact path="/org/:organization/teams/:teamId/projects/:projectId/add-member" component={AddTeamProjectMemberPage} />
-
+                  <PrivateRoute exact path="/org/:organization/teams/team-detail" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/add-projects" component={TeamAddProjects} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId" component={TeamDetailPage} />
+                  <PrivateRoute exact path="/org/:organization/teams/:teamId/add-projects" component={TeamAddProjects} />
+                  <PrivateRoute exact path="/org/:organization/video" component={VideoPage} overview />
+                  <PrivateRoute exact path="/org/:organization/activities" component={VideoPage} overview activities />
+                  <PrivateRoute exact path="/org/:organization/instance-admin" showSSO component={AdminPanel} />
+                  <PrivateRoute exact path="/org/:organization/library" showSSO component={Library} />
                   {/* <PrivateRoute exact path="/org/:organization/groups" component={GroupsPage} overview />
                      <PrivateRoute exact path="/org/:organization/groups/create-group" component={GroupsPage} creation />
                      <PrivateRoute exact path="/org/:organization/groups/:groupId" component={GroupsPage} groupShow />
@@ -203,7 +208,8 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/search" component={SearchResult} />
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
-                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}`} />
+
+                  <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}/activities`} />
                 </Switch>
                 <Footer />
               </div>

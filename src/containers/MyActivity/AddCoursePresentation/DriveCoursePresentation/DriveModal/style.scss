@@ -1,0 +1,83 @@
+.google-drive-search-modal {
+  z-index: 1060;
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  width: 100%;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.google-drive-search-modal .modal-header {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.google-drive-search-modal .modal-header img {
+  width: 20px;
+  cursor: pointer;
+}
+
+.drive-modal-search {
+  margin: 1rem;
+}
+
+.google-drive-search-modal svg {
+  cursor: pointer;
+}
+
+.google-drive-file-cards {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: scroll;
+  height: 25rem;
+  justify-content: space-evenly;
+}
+
+.google-drive-file-cards div {
+  border: solid 1px lightgray;
+  border-radius: 5px;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.google-drive-file-cards div:hover {
+  border-color: #084892;
+}
+
+.google-drive-file-cards img {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.google-drive-file-cards p {
+  text-align: center;
+  margin: 1rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.google-drive-search-modal .alert {
+  margin: 1rem;
+}
+
+.google-drive-file-table-container {
+  margin: 1rem;
+}
+
+.google-drive-file-table-container tbody tr {
+  cursor: pointer;
+}
+
+.google-drive-file-table-container th {
+  font-weight: bold;
+}
+
+.google-drive-file-table-container tbody img {
+  margin-inline: 1rem;
+}
+
+.modal-info svg {
+  font-size: xx-large;
+}

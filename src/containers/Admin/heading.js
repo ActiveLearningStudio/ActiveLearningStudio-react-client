@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import './style.scss';
 
 const Heading = () => {
-  const { name } = useSelector((state) => state.organization.activeOrganization);
+  const name = useSelector((state) => state.organization?.activeOrganization?.name);
   return (
     <div className="main-heading">
       <div className="secand-heading">

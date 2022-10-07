@@ -195,12 +195,13 @@ function ProjectPreview(props) {
                           <div
                             onClick={() => {
                               if (history?.location?.state?.from?.includes('preview')) {
-                                history.push(`/org/${organization.currentOrganization.domain}`)
+                                history.push(`/org/${organization.currentOrganization.domain}`);
                               } else {
-                                history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`)
+                                history.push(`/org/${organization.currentOrganization?.domain}/project/${currentProject?.id}`);
                               }
                             }}
-                            className="go-back-button-preview">
+                            className="go-back-button-preview"
+                          >
                             {/* <FontAwesomeIcon icon="undo" className="mr-2" /> */}
                             Close preview mode
                           </div>
@@ -252,8 +253,8 @@ function ProjectPreview(props) {
               deletePlaylist={deletePlaylist}
               // hideDeletePopup={hideDeletePopup}
               deleteProject={deleteProject}
-            // deleteType="project"
-            // showDeletePopup={showDeletePopup}
+              // deleteType="project"
+              // showDeletePopup={showDeletePopup}
             />
           )}
         </>

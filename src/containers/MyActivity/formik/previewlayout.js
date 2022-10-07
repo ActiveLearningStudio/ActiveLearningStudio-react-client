@@ -1,21 +1,17 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import HeadingText from "utils/HeadingText/headingtext";
-import HeadingTwo from "utils/HeadingTwo/headingtwo";
-import Tabs from "utils/Tabs/tabs";
-import HeadingThree from "utils/HeadingThree/headingthree";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TopHeading from "utils/TopHeading/topheading";
-import DialogCardImage from "assets/images/Rectangle 127.png";
-import Buttons from "utils/Buttons/buttons";
-import CarDImage from "../../../assets/images/program-thumb.png";
-import ExplanatoryH5P from "assets/images/svg/explanatoryH5P.svg";
-import {
-  faAngleLeft,
-  faAngleRight,
-  faArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import HeadingText from 'utils/HeadingText/headingtext';
+import HeadingTwo from 'utils/HeadingTwo/headingtwo';
+import Tabs from 'utils/Tabs/tabs';
+import HeadingThree from 'utils/HeadingThree/headingthree';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import TopHeading from 'utils/TopHeading/topheading';
+import DialogCardImage from 'assets/images/Rectangle 127.png';
+import Buttons from 'utils/Buttons/buttons';
+import CarDImage from '../../../assets/images/program-thumb.png';
+import ExplanatoryH5P from 'assets/images/svg/explanatoryH5P.svg';
+import { faAngleLeft, faAngleRight, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 const PreviewLayout = (props) => {
   const { changeScreenHandler } = props;
   return (
@@ -31,11 +27,7 @@ const PreviewLayout = (props) => {
       </div> */}
       <div className="preview-layout-tabs">
         <Tabs text="1. Select an activity" tabActive={true} />
-        <Tabs
-          text="2. Add activities to Layout"
-          className="ml-10 mt-10"
-          tabActive={true}
-        />
+        <Tabs text="2. Add activities to Layout" className="ml-10 mt-10" tabActive={true} />
         <Tabs text="3. Preview Activity" className="ml-10" tabActive={true} />
       </div>
       <div className="preview-layout-title-select">
@@ -81,8 +73,7 @@ const PreviewLayout = (props) => {
             </div>
             <div>
               <p>
-                <FontAwesomeIcon icon={faAngleLeft} />{" "}
-                <FontAwesomeIcon icon={faAngleRight} />
+                <FontAwesomeIcon icon={faAngleLeft} /> <FontAwesomeIcon icon={faAngleRight} />
                 Embed
               </p>
             </div>
@@ -144,33 +135,21 @@ const PreviewLayout = (props) => {
         <div className="preview-layout-project">
           <div className="project-title-link">
             <div className="project-title">
-              <HeadingTwo
-                text="Project: "
-                color="#084892"
-                className="project-heading"
-              />
+              <HeadingTwo text="Project: " color="#084892" className="project-heading" />
               <HeadingText text="Project title here" color="#515151" />
-              <HeadingTwo
-                text="Playlist:"
-                color="#084892"
-                className="playlist-heading"
-              />
+              <HeadingTwo text="Playlist:" color="#084892" className="playlist-heading" />
               <HeadingText text="Playlist name here" color="#515151" />
             </div>
             <div className="project-link">
               <Link className="get-link">
-                <FontAwesomeIcon icon="link" className="icon-link" />
+                {/* <FontAwesomeIcon icon="link" className="icon-link" />*/}
                 Get link
               </Link>
             </div>
           </div>
           <div className="dialog-card-box">
             <img src={DialogCardImage} alt="" />
-            <HeadingText
-              text="Dialog Cards"
-              color="#084892"
-              className="ml-15"
-            />
+            <HeadingText text="Dialog Cards" color="#084892" className="ml-15" />
           </div>
           {/* <div className="add-more-activity">
             <div className="more-activity-icon">
@@ -181,22 +160,8 @@ const PreviewLayout = (props) => {
             </Link>
           </div> */}
           <div className="project-link-button">
-            <Buttons
-              text="Back to Editor"
-              primary={true}
-              width="126px"
-              height="43px"
-              hover={true}
-              onClick={() => changeScreenHandler("addactivity")}
-            />
-            <Buttons
-              text="Finish Layout"
-              secondary={true}
-              width="126px"
-              height="43px"
-              hover={true}
-              onClick={() => changeScreenHandler("")}
-            />
+            <Buttons text="Back to Editor" primary={true} width="126px" height="43px" hover={true} onClick={() => changeScreenHandler('addactivity')} />
+            <Buttons text="Finish Layout" secondary={true} width="126px" height="43px" hover={true} onClick={() => changeScreenHandler('')} />
           </div>
         </div>
       </div>

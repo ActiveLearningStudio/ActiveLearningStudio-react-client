@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const PORT = process.env.PORT || 3000;
+const PORT = window.__RUNTIME_CONFIG__.PORT || 3000;
 
 const app = express();
 app.use(express.static(path.resolve(__dirname, './build')));
@@ -14,8 +14,8 @@ app.get('/*', (req, res) => {
     if (err) {
       return console.log(err);
     }
-    data = data.replace('<title>CurrikiStudio</title>', `<title>${process.env.META_IMAGE}</title>`);
-    data = data.replace(/__META_IMAGE__/g, process.env.META_IMAGE);
+    data = data.replace('<title>CurrikiStudio</title>', `<title>${window.__RUNTIME_CONFIG__.META_IMAGE}</title>`);
+    data = data.replace(/__META_IMAGE__/g, window.__RUNTIME_CONFIG__.META_IMAGE);
 
     res.send(data);
   });

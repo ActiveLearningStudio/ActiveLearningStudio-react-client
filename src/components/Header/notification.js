@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
@@ -8,6 +9,8 @@ import { getAllNotifications, clearAllNotification } from 'store/actions/notific
 import NotificationArea from 'containers/Notification/NotificationArea';
 
 import './style.scss';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import NotificationSvg from 'iconLibrary/header/NotificationSvg';
 
 function HeaderNotification() {
   const dispatch = useDispatch();
@@ -34,13 +37,14 @@ function HeaderNotification() {
   useEffect(() => {
     setNotificationData(allNotifications.notification);
   }, [allNotifications]);
-
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <li className="notification-bar">
       <Dropdown>
         <Dropdown.Toggle className="d-flex align-items-center" id="dropdown-autoclose-outside">
           <div className="notification-alert" onClick={() => dispatch(clearAllNotification())}>
-            <img src={bell} alt="notification" />
+            <NotificationSvg primaryColor={primaryColor} />
+
             <p className="header-icon-text">Notifications</p>
             {allNotifications.notificationAlert > 0 && <div className="alert-added" />}
           </div>

@@ -1,47 +1,137 @@
 @import "assets/css/index";
 
 .team-card-content {
-  width: 250px;
-  margin: 0 18px 18px 0;
-  padding: 5px 24px;
-  background: #fff;
-  border: solid 1px #e2e2e2;
-
+  width: 290px;
+  margin: 0 16px 16px 0;
+  padding: 16px 16px;
+  background: #ffffff;
+  box-shadow: 0px 4px 12px 2px rgba(81, 81, 81, 0.16);
+  border-radius: 8px;
   .team-title {
-    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    a {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      text-align: center;
+      color: #084892;
+      word-break: break-word;
+      text-decoration: none;
+    }
+    .dropdown {
+      button {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        width: auto;
+        background: none;
+        height: 36px;
+        color: #084892;
+        background-color: none;
+        box-sizing: border-box;
+        margin-left: 8px;
+        &:focus {
+          color: #084892;
+          box-shadow: none;
+        }
+      }
+      .dropdown-menu {
+        min-width: 160px !important;
+        // height: 72px;
+        background: #ffffff;
+        box-shadow: 0px 4px 12px 2px rgba(81, 81, 81, 0.16);
+        border-radius: 4px;
+      }
+      a {
+        display: flex;
+        margin-bottom: 4px;
+        font-family: "Open sans", sans-serif;
+        font-weight: normal;
+        font-size: 14px;
+        margin-left: 8px;
+        line-height: 20px;
+        letter-spacing: 0;
+        color: #084892;
+        padding: 4px 6px;
+        img {
+          width: 16px;
+          height: 16px;
+          margin-right: 8px;
+        }
+        svg {
+          margin-right: 8px;
+        }
+        &:hover {
+          color: #2e68bf;
+          background: #f7faff;
+        }
+      }
+      .dropdown-toggle {
+        &:after {
+          content: none;
+        }
+      }
+    }
+    svg {
+      color: $fun-blue-1;
+    }
   }
 
   .sub-title {
     display: flex;
-    justify-content: space-between;
-    font-weight: 600;
+    align-items: center;
+    img {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+    }
+    span {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      color: #084892;
+      padding-top: 3px;
+    }
   }
 
   & > .sub-title {
-    padding: 15px 0;
+    padding: 16px 0;
   }
   .edit-button {
     float: right;
     color: $fun-blue-1;
   }
   .team-member-content {
-    padding: 15px 0;
+    // padding: 15px 0;
 
-    &.mid-border {
-      border-width: 1px 0;
-      border-style: solid;
-      border-color: #e2e2e2;
-    }
+    // &.mid-border {
+    //   border-width: 1px 0;
+    //   border-style: solid;
+    //   border-color: #e2e2e2;
+    // }
 
     .member-mark-container {
       display: flex;
       flex-wrap: wrap;
-      margin-top: 14px;
+      margin-top: 8px;
 
       .member-name-mark {
         position: relative;
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         background: #fff;
         border: solid 1px #e2e2e2;
         border-radius: 50%;
@@ -74,10 +164,16 @@
   }
 
   .describe {
+    font-family: "Open Sans", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #767676;
     max-height: 36px;
-    margin-bottom: 0;
-    font-size: 12px;
-    line-height: 18px;
+    margin-bottom: 16px;
     word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }

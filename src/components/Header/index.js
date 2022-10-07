@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,23 +9,29 @@ import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
 import { Event } from 'trackers/ga';
 
-import help from 'assets/images/help.svg';
-import edit from 'assets/images/edit1.png';
-import changePassword from 'assets/images/changepassword.png';
-import logoutIcon from 'assets/images/logout.png';
-
 import HeaderNotification from './notification';
 import MultitenancyDropdown from './multitenancyDropdown';
 
 import './style.scss';
-
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import HelpSvg from 'iconLibrary/header/HelpSvg';
+import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
+import ChangePasswordMdSvg from 'iconLibrary/header/ChangePasswordMdSvg';
+import LogoutMdSvg from 'iconLibrary/header/LogoutMdSvg';
+import Forum from 'iconLibrary/header/Forum';
+import Community from 'iconLibrary/header/Community';
+import Group from 'iconLibrary/header/Group';
 function Header(props) {
   const { logout } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const { user } = useSelector((state) => state.auth);
   const { currentOrganization } = stateHeader;
-
+  const [primaryColor, setPrimaryColor] = useState();
+  useEffect(() => {
+    const primaryColorFunction = getGlobalColor('--main-primary-color');
+    setPrimaryColor(primaryColorFunction);
+  }, [currentOrganization]);
   return (
     <header>
       <div className="top-header flex-div align-items-center">
@@ -34,7 +41,10 @@ function Header(props) {
               <div
                 className="nav-logo"
                 style={{
-                  backgroundImage: `url(${global.config.resourceUrl + currentOrganization?.image})`,
+                  backgroundImage:
+                    !!currentOrganization?.image && currentOrganization?.image.includes('dev.currikistudio')
+                      ? `url(${currentOrganization?.image})`
+                      : `url(${global.config.resourceUrl}${currentOrganization?.image})`,
                   backgroundPosition: 'left',
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
@@ -49,19 +59,46 @@ function Header(props) {
               <li>
                 <MultitenancyDropdown />
               </li>
+              <li className="menu-user-settings d-flex align-items-center">
+                <Dropdown>
+                  <Dropdown.Toggle className="align-items-center">
+                    <Community primaryColor={primaryColor} />
+                    <p className="header-icon-text">Community</p>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu className="user-dropdown">
+                    <Dropdown.Item target="_blank" href={`https://www.currikistudio.org/groups/`}>
+                      <div className="user-dropdown-item">
+                        <Group primaryColor={primaryColor} />
+                        Groups
+                      </div>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item target="_blank" href={`https://www.currikistudio.org/forums/`}>
+                      <div className="user-dropdown-item">
+                        <Forum primaryColor={primaryColor} />
+                        Forums
+                      </div>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
               <li>
-                <div
+                <a
                   style={{ cursor: 'pointer', textAlign: 'center' }}
-                  onClick={() => {
-                    dispatch({
-                      type: SHOW_HELP,
-                      payload: true,
-                    });
-                  }}
+                  // onClick={() => {
+                  //   dispatch({
+                  //     type: SHOW_HELP,
+                  //     payload: true,
+                  //   });
+                  // }}
+                  href="https://www.currikistudio.org/help/"
+                  target="_blank"
                 >
-                  <img src={help} alt="help" />
+                  <HelpSvg primaryColor={primaryColor} />
+
                   <p className="header-icon-text">Help</p>
-                </div>
+                </a>
               </li>
 
               <HeaderNotification />
@@ -69,13 +106,17 @@ function Header(props) {
               <li className="menu-user-settings d-flex align-items-center">
                 <Dropdown>
                   <Dropdown.Toggle className="align-items-center">
-                    <div className="profile-avatar">{user?.first_name[0]}</div>
-                    <p className="header-icon-text">My Profile</p>
+                    <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
+                      {user?.first_name[0]}
+                    </div>
+                    <p className="header-icon-text">Profile</p>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className="user-dropdown">
                     <div className="user-dropdown-item-name">
-                      <div className="profile-avatar">{user?.first_name[0]}</div>
+                      <div className="profile-avatar" style={{ backgroundColor: primaryColor }}>
+                        {user?.first_name[0]}
+                      </div>
                       <div className="basic-info">
                         <b>
                           <p className="name">
@@ -90,18 +131,23 @@ function Header(props) {
                     <hr />
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/account`}>
                       <div className="user-dropdown-item">
-                        <img src={edit} alt="edit" />
+                        <EditMdSvg primaryColor={primaryColor} />
                         My Account
                       </div>
                     </Dropdown.Item>
-                    <hr />
+
                     <Dropdown.Item as={Link} to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}>
                       <div className="user-dropdown-item">
-                        <img className="img-change-password" src={changePassword} alt="changePassword" />
+                        {/* <img
+                          className="img-change-password"
+                          src={changePassword}
+                          alt="changePassword"
+                        /> */}
+                        <ChangePasswordMdSvg primaryColor={primaryColor} />
                         Change Password
                       </div>
                     </Dropdown.Item>
-                    <hr />
+
                     <Dropdown.Item
                       href="#"
                       onClick={() => {
@@ -110,7 +156,7 @@ function Header(props) {
                       }}
                     >
                       <div className="user-dropdown-item">
-                        <img src={logoutIcon} alt="logoutIcon" />
+                        <LogoutMdSvg primaryColor={primaryColor} />
                         Logout
                       </div>
                     </Dropdown.Item>

@@ -1,0 +1,130 @@
+@import "assets/css/index";
+
+.team-modal {
+  right: 0;
+  width: 560px;
+  height: auto;
+  background-color: #e5e5e5;
+  h1 {
+    margin: 0;
+    font-family: $rubik, sans-serif;
+    span {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 38px;
+      color: $fun-blue-1;
+      border-bottom: 2px solid #f8af2c;
+    }
+
+    font-size: 2rem;
+    font-weight: 300;
+    // color: #165399;
+    text-transform: capitalize;
+  }
+  .close-team-btn {
+    float: right;
+    background: none;
+    border: 0;
+    padding: 0px;
+  }
+
+  .modal-content {
+    padding: 32px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 470px;
+    .row-team {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  .modal-body {
+    padding: 0 32px 32px 32px !important;
+    .modal-title {
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 38px;
+      color: $fun-blue-1;
+      padding: 0px !important;
+      margin-top: 8px;
+      margin-bottom: 50px;
+      .col-md-12 {
+        padding: 0px !important;
+        p {
+          font-family: "Open Sans", sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 26px;
+          color: #515151;
+          margin-top: 10.02px !important;
+          margin-bottom: 0px !important;
+        }
+      }
+    }
+    .satelliteteaminfo {
+      margin-top: 48px;
+      color: #565656;
+    }
+    .error {
+      color: $error;
+    }
+    .label-title {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #515151;
+      margin-bottom: 4px;
+    }
+  }
+  .modal-footer {
+    padding: 0px !important;
+    margin-top: 120px;
+    display: block;
+    border-top: none;
+    float: right;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    .add-team-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 170px;
+      height: 40px;
+      border: 0;
+      background: #084892;
+      color: #ffffff;
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+      border-radius: 20px;
+      text-decoration: none;
+      svg {
+        color: #f8af2c;
+        margin-right: 8px;
+      }
+      // .add-team-btn-text {
+      //   width: 80px;
+      //   height: 20px;
+      //   font-style: normal;
+      //   font-weight: 500;
+      //   font-size: 14px;
+      //   line-height: 20px;
+      //   color: #ffffff;
+      //   flex: none;
+      //   order: 0;
+      //   flex-grow: 0;
+      //   margin: 0px 10px;
+      // }
+    }
+  }
+  .modal {
+    padding: 0 !important;
+  }
+}

@@ -1,0 +1,23 @@
+.file-upload-dnd-area {
+  background: #F1F1F1;
+  border-radius: 5px;
+  padding: 1em;
+  width: 30em;
+  cursor: pointer;
+}
+
+.file-upload-dnd-area label {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #F7FAFF;
+  padding: 0.75em;
+  border-radius: 5px;
+}
+
+.file-upload-dnd-input {
+  display: none;
+}
+
+.file-upload-dnd-area div {
+  text-align: center;
+}

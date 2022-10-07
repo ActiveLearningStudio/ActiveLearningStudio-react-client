@@ -1,18 +1,16 @@
 /*eslint-disable*/
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import "./tabs.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import './tabs.scss';
 
 const Tabs = ({ text, color, tabActive = false, className }) => {
-  const currikiUtility = classNames("curriki-utility-tabs", className);
-  const currikiUtility_tabs = classNames(
-    tabActive ? "tabs activeTabs" : "tabs"
-  );
+  const currikiUtility = classNames('curriki-utility-tabs', className);
+  const currikiUtility_tabs = classNames(tabActive ? 'tabs activeTabs' : 'tabs');
   return (
     <div className={currikiUtility} style={{ color: color }}>
       <span className={currikiUtility_tabs}></span>
-      <div className="tab-text">
+      <div className={`tab-text`} id={tabActive ? 'tab-text-color-selected' : 'tab-text-color-unselected'}>
         <p>{text}</p>
       </div>
     </div>

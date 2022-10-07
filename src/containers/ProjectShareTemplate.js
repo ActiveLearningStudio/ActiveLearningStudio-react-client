@@ -61,7 +61,7 @@ function ProjectShareTemplate(props) {
   };
   const onSubmit = (event) => {
     event.preventDefault();
-    if (password === process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS) {
+    if (password === window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_DEMO_PASS) {
       setPasswordCheck(true);
     } else {
       setError('Please enter valid password');
@@ -72,13 +72,13 @@ function ProjectShareTemplate(props) {
       if (!localStorage.auth_token) {
         await dispatch(
           loginAction({
-            email: process.env.REACT_APP_SHARED_PROJECT_DEMO_USER,
-            password: process.env.REACT_APP_SHARED_PROJECT_DEMO_PASS,
+            email: window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_DEMO_USER,
+            password: window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_DEMO_PASS,
             domain: 'currikistudio',
           })
         );
       }
-      const shareResult = await shareProjectsService.shareProjects(process.env.REACT_APP_SHARED_PROJECT_USERID);
+      const shareResult = await shareProjectsService.shareProjects(window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_USERID);
       setAllProject(shareResult.projects);
       if (shareResult.projects.length == 0) {
         setErrorShow(true);

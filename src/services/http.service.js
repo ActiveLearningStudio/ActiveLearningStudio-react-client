@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { USER_TOKEN_KEY } from '../constants';
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = window.__RUNTIME_CONFIG__.REACT_APP_API_URL;
 
 const http = axios.create({ baseURL: `${baseURL}/` });
 
@@ -16,9 +16,10 @@ function getAuthHeader() {
   return authHeader;
 }
 
-function get(url, headers = {}, params = {}) {
+function get(url, headers = {}, params = {}, signal = null) {
   return http.get(url, {
     params,
+    signal,
     headers: { ...getAuthHeader(), ...headers },
   });
 }

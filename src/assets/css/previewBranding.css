@@ -1,0 +1,132 @@
+:root {
+  /* --main-preview-primary-color: #084892; */
+  --main-preview-primary-color: #084892;
+  --main-preview-secondary-color: #f8af2c;
+  --main-preview-paragraph-text-color: #515151;
+  --main-preview-white-color: #ffffff;
+  --main-preview-black-color: #000000;
+  --main-preview-anchor-tag-color: #007bff;
+  --main-preview-heading-border: #f8af2c;
+  --main-preview-update-permissions-color: #087a2e;
+  --main-preview-continue-btn-color: #2ecf43;
+  --main-preview-left-btn-color: #5952c6;
+  --main-preview-projects-card-color: #607a9b;
+  --main-preview-user-text-color: #2f2f2f;
+  --maim-preview-playlist-border-color: #dddddd;
+  --main-preview-search-input-color: #959595;
+  --main-preview-alert-success-color: #346214;
+  --main-preview-alert-warning-color: #856404;
+  --main-preview-heading-font: rubic;
+  --main-preview-text-font: Open Sans, sans-serif;
+  --main-preview-bg-transparent: transparent;
+}
+
+.branding-preview .main-myproject-card .updated-date {
+  color: var(--main-preview-paragraph-text-color) !important;
+  font-family: var(--main-preview-text-font) !important;
+}
+
+.branding-preview .curriki-theme-primary-button {
+  color: var(--main-preview-white-color) !important;
+  background-color: var(--main-preview-primary-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+}
+.branding-preview #preview-myproject-card-title h2 {
+  color: var(--main-preview-white-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+}
+.branding-preview .curriki-utility-headings.paragraph-two {
+  color: var(--main-preview-paragraph-text-color) !important;
+  font-family: var(--main-preview-text-font) !important;
+}
+/* .branding-preview .heading-image .preview-myproject-heading {
+  color: var(--main-preview-primary-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+} */
+.branding-preview #preview-heading-myproject .preview-myproject-heading {
+  color: var(--main-preview-primary-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+  border-bottom-color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .project-headline .search-main-relaced .search-block {
+  border: 1px solid var(--main-preview-primary-color) !important;
+  background-color: var(--main-preview-white-color) !important;
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+
+.branding-preview .project-headline .search-main-relaced .search-block input {
+  /* Not Working */
+  font-family: var(--main-preview-heading-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .user-dropdown-item-name .email {
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .user-dropdown-item {
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .header-icon-text {
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .sidebar-all .sidebar-headings {
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:checked:after {
+  background-color: var(--main-preview-primary-color) !important;
+  border: 2px solid var(--main-preview-primary-color) !important;
+}
+.branding-preview
+  .search-div
+  .overlay-search-form
+  .form-group
+  .radio-btns
+  label
+  input[type="radio"]:after {
+  border: 2px solid var(--main-preview-primary-color) !important;
+}
+.branding-preview .search-div h4 {
+  font-family: var(--main-preview-heading-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .project-dropdown.check .dropdown-menu a {
+  font-family: var(--main-preview-heading-font) !important;
+  color: var(--main-preview-primary-color) !important;
+}
+.branding-preview .inner-content .main-tabs .nav-item.active {
+  font-family: var(--main-preview-text-font) !important;
+  color: var(--main-preview-primary-color) !important;
+  background-color: var(--main-preview-white-color) !important;
+}
+.branding-preview .content-wrapper .inner-content nav .nav-link {
+  color: var(--main-preview-white-color) !important;
+  background-color: var(--main-preview-primary-color) !important;
+  border-color: var(--main-preview-primary-color) !important;
+  font-family: var(--main-preview-heading-font) !important;
+}
+.branding-preview .main-myproject-card .myproject-card-detail p {
+  color: var(--main-preview-paragraph-text-color) !important;
+  font-family: var(--main-preview-text-font) !important;
+}
+.branding-preview
+  .project-headline
+  .search-main-relaced
+  .search-block
+  .fa-chevron-down {
+  color: var(--main-preview-primary-color) !important;
+}
+
+.branding-preview .project-headline button .fa-plus {
+  color: var(--main-preview-secondary-color) !important;
+}

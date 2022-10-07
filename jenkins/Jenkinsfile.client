@@ -6,8 +6,8 @@ node("currikidev") {
         checkout scm    
     }  
     
-    stage('Build image') {         
-        app = docker.build("quay.io/curriki/client")    
+    stage('Build image') { 
+        app = docker.build("quay.io/curriki/client", "--build-arg DOMAIN=$domain .")
         
     } 
     stage('Test image') {           

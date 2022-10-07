@@ -271,7 +271,7 @@ let ResourceDescribeActivity = (props) => {
                       Activity Image dimension should be
                       {' '}
                       <strong>290px width and 200px height. </strong>
-                      Maximun File size allowed is
+                      Maximum File size allowed is
                       {' '}
                       <strong>100MB.</strong>
                     </p>

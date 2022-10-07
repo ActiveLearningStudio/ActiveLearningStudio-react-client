@@ -10,13 +10,8 @@ import { loadH5pSettingsActivity } from 'store/actions/resource';
 
 const H5PEditor = (props) => {
   const {
-    match,
-    h5pParams,
-    resource,
-    loadH5pSettings,
-    handleCreateResourceSubmit,
-    upload,
-  } = props;
+ match, h5pParams, resource, loadH5pSettings, handleCreateResourceSubmit, upload,
+} = props;
 
   const uploadFile = useRef();
   let defaultState = 'create';
@@ -101,12 +96,7 @@ const H5PEditor = (props) => {
 
   return (
     <>
-      <form
-        method="POST"
-        acceptCharset="UTF-8"
-        className="form-horizontal"
-        id="laravel-h5p-form"
-      >
+      <form method="POST" acceptCharset="UTF-8" className="form-horizontal" id="laravel-h5p-form">
         <div className="form-group" style={{ position: 'inherit' }}>
           <div className="col-md-9 col-md-offset-3" style={{ position: 'inherit' }}>
             {/* <button
@@ -119,23 +109,9 @@ const H5PEditor = (props) => {
           </div>
         </div>
 
-        <input
-          name="_token"
-          type="hidden"
-          value={process.env.REACT_APP_H5P_KEY}
-        />
-        <input
-          type="hidden"
-          name="library"
-          id="laravel-h5p-library"
-          value={resource.newResource.activity.h5pLib}
-        />
-        <input
-          type="hidden"
-          name="parameters"
-          id="laravel-h5p-parameters"
-          value={JSON.parse('{"params":{},"metadata":{}}')}
-        />
+        <input name="_token" type="hidden" value={window.__RUNTIME_CONFIG__.REACT_APP_H5P_KEY} />
+        <input type="hidden" name="library" id="laravel-h5p-library" value={resource.newResource.activity.h5pLib} />
+        <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={JSON.parse('{"params":{},"metadata":{}}')} />
 
         <fieldset>
           <div id="laravel-h5p-create" className="form-group ">
@@ -145,8 +121,7 @@ const H5PEditor = (props) => {
               </div>
             </div>
           </div>
-          {upload
-          && (
+          {upload && (
             <div className="form-group laravel-h5p-upload-container">
               {/* <label htmlFor="inputUpload" className="control-label col-md-3">
                 Upload
@@ -167,12 +142,9 @@ const H5PEditor = (props) => {
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
                     <p>
                       Drag & Drop File or
-                      <span>
-                        &nbsp;Browse to upload
-                      </span>
+                      <span>&nbsp;Browse to upload</span>
                     </p>
-                    {!!h5pFile
-                    && (
+                    {!!h5pFile && (
                       <p>
                         Selected File:&nbsp;
                         {h5pFile.name}
@@ -199,26 +171,12 @@ const H5PEditor = (props) => {
             <label className="control-label col-md-3">Method</label>
             <div className="col-md-6">
               <label className="radio-inline mr-4">
-                <input
-                  type="radio"
-                  name="action"
-                  value="upload"
-                  className="laravel-h5p-type mr-2"
-                  checked={submitAction === 'upload'}
-                  onChange={onSubmitActionRadioChange}
-                />
+                <input type="radio" name="action" value="upload" className="laravel-h5p-type mr-2" checked={submitAction === 'upload'} onChange={onSubmitActionRadioChange} />
                 Upload
               </label>
 
               <label className="radio-inline">
-                <input
-                  type="radio"
-                  name="action"
-                  value="create"
-                  className="laravel-h5p-type mr-2"
-                  checked={submitAction === 'create'}
-                  onChange={onSubmitActionRadioChange}
-                />
+                <input type="radio" name="action" value="create" className="laravel-h5p-type mr-2" checked={submitAction === 'create'} onChange={onSubmitActionRadioChange} />
                 Create
               </label>
             </div>

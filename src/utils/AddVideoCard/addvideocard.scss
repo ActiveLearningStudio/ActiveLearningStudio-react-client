@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .curriki-utility-addvideo-card {
   margin-right: 30px;
@@ -7,6 +7,16 @@
   background: $white;
   box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
   border-radius: 8px;
+  .apply-check-video {
+    &:before {
+      background: rgba(8, 72, 146, 0.8);
+    }
+  }
+  .apply-uncheck-video {
+    &:before {
+      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+    }
+  }
   .addvideo-card-top {
     border-radius: 5px;
     // background-image: url("../../assets/images/cardlistimg.png");
@@ -14,11 +24,11 @@
     position: relative;
     height: 156px;
     &:before {
-      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      // background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       //   background-color: rgba(113, 117, 119, 0.7);
-      content: '';
+      content: "";
       display: block;
       height: 100%;
       position: absolute;
@@ -29,10 +39,30 @@
       position: absolute;
       top: 5px;
       right: 15px;
+      .cutom_checkbox {
+        margin-bottom: 0px !important;
+        input {
+          display: none;
+          &:checked + span {
+            background-image: url("../../assets/images/svg/tick_custome_checkoutbox_blue.svg");
+            background-color: #ffffff;
+          }
+        }
+        span {
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+          border: 1.5px solid #ffffff;
+          border-radius: 2px;
+          background-repeat: no-repeat;
+          background-position: 0px 0px;
+          display: inline-block;
+          height: 12px;
+          width: 12px;
+        }
+      }
     }
     .addvideo-card-title {
       position: absolute;
-      bottom: 10px;
+      bottom: 0px;
       left: 15px;
       h2 {
         font-family: $rubik;
@@ -45,15 +75,36 @@
     }
   }
   .addvideo-card-detail {
-    padding: 16px;
+    padding: 24px 16px 16px 16px;
     p {
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
+    }
+  }
+  .addvideo-activity-menu-option {
+    display: flex;
+    flex-direction: column;
+    .activity-request-tag {
+      cursor: pointer;
+      background: #f1f1f1;
+      width: max-content;
+      padding: 6px;
+      // margin-left: 16px;
+      border-radius: 4px;
+      span {
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #515151;
+        margin-left: 10px;
+      }
     }
   }
 
@@ -63,7 +114,7 @@
     margin-left: 16px;
     .share-text {
       span {
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         font-style: normal;
         font-weight: normal;
         font-size: 12px;
@@ -82,7 +133,7 @@
     text-align: right;
     span {
       margin-left: 8px;
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -90,4 +141,91 @@
       color: #515151;
     }
   }
+  .addvideo-card-add-share-options-parent {
+    display: flex;
+    margin-bottom: 16px;
+  }
+  .addvideo-card-add-share-options {
+    padding: 8px;
+    margin-top: 8px;
+    // margin-bottom: 25px;
+    // margin-right: 20px;
+  }
+  .addvideo-card-add-share-options-ind {
+    // padding: 8px;
+    // margin-top: 8px;
+    margin-bottom: 25px;
+    margin-right: 20px;
+  }
+  .mr-6 {
+    margin-right: 6px;
+  }
+
+  .activity-update-lib {
+    padding: 0px 16px 6px 16px;
+    .activity-update {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .activity-lib {
+      margin-top: 8px;
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      span {
+        color: $curriki-main-blue;
+      }
+    }
+  }
+}
+.hover-apply {
+  &:hover {
+    opacity: 1;
+    transition: 0.3s;
+    background-color: #f1f1f1;
+    // padding: 8px;
+    border-radius: 4px;
+    .textinButton {
+      display: inline-flex;
+      margin-left: 10px;
+      // margin-left: -10px;
+      // margin-right: 5px;
+      // opacity: 1;
+    }
+  }
+}
+
+.textinButton {
+  display: none;
+  font-family: $rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: $curriki-main-blue;
+}
+
+.button-tooltip_style {
+  .tooltip-inner {
+    text-align: left;
+    background: #e5eeff !important;
+    border-radius: 4px;
+    color: $curriki-main-blue;
+    max-width: 250px !important;
+    height: 64px;
+    font-family: "Open Sans", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+.bs-tooltip-bottom .arrow::before,
+.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: #e5eeff !important;
 }

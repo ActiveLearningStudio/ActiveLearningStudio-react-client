@@ -25,4 +25,5 @@ ButtonProps.args = {
   radius: "",
   text: "",
   type: "submit",
+  iconColor: "",
 };

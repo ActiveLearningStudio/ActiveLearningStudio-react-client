@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .flex-container {
   display: flex;
@@ -272,7 +272,9 @@ img {
   line-height: 1.2;
   color: #000;
 }
-
+.hover-control-caption.no-data {
+  left: -163px;
+}
 .hover-control-caption {
   position: absolute;
   left: 0;
@@ -280,7 +282,7 @@ img {
   z-index: 1;
   width: 190px;
   min-height: 155px;
-  margin-top: 17px;
+  // margin-top: 17px;
   padding: 10px;
   display: none;
   flex-wrap: wrap;
@@ -294,6 +296,8 @@ img {
   transition: transform 0.35s;
   transform: translate3d(0, 20px, 0);
   cursor: pointer;
+  top: 3px !important;
+  left: -125px;
 
   .img-in-hover {
     width: 100%;
@@ -373,8 +377,7 @@ img {
 }
 
 .back-arrow {
-  filter: invert(52%) sepia(83%) saturate(2850%) hue-rotate(203deg)
-    brightness(87%) contrast(97%);
+  filter: invert(52%) sepia(83%) saturate(2850%) hue-rotate(203deg) brightness(87%) contrast(97%);
 }
 
 .breadcrum {
@@ -398,14 +401,13 @@ img {
     }
 
     &:not(:last-child):after {
-      content: "";
+      content: '';
       position: absolute;
       right: 15px;
       top: 10px;
       width: 6px;
       height: 10px;
-      background: url(../../../assets/images/right-arrow.png) no-repeat right
-        top;
+      background: url(../../../assets/images/right-arrow.png) no-repeat right top;
     }
   }
 }
@@ -531,10 +533,6 @@ img {
     align-items: flex-start;
     flex-direction: column;
   }
-
-  .main-item-wrapper {
-    margin-bottom: 50px;
-  }
 }
 
 @media (max-width: 992px) {
@@ -569,8 +567,7 @@ img {
     top: 10px;
   }
 
-  .act-top-header,
-  .main-item-wrapper {
+  .act-top-header {
     margin-bottom: 30px;
   }
 }
@@ -815,17 +812,17 @@ img {
 .main-item-wrapper {
   .h5p-iframe-wrapper {
     // position: fixed;
-    padding-bottom: 50px;
-    height: 90%;
-    // width: 100%;
-    overflow-y: auto;
-    background: #fff;
+    // padding-bottom: 50px;
+    // height: 90%;
+    // // width: 100%;
+    // overflow-y: auto;
+    // background: #fff;
   }
 }
 .activity-bg.left-vdo.collapsed {
   .main-item-wrapper {
     .h5p-iframe-wrapper {
-      width: 100%;
+      // width: 100%;
     }
   }
 }

@@ -7,7 +7,7 @@ import { slideInRight } from 'react-animations';
 import close from 'assets/images/grayclose.png';
 
 import CreateProjectPopup from './CreateProjectPopup';
-
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const bounceAnimation = keyframes`${slideInRight}`;
 
 const BouncyDiv = styled.div`
@@ -15,12 +15,12 @@ const BouncyDiv = styled.div`
 `;
 
 function NewProjectPage(props) {
-  const { editMode, project, handleCloseProjectModal } = props;
+  const { project, handleCloseProjectModal } = props;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   return (
     <div className="resource-modal">
       <div className="modal fade right" role="dialog" aria-hidden="true">
@@ -29,17 +29,21 @@ function NewProjectPage(props) {
             <div className="modal-title">
               <div className="row">
                 <button type="button" className="close-btn" data-dismiss="modal" onClick={() => handleCloseProjectModal(false)}>
-                  <img
+                  {/* <img
                     style={{
                       cursor: 'pointer',
                     }}
                     src={close}
                     alt="close"
-                  />
+                  /> */}
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 1L1 15" stroke={paragraphColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M1 1L15 15" stroke={paragraphColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </button>
                 <div className="col-md-12">
                   <h1 className="mb-0">
-                    <span> {`${editMode ? 'Update' : 'Create a'} Project`}</span>
+                    <span>Create a Project</span>
                   </h1>
                 </div>
               </div>
@@ -48,7 +52,7 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup editMode {...props} thumbUrl={project.thumbUrl} />
+                  <CreateProjectPopup {...props} thumbUrl={project?.thumbUrl} />
                 </div>
               </div>
             </div>
@@ -61,7 +65,6 @@ function NewProjectPage(props) {
 
 NewProjectPage.propTypes = {
   project: PropTypes.object.isRequired,
-  editMode: PropTypes.bool.isRequired,
   handleCloseProjectModal: PropTypes.func.isRequired,
 };
 

@@ -1,21 +1,36 @@
-FROM node:13.12.0-alpine as build
+FROM node:10 as build
+
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+ARG DOMAIN
+ENV DOMAIN_URL=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
+RUN apt-get install git -y
+
 COPY . .
+RUN git --no-pager log -10 > log.txt
+
+RUN npm install --no-package-lock
 RUN npm run build
-RUN mkdir -p /app/html
-RUN cp -rf /app/build/* /app/html
 
-# production environment
-#FROM nginx:stable-alpine
-#COPY --from=build /app/build /usr/share/nginx/html
-#COPY client.nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 3000
-#CMD ["nginx", "-g", "daemon off;"]
+COPY . .
+RUN mv log.txt build/
 
-#CMD ["npm", "run", "start:prod"]
-COPY ./entrypoint.client.sh ./
-RUN chmod +x /app/entrypoint.client.sh
-ENTRYPOINT ["sh", "/app/entrypoint.client.sh"]
+# -- RELEASE --
+FROM nginx:stable-alpine as release
+
+COPY --from=build /app/build /usr/share/nginx/html
+# copy .env.example as .env to the release build
+# COPY --from=build /app/.env.example /usr/share/nginx/html/.env
+COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN apk add --update nodejs
+RUN apk add --update npm
+RUN npm install -g runtime-env-cra@0.2.2
+
+WORKDIR /usr/share/nginx/html
+
+EXPOSE 80
+RUN chmod 777 -R /usr/lib/node_modules/
+CMD ["/bin/sh", "-c", "runtime-env-cra && touch /usr/share/nginx/html/health.ok && nginx -g \"daemon off;\""]

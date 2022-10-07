@@ -1,3 +1,6 @@
+.modal-dialog {
+  max-width: 630px;
+}
 .remove-user-modal-header {
   background-color: white;
   border-bottom: 0;
@@ -17,11 +20,11 @@
 
 .remove-user-modal h1 {
   font-weight: 300;
-  font-size: 3em;
+  font-size: 1.5em;
 }
 
 .fa-save {
-  color:#2E8DF5;
+  color: #2e8df5;
   font-size: 5em;
 }
 
@@ -31,11 +34,11 @@
 }
 
 .remove-user-modal .fa-exclamation {
-  color: #F8AF2C;
+  color: #f8af2c;
   font-size: 5em;
 }
 
 .remove-user-modal .fa-user-times {
-  color: #FF403B;
+  color: #ff403b;
   font-size: 5em;
 }

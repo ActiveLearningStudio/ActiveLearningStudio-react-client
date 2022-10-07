@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveAdminForm } from 'store/actions/admin';
+import { ltiToolType, setActiveAdminForm } from 'store/actions/admin';
 import EditProjectModel from './model/editprojectmodel';
 import { removeActiveAdminForm, setActiveTab } from 'store/actions/admin';
 import CreateActivityItem from './formik/createActivityItem';
@@ -25,21 +25,33 @@ import './style.scss';
 import { getRoles } from 'store/actions/organization';
 import EditProject from './formik/editProject';
 import { useHistory } from 'react-router-dom';
-import editicon from 'assets/images/edit-icon.png';
+// import editicon from 'assets/images/edit2.svg';
+import CreateSubject from './formik/createSubject';
+import CreateEducationLevel from './formik/createEducationLevel';
+import CreateAuthorTag from './formik/createAuthorTag';
+import CreateActivityLayout from './formik/createActivityLayout';
+import EditTeamModel from './model/EditTeamModel';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
+import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
+import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [allProjectTab, setAllProjectTab] = useState(null);
   const adminState = useSelector((state) => state.admin);
-
+  const [users, setUsers] = useState(null);
   const { paginations } = useSelector((state) => state.ui);
   const organization = useSelector((state) => state.organization);
+  const [modalShowh5p, setModalShowh5p] = useState(false);
   const { permission, roles, currentOrganization, activeOrganization } = organization;
   const { activeForm, activeTab, removeUser } = adminState;
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowTeam, setModalShowTeam] = useState(false);
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
+  const [currentActivity, setCurrentActivity] = useState(null);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -59,10 +71,20 @@ function AdminPanel({ showSSO }) {
         payload: [currentOrganization || []],
       });
     }
-  }, [currentOrganization]);
+    dispatch(getAllMediaSources());
+    if (activeOrganization?.id) {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    }
+  }, [activeOrganization]);
+
+  const paragraphColor = getGlobalColor('--main-paragraph-text-color');
+  // ltiToolType calling
+  useEffect(() => {
+    dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+  }, [activeOrganization, currentOrganization]);
   return (
     <div className="admin-panel">
-      {permission?.Organization?.includes('organization:view') ? (
+      {true ? (
         <>
           <div className="content-wrapper">
             <div className="inner-content">
@@ -78,35 +100,42 @@ function AdminPanel({ showSSO }) {
                     localStorage.setItem('activeTab', key);
                   }}
                 >
-                  <Tab eventKey="Organization" title="Organizations">
-                    <div className="parent-organization-detail">
-                      <div className="detailer">
-                        <h3>Main organization: {currentOrganization.name}</h3>
-                        <p>{currentOrganization.description}</p>
+                  {permission?.Organization?.includes('organization:view') && (
+                    <Tab eventKey="Organization" title="Organizations">
+                      <div className="parent-organization-detail">
+                        <div className="detailer">
+                          <h3>Main organization: {currentOrganization?.name}</h3>
+                          <p>{currentOrganization?.description}</p>
+                        </div>
+                        {permission?.Organization?.includes('organization:edit') && (
+                          <button
+                            onClick={() => {
+                              dispatch(setActiveAdminForm('edit_org'));
+                              dispatch({
+                                type: 'SET_ACTIVE_EDIT',
+                                payload: currentOrganization,
+                              });
+                            }}
+                          >
+                            <EditSmSvg primaryColor={paragraphColor} className="mr-2" />
+                            Edit organization
+                          </button>
+                        )}
                       </div>
-                      <button
-                        onClick={() => {
-                          dispatch(setActiveAdminForm('edit_org'));
-                          dispatch({
-                            type: 'SET_ACTIVE_EDIT',
-                            payload: activeOrganization,
-                          });
-                        }}
-                      >
-                        <img src={editicon} alt="" />
-                        Edit organization
-                      </button>
-                    </div>
-                    <div className="module-content">
-                      <Pills modules={['All Organizations']} type="Organization" subType="All Organizations" />
-                    </div>
-                  </Tab>
-                  {permission?.Project?.includes('project:view') && (
+                      <div className="module-content">
+                        <Pills modules={['Organizations']} type="Organization" subType="All Organizations" />
+                      </div>
+                    </Tab>
+                  )}
+                  {(permission?.Organization?.includes('organization:view-all-project') || permission?.Organization?.includes('organization:view-exported-project')) && (
                     <Tab eventKey="Projects" title="Projects">
                       <div className="module-content">
                         <Pills
                           setModalShow={setModalShow}
-                          modules={['All Projects', 'Exported Projects']}
+                          modules={[
+                            permission?.Organization?.includes('organization:view-all-project') && 'All Projects',
+                            permission?.Organization?.includes('organization:view-exported-project') && 'Exported Projects',
+                          ]}
                           allProjectTab={allProjectTab}
                           setAllProjectTab={setAllProjectTab}
                           type="Projects"
@@ -116,31 +145,82 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  <Tab eventKey="Activities" title="Activities">
-                    <div className="module-content">
-                      <Pills modules={['Activity Types', 'Activity Items']} type="Activities" />
-                    </div>
-                  </Tab>
-                  {permission?.Organization?.includes('organization:view-user') && (
-                    <Tab eventKey="Users" title="Users">
+                  {/* Ind.Activity Start */}
+                  {(permission?.['Independent Activity']?.includes('independent-activity:view') ||
+                    permission?.['Independent Activity']?.includes('independent-activity:view-export')) && (
+                    <Tab eventKey="IndActivities" title="Ind. activities">
                       <div className="module-content">
                         <Pills
+                          setCurrentActivity={setCurrentActivity}
+                          setModalShowh5p={setModalShowh5p}
                           modules={[
-                            'All Users',
-                            permission?.Organization?.includes('organization:add-role') || permission?.Organization?.includes('organization:edit-role') ? 'Manage Roles' : null,
+                            permission?.['Independent Activity']?.includes('independent-activity:view') && 'All independent activities',
+                            permission?.['Independent Activity']?.includes('independent-activity:view-export') && 'Exported activities',
                           ]}
-                          type="Users"
-                          subType="All Users"
+                          type="IndActivities"
                         />
                       </div>
                     </Tab>
                   )}
-                  <Tab eventKey="LMS" title="Integrations">
-                    <div className="module-content">
-                      <Pills modules={['All settings', 'LTI Tools', 'BrightCove']} type="LMS" />
-                      {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
-                    </div>
-                  </Tab>
+                  {/* Ind.Activity End*/}
+                  {(permission?.Organization?.includes('organization:view-activity-item') ||
+                    permission?.Organization?.includes('organization:view-activity-type') ||
+                    permission?.Organization?.includes('organization:view-activity-type')) && (
+                    <Tab eventKey="Activities" title="Ref. tables">
+                      <div className="module-content">
+                        <Pills
+                          modules={[
+                            'Activity Layouts',
+                            permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
+                            permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
+                            'Subjects',
+                            'Education Level',
+                            'Author Tags',
+                          ]}
+                          type="Activities"
+                        />
+                      </div>
+                    </Tab>
+                  )}
+                  {(permission?.Organization?.includes('organization:view-user') || permission?.Organization?.includes('organization:view-role')) && (
+                    <Tab eventKey="Users" title="Users">
+                      <div className="module-content">
+                        <Pills
+                          type="Users"
+                          modules={[
+                            permission?.Organization?.includes('organization:view-user') && 'All Users',
+                            permission?.Organization?.includes('organization:view-role') && 'Manage Roles',
+                          ]}
+                          subType="All Users"
+                          users={users}
+                          setUsers={setUsers}
+                        />
+                      </div>
+                    </Tab>
+                  )}
+                  {permission?.Organization?.includes('organization:view-user') && (
+                    <Tab eventKey="Teams" title="Teams">
+                      <div className="module-content">
+                        <Pills type="Teams" modules={['All teams']} subType="All teams" setModalShowTeam={setModalShowTeam} />
+                      </div>
+                    </Tab>
+                  )}
+                  {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
+                    <Tab eventKey="LMS" title="Integrations">
+                      <div className="module-content">
+                        <Pills
+                          modules={[
+                            permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
+                            permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
+                            permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
+                            'Media',
+                          ]}
+                          type="LMS"
+                        />
+                        {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
+                      </div>
+                    </Tab>
+                  )}
 
                   {/* <Tab eventKey="Settings" title="Settings">
                   <div className="module-content">
@@ -160,7 +240,7 @@ function AdminPanel({ showSSO }) {
                   }}
                 >
                   {permission.activeRole?.includes('admin') && !currentOrganization?.parent && (
-                    <Tab eventKey="DefaultSso" title="Default SSO Integrations">
+                    <Tab eventKey="DefaultSso" title="Default SSO settings">
                       <div className="module-content">
                         <Pills modules={['All Default SSO Settings']} type="DefaultSso" />
                       </div>
@@ -187,9 +267,59 @@ function AdminPanel({ showSSO }) {
               <div className="inner-form-content">{activeForm === 'add_activity_item' ? <CreateActivityItem /> : <CreateActivityItem editMode />}</div>
             </div>
           )}
+          {(activeForm === 'add_subject' || activeForm === 'edit_subject') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_subject' ? <CreateSubject /> : <CreateSubject editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_education_level' || activeForm === 'edit_education_level') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_education_level' ? <CreateEducationLevel /> : <CreateEducationLevel editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_author_tag' || activeForm === 'edit_author_tag') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_author_tag' ? <CreateAuthorTag /> : <CreateAuthorTag editMode />}</div>
+            </div>
+          )}
+          {(activeForm === 'add_activity_layout' || activeForm === 'edit_activity_layout') && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">{activeForm === 'add_activity_layout' ? <CreateActivityLayout /> : <CreateActivityLayout editMode />}</div>
+            </div>
+          )}
           {(activeForm === 'add_org' || activeForm === 'edit_org') && (
             <div className="form-new-popup-admin">
-              <div className="inner-form-content">{activeForm === 'add_org' ? <CreateOrg /> : <CreateOrg editMode />}</div>
+              <div className="inner-form-content" style={{ width: '944px' }}>
+                {activeForm === 'add_org' ? <CreateOrg /> : <CreateOrg editMode />}
+              </div>
             </div>
           )}
           {activeForm === 'add_role' && (
@@ -314,6 +444,21 @@ function AdminPanel({ showSSO }) {
             </div>
           )}
 
+          {activeForm === 'clone_lti_tool' && (
+            <div className="form-new-popup-admin">
+              <FontAwesomeIcon
+                icon="times"
+                className="cross-all-pop"
+                onClick={() => {
+                  dispatch(removeActiveAdminForm());
+                }}
+              />
+              <div className="inner-form-content">
+                <CreateLtiTool editMode clone />
+              </div>
+            </div>
+          )}
+
           {(activeForm === 'add_lti_tool' || activeForm === 'edit_lti_tool') && (
             <div className="form-new-popup-admin">
               <FontAwesomeIcon
@@ -326,7 +471,7 @@ function AdminPanel({ showSSO }) {
               <div className="inner-form-content">{activeForm === 'add_lti_tool' ? <CreateLtiTool /> : <CreateLtiTool editMode />}</div>
             </div>
           )}
-          {removeUser && <RemoveUser />}
+          {removeUser && <RemoveUser users={users} setUsers={setUsers} />}
 
           <EditProjectModel
             show={modalShow}
@@ -337,12 +482,14 @@ function AdminPanel({ showSSO }) {
             setAllProjectTab={setAllProjectTab}
             activeOrganization={activeOrganization}
           />
+          <EditTeamModel show={modalShowTeam} onHide={() => setModalShowTeam(false)} activePage={activePageNumber} activeOrganization={activeOrganization} showFooter={true} />
         </>
       ) : (
         <div className="content-wrapper" style={{ padding: '20px' }}>
           <Alert variant="danger">You are not authorized to view this page.</Alert>
         </div>
       )}
+      <MyVerticallyCenteredModal show={modalShowh5p} onHide={() => setModalShowh5p(false)} activity={currentActivity} showvideoH5p={true} activeType={'demo'} activities={true} />
     </div>
   );
 }

@@ -1,28 +1,24 @@
 /* eslint-disable */
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import eye from 'assets/images/svg/eye_library_req.svg';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import {
-  // forgetAllFailedJobs,
-  // retryAllFailedJobs,
-  setActiveAdminForm,
-} from 'store/actions/admin';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
-import filterImg from 'assets/images/svg/filter.svg';
+import { searchLtiTool, setActiveAdminForm, ltiToolType } from 'store/actions/admin';
 import filterSearchIcon from 'assets/images/svg/filter-placeholder.svg';
 import loader from 'assets/images/dotsloader.gif';
-// import csv from "assets/images/csv.png";
-// import pdf from "assets/images/pdf.png";
-// import bulk from 'assets/images/bulk.png';
-// import InviteUser from 'containers/ManageOrganization/inviteAdmin';
-// import AddUser from 'containers/ManageOrganization/addUser';
+import * as actionTypes from 'store/actionTypes';
+import indActivityService from 'services/indActivities.service';
 import adminService from 'services/admin.service';
-import { getRoles, roleDetail, getAllOrganizationSearch, getsubOrgList, searchUserInOrganization } from 'store/actions/organization';
-// import { alphaNumeric } from 'utils';
+import { getRoles, roleDetail, searchUserInOrganization } from 'store/actions/organization';
+import { toolTypeArray } from 'utils';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import { integratedLMS } from '../../components/ResourceCard/AddResource/dropdownData';
+import Filter from './filter';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import FilterMdSvg from 'iconLibrary/mainContainer/FilterMdSvg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
 
 function Controller(props) {
   const {
@@ -32,18 +28,15 @@ function Controller(props) {
     btnText,
     btnAction,
     importUser,
-    // jobType,
-    // SetJobType,
-    // logType,
-    // SetLogType,
+
     subTypeState,
     filter,
     activeRole,
     setActiveRole,
     setActivePage,
     type,
-    searchQueryActivities,
-    setSearchQueryActivities,
+    // searchQueryActivities,
+    // setSearchQueryActivities,
     searchQuery,
     searchQueryProject,
     setSearchQueryProject,
@@ -52,17 +45,19 @@ function Controller(props) {
     setSearchQuery,
     searchQueryChangeHandler,
     searchProjectQueryChangeHandler,
-    searchActivitiesQueryHandler,
+    // searchActivitiesQueryHandler,
+    setSearchQueryTeam,
     // searchUserReportQueryHandler,
     size,
     setSize,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     // tableHead,
     roles,
     // inviteUser,
     subType,
     setChangeIndexValue,
-    selectedActivityType,
-    setSelectedActivityType,
+    // selectedActivityType,
     libraryReqSelected,
     setLibraryReqSelected,
     // setSubTypeState,
@@ -70,6 +65,10 @@ function Controller(props) {
     setProjectFilterObj,
     filterSearch,
     resetProjectFilter,
+    filteredItems,
+    setSearchKey,
+    setfilterLtiSettings,
+    filterLtiSettings,
   } = props;
   const importProject = useRef();
   const dispatch = useDispatch();
@@ -84,6 +83,9 @@ function Controller(props) {
   const [authorName, setAuthorName] = useState('');
   const [authorsArray, setAuthorsArray] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
+  const [selectedFilterItem, setSelectedFilterItem] = useState('');
+  const [ltiToolTypes, setLtiToolTypes] = useState();
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -91,7 +93,7 @@ function Controller(props) {
   }, [dispatch, type]);
   useEffect(() => {
     if (roles?.length > 0 && subTypeState !== 'Manage Roles' && adminState?.activeTab === 'Users') {
-      console.log(roles, 'roles');
+      // console.log(roles, 'roles');
       // if(!activeRoleInComponent) setActiveRoleInComponent(roles[0]?.display_name);
       if (!activeRole) {
         setActiveRole(roles[0]?.id);
@@ -111,7 +113,7 @@ function Controller(props) {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
       const result = await dispatch(searchUserInOrganization(activeOrganization?.id, authorName));
-      console.log(result?.data, 'result');
+      // console.log(result?.data, 'result');
       if (result?.data?.length > 0) {
         setLoaderImgUser(false);
         setAuthorsArray(result?.data);
@@ -119,6 +121,9 @@ function Controller(props) {
         setLoaderImgUser(false);
         setAuthorsArray([]);
       }
+    } else if (authorName.length < 2) {
+      setLoaderImgUser(false);
+      setAuthorsArray([]);
     }
   }, [activeOrganization?.id, authorName, dispatch]);
   const updateIndexAction = (value, id) => {
@@ -126,6 +131,12 @@ function Controller(props) {
     setChangeIndexValue(id);
     setSelectedIndexValueid(id);
   };
+  const primaryColor = getGlobalColor('--main-primary-color');
+  // const secondaryColor = getGlobalColor('--main-secondary-color');
+
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
+  }, [ltiToolsTypes]);
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
@@ -173,11 +184,12 @@ function Controller(props) {
                 className=""
                 type="text"
                 // title="Enter at least 2 characters"
-                placeholder="Search by email"
+                placeholder="Search"
                 value={searchQuery}
                 onChange={searchQueryChangeHandler}
               />
-              <img src={searchimg} alt="search" />
+              {/* <img src={searchimg} alt="search" /> */}
+              <SearchInputMdSvg primaryColor={primaryColor} />
               {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
                 <label className="flex" style={{ color: 'red' }}>
                   Enter at least 2 characters
@@ -186,30 +198,39 @@ function Controller(props) {
             </div>
           </>
         )}
-        {!!search && type === 'LMS' && subType === 'All settings' && (
+        {!!search && type === 'LMS' && subType === 'LMS settings' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Email" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
         {!!search && type === 'LMS' && subType === 'LTI Tools' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or User Email" value={searchQuery} onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input className="" type="text" placeholder="Search" value={searchLtiquery} onChange={searchQueryChangeHandlerLtiTool} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {!!search && type === 'LMS' && subType === 'BrightCove' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by ID or email" onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
 
         {!!search && type === 'DefaultSso' && (
           <div className="search-bar">
-            <input className="" type="text" placeholder="Search by URL or Client Id" value={searchQuery} onChange={searchQueryChangeHandler} />
-            <img src={searchimg} alt="search" />
+            <input className="" type="text" placeholder="Search by Site name,URL or Client id" onChange={searchQueryChangeHandler} />
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
+        {!!search && type === 'Teams' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={({ target }) => setSearchQueryTeam(target.value)} />
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {/* {!!search && type === 'Stats' && (
@@ -251,48 +272,98 @@ function Controller(props) {
                 }
               }}
             />
-            <img src={searchimg} alt="search" onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
+            {/* <img
+              src={searchimg}
+              alt="search"
+              onClick={() =>
+                searchProjectQueryChangeHandler(
+                  searchQueryProject,
+                  selectedIndexValueid,
+                  subType
+                )
+              }
+            /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
+          </div>
+        )}
+
+        {!!search && type === 'IndActivities' && (
+          <div className="search-bar">
+            <input
+              className=""
+              type="text"
+              placeholder="Search"
+              value={searchQueryProject}
+              onChange={(e) => {
+                dispatch({
+                  type: actionTypes.CLEAR_IND_ACTIVITIES,
+                });
+                dispatch({
+                  type: actionTypes.CLEAR_ADMIN_EXPORTED_ACTIVITIES,
+                });
+                if (e.target.value) {
+                  setActivePage(1);
+                  setSearchQueryProject(e.target.value);
+                  // searchProjectQueryChangeHandler(e.target.value, selectedIndexValueid, subType);
+                } else if (e.target.value === '') {
+                  setActivePage(1);
+                  setSearchQueryProject('');
+                  // searchProjectQueryChangeHandler('', selectedIndexValueid, subType);
+                }
+              }}
+            />
+            <SearchInputMdSvg primaryColor={primaryColor} onClick={() => searchProjectQueryChangeHandler(searchQueryProject, selectedIndexValueid, subType)} />
           </div>
         )}
 
         {!!search && type === 'Organization' && (
           <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search Organization"
-              onChange={(e) => {
-                if (e.target.value?.trim()) {
-                  dispatch(getAllOrganizationSearch(activeOrganization.id, e.target.value?.trim()));
-                } else if (e.target.value === '') {
-                  dispatch(getsubOrgList(activeOrganization?.id));
-                }
-              }}
-            />
-            <img src={searchimg} alt="search" />
+            <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} />
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
-        {/* {!!search && type === 'Activities' && subType === 'Activity Types' && (
-        <div className="search-bar">
-          <input type="text" placeholder="Search" onChange={(e) => searchActivitiesQueryHandler(e, subType)} />
-          <img src={searchimg} alt="search" />
-        </div>
-      )} */}
+        {!!search && type === 'Activities' && subType === 'Activity Types' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
         {!!search && type === 'Activities' && subType === 'Activity Items' && (
           <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={(e) => {
-                if (e.target.value) {
-                  setSearchQueryActivities(e.target.value);
-                } else if (e.target.value === '') {
-                  setSearchQueryActivities('');
-                  searchActivitiesQueryHandler('', subType);
-                }
-              }}
-            />
-            <img src={searchimg} alt="search" onClick={() => searchActivitiesQueryHandler(searchQueryActivities, subType)} />
+            <input type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Subjects' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Education Level' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Author Tags' && (
+          <div className="search-bar">
+            <input className="" type="text" placeholder="Search" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
+          </div>
+        )}
+
+        {!!search && type === 'Activities' && subType === 'Activity Layouts' && (
+          <div className="search-bar">
+            <input type="text" placeholder="Search by activity layout name" onChange={searchQueryChangeHandler} value={setSearchKey} />
+            {/* <img src={searchimg} alt="search" /> */}
+            <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
         {paginationCounter && (
@@ -306,6 +377,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(10);
+                      setActivePage(1);
                     }}
                   >
                     10
@@ -313,6 +385,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(25);
+                      setActivePage(1);
                     }}
                   >
                     25
@@ -320,6 +393,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(50);
+                      setActivePage(1);
                     }}
                   >
                     50
@@ -327,6 +401,7 @@ function Controller(props) {
                   <Dropdown.Item
                     onClick={() => {
                       setSize(100);
+                      setActivePage(1);
                     }}
                   >
                     100
@@ -336,12 +411,25 @@ function Controller(props) {
             </span>
           </div>
         )}
+        {/* Ind. activity Start */}
+        {type === 'IndActivities' && subType === 'All independent activities' && (
+          <Filter
+            setProjectFilterObj={setProjectFilterObj}
+            projectFilterObj={projectFilterObj}
+            setLibraryReqSelected={setLibraryReqSelected}
+            resetProjectFilter={resetProjectFilter}
+            filterSearch={filterSearch}
+          />
+        )}
+
+        {/* Ind. Activity End  */}
         {/* FILTER FOR PROJECT TABS */}
         {type === 'Projects' && subType === 'All Projects' && (
           <div className="filter-dropdown-project">
             <Dropdown>
               <Dropdown.Toggle id="dropdown-basic">
-                <img src={filterImg} alt="filter" />
+                {/* <img src={filterImg} alt="filter" /> */}
+                <FilterMdSvg primaryColor={primaryColor} />
                 Filter
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -356,7 +444,10 @@ function Controller(props) {
                             <div
                               className="single-author"
                               onClick={() => {
-                                setProjectFilterObj({ ...projectFilterObj, author_id: author.id });
+                                setProjectFilterObj({
+                                  ...projectFilterObj,
+                                  author_id: author.id,
+                                });
                                 setAuthorName(`${author.first_name} ${author.last_name}`);
                                 setAuthorsArray([]);
                               }}
@@ -387,7 +478,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.created_from}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, created_from: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            created_from: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -401,7 +495,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.created_to}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, created_to: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            created_to: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -421,7 +518,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.updated_from}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, updated_from: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            updated_from: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -435,7 +535,10 @@ function Controller(props) {
                         }}
                         value={projectFilterObj.updated_to}
                         onChange={(e) => {
-                          setProjectFilterObj({ ...projectFilterObj, updated_to: e.target.value });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            updated_to: e.target.value,
+                          });
                         }}
                       />
                     </div>
@@ -451,7 +554,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 1 && true}
                         onChange={() => {
                           setLibraryReqSelected(true);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 1 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 1,
+                          });
                         }}
                       />
                       Requested
@@ -462,7 +568,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 0 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 0 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 0,
+                          });
                         }}
                       />
                       Not Requested
@@ -473,7 +582,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 3 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 3 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 3,
+                          });
                         }}
                       />
                       Approved
@@ -484,7 +596,10 @@ function Controller(props) {
                         checked={projectFilterObj.indexing === 2 && true}
                         onChange={() => {
                           setLibraryReqSelected(false);
-                          setProjectFilterObj({ ...projectFilterObj, indexing: 2 });
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            indexing: 2,
+                          });
                         }}
                       />
                       Rejected
@@ -493,17 +608,36 @@ function Controller(props) {
                   <div className="shared-status">
                     <label>Shared status</label>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === 1 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 1 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.shared === 1 && true}
+                        onChange={() =>
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            shared: 1,
+                          })
+                        }
+                      />
                       Enabled
                     </span>
                     <span>
-                      <input type="radio" checked={projectFilterObj.shared === 0 && true} onChange={() => setProjectFilterObj({ ...projectFilterObj, shared: 0 })} />
+                      <input
+                        type="radio"
+                        checked={projectFilterObj.shared === 0 && true}
+                        onChange={() =>
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            shared: 0,
+                          })
+                        }
+                      />
                       Disabled
                     </span>
                   </div>
                 </div>
                 <div className="filter-btn-project" onClick={() => filterSearch()}>
-                  <img src={filterImg} alt="filter" />
+                  {/* <img src={filterImg} alt="filter" /> */}
+                  <FilterMdSvg primaryColor={primaryColor} />
                   Apply Filters
                 </div>
                 <div
@@ -530,7 +664,23 @@ function Controller(props) {
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
-            <img src={eye} alt="eye" />
+            {/* <img src={eye} alt="eye" /> */}
+            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
+            Library request to review
+          </button>
+        )}
+        {subType === 'All independent activities' && (
+          <button
+            className="switch-libreq"
+            type="button"
+            style={{ border: libraryReqSelected ? '1px solid #F8AF2C' : '0' }}
+            onClick={() => {
+              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              setLibraryReqSelected(!libraryReqSelected);
+            }}
+          >
+            {/* <img src={eye} alt="eye" /> */}
+            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
             Library request to review
           </button>
         )}
@@ -540,12 +690,26 @@ function Controller(props) {
             Filter by activity type
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{selectedActivityType?.title || 'Select'}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.title ? selectedFilterItem?.title : 'Select'}</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  {selectedActivityType && <Dropdown.Item onClick={() => setSelectedActivityType(null)}>Select</Dropdown.Item>}
-                  {activityTypes?.map((item) => (
-                    <Dropdown.Item onClick={() => setSelectedActivityType(item)}>{item.title}</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    Audio
+                  </Dropdown.Item>
+                  {activityTypes?.data.map((item) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(item.id);
+                        setSelectedFilterItem(item);
+                      }}
+                    >
+                      {item.title}
+                    </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -627,66 +791,90 @@ function Controller(props) {
             </span>
           </div>
         ) : null}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && (
-          <Dropdown name="jobType" id="jobType">
-            <Dropdown.Toggle id="dropdown-basic">{jobType.display_name}</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item value="1" name="Pending" onClick={() => SetJobType({ value: 1, display_name: 'Pending' })}>
-                Pending
-              </Dropdown.Item>
-              <Dropdown.Item value="2" name="Failed" onClick={() => SetJobType({ value: 2, display_name: 'Failed' })}>
-                Failed
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )} */}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Logs' && (
-          <Dropdown name="logType" id="logType">
-            <Dropdown.Toggle id="dropdown-basic">{logType.display_name}</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item value="all" name="All" onClick={() => SetLogType({ value: 'all', display_name: 'All' })}>
-                All
-              </Dropdown.Item>
-              <Dropdown.Item value="1" name="Running" onClick={() => SetLogType({ value: 1, display_name: 'Running' })}>
-                Running
-              </Dropdown.Item>
-              <Dropdown.Item value="2" name="Failed" onClick={() => SetLogType({ value: 2, display_name: 'Failed' })}>
-                Failed
-              </Dropdown.Item>
-              <Dropdown.Item value="3" name="Completed" onClick={() => SetLogType({ value: 3, display_name: 'Completed' })}>
-                Completed
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        )} */}
-        {/* {type === 'Stats' && subTypeState === 'Queues: Jobs' && jobType.value === 2 && (
-          <div className="retryandforget">
-            <button
-              type="button"
-              className="retry"
-              onClick={() => {
-                dispatch(retryAllFailedJobs());
-              }}
-            >
-              Retry All
-            </button>
-            <button
-              type="button"
-              className="forget"
-              onClick={() => {
-                dispatch(forgetAllFailedJobs());
-              }}
-            >
-              Forget All
-            </button>
+        {/* FILTER FOR ACTIVITY ITEMS */}
+        {subType === 'LTI Tools' && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{filterLtiSettings?.name ? filterLtiSettings?.name : 'All'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems(null);
+                      setSelectedFilterItem(null);
+                      setfilterLtiSettings(null);
+                    }}
+                  >
+                    All
+                  </Dropdown.Item>
+                  {/* {toolTypeArray?.map((t) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(t.key);
+                        setSelectedFilterItem(t);
+                      }}
+                    >
+                      {t.value}
+                    </Dropdown.Item>
+                  ))} */}
+                  {ltiToolTypes?.map((t) => {
+                    return (
+                      <Dropdown.Item
+                        onClick={() => {
+                          filteredItems(t.id);
+                          setSelectedFilterItem(t);
+                          setfilterLtiSettings(t);
+                        }}
+                      >
+                        {t.name}
+                      </Dropdown.Item>
+                    );
+                  })}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
           </div>
-        )} */}
+        )}
+
+        {(type === 'DefaultSso' || subType === 'LMS settings') && (
+          <div className="filter-dropdown-activityItems">
+            Filter by type
+            <span>
+              <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">{selectedFilterItem?.value ? selectedFilterItem?.value : 'All'}</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    onClick={() => {
+                      filteredItems('');
+                      setSelectedFilterItem(null);
+                    }}
+                  >
+                    All
+                  </Dropdown.Item>
+                  {integratedLMS?.map((data) => (
+                    <Dropdown.Item
+                      onClick={() => {
+                        filteredItems(data.value);
+                        setSelectedFilterItem(data);
+                      }}
+                    >
+                      {data.name}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </span>
+          </div>
+        )}
 
         {/* ROW PER PAGE */}
       </div>
       {/* RIGHT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-right-side">
-        {!!importUser && type === 'Projects' && subType === 'All Projects' && (
+        {!!importUser && type === 'Projects' && subType === 'All Projects' && permission?.Organization?.includes('organization:edit-project') && (
           <div
             className="import-user"
             style={{ cursor: 'pointer' }}
@@ -736,6 +924,56 @@ function Controller(props) {
           </div>
         )}
 
+        {!!importUser && type === 'IndActivities' && subType === 'All independent activities' && permission['Independent Activity']?.includes('independent-activity:import') && (
+          <div
+            className="import-user"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              importProject.current.click();
+            }}
+          >
+            <FontAwesomeIcon icon="sign-in-alt" />
+            <div>Import activity</div>
+            <input
+              type="file"
+              ref={importProject}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                if (e.target.files.length === 0) {
+                  return true;
+                }
+                if (!e.target.files[0].type.includes('zip')) {
+                  Swal.fire({
+                    title: 'Invalid File',
+                    icon: 'error',
+                    text: 'please select zip file',
+                  });
+                } else {
+                  Swal.fire({
+                    title: 'Importing Project',
+                    icon: 'info',
+                    text: 'please wait...',
+                    allowOutsideClick: false,
+                    onBeforeOpen: () => {
+                      Swal.showLoading();
+                    },
+                    button: false,
+                  });
+                  const formData = new FormData();
+                  formData.append('independent_activity', e.target.files[0]);
+                  const response = indActivityService.importIndAvtivity(activeOrganization.id, formData);
+                  response.then((res) => {
+                    Swal.fire({
+                      icon: 'success',
+                      html: res?.message,
+                    });
+                  });
+                }
+              }}
+            />
+          </div>
+        )}
+
         {/* {!!print && (
         <div className="print-info">
           <div>print</div>
@@ -745,7 +983,7 @@ function Controller(props) {
           </div>
         </div>
       )} */}
-        {!!btnText && subType === 'Activity Types' && (
+        {!!btnText && subType === 'Activity Types' && permission?.Organization.includes('organization:create-activity-type') && (
           <div className="btn-text">
             <button
               type="button"
@@ -760,7 +998,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subType === 'Activity Items' && (
+        {!!btnText && subType === 'Activity Items' && permission?.Organization.includes('organization:create-activity-item') && (
           <div className="btn-text">
             <button
               type="button"
@@ -775,7 +1013,71 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subTypeState === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
+
+        {!!btnText && subType === 'Subjects' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_subject') {
+                  dispatch(setActiveAdminForm('add_subject'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Education Level' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_education_level') {
+                  dispatch(setActiveAdminForm('add_education_level'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Author Tags' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_author_tag') {
+                  dispatch(setActiveAdminForm('add_author_tag'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+        {!!btnText && subType === 'Activity Layouts' /* && permission?.Organization.includes('organization:create-activity-subject') */ && (
+          <div className="btn-text">
+            <button
+              type="button"
+              onClick={() => {
+                if (btnAction === 'add_activity_layout') {
+                  dispatch(setActiveAdminForm('add_activity_layout'));
+                }
+              }}
+            >
+              <FontAwesomeIcon icon="plus" />
+              {btnText}
+            </button>
+          </div>
+        )}
+
+        {!!btnText && subType === 'Manage Roles' && permission?.Organization.includes('organization:add-role') && (
           <div className="btn-text">
             <button
               type="button"
@@ -790,7 +1092,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && subTypeState === 'All Users' && permission?.Organization.includes('organization:add-user') && (
+        {!!btnText && subType === 'All Users' && permission?.Organization.includes('organization:add-user') && (
           <div className="btn-text">
             <button
               type="button"
@@ -820,7 +1122,7 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {!!btnText && type === 'LMS' && subType === 'All settings' && (
+        {!!btnText && type === 'LMS' && subType === 'LMS settings' && permission?.Organization.includes('organization:create-lms-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -836,7 +1138,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && (
+        {!!btnText && type === 'LMS' && subType === 'LTI Tools' && permission?.Organization.includes('organization:create-all-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -852,7 +1154,7 @@ function Controller(props) {
           </div>
         )}
 
-        {!!btnText && type === 'LMS' && subType === 'BrightCove' && (
+        {!!btnText && type === 'LMS' && subType === 'BrightCove' && permission?.Organization.includes('organization:create-brightcove-setting') && (
           <div className="btn-text">
             <button
               type="button"
@@ -883,91 +1185,43 @@ function Controller(props) {
             </button>
           </div>
         )}
-        {/* {inviteUser && permission?.Organization?.includes('organization:invite-members') && (
-          <div className="btn-text">
-            <div className="add-user-btn">
-              <Dropdown drop="down" id="dropdown-button-drop-down">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Invite external user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <InviteUser />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </div>
-        )} */}
-
-        {/* {permission?.Organization?.includes('organization:view-user') && type === 'Users' && subTypeState === 'All Users' && (
-          <div className="btn-text">
-            <div className="add-user-btn">
-              <Dropdown drop="down" id="dropdown-button-drop-down">
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  Add internal user
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <AddUser setAllUsersAdded={setAllUsersAdded} allUsersAdded={allUsersAdded} method="create" />
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          </div>
-        )} */}
       </div>
-
-      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
-        <div className="btn-text">
-          <button
-            onClick={async () => {
-              await dispatch(getOrganization(currentOrganization?.id));
-              dispatch(clearOrganizationState());
-              dispatch(getRoles());
-            }}
-          >
-            Go to root organization
-          </button>
-        </div>
-      )} */}
     </div>
   );
 }
 Controller.propTypes = {
-  paginationCounter: PropTypes.number,
+  paginationCounter: PropTypes.bool,
   search: PropTypes.bool,
   btnText: PropTypes.string,
   btnAction: PropTypes.string,
   importUser: PropTypes.bool,
-  // jobType: PropTypes.object,
-  // SetJobType: PropTypes.func,
-  // logType: PropTypes.object,
-  // SetLogType: PropTypes.func,
+  filteredItems: PropTypes.object,
+
   subTypeState: PropTypes.string,
   filter: PropTypes.bool,
   activeRole: PropTypes.string,
   setActiveRole: PropTypes.func,
   setActivePage: PropTypes.func,
   type: PropTypes.string,
-  searchQueryActivities: PropTypes.string,
-  setSearchQueryActivities: PropTypes.func,
+
   searchQuery: PropTypes.string,
   searchQueryProject: PropTypes.string,
   setSearchQueryProject: PropTypes.func,
-  // searchQueryStats: PropTypes.string,
-  // setSearchQueryStats: PropTypes.func,
+  setSearchQueryTeam: PropTypes.func,
+
   setSearchQuery: PropTypes.func,
   searchQueryChangeHandler: PropTypes.func,
   searchProjectQueryChangeHandler: PropTypes.func,
-  searchActivitiesQueryHandler: PropTypes.func,
-  // searchUserReportQueryHandler: PropTypes.func,
+
   size: PropTypes.number,
   setSize: PropTypes.func,
   roles: PropTypes.array,
   subType: PropTypes.string,
   setChangeIndexValue: PropTypes.func,
-  selectedActivityType: PropTypes.string,
-  setSelectedActivityType: PropTypes.func,
+
   libraryReqSelected: PropTypes.bool,
   setLibraryReqSelected: PropTypes.func,
-  // setSubTypeState: PropTypes.func,
+
   projectFilterObj: PropTypes.object,
   setProjectFilterObj: PropTypes.func,
   filterSearch: PropTypes.func,
@@ -980,38 +1234,33 @@ Controller.defaultProps = {
   btnText: '',
   btnAction: '',
   importUser: false,
-  // jobType: PropTypes.object,
-  // SetJobType: PropTypes.func,
-  // logType: PropTypes.object,
-  // SetLogType: PropTypes.func,
+
   subTypeState: '',
   filter: '',
   activeRole: '',
   setActiveRole: {},
   setActivePage: {},
+  filteredItems: {},
   type: '',
-  searchQueryActivities: '',
-  setSearchQueryActivities: {},
+
   searchQuery: '',
   searchQueryProject: '',
   setSearchQueryProject: {},
-  // searchQueryStats: PropTypes.string,
-  // setSearchQueryStats: PropTypes.func,
+  setSearchQueryTeam: {},
+
   setSearchQuery: {},
   searchQueryChangeHandler: {},
   searchProjectQueryChangeHandler: {},
-  searchActivitiesQueryHandler: {},
-  // searchUserReportQueryHandler: PropTypes.func,
+
   size: 10,
   setSize: {},
   roles: [],
   subType: '',
   setChangeIndexValue: {},
-  selectedActivityType: '',
-  setSelectedActivityType: {},
+
   libraryReqSelected: false,
   setLibraryReqSelected: {},
-  // setSubTypeState: {},
+
   projectFilterObj: {},
   setProjectFilterObj: {},
   filterSearch: {},

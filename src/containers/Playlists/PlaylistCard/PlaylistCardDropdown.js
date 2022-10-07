@@ -20,6 +20,13 @@ import MenuLogo from '../../../assets/images/menu-logo.svg';
 
 import './style.scss';
 import SharePreviewPopup from 'components/SharePreviewPopup';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MenuLgSvg from 'iconLibrary/dropDown/MenuLgSvg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
+import EditDpDnMdSvg from 'iconLibrary/dropDown/EditDpDnMdSvg';
+import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
+import ShareLinkSmSvg from 'iconLibrary/dropDown/ShareLinkSmSvg';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
 
 // TODO: need to clean up attributes, update to functional component
 // need to refactor template functions
@@ -39,29 +46,31 @@ class PlaylistCardDropdown extends React.Component {
       handleShow,
       setProjectId,
       setProjectPlaylistId,
+      setProjectPlaylistActivityId,
       enablePlaylistShared,
-      selectedProject
+      selectedProject,
     } = this.props;
     const { permission } = organization;
+    const primaryColor = getGlobalColor('--main-primary-color');
     return (
       <Dropdown className="pull-right playlist-dropdown check">
         <Dropdown.Toggle className="playlist-dropdown-btn">
-          <img src={MenuLogo} alt="logo" />
+          <MenuLgSvg primaryColor={primaryColor} />
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
           {(Object.keys(teamPermission).length
             ? teamPermission?.Team?.includes('team:view-playlist')
             : permission?.Playlist?.includes('playlist:view') && permission?.Activity?.includes('activity:view')) && (
-              <Dropdown.Item
-                as={Link}
-                className="hidden"
-                to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
-              >
-                <img src={Preview} alt="Preview" className="menue-img" />
-                Preview
-              </Dropdown.Item>
-            )}
+            <Dropdown.Item
+              as={Link}
+              className="hidden"
+              to={`/org/${organization.currentOrganization?.domain}/project/${playlist.project_id}/playlist/${playlist.id}/activity/${playlist?.activities[0]?.id}/preview`}
+            >
+              <PreviewSmSvg primaryColor={primaryColor} className="menue-img" />
+              Preview
+            </Dropdown.Item>
+          )}
           {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-playlist') : permission?.Playlist?.includes('playlist:edit')) && (
             <Dropdown.Item
               onClick={() => {
@@ -71,11 +80,11 @@ class PlaylistCardDropdown extends React.Component {
                 }
               }}
             >
-              <img src={Edit} alt="Preview" className="menue-img" />
+              <EditDpDnMdSvg primaryColor={primaryColor} className="menue-img" />
               Edit
             </Dropdown.Item>
           )}
-          {permission?.Playlist?.includes('playlist:duplicate') && (
+          {permission?.Playlist?.includes('playlist:edit') && (
             <Dropdown.Item
               to="#"
               onClick={() => {
@@ -83,17 +92,17 @@ class PlaylistCardDropdown extends React.Component {
                 clonePlaylist(playlist.project_id, playlist.id);
               }}
             >
-              <img src={Duplicate} alt="Preview" className="menue-img" />
+              <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
               Duplicate
             </Dropdown.Item>
           )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) && selectedProject.shared && (
-            (
+          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-playlist') : permission?.Playlist?.includes('playlist:publish')) &&
+            selectedProject.shared && (
               <Dropdown.Item
                 to="#"
                 onClick={() => {
-                  const protocol = `${window.location.href.split('/')[0]}//`
-                  const url = `${protocol + window.location.host}/project/${playlist?.project?.id}/playlist/${playlist.id}/shared`
+                  const protocol = `${window.location.href.split('/')[0]}//`;
+                  const url = `${protocol + window.location.host}/project/${playlist.project_id}/playlist/${playlist.id}/shared`;
                   if (!playlist.shared) {
                     Swal.showLoading();
                     enablePlaylistShared(playlist?.project.id, playlist.id);
@@ -104,23 +113,14 @@ class PlaylistCardDropdown extends React.Component {
                   }
                 }}
               >
-                {playlist?.shared ? (
-                  <>
-                    <FontAwesomeIcon icon="link" className="mr-2" />
-                    Get link
-                  </>
-                ) :
-                  (
-                    <>
-                      <FontAwesomeIcon icon="share" className="mr-2" />
-                      Share
-                    </>
-                  )}
+                <>
+                  <ShareLinkSmSvg primaryColor={primaryColor} className="mr-2" />
+                  Get link
+                </>
               </Dropdown.Item>
-            )
-          )}
-          {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
-            <>
+            )}
+          <>
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-playlist') : permission?.Playlist?.includes('playlist:publish')) && (
               <ShareLink
                 playlistId={playlist.id}
                 gcr_playlist_visibility={playlist.gcr_playlist_visibility}
@@ -128,13 +128,16 @@ class PlaylistCardDropdown extends React.Component {
                 handleShow={handleShow}
                 setProjectId={setProjectId}
                 setProjectPlaylistId={setProjectPlaylistId}
+                setProjectPlaylistActivityId={setProjectPlaylistActivityId}
               />
+            )}
+            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-playlist') : permission?.Playlist?.includes('playlist:delete')) && (
               <Dropdown.Item onClick={this.handleDelete}>
-                <img src={Delete} alt="Preview" className="menue-img" />
+                <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
                 Delete
               </Dropdown.Item>
-            </>
-          )}
+            )}
+          </>
         </Dropdown.Menu>
       </Dropdown>
     );

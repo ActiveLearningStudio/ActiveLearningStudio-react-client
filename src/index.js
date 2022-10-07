@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -17,6 +18,7 @@ import store from './store';
 import * as serviceWorker from './serviceWorker';
 import './config';
 import 'assets/css/main-style.scss';
+import 'assets/css/dynamicBranding.css';
 
 library.add(fas);
 library.add(far);
@@ -30,7 +32,7 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

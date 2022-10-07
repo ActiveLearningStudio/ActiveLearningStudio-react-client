@@ -7,9 +7,11 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
   const dispatch = useDispatch();
   return (
     <div className="pagination-top">
-      <div className="pagination_state">
-        Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total}
-      </div>
+      {data?.meta && (
+        <div className="pagination_state">
+          Showing {data?.meta?.from} - {data?.meta?.to} of {data?.meta?.total}
+        </div>
+      )}
       <div className="main-pagination">
         {type === 'Stats' && subTypeState === 'Report' && (
           <Pagination
@@ -35,6 +37,8 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
               window.scrollTo(0, 0);
               setActivePage(e);
             }}
+            firstPageText="First"
+            lastPageText="Last"
           />
         )}
         {type === 'Stats' && subTypeState === 'Queues: Logs' && (
@@ -64,6 +68,21 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
           />
         )}
         {type === 'Users' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("all");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'IndActivities' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -127,7 +146,7 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Last"
           />
         )}
-        {type === 'Activities' && subType === 'Activity Types' && (
+        {type === 'Activities' && subType === 'Activity Types' && data?.meta && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -143,6 +162,66 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
           />
         )}
         {type === 'Activities' && subType === 'Activity Items' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Activities' && subType === 'Subjects' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Activities' && subType === 'Education Level' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Activities' && subType === 'Author Tags' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
+        {type === 'Activities' && subType === 'Activity Layouts' && (
           <Pagination
             activePage={activePage}
             pageRangeDisplayed={5}
@@ -215,6 +294,19 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             }}
             firstPageText="First"
             lastPageText="Last"
+          />
+        )}
+        {type === 'Teams' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("index");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
           />
         )}
       </div>

@@ -15,10 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Dropdown } from 'react-bootstrap';
 import { forgetSpecificFailedJob, retrySpecificFailedJob, setActiveAdminForm, setActiveTab, setCurrentProject, setCurrentUser } from 'store/actions/admin';
 // import { deleteActivityItem, deleteActivityType, getActivityItems, loadResourceTypesAction, selectActivityItem, selectActivityType } from 'store/actions/resource';
-
+import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { shareDisableLink, shareEnableLink, editIndActivityItem, getIndex } from 'store/actions/indActivities';
 function Table(props) {
   const {
     tableHead,
@@ -41,8 +42,12 @@ function Table(props) {
     changeProjectFromorg,
     setAllProjectTab,
     setModalShow,
+    setModalShowTeam,
     setrowData,
     setActivePageNumber,
+    setCurrentActivity,
+    setModalShowh5p,
+    filterLtiSettings,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -57,11 +62,12 @@ function Table(props) {
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(null);
   const [localstatePagination, setLocalStatePagination] = useState();
+
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
-    { indexing: 1, indexing_text: 'REQUESTED' },
-    { indexing: 3, indexing_text: 'APPROVED' },
-    { indexing: 2, indexing_text: 'REJECTED' },
+    { indexing: 1, indexing_text: 'Requested' },
+    { indexing: 3, indexing_text: 'Approved' },
+    { indexing: 2, indexing_text: 'Rejected' },
   ];
   useEffect(() => {
     (async () => {
@@ -91,7 +97,7 @@ function Table(props) {
             } else {
               return lms;
             }
-          })
+          }),
         );
       }
     }
@@ -107,7 +113,7 @@ function Table(props) {
 
   //update table after search and first time
   useEffect(() => {
-    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso') {
+    if (type === 'LMS' || type === 'Projects' || type === 'DefaultSso' || 'Activities') {
       if (data?.data) {
         setLocalStateData(data?.data);
       } else {
@@ -187,9 +193,14 @@ function Table(props) {
     });
   };
   //const history = useHistory();
+  const [ltiToolTypes, setLtiToolTypes] = useState([]);
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes);
+  }, [ltiToolsTypes]);
   return (
     <div className="table-data">
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
@@ -207,7 +218,7 @@ function Table(props) {
           <thead>
             <tr>
               {tableHead?.map((head, keyid) => {
-                let checkSolCol = sortCol != '' && sortCol.includes(head) ? true : false;
+                let checkSolCol = sortCol !== '' && sortCol?.includes(head) ? true : false;
                 return head === 'Users' && permission?.Organization?.includes('organization:view-user') ? (
                   <th key={keyid}> {head} </th>
                 ) : head !== 'Users' ? (
@@ -219,117 +230,12 @@ function Table(props) {
             </tr>
           </thead>
           <tbody>
-            {type === 'Stats' &&
-              subTypeState === 'Report' &&
-              (data?.data?.length > 0 ? (
-                data?.data?.map((row, keyid) => (
-                  <tr key={keyid}>
-                    <td>{row.first_name}</td>
-                    <td>{row.last_name}</td>
-                    <td>{row.email}</td>
-                    <td>{row.projects_count}</td>
-                    <td>{row.playlists_count}</td>
-                    <td>{row.activities_count}</td>
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Reports Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
-            {type === 'Stats' &&
-              subTypeState === 'Queues: Jobs' &&
-              (data?.data?.length > 0 ? (
-                data?.data.map((job) => (
-                  <tr>
-                    <td>{job.id}</td>
-                    <td>{job.queue}</td>
-                    <td>{job.payload}</td>
-                    <td>{job.exception}</td>
-                    <td>{job.time}</td>
-                    {jobType.value === 2 ? (
-                      <td>
-                        <div className="links">
-                          <Link
-                            onClick={() => {
-                              dispatch(retrySpecificFailedJob(job.id));
-                            }}
-                          >
-                            Retry
-                          </Link>
-                          <Link
-                            onClick={() => {
-                              dispatch(forgetSpecificFailedJob(job.id));
-                            }}
-                          >
-                            Forget
-                          </Link>
-                        </div>
-                      </td>
-                    ) : (
-                      <td>{job.action ? job.action : 'N/A'}</td>
-                    )}
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Queue: Jobs Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
-            {type === 'Stats' &&
-              subTypeState === 'Queues: Logs' &&
-              (data?.data?.length > 0 ? (
-                data?.data.map((job) => (
-                  <tr>
-                    <td>{job.name}</td>
-                    <td>
-                      {job.is_finished && job.failed && <Alert variant="danger">Failed</Alert>}
-                      {!job.is_finished && !job.failed && <Alert variant="primary">Running</Alert>}
-                      {job.is_finished && !job.failed && <Alert variant="success">Success</Alert>}
-                    </td>
-                    <td>{job.started_at}</td>
-                    <td>
-                      Queue: {job.queue} Attempt: {job.attempt}
-                    </td>
-                    <td>{job.time_elapsed}</td>
-                    <td>{job.exception_message}</td>
-                  </tr>
-                ))
-              ) : data?.data?.length === 0 || searchAlertTogglerStats === 0 ? (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="warning">No Queue: Logs Found</Alert>
-                  </td>
-                </tr>
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <Alert variant="primary">Loading...</Alert>
-                  </td>
-                </tr>
-              ))}
             {type === 'LMS' &&
-              subType === 'All settings' &&
+              subType === 'LMS settings' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row.user?.first_name + ' ' + row.user?.last_name}</td>
@@ -339,7 +245,14 @@ function Table(props) {
                         <div className="admin-panel-dropdown">
                           {row?.description}
                           <div>
-                            <AdminDropdown type={type} subType="All settings" row={row} activePage={activePage} />
+                            <AdminDropdown
+                              type={type}
+                              subType="LMS settings"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
                           </div>
                         </div>
                       </td>
@@ -363,8 +276,8 @@ function Table(props) {
               subType === 'BrightCove' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={(row, counter)} className="admin-panel-rows">
                       <td>{row.organization?.id}</td>
                       <td>{row.account_id}</td>
                       <td>{row.account_email}</td>
@@ -404,8 +317,8 @@ function Table(props) {
               ))}
             {type === 'Users' &&
               (data?.data?.length > 0 ? (
-                data?.data.map((user) => (
-                  <tr className="admin-panel-rows">
+                data?.data.map((user, counter) => (
+                  <tr key={(user, counter)} className="admin-panel-rows">
                     <td>{user.organization_joined_at ? user.organization_joined_at : 'NA'}</td>
                     <td>{user.first_name ? user.first_name : 'NA'}</td>
                     <td>{user.last_name ? user.last_name : 'NA'}</td>
@@ -438,13 +351,13 @@ function Table(props) {
             {type === 'Organization' &&
               (localOrganizationList ? (
                 localOrganizationList?.data?.length > 0 ? (
-                  localOrganizationList?.data?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localOrganizationList?.data?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
                           <div
                             style={{
-                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundImage: row.image?.includes('dev.currikistudio') ? `url(${row.image})` : `url(${global.config.resourceUrl}${row.image})`,
                               backgroundPosition: 'center',
                               backgroundRepeat: 'no-repeat',
                               backgroundSize: 'cover',
@@ -476,9 +389,6 @@ function Table(props) {
                                 if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
-                                // dispatch(setActiveTab('Project'));
-                                // dispatch(clearOrganizationState());
-                                // dispatch(getRoles());
                               }
                             }}
                           >
@@ -586,23 +496,7 @@ function Table(props) {
                           )}
                         </td>
                       )}
-                      {/* <td>
-                    {row.groups_count > 0 ? (
-                      <Link
-                        to={`/org/${allState?.organization?.currentOrganization?.domain}/groups`}
-                        className="view-all"
-                        onClick={
-                          async () => {
-                            if (permission?.Organization?.includes('organization:view')) await dispatch(getOrganization(row.id));
-                            dispatch(clearOrganizationState());
-                            dispatch(getRoles());
-                          }
-                        }
-                      >
-                        {row.groups_count}
-                      </Link>
-                    ) : 'N/A'}
-                  </td> */}
+
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.teams_count > 0 ? (
@@ -645,11 +539,11 @@ function Table(props) {
               subType === 'All Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData.map((row) => {
+                  localStateData.map((row, counter) => {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr className="admin-panel-rows">
+                      <tr key={counter} className="admin-panel-rows">
                         <td>
                           <div className="admin-name-img">
                             <div
@@ -674,107 +568,128 @@ function Table(props) {
                         </td>
 
                         <td>{row.id}</td>
-                        <td>{row.users?.[0]?.name}</td>
+                        <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {indexingArray.map((element) => (
-                                  element.indexing_text !== 'NOT REQUESTED' && (
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.indexing_text}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={async () => {
+                                            const result = await adminService.updateIndex(row.id, element.indexing);
+                                            if (result?.message) {
+                                              const editRow = {
+                                                ...row,
+                                                indexing: element.indexing,
+                                                indexing_text: element.indexing_text,
+                                              };
+                                              setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
+                                              Swal.fire({
+                                                icon: 'success',
+                                                text: result.message,
+                                              });
+                                            } else {
+                                              Swal.fire({
+                                                icon: 'error',
+                                                text: 'Error',
+                                              });
+                                            }
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      ),
+                                  )}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            row.indexing_text
+                          )}
+                        </td>
+                        <td>
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {visibilityTypeArray?.map((element) => (
                                     <Dropdown.Item
                                       onClick={async () => {
-                                        const result = await adminService.updateIndex(row.id, element.indexing);
-                                        if (result?.message) {
-                                          const editRow = {
+                                        Swal.showLoading();
+                                        const result = await dispatch(
+                                          updateProjectAction(row.id, {
                                             ...row,
-                                            indexing: element.indexing,
-                                            indexing_text: element.indexing_text,
-                                          };
-                                          setLocalStateData(localStateData.map((indexing) => (indexing.id === row.id ? editRow : indexing)));
-                                          Swal.fire({
-                                            icon: 'success',
-                                            text: result.message,
-                                          });
-                                        } else {
-                                          Swal.fire({
-                                            icon: 'error',
-                                            text: 'Error',
-                                          });
+                                            organization_visibility_type_id: element.id,
+                                          }),
+                                        );
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                         }
+                                        Swal.close();
                                       }}
                                     >
-                                      {element.indexing_text}
+                                      {element.display_name}
                                     </Dropdown.Item>
-                                  )))}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name
+                          )}
                         </td>
                         <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {visibilityTypeArray?.map((element) => (
+                          {permission?.Organization.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.shared ? 'Enabled' : 'Disabled'}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
                                   <Dropdown.Item
                                     onClick={async () => {
-                                      Swal.showLoading();
-                                      const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
+                                      if (!row.shared) {
+                                        const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                        }
                                       }
-                                      Swal.close();
                                     }}
                                   >
-                                    {element.display_name}
+                                    Enable
                                   </Dropdown.Item>
-                                ))}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="filter-dropdown-table">
-                            <Dropdown>
-                              <Dropdown.Toggle id="dropdown-basic">
-                                {row.shared ? 'Enabled' : 'Disabled'}
-                                <FontAwesomeIcon icon="chevron-down" />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <Dropdown.Item
-                                  onClick={async () => {
-                                    if (!row.shared) {
-                                      const result = await dispatch(toggleProjectShareAction(row.id, row.name, true));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      if (row.shared) {
+                                        const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
+                                        if (result) {
+                                          setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
+                                        }
                                       }
-                                    }
-                                  }}
-                                >
-                                  Enable
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  onClick={async () => {
-                                    if (row.shared) {
-                                      const result = await dispatch(toggleProjectShareRemovedAction(row.id, row.name, true));
-                                      if (result) {
-                                        setLocalStateData(localStateData.map((element) => (element.id === row.id ? result : element)));
-                                      }
-                                    }
-                                  }}
-                                >
-                                  Disable
-                                </Dropdown.Item>
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </div>
+                                    }}
+                                  >
+                                    Disable
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : row.shared ? (
+                            'Enabled'
+                          ) : (
+                            'Disabled'
+                          )}
                         </td>
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
@@ -818,12 +733,237 @@ function Table(props) {
               subType === 'Exported Projects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => {
+                  localStateData?.map((row, counter) => {
+                    // console.log(row);
                     return (
-                      <tr className="org-rows">
+                      <tr key={counter} className="org-rows">
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
+                        {permission?.Organization?.includes('organization:download-project') ? (
+                          <td>
+                            <a href={row.link} target="_blank">
+                              Download
+                            </a>
+                          </td>
+                        ) : (
+                          <td>Not Authorized</td>
+                        )}
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {/* Ind. Activity Start */}
+            {type === 'IndActivities' &&
+              subType === 'All independent activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row.created_at);
+                    const updateNew = new Date(row.updated_at);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td
+                          onClick={() => {
+                            setCurrentActivity(row.id), setModalShowh5p(true);
+                          }}
+                        >
+                          <div className="admin-name-img">
+                            <div
+                              style={{
+                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                              }}
+                              className="admin-img"
+                            ></div>
+
+                            <Link className="admin-name">{row.title}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+
+                        <td>{row.id}</td>
+                        <td>{row.user?.name}</td>
+
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.indexing_text}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            dispatch(getIndex(row.id, element, 'admin'));
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      ),
+                                  )}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            row.indexing_text
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {visibilityTypeArray?.map((element) => (
+                                    <Dropdown.Item
+                                      onClick={() => {
+                                        dispatch(
+                                          editIndActivityItem(
+                                            row.id,
+                                            {
+                                              ...row,
+                                              data: '',
+                                              organization_visibility_type_id: element.id,
+                                            },
+                                            'admin',
+                                          ),
+                                        );
+                                      }}
+                                    >
+                                      {element.display_name}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.shared ? 'Enabled' : 'Disabled'}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      dispatch(shareEnableLink(row.id, 'admin'));
+                                    }}
+                                  >
+                                    Enable
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={() => {
+                                      Swal.fire({
+                                        icon: 'warning',
+                                        title: `You are about to stop sharing <strong>"${row.title}"</strong>`,
+                                        html: `Please remember that anyone you have shared this project
+                                                              with will no longer have access its contents. Do you want to continue?`,
+                                        showCloseButton: true,
+                                        showCancelButton: true,
+                                        focusConfirm: false,
+                                        confirmButtonText: 'Stop Sharing!',
+                                        confirmButtonAriaLabel: 'Stop Sharing!',
+                                        cancelButtonText: 'Cancel',
+                                        cancelButtonAriaLabel: 'Cancel',
+                                      }).then((resp) => {
+                                        if (resp.isConfirmed) {
+                                          dispatch(shareDisableLink(row.id, 'admin'));
+                                        }
+                                      });
+                                    }}
+                                  >
+                                    Disable
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : row.shared ? (
+                            'Enabled'
+                          ) : (
+                            'Disabled'
+                          )}
+                        </td>
+                        {/* <td>{String(row.starter_project)}</td> */}
+                        {/* <td>{row.status_text}</td> */}
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
+                            <div>
+                              <AdminDropdown
+                                activePage={activePage}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                                setCurrentActivity={setCurrentActivity}
+                                setModalShowh5p={setModalShowh5p}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'IndActivities' &&
+              subType === 'Exported activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row?.created_at);
+                    const expireNew = new Date(row.will_expire_on);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>
+                          <div className="admin-name-img">
+                            <Link className="admin-name">{row.project}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>{new Date(expireNew.toDateString()).toLocaleDateString('en-US')}</td>
                         <td>
                           <a href={row.link} target="_blank">
                             Download
@@ -846,193 +986,70 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
+            {/* Ind. Activity End*/}
 
-            {/* {type === 'Projects' &&
-              subType === 'Library requests' &&
+            {type === 'Activities' &&
+              subType === 'Activity Types' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData.map((row) => {
-                    const createNew = new Date(row.created_at);
-                    const updateNew = new Date(row.updated_at);
-                    return (
-                      <tr className="admin-panel-rows">
-                        <td>
-                          <div className="admin-name-img">
-                            <div
-                              style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundSize: 'cover',
-                              }}
-                              className="admin-img"
-                            ></div>
-
-                            <Link className="admin-name" target="_blank" to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}>
-                              {row.name}
-                            </Link>
+                  localStateData?.map((row) => (
+                    <tr key={'act-type-' + row.id} className="admin-panel-rows">
+                      <td>
+                        <div className="admin-name-img">
+                          <div
+                            style={{
+                              backgroundImage: `url(${global.config.resourceUrl + row.image})`,
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat',
+                              backgroundSize: 'contain',
+                            }}
+                            className="image-size"
+                          ></div>
+                          <Link className="admin-name">{row.title}</Link>
+                        </div>
+                      </td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div className="admin-description-main">
+                            <div className="admin-description2">
+                              {row.activityItems.map((item, i) => (
+                                <div>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</div>
+                              ))}
+                            </div>
+                            <div className="admin-description2-hover">
+                              {row.activityItems.map((item, i) => (
+                                <>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</>
+                              ))}
+                            </div>
                           </div>
-                        </td>
-                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
-                        <td>{row.id}</td>
-                        <td>{row.users?.[0]?.email}</td>
-                        <td>{row.indexing_text}</td>
-                        <td>
-                          {row.shared ? (
-                            <Link className="shared-link-enable">Enabled</Link>
-                          ) : (
-                            <>
-                              <Link className="shared-link-disable">Disabled</Link>
-                            </>
-                          )}
-                        </td>
-                        <td>{new Date(updateNew.toDateString()).toLocaleDateString('en-US')}</td>
-                        <td>
-                          <div className="links">
-                            {(row.indexing === 1 || row.indexing === 2) && (
-                              <Link
-                                style={{ padding: '4px 0' }}
-                                className="approve-label"
-                                onClick={async () => {
-                                  Swal.fire({
-                                    title: 'Please Wait !',
-                                    html: 'Approving Project ...',
-                                    allowOutsideClick: false,
-                                    onBeforeOpen: () => {
-                                      Swal.showLoading();
-                                    },
-                                  });
-                                  const result = await adminService.updateIndex(row.id, 3);
-                                  if (result?.message) {
-                                    if (changeIndexValue !== 0) {
-                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
-                                    } else {
-                                      const editRow = {
-                                        ...row,
-                                        indexing: 3,
-                                        indexing_text: 'APPROVED',
-                                      };
-                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
-                                    }
-                                    Swal.fire({
-                                      icon: 'success',
-                                      text: result.message,
-                                    });
-                                  } else {
-                                    Swal.fire({
-                                      icon: 'error',
-                                      text: 'Error',
-                                    });
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: '4px' }} />
-                                Approve&nbsp;&nbsp;
-                              </Link>
-                            )}
-                            {(row.indexing === 1 || row.indexing === 3) && (
-                              <Link
-                                style={{ padding: '4px 0' }}
-                                className="reject-label"
-                                onClick={async () => {
-                                  Swal.fire({
-                                    title: 'Please Wait !',
-                                    html: 'Rejecting Project ...',
-                                    allowOutsideClick: false,
-                                    onBeforeOpen: () => {
-                                      Swal.showLoading();
-                                    },
-                                  });
-                                  const result = await adminService.updateIndex(row.id, 2);
-                                  if (result?.message) {
-                                    if (changeIndexValue !== 0) {
-                                      setLocalStateData(localStateData.filter((indexing) => indexing.id !== row.id));
-                                    } else {
-                                      const editRow = {
-                                        ...row,
-                                        indexing: 2,
-                                        indexing_text: 'REJECT',
-                                      };
-                                      setLocalStateData(localStateData.map((indexing) => (indexing.id == row.id ? editRow : indexing)));
-                                    }
-                                    Swal.fire({
-                                      icon: 'success',
-                                      text: result.message,
-                                    });
-                                  } else {
-                                    Swal.fire({
-                                      icon: 'error',
-                                      text: 'Error',
-                                    });
-                                  }
-                                }}
-                              >
-                                <FontAwesomeIcon icon={faStopCircle} style={{ marginRight: '4px' }} />
-                                Reject
-                              </Link>
-                            )}
+                          <div>
+                            <AdminDropdown type={type} subType={subType} row={row} activePage={activePage} />
                           </div>
-                        </td>
-                      </tr>
-                    );
-                  })
+                        </div>
+                      </td>
+                    </tr>
+                  ))
                 ) : (
                   <tr>
                     <td colSpan="11">
-                      <Alert variant="warning">No result found.</Alert>
+                      <Alert variant="warning">No activity type found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
                   </td>
                 </tr>
-              ))} */}
-            {type === 'Activities' &&
-              subType === 'Activity Types' &&
-              (data ? (
-                data?.map((type1) => (
-                  <tr key={type1} className="admin-panel-rows">
-                    <td>
-                      <div className="admin-name-img">
-                        <div
-                          style={{
-                            backgroundImage: `url(${global.config.resourceUrl + type1.image})`,
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'contain',
-                          }}
-                          className="image-size"
-                        ></div>
-                        <Link className="admin-name">{type1.title}</Link>
-                      </div>
-                    </td>
-                    <td>{type1.order}</td>
-                    <td>
-                      <div className="admin-panel-dropdown">
-                        <div className="admin-description2 ">
-                          {type1.activityItems.map((item) => (
-                            <div>{item.title + ','}</div>
-                          ))}
-                        </div>
-                        <div>
-                          <AdminDropdown type={type} type1={type1} />
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <Alert variant="warning">No activity type found</Alert>
               ))}
             {type === 'Activities' &&
               subType === 'Activity Items' &&
               (data?.data ? (
                 data?.data?.length > 0 ? (
-                  data?.data.map((item) => (
-                    <tr key={item} className="admin-panel-rows">
+                  data?.data.map((item, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>
                         <div className="admin-name-img">
                           <div
@@ -1052,15 +1069,15 @@ function Table(props) {
                       <td>
                         <div className="admin-panel-dropdown">
                           <div className="">
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Type:</h6>
                               <span>{item?.activityType?.title}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Item Type:</h6>
                               <span>{item.type}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Item Value:</h6>
                               <span>{item.h5pLib}</span>
                             </div>
@@ -1134,11 +1151,140 @@ function Table(props) {
                 </tr>
               ))}
 
-            {type === 'DefaultSso' &&
+            {type === 'Activities' &&
+              subType === 'Subjects' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                    <tr key={'subject-' + row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div>
+                            <AdminDropdown type={type} subType="Subjects" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No subject found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {type === 'Activities' &&
+              subType === 'Education Level' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'edu-lvl-' + row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div>
+                            <AdminDropdown type={type} subType="Education Level" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Education level found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {type === 'Activities' &&
+              subType === 'Author Tags' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'auth-tag-' + row.id} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div>
+                            <AdminDropdown type={type} subType="Author Tags" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Author tag found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {type === 'Activities' &&
+              subType === 'Activity Layouts' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row) => (
+                    <tr key={'act-lay-' + row.id} className="admin-panel-rows">
+                      <td>{row.title}</td>
+                      <td>{row.order}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          --
+                          <div>
+                            <AdminDropdown type={type} subType="Activity Layouts" row={row} activePage={activePage} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No Activity layout found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
+
+            {type === 'DefaultSso' &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row?.site_name}</td>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
@@ -1171,16 +1317,27 @@ function Table(props) {
               subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row) => (
-                    <tr key={row} className="admin-panel-rows">
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
+                      {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
+                      {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
+
+                      <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
                       <td>{row.tool_description}</td>
                       <td>
                         <div className="admin-panel-dropdown">
                           {row.lti_version}
                           <div>
-                            <AdminDropdown type={type} subType="LTI Tools" row={row} activePage={activePage} />
+                            <AdminDropdown
+                              type={type}
+                              subType="LTI Tools"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
                           </div>
                         </div>
                       </td>
@@ -1200,10 +1357,44 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
+            {type === 'Teams' &&
+              (Object.keys(data).length > 0 ? (
+                data?.data?.length > 0 ? (
+                  data?.data.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
+                      <td>{row.name.length > 30 ? row.name.substring(0, 30).concat('...') : row.name}</td>
+                      <td>{row.created_at?.split('T')[0]}</td>
+                      <td>{row.description.length > 30 ? row.description.substring(0, 30).concat('...') : row.description}</td>
+                      <td>{row?.users?.length}</td>
+                      <td>{row?.projects?.length}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row?.updated_at?.split('T')[0]}
+                          <div>
+                            <AdminDropdown type={type} row={row} setModalShowTeam={setModalShowTeam} />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No team found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}

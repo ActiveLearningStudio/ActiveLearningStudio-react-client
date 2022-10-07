@@ -17,7 +17,8 @@ export default function CreateActivityItem(props) {
   const dispatch = useDispatch();
   const activityTypes = useSelector((state) => state.admin.activityTypes);
   const selectedItem = useSelector((state) => state.resource.selectedItem);
-  const { activePage } = useSelector((state) => state.organization);
+  const organization = useSelector((state) => state.organization);
+  const { activePage } = organization;
   useEffect(() => {
     if (editMode) {
       setImgActive(selectedItem?.image);
@@ -38,6 +39,7 @@ export default function CreateActivityItem(props) {
           demo_video_id: editMode ? selectedItem?.demo_video_id : '',
           image: editMode ? selectedItem?.image : '',
           order: editMode ? selectedItem?.order : '',
+          organization_id: organization?.activeOrganization?.id,
         }}
         validate={(values) => {
           const errors = {};
@@ -83,18 +85,20 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(editActivityItem(values, selectedItem.id));
+            const response = await dispatch(editActivityItem(organization?.activeOrganization?.id, values, selectedItem.id));
             if (response) {
               Swal.fire({
                 text: 'Activity item edited successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }
@@ -109,18 +113,20 @@ export default function CreateActivityItem(props) {
               },
               button: false,
             });
-            const response = await dispatch(createActivityItem(values));
+            const response = await dispatch(createActivityItem(organization?.activeOrganization?.id, values));
             if (response) {
               Swal.fire({
                 text: 'Activity item added successfully',
                 icon: 'success',
                 showCancelButton: false,
-                confirmButtonColor: '#084892',
-                confirmButtonText: 'OK',
+                confirmButtonText: 'Close',
+                customClass: {
+                  confirmButton: 'confirmation-close-btn',
+                },
               }).then((result) => {
                 if (result.isConfirmed) {
                   dispatch(removeActiveAdminForm());
-                  dispatch(getActivityItems('', activePage));
+                  dispatch(getActivityItems(organization?.activeOrganization?.id, '', activePage));
                 }
               });
             }
@@ -138,11 +144,14 @@ export default function CreateActivityItem(props) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <h2>{editMode ? 'Edit' : 'Add'} activity item</h2>
+            <h2>
+              {editMode ? 'Edit ' : 'Add '}
+              activity item
+            </h2>
 
             <div className="create-form-inputs-group">
               {/* Left container */}
-              <div style={{marginRight:"64px"}}>
+              <div style={{ marginRight: '64px' }}>
                 <div className="form-group-create">
                   <h3>Title</h3>
                   <input type="text" name="title" onChange={handleChange} onBlur={handleBlur} value={values.title} />
@@ -154,7 +163,7 @@ export default function CreateActivityItem(props) {
                   <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
                   <div className="error">{errors.description && touched.description && errors.description}</div>
                 </div>
-                
+
                 <div className="form-group-create">
                   <h3>Order</h3>
                   <input
@@ -176,9 +185,9 @@ export default function CreateActivityItem(props) {
                 <div className="form-group-create">
                   <h3>Activity Type</h3>
                   <select name="activity_type_id" onChange={handleChange} onBlur={handleBlur} value={values.activity_type_id}>
-                    <option value=""> </option>
-                    {activityTypes?.length > 0 &&
-                      activityTypes?.map((type) => (
+                    {/* <option value=""> </option> */}
+                    {activityTypes?.data.length > 0 &&
+                      activityTypes?.data.map((type) => (
                         <option value={type?.id} key={type?.id}>
                           {type?.title}
                         </option>
@@ -211,91 +220,92 @@ export default function CreateActivityItem(props) {
                   <div className="error">{errors.demo_activity_id && touched.demo_activity_id && errors.demo_activity_id}</div>
                 </div>
               </div>
-              
+
               {/* Right container */}
               <div>
                 <div className="form-group-create">
-                    <h3>Upload an image</h3>
-                    <div className="" onClick={() => imgUpload.current.click()}>
-                      <input
-                        type="file"
-                        name="image"
-                        onChange={(e) => {
-                          if (
-                            !(
-                              e.target.files[0].type.includes('png') ||
-                              e.target.files[0].type.includes('jpg') ||
-                              e.target.files[0].type.includes('gif') ||
-                              e.target.files[0].type.includes('jpeg') ||
-                              e.target.files[0].type.includes('svg')
-                            )
-                          ) {
+                  <h3>Upload an image</h3>
+                  <div className="" onClick={() => imgUpload.current.click()}>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={(e) => {
+                        if (
+                          !(
+                            e.target.files[0].type.includes('png') ||
+                            e.target.files[0].type.includes('jpg') ||
+                            e.target.files[0].type.includes('gif') ||
+                            e.target.files[0].type.includes('jpeg') ||
+                            e.target.files[0].type.includes('svg')
+                          )
+                        ) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Invalid file selected.',
+                          });
+                        } else if (e.target.files[0].size > 100000000) {
+                          Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Selected file size should be less then 100MB.',
+                          });
+                        } else {
+                          const formData = new FormData();
+                          try {
+                            formData.append('image', e.target.files[0]);
+                            const imgurl = dispatch(uploadActivityItemThumbAction(formData));
+                            imgurl.then((img) => {
+                              setImgActive(img);
+                              setFieldValue('image', img);
+                            });
+                          } catch (err) {
                             Swal.fire({
                               icon: 'error',
                               title: 'Error',
-                              text: 'Invalid file selected.',
+                              text: 'Image upload failed, kindly try again.',
                             });
-                          } else if (e.target.files[0].size > 100000000) {
-                            Swal.fire({
-                              icon: 'error',
-                              title: 'Error',
-                              text: 'Selected file size should be less then 100MB.',
-                            });
-                          } else {
-                            const formData = new FormData();
-                            try {
-                              formData.append('image', e.target.files[0]);
-                              const imgurl = dispatch(uploadActivityItemThumbAction(formData));
-                              imgurl.then((img) => {
-                                setImgActive(img);
-                                setFieldValue('image', img);
-                              });
-                            } catch (err) {
-                              Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'Image upload failed, kindly try again.',
-                              });
-                            }
                           }
-                        }}
-                        onBlur={handleBlur}
-                        ref={imgUpload}
-                        style={{ display: 'none' }}
-                      />
-                      {imageActive ? (
-                           <>
-                            <img
-                            src={`${global.config.resourceUrl}${imageActive}`}
-                            style={{
-                              width: '360px',
-                              height: '215px',
-                              borderRadius: '8px',
-                            }}
-                            />
-                            <span className="upload-btn">
-                              <img src={pcIcon} alt="" />
-                              My device
-                            </span>
-                          </>
-                      ) : (
-                        <>
-                          <img src={imgAvatar} alt="" />
-                          <span className="upload-btn">
+                        }
+                      }}
+                      onBlur={handleBlur}
+                      ref={imgUpload}
+                      style={{ display: 'none' }}
+                    />
+                    {imageActive ? (
+                      <>
+                        <img
+                          src={`${global.config.resourceUrl}${imageActive}`}
+                          style={{
+                            width: '360px',
+                            height: '215px',
+                            borderRadius: '8px',
+                          }}
+                        />
+                        <span className="upload-btn">
                           <img src={pcIcon} alt="" />
-                            My device
-                          </span>
-                        </>
-                      )}
-                      <div className="error">{errors.image && touched.image && errors.image}</div>
-                    </div>
+                          My device
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <img src={imgAvatar} alt="" />
+                        <span className="upload-btn">
+                          <img src={pcIcon} alt="" />
+                          My device
+                        </span>
+                      </>
+                    )}
+                    <div className="error">{errors.image && touched.image && errors.image}</div>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">{editMode ? 'Edit' : 'Add'} activity item</button>
+              <button type="submit">Save</button>
               <button
                 type="button"
+                style={{ width: '95px' }}
                 className="cancel"
                 onClick={() => {
                   dispatch(removeActiveAdminForm());

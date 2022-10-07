@@ -1,7 +1,8 @@
 @import "assets/css/index";
 .inner-content {
   background: $white;
-  padding: 32px 30px 30px;
+  // padding: 32px 30px 30px;
+  padding: 16px 24px;
   margin-top: 0px;
   // margin: 13px 39px 81px 29px;
   border-radius: 3px;
@@ -135,7 +136,7 @@
 }
 .paragraph {
   display: flex;
-  margin: 8px 20px 16px 0px;
+  margin: 18px 20px 16px 0px;
   padding: 0 14px 0 0;
   align-items: center;
   max-width: 800px;
@@ -163,13 +164,50 @@
   }
 }
 .library-status {
-  padding: 6px 12px;
+  font-family: $rubik;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
   text-align: center;
-  height: 32px;
-  background: #f1f1f1;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
+  .approved {
+    display: flex;
+    align-items: center;
+    background: #f7faff;
+    padding: 6px 12px;
+    color: #084892;
+    border-radius: 4px;
+    img {
+      margin-right: 8px;
+    }
+    svg{
+      margin-right: 8px;
+
+    }
+  }
+  .rejected {
+    display: flex;
+    align-items: center;
+    background: rgba(248, 175, 44, 0.08);
+    padding: 6px 12px;
+    border-radius: 4px;
+    color: #cf900f;
+    svg {
+      color: #cf900f;
+      margin-right: 8px;
+    }
+  }
+  .requested {
+    display: flex;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 6px 12px;
+    color: #767676;
+    border-radius: 4px;
+    svg {
+      color: #767676;
+      margin-right: 8px;
+    }
+  }
 }
 .status-pref {
   display: flex;
@@ -288,7 +326,7 @@ hr {
 
     .share-button {
       margin: 0;
-      margin-top: 25px;
+      margin-top: 36px;
       text-transform: capitalize;
       white-space: nowrap;
     }
@@ -298,7 +336,8 @@ hr {
       justify-content: center;
       align-items: center;
       height: 32px;
-      width: 153px;
+      width: auto;
+      padding: 0 15px;
       background: #084892;
       border: 1px solid #084892;
       box-sizing: border-box;
@@ -306,9 +345,9 @@ hr {
       color: #fff;
       font-size: 14px;
 
-      svg {
-        color: #f8af2c;
-      }
+      // svg {
+      //   color: #f8af2c;
+      // }
 
       &:hover {
         background-color: #2e68bf;
@@ -397,7 +436,7 @@ hr {
         width: 50px;
         height: 50px;
         border-radius: 2px;
-        margin-right: 10px;
+        margin-right: 8px;
         position: relative;
       }
       &:hover {

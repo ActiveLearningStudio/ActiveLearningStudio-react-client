@@ -91,7 +91,7 @@ export default function EditProject(props) {
                       return response;
                     }
                     return eachProject;
-                   }),
+                  }),
                 });
                 dispatch(removeActiveAdminForm());
               }
@@ -158,11 +158,11 @@ export default function EditProject(props) {
                     } else {
                       const formData = new FormData();
                       // try {
-                        formData.append('thumb', e.target.files[0]);
-                        const result = dispatch(uploadProjectThumbnailAction(formData));
-                        result.then((img) => {
-                          setFieldValue('thumb_url', img);
-                        });
+                      formData.append('thumb', e.target.files[0]);
+                      const result = dispatch(uploadProjectThumbnailAction(formData));
+                      result.then((img) => {
+                        setFieldValue('thumb_url', img);
+                      });
                     }
                   }}
                   onBlur={handleBlur}
@@ -174,12 +174,12 @@ export default function EditProject(props) {
                     <div
                       className="playimg"
                       style={{
-                        backgroundImage: `${values.thumb_url.includes('pexels') ? `url(${values.thumb_url})` : `url(${global.config.resourceUrl}${values.thumb_url})` }`,
+                        backgroundImage: `${values.thumb_url.includes('pexels') ? `url(${values.thumb_url})` : `url(${global.config.resourceUrl}${values.thumb_url})`}`,
                       }}
                     />
                     <div
                       className="update-img"
-                      // onClick={() => imgUpload.current.click()}
+                    // onClick={() => imgUpload.current.click()}
                     >
                       Update Image
                     </div>
@@ -272,13 +272,13 @@ export default function EditProject(props) {
               <Switch
                 checked={values.shared}
                 onChange={() => {
-                    setFieldValue('shared', !values.shared);
+                  setFieldValue('shared', !values.shared);
                 }}
               />
             </div>
             <div className="button-group">
               <button type="submit">
-                Save Changes
+                Save
               </button>
               <button
                 type="button"
