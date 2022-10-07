@@ -86,7 +86,7 @@ const ActivityCard = (props) => {
             <Link
               to={
                 shared
-                  ? `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
+                  ? `/project/${projectId}/playlist/${playlistId}/shared?view=activity`
                   : lti
                   ? `/playlist/${playlistId}/activity/${activity.id}/preview/lti?view=activity`
                   : `/org/${organization.currentOrganization?.domain}/project/${projectId}/playlist/${playlistId}/activity/${activity.id}/preview?view=activity`
@@ -106,16 +106,6 @@ const ActivityCard = (props) => {
                 </div>
               </div>
             </Link>
-            {/* {!lti && (
-            <div className="activity-options-wrapper check">
-              <ResourceCardDropdown
-                playlist={playlist}
-                resource={activity}
-                teamPermission={teamPermission || {}}
-                previewPage="projectPreview"
-              />
-            </div>
-          )} */}
           </>
         )}
       </li>
