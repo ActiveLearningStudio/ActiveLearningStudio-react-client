@@ -300,6 +300,16 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   });
   return result;
 };
+export const updateOrganizationGcrSettings = (data, id) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { currentOrganization, activeOrganization },
+  } = centralizedState;
+
+  const result = organization.updateOrganization(data, id);
+
+  return result;
+};
 
 export const allUsers = (id, name, method) => async () => {
   const result = await organization.getAllUsers(id, name, method);
