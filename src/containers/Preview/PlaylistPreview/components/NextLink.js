@@ -7,19 +7,21 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function NextLink(props) {
-  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists, viewType, setH5pCurrentActivity } = props;
+  const { history, showLti, shared, projectId, playlistId, nextResource, allPlaylists, activtyPlaylist, viewType, setH5pCurrentActivity } = props;
 
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const nextPlaylist = currentPlaylistIndex < allPlaylists.length - 1 ? allPlaylists[currentPlaylistIndex + 1] : null;
   const organization = useSelector((state) => state.organization);
-  console.log('nextPlaylist', nextPlaylist);
+
   let nextLink = '#';
-  if (nextResource) {
-    nextLink = `/playlist/${playlistId}/activity/${nextResource.id}/preview`;
+  if (activtyPlaylist) {
+    nextLink = `/activity/${nextResource?.id}/shared/?view=playlist`;
+  } else if (nextResource) {
+    nextLink = `/playlist/${playlistId}/activity/${nextResource?.id}/preview`;
   } else if (nextPlaylist) {
     nextLink = `/playlist/${nextPlaylist.id}/activity/${nextPlaylist.activities[0]?.id}/preview`;
   }
-  if (nextLink !== '#') {
+  if (nextLink !== '#' && !activtyPlaylist) {
     if (showLti) {
       if (viewType === 'activity') {
         nextLink += '/lti?view=activity';
@@ -50,7 +52,7 @@ function NextLink(props) {
             setH5pCurrentActivity(nextResource);
           }
         }}
-        to={setH5pCurrentActivity ? void 0 : nextLink}
+        to={setH5pCurrentActivity ? (activtyPlaylist ? nextLink : void 0) : nextLink}
       >
         <FontAwesomeIcon icon="chevron-right" />
         Next
@@ -64,7 +66,7 @@ function NextLink(props) {
                 setH5pCurrentActivity(nextResource);
               }
             }}
-            to={setH5pCurrentActivity ? void 0 : nextLink}
+            to={setH5pCurrentActivity ? (activtyPlaylist ? nextLink : void 0) : nextLink}
           >
             <div
               className="img-in-hover"
