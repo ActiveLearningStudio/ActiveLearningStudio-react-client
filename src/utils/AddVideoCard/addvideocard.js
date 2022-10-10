@@ -133,7 +133,7 @@ const AddVideoCard = ({
         <div
           className={selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox ? 'addvideo-card-top apply-check-video' : 'addvideo-card-top apply-uncheck-video'}
           style={{
-            backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
+            backgroundImage: `url(${!data.thumb_url?.includes('/storage/') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
           }}
         >
           <div className="addvideo-card-dropdown">

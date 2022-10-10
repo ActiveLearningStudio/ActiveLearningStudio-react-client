@@ -369,7 +369,7 @@ const Index = ({ activities }) => {
                             </label>
 
                             <p className="move_text" id="move_text_id_branding">
-                              Move to Project
+                              Move To Project
                             </p>
                           </div>
                           {addToProjectCheckbox && (
