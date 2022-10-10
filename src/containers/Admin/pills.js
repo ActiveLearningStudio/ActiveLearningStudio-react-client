@@ -1151,6 +1151,7 @@ export default function Pills(props) {
               {/* Media Start */}
               {type === 'LMS' && subTypeState === 'Media' && <Media />}
               {type === 'LMS' && subTypeState === 'Google Classroom' && <Publishing />}
+              {type === 'LMS' && subTypeState === 'Microsoft Teams' && <Publishing msTeamTab={true} />}
               {/* Media End */}
 
               {type === 'Projects' && subTypeState === 'All Projects' && (

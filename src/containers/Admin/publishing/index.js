@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import updateImg from '../../../assets/images/update1.svg';
 import { updateOrganizationGcrSettings } from 'store/actions/organization';
-const Index = () => {
+const Index = ({ msTeamTab }) => {
   const dispatch = useDispatch();
   const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
@@ -22,6 +22,9 @@ const Index = () => {
               gcr_activity: activeOrganization?.gcr_activity_visibility,
               gcr_playlist: activeOrganization?.gcr_playlist_visibility,
               gcr_project: activeOrganization?.gcr_project_visibility,
+              msp_activity: true,
+              msp_playlist: false,
+              msp_project: true,
             }}
             enableReinitialize
             onSubmit={async (values) => {
@@ -44,7 +47,7 @@ const Index = () => {
 
                   <div className="sources-options">
                     <div className="sources-options-all">
-                      <div className="media-field-checkbox">
+                      <div className="media-field-checkbox align-items-baseline">
                         <div>
                           <input
                             name="publish_all"
@@ -65,68 +68,97 @@ const Index = () => {
                           />
                           <span className="span-heading">Select all</span>
                         </div>
+                        {msTeamTab && (
+                          <div className="ms-team-lti-heading">
+                            <h3>LTI information</h3>
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <div className="sources-sub">
-                      <div>
-                        <div className="media-version-options">
-                          <div className="media-field-checkbox">
-                            <input
-                              name="activity"
-                              type="checkbox"
-                              className="media-sources-checkboxes "
-                              checked={values.gcr_activity}
-                              onChange={(e) => {
-                                setFieldValue('gcr_activity', !values.gcr_activity);
-                              }}
-                            />
-                            <span id="span-sub-selected" className="span-sub">
-                              Activity
-                            </span>
+                    <div className="gcr-pblishing-feature">
+                      <div className="gcr-checkboxes">
+                        <div className="sources-sub">
+                          <div>
+                            <div className="media-version-options">
+                              <div className="media-field-checkbox">
+                                <input
+                                  name="activity"
+                                  type="checkbox"
+                                  className="media-sources-checkboxes "
+                                  checked={values.gcr_activity}
+                                  onChange={(e) => {
+                                    setFieldValue('gcr_activity', !values.gcr_activity);
+                                  }}
+                                />
+                                <span id="span-sub-selected" className="span-sub">
+                                  Activity
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="sources-sub" style={{ marginTop: '14px' }}>
+                          <div>
+                            <div className="media-version-options">
+                              <div className="media-field-checkbox">
+                                <input
+                                  name="playlist"
+                                  type="checkbox"
+                                  className="media-sources-checkboxes"
+                                  checked={values.gcr_playlist}
+                                  onChange={(e) => {
+                                    setFieldValue('gcr_playlist', !values.gcr_playlist);
+                                  }}
+                                />
+                                <span id="span-sub-selected" className="span-sub">
+                                  Playlist
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="sources-sub" style={{ marginTop: '14px' }}>
+                          <div>
+                            <div className="media-version-options">
+                              <div className="media-field-checkbox">
+                                <input
+                                  name="project"
+                                  type="checkbox"
+                                  className="media-sources-checkboxes"
+                                  checked={values.gcr_project}
+                                  onChange={(e) => {
+                                    setFieldValue('gcr_project', !values.gcr_project);
+                                  }}
+                                />
+                                <span id="span-sub-selected" className="span-sub">
+                                  Project
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="sources-sub" style={{ marginTop: '14px' }}>
-                      <div>
-                        <div className="media-version-options">
-                          <div className="media-field-checkbox">
-                            <input
-                              name="playlist"
-                              type="checkbox"
-                              className="media-sources-checkboxes"
-                              checked={values.gcr_playlist}
-                              onChange={(e) => {
-                                setFieldValue('gcr_playlist', !values.gcr_playlist);
-                              }}
-                            />
-                            <span id="span-sub-selected" className="span-sub">
-                              Playlist
-                            </span>
+                      {msTeamTab && (
+                        <div className="ms-team-settings">
+                          <div className="ms-team-lti-info">
+                            <label>LTI client ID</label>
+                            <input name="ms_client_id" value="" />
+                          </div>
+                          <div className="ms-team-lti-info">
+                            <label>LMS name</label>
+                            <input name="ms_client_id" value="" />
+                          </div>
+                          <div className="ms-team-lti-info">
+                            <label>Access key</label>
+                            <input name="ms_client_id" value="" />
+                          </div>
+                          <div className="ms-team-lti-info">
+                            <label>Secret key</label>
+                            <input name="ms_client_id" value="" />
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="sources-sub" style={{ marginTop: '14px' }}>
-                      <div>
-                        <div className="media-version-options">
-                          <div className="media-field-checkbox">
-                            <input
-                              name="project"
-                              type="checkbox"
-                              className="media-sources-checkboxes"
-                              checked={values.gcr_project}
-                              onChange={(e) => {
-                                setFieldValue('gcr_project', !values.gcr_project);
-                              }}
-                            />
-                            <span id="span-sub-selected" className="span-sub">
-                              Project
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   </div>
 
