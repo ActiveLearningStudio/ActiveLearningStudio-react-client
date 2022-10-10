@@ -1,32 +1,48 @@
 /* eslint-disable */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { Suspense, useEffect, useState, useRef } from 'react';
+
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import TinCan from 'tincanjs';
+import { Tab, Tabs } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
-import { loadH5pResourceSettingsShared, loadH5pResourceSettingsEmbed, loadH5pResourceXapi, searchPreviewActivityAction, searchPreviewIndependentActivityAction } from 'store/actions/resource';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  loadH5pResourceSettingsShared,
+  loadH5pResourceSettingsEmbed,
+  loadH5pResourceXapi,
+  searchPreviewActivityAction,
+  searchPreviewIndependentActivityAction,
+} from 'store/actions/resource';
+import PreviousLink from './components/PreviousLink';
+import NextLink from './components/NextLink';
+import listIcon from 'assets/images/svg/miscellaneous-list.svg';
 import indResourceService from 'services/indActivities.service';
 import HeaderLogo from 'assets/images/GCLogo.png';
 import * as xAPIHelper from 'helpers/xapi';
 import QueryString from 'query-string';
-
+import projectIcon from 'assets/images/project_icon.svg';
 import './activity-share.scss';
+import './playlistPreview.scss';
 
 let counter = 1;
 let lrs = null;
 
 const ActivityShared = (props) => {
   const currikiH5PWrapper = useRef(null);
+
   const query = QueryString.parse(window.location.search);
   const { match, embed } = props;
   const lrsEndpoint = new URLSearchParams(window.location.search).get('endpoint');
   const lrsAuth = new URLSearchParams(window.location.search).get('auth');
   const lrsRegistration = new URLSearchParams(window.location.search).get('registration');
   const [authorized, setAuthorized] = useState(false);
-  // const [lrs, setLrs] = useState(null);
-  // const { orientation } = useSelector((state) => state.ui);
+  const [openPlaylistMenu, setPlaylistMenu] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState();
+
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
   const h5pInsertion = async (data) => {
@@ -44,7 +60,7 @@ const ActivityShared = (props) => {
         link.rel = 'stylesheet';
         document.head.appendChild(link);
         return true;
-      })
+      }),
     );
 
     const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
@@ -100,7 +116,7 @@ const ActivityShared = (props) => {
             if (data) {
               h5pInsertion(data);
             } else {
-              setAuthorized(true);
+              setAuthorized(data);
             }
           })
           .catch(() => {
@@ -112,7 +128,7 @@ const ActivityShared = (props) => {
             if (data) {
               h5pInsertion(data);
             } else {
-              setAuthorized(true);
+              setAuthorized(data);
             }
           })
           .catch(() => {
@@ -126,7 +142,7 @@ const ActivityShared = (props) => {
               if (data) {
                 h5pInsertion(data);
               } else {
-                setAuthorized(true);
+                setAuthorized(data);
               }
             })
             .catch(() => {
@@ -136,13 +152,14 @@ const ActivityShared = (props) => {
           loadH5pResourceSettingsShared(match.params.activityId)
             .then(async (data) => {
               if (data) {
+                setSelectedPlaylist(data);
                 h5pInsertion(data);
               } else {
-                setAuthorized(true);
+                setAuthorized(data);
               }
             })
-            .catch(() => {
-              setAuthorized(true);
+            .catch((e) => {
+              setAuthorized(e);
             });
         }
       }
@@ -217,27 +234,151 @@ const ActivityShared = (props) => {
   }, [embed, match.params.activityId, activeOrganization?.id, match.path, dispatch, lrsRegistration]);
 
   return (
-    <>
+    <section className="curriki-playlist-preview">
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
-      <div className="curriki-activity-share">
-        {authorized ? (
-          <Alert variant="danger"> Activity not found.</Alert>
-        ) : (
-          <div
-            id="curriki-h5p-wrapper"
-            ref={(el) => {
-              if (el) {
-                currikiH5PWrapper.current = el;
-              }
-            }}
-          >
-            <Alert variant="primary"> Loading Activity</Alert>
+      {query.view === 'playlist' ? (
+        <div className="curriki-playlist-preview-container">
+          <div className="activity-preview-with-playlist-container">
+            <div className={!openPlaylistMenu ? (query.view === 'activity' ? 'left-activity-view extra-padding' : ' left-activity-view') : ' hideInMobile left-activity-view'}>
+              <div className="activity-metadata">
+                <Link to={`/project/${selectedPlaylist?.playlist?.project.id}/shared`}>
+                  <img src={projectIcon} alt="" />
+                  Project: {selectedPlaylist?.playlist?.project.name}
+                </Link>
+                <FontAwesomeIcon icon="chevron-right" />
+                <Link>
+                  <img src={listIcon} alt="" />
+                  Playlist:{selectedPlaylist?.playlist?.title}
+                </Link>
+              </div>
+
+              <div className="activity-controller">
+                <h1>
+                  Activity: &nbsp;
+                  <span>{selectedPlaylist?.activity.title}</span>
+                </h1>
+                <div className="controller">
+                  <PreviousLink
+                    viewType={query.view}
+                    playlistId={selectedPlaylist?.playlist.id}
+                    previousResource={selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) - 1]}
+                    allPlaylists={[]}
+                    projectId={selectedPlaylist?.playlist.project.id}
+                    activtyPlaylist
+                    setH5pCurrentActivity={() => setSelectedPlaylist()}
+                  />
+                  <NextLink
+                    viewType={query.view}
+                    playlistId={selectedPlaylist?.playlist.id}
+                    nextResource={selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) + 1]}
+                    allPlaylists={[]}
+                    projectId={selectedPlaylist?.playlist.project.id}
+                    activtyPlaylist
+                    setH5pCurrentActivity={() => setSelectedPlaylist()}
+                  />
+                </div>
+              </div>
+              <div className="main-item-wrapper">
+                <div className="item-container">
+                  {authorized?.errors ? (
+                    <Alert variant="danger">{authorized.errors?.[0]}</Alert>
+                  ) : selectedPlaylist?.activity.id ? (
+                    <div
+                      id="curriki-h5p-wrapper"
+                      ref={(el) => {
+                        if (el) {
+                          currikiH5PWrapper.current = el;
+                        }
+                      }}
+                    ></div>
+                  ) : (
+                    <Alert variant="primary"> Loading Activity</Alert>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div className={openPlaylistMenu ? 'all-activities-of-playlist active' : 'all-activities-of-playlist'}>
+              <div className="list-button" onClick={() => setPlaylistMenu(!openPlaylistMenu)}>
+                {openPlaylistMenu ? <FontAwesomeIcon icon="chevron-right" /> : <FontAwesomeIcon icon="chevron-left" />}
+              </div>
+
+              {openPlaylistMenu ? (
+                <div className="relative-white-bg">
+                  <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
+                    <Tab eventKey="home" title="Activities">
+                      <div className="all-activities">
+                        {selectedPlaylist?.playlist.activities?.map((data) => (
+                          <div className={selectedPlaylist?.activity.title === data.title ? 'each-activity active' : 'each-activity'}>
+                            <Link
+                              onClick={() => {
+                                setSelectedPlaylist();
+                              }}
+                              to={`/activity/${data.id}/shared?view=playlist`}
+                            >
+                              <div
+                                className="thumbnail"
+                                style={{
+                                  backgroundImage:
+                                    !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                }}
+                              />
+                              <p>{data.title}</p>
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </Tab>
+                  </Tabs>
+                </div>
+              ) : (
+                <div className="relative-white-bg-collapsed">
+                  <div className="all-activities">
+                    {selectedPlaylist?.playlist.activities?.map((data) => (
+                      <Link
+                        title={data.title}
+                        onClick={() => {
+                          setSelectedPlaylist();
+                        }}
+                        to={`/activity/${data.id}/shared?view=playlist`}
+                        className="each-activity"
+                      >
+                        <div
+                          className="thumbnail"
+                          style={{
+                            backgroundImage:
+                              !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                          }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
-    </>
+        </div>
+      ) : (
+        <div className="curriki-activity-share">
+          {authorized?.errors ? (
+            <Alert variant="danger">{authorized.errors?.[0]}</Alert>
+          ) : (
+            <div
+              id="curriki-h5p-wrapper"
+              ref={(el) => {
+                if (el) {
+                  currikiH5PWrapper.current = el;
+                }
+              }}
+            >
+              <Alert variant="primary"> Loading d Activity</Alert>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
   );
 };
 
