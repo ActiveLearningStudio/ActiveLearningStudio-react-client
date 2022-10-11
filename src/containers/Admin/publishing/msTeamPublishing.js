@@ -6,12 +6,10 @@ import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import updateImg from '../../../assets/images/update1.svg';
 import { updateOrgGcrSettings } from 'store/actions/organization';
-const Index = ({ msTeamTab }) => {
+const MsTeamPublishing = () => {
   const dispatch = useDispatch();
-  const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const { activeOrganization } = organization;
-  const [publish_Settings, setpublish_Settings] = useState([]);
 
   return (
     <>
@@ -19,20 +17,16 @@ const Index = ({ msTeamTab }) => {
         <div className="box-group">
           <Formik
             initialValues={{
-              gcr_activity_visibility: activeOrganization?.gcr_activity_visibility,
-              gcr_playlist_visibility: activeOrganization?.gcr_playlist_visibility,
-              gcr_project_visibility: activeOrganization?.gcr_project_visibility,
-              msp_activity: true,
-              msp_playlist: false,
-              msp_project: true,
+              msteam_project_visibility: activeOrganization?.msteam_project_visibility,
+              msteam_playlist_visibility: activeOrganization?.msteam_playlist_visibility,
+              msteam_activity_visibility: activeOrganization?.msteam_activity_visibility,
+              msteam_client_id: activeOrganization?.msteam_client_id,
+              msteam_tenant_id: activeOrganization?.msteam_tenant_id,
+              msteam_secret_id: activeOrganization?.msteam_secret_id,
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              if (msTeamTab) {
-                console.log('values', values);
-              } else {
-                const response = await dispatch(updateOrgGcrSettings(values, activeOrganization?.id));
-              }
+              const response = await dispatch(updateOrgGcrSettings(values, activeOrganization?.id, false));
             }}
           >
             {({ handleSubmit, handleBlur, setFieldValue, values }) => (
@@ -56,26 +50,25 @@ const Index = ({ msTeamTab }) => {
                             name="publish_all"
                             type="checkbox"
                             label="Selectall"
-                            checked={values.gcr_activity_visibility && values.gcr_playlist_visibility && values.gcr_project_visibility ? true : false}
+                            checked={values.msteam_project_visibility && values.msteam_playlist_visibility && values.msteam_activity_visibility ? true : false}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFieldValue('gcr_activity_visibility', true);
-                                setFieldValue('gcr_playlist_visibility', true);
-                                setFieldValue('gcr_project_visibility', true);
+                                setFieldValue('msteam_activity_visibility', true);
+                                setFieldValue('msteam_playlist_visibility', true);
+                                setFieldValue('msteam_project_visibility', true);
                               } else {
-                                setFieldValue('gcr_activity_visibility', false);
-                                setFieldValue('gcr_playlist_visibility', false);
-                                setFieldValue('gcr_project_visibility', false);
+                                setFieldValue('msteam_project_visibility', false);
+                                setFieldValue('msteam_playlist_visibility', false);
+                                setFieldValue('msteam_activity_visibility', false);
                               }
                             }}
                           />
                           <span className="span-heading">Select all</span>
                         </div>
-                        {msTeamTab && (
-                          <div className="ms-team-lti-heading">
-                            <h3>LTI information</h3>
-                          </div>
-                        )}
+
+                        <div className="ms-team-lti-heading">
+                          <h3>LTI information</h3>
+                        </div>
                       </div>
                     </div>
 
@@ -86,12 +79,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="gcr_activity_visibility"
+                                  name="msteam_activity_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes "
-                                  checked={values.gcr_activity_visibility}
+                                  checked={values.msteam_activity_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_activity_visibility', !values.gcr_activity_visibility);
+                                    setFieldValue('msteam_activity_visibility', !values.msteam_activity_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -106,12 +99,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="gcr_playlist_visibility"
+                                  name="msteam_playlist_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes"
-                                  checked={values.gcr_playlist_visibility}
+                                  checked={values.msteam_playlist_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_playlist_visibility', !values.gcr_playlist_visibility);
+                                    setFieldValue('msteam_playlist_visibility', !values.msteam_playlist_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -126,12 +119,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="gcr_project_visibility"
+                                  name="msteam_project_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes"
-                                  checked={values.gcr_project_visibility}
+                                  checked={values.msteam_project_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_project_visibility', !values.gcr_project_visibility);
+                                    setFieldValue('msteam_project_visibility', !values.msteam_project_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -142,26 +135,25 @@ const Index = ({ msTeamTab }) => {
                           </div>
                         </div>
                       </div>
-                      {msTeamTab && (
-                        <div className="ms-team-settings">
-                          <div className="ms-team-lti-info">
-                            <label>LTI client ID</label>
-                            <input name="ms_client_id" value="" />
-                          </div>
-                          <div className="ms-team-lti-info">
-                            <label>LMS name</label>
-                            <input name="ms_client_id" value="" />
-                          </div>
-                          <div className="ms-team-lti-info">
-                            <label>Access key</label>
-                            <input name="ms_client_id" value="" />
-                          </div>
-                          <div className="ms-team-lti-info">
-                            <label>Secret key</label>
-                            <input name="ms_client_id" value="" />
-                          </div>
+
+                      <div className="ms-team-settings">
+                        <div className="ms-team-lti-info">
+                          <label>LTI client ID</label>
+                          <input name="msteam_client_id" value={values.msteam_client_id} onChange={(e) => setFieldValue('msteam_client_id', e.target.value)} />
                         </div>
-                      )}
+                        <div className="ms-team-lti-info">
+                          <label>LMS Tenant ID</label>
+                          <input name="msteam_tenant_id" value={values.msteam_tenant_id} onChange={(e) => setFieldValue('msteam_tenant_id', e.target.value)} />
+                        </div>
+                        <div className="ms-team-lti-info">
+                          <label>LMS Secret ID</label>
+                          <input name="msteam_secret_id" value={values.msteam_secret_id} onChange={(e) => setFieldValue('msteam_secret_id', e.target.value)} />
+                        </div>
+                        {/* <div className="ms-team-lti-info">
+                          <label>Secret key</label>
+                          <input name="ms_client_id" value="" />
+                        </div> */}
+                      </div>
                     </div>
                   </div>
 
@@ -176,4 +168,4 @@ const Index = ({ msTeamTab }) => {
   );
 };
 
-export default Index;
+export default MsTeamPublishing;

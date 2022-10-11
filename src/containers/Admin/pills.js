@@ -7,7 +7,8 @@ import adminService from 'services/admin.service';
 import indActivity from 'services/indActivities.service';
 import Starter from './starter';
 import { columnData } from './column';
-import Publishing from './publishing/index';
+import GcrPublishing from './publishing/gcrPublishing';
+import MsTeamPublishing from './publishing/msTeamPublishing';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { adminIntActivities, allAdminExportActivity } from 'store/actions/indActivities';
@@ -1150,8 +1151,8 @@ export default function Pills(props) {
               )}
               {/* Media Start */}
               {type === 'LMS' && subTypeState === 'Media' && <Media />}
-              {type === 'LMS' && subTypeState === 'Google Classroom' && <Publishing />}
-              {type === 'LMS' && subTypeState === 'Microsoft Teams' && <Publishing msTeamTab={true} />}
+              {type === 'LMS' && subTypeState === 'Google Classroom' && <GcrPublishing />}
+              {type === 'LMS' && subTypeState === 'Microsoft Teams' && <MsTeamPublishing />}
               {/* Media End */}
 
               {type === 'Projects' && subTypeState === 'All Projects' && (
