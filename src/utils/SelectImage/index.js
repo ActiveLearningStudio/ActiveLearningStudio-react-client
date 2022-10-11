@@ -36,7 +36,7 @@ const SelectImage = (props) => {
         <div className="box-section">
           <img
             style={{
-              backgroundImage: image.includes('/storage/') ? `url(${image})` : `url(${image})`,
+              backgroundImage: image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
             }}
             className="thumbnail"
           />

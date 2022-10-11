@@ -588,7 +588,7 @@ function PlaylistsPage(props) {
                                   <SelectImage
                                     image={
                                       selectedProject.thumb_url?.includes('/storage/')
-                                        ? global.config.resourceUrl + selectedProject.thumb_url
+                                        ? selectedProject.thumb_url
                                         : selectedProject.thumb_url ||
                                           'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
                                     }

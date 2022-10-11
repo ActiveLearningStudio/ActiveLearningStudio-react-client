@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .project-list-all {
   // display: flex;
@@ -385,7 +385,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
 
       input {
         border: none;
@@ -489,7 +489,7 @@
 .Add-my-project-section {
   background-color: #e5eeff;
   height: 356px;
-  margin-right: 16px;
+  // margin-right: 16px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -726,7 +726,7 @@
         width: 50%;
         margin-right: 8px;
         span {
-          font-family: "Open sans";
+          font-family: 'Open sans';
           font-style: normal;
           font-weight: normal;
           font-size: 12px;
@@ -754,7 +754,7 @@
         flex-direction: column;
         width: 50%;
         span {
-          font-family: "Open sans";
+          font-family: 'Open sans';
           font-style: normal;
           font-weight: normal;
           font-size: 12px;
@@ -815,7 +815,7 @@
           span {
             display: flex;
             align-items: center;
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 14px;
@@ -839,7 +839,7 @@
           span {
             display: flex;
             align-items: center;
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-style: normal;
             font-weight: normal;
             font-size: 14px;

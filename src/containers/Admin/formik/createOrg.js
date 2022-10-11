@@ -34,9 +34,9 @@ export default function CreateOrg(prop) {
   const dispatch = useDispatch();
   const [loaderImg, setLoaderImg] = useState(false);
   const { activeEdit, activeOrganization, currentOrganization } = allListState;
-  const [checkedActivity, setCheckedActivty] = useState(false);
-  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
-  const [checkedProject, setCheckedProject] = useState(false);
+  // const [checkedActivity, setCheckedActivty] = useState(false);
+  // const [checkedPlaylist, setCheckedPlaylist] = useState(false);
+  // const [checkedProject, setCheckedProject] = useState(false);
   const [checkedTosParent, setCheckedTosParent] = useState(true);
   const [checkedTosUrl, setCheckedTosUrl] = useState(false);
   const [checkedPpParent, setCheckedPpParent] = useState(true);
@@ -71,9 +71,9 @@ export default function CreateOrg(prop) {
       console.log('activeOrganization', activeOrganization);
       setImgActive(activeEdit?.image);
       setFaviconActive(activeEdit?.favicon);
-      setCheckedActivty(activeEdit?.gcr_activity_visibility);
-      setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
-      setCheckedProject(activeEdit?.gcr_project_visibility);
+      // setCheckedActivty(activeEdit?.gcr_activity_visibility);
+      // setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
+      // setCheckedProject(activeEdit?.gcr_project_visibility);
       setTosContentValue(activeEdit?.tos_content);
       setPpContentValue(activeEdit?.privacy_policy_content);
       if (activeEdit.tos_type == 'Parent') {
@@ -175,9 +175,9 @@ export default function CreateOrg(prop) {
           unit_path: editMode ? activeEdit?.unit_path : undefined,
           self_registration: editMode ? activeEdit?.self_registration : false,
           noovo_client_id: editMode ? activeEdit?.noovo_client_id : undefined,
-          gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
-          gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
-          gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
+          // gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
+          // gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
+          // gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
           // lp_private: editMode ? activeEdit?.lp_private : true,
           // lp_my_org: editMode ? activeEdit?.lp_my_org : false,
           // lp_my_org_parent: editMode ? activeEdit?.lp_my_org_parent : false,
@@ -427,7 +427,7 @@ export default function CreateOrg(prop) {
                           </div>
                         </div>
                         <div className="tab-form-section-right">
-                          <div className="toggle-group-button">
+                          {/* <div className="toggle-group-button">
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
                               <div className="create-form-inputs-toggles">
@@ -449,14 +449,6 @@ export default function CreateOrg(prop) {
                                   />
                                   <h3>Activity</h3>
                                 </div>
-
-                                {/* <Switch
-                      checked={checked}
-                      onChange={() => {
-                        setChecked(!checked);
-                        setFieldValue("published", !checked);
-                      }}
-                    /> */}
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_playlist_visibility}
@@ -495,7 +487,7 @@ export default function CreateOrg(prop) {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="form-group-create">
                             <h3>Self Registration</h3>
                             <div className="custom-toggle-button">

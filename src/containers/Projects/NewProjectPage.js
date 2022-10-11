@@ -52,7 +52,7 @@ function NewProjectPage(props) {
             <div className="modal-body">
               <div className="row">
                 <div className="col-md-12">
-                  <CreateProjectPopup {...props} thumbUrl={project?.thumbUrl} />
+                  <CreateProjectPopup {...props} thumbUrl={project?.thumbUrl || project?.selectedProject?.thumb_url} />
                 </div>
               </div>
             </div>
