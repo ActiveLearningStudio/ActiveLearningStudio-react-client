@@ -209,11 +209,12 @@ export default (state = INITIAL_STATE, action) => {
         activeOrganization: { ...state.activeOrganization },
       };
     case actionTypes.ORG_UPDATE_GCR_SETTINGS:
-      const filterdata = action.payload;
+      const filterGcrSettings = action.payload;
       return {
         ...state,
-        activeOrganization: { ...state.activeOrganization, ...filterdata },
+        activeOrganization: { ...state.activeOrganization, ...filterGcrSettings },
       };
+
     default:
       return state;
   }
