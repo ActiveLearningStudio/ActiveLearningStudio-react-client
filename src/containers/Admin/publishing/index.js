@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import updateImg from '../../../assets/images/update1.svg';
-import { updateOrganizationGcrSettings } from 'store/actions/organization';
+import { updateOrgGcrSettings } from 'store/actions/organization';
 const Index = ({ msTeamTab }) => {
   const dispatch = useDispatch();
   const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
@@ -19,17 +19,20 @@ const Index = ({ msTeamTab }) => {
         <div className="box-group">
           <Formik
             initialValues={{
-              gcr_activity: activeOrganization?.gcr_activity_visibility,
-              gcr_playlist: activeOrganization?.gcr_playlist_visibility,
-              gcr_project: activeOrganization?.gcr_project_visibility,
+              gcr_activity_visibility: activeOrganization?.gcr_activity_visibility,
+              gcr_playlist_visibility: activeOrganization?.gcr_playlist_visibility,
+              gcr_project_visibility: activeOrganization?.gcr_project_visibility,
               msp_activity: true,
               msp_playlist: false,
               msp_project: true,
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              console.log('values', values);
-              // const response = await dispatch(updateOrganizationGcrSettings(values, activeOrganization?.id));
+              if (msTeamTab) {
+                console.log('values', values);
+              } else {
+                const response = await dispatch(updateOrgGcrSettings(values, activeOrganization?.id));
+              }
             }}
           >
             {({ handleSubmit, handleBlur, setFieldValue, values }) => (
@@ -53,16 +56,16 @@ const Index = ({ msTeamTab }) => {
                             name="publish_all"
                             type="checkbox"
                             label="Selectall"
-                            checked={values.gcr_activity && values.gcr_playlist && values.gcr_project ? true : false}
+                            checked={values.gcr_activity_visibility && values.gcr_playlist_visibility && values.gcr_project_visibility ? true : false}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFieldValue('gcr_activity', true);
-                                setFieldValue('gcr_playlist', true);
-                                setFieldValue('gcr_project', true);
+                                setFieldValue('gcr_activity_visibility', true);
+                                setFieldValue('gcr_playlist_visibility', true);
+                                setFieldValue('gcr_project_visibility', true);
                               } else {
-                                setFieldValue('gcr_activity', false);
-                                setFieldValue('gcr_playlist', false);
-                                setFieldValue('gcr_project', false);
+                                setFieldValue('gcr_activity_visibility', false);
+                                setFieldValue('gcr_playlist_visibility', false);
+                                setFieldValue('gcr_project_visibility', false);
                               }
                             }}
                           />
@@ -83,12 +86,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="activity"
+                                  name="gcr_activity_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes "
-                                  checked={values.gcr_activity}
+                                  checked={values.gcr_activity_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_activity', !values.gcr_activity);
+                                    setFieldValue('gcr_activity_visibility', !values.gcr_activity_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -103,12 +106,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="playlist"
+                                  name="gcr_playlist_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes"
-                                  checked={values.gcr_playlist}
+                                  checked={values.gcr_playlist_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_playlist', !values.gcr_playlist);
+                                    setFieldValue('gcr_playlist_visibility', !values.gcr_playlist_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -123,12 +126,12 @@ const Index = ({ msTeamTab }) => {
                             <div className="media-version-options">
                               <div className="media-field-checkbox">
                                 <input
-                                  name="project"
+                                  name="gcr_project_visibility"
                                   type="checkbox"
                                   className="media-sources-checkboxes"
-                                  checked={values.gcr_project}
+                                  checked={values.gcr_project_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_project', !values.gcr_project);
+                                    setFieldValue('gcr_project_visibility', !values.gcr_project_visibility);
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">

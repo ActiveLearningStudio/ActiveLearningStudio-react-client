@@ -300,13 +300,28 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
   });
   return result;
 };
-export const updateOrganizationGcrSettings = (data, id) => async (dispatch) => {
-  const centralizedState = store.getState();
-  const {
-    organization: { currentOrganization, activeOrganization },
-  } = centralizedState;
-
-  const result = organization.updateOrganization(data, id);
+export const updateOrgGcrSettings = (data, id) => async (dispatch) => {
+  const filtergcr = {
+    gcr_project_visibility: data.gcr_project_visibility,
+    gcr_playlist_visibility: data.gcr_playlist_visibility,
+    gcr_activity_visibility: data.gcr_activity_visibility,
+  };
+  Swal.fire({
+    title: 'Please Wait !',
+    text: 'Updating view...!!!',
+    allowOutsideClick: false,
+  });
+  const result = await organization.updateOrganizationGcrSettings(filtergcr, id);
+  if (result.success) {
+    dispatch({
+      type: actionTypes.ORG_UPDATE_GCR_SETTINGS,
+      payload: filtergcr,
+    });
+    Swal.fire({
+      icon: 'success',
+      title: result?.success[0],
+    });
+  }
 
   return result;
 };
