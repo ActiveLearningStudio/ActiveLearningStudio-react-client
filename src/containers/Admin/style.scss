@@ -2762,6 +2762,16 @@
             min-height: 32px;
           }
         }
+        .ms-team-lti-heading {
+          margin-left: 170px;
+          h3 {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: #084892;
+          }
+        }
       }
 
       .sources-sub {
@@ -2865,10 +2875,6 @@
             margin-bottom: 0px !important;
           }
         }
-
-        // .media-sources-checkboxes{
-        //   width
-        // }
       }
 
       input[type='checkbox'] {
@@ -2877,6 +2883,35 @@
         -webkit-transform: scale(1.6);
         padding: 10px;
         accent-color: $curriki-main-blue;
+      }
+      .gcr-pblishing-feature {
+        max-width: 500px;
+        display: flex;
+        justify-content: space-between;
+        .ms-team-settings {
+          margin-top: 25px;
+          .ms-team-lti-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+            input {
+              width: 240px;
+              height: 34px;
+              background: #ffffff;
+              border: 1px solid #959595;
+              border-radius: 4px;
+              padding: 8px;
+            }
+            label {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 20px;
+              color: #515151;
+              margin-bottom: 2px;
+            }
+          }
+        }
       }
     }
   }
