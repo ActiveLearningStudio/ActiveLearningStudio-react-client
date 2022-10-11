@@ -185,19 +185,29 @@ const AddVideoCard = ({
                 </OverlayTrigger>
               )
             ) : (
-              <DropDownEdit
-                data={data}
-                iconColor="white"
-                activities={activities}
-                isActivityCard={isActivityCard}
-                setModalShow={setModalShow}
-                setCurrentActivity={setCurrentActivity}
-                setOpenVideo={setOpenVideo}
-                setScreenStatus={setScreenStatus}
-                permission={permission}
-                handleShow={handleShow}
-                setSelectedActivityId={setSelectedActivityId}
-              />
+              <>
+                {(
+                  !isActivityCard
+                  || (
+                    isActivityCard
+                    && permission?.['Independent Activity']?.includes('independent-activity:edit-author')
+                  )
+                ) && (
+                  <DropDownEdit
+                    data={data}
+                    iconColor="white"
+                    activities={activities}
+                    isActivityCard={isActivityCard}
+                    setModalShow={setModalShow}
+                    setCurrentActivity={setCurrentActivity}
+                    setOpenVideo={setOpenVideo}
+                    setScreenStatus={setScreenStatus}
+                    permission={permission}
+                    handleShow={handleShow}
+                    setSelectedActivityId={setSelectedActivityId}
+                  />
+                )}
+              </>
             )}
           </div>
           <div onClick={() => openEditor()} className="addvideo-card-title">
