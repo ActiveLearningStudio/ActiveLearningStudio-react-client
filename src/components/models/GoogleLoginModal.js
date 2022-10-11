@@ -33,13 +33,6 @@ import {
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
-const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
-const config = {
-  appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
-  redirectUri: `${domainName}org/currikistudio`,
-  scopes: ['user.read'],
-  authority: `https://login.microsoftonline.com/${tenantId}`,
-};
 
 const GoogleLoginModal = ({
   show,
@@ -58,6 +51,7 @@ const GoogleLoginModal = ({
   selectedPlaylistActivityName,
 }) => {
   const dataRedux = useSelector((state) => state);
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -72,6 +66,13 @@ const GoogleLoginModal = ({
   const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
 
+  const tenantId = activeOrganization?.msteam_tenant_id;
+  const config = {
+    appId: activeOrganization?.msteam_client_id,
+    redirectUri: `${domainName}org/currikistudio`,
+    scopes: ['user.read'],
+    authority: `https://login.microsoftonline.com/${tenantId}`,
+  };
   const publicClientApplication = new PublicClientApplication({
     auth: {
       clientId: config.appId,
@@ -288,7 +289,7 @@ const GoogleLoginModal = ({
         });
     } catch (err) {
       setShowForm(false);
-      console.log('err'.err);
+      console.log('err', err);
     }
   };
   return (
