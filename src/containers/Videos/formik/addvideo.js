@@ -44,6 +44,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [modalShow, setModalShow] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdKomodo, setSelectedVideoIdKomodo] = useState('');
   const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
@@ -81,6 +82,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
         selectedVideoIdVimeo={selectedVideoIdVimeo}
         showSidebar={showSidebar}
         platformName={platformName}
+        setSelectedVideoIdKomodo={setSelectedVideoIdKomodo}
+        selectedVideoIdKomodo={selectedVideoIdKomodo}
       />
       <div className="add-video-form">
         <div className="add-video-tabs">
@@ -444,7 +447,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     changeScreenHandler={changeScreenHandler}
                     type={AddVemeo}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={videoId && platform === 'Komodo' ? videoId : selectedVideoIdVimeo}
+                    selectedVideoId={videoId && platform === 'Komodo' ? videoId : selectedVideoIdKomodo}
                     platformName={platformName}
                     placeholder="Enter here your Komodo link"
                     setisbackHide={setisbackHide}
