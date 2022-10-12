@@ -332,6 +332,7 @@ export const updateOrgGcrSettings = (data, id, gcr) => async (dispatch) => {
       msteam_client_id: data.msteam_client_id,
       msteam_secret_id: data.msteam_secret_id,
       msteam_tenant_id: data.msteam_tenant_id,
+      msteam_secret_id_expiry: data.msteam_secret_id_expiry,
     };
     const res = await organization.updateOrganizationGcrSettings(filtermsTeamSettings, id);
     if (res.success) {

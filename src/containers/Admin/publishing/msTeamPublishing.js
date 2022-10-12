@@ -23,10 +23,11 @@ const MsTeamPublishing = () => {
               msteam_client_id: activeOrganization?.msteam_client_id,
               msteam_tenant_id: activeOrganization?.msteam_tenant_id,
               msteam_secret_id: activeOrganization?.msteam_secret_id,
+              msteam_secret_id_expiry: activeOrganization?.msteam_secret_id_expiry,
             }}
             enableReinitialize
             onSubmit={async (values) => {
-              const response = await dispatch(updateOrgGcrSettings(values, activeOrganization?.id, false));
+              await dispatch(updateOrgGcrSettings(values, activeOrganization?.id, false));
             }}
           >
             {({ handleSubmit, handleBlur, setFieldValue, values }) => (
@@ -138,16 +139,20 @@ const MsTeamPublishing = () => {
 
                       <div className="ms-team-settings">
                         <div className="ms-team-lti-info">
-                          <label>LTI client ID</label>
+                          <label>MS client ID</label>
                           <input name="msteam_client_id" value={values.msteam_client_id} onChange={(e) => setFieldValue('msteam_client_id', e.target.value)} />
                         </div>
                         <div className="ms-team-lti-info">
-                          <label>LMS Tenant ID</label>
+                          <label>MS Tenant ID</label>
                           <input name="msteam_tenant_id" value={values.msteam_tenant_id} onChange={(e) => setFieldValue('msteam_tenant_id', e.target.value)} />
                         </div>
                         <div className="ms-team-lti-info">
-                          <label>LMS Secret ID</label>
+                          <label>MS Secret ID</label>
                           <input name="msteam_secret_id" value={values.msteam_secret_id} onChange={(e) => setFieldValue('msteam_secret_id', e.target.value)} />
+                        </div>
+                        <div className="ms-team-lti-info">
+                          <label>MS Secret ID Expiry</label>
+                          <input name="msteam_secret_id_expiry" value={values.msteam_secret_id_expiry} onChange={(e) => setFieldValue('msteam_secret_id_expiry', e.target.value)} />
                         </div>
                         {/* <div className="ms-team-lti-info">
                           <label>Secret key</label>
