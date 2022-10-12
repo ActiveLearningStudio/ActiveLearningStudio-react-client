@@ -147,6 +147,15 @@ const getVimeoVideos = (data) =>
       return Promise.reject(err.response.data);
     });
 
+const getKomodoVideos = (data) =>
+  httpService
+    .post(`/${apiVersion}/komodo/get-my-video-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 const deleteBrightCove = (orgId, settingId) =>
   httpService
     .remove(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings/${settingId}`)
@@ -196,4 +205,5 @@ export default {
   getKalturaVideos,
   getVimeoVideos,
   uploadvideoDirect,
+  getKomodoVideos,
 };
