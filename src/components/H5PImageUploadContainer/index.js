@@ -1,20 +1,31 @@
 /*eslint-disable*/
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Modal, Tabs, Tab } from 'react-bootstrap';
+import Modal from '../../utils/SelectImage/modal';
 import './styles.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import H5PImageUploadMyDevice from "components/H5PImageUploadContainer/H5PImageUploadMyDevice";
-import H5PImageUploadPexels from "components/H5PImageUploadContainer/H5PImageUploadPexels";
-import H5PImageUploadSmithsonian from "components/H5PImageUploadContainer/H5PImageUploadSmithsonian";
+import {getMediaSources} from "../../store/actions/admin";
 
 const H5PImageUploadContainer = (props) => {
   const {
     closeModal,
     details,
-    layout,
   } = props;
+
+  const dispatch = useDispatch();
+  const [mediaSources, setMediaSources] = useState([]);
+  const organization = useSelector((state) => state.organization);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (mediaSources.length === 0) {
+      const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
+      result.then((data) => {
+        setMediaSources(data.mediaSources);
+        setShow(true);
+      });
+    }
+  }, [mediaSources]);
 
   const handleCloseModal = () => {
     closeModal();
@@ -31,45 +42,18 @@ const H5PImageUploadContainer = (props) => {
   };
 
   return (
-    <Modal show backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="existing-activity-search-modal">
-      <Modal.Header>
-        <div className="title">
-          <p>Browse Images</p>
-          <h2 className="curriki-utility-headings">
-            <FontAwesomeIcon className="mr-2" icon="search" />
-            Explore image libraries
-          </h2>
-        </div>
-        <div className="close">
-          <FontAwesomeIcon className="ml-2" icon="times" onClick={handleCloseModal} />
-        </div>
-      </Modal.Header>
-      <Modal.Body>
-        <Tabs
-          defaultActiveKey="mydevice"
-          className="main-tabs"
-          onSelect={handleTabChange}
-        >
-          <Tab eventKey="mydevice" title="My Device">
-            <H5PImageUploadMyDevice uploadHandler={handleImageUpload} />
-          </Tab>
-          <Tab eventKey="pexels" title="Pexels">
-            <H5PImageUploadPexels uploadHandler={handleImageUpload} />
-          </Tab>
-          <Tab eventKey="smithsonian" title="Smithsonian">
-            <H5PImageUploadSmithsonian uploadHandler={handleImageUpload} />
-          </Tab>
-        </Tabs>
-      </Modal.Body>
-      <Modal.Footer>
-        <div className="row">
-          <div className="col footer-info">
-            <FontAwesomeIcon className="mr-2" icon="info-circle" />
-            {`You're searching for images to insert in ${layout.title}`}
-          </div>
-        </div>
-      </Modal.Footer>
-    </Modal>
+        <Modal
+          show={show}
+          returnImage={(e) => handleImageUpload(e)}
+          returnImagePexel={(e) => handleImageUpload(e)}
+          handleClose={() => {
+            setShow(false);
+            handleCloseModal();
+          }}
+          {...props}
+          mediaSources={mediaSources}
+          setshowSmythsonianModal={true}
+        />
   );
 };
 
