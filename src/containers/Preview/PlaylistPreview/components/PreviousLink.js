@@ -7,18 +7,20 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function PreviousLink(props) {
-  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType, setH5pCurrentActivity } = props;
+  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType, activtyPlaylist, setH5pCurrentActivity } = props;
   const organization = useSelector((state) => state.organization);
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const prevPlaylist = currentPlaylistIndex > 0 ? allPlaylists[currentPlaylistIndex - 1] : null;
 
   let prevLink = '#';
-  if (previousResource) {
-    prevLink = `/playlist/${playlistId}/activity/${previousResource.id}/preview`;
+  if (activtyPlaylist) {
+    prevLink = `/activity/${previousResource?.id}/shared/?view=playlist`;
+  } else if (previousResource) {
+    prevLink = `/playlist/${playlistId}/activity/${previousResource?.id}/preview`;
   } else if (prevPlaylist) {
-    prevLink = `/playlist/${prevPlaylist.id}/activity/${prevPlaylist.activities[0]?.id}/preview`;
+    prevLink = `/playlist/${prevPlaylist.id}/activity/${prevPlaylist?.activities[0]?.id}/preview`;
   }
-  if (prevLink !== '#') {
+  if (prevLink !== '#' && !activtyPlaylist) {
     if (showLti) {
       if (viewType === 'activity') {
         prevLink += '/lti?view=activity';
@@ -49,7 +51,7 @@ function PreviousLink(props) {
             setH5pCurrentActivity(previousResource);
           }
         }}
-        to={setH5pCurrentActivity ? void 0 : prevLink}
+        to={setH5pCurrentActivity ? (activtyPlaylist ? prevLink : void 0) : prevLink}
       >
         Previous
         <FontAwesomeIcon icon="chevron-left" />
@@ -63,7 +65,7 @@ function PreviousLink(props) {
                 setH5pCurrentActivity(previousResource);
               }
             }}
-            to={setH5pCurrentActivity ? void 0 : prevLink}
+            to={setH5pCurrentActivity ? (activtyPlaylist ? prevLink : void 0) : prevLink}
           >
             <div
               className="img-in-hover"
