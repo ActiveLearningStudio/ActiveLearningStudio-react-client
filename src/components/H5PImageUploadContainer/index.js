@@ -31,13 +31,22 @@ const H5PImageUploadContainer = (props) => {
     closeModal();
   };
 
-  const handleTabChange = () => {
-    console.log('tab changed');
-  };
+  const handleImageUpload = (image) => {
+    if (typeof image === 'string') {
+      fetch(image).then((res) => res.blob().then((blob => {
+        const file = new File([blob], 'image.jpg', {type: blob.type});
+        details.callback(file);
+        closeModal();
+      })));
+      return;
+    }
 
-  const handleImageUpload = (file) => {
-    console.log('upload image to h5p');
-    details.callback(file);
+    if (image?.target?.files[0]) {
+      details.callback(image?.target?.files[0]);
+    } else if (image instanceof File) {
+      details.callback(File);
+    }
+
     closeModal();
   };
 
