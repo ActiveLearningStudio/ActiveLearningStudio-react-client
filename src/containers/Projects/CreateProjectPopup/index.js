@@ -121,10 +121,15 @@ const onSubmit = async (values, dispatch, props) => {
     history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
   }
 };
-export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch, typeUpload = 'FILE_UPLOAD') => {
   const formData = new FormData();
   try {
-    formData.append('thumb', e.target.files[0]);
+    if (typeUpload === 'DRAG_DROP') {
+      formData.append('thumb', e[0]);
+    } else {
+      formData.append('thumb', e.target.files[0]);
+    }
+    // formData.append('thumb', e.target.files[0]);
     if (id) {
       formData.append('project_id', id);
     }
@@ -216,6 +221,7 @@ let CreateProjectPopup = (props) => {
             'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
           }
           returnImage={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch)}
+          returnImageDragDrop={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, 'DRAG_DROP')}
           returnImagePexel={(e) => dispatch(uploadProjectThumbnail(e))}
         />
         <div className="create-project-template-wrapper">
