@@ -1,10 +1,11 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../tabview/Tabview";
-import codeSnippet from "!!raw-loader!../../../containers/Admin/controller";
-import controllerimg from "./controllerimg.png";
-import ControllerStore from "!!raw-loader!../../../store/actions/admin";
-import Stylesheetused from "!!raw-loader!../../../containers/Admin/style.scss";
+import React from 'react';
+import Tabview from '../../tabview/Tabview';
+import codeSnippet from '!!raw-loader!../../../containers/Admin/controller';
+import controllerimg from './controllerimg.png';
+import ControllerStore from '!!raw-loader!../../../store/actions/admin';
+import ApiCode from '!!raw-loader!../../../services/admin.service';
+import Stylesheetused from '!!raw-loader!../../../containers/Admin/style.scss';
 export const Controller = () => {
   return (
     <>
@@ -22,21 +23,19 @@ the table. you can also set a filter on the data where you can filter through me
 In the user's controller page, on the top right corner, you can also add a new user from your 
 organization, from your team, or add an external user."
         codeSnippet={codeSnippet}
-        libraryUsed={["react-bootstrap", "react-redux", "react-fontawesome"]}
+        libraryUsed={['react-bootstrap', 'react-redux', 'react-fontawesome', 'prop-types', 'swal']}
         customHooks={[
           {
-            name: "containers/ManageOrganization/inviteAdmin",
-            url: "",
+            name: 'components/ResourceCard/AddResource/dropdownData',
+            url: '',
           },
           {
-            name: "containers/ManageOrganization/addUser",
-            url: "",
+            name: 'filter',
+            url: '',
           },
         ]}
-        reduxStore={[
-          { path: "/src/store/actions/admin", pathCode: ControllerStore },
-        ]}
-        apiUsed={[]}
+        reduxStore={[{ path: '/src/store/actions/admin', pathCode: ControllerStore }]}
+        apiUsed={[{ path: '/src/services/admin.service', apicode: ApiCode }]}
         stylesheetUsed={Stylesheetused}
         images={controllerimg}
         example="https://dev.currikistudio.org/org/currikistudio/admin"
