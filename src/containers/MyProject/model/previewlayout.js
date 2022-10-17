@@ -6,6 +6,7 @@ import "./previewlayout.scss";
 import Tabs from "utils/Tabs/tabs";
 import H5PEditor from "components/ResourceCard/AddResource/Editors/H5PEditorV2";
 import ExistingActivitySearchContainer from "components/ExistingActivitySearchContainer";
+import H5PImageUploadContainer from "components/H5PImageUploadContainer";
 import cross from "assets/images/cross-icon.png";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
@@ -36,6 +37,8 @@ const PreviewLayoutModel = (props) => {
   const [showActivitySearch, setShowActivitySearch] = useState(false);
   const [insertActivityCallback, setInsertActivityCallback] = useState(null);
   const [insertActivityLibraries, setInsertActivityLibraries] = useState(null);
+  const [showH5PImageUploadDialog, setShowH5PImageUploadDialog] = useState(false);
+  const [H5PImageUploadDialogDetails, setH5PImageUploadDialogDetails] = useState(null);
 
   // useEffect(() => {
   //   if (type === "videoModal" && props.show) {
@@ -135,6 +138,13 @@ const PreviewLayoutModel = (props) => {
     setShowActivitySearch(true);
   };
 
+  const handleH5PImageUploadDialogEvent = (e) => {
+    if (e === "close") return setShowH5PImageUploadDialog(false);
+
+    setH5PImageUploadDialogDetails(e.detail);
+    setShowH5PImageUploadDialog(true);
+  };
+
   useEffect(() => {
     window.addEventListener(
       "launchExistingActivitySearch",
@@ -144,6 +154,19 @@ const PreviewLayoutModel = (props) => {
       window.removeEventListener(
         "launchExistingActivitySearch",
         handleExistingActivitySearchEvent
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(
+      "launchH5PImageUploadDialog",
+      handleH5PImageUploadDialogEvent
+    );
+    return () => {
+      window.removeEventListener(
+        "launchH5PImageUploadDialog",
+        handleH5PImageUploadDialogEvent
       );
     };
   }, []);
@@ -471,6 +494,13 @@ const PreviewLayoutModel = (props) => {
           layout={selectedLayout}
           libraries={insertActivityLibraries}
           closeModal={() => handleExistingActivitySearchEvent("close")}
+        />
+      )}
+      {showH5PImageUploadDialog && (
+        <H5PImageUploadContainer
+          layout={selectedLayout}
+          details={H5PImageUploadDialogDetails}
+          closeModal={() => handleH5PImageUploadDialogEvent("close")}
         />
       )}
     </>

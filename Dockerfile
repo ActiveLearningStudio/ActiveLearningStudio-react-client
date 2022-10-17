@@ -12,7 +12,7 @@ COPY . .
 RUN git log --graph -10 --decorate --pretty > log.txt
 
 RUN npm install --no-package-lock
-RUN npm run build
+RUN set GENERATE_SOURCEMAP=false && npm run build
 
 COPY . .
 RUN mv log.txt build/
