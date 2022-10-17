@@ -9,7 +9,7 @@ import { updateOrgGcrSettings } from 'store/actions/organization';
 const MsTeamPublishing = () => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
 
   return (
     <>
@@ -35,12 +35,14 @@ const MsTeamPublishing = () => {
                 <div className="sources-section">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <h3>Permissions to publish</h3>
-                    <div className="button-group">
-                      <button type="submit" className="update-permission">
-                        <img src={updateImg} alt="update" />
-                        <span>Update</span>
-                      </button>
-                    </div>
+                    {permission?.Organization.includes('organization:edit-microsoft-team') && (
+                      <div className="button-group">
+                        <button type="submit" className="update-permission">
+                          <img src={updateImg} alt="update" />
+                          <span>Update</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <div className="sources-options">
@@ -53,14 +55,16 @@ const MsTeamPublishing = () => {
                             label="Selectall"
                             checked={values.msteam_project_visibility && values.msteam_playlist_visibility && values.msteam_activity_visibility ? true : false}
                             onChange={(e) => {
-                              if (e.target.checked) {
-                                setFieldValue('msteam_activity_visibility', true);
-                                setFieldValue('msteam_playlist_visibility', true);
-                                setFieldValue('msteam_project_visibility', true);
-                              } else {
-                                setFieldValue('msteam_project_visibility', false);
-                                setFieldValue('msteam_playlist_visibility', false);
-                                setFieldValue('msteam_activity_visibility', false);
+                              if (permission?.Organization.includes('organization:edit-microsoft-team')) {
+                                if (e.target.checked) {
+                                  setFieldValue('msteam_activity_visibility', true);
+                                  setFieldValue('msteam_playlist_visibility', true);
+                                  setFieldValue('msteam_project_visibility', true);
+                                } else {
+                                  setFieldValue('msteam_project_visibility', false);
+                                  setFieldValue('msteam_playlist_visibility', false);
+                                  setFieldValue('msteam_activity_visibility', false);
+                                }
                               }
                             }}
                           />
@@ -85,7 +89,9 @@ const MsTeamPublishing = () => {
                                   className="media-sources-checkboxes "
                                   checked={values.msteam_activity_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('msteam_activity_visibility', !values.msteam_activity_visibility);
+                                    if (permission?.Organization.includes('organization:edit-microsoft-team')) {
+                                      setFieldValue('msteam_activity_visibility', !values.msteam_activity_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -105,7 +111,9 @@ const MsTeamPublishing = () => {
                                   className="media-sources-checkboxes"
                                   checked={values.msteam_playlist_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('msteam_playlist_visibility', !values.msteam_playlist_visibility);
+                                    if (permission?.Organization.includes('organization:edit-microsoft-team')) {
+                                      setFieldValue('msteam_playlist_visibility', !values.msteam_playlist_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -125,7 +133,9 @@ const MsTeamPublishing = () => {
                                   className="media-sources-checkboxes"
                                   checked={values.msteam_project_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('msteam_project_visibility', !values.msteam_project_visibility);
+                                    if (permission?.Organization.includes('organization:edit-microsoft-team')) {
+                                      setFieldValue('msteam_project_visibility', !values.msteam_project_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -140,19 +150,39 @@ const MsTeamPublishing = () => {
                       <div className="ms-team-settings">
                         <div className="ms-team-lti-info">
                           <label>MS client ID</label>
-                          <input name="msteam_client_id" value={values.msteam_client_id} onChange={(e) => setFieldValue('msteam_client_id', e.target.value)} />
+                          <input
+                            name="msteam_client_id"
+                            value={values.msteam_client_id}
+                            onChange={(e) => setFieldValue('msteam_client_id', e.target.value)}
+                            readOnly={permission?.Organization.includes('organization:edit-microsoft-team') ? false : true}
+                          />
                         </div>
                         <div className="ms-team-lti-info">
                           <label>MS Tenant ID</label>
-                          <input name="msteam_tenant_id" value={values.msteam_tenant_id} onChange={(e) => setFieldValue('msteam_tenant_id', e.target.value)} />
+                          <input
+                            name="msteam_tenant_id"
+                            value={values.msteam_tenant_id}
+                            onChange={(e) => setFieldValue('msteam_tenant_id', e.target.value)}
+                            readOnly={permission?.Organization.includes('organization:edit-microsoft-team') ? false : true}
+                          />
                         </div>
                         <div className="ms-team-lti-info">
                           <label>MS Secret ID</label>
-                          <input name="msteam_secret_id" value={values.msteam_secret_id} onChange={(e) => setFieldValue('msteam_secret_id', e.target.value)} />
+                          <input
+                            name="msteam_secret_id"
+                            value={values.msteam_secret_id}
+                            onChange={(e) => setFieldValue('msteam_secret_id', e.target.value)}
+                            readOnly={permission?.Organization.includes('organization:edit-microsoft-team') ? false : true}
+                          />
                         </div>
                         <div className="ms-team-lti-info">
                           <label>MS Secret ID Expiry</label>
-                          <input name="msteam_secret_id_expiry" value={values.msteam_secret_id_expiry} onChange={(e) => setFieldValue('msteam_secret_id_expiry', e.target.value)} />
+                          <input
+                            name="msteam_secret_id_expiry"
+                            value={values.msteam_secret_id_expiry}
+                            onChange={(e) => setFieldValue('msteam_secret_id_expiry', e.target.value)}
+                            readOnly={permission?.Organization.includes('organization:edit-microsoft-team') ? false : true}
+                          />
                         </div>
                         {/* <div className="ms-team-lti-info">
                           <label>Secret key</label>

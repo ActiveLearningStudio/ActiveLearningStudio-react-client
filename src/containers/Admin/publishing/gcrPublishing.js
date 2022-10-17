@@ -9,7 +9,7 @@ import { updateOrgGcrSettings } from 'store/actions/organization';
 const GcrPublisbhing = () => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
 
   return (
     <>
@@ -31,12 +31,14 @@ const GcrPublisbhing = () => {
                 <div className="sources-section">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <h3>Permissions to publish</h3>
-                    <div className="button-group">
-                      <button type="submit" className="update-permission">
-                        <img src={updateImg} alt="update" />
-                        <span>Update</span>
-                      </button>
-                    </div>
+                    {permission?.Organization.includes('organization:edit-google-classroom') && (
+                      <div className="button-group">
+                        <button type="submit" className="update-permission">
+                          <img src={updateImg} alt="update" />
+                          <span>Update</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   <div className="sources-options">
@@ -49,14 +51,16 @@ const GcrPublisbhing = () => {
                             label="Selectall"
                             checked={values.gcr_activity_visibility && values.gcr_playlist_visibility && values.gcr_project_visibility ? true : false}
                             onChange={(e) => {
-                              if (e.target.checked) {
-                                setFieldValue('gcr_activity_visibility', true);
-                                setFieldValue('gcr_playlist_visibility', true);
-                                setFieldValue('gcr_project_visibility', true);
-                              } else {
-                                setFieldValue('gcr_activity_visibility', false);
-                                setFieldValue('gcr_playlist_visibility', false);
-                                setFieldValue('gcr_project_visibility', false);
+                              if (permission?.Organization.includes('organization:edit-google-classroom')) {
+                                if (e.target.checked) {
+                                  setFieldValue('gcr_activity_visibility', true);
+                                  setFieldValue('gcr_playlist_visibility', true);
+                                  setFieldValue('gcr_project_visibility', true);
+                                } else {
+                                  setFieldValue('gcr_activity_visibility', false);
+                                  setFieldValue('gcr_playlist_visibility', false);
+                                  setFieldValue('gcr_project_visibility', false);
+                                }
                               }
                             }}
                           />
@@ -77,7 +81,9 @@ const GcrPublisbhing = () => {
                                   className="media-sources-checkboxes "
                                   checked={values.gcr_activity_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_activity_visibility', !values.gcr_activity_visibility);
+                                    if (permission?.Organization.includes('organization:edit-google-classroom')) {
+                                      setFieldValue('gcr_activity_visibility', !values.gcr_activity_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -97,7 +103,9 @@ const GcrPublisbhing = () => {
                                   className="media-sources-checkboxes"
                                   checked={values.gcr_playlist_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_playlist_visibility', !values.gcr_playlist_visibility);
+                                    if (permission?.Organization.includes('organization:edit-google-classroom')) {
+                                      setFieldValue('gcr_playlist_visibility', !values.gcr_playlist_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
@@ -117,7 +125,9 @@ const GcrPublisbhing = () => {
                                   className="media-sources-checkboxes"
                                   checked={values.gcr_project_visibility}
                                   onChange={(e) => {
-                                    setFieldValue('gcr_project_visibility', !values.gcr_project_visibility);
+                                    if (permission?.Organization.includes('organization:edit-google-classroom')) {
+                                      setFieldValue('gcr_project_visibility', !values.gcr_project_visibility);
+                                    }
                                   }}
                                 />
                                 <span id="span-sub-selected" className="span-sub">
