@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,24 +24,24 @@ export default function CreateUser(prop) {
   }, []);
   const validatePassword = (pwd) => {
     // eslint-disable-next-line quotes
-    const regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+    const regex = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
     return regex.test(pwd);
   };
   return (
     <div className="create-form">
       <Formik
         initialValues={{
-          first_name: (editMode || existingUser) ? currentUser?.first_name : '',
-          last_name: (editMode || existingUser) ? currentUser?.last_name : '',
-          user_id: (editMode || existingUser) ? currentUser?.id : '',
-          organization_type: (editMode || existingUser) ? currentUser?.organization_type : '',
-          organization_name: (editMode || existingUser) ? currentUser?.organization_name : '',
-          job_title: (editMode || existingUser) ? currentUser?.job_title : '',
-          role_id: (editMode || existingUser) ? currentUser?.organization_role_id : '',
-          email: (editMode || existingUser) ? currentUser?.email : checkedEmail,
+          first_name: editMode || existingUser ? currentUser?.first_name : '',
+          last_name: editMode || existingUser ? currentUser?.last_name : '',
+          user_id: editMode || existingUser ? currentUser?.id : '',
+          organization_type: editMode || existingUser ? currentUser?.organization_type : '',
+          organization_name: editMode || existingUser ? currentUser?.organization_name : '',
+          job_title: editMode || existingUser ? currentUser?.job_title : '',
+          role_id: editMode || existingUser ? currentUser?.organization_role_id : '',
+          email: editMode || existingUser ? currentUser?.email : checkedEmail,
           send_email: false,
           message: '',
-          password: '',
+          password: undefined,
         }}
         validate={(values) => {
           const errors = {};
@@ -52,12 +53,10 @@ export default function CreateUser(prop) {
           }
           if (!values.email) {
             errors.email = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
+          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
             errors.email = 'Invalid email address';
           }
-          if (!values.password && !editMode) {
+          if (!values.password && !editMode && !existingUser) {
             errors.password = 'Required';
           }
           if (values.password) {
@@ -156,53 +155,23 @@ export default function CreateUser(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit} autoComplete="off">
-            <h2>
-              {editMode ? 'Edit ' : 'Add '}
-              {' '}
-              user
-            </h2>
+            <h2>{editMode ? 'Edit ' : 'Add '} user</h2>
             <div className="row">
               <div className="col">
                 <div className="form-group-create">
-                  <h3>First Name</h3>
-                  <input
-                    type="text"
-                    name="first_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.first_name}
-                  />
-                  <div className="error">
-                    {errors.first_name && touched.first_name && errors.first_name}
-                  </div>
+                  <h3>First name</h3>
+                  <input type="text" name="first_name" onChange={handleChange} onBlur={handleBlur} value={values.first_name} />
+                  <div className="error">{errors.first_name && touched.first_name && errors.first_name}</div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Last Name</h3>
-                  <input
-                    type="text"
-                    name="last_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.last_name}
-                  />
-                  <div className="error">
-                    {errors.last_name && touched.last_name && errors.last_name}
-                  </div>
+                  <h3>Last name</h3>
+                  <input type="text" name="last_name" onChange={handleChange} onBlur={handleBlur} value={values.last_name} />
+                  <div className="error">{errors.last_name && touched.last_name && errors.last_name}</div>
                 </div>
                 <div className="form-group-create">
                   <h3>Email</h3>
-                  <input
-                    type="email"
-                    name="email"
-                    onChange={handleChange}
-                    autoComplete="nope"
-                    onBlur={handleBlur}
-                    value={values.email}
-                    readOnly={!editMode}
-                  />
-                  <div className="error">
-                    {errors.email && touched.email && errors.email}
-                  </div>
+                  <input type="email" name="email" onChange={handleChange} autoComplete="nope" onBlur={handleBlur} value={values.email} readOnly={!editMode} />
+                  <div className="error">{errors.email && touched.email && errors.email}</div>
                 </div>
                 <div className="form-group-create">
                   <h3>Password</h3>
@@ -210,76 +179,58 @@ export default function CreateUser(prop) {
                     type="password"
                     name="password"
                     autoComplete="new-password"
-                    placeholder={editMode ? 'Leave blank for unchanged' : 'Password'}
+                    placeholder={editMode || existingUser ? 'Leave blank for unchanged' : 'Password'}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.password}
                   />
-                  <div className="error">
-                    {errors.password && touched.password && errors.password}
-                  </div>
+                  <div className="error">{errors.password && touched.password && errors.password}</div>
                 </div>
                 <div className="form-group-create">
                   <h3>Role</h3>
-                  <div className="filter-dropdown-user">
+                  <div className="filter-dropdown-user" id="filter-dropdown-user-id-style">
                     <Dropdown>
-                      <Dropdown.Toggle id="dropdown-basic">
-                        {roles?.length > 0 && roles?.find((role) => role.id === values.role_id)?.display_name}
-                      </Dropdown.Toggle>
+                      <Dropdown.Toggle id="dropdown-basic">{roles?.length > 0 && roles?.find((role) => role.id === values.role_id)?.display_name}</Dropdown.Toggle>
                       <Dropdown.Menu>
-                        {roles?.length > 0 && roles?.map((role) => (
-                          <Dropdown.Item key={role?.id} onClick={() => setFieldValue('role_id', role.id)}>{role?.display_name}</Dropdown.Item>
-                        ))}
+                        {roles?.length > 0 &&
+                          roles?.map((role) => (
+                            <Dropdown.Item key={role?.id} onClick={() => setFieldValue('role_id', role.id)}>
+                              {role?.display_name}
+                            </Dropdown.Item>
+                          ))}
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
-                  <div className="error">
-                    {errors.role_id && touched.role_id && errors.role_id}
-                  </div>
+                  <div className="error">{errors.role_id && touched.role_id && errors.role_id}</div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Organization Type</h3>
-                  <div className="filter-dropdown-user">
+                  <h3>Organization type</h3>
+                  <div className="filter-dropdown-user" id="filter-dropdown-user-id-style">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic">
                         {organizationTypes?.length > 0 && organizationTypes?.find((type) => type.label === values.organization_type)?.label}
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        {organizationTypes?.length > 0 && organizationTypes?.map((type) => (
-                          <Dropdown.Item key={type?.label} onClick={() => setFieldValue('organization_type', type.label)}>{type?.label}</Dropdown.Item>
-                        ))}
+                        {organizationTypes?.length > 0 &&
+                          organizationTypes?.map((type) => (
+                            <Dropdown.Item key={type?.label} onClick={() => setFieldValue('organization_type', type.label)}>
+                              {type?.label}
+                            </Dropdown.Item>
+                          ))}
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
-                  <div className="error">
-                    {errors.organization_type && touched.organization_type && errors.organization_type}
-                  </div>
+                  <div className="error">{errors.organization_type && touched.organization_type && errors.organization_type}</div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Organization Name</h3>
-                  <input
-                    type="text"
-                    name="organization_name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.organization_name}
-                  />
-                  <div className="error">
-                    {errors.organization_name && touched.organization_name && errors.organization_name}
-                  </div>
+                  <h3>Organization name</h3>
+                  <input type="text" name="organization_name" onChange={handleChange} onBlur={handleBlur} value={values.organization_name} />
+                  <div className="error">{errors.organization_name && touched.organization_name && errors.organization_name}</div>
                 </div>
                 <div className="form-group-create">
-                  <h3>Job Title</h3>
-                  <input
-                    type="text"
-                    name="job_title"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.job_title}
-                  />
-                  <div className="error">
-                    {errors.job_title && touched.job_title && errors.job_title}
-                  </div>
+                  <h3>Job title</h3>
+                  <input type="text" name="job_title" onChange={handleChange} onBlur={handleBlur} value={values.job_title} />
+                  <div className="error">{errors.job_title && touched.job_title && errors.job_title}</div>
                 </div>
                 {!editMode && (
                   <>
@@ -306,9 +257,7 @@ export default function CreateUser(prop) {
               </div>
             </div>
             <div className="button-group">
-              <button type="submit">
-                Save
-              </button>
+              <button type="submit">Save</button>
               <button
                 type="button"
                 className="cancel"
@@ -326,6 +275,4 @@ export default function CreateUser(prop) {
   );
 }
 
-CreateUser.propTypes = {
-
-};
+CreateUser.propTypes = {};

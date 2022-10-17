@@ -8,7 +8,9 @@ import { useDispatch } from 'react-redux';
 import { loadH5pSettingsActivity } from 'store/actions/resource';
 import { Alert } from 'react-bootstrap';
 import { createResourceAction, editResourceAction } from 'store/actions/resource';
+import { createIndResourceAction } from 'store/actions/indActivities';
 import { edith5pVideoActivity } from 'store/actions/videos';
+import { editIndActivityItem } from 'store/actions/indActivities';
 import Swal from 'sweetalert2';
 const H5PEditor = (props) => {
   const {
@@ -25,11 +27,14 @@ const H5PEditor = (props) => {
     hide,
     editActivity,
     activityId,
+    contentId,
     type,
     accountId,
     settingId,
     reverseType,
     submitForm,
+    activityPreview,
+    setisSubmitActivty,
   } = props;
 
   const uploadFile = useRef();
@@ -49,7 +54,6 @@ const H5PEditor = (props) => {
   }, [formData]);
 
   useEffect(() => {
-
     if (h5pLib === 'H5P.BrightcoveInteractiveVideo 1.0') {
       let bcAccountId = accountId ? accountId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.accountId : null;
       let apiSettingId = settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null;
@@ -66,16 +70,16 @@ const H5PEditor = (props) => {
   const formatSelectBoxData = (data) => {
     let ids = [];
     if (data.length > 0) {
-      data?.map(datum => {
+      data?.map((datum) => {
         ids.push(datum.value);
       });
     }
     return ids;
-  }
+  };
 
   const submitResource = async (event) => {
     const parameters = window.h5peditorCopy.getParams();
-    console.log('formData', formData);
+
     formData.subject_id = formatSelectBoxData(formData.subject_id);
     formData.education_level_id = formatSelectBoxData(formData.education_level_id);
     formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
@@ -84,15 +88,43 @@ const H5PEditor = (props) => {
       if (editActivity) {
         dispatch(editResourceAction(playlistId, h5pLib, h5pLibType, activityId, { ...formData, title: metadata?.title || formData.title }, hide, projectId));
       } else if (editVideo) {
-        await dispatch(edith5pVideoActivity(editVideo.id, { ...formData, title: metadata?.title || formData.title }));
-        setOpenVideo(false);
+        if (activityPreview) {
+          const h5pdata = {
+            library: window.h5peditorCopy.getLibrary(),
+            parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+            action: 'create',
+          };
+          await dispatch(
+            editIndActivityItem(editVideo.id, {
+              ...formData,
+              organization_visibility_type_id: editVideo.organization_visibility_type_id || 1,
+              data: h5pdata,
+              type: 'h5p',
+              content: 'place_holder',
+              title: metadata?.title || formData.title,
+            }),
+          );
+          setOpenVideo(false);
+        } else {
+          await dispatch(
+            edith5pVideoActivity(editVideo.id, {
+              ...formData,
+              title: metadata?.title || formData.title,
+            }),
+          );
+          setOpenVideo(false);
+        }
       } else {
         const payload = {
           event,
           submitAction,
           h5pFile,
         };
-        handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        if (activityPreview) {
+          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId));
+        } else {
+          handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
+        }
       }
       delete window.H5PEditor; // Unset H5PEditor after saving the or editing the activity
     }
@@ -123,6 +155,8 @@ const H5PEditor = (props) => {
         <input name="_token" type="hidden" value={process.env.REACT_APP_H5P_KEY} />
         <input type="hidden" name="library" id="laravel-h5p-library" value={h5pLib} />
         <input type="hidden" name="parameters" id="laravel-h5p-parameters" value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')} />
+        <input type="hidden" name="contentId" id="laravel-h5p-contentId" value={contentId} />
+        <input type="hidden" name="brightcoveApiSettingId" id="laravel-h5p-brightcove-api-settingId" value={ settingId ? settingId : typeof editVideo === 'object' && editVideo.hasOwnProperty('brightcoveData') ? editVideo.brightcoveData.apiSettingId : null} />
 
         <fieldset>
           <div id="laravel-h5p-create" className="form-group ">
@@ -147,7 +181,7 @@ const H5PEditor = (props) => {
                     onChange={setH5pFileUpload}
                     ref={uploadFile}
                     style={{ cursor: 'pointer' }}
-                  // style={{ display: 'none' }}
+                    // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
                     <FontAwesomeIcon icon="file-upload" className="mr-2" />
@@ -212,6 +246,11 @@ const H5PEditor = (props) => {
                 className="saveclosemodel"
                 onClick={() => {
                   submitResource();
+                  if (!editVideo) {
+                    if (setisSubmitActivty) {
+                      setisSubmitActivty(true);
+                    }
+                  }
                 }}
               >
                 Save & Close

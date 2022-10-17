@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import './style.scss';
 import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import { Card, Alert, Tab, Row, Col, Nav } from 'react-bootstrap';
@@ -11,14 +11,24 @@ import Pagination from 'react-js-pagination';
 import HeadingThree from 'utils/HeadingThree/headingthree';
 import Buttons from 'utils/Buttons/buttons';
 import { useDispatch } from 'react-redux';
-import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos, getVimeoVideos } from 'store/actions/videos';
+import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos, getVimeoVideos, getKomodoVideos } from 'store/actions/videos';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platform, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo } = props;
+  const {
+    platformName,
+    showSidebar,
+    setSelectedVideoIdKaltura,
+    selectedVideoIdVimeo,
+    selectedVideoIdKaltura,
+    selectedVideoId,
+    selectedVideoIdKomodo,
+    setSelectedVideoIdKomodo,
+  } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [vimeo, setVimeo] = useState(null);
+  const [komodo, setKomodo] = useState(null);
   const [cmsVideo, setcmsVideo] = useState(null);
   const [activeCms, setActiveCms] = useState(null);
   const [offset, setOffset] = useState(0);
@@ -28,12 +38,13 @@ const BrightcoveModel = (props) => {
   const [error, setError] = useState(null);
   useEffect(() => {
     (async () => {
-      if (platform == 'Brightcove') {
+      setSearchId('');
+      if (platformName == 'Brightcove') {
         const result = await dispatch(getBrightCMS());
 
         setcms(result.data);
         setActiveCms(result.data?.[0]);
-      } else if (platform == 'Kaltura') {
+      } else if (platformName == 'Kaltura') {
         setActiveCms(null);
         const result = await dispatch(getKalturaVideos());
         if (result?.errors) {
@@ -42,7 +53,7 @@ const BrightcoveModel = (props) => {
         } else {
           setkaltura(result);
         }
-      } else if (platform == 'Vimeo') {
+      } else if (platformName == 'Vimeo') {
         setActiveCms(null);
         const result = await dispatch(getVimeoVideos());
         if (result?.errors) {
@@ -52,9 +63,20 @@ const BrightcoveModel = (props) => {
           setVimeo(result);
           console.log('Result:', result.data);
         }
+      } else if (platformName == 'Komodo') {
+        setActiveCms(null);
+        const result = await dispatch(getKomodoVideos());
+        if (result?.errors) {
+          setKomodo([]);
+          setError('No record Found');
+        } else {
+          setKomodo(result);
+          console.log('Result:', result.data);
+        }
       }
     })();
-  }, [platform]);
+  }, [platformName]);
+
   useEffect(() => {
     (async () => {
       if (activeCms) {
@@ -88,7 +110,7 @@ const BrightcoveModel = (props) => {
     <Modal {...props} size="xl" aria-labelledby="contained-modal-title-vcenter" centered className="preview-layout-model">
       <Modal.Header style={{ display: 'block !important' }} className="modal-header-custom">
         <Modal.Title id="contained-modal-title-vcenter"></Modal.Title>
-        <HeadingTwo text={`Add videos from ${platform}`} color="#515151" className="model-top-heading" />
+        <HeadingTwo text={`Add videos from ${platformName}`} color="#515151" className="model-top-heading" />
       </Modal.Header>
 
       <Modal.Body style={{ display: 'block !important' }}>
@@ -129,10 +151,15 @@ const BrightcoveModel = (props) => {
                     </div>
                     <div className="NetSuite-section-searching">
                       <div className="section-input-search">
-                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or id..." />
+                        <input
+                          value={searchId}
+                          onChange={(e) => setSearchId(e.target.value)}
+                          type="text"
+                          placeholder={platformName == 'Komodo' ? 'Search by video name' : 'Search by video name or video id...'}
+                        />
                         <button
                           onClick={async () => {
-                            if (platform == 'Brightcove') {
+                            if (platformName == 'Brightcove') {
                               setcmsVideo(null);
                               dispatch(getBrightVideosSearch(activeCms.id, searchId))
                                 .then((data) => {
@@ -145,7 +172,7 @@ const BrightcoveModel = (props) => {
                                     setError('No record Found');
                                   }
                                 });
-                            } else if (platform == 'Kaltura') {
+                            } else if (platformName == 'Kaltura') {
                               setkaltura(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos(searchId));
@@ -155,7 +182,7 @@ const BrightcoveModel = (props) => {
                                 setkaltura([]);
                                 setError('No record Found');
                               }
-                            } else if (platform == 'Vimeo') {
+                            } else if (platformName == 'Vimeo') {
                               setVimeo(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getVimeoVideos(searchId));
@@ -163,6 +190,16 @@ const BrightcoveModel = (props) => {
                                 setVimeo(result);
                               } else {
                                 setVimeo([]);
+                                setError('No record Found');
+                              }
+                            } else if (platformName == 'Komodo') {
+                              setKomodo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(getKomodoVideos(searchId));
+                              if (result.total_record) {
+                                setKomodo(result);
+                              } else {
+                                setKomodo([]);
                                 setError('No record Found');
                               }
                             }
@@ -175,7 +212,7 @@ const BrightcoveModel = (props) => {
                         <button
                           onClick={async () => {
                             setSearchId('');
-                            if (platform == 'Brightcove') {
+                            if (platformName == 'Brightcove') {
                               setcmsVideo(null);
                               try {
                                 const videosResult = await dispatch(getBrightVideos(activeCms.id, offset * 6));
@@ -188,16 +225,21 @@ const BrightcoveModel = (props) => {
                                   setError('No record Found');
                                 }
                               }
-                            } else if (platform == 'Kaltura') {
+                            } else if (platformName == 'Kaltura') {
                               setkaltura(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getKalturaVideos());
                               setkaltura(result);
-                            } else if (platform == 'Vimeo') {
+                            } else if (platformName == 'Vimeo') {
                               setVimeo(null);
                               setPaginationCounter(1);
                               const result = await dispatch(getVimeoVideos());
                               setVimeo(result);
+                            } else if (platformName == 'Komodo') {
+                              setKomodo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(getKomodoVideos());
+                              setKomodo(result);
                             }
                           }}
                           className="reset-btn"
@@ -210,7 +252,7 @@ const BrightcoveModel = (props) => {
                 </div>
                 <div className="for-NetSuite-section">
                   <div className="NetSuite-section-table responsive-table">
-                    {platform == 'Brightcove' && (
+                    {platformName == 'Brightcove' && (
                       <Tab.Content>
                         {cms?.map((data1, counter) => (
                           <Tab.Pane eventKey={`manual-${counter + 1}`}>
@@ -220,7 +262,7 @@ const BrightcoveModel = (props) => {
                                   <tr>
                                     <th>Name</th>
                                     <th>Created</th>
-                                    <th>Video</th>
+                                    <th>Video Id</th>
                                     <th>Updated At</th>
                                   </tr>
                                 </thead>
@@ -230,15 +272,18 @@ const BrightcoveModel = (props) => {
                                       cmsVideo?.map((data) => (
                                         <tr>
                                           <td className="firstname">
-                                            <input
-                                              name="video"
-                                              onChange={() => {
-                                                props.setSelectedVideoId(data.id);
-                                              }}
+                                            <Form.Check
                                               type="radio"
+                                              id={`default-${data.id}`}
+                                              onChange={() => {
+                                                props?.setSelectedVideoId(data.id);
+                                              }}
+                                              checked={selectedVideoId === data.id ? true : false}
                                             />
-                                            <img src={data?.images?.thumbnail?.src} className="image-size" />
-                                            <span>{data.name}</span>
+                                            <div className="first-col-image-name">
+                                              <img src={data?.images?.thumbnail?.src} className="image-size" />
+                                              <span>{data.name}</span>
+                                            </div>
                                           </td>
                                           <td>{data.created_at?.split('T')[0]}</td>
                                           <td>{data.id}</td>
@@ -272,9 +317,12 @@ const BrightcoveModel = (props) => {
                                   pageRangeDisplayed={7}
                                   itemsCountPerPage={6}
                                   totalItemsCount={totalCount}
-                                  onChange={(e) => {
+                                  onChange={async (e) => {
                                     //const newOffset = offset + 1;
+                                    // setPaginationCounter(e);
                                     setOffset(e - 1);
+                                    // const result = await dispatch(getBrightVideos('', e, 6));
+                                    // setcmsVideo(result);
                                   }}
                                 />
                               )}
@@ -283,7 +331,7 @@ const BrightcoveModel = (props) => {
                         ))}
                       </Tab.Content>
                     )}
-                    {platform == 'Kaltura' && (
+                    {platformName == 'Kaltura' && (
                       <Tab.Content>
                         <Tab.Pane eventKey="manual-1">
                           <Card.Body style={{ padding: '0px' }}>
@@ -311,6 +359,7 @@ const BrightcoveModel = (props) => {
                                                 setSelectedVideoIdKaltura(data.dataUrl);
                                               }}
                                               type="radio"
+                                              checked={selectedVideoIdKaltura === data.dataUrl ? true : false}
                                             />
                                             <img src={data?.thumbnailUrl} className="image-size" />
                                             <span>{data.name}</span>
@@ -361,7 +410,7 @@ const BrightcoveModel = (props) => {
                     )}
 
                     {/* Vimeo */}
-                    {platform == 'Vimeo' && (
+                    {platformName == 'Vimeo' && (
                       <Tab.Content>
                         <Tab.Pane eventKey="manual-1">
                           <Card.Body style={{ padding: '0px' }}>
@@ -438,6 +487,81 @@ const BrightcoveModel = (props) => {
                         </Tab.Pane>
                       </Tab.Content>
                     )}
+                    {platformName == 'Komodo' && (
+                      <Tab.Content>
+                        <Tab.Pane eventKey="manual-1">
+                          <Card.Body style={{ padding: '0px' }}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Created</th>
+                                  <th>Video Id</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {komodo ? (
+                                  komodo?.data?.length > 0 ? (
+                                    komodo?.data?.map((data) => {
+                                      var created = new Date(data.createdAt);
+
+                                      return (
+                                        <tr>
+                                          <td className="firstname">
+                                            <input
+                                              name="video"
+                                              onChange={() => {
+                                                setSelectedVideoIdKomodo(data.htmlUrl);
+                                              }}
+                                              type="radio"
+                                              checked={selectedVideoIdKomodo === data.htmlUrl ? true : false}
+                                            />
+                                            <img src={data?.previewUrl} className="image-size" />
+                                            <span>{data.title}</span>
+                                          </td>
+                                          <td>{created?.toLocaleDateString()}</td>
+                                          <td>{data.id}</td>
+                                        </tr>
+                                      );
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="4">
+                                        <Alert variant="danger" colSpan={3}>
+                                          {error}
+                                        </Alert>
+                                      </td>
+                                    </tr>
+                                  )
+                                ) : (
+                                  <tr>
+                                    <td colSpan="4">
+                                      <Alert variant="primary" colSpan={4}>
+                                        Loading...
+                                      </Alert>
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+
+                            {komodo?.data?.length > 0 && (
+                              <Pagination
+                                activePage={paginationCounter}
+                                pageRangeDisplayed={7}
+                                itemsCountPerPage={6}
+                                totalItemsCount={komodo?.total_record}
+                                onChange={async (e) => {
+                                  setPaginationCounter(e);
+                                  const result = await dispatch(getKomodoVideos('', e, 6));
+                                  setKomodo(result);
+                                }}
+                              />
+                            )}
+                          </Card.Body>
+                        </Tab.Pane>
+                      </Tab.Content>
+                    )}
                   </div>
                 </div>
               </Col>
@@ -452,6 +576,8 @@ const BrightcoveModel = (props) => {
             <Buttons
               onClick={() => {
                 props.setSelectedVideoId('');
+                setSelectedVideoIdKaltura('');
+                props.setSelectedVideoIdVimeo('');
                 props.onHide();
               }}
               secondary={true}

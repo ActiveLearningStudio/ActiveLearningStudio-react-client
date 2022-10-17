@@ -49,8 +49,8 @@ export const alphabetsOnly = (value) => {
 
 export const toolTypeArray = [
   { key: "kaltura", value: "Kaltura" },
-  { key: "youtube", value: "Youtube" },
-  { key: "vimeo", value: "Vimeo" },
-  { key: "safari_montage", value: "Safari Montage" },
-  { key: "other", value: "Other" },
+  // { key: "youtube", value: "Youtube" },
+  // { key: "vimeo", value: "Vimeo" },
+  { key: "safari_montage", value: "SAFARI" },
+  { key: "other", value: "Turnitin" },
 ];

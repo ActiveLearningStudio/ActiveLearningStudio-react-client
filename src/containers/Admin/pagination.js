@@ -82,6 +82,21 @@ const PaginationAdmin = ({ type, setCurrentTab, subTypeState, subType, data, act
             lastPageText="Last"
           />
         )}
+        {type === 'IndActivities' && (
+          <Pagination
+            activePage={activePage}
+            pageRangeDisplayed={5}
+            itemsCountPerPage={data?.meta?.per_page}
+            totalItemsCount={data?.meta?.total}
+            onChange={(e) => {
+              // setCurrentTab("all");
+              window.scrollTo(0, 0);
+              setActivePage(e);
+            }}
+            firstPageText="First"
+            lastPageText="Last"
+          />
+        )}
         {type === 'Projects' && subType === 'All Projects' && (
           <Pagination
             activePage={activePage}

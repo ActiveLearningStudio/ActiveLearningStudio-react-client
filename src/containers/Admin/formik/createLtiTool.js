@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+/* eslint-disable array-callback-return */
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actionTypes from 'store/actionTypes';
@@ -18,6 +20,29 @@ export default function CreateLtiTool(prop) {
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
+  const [ltiToolTypeGroup, setLtiToolTypesGroup] = useState([]);
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    // setLtiToolTypesGroup(ltiToolsTypes);
+    setLtiToolTypesGroup(
+      ltiToolsTypes.filter((type) => {
+        if (type.name !== 'My device' && type.name !== 'BrightCove') {
+          return type;
+        }
+      }),
+    );
+    if (editMode && activeEdit?.media_source_id) {
+      const editmodeLti = ltiToolsTypes
+        .filter((type) => {
+          if (type.name !== 'My device' && type.name !== 'BrightCove' && type.id !== activeEdit?.media_source_id) {
+            return type;
+          }
+        })
+        ?.concat(activeEdit?.media_sources);
+      console.log('editmodeLti', editmodeLti);
+      setLtiToolTypesGroup(editmodeLti);
+    }
+  }, [ltiToolsTypes, editMode]);
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -29,7 +54,14 @@ export default function CreateLtiTool(prop) {
           lti_version: editMode ? activeEdit?.lti_version || 'LTI-1p0' : 'LTI-1p0',
           tool_consumer_key: editMode ? activeEdit?.tool_consumer_key : '',
           tool_description: editMode ? activeEdit?.tool_description : '',
-          tool_type: editMode ? activeEdit?.tool_type : '',
+          // tool_type: editMode ? activeEdit?.tool_type : '',media_source_id
+
+          media_source_id: editMode
+            ? activeEdit?.media_source_id
+            : ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x).length > 0
+            ? ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x)['0'].id
+            : '',
+
           tool_secret_key: editMode ? activeEdit?.tool_secret_key : '',
           organization_id: organization?.activeOrganization?.id,
           user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
@@ -76,9 +108,19 @@ export default function CreateLtiTool(prop) {
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
+              // dispatch({
+              //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+              //   payload: res?.data,
+              // });
               dispatch({
-                type: actionTypes.NEWLY_EDIT_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_EDIT,
                 payload: res?.data,
+              });
+              console.log('values.media_source_id', values.media_source_id);
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'DECREMENT_TYPE_CHANGED',
+                ltitoolType: values.media_source_id,
               });
             });
           } else {
@@ -104,11 +146,21 @@ export default function CreateLtiTool(prop) {
                 },
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
+
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'INCREMENT',
+                ltitoolType: values.media_source_id,
+              });
               dispatch(removeActiveAdminForm());
               dispatch({
-                type: actionTypes.NEWLY_CREATED_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_NEW,
                 payload: res?.data,
               });
+              // dispatch({
+              //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+              //   payload: res?.data,
+              // });
             });
           }
         }}
@@ -151,26 +203,60 @@ export default function CreateLtiTool(prop) {
                     <div className="error">{errors.tool_description && touched.tool_description && errors.tool_description}</div>
                   </div>
 
-                  <div className="form-group-create">
+                  {/* <div className="form-group-create">
                     <h3>Tool type</h3>
                     <div className="filter-dropdown-tooltype">
                       <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">{toolTypeArray.filter((type) => type.key === values.tool_type)[0]?.value}</Dropdown.Toggle>
+                        <Dropdown.Toggle id="dropdown-basic">{ltiToolTypes?.filter((type) => type.id === values.media_source_id)[0]?.name}</Dropdown.Toggle>
+
                         <Dropdown.Menu>
-                          {toolTypeArray.map((type) => (
-                            <Dropdown.Item
-                              key={type.key}
-                              onClick={() => {
-                                setFieldValue('tool_type', type.key);
-                              }}
-                            >
-                              {type.value}
-                            </Dropdown.Item>
-                          ))}
+                          {ltiToolTypes.map((type) => {
+                            if (type.name !== 'My device' && type.name !== 'BrightCove') {
+                              return (
+                                <>
+                                  <Dropdown.Item
+                                    key={type.id}
+                                    onClick={() => {
+                                      setFieldValue('media_source_id', type.id);
+                                    }}
+                                  >
+                                    {type.name}
+                                  </Dropdown.Item>
+                                </>
+                              );
+                            }
+                          })}
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
+                  </div> */}
+                  {/* Tool Type Update Start */}
+                  <div className="form-group-create">
+                    <h3>Tool type</h3>
+                    <select name="media_source_id" onChange={handleChange} onBlur={handleBlur} value={values.media_source_id}>
+                      {/* {values.media_source_id === '' && (
+                        <option selected value={null}>
+                          Select
+                        </option>
+                      )} */}
+                      {ltiToolTypeGroup.map((type) => (
+                        <>
+                          <option value={type.id}>{type.name}</option>
+                        </>
+                      ))}
+                      {/* {ltiToolTypeGroup.map((type) => {
+                        if (type.name !== 'My device' && type.name !== 'BrightCove') {
+                          return (
+                            <>
+                              <option value={type.id}>{type.name}</option>
+                            </>
+                          );
+                        }
+                      })} */}
+                    </select>
+                    <div className="error">{errors.lti_version && touched.lti_version && errors.lti_version}</div>
                   </div>
+                  {/* Tool Type Update End */}
 
                   <div className="form-group-create">
                     <h3>LTI version</h3>

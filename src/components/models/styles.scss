@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .search-pixels {
   position: relative;
@@ -48,9 +48,9 @@
     cursor: pointer;
 
     .imgbox {
-      height: 150px;
+      height: 210px;
       border: 1px solid #ccc;
-      width: 354px;
+      width: 460px;
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -66,7 +66,7 @@
     }
 
     .button-flex {
-      width: 354px;
+      width: 460px;
       margin-top: 16px;
       // margin-left: 40px;
       display: flex;
@@ -76,7 +76,7 @@
 
     .gallery,
     .pexel {
-      width: 161px;
+      width: 220px;
       height: 36px;
       display: flex;
       // background: #00000000 0% 0% no-repeat padding-box;

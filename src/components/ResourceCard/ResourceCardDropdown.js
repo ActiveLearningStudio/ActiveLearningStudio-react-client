@@ -13,7 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -26,6 +26,13 @@ import MenuLogo from '../../assets/images/menu-logo-2.svg';
 import { toast } from 'react-toastify';
 import './style.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import MenuMdSvg from 'iconLibrary/dropDown/MenuMdSvg';
+import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
+import EditDpDnMdSvg from 'iconLibrary/dropDown/EditDpDnMdSvg';
+import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
+import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
+import DownloadSmSvg from 'iconLibrary/dropDown/DownloadSmSvg';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
 
 const ResourceCardDropdown = (props) => {
   const {
@@ -43,6 +50,8 @@ const ResourceCardDropdown = (props) => {
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
+    setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
@@ -74,33 +83,7 @@ const ResourceCardDropdown = (props) => {
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
-        {/* <img src={MenuLogo} alt="logo" /> */}
-        <svg width="4" height="14" viewBox="0 0 4 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M2 7.75001C2.41422 7.75001 2.75001 7.41422 2.75001 7C2.75001 6.58579 2.41422 6.25 2 6.25C1.58579 6.25 1.25 6.58579 1.25 7C1.25 7.41422 1.58579 7.75001 2 7.75001Z"
-            fill="#767676"
-            stroke={primaryColor}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2 2.50001C2.41422 2.50001 2.75001 2.16422 2.75001 1.75C2.75001 1.33579 2.41422 1 2 1C1.58579 1 1.25 1.33579 1.25 1.75C1.25 2.16422 1.58579 2.50001 2 2.50001Z"
-            fill="#767676"
-            stroke={primaryColor}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2 13C2.41422 13 2.75001 12.6642 2.75001 12.25C2.75001 11.8358 2.41422 11.5 2 11.5C1.58579 11.5 1.25 11.8358 1.25 12.25C1.25 12.6642 1.58579 13 2 13Z"
-            fill="#767676"
-            stroke={primaryColor}
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <MenuMdSvg primaryColor={primaryColor} />
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -116,23 +99,7 @@ const ResourceCardDropdown = (props) => {
               }
             }}
           >
-            {/* <img src={Preview} alt="Preview" className="menue-img" /> */}
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-              <path
-                d="M1.125 6C1.125 6 3.625 1 8 1C12.375 1 14.875 6 14.875 6C14.875 6 12.375 11 8 11C3.625 11 1.125 6 1.125 6Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8 7.875C9.03553 7.875 9.875 7.03553 9.875 6C9.875 4.96447 9.03553 4.125 8 4.125C6.96447 4.125 6.125 4.96447 6.125 6C6.125 7.03553 6.96447 7.875 8 7.875Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <PreviewSmSvg primaryColor={primaryColor} className="menue-img" />
             Preview
           </Dropdown.Item>
         )}
@@ -167,23 +134,7 @@ const ResourceCardDropdown = (props) => {
               }
             }}
           >
-            {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-              <path
-                d="M6.36745 2.26514H2.19277C1.87642 2.26514 1.57304 2.3908 1.34935 2.61449C1.12567 2.83818 1 3.14156 1 3.4579V11.8073C1 12.1236 1.12567 12.427 1.34935 12.6507C1.57304 12.8744 1.87642 13 2.19277 13H10.5421C10.8585 13 11.1619 12.8744 11.3855 12.6507C11.6092 12.427 11.7349 12.1236 11.7349 11.8073V7.63258"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M10.8392 1.37054C11.0764 1.13329 11.3982 1 11.7337 1C12.0693 1 12.3911 1.13329 12.6283 1.37054C12.8656 1.6078 12.9989 1.92959 12.9989 2.26512C12.9989 2.60065 12.8656 2.92244 12.6283 3.15969L6.96268 8.82533L4.57715 9.42172L5.17353 7.03618L10.8392 1.37054Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <EditDpDnMdSvg primaryColor={primaryColor} className="menue-img" />
             Edit
           </Dropdown.Item>
         )}
@@ -195,18 +146,7 @@ const ResourceCardDropdown = (props) => {
               cloneActivity(playlist.id, resource.id);
             }}
           >
-            {/* <img src={Duplicate} alt="Preview" className="menue-img" /> */}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-              <path
-                d="M11.6667 1H2.33333C1.59695 1 1 1.59695 1 2.33333V11.6667C1 12.403 1.59695 13 2.33333 13H11.6667C12.403 13 13 12.403 13 11.6667V2.33333C13 1.59695 12.403 1 11.6667 1Z"
-                stroke={primaryColor}
-                strokeidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M7 4.33325V9.66659" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M4.33301 7H9.66634" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
             Duplicate
           </Dropdown.Item>
         )}
@@ -214,32 +154,7 @@ const ResourceCardDropdown = (props) => {
           lmsSettings.length !== 0 && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
-                {/* <img src={Publish} alt="Preview" className="menue-img" /> */}
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-                  <path
-                    d="M10.583 4.52941C11.5495 4.52941 12.333 3.73933 12.333 2.76471C12.333 1.79009 11.5495 1 10.583 1C9.61651 1 8.83301 1.79009 8.83301 2.76471C8.83301 3.73933 9.61651 4.52941 10.583 4.52941Z"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M3.41602 8.5631C4.38251 8.5631 5.16602 7.77302 5.16602 6.7984C5.16602 5.82378 4.38251 5.03369 3.41602 5.03369C2.44952 5.03369 1.66602 5.82378 1.66602 6.7984C1.66602 7.77302 2.44952 8.5631 3.41602 8.5631Z"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10.583 13.0001C11.5495 13.0001 12.333 12.21 12.333 11.2354C12.333 10.2608 11.5495 9.4707 10.583 9.4707C9.61651 9.4707 8.83301 10.2608 8.83301 11.2354C8.83301 12.21 9.61651 13.0001 10.583 13.0001Z"
-                    stroke={primaryColor}
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path d="M5.27148 7.96411L9.06593 10.3722" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M9.06037 3.72876L5.27148 6.13683" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
@@ -252,11 +167,42 @@ const ResourceCardDropdown = (props) => {
                       setProjectPlaylistId(playlist.id);
                       setProjectPlaylistActivityId(resource.id);
                       dispatch(googleShare(false));
+                      dispatch(shareToCanvas(false));
                     }}
                   >
                     <a>Google Classroom</a>
                   </li>
                 )}
+                <li
+                  onClick={() => {
+                    handleShow();
+                    // getProjectId(match.params.projectId);
+                    // setProjectId(match.params.projectId);
+                    // setProjectPlaylistId(playlist.id);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
+                </li>
+                <li
+                  onClick={() => {
+                    handleShow();
+                    console.log('res', resource);
+                    setselectedPlaylistActivityName(resource.title);
+                    getProjectId(match.params.projectId);
+                    setProjectId(match.params.projectId);
+                    setProjectPlaylistId(playlist.id);
+                    setselectedProjectPlaylistName(playlist.title);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(true));
+                  }}
+                >
+                  <a>Curriki Canvas</a>
+                </li>
                 {lmsSettings.map((data) => {
                   return (
                     data.lms_name === 'safarimontage' &&
@@ -346,36 +292,13 @@ const ResourceCardDropdown = (props) => {
         )}
         {permission?.Activity?.includes('activity:share') && (
           <Dropdown.Item href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
-            {/* <img src={Xapi} alt="Preview" className="menue-img" /> */}
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-              <path
-                d="M13 9V11.6667C13 12.0203 12.8595 12.3594 12.6095 12.6095C12.3594 12.8595 12.0203 13 11.6667 13H2.33333C1.97971 13 1.64057 12.8595 1.39052 12.6095C1.14048 12.3594 1 12.0203 1 11.6667V9"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M3.66699 5.66675L7.00033 9.00008L10.3337 5.66675" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M7 9V1" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <DownloadSmSvg primaryColor={primaryColor} className="menue-img" />
             xAPI Download
           </Dropdown.Item>
         )}
         {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
           <Dropdown.Item onClick={handleDelete}>
-            {/* <img src={Delete} alt="Preview" className="menue-img" /> */}
-            <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" className="menue-img">
-              <path d="M0.75 3.39966H1.91667H11.25" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path
-                d="M3.66699 3.4V2.2C3.66699 1.88174 3.78991 1.57652 4.0087 1.35147C4.22749 1.12643 4.52424 1 4.83366 1H7.16699C7.47641 1 7.77316 1.12643 7.99195 1.35147C8.21074 1.57652 8.33366 1.88174 8.33366 2.2V3.4M10.0837 3.4V11.8C10.0837 12.1183 9.96074 12.4235 9.74195 12.6485C9.52316 12.8736 9.22641 13 8.91699 13H3.08366C2.77424 13 2.47749 12.8736 2.2587 12.6485C2.03991 12.4235 1.91699 12.1183 1.91699 11.8V3.4H10.0837Z"
-                stroke={primaryColor}
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path d="M4.83301 6.39966V9.99966" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M7.16699 6.39966V9.99966" stroke={primaryColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
             Delete
           </Dropdown.Item>
         )}

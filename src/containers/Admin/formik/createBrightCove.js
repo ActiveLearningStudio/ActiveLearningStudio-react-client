@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useRef, useEffect } from 'react';
 import { Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,18 +6,21 @@ import PropTypes from 'prop-types';
 import { removeActiveAdminForm } from 'store/actions/admin';
 import { addBrightCove, editBrightCove } from 'store/actions/videos';
 import Swal from 'sweetalert2';
+import authapi from '../../../services/auth.service';
 import docAvatar from 'assets/images/upload-files.png';
 import pcIcon from 'assets/images/pc-icon.png';
-
+import loader from 'assets/images/dotsloader.gif';
 import adminapi from '../../../services/videos.services';
 
-export default function CreateBrightCove({ editMode }) {
+export default function CreateBrightCove({ editMode, clone }) {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const { id } = useSelector((state) => state.auth.user);
   const { activeEdit, activeOrganization } = organization;
   const [fileActive, setFileActive] = useState(null);
+  const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const fileUpload = useRef();
+  const [stateOrgUsers, setStateOrgUsers] = useState([]);
   // const [checked, setChecked] = useState(false);
   useEffect(() => {
     if (editMode) {
@@ -30,15 +34,16 @@ export default function CreateBrightCove({ editMode }) {
     <div className="create-form lms-admin-form">
       <Formik
         initialValues={{
-          organization_id: editMode ? activeEdit?.organization_id : activeOrganization.id,
-          user_id: id,
-          account_id: editMode ? activeEdit?.account_id : '',
-          account_name: editMode ? activeEdit?.account_name : '',
-          account_email: editMode ? activeEdit?.account_email : '',
-          client_id: editMode ? activeEdit?.client_id : '',
-          client_secret: editMode ? activeEdit?.client_secret : '',
-          description: editMode ? activeEdit?.description : '',
-          css_path: editMode ? activeEdit?.css_path : undefined,
+          organization_id: editMode ? activeEdit?.organization_id : clone ? activeEdit?.organization_id : activeOrganization.id,
+          user_id: editMode ? activeEdit?.user_id : '',
+          account_id: editMode ? activeEdit?.account_id : clone ? activeEdit?.account_id : '',
+          account_name: editMode ? activeEdit?.account_name : clone ? activeEdit?.account_name : '',
+          account_email: editMode ? activeEdit?.account_email : clone ? activeEdit?.account_email : '',
+          client_id: editMode ? activeEdit?.client_id : clone ? activeEdit?.client_id : '',
+          client_secret: editMode ? activeEdit?.client_secret : clone ? activeEdit?.client_secret : '',
+          description: editMode ? activeEdit?.description : clone ? activeEdit?.description : '',
+          css_path: editMode ? activeEdit?.css_path : clone ? activeEdit?.css_path : undefined,
+          name: editMode ? activeEdit?.user?.name : '',
         }}
         enableReinitialize
         validate={(values) => {
@@ -68,6 +73,9 @@ export default function CreateBrightCove({ editMode }) {
 
           if (!values.description) {
             errors.description = 'Required';
+          }
+          if (!values.user_id) {
+            errors.user_id = 'Required';
           }
 
           return errors;
@@ -134,7 +142,7 @@ export default function CreateBrightCove({ editMode }) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove Entry' : 'Add New BrightCove Entry'}</h2>
+              <h2 style={{ marginBottom: '45px' }}>{editMode ? 'Edit BrightCove entry' : 'Add new BrightCove entry'}</h2>
 
               <div className="create-form-inputs-group">
                 {/* Left container */}
@@ -170,6 +178,58 @@ export default function CreateBrightCove({ editMode }) {
                     <h3> Secret</h3>
                     <input type="text" name="client_secret" onChange={handleChange} onBlur={handleBlur} value={values.client_secret} />
                     <div className="error">{errors.client_secret && touched.client_secret && errors.client_secret}</div>
+                  </div>
+                  <div className="form-group-create">
+                    <h3>
+                      User{' '}
+                      <div>
+                        <small>Search users from dropdown list only</small>
+                      </div>
+                    </h3>
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="off"
+                      onChange={async (e) => {
+                        setFieldValue('name', e.target.value);
+                        // eslint-disable-next-line eqeqeq
+                        if (e.target.value == '') {
+                          setStateOrgUsers([]);
+                          return;
+                        }
+                        setLoaderlmsImgUser(true);
+                        const lmsApi = authapi.searchUsers(e.target.value);
+                        lmsApi.then((data) => {
+                          setLoaderlmsImgUser(false);
+
+                          setStateOrgUsers(data?.users);
+                        });
+                      }}
+                      onBlur={handleBlur}
+                      value={values.name}
+                    />
+                    {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+                    {stateOrgUsers?.length > 0 && (
+                      <ul className="all-users-list">
+                        {stateOrgUsers?.map((user) => (
+                          <li
+                            value={user}
+                            onClick={() => {
+                              setFieldValue('user_id', user.id);
+                              setFieldValue('name', user.first_name);
+                              setStateOrgUsers([]);
+                            }}
+                          >
+                            {user.first_name}
+                            <p>
+                              Email: &nbsp;
+                              {user.email}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
                   </div>
                 </div>
                 {/* Right Container */}

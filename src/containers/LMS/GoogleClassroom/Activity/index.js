@@ -160,6 +160,9 @@ const Activity = (props) => {
     if (xAPIHelper.isxAPINeeded(match.path) === true) {
       activityState.h5pObject.externalDispatcher.on('xAPI', function (event) {
         console.log('Running xAPI listener callback');
+        if (event.ignoreStatement) {
+          return;
+        }
         const params = {
           path: match.path,
           activityId,

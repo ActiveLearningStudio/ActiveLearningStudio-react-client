@@ -36,12 +36,12 @@ const NotificationArea = (props) => {
     <>
       {content.data?.message && (
         <div className="notification-area">
-          {content.type.includes('ProjectExportNotification') ? (
+          {content.type.includes('ProjectExportNotification') || content.type.includes('ActivityExportNotification') ? (
             <div className="user-detail">
               {/* <img src={flashCards} alt="" /> */}
               <div className="user-icons">{userNameImg.toUpperCase()}</div>
               <p>
-                Project &nbsp;
+                {content.type.includes('ProjectExportNotification') ? 'Project' : 'Activity'} &nbsp;
                 <b>{content.data.project}</b>
                 &nbsp; has been exported successfully.
                 <br />

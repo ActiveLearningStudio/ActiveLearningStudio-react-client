@@ -22,7 +22,7 @@ export const columnData = {
   projectUser: ['Project Name', 'Created Date', 'Expired Date', 'Download'],
   projectUserSortCol: ['Created Date'],
 
-  projectAll: ['Name', 'Created', 'Description', 'ID', 'Author', 'Library status', 'Library preferences', 'Shared status', 'Updated'],
+  projectAll: ['Name', 'Created', 'Description', 'ID', 'Author', 'Library status', 'Library preferences', 'Sharing', 'Updated'],
   projectAllSortCol: ['Created'],
 
   ActivityTypes: ['Name', 'Order', 'Items'],
@@ -38,13 +38,13 @@ export const columnData = {
   lmssettingsSortCol: ['Type'],
 
   organization: ['Name', 'Domain', 'Projects', 'Sub Org.', 'Users', 'Teams'],
-  organizationSortCol: ['Name'],
+  organizationSortCol: ['Name', 'Domain'],
 
   IntegrationBrightCove: ['Studio org ID', 'Account ID', 'BrightCove email ID ', 'Account name', 'Description', 'Key', 'Secret', 'CSS'],
-  
+  sortIntegrationBrightCove: ['Account name'],
   defaultsso: ['Site Name', 'URL', 'Type', 'Client Id', 'Description'],
   defaultssoSortCol: ['Site Name'],
-  
+
   ltitool: ['Name', 'URL', 'Tool type', 'User', 'Description', 'Version'],
   ltitoolSortCol: ['Name'],
 
@@ -56,10 +56,16 @@ export const columnData = {
 
   authorTags: ['Name', 'Order', ''],
   authorTagsSortCol: ['Order'],
-  
+
   activityLayouts: ['Name', 'Order', 'Items'],
   activityLayoutsSortCol: ['Order'],
-  
+
   teams: ['Name', 'Created', 'Description', 'Members', 'Projects', 'Updated'],
   teamsSortCol: ['Created'],
+
+  indActivitiesCol: ['Name', 'Created', 'ID', 'Author', 'Library', 'Library preference', 'Sharing', 'Updated'],
+  indActivitiesSortCol: ['Created'],
+
+  indActivitiesExportCol: ['Name', 'Created', 'Expired date', 'Download'],
+  indActivitiesExportSortCol: ['Created'],
 };

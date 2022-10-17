@@ -20,6 +20,7 @@ import {
   GET_LTI_SUMMARY,
   GET_LTI_SUMMARY_ACTIVITY_INFO,
   GET_TEAMS,
+  GET_ACTIVITIES,
 } from '../actionTypes';
 
 // Deeplinking browse tab
@@ -154,6 +155,15 @@ export const getTeamsAction = (params) => async (dispatch) => {
   const results = await canvasService.teams(params);
   dispatch({
     type: GET_TEAMS,
+    results,
+  });
+};
+
+// Deeplinking my activities tab
+export const getActivitiesAction = (params) => async (dispatch) => {
+  const results = await canvasService.activities(params);
+  dispatch({
+    type: GET_ACTIVITIES,
     results,
   });
 };

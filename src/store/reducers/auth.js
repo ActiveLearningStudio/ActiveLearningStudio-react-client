@@ -7,6 +7,8 @@ const INITIAL_STATE = {
   forgotPasswordEmail: null,
   searchedUsers: [],
   organizationTypes: [],
+  wpSSOError: null,
+  wpSSOSettings: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -185,6 +187,24 @@ export default (state = INITIAL_STATE, action) => {
 
     case actionTypes.LOG_OUT:
       return INITIAL_STATE;
+
+    case actionTypes.WP_SSO_LOGIN_FAIL:
+      return {
+        ...state,
+        wpSSOError: action.error,
+      };
+
+    case actionTypes.WP_SSO_LOGIN_SUCCESS:
+      return {
+        ...state,
+        wpSSOSuccess: true,
+      };
+
+    case actionTypes.WP_SSO_GET_SETTINGS:
+      return {
+        ...state,
+        wpSSOSettings: action.response,
+      };
 
     default:
       return state;

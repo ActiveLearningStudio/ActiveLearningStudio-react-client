@@ -1,10 +1,5 @@
-import {
-  SHOW_LMS,
-  CHANGE_LOADING,
-  GOOGLE_SHARE,
-  ALL_COURSES,
-  GET_COURSE_TOPICS,
-} from '../actionTypes';
+/* eslint-disable */
+import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE, ALL_COURSES, GET_COURSE_TOPICS, SHARE_CANAVS, SHARE_MS_TEAM } from '../actionTypes';
 
 const INITIAL_STATE = {
   shareVendors: [],
@@ -12,6 +7,8 @@ const INITIAL_STATE = {
   googleShare: false,
   courses: false,
   topics: false,
+  isCanvas: false,
+  msTeamShare: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -32,6 +29,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         googleShare: action.value,
+      };
+    case SHARE_MS_TEAM:
+      return {
+        ...state,
+        msTeamShare: action.value,
+      };
+    case SHARE_CANAVS:
+      return {
+        ...state,
+        isCanvas: action.value,
       };
 
     case ALL_COURSES:

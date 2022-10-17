@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .actions .dropdown-toggle:after {
   content: none;
@@ -32,7 +32,7 @@
       color: #084892;
       border: none !important;
       text-align: center;
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
     }
 
     .nav-link.active {
@@ -40,7 +40,7 @@
       color: #084892;
       font-weight: 700;
       border-bottom: 4px solid #084892 !important;
-      font-family: 'rubic';
+      font-family: "rubic";
     }
   }
   .Playlists-container {
@@ -85,7 +85,7 @@
           .dropdown-toggle::after {
             margin-left: 0;
             vertical-align: 0;
-            content: '';
+            content: "";
             border-top: none;
             border-right: none;
             border-bottom: 0;

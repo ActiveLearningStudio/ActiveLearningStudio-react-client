@@ -24,9 +24,8 @@ function Footer() {
   return (
     <div className="footer-img-section">
       <footer className="footer-all">
-
         <a target="_blank" href={tosUrl} rel="noopener noreferrer">
-          Terms of service
+          Terms of Use
         </a>
 
         <a target="_blank" href={ppUrl} rel="noopener noreferrer">
@@ -34,7 +33,7 @@ function Footer() {
         </a>
 
         <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer">
-          Help & Support
+          Help Center
         </a>
       </footer>
       <div className="img-">

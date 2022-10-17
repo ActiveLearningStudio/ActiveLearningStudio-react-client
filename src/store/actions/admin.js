@@ -156,6 +156,7 @@ export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filter
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,
+    filterLti: filterBy,
   });
   return result;
 };
@@ -218,6 +219,21 @@ export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column 
   return result;
 };
 
+export const gettAllDynamicPermisison = (subOrgId, roleId, add) => async (dispatch) => {
+  const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId, add);
+  if (add) {
+    dispatch({
+      type: actionTypes.SET_ALL_DEFAULT_PERMISSION,
+      payload: result?.data,
+    });
+  } else {
+    dispatch({
+      type: actionTypes.SET_ALL_PERMISSION,
+      payload: result?.data,
+    });
+  }
+};
+
 export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({
@@ -275,4 +291,31 @@ export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMedias
   }
 
   return result;
+};
+
+export const ltiToolType = (subOrgId) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.GET_LTI_TOOLS_TYPES_REQUEST,
+  });
+  try {
+    const { data } = await adminService.ltiToolType(subOrgId);
+    dispatch({
+      type: actionTypes.GET_LTI_TOOLS_TYPES_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {
+    dispatch({
+      type: actionTypes.GET_LTI_TOOLS_TYPES_REQUEST,
+    });
+  }
+};
+
+export const cloneLtiTool = (subOrgId, id, user_id) => async (dispatch) => {
+  try {
+    const { data } = await adminService.cloneLtiTool(subOrgId, id, user_id);
+    dispatch({
+      type: actionTypes.CLONE_LTI_TOOLS_TYPES_SUCCESS,
+      payload: data,
+    });
+  } catch (e) {}
 };

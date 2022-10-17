@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .top-header {
   .dropdown-toggle {
@@ -141,7 +141,7 @@
 
   .navbar-link li .dropdown-menu {
     width: 200px;
-    padding: 20px;
+    padding: 12px;
     margin-top: -5.5px !important;
     h2.title {
       font-weight: 500;
@@ -149,6 +149,9 @@
       line-height: 24px;
 
       color: #515151;
+    }
+    a {
+      padding: 10px 20px;
     }
   }
   .navbar-link {
@@ -289,8 +292,8 @@
         }
       }
 
-      input[type="date"],
-      input[type="select"] {
+      input[type='date'],
+      input[type='select'] {
         cursor: pointer;
       }
 
@@ -316,7 +319,7 @@
             margin-right: 10px;
             cursor: pointer;
           }
-          input[type="radio"]:after {
+          input[type='radio']:after {
             width: 15px;
             height: 15px;
             border-radius: 15px;
@@ -324,12 +327,12 @@
             left: -1px;
             position: relative;
             background-color: #fff;
-            content: "";
+            content: '';
             display: inline-block;
             visibility: visible;
             border: 2px solid $fun-blue-1;
           }
-          input[type="radio"]:checked:after {
+          input[type='radio']:checked:after {
             width: 15px;
             height: 15px;
             border-radius: 15px;
@@ -337,7 +340,7 @@
             left: -1px;
             position: relative;
             background-color: $fun-blue-1;
-            content: "";
+            content: '';
             display: inline-block;
             visibility: visible;
             border: 2px solid $fun-blue-1;
@@ -569,6 +572,8 @@ hr {
 .user-dropdown-item-name {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  padding-top: 5px;
 
   .basic-info {
     margin-left: 10px;

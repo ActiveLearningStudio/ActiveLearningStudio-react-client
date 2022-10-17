@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .main-page-content {
   padding-top: 85px;
@@ -8,6 +8,10 @@
   margin-top: 5px;
   // padding: 0 15px;
   overflow: hidden;
+}
+
+.container-fluid {
+  padding: 0 !important;
 }
 
 .modal {
@@ -20,7 +24,7 @@
   &.left .modal-dialog,
   &.right .modal-dialog {
     position: relative;
-    max-width: none;
+    max-width: none !important;
     height: 100%;
     margin-top: 0;
     padding-left: 346px;
@@ -29,6 +33,7 @@
 
   &.left .modal-content,
   &.right .modal-content {
+    width: 550px;
     height: 100%;
     overflow-y: auto;
     border: 0;
@@ -370,8 +375,7 @@
           margin-top: 3px;
           margin-right: 8px;
           display: block;
-          background: url(../../assets/images/program-lesson-icon.png) no-repeat
-            center;
+          background: url(../../assets/images/program-lesson-icon.png) no-repeat center;
           float: left;
         }
       }
@@ -386,8 +390,7 @@
           margin-top: 3px;
           margin-right: 8px;
           display: block;
-          background: url(../../assets/images/program-duration-icon.png)
-            no-repeat center;
+          background: url(../../assets/images/program-duration-icon.png) no-repeat center;
           float: left;
         }
       }
@@ -542,7 +545,7 @@
     color: #fff !important;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -559,7 +562,6 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 80px;
   // padding-bottom: 45px;
   // display: flex;
   float: left;
@@ -781,6 +783,9 @@ body {
 aside.sidebar-all {
   min-height: 100%;
   margin-top: 32px;
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 50px;
 }
 aside.sidebar-all:first-child {
   border-top: none;
@@ -809,7 +814,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
 }
 
 blockquote,
@@ -969,7 +974,7 @@ body {
 }
 
 .top-header {
-  position: fixed;
+  position: fixed !important;
   width: 100%;
   height: 80px;
   box-shadow: 0 5px 6px #00000026;
@@ -1078,7 +1083,7 @@ body.menuopen {
 }
 
 body.menuopen:before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1169,8 +1174,7 @@ nav > ul > li.active a i {
 
 nav > ul > li > a:hover img,
 nav > ul > li.active > a img {
-  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg)
-    brightness(108%) contrast(100%);
+  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg) brightness(108%) contrast(100%);
 }
 
 .show {
@@ -1242,11 +1246,12 @@ header {
   .flex-div {
     flex-wrap: nowrap;
   }
+  height: 80px;
 }
 
 .menuoverlay:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 100%;
   width: 100%;
   top: 0;
@@ -1330,7 +1335,7 @@ header {
 
 .clearfix:before,
 .clearfix:after {
-  content: " ";
+  content: ' ';
   display: table;
 }
 
@@ -1366,7 +1371,7 @@ header {
 
 .togglebtn span::before,
 .togglebtn span::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
 }
@@ -1463,7 +1468,7 @@ header.head_mobile {
           h2 {
             color: rgb(8, 72, 146) !important;
             font-weight: 500;
-            font-family: "rubic";
+            font-family: 'rubic';
             font-size: 32px;
             line-height: 36px;
             font-style: normal;
@@ -1475,7 +1480,7 @@ header.head_mobile {
           margin-top: 16px;
           p {
             color: #515151 !important;
-            font-family: "Open Sans", sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-size: 16px;
             font-weight: 400;
             line-height: 22px;
@@ -1546,8 +1551,7 @@ a:hover {
     transform: translateX(0%);
     display: block;
     background: #fff;
-    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-      -webkit-transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .menu_link.active {
@@ -1555,7 +1559,7 @@ a:hover {
   }
 
   html.menuhidden body:before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -1878,8 +1882,11 @@ a:hover {
   span {
     height: auto;
     padding: 0;
-    max-width: 268px;
+    max-width: 170px;
     word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .list {
@@ -2036,7 +2043,7 @@ a:hover {
   }
 
   .accordion.active i::before {
-    content: "\f068";
+    content: '\f068';
   }
 
   .accordion a {
@@ -2054,7 +2061,7 @@ a:hover {
       padding-left: 5px;
 
       &:before {
-        content: "\f054" !important;
+        content: '\f054' !important;
       }
     }
   }
@@ -2087,7 +2094,7 @@ a:hover {
     font-weight: 500;
     font-size: 18px;
     line-height: 24px;
-    font-family: $rubik "sans-serif";
+    font-family: $rubik 'sans-serif';
     box-shadow: 0 0 0 transparent;
     letter-spacing: 0;
     color: $mine-shaft;
@@ -2270,7 +2277,7 @@ a:hover {
   padding: 0px;
 
   .line::after {
-    content: "";
+    content: '';
   }
 
   .watcher {
@@ -2412,7 +2419,7 @@ a:hover {
 
     button.collapsed {
       .fa:before {
-        content: "\f107";
+        content: '\f107';
       }
     }
 
@@ -2913,7 +2920,7 @@ a:hover {
 .hover-control-caption.no-data {
   width: 235px;
   min-height: auto !important;
-  left: -200px;
+  left: -50px;
   padding: 0;
 }
 
@@ -3279,7 +3286,7 @@ a:hover {
 
 .video_activity.modal {
   .modal-xl {
-    max-width: 100% !important;
+    max-width: 1440px !important;
     width: 100% !important;
   }
   nav {
@@ -3430,7 +3437,7 @@ a:hover {
   display: none;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .mobile-app-alert {
     background-color: #eee;
     color: #333;
@@ -4052,8 +4059,13 @@ body.collapsed {
   height: 32px;
   padding: 0 !important;
 }
-
+.swal2-cancel,
+.swal2-confirm,
+.swal2-deny {
+  height: 32px;
+  padding: 0 !important;
+}
 .video_activity .interactivevideoreferce {
   margin: 0 auto;
-  height: calc(100vh - 200px);
+  min-height: calc(100vh - 200px);
 }

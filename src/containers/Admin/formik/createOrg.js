@@ -34,9 +34,9 @@ export default function CreateOrg(prop) {
   const dispatch = useDispatch();
   const [loaderImg, setLoaderImg] = useState(false);
   const { activeEdit, activeOrganization, currentOrganization } = allListState;
-  const [checkedActivity, setCheckedActivty] = useState(false);
-  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
-  const [checkedProject, setCheckedProject] = useState(false);
+  // const [checkedActivity, setCheckedActivty] = useState(false);
+  // const [checkedPlaylist, setCheckedPlaylist] = useState(false);
+  // const [checkedProject, setCheckedProject] = useState(false);
   const [checkedTosParent, setCheckedTosParent] = useState(true);
   const [checkedTosUrl, setCheckedTosUrl] = useState(false);
   const [checkedPpParent, setCheckedPpParent] = useState(true);
@@ -47,6 +47,10 @@ export default function CreateOrg(prop) {
   const [ppContentValue, setPpContentValue] = useState(null);
   const [checkedTosContent, setCheckedTosContent] = useState(null);
   const [checkedPpContent, setCheckedPpContent] = useState(null);
+  const [checkedPrivate, setcheckedPrivate] = useState(true);
+  const [checkedMyOrg, setcheckedMyOrg] = useState(false);
+  const [checkedMyOrgParent, setcheckedMyOrgParent] = useState(false);
+  const [checkedAll, setcheckedAll] = useState(false);
 
   const [checkedColorsParent, setCheckedColorsParent] = useState(false);
   const [checkedColorsOwn, setCheckedColorsOwn] = useState(true);
@@ -67,9 +71,9 @@ export default function CreateOrg(prop) {
       console.log('activeOrganization', activeOrganization);
       setImgActive(activeEdit?.image);
       setFaviconActive(activeEdit?.favicon);
-      setCheckedActivty(activeEdit?.gcr_activity_visibility);
-      setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
-      setCheckedProject(activeEdit?.gcr_project_visibility);
+      // setCheckedActivty(activeEdit?.gcr_activity_visibility);
+      // setCheckedPlaylist(activeEdit?.gcr_playlist_visibility);
+      // setCheckedProject(activeEdit?.gcr_project_visibility);
       setTosContentValue(activeEdit?.tos_content);
       setPpContentValue(activeEdit?.privacy_policy_content);
       if (activeEdit.tos_type == 'Parent') {
@@ -150,7 +154,7 @@ export default function CreateOrg(prop) {
         activeEdit?.branding.secondary_color,
         activeEdit?.branding.tertiary_color,
         activeEdit?.branding.primary_font_family,
-        activeEdit?.branding.secondary_font_family
+        activeEdit?.branding.secondary_font_family,
       );
     }
   }, [activeEdit, editMode]);
@@ -171,9 +175,20 @@ export default function CreateOrg(prop) {
           unit_path: editMode ? activeEdit?.unit_path : undefined,
           self_registration: editMode ? activeEdit?.self_registration : false,
           noovo_client_id: editMode ? activeEdit?.noovo_client_id : undefined,
-          gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
-          gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
-          gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
+          // gcr_project_visibility: editMode ? activeEdit?.gcr_project_visibility : false,
+          // gcr_playlist_visibility: editMode ? activeEdit?.gcr_playlist_visibility : false,
+          // gcr_activity_visibility: editMode ? activeEdit?.gcr_activity_visibility : false,
+          // lp_private: editMode ? activeEdit?.lp_private : true,
+          // lp_my_org: editMode ? activeEdit?.lp_my_org : false,
+          // lp_my_org_parent: editMode ? activeEdit?.lp_my_org_parent : false,
+          // lp_all: editMode ? activeEdit?.lp_all : false,
+
+          // lp_private: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 1) : true,
+          lp_private: true,
+          lp_my_org: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 2) : false,
+          lp_my_org_parent: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 3) : false,
+          lp_all: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 4) : false,
+
           tos_type: editMode ? (!activeEdit?.tos_type ? 'Parent' : activeEdit?.tos_type) : 'Parent',
           tos_url: editMode ? activeEdit?.tos_url : '',
           tos_content: editMode ? activeEdit?.tos_content : '',
@@ -327,7 +342,7 @@ export default function CreateOrg(prop) {
                       <div className="tab-form-section">
                         <div className="tab-form-section-left">
                           <div className="form-group-create">
-                            <h3>Organization Name</h3>
+                            <h3>Organization name</h3>
                             <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} />
                             <div className="error">{errors.name && touched.name && errors.name}</div>
                           </div>
@@ -412,11 +427,11 @@ export default function CreateOrg(prop) {
                           </div>
                         </div>
                         <div className="tab-form-section-right">
-                          <div className="toggle-group-button">
+                          {/* <div className="toggle-group-button">
                             <div className="form-group-create">
                               <h3>Google classroom publishing</h3>
                               <div className="create-form-inputs-toggles">
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_activity_visibility}
                                     onChange={() => {
@@ -428,21 +443,13 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor={primaryColor}
-                                    onHandleColor={primaryColor}
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
                                     offHandleColor="#666"
                                   />
                                   <h3>Activity</h3>
                                 </div>
-
-                                {/* <Switch
-                      checked={checked}
-                      onChange={() => {
-                        setChecked(!checked);
-                        setFieldValue("published", !checked);
-                      }}
-                    /> */}
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_playlist_visibility}
                                     onChange={() => {
@@ -454,13 +461,13 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor={primaryColor}
-                                    onHandleColor={primaryColor}
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
                                     offHandleColor="#666"
                                   />
                                   <h3>Playlist</h3>
                                 </div>
-                                <div className="custom-toggle-button">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.gcr_project_visibility}
                                     onChange={() => {
@@ -472,15 +479,15 @@ export default function CreateOrg(prop) {
                                     uncheckedIcon={false}
                                     checkedIcon={false}
                                     offColor="#888"
-                                    onColor={primaryColor}
-                                    onHandleColor={primaryColor}
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
                                     offHandleColor="#666"
                                   />
                                   <h3>Project</h3>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="form-group-create">
                             <h3>Self Registration</h3>
                             <div className="custom-toggle-button">
@@ -492,10 +499,101 @@ export default function CreateOrg(prop) {
                                 className="react-switch"
                                 handleDiameter={30}
                                 offColor="#888"
-                                onColor={primaryColor}
-                                onHandleColor={primaryColor}
+                                onColor={secondaryColorIcon}
+                                onHandleColor={secondaryColorIcon}
                                 offHandleColor="#666"
                               />
+                            </div>
+                          </div>
+                          <div className="toggle-group-button">
+                            <div className="form-group-create">
+                              <h3>Library preferences</h3>
+                              <div className="create-form-inputs-toggles flex-column">
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.lp_private}
+                                    onChange={() => {
+                                      // it will be alawys ture
+                                      setcheckedPrivate(true);
+                                      setFieldValue('lp_private', true);
+                                      // setcheckedPrivate(!checkedPrivate);
+                                      // setFieldValue('lp_private', !checkedPrivate);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>Private</h3>
+                                </div>
+
+                                {/* <Switch
+                      checked={checked}
+                      onChange={() => {
+                        setChecked(!checked);
+                        setFieldValue("published", !checked);
+                      }}
+                    /> */}
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.lp_my_org}
+                                    onChange={() => {
+                                      setcheckedMyOrg(!checkedMyOrg);
+                                      setFieldValue('lp_my_org', !checkedMyOrg);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>My Organization</h3>
+                                </div>
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.lp_my_org_parent}
+                                    onChange={() => {
+                                      setcheckedMyOrgParent(!checkedMyOrgParent);
+                                      setFieldValue('lp_my_org_parent', !checkedMyOrgParent);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                  />
+                                  <h3>My Org + Parent & Child Org </h3>
+                                </div>
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.lp_all}
+                                    onChange={() => {
+                                      setcheckedAll(!checkedAll);
+                                      setFieldValue('lp_all', !checkedAll);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                    // style={{ transform: checkedAll ? 'translateX(22px)' : 'translateX(0px)' }}
+                                  />
+                                  <h3>All </h3>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -990,7 +1088,7 @@ export default function CreateOrg(prop) {
                                   activeEdit?.parent?.branding.secondary_color,
                                   activeEdit?.parent?.branding.tertiary_color,
                                   values.primary_font_family,
-                                  values.secondary_font_family
+                                  values.secondary_font_family,
                                 );
                             } else {
                               updatePreviewScreen(
@@ -998,7 +1096,7 @@ export default function CreateOrg(prop) {
                                 activeOrganization?.branding.secondary_color,
                                 activeOrganization?.branding.tertiary_color,
                                 values.primary_font_family,
-                                values.secondary_font_family
+                                values.secondary_font_family,
                               );
                               activeOrganization?.branding && setFieldValue('primary_color', activeOrganization?.branding.primary_color);
                               activeOrganization?.branding && setFieldValue('secondary_color', activeOrganization?.branding.secondary_color);
@@ -1029,7 +1127,7 @@ export default function CreateOrg(prop) {
                                 activeEdit?.branding.secondary_color,
                                 activeEdit?.branding.tertiary_color,
                                 values.primary_font_family,
-                                values.secondary_font_family
+                                values.secondary_font_family,
                               );
                             } else {
                               setFieldValue('primary_color', saveAddOwnprimaryColor);
@@ -1118,7 +1216,7 @@ export default function CreateOrg(prop) {
                   </div>
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
-                      <h1>Font</h1>
+                      <h1>Fonts</h1>
                       <button
                         type="button"
                         onClick={() => {
@@ -1161,7 +1259,7 @@ export default function CreateOrg(prop) {
                                   values.secondary_color,
                                   values.tertiary_color,
                                   activeEdit?.parent?.branding.primary_font_family,
-                                  activeEdit?.parent?.branding.secondary_font_family
+                                  activeEdit?.parent?.branding.secondary_font_family,
                                 );
                             } else {
                               updatePreviewScreen(
@@ -1169,7 +1267,7 @@ export default function CreateOrg(prop) {
                                 values.secondary_color,
                                 values.tertiary_color,
                                 activeOrganization?.branding.primary_font_family,
-                                activeOrganization?.branding.secondary_font_family
+                                activeOrganization?.branding.secondary_font_family,
                               );
                               activeOrganization?.branding && setFieldValue('primary_font_family', activeOrganization?.branding.primary_font_family);
                               activeOrganization?.branding && setFieldValue('secondary_font_family', activeOrganization?.branding.secondary_font_family);
@@ -1198,7 +1296,7 @@ export default function CreateOrg(prop) {
                                 values.secondary_color,
                                 values.tertiary_color,
                                 activeEdit?.branding.primary_font_family,
-                                activeEdit?.branding.secondary_font_family
+                                activeEdit?.branding.secondary_font_family,
                               );
                             } else {
                               updatePreviewScreen(values.primary_color, values.secondary_color, values.tertiary_color, saveAddOwnprimaryFont, saveAddOwnsecondaryFont);
@@ -1231,7 +1329,7 @@ export default function CreateOrg(prop) {
                             >
                               <option value="rubic">Rubic</option>
                               <option value="SmoochSans">SmoochSans</option>
-                              <option value="Open Sans">Open Sans</option>
+                              <option value="Open Sans, sans-serif">Open Sans</option>
                               <option value="Fredoka">Fredoka</option>
                               {/*<option value="BhuTukaExpandedOne">BhuTukaExpandedOne</option>*/}
                             </select>
@@ -1249,7 +1347,7 @@ export default function CreateOrg(prop) {
                             >
                               <option value="rubic">Rubic</option>
                               <option value="SmoochSans">SmoochSans</option>
-                              <option value="Open Sans">Open Sans</option>
+                              <option value="Open Sans, sans-serif">Open Sans</option>
                               <option value="Fredoka">Fredoka</option>
                               {/*<option value="BhuTukaExpandedOne">BhuTukaExpandedOne</option>*/}
                             </select>
@@ -1314,7 +1412,7 @@ export default function CreateOrg(prop) {
                     setFieldValue('privacy_policy_content', ppContentValue);
                   }}
                 >
-                  {editMode ? 'Save ' : 'Save'} Organization
+                  {editMode ? 'Save ' : 'Save'} changes
                 </button>
               </div>
             </div>

@@ -1,4 +1,3 @@
-/* eslint-disable  */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,7 +7,9 @@ import { loadH5pSettingsActivity } from 'store/actions/resource';
 import Swal from 'sweetalert2';
 
 const H5PEditorEdit = (props) => {
-  const { h5pParams, match, resource, loadH5pSettings, handleEditResourceSubmit } = props;
+  const {
+ h5pParams, match, resource, loadH5pSettings, handleEditResourceSubmit,
+} = props;
 
   const [submitAction, setSubmitAction] = useState('create');
   // const [h5pFile, setH5pFile] = useState(null);

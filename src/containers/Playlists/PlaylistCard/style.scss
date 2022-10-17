@@ -103,3 +103,56 @@
 .playlist-body-bg {
   background: none !important;
 }
+.playlist-header-icon-section{
+  margin: 0px 16px 16px 16px;
+  padding: 16px 0px;
+  display: flex;
+  border-top: 1px solid #DDDDDD;
+  border-bottom: 1px solid #DDDDDD;
+  flex-direction: row;
+  .hover-text{
+    .span-show{
+      display: none;
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: $curriki-main-blue;
+      margin-left: 9px;
+
+    }
+    &:hover{
+      .span-show{
+        display: inline;
+      }
+    }
+  }
+  div{
+    cursor: pointer;
+  }
+  .mr-30{
+    margin-right: 30px;
+  }
+  .mr-30-add{
+    margin-right: 30px;
+    &:hover{
+      margin-right: 22px;
+    }
+  }
+}
+
+.playlist-no-resource{
+  width: 100%;
+  height: 40px;
+  background: #DDDDDD;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #515151;
+    }

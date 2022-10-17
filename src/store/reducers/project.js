@@ -4,7 +4,10 @@ import * as actionTypes from '../actionTypes';
 
 const INITIAL_STATE = {
   isLoading: false,
-  projects: [],
+  projects: null,
+  projectMeta: null,
+  isProjectLoading: false,
+  islazyLoader: false,
   selectedProject: {},
   thumbUrl: null,
   projectSelect: {},
@@ -17,7 +20,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { projects } = state;
+  const { projects, clone } = state;
 
   switch (action.type) {
     case actionTypes.CREATE_PROJECT_REQUEST:
@@ -26,12 +29,22 @@ export default (state = INITIAL_STATE, action) => {
         isLoading: true,
       };
     case actionTypes.CREATE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        projects: [...projects, action.payload.project],
-        thumbUrl: null,
-      };
+      if (projects) {
+        return {
+          ...state,
+          isLoading: false,
+          projects: [...projects, action.payload.project],
+          thumbUrl: null,
+        };
+      } else {
+        return {
+          ...state,
+          isLoading: false,
+          projects: [action.payload.project],
+          thumbUrl: null,
+        };
+      }
+
     case actionTypes.CREATE_PROJECT_FAIL:
       return {
         ...state,
@@ -42,6 +55,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: true,
+      };
+    case actionTypes.PAGE_LOADING:
+      return {
+        ...state,
+        islazyLoader: true,
+      };
+    case actionTypes.PAGE_LOADING_COMPLETE:
+      return {
+        ...state,
+        islazyLoader: false,
       };
     case actionTypes.SET_SELECTED_PROJECT:
       return {
@@ -128,13 +151,60 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         projects: action.payload.projects,
+        islazyLoader: false,
+        isProjectLoading: true,
+        projectMeta: action.payload.meta,
+        links: action.payload.links?.first,
       };
+    case actionTypes.SHOW_SKELETON:
+      return {
+        ...state,
 
+        isProjectLoading: false,
+      };
+    case actionTypes.ADD_MY_PROJECTS:
+      if (!projects) {
+        return {
+          ...state,
+          projects: action.payload.projects,
+          islazyLoader: false,
+          isProjectLoading: true,
+          projectMeta: action.payload.meta,
+        };
+      } else {
+        const newProjects = projects.concat(action.payload.projects);
+        return {
+          ...state,
+          projects: newProjects,
+          islazyLoader: false,
+          isProjectLoading: true,
+          projectMeta: action.payload.meta,
+        };
+      }
     case actionTypes.LOAD_MY_CLONE_PROJECTS:
       return {
         ...state,
         clone: action.payload.projects,
+        islazyLoader: false,
+        projectMeta: action.payload.meta,
       };
+    case actionTypes.ADD_MY_CLONE_PROJECTS:
+      if (!clone) {
+        return {
+          ...state,
+          clone: action.payload.projects,
+          islazyLoader: false,
+          projectMeta: action.payload.meta,
+        };
+      } else {
+        const newClone = clone.concat(action.payload.projects);
+        return {
+          ...state,
+          clone: newClone,
+          islazyLoader: false,
+          projectMeta: action.payload.meta,
+        };
+      }
 
     case actionTypes.LOAD_MY_PROJECTS_SELECTED:
     case actionTypes.SHARE_PROJECT:
@@ -148,7 +218,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.UPLOAD_PROJECT_THUMBNAIL:
       return {
         ...state,
-        thumbUrl: action.payload.thumbUrl,
+        selectedProject: { ...state.selectedProject, thumb_url: action.payload.thumbUrl },
         progress: null,
       };
 

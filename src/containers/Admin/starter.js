@@ -1,11 +1,11 @@
 /* eslint-disable */
-import React, { useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-import Controller from "./controller";
-import TableData from "./table";
-import Userroles from "./userroles";
+import Controller from './controller';
+import TableData from './table';
+import Userroles from './userroles';
 // import Media from "./media";
 // import Settings from './settings';
 function Starter(props) {
@@ -49,6 +49,8 @@ function Starter(props) {
     searchAlertToggler,
     searchAlertTogglerStats,
     setActivePage,
+    searchQueryChangeHandlerLtiTool,
+    searchLtiquery,
     setSearchQueryTeam,
     subType,
     inviteUser,
@@ -71,7 +73,11 @@ function Starter(props) {
     setrowData,
     setActivePageNumber,
     filteredItems,
+    setCurrentActivity,
+    setModalShowh5p,
     setSearchKey,
+    filterLtiSettings,
+    setfilterLtiSettings,
   } = props;
   return (
     <>
@@ -124,10 +130,14 @@ function Starter(props) {
         setSearchQueryTeam={setSearchQueryTeam}
         filteredItems={filteredItems}
         setSearchKey={setSearchKey}
+        setfilterLtiSettings={setfilterLtiSettings}
+        filterLtiSettings={filterLtiSettings}
+        searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+        searchLtiquery={searchLtiquery}
       />
       {/* {subTypeState === 'All settings' && <Settings />} */}
       {/* {subTypeState === "Media" && <Media />} */}
-      {subTypeState === "Manage Roles" ? (
+      {subTypeState === 'Manage Roles' ? (
         <Userroles permissionRender={permissionRender} />
       ) : (
         <TableData
@@ -151,6 +161,9 @@ function Starter(props) {
           setModalShowTeam={setModalShowTeam}
           setrowData={setrowData}
           setActivePageNumber={setActivePageNumber}
+          setCurrentActivity={setCurrentActivity}
+          setModalShowh5p={setModalShowh5p}
+          filterLtiSettings={filterLtiSettings}
         />
       )}
     </>

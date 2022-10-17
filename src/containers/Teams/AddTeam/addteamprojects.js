@@ -18,7 +18,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
     <div className="add-team-projects">
       <div className="team-projects-top-section">
         <div>
-          <div className="organization-name">Curriki Studio</div>
+          <div className="organization-name">CurrikiStudio</div>
           <div className="title-image">
             <div>
               <h1 className="title">Add projects</h1>
@@ -62,7 +62,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add projects to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add Project to team" primary={true} width="188px" height="32px" hover={true} />
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@ const AddTeamProjects = ({ setPageLoad }) => {
                   <div className="project-selection">
                     <p>5 projects have been selected. </p>
                   </div>
-                  <Buttons icon={faPlus} text="Add projects to team" primary={true} width="188px" height="32px" hover={true} />
+                  <Buttons icon={faPlus} text="Add project to team" primary={true} width="188px" height="32px" hover={true} />
                 </div>
               </div>
             </div>

@@ -19,6 +19,7 @@ import { toolTypeArray } from 'utils';
 import AdminDropdown from './adminDropdown';
 import AdminPagination from './pagination';
 import { faCheckCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
+import { shareDisableLink, shareEnableLink, editIndActivityItem, getIndex } from 'store/actions/indActivities';
 function Table(props) {
   const {
     tableHead,
@@ -44,6 +45,9 @@ function Table(props) {
     setModalShowTeam,
     setrowData,
     setActivePageNumber,
+    setCurrentActivity,
+    setModalShowh5p,
+    filterLtiSettings,
   } = props;
 
   const organization = useSelector((state) => state.organization);
@@ -61,20 +65,23 @@ function Table(props) {
 
   const indexingArray = [
     { indexing: 0, indexing_text: 'NOT REQUESTED' },
-    { indexing: 1, indexing_text: 'REQUESTED' },
-    { indexing: 3, indexing_text: 'APPROVED' },
-    { indexing: 2, indexing_text: 'REJECTED' },
+    { indexing: 1, indexing_text: 'Requested' },
+    { indexing: 3, indexing_text: 'Approved' },
+    { indexing: 2, indexing_text: 'Rejected' },
   ];
+  // useEffect(() => {
+  //   (async () => {
+  //     if (project?.visibilityTypes.length === 0) {
+  //       const { data } = await dispatch(visibilityTypes());
+  //       setVisibilityTypeArray(data.data);
+  //     } else {
+  //       setVisibilityTypeArray(project?.visibilityTypes?.data);
+  //     }
+  //   })();
+  // }, [project?.visibilityTypes]);
   useEffect(() => {
-    (async () => {
-      if (project?.visibilityTypes.length === 0) {
-        const { data } = await dispatch(visibilityTypes());
-        setVisibilityTypeArray(data.data);
-      } else {
-        setVisibilityTypeArray(project?.visibilityTypes?.data);
-      }
-    })();
-  }, [project?.visibilityTypes]);
+    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+  }, [activeOrganization]);
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -82,30 +89,36 @@ function Table(props) {
   }, [allSuborgList]);
   //update table after crud
   useEffect(() => {
-    if (type === 'LMS') {
-      if (newlyCreated) {
-        setLocalStateData([newlyCreated, ...data?.data]);
-      } else if (newlyEdit) {
-        setLocalStateData(
-          data?.data.map((lms) => {
-            if (lms.id === newlyEdit?.id) {
-              return newlyEdit;
-            } else {
-              return lms;
-            }
-          })
-        );
-      }
-    }
-    dispatch({
-      type: actionTypes.NEWLY_EDIT_RESOURCE,
-      payload: null,
-    });
-    dispatch({
-      type: actionTypes.NEWLY_CREATED_RESOURCE,
-      payload: null,
-    });
-  }, [newlyCreated, newlyEdit]);
+    setLocalStateData(data?.data);
+  }, [data?.data]);
+
+  // useEffect(() => {
+  //   if (type === 'LMS') {
+  //     if (newlyCreated) {
+  //       setLocalStateData([newlyCreated, ...data?.data]);
+  //     } else if (newlyEdit) {
+  //       console.log('newlyEdit');
+  //       setLocalStateData(
+  //         data?.data.map((lms) => {
+  //           console.log('lms', lms);
+  //           if (lms.id === newlyEdit?.id) {
+  //             return newlyEdit;
+  //           } else {
+  //             return lms;
+  //           }
+  //         }),
+  //       );
+  //     }
+  //   }
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  // }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
   useEffect(() => {
@@ -189,9 +202,14 @@ function Table(props) {
     });
   };
   //const history = useHistory();
+  const [ltiToolTypes, setLtiToolTypes] = useState([]);
+  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  useEffect(() => {
+    setLtiToolTypes(ltiToolsTypes);
+  }, [ltiToolsTypes]);
   return (
     <div className="table-data">
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}
@@ -539,7 +557,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -561,11 +579,11 @@ function Table(props) {
                         <td>{row.id}</td>
                         <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                          {permission?.Organization?.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
-                                  {row.indexing_text === 'NOT REQUESTED' ? '' : row.indexing_text}
+                                  {row.indexing_text}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
@@ -596,7 +614,7 @@ function Table(props) {
                                         >
                                           {element.indexing_text}
                                         </Dropdown.Item>
-                                      )
+                                      ),
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -606,8 +624,8 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                          {permission?.Organization?.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
@@ -618,7 +636,12 @@ function Table(props) {
                                     <Dropdown.Item
                                       onClick={async () => {
                                         Swal.showLoading();
-                                        const result = await dispatch(updateProjectAction(row.id, { ...row, organization_visibility_type_id: element.id }));
+                                        const result = await dispatch(
+                                          updateProjectAction(row.id, {
+                                            ...row,
+                                            organization_visibility_type_id: element.id,
+                                          }),
+                                        );
                                         if (result) {
                                           setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
                                         }
@@ -636,8 +659,8 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
-                            <div className="filter-dropdown-table">
+                          {permission?.Organization?.includes('organization:edit-project') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
                                   {row.shared ? 'Enabled' : 'Disabled'}
@@ -753,6 +776,227 @@ function Table(props) {
                 </tr>
               ))}
 
+            {/* Ind. Activity Start */}
+            {type === 'IndActivities' &&
+              subType === 'All independent activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row.created_at);
+                    const updateNew = new Date(row.updated_at);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td
+                          onClick={() => {
+                            setCurrentActivity(row.id), setModalShowh5p(true);
+                          }}
+                        >
+                          <div className="admin-name-img">
+                            <div
+                              style={{
+                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                              }}
+                              className="admin-img"
+                            ></div>
+
+                            <Link className="admin-name">{row.title}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+
+                        <td>{row.id}</td>
+                        <td>{row.user?.name}</td>
+
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.indexing_text}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {indexingArray.map(
+                                    (element) =>
+                                      element.indexing_text !== 'NOT REQUESTED' && (
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            dispatch(getIndex(row.id, element, 'admin'));
+                                          }}
+                                        >
+                                          {element.indexing_text}
+                                        </Dropdown.Item>
+                                      ),
+                                  )}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            row.indexing_text
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {visibilityTypeArray?.map((element) => (
+                                    <Dropdown.Item
+                                      onClick={() => {
+                                        dispatch(
+                                          editIndActivityItem(
+                                            row.id,
+                                            {
+                                              ...row,
+                                              data: '',
+                                              organization_visibility_type_id: element.id,
+                                            },
+                                            'admin',
+                                          ),
+                                        );
+                                      }}
+                                    >
+                                      {element.display_name}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : (
+                            visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name
+                          )}
+                        </td>
+                        <td>
+                          {permission?.['Independent Activity']?.includes('independent-activity:edit') ? (
+                            <div className="filter-dropdown-table" id="filter-dropdown-table-id">
+                              <Dropdown>
+                                <Dropdown.Toggle id="dropdown-basic">
+                                  {row.shared ? 'Enabled' : 'Disabled'}
+                                  <FontAwesomeIcon icon="chevron-down" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    onClick={async () => {
+                                      dispatch(shareEnableLink(row.id, 'admin'));
+                                    }}
+                                  >
+                                    Enable
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    onClick={() => {
+                                      Swal.fire({
+                                        icon: 'warning',
+                                        title: `You are about to stop sharing <strong>"${row.title}"</strong>`,
+                                        html: `Please remember that anyone you have shared this project
+                                                              with will no longer have access its contents. Do you want to continue?`,
+                                        showCloseButton: true,
+                                        showCancelButton: true,
+                                        focusConfirm: false,
+                                        confirmButtonText: 'Stop Sharing!',
+                                        confirmButtonAriaLabel: 'Stop Sharing!',
+                                        cancelButtonText: 'Cancel',
+                                        cancelButtonAriaLabel: 'Cancel',
+                                      }).then((resp) => {
+                                        if (resp.isConfirmed) {
+                                          dispatch(shareDisableLink(row.id, 'admin'));
+                                        }
+                                      });
+                                    }}
+                                  >
+                                    Disable
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </div>
+                          ) : row.shared ? (
+                            'Enabled'
+                          ) : (
+                            'Disabled'
+                          )}
+                        </td>
+                        {/* <td>{String(row.starter_project)}</td> */}
+                        {/* <td>{row.status_text}</td> */}
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {new Date(updateNew.toDateString()).toLocaleDateString('en-US')}
+                            <div>
+                              <AdminDropdown
+                                activePage={activePage}
+                                type={type}
+                                row={row}
+                                setModalShow={setModalShow}
+                                setrowData={setrowData}
+                                setActivePageNumber={setActivePageNumber}
+                                setCurrentActivity={setCurrentActivity}
+                                setModalShowh5p={setModalShowh5p}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {type === 'IndActivities' &&
+              subType === 'Exported activities' &&
+              (data ? (
+                data?.data?.length > 0 ? (
+                  data.data.map((row, counter) => {
+                    const createNew = new Date(row?.created_at);
+                    const expireNew = new Date(row.will_expire_on);
+                    return (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>
+                          <div className="admin-name-img">
+                            <Link className="admin-name">{row.project}</Link>
+                          </div>
+                        </td>
+                        <td>{new Date(createNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>{new Date(expireNew.toDateString()).toLocaleDateString('en-US')}</td>
+                        <td>
+                          <a href={row.link} target="_blank">
+                            Download
+                          </a>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">No result found.</Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="13">
+                    <Alert variant="primary">Loading data...</Alert>
+                  </td>
+                </tr>
+              ))}
+            {/* Ind. Activity End*/}
+
             {type === 'Activities' &&
               subType === 'Activity Types' &&
               (localStateData ? (
@@ -777,7 +1021,6 @@ function Table(props) {
                       <td>
                         <div className="admin-panel-dropdown">
                           <div className="admin-description-main">
-
                             <div className="admin-description2">
                               {row.activityItems.map((item, i) => (
                                 <div>{row.activityItems.length === i + 1 ? item.title : item.title + ','}</div>
@@ -835,15 +1078,15 @@ function Table(props) {
                       <td>
                         <div className="admin-panel-dropdown">
                           <div className="">
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Type:</h6>
                               <span>{item?.activityType?.title}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Item Type:</h6>
                               <span>{item.type}</span>
                             </div>
-                            <div className="d-flex">
+                            <div className="d-flex" id="meta-style-td-id">
                               <h6 className="m-0 admin-mata-heading">Activity Item Value:</h6>
                               <span>{item.h5pLib}</span>
                             </div>
@@ -1083,30 +1326,42 @@ function Table(props) {
               subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
-                      <td>{row.tool_name}</td>
-                      <td>{row.tool_url}</td>
-                      <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td>
-                      <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
-                      <td>{row.tool_description}</td>
-                      <td>
-                        <div className="admin-panel-dropdown">
-                          {row.lti_version}
-                          <div>
-                            <AdminDropdown
-                              type={type}
-                              subType="LTI Tools"
-                              row={row}
-                              activePage={activePage}
-                              localStateData={localStateData}
-                              setLocalStateData={setLocalStateData}
-                            />
+                  localStateData
+                    ?.filter((item) => {
+                      if (filterLtiSettings) {
+                        if (item?.media_sources?.name === filterLtiSettings?.name) {
+                          return item;
+                        }
+                      } else {
+                        return item;
+                      }
+                    })
+                    ?.map((row, counter) => (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>{row.tool_name}</td>
+                        <td>{row.tool_url}</td>
+                        {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
+                        {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
+
+                        <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
+                        <td>{row.tool_description}</td>
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {row.lti_version}
+                            <div>
+                              <AdminDropdown
+                                type={type}
+                                subType="LTI Tools"
+                                row={row}
+                                activePage={activePage}
+                                localStateData={localStateData}
+                                setLocalStateData={setLocalStateData}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                      </tr>
+                    ))
                 ) : (
                   <tr>
                     <td colSpan="11">
@@ -1158,7 +1413,7 @@ function Table(props) {
           </tbody>
         </table>
       </div>
-      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta)) && (
+      {((data?.data?.length > 0 && data?.meta) || (localOrganizationList?.data?.length > 0 && localOrganizationList?.meta && type !== 'LMS')) && (
         <AdminPagination
           setCurrentTab={setCurrentTab}
           subType={subType}

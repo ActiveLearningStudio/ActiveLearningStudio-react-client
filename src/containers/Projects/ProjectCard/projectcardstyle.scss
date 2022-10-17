@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .main-myproject-card {
   margin-bottom: 30px;
   position: relative;
@@ -28,12 +28,8 @@
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       // background-color: rgba(113, 117, 119, 0.7);
-      background: linear-gradient(
-        180deg,
-        rgba(81, 81, 81, 0.2) 0%,
-        rgba(0, 0, 0, 0.8) 100%
-      );
-      content: "";
+      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      content: '';
       display: block;
       height: 100%;
       position: absolute;
@@ -42,8 +38,8 @@
 
     .myproject-card-dropdown {
       position: absolute;
-      top: 19px;
-      right: 26px;
+      top: 5px;
+      right: 15px;
     }
     .myproject-card-title {
       position: absolute;
@@ -67,7 +63,7 @@
   .myproject-card-detail {
     padding: 16px;
     p {
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -75,12 +71,13 @@
       color: #767676;
       margin-bottom: 0 !important;
       word-break: break-all;
+      text-overflow: ellipsis;
     }
   }
   .updated-date {
     padding-left: 16px;
     padding-bottom: 8px;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
