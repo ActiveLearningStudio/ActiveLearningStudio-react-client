@@ -224,8 +224,8 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
                             permission?.Organization?.includes('organization:view-media') && 'Media',
-                            'Google Classroom',
-                            'Microsoft Teams',
+                            permission?.Organization?.includes('organization:view-google-classroom') && 'Google Classroom',
+                            permission?.Organization?.includes('organization:view-microsoft-team') && 'Microsoft Teams',
                           ]}
                           type="LMS"
                         />
