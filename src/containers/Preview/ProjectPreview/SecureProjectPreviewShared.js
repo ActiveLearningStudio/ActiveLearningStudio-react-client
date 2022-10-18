@@ -1,27 +1,21 @@
 /*eslint-disable */
-import React, { useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
-import Slider from "react-slick";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Alert } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { connect, useSelector } from 'react-redux';
+import Slider from 'react-slick';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Alert } from 'react-bootstrap';
 
-import { loadMyProjectsPreviewSharedAction } from "store/actions/project";
-import ActivityCard from "components/ActivityCard";
-import Unauthorized from "components/Unauthorized";
-import GoogleModel from "components/models/GoogleLoginModal";
+import { loadMyProjectsPreviewSharedAction } from 'store/actions/project';
+import ActivityCard from 'components/ActivityCard';
+import Unauthorized from 'components/Unauthorized';
+import GoogleModel from 'components/models/GoogleLoginModal';
 
-import "./style.scss";
+import './style.scss';
 
 function ProjectPreviewShared(props) {
-  const {
-    match,
-    sampleId,
-    loadMyProjectsPreviewShared,
-    setModalShow,
-    setCurrentActivity,
-  } = props;
+  const { match, sampleId, loadMyProjectsPreviewShared, setModalShow, setCurrentActivity } = props;
 
   const project = useSelector((state) => state.project);
   const accordion = useRef([]);
@@ -135,9 +129,9 @@ function ProjectPreviewShared(props) {
               ref={(el) => {
                 accordion.current[counter] = el;
               }}
-              className={counter === 0 ? "active accordion" : " accordion"}
+              className={counter === 0 ? 'active accordion' : ' accordion'}
               onClick={() => {
-                accordion.current[counter].classList.toggle("active");
+                accordion.current[counter].classList.toggle('active');
               }}
             >
               <FontAwesomeIcon icon="plus" />
@@ -164,7 +158,7 @@ function ProjectPreviewShared(props) {
 
   return (
     <div className="full-width-share">
-      {currentProject && currentProject.status === "error" ? (
+      {currentProject && currentProject.status === 'error' ? (
         <Unauthorized text="Project is not Public" />
       ) : (
         <>
@@ -173,16 +167,10 @@ function ProjectPreviewShared(props) {
               <div className="container">
                 <div className="scene flex-wrap">
                   <div className="scene-img">
-                    {!!currentProject.thumb_url &&
-                    currentProject.thumb_url.includes("pexels.com") ? (
+                    {!currentProject?.thumb_url.includes('/storage/') ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
                     ) : (
-                      <img
-                        src={
-                          global.config.resourceUrl + currentProject.thumb_url
-                        }
-                        alt="thumbnail"
-                      />
+                      <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
                     )}
                   </div>
                   <div className="sce_cont">
@@ -191,10 +179,7 @@ function ProjectPreviewShared(props) {
                       <li>
                         <div className="title_lg check">
                           <div>{currentProject.name}</div>
-                          <div
-                            className="googleSign"
-                            onClick={() => setShow(true)}
-                          >
+                          <div className="googleSign" onClick={() => setShow(true)}>
                             <FontAwesomeIcon icon="google" />
                             Publish Google Class
                           </div>
@@ -226,14 +211,11 @@ function ProjectPreviewShared(props) {
               />
             </div>
           ) : project.isSharedProject === false ? (
-            <Alert
-              variant="danger"
-              style={{ margin: "40px", fontSize: "1.5em" }}
-            >
+            <Alert variant="danger" style={{ margin: '40px', fontSize: '1.5em' }}>
               Project is not sharable.
             </Alert>
           ) : (
-            <Alert variant="primary" style={{ margin: "20px" }}>
+            <Alert variant="primary" style={{ margin: '20px' }}>
               Loading ...
             </Alert>
           )}
@@ -256,10 +238,7 @@ ProjectPreviewShared.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadMyProjectsPreviewShared: (projectId) =>
-    dispatch(loadMyProjectsPreviewSharedAction(projectId)),
+  loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
 });
 
-export default withRouter(
-  connect(null, mapDispatchToProps)(ProjectPreviewShared)
-);
+export default withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared));
