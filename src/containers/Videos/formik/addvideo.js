@@ -542,7 +542,7 @@ const FormikVideo = ({
     <div className="add-video-layout-formik">
       <Formik
         initialValues={{
-          videoUrl: '',
+          videoUrl: selectedVideoId || editVideo,
         }}
         enableReinitialize
         innerRef={formRef}
