@@ -1,3 +1,4 @@
+import axios from 'axios';
 import config from 'config';
 import httpService from './http.service';
 
@@ -27,8 +28,22 @@ const loadSafariMontagePublishTool = (projectId, playlistId, activityId, lmsSett
   .then(({ data }) => data)
   .catch((err) => err.response.data);
 
+const getMsTeamsClassMembers = (classId, token) => axios.get(`https://graph.microsoft.com/v1.0/education/classes/${classId}/members`, {
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => response.data);
+
+const getMsTeamsClassTeachers = (classId, token) => axios.get(`https://graph.microsoft.com/v1.0/education/classes/${classId}/teachers`, {
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => response.data);
+
 export default {
   login,
   loadH5PSettings,
   loadSafariMontagePublishTool,
+  getMsTeamsClassMembers,
+  getMsTeamsClassTeachers,
 };
