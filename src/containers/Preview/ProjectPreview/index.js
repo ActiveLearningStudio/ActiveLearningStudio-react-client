@@ -90,7 +90,7 @@ function ProjectPreview(props) {
                   playlist={playlist}
                   teamPermission={teamPermission || {}}
                 />
-              )
+              ),
           );
         } else {
           activities = (
@@ -169,7 +169,7 @@ function ProjectPreview(props) {
               <div className="project-details">
                 <div className="scene-img">
                   <Link to={`/org/${organization.currentOrganization?.domain}/project/${currentProject.id}`}>
-                    {!!currentProject.thumb_url && currentProject.thumb_url.includes('pexels.com') ? (
+                    {!currentProject.thumb_url?.includes('/storage/') ? (
                       <img src={currentProject.thumb_url} alt="thumbnail" />
                     ) : (
                       <img src={global.config.resourceUrl + currentProject.thumb_url} alt="thumbnail" />
