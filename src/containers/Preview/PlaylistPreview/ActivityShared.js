@@ -376,7 +376,7 @@ const ActivityShared = (props) => {
                 }
               }}
             >
-              <Alert variant="primary"> Loading d Activity</Alert>
+              <Alert variant="primary"> Loading Activity</Alert>
             </div>
           )}
         </div>
