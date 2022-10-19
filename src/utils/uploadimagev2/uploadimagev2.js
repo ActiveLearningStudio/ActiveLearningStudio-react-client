@@ -26,10 +26,15 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, se
   // const openFile = useRef();
   const [uploadImage, setUploadImage] = useState(thumb_url);
 
-  const uploadThumb = async (e) => {
+  const uploadThumb = async (e, typeUpload) => {
     const formData = new FormData();
     try {
-      formData.append('thumb', e.target.files[0]);
+      // formData.append('thumb', e.target.files[0]);
+      if (typeUpload === 'DRAG_DROP') {
+        formData.append('thumb', e[0]);
+      } else {
+        formData.append('thumb', e.target.files[0]);
+      }
       const result = await dispatch(uploadResourceThumbnailAction(formData));
       setUploadImage(result);
 
@@ -46,6 +51,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, se
     <SelectImage
       image={uploadImage || 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'}
       returnImage={(e) => uploadThumb(e)}
+      returnImageDragDrop={(e) => uploadThumb(e, 'DRAG_DROP')}
       returnImagePexel={(e) => setUploadImage(e)}
       setshowSmythsonianModal={setshowSmythsonianModal}
       formRef={formRef}

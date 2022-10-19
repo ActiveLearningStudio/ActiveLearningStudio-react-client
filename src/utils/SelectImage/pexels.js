@@ -108,6 +108,18 @@ function Pexels(props) {
                     setLoader(false);
                     setPexels(data?.response?.rows);
                   });
+                } else {
+                  pexelsClient
+                    .search(searchValue, 10, 1)
+                    .then((result) => {
+                      setLoader(false);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
+                      setPexels(allPhotos);
+                      setNextApi(result.next_page);
+                    })
+                    .catch(() => {
+                      // console.err(e);
+                    });
                 }
               }}
             />

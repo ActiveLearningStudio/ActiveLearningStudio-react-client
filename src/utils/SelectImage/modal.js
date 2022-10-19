@@ -46,6 +46,7 @@ const ModalImage = (props) => {
                 openFile.current?.click();
               } else {
                 setLoader(false);
+                setactiveKey(k);
               }
             }}
           >

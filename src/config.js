@@ -3,6 +3,7 @@ export default global.config = {
   h5pAjaxUrl: '/h5papi',
   h5pBaseUrl: '/',
   laravelAPIUrl: '/api',
+  domainUrl: window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL,
   resourceUrl: window.__RUNTIME_CONFIG__.REACT_APP_RESOURCE_URL,
   apiVersion: window.__RUNTIME_CONFIG__.REACT_APP_API_VERSION,
   gapiClientId: window.__RUNTIME_CONFIG__.REACT_APP_GAPI_CLIENT_ID,
