@@ -1,41 +1,22 @@
 /* eslint-disable */
-import React from "react";
-import { Tabs, Tab, Alert } from "react-bootstrap";
-import PropTypes from "prop-types";
-import "bootstrap/dist/css/bootstrap.min.css";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import Libraries from "./libraries";
-import "./Tabview.css";
+import React from 'react';
+import { Tabs, Tab, Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import Libraries from './libraries';
+import './Tabview.css';
 const Tabview = (props) => {
-  const {
-    componentName,
-    path,
-    description,
-    codeSnippet,
-    libraryUsed,
-    customHooks,
-    reduxStore,
-    apiUsed,
-    images,
-    stylesheetUsed,
-    example,
-  } = props;
+  const { componentName, path, description, codeSnippet, libraryUsed, customHooks, reduxStore, apiUsed, images, stylesheetUsed, example } = props;
 
   return (
     <div>
       <h2>{componentName}</h2>
-      <Tabs
-        className="tabs"
-        defaultActiveKey="profile"
-        id="uncontrolled-tab-example"
-      >
-        <Tab eventKey="profile" title="Path" style={{ margin: "0" }}>
+      <Tabs className="tabs" defaultActiveKey="profile" id="uncontrolled-tab-example">
+        <Tab eventKey="profile" title="Path" style={{ margin: '0' }}>
           <div className="tab-text">
-            <p>
-              This is the path of the component,if you want to go this directory
-              then copy this path and paste into your text editor.
-            </p>
+            <p>This is the path of the component,if you want to go this directory then follow this path onto your text editor.</p>
             <h4 className="url-header">{path}</h4>
           </div>
         </Tab>
@@ -66,7 +47,7 @@ const Tabview = (props) => {
                         <li>
                           <h5>
                             {key?.name}
-                            {key.url !== "" ? (
+                            {key.url !== '' ? (
                               <a href={key.url} target="_blank" rel="noopener">
                                 link to component
                               </a>
@@ -94,11 +75,7 @@ const Tabview = (props) => {
               reduxStore?.map((key) => {
                 return (
                   <div>
-                    <p>
-                      This is the path of the {componentName} component.if you
-                      want to go this directory then copy this path and paste
-                      into your text editor.
-                    </p>
+                    <p>This is the path of the {componentName} component.if you want to go this directory then follow this path onto your text editor.</p>
                     <h4 className="url-header">{key.path} </h4>
                     <h5>Code Used for Redux Store</h5>
                     <SyntaxHighlighter language="javascript" style={docco}>
@@ -119,11 +96,7 @@ const Tabview = (props) => {
               apiUsed?.map((key) => {
                 return (
                   <div>
-                    <p>
-                      This is the path of the Services used in this component.if
-                      you want to go this directory then copy this path and
-                      paste into your text editor.
-                    </p>
+                    <p>This is the path of the Services used in this component.if you want to go this directory then follow this path onto your text editor.</p>
                     <h4 className="url-header">{key.path} </h4>
                     <h5>Code Used in Api</h5>
                     <SyntaxHighlighter language="javascript" style={docco}>
@@ -152,20 +125,14 @@ const Tabview = (props) => {
           </div>
         </Tab>
         <Tab eventKey="screenshot" title="Screenshots">
-          <div className="tab-text">
-            {images ? (
-              <img src={images} className="App-logo" alt="logo" />
-            ) : (
-              <Alert variant="primary">No Screenshot Available</Alert>
-            )}
-          </div>
+          <div className="tab-text">{images ? <img src={images} className="App-logo" alt="logo" /> : <Alert variant="primary">No Screenshot Available</Alert>}</div>
         </Tab>
         <Tab eventKey="example" title="Examples">
           <div className="tab-text">
             {example ? (
               <>
                 <h4>Design of the page</h4>
-                Visit the website to view design look{" "}
+                Visit the website to view design look{' '}
                 <a href={example} target="_blank">
                   Go to the Page
                 </a>

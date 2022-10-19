@@ -26,7 +26,7 @@ organization, from your team, or add an external user."
         libraryUsed={['react-bootstrap', 'react-redux', 'react-fontawesome', 'prop-types', 'swal']}
         customHooks={[
           {
-            name: 'components/ResourceCard/AddResource/dropdownData',
+            name: '/src/components/ResourceCard/AddResource/dropdownData',
             url: '',
           },
           {

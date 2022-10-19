@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../../../tabview/Tabview";
-import CreateBrightImg from "./createBrightImg.png";
-import CreateBrightCoveSnippet from "!!raw-loader!../../../../../containers/Admin/formik/createBrightCove";
-import CreateLmsStore from "!!raw-loader!../../../../../store/actions/admin";
-import Stylesheetused from "!!raw-loader!../../../../../containers/Admin/style.scss";
+import React from 'react';
+import Tabview from '../../../../tabview/Tabview';
+import CreateBrightImg from './createBrightImg.png';
+import CreateBrightCoveSnippet from '!!raw-loader!../../../../../containers/Admin/formik/createBrightCove';
+import CreateLmsStore from '!!raw-loader!../../../../../store/actions/admin';
+import Stylesheetused from '!!raw-loader!../../../../../containers/Admin/style.scss';
 export const CreateBrightCove = () => {
   return (
     <>
@@ -16,11 +16,11 @@ export const CreateBrightCove = () => {
     a thumbnail, enter the description and domain. After putting this information you can click on Create organization.
     After all of this, your created organization will reflect on the dashboard."
         codeSnippet={CreateBrightCoveSnippet}
-        libraryUsed={["react-bootstrap", "react-redux", "formik", "swal"]}
+        libraryUsed={['react-bootstrap', 'react-redux', 'formik', 'swal']}
         customHooks={[]}
         reduxStore={[
           {
-            path: "store/actions/admin",
+            path: '/src/store/actions/admin',
             pathCode: CreateLmsStore,
           },
         ]}
