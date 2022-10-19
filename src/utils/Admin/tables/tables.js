@@ -1,11 +1,11 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../tabview/Tabview";
-import ApiCode from "!!raw-loader!../../../services/admin.service";
-import codeSnippet from "!!raw-loader!../../../containers/Admin/table";
-import TablePageimg from "./table.png";
-import TableStore from "!!raw-loader!../../../store/actions/admin";
-import Stylesheetused from "!!raw-loader!../../../containers/Admin/style.scss";
+import React from 'react';
+import Tabview from '../../tabview/Tabview';
+import ApiCode from '!!raw-loader!../../../services/admin.service';
+import codeSnippet from '!!raw-loader!../../../containers/Admin/table';
+import TablePageimg from './table.png';
+import TableStore from '!!raw-loader!../../../store/actions/admin';
+import Stylesheetused from '!!raw-loader!../../../containers/Admin/style.scss';
 export const Tables = () => {
   return (
     <>
@@ -18,17 +18,11 @@ Then you will get a table where you will find one header of the table and other 
 In the header of the table, you will find the name, domain, admin, project, sub org, and other information related to every module.
 "
         codeSnippet={codeSnippet}
-        libraryUsed={[
-          "react-bootstrap",
-          "react-redux",
-          "prop-types",
-          "react-js-pagination",
-          "swal",
-        ]}
+        libraryUsed={['react-bootstrap', 'react-redux', 'prop-types', 'react-js-pagination', 'swal']}
         customHooks={[]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[{ path: "store/actions/admin", pathCode: TableStore }]}
-        apiUsed={[{ path: "services/admin.service", apicode: ApiCode }]}
+        reduxStore={[{ path: '/src/store/actions/admin', pathCode: TableStore }]}
+        apiUsed={[{ path: '/src/services/admin.service', apicode: ApiCode }]}
         images={TablePageimg}
         stylesheetUsed={Stylesheetused}
         examples="https://dev.currikistudio.org/org/currikistudio/admin"
