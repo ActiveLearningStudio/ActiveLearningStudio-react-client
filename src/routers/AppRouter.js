@@ -76,6 +76,7 @@ const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
+const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -125,6 +126,7 @@ const AppRouter = (props) => {
         />
         <OpenRoute exact path="/gclass/launch/:userId/:courseId/:activityId/:classworkId" component={GclassActivityPage} />
         <OpenRoute exact path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId" component={GclassSummaryPage} />
+        <OpenRoute exact path="/msteams/launch/activity/:activityId/class/:classId/assignment/:assignmentId" component={MsTeamsActivityPage} />
         <OpenRoute
           exact
           path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
