@@ -1,5 +1,47 @@
 @import "assets/css/index";
 
+// C-CSS-Start
+
+.playlist-dropdown.check {
+  .dropdown-menu {
+    min-width: 160px;
+    margin: 0;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 2px 6px 1px rgba(81, 81, 81, 0.16);
+
+    a {
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: 0;
+      // color: $mine-shaft;
+      color: #084892;
+      padding: 4px 6px;
+      // sborder-bottom: 1px solid #eee;
+      display: flex;
+      margin-bottom: 4px;
+
+      &:hover {
+        color: #2e68bf;
+        background: rgba(229, 238, 255, 0.32);
+        border-radius: 4px;
+      }
+      .menue-img {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+      .fa {
+        padding-right: 4px;
+        font-size: 12px;
+        color: $mine-shaft;
+      }
+    }
+  }
+}
+// C-CSS-End
 .list-wrapper {
   margin-right: 8px;
   height: 100%;
