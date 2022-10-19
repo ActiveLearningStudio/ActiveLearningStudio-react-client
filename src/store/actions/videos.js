@@ -93,6 +93,26 @@ export const getVimeoVideos = (searchText = '', page = 1, size = 6) => async (di
   return result;
 };
 
+export const getKomodoVideos = (searchText = '', page = 1, size = 6) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  var result;
+  try {
+    result = await videoServices.getKomodoVideos({
+      organization_id: activeOrganization.id,
+      search: searchText,
+      page: page,
+      per_page: size,
+    });
+  } catch (e) {
+    result = e;
+  }
+
+  return result;
+};
+
 export const getBrightVideosSearch = (brightId, videoID) => async (dispatch) => {
   const centralizedState = store.getState();
   const {

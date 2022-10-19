@@ -211,6 +211,15 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
   });
+  toast.success('Project Edited', {
+    position: 'top-center',
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    autoClose: 2500,
+  });
   return thumbUrl;
 };
 export const addMyproject = (page, size, searchQuery) => async (dispatch) => {

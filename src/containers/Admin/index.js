@@ -170,17 +170,20 @@ function AdminPanel({ showSSO }) {
                   {/* Ind.Activity End*/}
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
-                    permission?.Organization?.includes('organization:view-activity-type')) && (
+                    permission?.Organization?.includes('organization:view-activity-layout') ||
+                    permission?.Organization?.includes('organization:view-subject') ||
+                    permission?.Organization?.includes('organization:view-education-level') ||
+                    permission?.Organization?.includes('organization:view-author-tag')) && (
                     <Tab eventKey="Activities" title="Ref. tables">
                       <div className="module-content">
                         <Pills
                           modules={[
-                            'Activity Layouts',
+                            permission?.Organization?.includes('organization:view-activity-layout') && 'Activity Layouts',
                             permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
                             permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
+                            permission?.Organization?.includes('organization:view-subject') && 'Subjects',
+                            permission?.Organization?.includes('organization:view-education-level') && 'Education Level',
+                            permission?.Organization?.includes('organization:view-author-tag') && 'Author Tags',
                           ]}
                           type="Activities"
                         />
@@ -210,7 +213,9 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
+                  {(permission?.Organization?.includes('organization:view-lms-setting') ||
+                    permission?.Organization?.includes('organization:view-all-setting') ||
+                    permission?.Organization?.includes('organization:view-media')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
                         <Pills
@@ -218,7 +223,9 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
-                            'Media',
+                            permission?.Organization?.includes('organization:view-media') && 'Media',
+                            permission?.Organization?.includes('organization:view-google-classroom') && 'Google Classroom',
+                            permission?.Organization?.includes('organization:view-microsoft-team') && 'Microsoft Teams',
                           ]}
                           type="LMS"
                         />

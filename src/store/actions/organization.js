@@ -183,9 +183,9 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     domain: data.domain,
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || undefined,
-    gcr_project_visibility: data?.gcr_project_visibility || false,
-    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
-    gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    // gcr_project_visibility: data?.gcr_project_visibility || false,
+    // gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    // gcr_activity_visibility: data?.gcr_activity_visibility || false,
     tos_type: data.tos_type,
     tos_url: data.tos_url,
     tos_content: data.tos_content,
@@ -250,9 +250,9 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     unit_path: data.unit_path || '',
     self_registration: data.self_registration,
     noovo_client_id: data.noovo_client_id || undefined,
-    gcr_project_visibility: data?.gcr_project_visibility || false,
-    gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
-    gcr_activity_visibility: data?.gcr_activity_visibility || false,
+    // gcr_project_visibility: data?.gcr_project_visibility || false,
+    // gcr_playlist_visibility: data?.gcr_playlist_visibility || false,
+    // gcr_activity_visibility: data?.gcr_activity_visibility || false,
     tos_type: data.tos_type,
     tos_url: data.tos_url,
     tos_content: data.tos_content,
@@ -299,6 +299,53 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     });
   });
   return result;
+};
+export const updateOrgGcrSettings = (data, id, gcr) => async (dispatch) => {
+  Swal.fire({
+    title: 'Please Wait !',
+    text: 'Updating view...!!!',
+    allowOutsideClick: false,
+  });
+  if (!!gcr) {
+    const filtergcr = {
+      gcr_project_visibility: data.gcr_project_visibility,
+      gcr_playlist_visibility: data.gcr_playlist_visibility,
+      gcr_activity_visibility: data.gcr_activity_visibility,
+    };
+
+    const result = await organization.updateOrganizationGcrSettings(filtergcr, id);
+    if (result.success) {
+      dispatch({
+        type: actionTypes.ORG_UPDATE_GCR_SETTINGS,
+        payload: filtergcr,
+      });
+      Swal.fire({
+        icon: 'success',
+        title: result?.success[0],
+      });
+    }
+  } else {
+    const filtermsTeamSettings = {
+      msteam_project_visibility: data.msteam_project_visibility,
+      msteam_playlist_visibility: data.msteam_playlist_visibility,
+      msteam_activity_visibility: data.msteam_activity_visibility,
+      msteam_client_id: data.msteam_client_id,
+      msteam_secret_id: data.msteam_secret_id,
+      msteam_tenant_id: data.msteam_tenant_id,
+      msteam_secret_id_expiry: data.msteam_secret_id_expiry,
+    };
+    const res = await organization.updateOrganizationGcrSettings(filtermsTeamSettings, id);
+    if (res.success) {
+      dispatch({
+        type: actionTypes.ORG_UPDATE_GCR_SETTINGS,
+        payload: filtermsTeamSettings,
+      });
+      Swal.fire({
+        icon: 'success',
+        title: res?.success[0],
+      });
+    }
+  }
 };
 
 export const allUsers = (id, name, method) => async () => {

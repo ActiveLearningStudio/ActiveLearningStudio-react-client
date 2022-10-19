@@ -7,6 +7,7 @@ import { getMediaSources } from 'store/actions/admin';
 import './style.scss';
 
 import dragImage from '../../assets/images/Icons-explanatory-activity.png';
+import DragDropImage from './DragDropImage';
 
 const SelectImage = (props) => {
   const { containerType = 'Project', image, setshowSmythsonianModal } = props;
@@ -16,7 +17,7 @@ const SelectImage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (show && containerType === 'activity') {
+    if (show && containerType === 'Activity') {
       setshowSmythsonianModal(true);
     }
   }, [show]);
@@ -28,30 +29,51 @@ const SelectImage = (props) => {
       });
     }
   }, [mediaSources]);
+  console.log('images', image);
   return (
     <>
       <div className="curriki-image-update-util">
         <p>{containerType} Thumbnail Image</p>
-        <div className="box-section">
+        <DragDropImage {...props}>
+          <div className="box-section">
+            <img
+              style={{
+                backgroundImage: image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
+              }}
+              className="thumbnail"
+            />
+
+            <div className="overlay">
+              <img className="overlay-drag-image" src={dragImage} alt="drag" />
+              <h6 className="overlay-drag-image-title">Drag & drop Image</h6>
+              <h6 className="overlay-drag-image-or">Or</h6>
+
+              <Buttons className="overlay-drag-brows-btn" text="Browse" onClick={() => setShow(true)} />
+            </div>
+          </div>
+        </DragDropImage>
+        {/* <div className="box-section">
           <img
             style={{
-              backgroundImage: !image.includes('/storage/') ? `url(${image})` : `url(${global.config.resourceUrl}${image})`,
+              backgroundImage: image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
             }}
             className="thumbnail"
           />
+
           <div className="overlay">
             <img className="overlay-drag-image" src={dragImage} alt="drag" />
             <h6 className="overlay-drag-image-title">Drag & drop Image</h6>
             <h6 className="overlay-drag-image-or">Or</h6>
+          
             <Buttons className="overlay-drag-brows-btn" text="Browse" onClick={() => setShow(true)} />
           </div>
-        </div>
+        </div> */}
       </div>
       <Modal
         show={show}
         handleClose={() => {
           setShow(false);
-          if (containerType === 'activity') {
+          if (containerType === 'Activity') {
             setshowSmythsonianModal(false);
           }
         }}
