@@ -135,6 +135,7 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch, t
     }
     imageValidation = '';
     const result = await dispatch(uploadProjectThumbnailAction(formData));
+
     return result;
   } catch (err) {
     Swal.fire({

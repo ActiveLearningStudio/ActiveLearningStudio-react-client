@@ -48,7 +48,7 @@ const SelectImage = (props) => {
               <h6 className="overlay-drag-image-title">Drag & drop Image</h6>
               <h6 className="overlay-drag-image-or">Or</h6>
 
-              <Buttons className="overlay-drag-brows-btn" text="Browse" onClick={() => setShow(true)} />
+              <Buttons className="overlay-drag-brows-btn" type="button" text="Browse" onClick={() => setShow(true)} />
             </div>
           </div>
         </DragDropImage>
