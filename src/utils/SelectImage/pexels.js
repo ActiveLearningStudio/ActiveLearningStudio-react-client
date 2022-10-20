@@ -7,8 +7,7 @@ import axios from 'axios';
 import resourceService from 'services/resource.service';
 import dotsloader from 'assets/images/dotsloader.gif';
 
-const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API || process.env.REACT_APP_PEXEL_API);
-
+const pexelsClient = window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API && new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API);
 function Pexels(props) {
   const [pexelData, setPexels] = useState([]);
 
