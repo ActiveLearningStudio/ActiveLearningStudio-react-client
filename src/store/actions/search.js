@@ -191,11 +191,20 @@ export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
 
-export const existingActivitySearchGetAction = (activityId) => async (dispatch) => {
-  const result = await resourceService.h5pResourceSettings(activityId);
+export const existingActivitySearchGetAction = (activityId, activityType) => async (dispatch) => {
+  let result = null;
+  if (activityType === 'independent') {
+    result = await resourceService.independentH5pResourceSettings(activityId);
+  } else {
+    result = await resourceService.h5pResourceSettings(activityId);
+  }
+
   dispatch({
     type: SELECT_EXISTING_ACTIVITY,
-    activity: result,
+    activity: {
+      ...result,
+      activityType,
+    },
   });
 };
 
