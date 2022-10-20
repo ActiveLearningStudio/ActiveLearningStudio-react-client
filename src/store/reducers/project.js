@@ -252,7 +252,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.PROJECT_VISIBILITY_TYPES:
       return {
         ...state,
-        visibilityTypes: action.payload.data,
+        visibilityTypes: action.payload?.data,
       };
     case actionTypes.CURRENT_VISIBILITY_TYPE:
       return {

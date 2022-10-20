@@ -83,7 +83,7 @@ function LtiProjectShared(props) {
                   <div
                     className="backgroundimg-clone"
                     style={{
-                      backgroundImage: clone.clone.thumb_url?.includes('pexels.com')
+                      backgroundImage: !clone.clone.thumb_url?.includes('/storage/')
                         ? `url(${clone.clone.thumb_url})`
                         : `url(${global.config.resourceUrl}${clone.clone.thumb_url})`,
                     }}
@@ -178,7 +178,7 @@ function LtiProjectShared(props) {
                                   <div
                                     className="backgroundimg-clone"
                                     style={{
-                                      backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                      backgroundImage: !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                     }}
                                   />
                                   <div className="active-resource-detail">
@@ -324,7 +324,7 @@ function LtiProjectShared(props) {
                               <div
                                 className="backgroundimg-clone"
                                 style={{
-                                  backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                  backgroundImage: !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
                               <div className="active-resource-detail">

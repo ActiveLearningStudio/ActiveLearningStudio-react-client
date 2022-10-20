@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -8,13 +9,7 @@ import Swal from 'sweetalert2';
 import computer from 'assets/images/computer.svg';
 import pexel from 'assets/images/pexel.png';
 import { FadeDiv } from 'utils';
-import {
-  uploadResourceThumbnailAction,
-  showBuildActivityAction,
-  onSubmitDescribeActivityAction,
-  uploadResourceThumbnail,
-  saveFormDataInCreation,
-} from 'store/actions/resource';
+import { uploadResourceThumbnailAction, showBuildActivityAction, onSubmitDescribeActivityAction, uploadResourceThumbnail, saveFormDataInCreation } from 'store/actions/resource';
 import PexelsAPI from 'components/models/pexels';
 import { subjects, educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
 import MetaTitleInputField from '../fields/MetaTitleInputField';
@@ -49,13 +44,7 @@ const onSubmit = async (val, dispatch, props) => {
     return;
   }
   const values = { ...val };
-  const {
-    resource,
-    saveFormData,
-    selectType,
-    type,
-    setActiveView,
-  } = props;
+  const { resource, saveFormData, selectType, type, setActiveView } = props;
   values.metaTitle = resource.formData.metaTitle;
   if (typeof values.metaSubject !== 'object' || values.metaSubject === null) {
     values.metaSubject = resource.formData.metaSubject || val.metaSubject;
@@ -75,12 +64,7 @@ const onSubmit = async (val, dispatch, props) => {
 };
 
 let ResourceDescribeActivity = (props) => {
-  const {
-    resource,
-    handleSubmit,
-    uploadResourceThumbnailDefault,
-    saveFormData,
-  } = props;
+  const { resource, handleSubmit, uploadResourceThumbnailDefault, saveFormData } = props;
 
   const [modalShow, setModalShow] = useState(false);
   const openFile = useRef();
@@ -91,12 +75,8 @@ let ResourceDescribeActivity = (props) => {
 
   useEffect(() => {
     const { title, subjectId, educationLevelId } = resource.editResource.metadata;
-    const subject = subjectId
-      ? subjects.find((subj) => subj.subject === subjectId)
-      : { subject: title ? ' ' : '', value: '' };
-    const educationLvl = educationLevelId
-      ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId)
-      : { name: title ? ' ' : '', value: '' };
+    const subject = subjectId ? subjects.find((subj) => subj.subject === subjectId) : { subject: title ? ' ' : '', value: '' };
+    const educationLvl = educationLevelId ? educationLevels.find((eduLvl) => eduLvl.name === educationLevelId) : { name: title ? ' ' : '', value: '' };
     const { metaTitle: savedTitle, metaEducationLevels, metaSubject } = resource.formData;
     const values = {
       metaTitle: savedTitle || title,
@@ -140,7 +120,9 @@ let ResourceDescribeActivity = (props) => {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="meta-subjects">
-                          <label><h2>Subject</h2></label>
+                          <label>
+                            <h2>Subject</h2>
+                          </label>
                           <Field
                             name="metaSubject"
                             component={MetaSubjectsField}
@@ -155,7 +137,9 @@ let ResourceDescribeActivity = (props) => {
 
                       <div className="col-md-6">
                         <div className="meta-education-levels">
-                          <label><h2>Education Level</h2></label>
+                          <label>
+                            <h2>Education Level</h2>
+                          </label>
                           <Field
                             name="metaEducationLevels"
                             component={MetaEducationLevelInputField}
@@ -180,8 +164,14 @@ let ResourceDescribeActivity = (props) => {
                               if (e.target.files.length === 0) {
                                 return true;
                               }
-                              if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
-                                || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
+                              if (
+                                !(
+                                  e.target.files[0].type.includes('png') ||
+                                  e.target.files[0].type.includes('jpg') ||
+                                  e.target.files[0].type.includes('gif') ||
+                                  e.target.files[0].type.includes('jpeg')
+                                )
+                              ) {
                                 Swal.fire({
                                   icon: 'error',
                                   title: 'Error',
@@ -201,9 +191,7 @@ let ResourceDescribeActivity = (props) => {
                           <span>Upload</span>
                         </label>
 
-                        <span className="validation-error">
-                          {imageValidation}
-                        </span>
+                        <span className="validation-error">{imageValidation}</span>
 
                         <div>
                           {resource.progress}
@@ -223,7 +211,7 @@ let ResourceDescribeActivity = (props) => {
                               <div
                                 className="imgbox"
                                 style={{
-                                  backgroundImage: resource.editResource.metadata.thumbUrl.includes('pexels.com')
+                                  backgroundImage: !resource.editResource.metadata.thumbUrl.includes('/storage/')
                                     ? `url(${resource.editResource.metadata.thumbUrl})`
                                     : `url(${global.config.resourceUrl}${resource.editResource.metadata.thumbUrl})`,
                                 }}
@@ -246,10 +234,7 @@ let ResourceDescribeActivity = (props) => {
                         <div className="button-flex">
                           <h2>Change thumbnail from below options</h2>
 
-                          <div
-                            className="pexel"
-                            onClick={() => setModalShow(true)}
-                          >
+                          <div className="pexel" onClick={() => setModalShow(true)}>
                             <img src={pexel} alt="pexel" />
                             <p>Select from Pexels</p>
                           </div>
@@ -268,16 +253,14 @@ let ResourceDescribeActivity = (props) => {
                     </div>
 
                     <p className="disclaimer">
-                      Activity Image dimension should be
-                      {' '}
-                      <strong>290px width and 200px height. </strong>
-                      Maximum File size allowed is
-                      {' '}
-                      <strong>100MB.</strong>
+                      Activity Image dimension should be <strong>290px width and 200px height. </strong>
+                      Maximum File size allowed is <strong>100MB.</strong>
                     </p>
                     <div className="row">
                       <div className="col-md-12">
-                        <button type="submit" className="add-resource-continue-btn">Save & Continue</button>
+                        <button type="submit" className="add-resource-continue-btn">
+                          Save & Continue
+                        </button>
                       </div>
                     </div>
                   </form>
@@ -290,12 +273,7 @@ let ResourceDescribeActivity = (props) => {
 
       <PexelsAPI
         show={modalShow}
-        resourceName={
-          resource
-          && resource.newResource
-          && resource.newResource.activity
-          && resource.newResource.activity.title
-        }
+        resourceName={resource && resource.newResource && resource.newResource.activity && resource.newResource.activity.title}
         searchName="abstract"
         onHide={() => setModalShow(false)}
       />
@@ -333,6 +311,4 @@ const mapStateToProps = (state) => ({
   },
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity));

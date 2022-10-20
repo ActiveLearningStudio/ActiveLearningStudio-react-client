@@ -1,28 +1,18 @@
 /*eslint-disable*/
-import React, { useState, useRef } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import "./uploadimage.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PexelsAPI from "../../components/models/pexels";
-import DefaultImage from "assets/images/activitycard.png";
-import PixelIcon from "assets/images/svg/pixel.svg";
-import {
-  faLaptop,
-  faLink,
-  faHdd,
-  faParachuteBox,
-} from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import './uploadimage.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PexelsAPI from '../../components/models/pexels';
+import DefaultImage from 'assets/images/activitycard.png';
+import PixelIcon from 'assets/images/svg/pixel.svg';
+import { faLaptop, faLink, faHdd, faParachuteBox } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
-const UploadImage = ({
-  className,
-  setUploadImageStatus,
-  title,
-  defuaultImage,
-}) => {
+const UploadImage = ({ className, setUploadImageStatus, title, defuaultImage }) => {
   const [modalShow, setModalShow] = useState(false);
-  const currikiUtility = classNames("curriki-utility-uploadimage", className);
+  const currikiUtility = classNames('curriki-utility-uploadimage', className);
   const project = useSelector((state) => state.project);
   const openFile = useRef();
   defuaultImage == null ? defuaultImage : DefaultImage;
@@ -43,7 +33,7 @@ const UploadImage = ({
           className="uploadimage-box"
           style={{
             backgroundImage: project.thumbUrl
-              ? project.thumbUrl.includes("pexels.com")
+              ? !project.thumbUrl.includes('/storage/')
                 ? `url(${project.thumbUrl})`
                 : `url(${global.config.resourceUrl}${project.thumbUrl})`
               : `url(${DefaultImage})`,
@@ -65,7 +55,7 @@ const UploadImage = ({
           />
         </div> */}
         <div className="uploadimage-option">
-          <label style={{ display: "none" }}>
+          <label style={{ display: 'none' }}>
             <input
               ref={openFile}
               type="file"
@@ -76,22 +66,22 @@ const UploadImage = ({
                 }
                 if (
                   !(
-                    e.target.files[0].type.includes("png") ||
-                    e.target.files[0].type.includes("jpg") ||
-                    e.target.files[0].type.includes("gif") ||
-                    e.target.files[0].type.includes("jpeg")
+                    e.target.files[0].type.includes('png') ||
+                    e.target.files[0].type.includes('jpg') ||
+                    e.target.files[0].type.includes('gif') ||
+                    e.target.files[0].type.includes('jpeg')
                   )
                 ) {
                   Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Invalid file selected.",
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Invalid file selected.',
                   });
                 } else if (e.target.files[0].size > 100000000) {
                   Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Selected file size should be less then 100MB.",
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Selected file size should be less then 100MB.',
                   });
                 } else {
                   uploadThumb(e);

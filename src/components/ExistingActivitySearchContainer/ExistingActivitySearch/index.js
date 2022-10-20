@@ -42,7 +42,7 @@ function ExistingActivitySearch(props) {
   const [activetab, setActiveTab] = useState('activities');
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
-  
+
   useEffect(() => {
     if (localStorage.getItem('refreshPage') === 'true' && currentOrganization && searchType) {
       let dataSend;
@@ -171,7 +171,7 @@ function ExistingActivitySearch(props) {
     activityTypesState?.data?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
-  
+
   return (
     <>
       <div>
@@ -497,7 +497,7 @@ function ExistingActivitySearch(props) {
                                               return false;
                                             }
                                             return true;
-                                          })
+                                          }),
                                         );
                                       } else {
                                         setActiveSubject(activeSubject.filter((index) => index !== data.subject));
@@ -558,7 +558,7 @@ function ExistingActivitySearch(props) {
                                               return false;
                                             }
                                             return true;
-                                          })
+                                          }),
                                         );
                                       } else {
                                         setActiveEducation(activeEducation.filter((index) => index !== data.name));
@@ -734,7 +734,6 @@ function ExistingActivitySearch(props) {
                         }
                       }}
                     >
-
                       {!fromTeam && (
                         <Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
                           <div className="content">
@@ -748,7 +747,7 @@ function ExistingActivitySearch(props) {
                                           {res.thumb_url ? (
                                             <div
                                               style={{
-                                                backgroundImage: res.thumb_url.includes('pexels.com')
+                                                backgroundImage: !res.thumb_url.includes('/storage/')
                                                   ? `url(${res.thumb_url})`
                                                   : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                               }}

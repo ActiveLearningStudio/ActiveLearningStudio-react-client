@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -85,11 +86,7 @@ let ResourceDescribeActivity = (props) => {
             <div className="row">
               <div className="col-md-12">
                 <div className="describe-activity-wrapper">
-                  <form
-                    className="meta-form"
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                  >
+                  <form className="meta-form" onSubmit={handleSubmit} autoComplete="off">
                     <div className="flex-form-imag-upload">
                       <div>
                         <div className="row">
@@ -159,8 +156,14 @@ let ResourceDescribeActivity = (props) => {
                               if (e.target.files.length === 0) {
                                 return true;
                               }
-                              if (!(e.target.files[0].type.includes('png') || e.target.files[0].type.includes('jpg')
-                                || e.target.files[0].type.includes('gif') || e.target.files[0].type.includes('jpeg'))) {
+                              if (
+                                !(
+                                  e.target.files[0].type.includes('png') ||
+                                  e.target.files[0].type.includes('jpg') ||
+                                  e.target.files[0].type.includes('gif') ||
+                                  e.target.files[0].type.includes('jpeg')
+                                )
+                              ) {
                                 Swal.fire({
                                   icon: 'error',
                                   title: 'Error',
@@ -180,9 +183,7 @@ let ResourceDescribeActivity = (props) => {
                           <span>Upload</span>
                         </label>
 
-                        <span className="validation-error">
-                          {imageValidation}
-                        </span>
+                        <span className="validation-error">{imageValidation}</span>
 
                         <div>
                           {resource.progress}
@@ -203,7 +204,7 @@ let ResourceDescribeActivity = (props) => {
                               <div
                                 className="imgbox"
                                 style={{
-                                  backgroundImage: resource.newResource.metadata.thumbUrl.includes('pexels.com')
+                                  backgroundImage: !resource.newResource.metadata.thumbUrl.includes('/storage/')
                                     ? `url(${resource.newResource.metadata.thumbUrl})`
                                     : `url(${global.config.resourceUrl}${resource.newResource.metadata.thumbUrl})`,
                                 }}
@@ -226,10 +227,7 @@ let ResourceDescribeActivity = (props) => {
                         <div className="button-flex">
                           <h2>Change thumbnail from below options</h2>
 
-                          <div
-                            className="pexel"
-                            onClick={() => setModalShow(true)}
-                          >
+                          <div className="pexel" onClick={() => setModalShow(true)}>
                             <img src={pexel} alt="pexel" />
                             <p>Select from Pexels</p>
                           </div>
@@ -248,12 +246,8 @@ let ResourceDescribeActivity = (props) => {
                     </div>
 
                     <p className="disclaimer">
-                      Activity Image dimension should be
-                      {' '}
-                      <strong>290px width and 200px height. </strong>
-                      Maximum File size allowed is
-                      {' '}
-                      <strong>100MB.</strong>
+                      Activity Image dimension should be <strong>290px width and 200px height. </strong>
+                      Maximum File size allowed is <strong>100MB.</strong>
                     </p>
 
                     <div className="row">
@@ -273,17 +267,9 @@ let ResourceDescribeActivity = (props) => {
 
       <PexelsAPI
         show={modalShow}
-        resourceName={
-          resource
-          && resource.newResource
-          && resource.newResource.activity
-          && resource.newResource.activity.title
-        }
+        resourceName={resource && resource.newResource && resource.newResource.activity && resource.newResource.activity.title}
         searchName={
-          resource
-            && resource.newResource
-            && resource.newResource.activity
-            && !!resource.newResource.activity.activity_thumbnail_text
+          resource && resource.newResource && resource.newResource.activity && !!resource.newResource.activity.activity_thumbnail_text
             ? resource.newResource.activity.activity_thumbnail_text
             : resource.newResource.activity.title
         }
@@ -308,15 +294,7 @@ ResourceDescribeActivity = reduxForm({
   enableReinitialize: true,
   onSubmit: async (val, dispatch, props) => {
     const values = val;
-    const {
-      resource,
-      showBuildActivity,
-      onSubmitDescribeActivity,
-      saveFormData,
-      selectType,
-      type,
-      setActiveView,
-    } = props;
+    const { resource, showBuildActivity, onSubmitDescribeActivity, saveFormData, selectType, type, setActiveView } = props;
 
     if (!values.metaTitle) {
       values.metaTitle = resource.formData.metaTitle;
@@ -347,10 +325,7 @@ ResourceDescribeActivity = reduxForm({
         );
       }
       onSubmitDescribeActivity(values);
-      showBuildActivity(
-        resource.newResource.activity.h5pLib,
-        resource.newResource.activity.type,
-      );
+      showBuildActivity(resource.newResource.activity.h5pLib, resource.newResource.activity.type);
       setActiveView('build');
       selectType([...type, 'build']);
     } catch (e) {
@@ -372,6 +347,4 @@ const mapStateToProps = (state) => ({
   resource: state.resource,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceDescribeActivity));
