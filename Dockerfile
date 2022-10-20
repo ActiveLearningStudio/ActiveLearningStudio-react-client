@@ -7,7 +7,7 @@ ENV DOMAIN_URL=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
 RUN apt-get install git -y
-
+COPY . .
 RUN git log --graph -10 --decorate --pretty > log.txt
 
 RUN npm install --no-package-lock
