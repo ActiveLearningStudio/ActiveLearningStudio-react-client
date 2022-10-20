@@ -23,27 +23,31 @@ function GroupProjectView(props) {
   const organization = useSelector((state) => state.organization);
   const { permission } = organization;
 
-  const removeProjectSubmit = useCallback((projectId) => {
-    removeProject(id, projectId)
-      .catch(() => {
+  const removeProjectSubmit = useCallback(
+    (projectId) => {
+      removeProject(id, projectId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Failed to remove project.',
         });
       });
-  }, [id, removeProject]);
+    },
+    [id, removeProject],
+  );
 
-  const removeMemberSubmit = useCallback((projectId, userId) => {
-    removeMember(id, projectId, userId)
-      .catch(() => {
+  const removeMemberSubmit = useCallback(
+    (projectId, userId) => {
+      removeMember(id, projectId, userId).catch(() => {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'Failed to remove member.',
         });
       });
-  }, [id, removeMember]);
+    },
+    [id, removeMember],
+  );
 
   return (
     <div className="group-information">
@@ -63,9 +67,7 @@ function GroupProjectView(props) {
               <div
                 className="project-img"
                 style={{
-                  backgroundImage: project.thumb_url.includes('pexels.com')
-                    ? `url(${project.thumb_url})`
-                    : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage: !project.thumb_url.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
 
@@ -92,15 +94,13 @@ function GroupProjectView(props) {
                       <FontAwesomeIcon icon="pen" className="mr-2" />
                       Edit
                     </Dropdown.Item>
-                    {permission?.Group?.includes('group:add-project-user')
-                    && (
+                    {permission?.Group?.includes('group:add-project-user') && (
                       <Dropdown.Item as={Link} to={`/org/${organization.currentOrganization?.domain}/groups/${id}/projects/${project.id}/add-member`}>
                         <FontAwesomeIcon icon="crosshairs" className="mr-2" />
                         Add member
                       </Dropdown.Item>
                     )}
-                    {permission?.Group?.includes('group:remove-projects')
-                    && (
+                    {permission?.Group?.includes('group:remove-projects') && (
                       <Dropdown.Item onClick={() => removeProjectSubmit(project.id)}>
                         <FontAwesomeIcon icon="times-circle" className="mr-2" />
                         Remove project
@@ -138,8 +138,7 @@ function GroupProjectView(props) {
                           </div>
 
                           <div className="dropdown-divider" />
-                          {permission?.Group?.includes('group:remove-project-user')
-                          && (
+                          {permission?.Group?.includes('group:remove-project-user') && (
                             <Dropdown.Item onClick={() => removeMemberSubmit(project.id, u.id)}>
                               <FontAwesomeIcon icon="times" className="mr-2" />
                               Remove from project

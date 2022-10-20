@@ -40,7 +40,7 @@ const GoogleLoginModal = ({
   googleClassRoomLogin,
   googleClassRoomLoginFailure,
   googleClassRoomCourseTopics,
-  projectId,
+  projectId = 0,
   playlistId,
   activityId,
   selectedProjectPlaylistName,

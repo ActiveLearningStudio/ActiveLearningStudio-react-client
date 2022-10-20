@@ -12,7 +12,7 @@ const ProjectPreviewModal = (props) => {
     playlists = project.playlists.map((playlist) => {
       let activities;
       if (playlist.activities.length > 0) {
-        activities = playlist.activities.map(() => (<p>this is an activity</p>));
+        activities = playlist.activities.map(() => <p>this is an activity</p>);
       } else {
         activities = (
           <div className="col-md-12">
@@ -63,9 +63,9 @@ const ProjectPreviewModal = (props) => {
                   <div className="row">
                     <div className="col">
                       <img
-                        src={!!project.thumb_url && project.thumb_url.includes('pexels.com')
-                          ? `url(${project.thumb_url})`
-                          : `url(${global.config.resourceUrl}${project.thumb_url})`}
+                        src={
+                          !!project.thumb_url && !project.thumb_url.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`
+                        }
                         className="img-fluid project-preview-thumbnail"
                         alt="thumbnail"
                       />
@@ -82,12 +82,8 @@ const ProjectPreviewModal = (props) => {
 
                 <div className="col-8">
                   <div className="card">
-                    <div className="card-header">
-                      Playlists
-                    </div>
-                    <div className="card-body">
-                      {playlists}
-                    </div>
+                    <div className="card-header">Playlists</div>
+                    <div className="card-body">{playlists}</div>
                   </div>
                 </div>
               </div>

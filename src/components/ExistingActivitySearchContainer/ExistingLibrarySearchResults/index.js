@@ -123,7 +123,7 @@ const ExistingActivitySearchResults = (props) => {
               <>
                 <div className='row'>
                   <div className='col'>
-                    {independentActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} /> ))}
+                    {independentActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="independent" /> ))}
                   </div>
                 </div>
                 <div className='row'>
@@ -143,7 +143,7 @@ const ExistingActivitySearchResults = (props) => {
               <>
                 <div className='row'>
                   <div className='col'>
-                    {projectActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} /> ))}
+                    {projectActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="project" /> ))}
                   </div>
                 </div>
                 <div className='row'>

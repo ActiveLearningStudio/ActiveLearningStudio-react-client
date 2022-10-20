@@ -158,7 +158,7 @@ function ProjectPreviewShared(props) {
                   <div
                     className="project-thumbnail"
                     style={{
-                      backgroundImage: currentProject.thumb_url?.includes('pexels.com')
+                      backgroundImage: !currentProject.thumb_url?.includes('/storage/')
                         ? `url(${currentProject.thumb_url})`
                         : `url(${global.config.resourceUrl}${currentProject.thumb_url})`,
                     }}

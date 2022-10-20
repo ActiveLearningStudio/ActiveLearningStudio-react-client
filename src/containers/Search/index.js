@@ -403,7 +403,7 @@ function SearchInterface(props) {
                                               {res?.thumb_url ? (
                                                 <div
                                                   style={{
-                                                    backgroundImage: res.thumb_url.includes('pexels.com')
+                                                    backgroundImage: !res.thumb_url.includes('/storage/')
                                                       ? `url(${res.thumb_url})`
                                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                   }}
@@ -653,7 +653,7 @@ function SearchInterface(props) {
                                           {res.thumb_url ? (
                                             <div
                                               style={{
-                                                backgroundImage: res.thumb_url.includes('pexels.com')
+                                                backgroundImage: !res.thumb_url.includes('/storage/')
                                                   ? `url(${res.thumb_url})`
                                                   : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                               }}
@@ -922,7 +922,7 @@ function SearchInterface(props) {
                                               <div
                                                 style={{
                                                   // eslint-disable-next-line max-len
-                                                  backgroundImage: res.thumb_url.includes('pexels.com')
+                                                  backgroundImage: !res.thumb_url.includes('/storage/')
                                                     ? `url(${res.thumb_url})`
                                                     : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                 }}
@@ -1090,7 +1090,7 @@ function SearchInterface(props) {
                                                 <div
                                                   style={{
                                                     // eslint-disable-next-line max-len
-                                                    backgroundImage: res.thumb_url.includes('pexels.com')
+                                                    backgroundImage: !res.thumb_url.includes('/storage/')
                                                       ? `url(${res.thumb_url})`
                                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                   }}
@@ -1209,7 +1209,7 @@ function SearchInterface(props) {
                                                 {res.thumb_url ? (
                                                   <div
                                                     style={{
-                                                      backgroundImage: res.thumb_url.includes('pexels.com')
+                                                      backgroundImage: !res.thumb_url.includes('/storage/')
                                                         ? `url(${res.thumb_url})`
                                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                     }}

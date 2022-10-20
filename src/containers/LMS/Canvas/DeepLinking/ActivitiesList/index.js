@@ -15,7 +15,7 @@ const ActivitiesList = (props) => {
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
 
-    if (activityId  && activity.id == activityId) {
+    if (activityId && activity.id == activityId) {
       setPreviewActivity(activity);
     }
   };
@@ -47,7 +47,7 @@ const ActivitiesList = (props) => {
               <div
                 className="activity-img"
                 style={{
-                  backgroundImage: activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                  backgroundImage: !activity.thumb_url.includes('/storage/') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
                 }}
               ></div>
 
@@ -94,7 +94,6 @@ const ActivitiesList = (props) => {
             </div>
           </div>
         </div>
-        
       </div>
     </>
   );

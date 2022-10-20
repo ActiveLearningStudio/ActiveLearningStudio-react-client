@@ -43,7 +43,7 @@ export const createProjectAction = (data) => async (dispatch) => {
     //   draggable: true,
     //   progress: undefined,
     // });
-    const { project } = await projectService.create(data, activeOrganization.id);
+    const { project } = await projectService.create(data, activeOrganization?.id);
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },

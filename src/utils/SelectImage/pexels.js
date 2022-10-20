@@ -7,8 +7,7 @@ import axios from 'axios';
 import resourceService from 'services/resource.service';
 import dotsloader from 'assets/images/dotsloader.gif';
 
-const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API);
-
+const pexelsClient = window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API && new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API);
 function Pexels(props) {
   const [pexelData, setPexels] = useState([]);
 
@@ -108,6 +107,18 @@ function Pexels(props) {
                     setLoader(false);
                     setPexels(data?.response?.rows);
                   });
+                } else {
+                  pexelsClient
+                    .search(searchValue, 10, 1)
+                    .then((result) => {
+                      setLoader(false);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
+                      setPexels(allPhotos);
+                      setNextApi(result.next_page);
+                    })
+                    .catch(() => {
+                      // console.err(e);
+                    });
                 }
               }}
             />
