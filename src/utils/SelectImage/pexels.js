@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import resourceService from 'services/resource.service';
 import dotsloader from 'assets/images/dotsloader.gif';
+import SmithsonianFilter from './SmithsonianFilter';
 
 const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API || process.env.REACT_APP_PEXEL_API);
 
@@ -126,40 +127,46 @@ function Pexels(props) {
           </div>
         </div>
       </div>
-
-      <div className="thumbnails-img-box-pexels">
-        {loader ? (
-          <img src={dotsloader} className="thumbnails-loader" alt="loader" />
-        ) : pexelData?.length === 0 ? (
-          <h6 className="read-more-pexel">No result found. You can still search other thumbnails.</h6>
-        ) : (
-          <>
-            {!!pexelData && (
-              <>
-                {pexelData.map((images) => (
-                  <div className="thumbnails-watermark" key={images.id}>
-                    <img
-                      className="thumbnails-watermark-img"
-                      src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail : images.src.tiny}
-                      onClick={() => {
-                        if (smythsonian) {
-                          if (formRef) {
-                            formRef?.current.setFieldValue('thumb_url', images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
+      {/* Add filter Contion */}
+      <div className="filter_smithsonian_section">
+        {smythsonian && (
+          <div className="filter_smithsonian">
+            <SmithsonianFilter />
+          </div>
+        )}
+        <div className={`thumbnails-img-box-pexels ${smythsonian && 'thumbnails-img-box-pexels-smithsonian'}`}>
+          {loader ? (
+            <img src={dotsloader} className="thumbnails-loader" alt="loader" />
+          ) : pexelData?.length === 0 ? (
+            <h6 className="read-more-pexel">No result found. You can still search other thumbnails.</h6>
+          ) : (
+            <>
+              {!!pexelData && (
+                <>
+                  {pexelData.map((images) => (
+                    <div className="thumbnails-watermark" key={images.id}>
+                      <img
+                        className="thumbnails-watermark-img"
+                        src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail : images.src.tiny}
+                        onClick={() => {
+                          if (smythsonian) {
+                            if (formRef) {
+                              formRef?.current.setFieldValue('thumb_url', images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
+                            }
+                            returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail);
+                          } else {
+                            if (formRef) {
+                              formRef?.current.setFieldValue('thumb_url', images.src.tiny);
+                            }
+                            returnImagePexel(images.src.tiny);
                           }
-                          returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail);
-                        } else {
-                          if (formRef) {
-                            formRef?.current.setFieldValue('thumb_url', images.src.tiny);
-                          }
-                          returnImagePexel(images.src.tiny);
-                        }
 
-                        handleClose();
-                      }}
-                      alt="pexel"
-                    />
-                    {smythsonian && <span>{images.title}</span>}
-                    {/* {smythsonian ? (
+                          handleClose();
+                        }}
+                        alt="pexel"
+                      />
+                      {smythsonian && <span>{images.title}</span>}
+                      {/* {smythsonian ? (
                       <a href="#" target="_blank" rel="noopener noreferrer">
                         {images.title}
                       </a>
@@ -170,38 +177,39 @@ function Pexels(props) {
                         /Pexels
                       </a>
                     )}*/}
-                  </div>
-                ))}
-              </>
-            )}
+                    </div>
+                  ))}
+                </>
+              )}
 
-            {!!nextApi ||
-              (smythsonian && (
-                <h6
-                  className="read-more-pexel"
-                  onClick={() => {
-                    if (smythsonian) {
-                      setSmythCount(smythCount + 15);
-                    } else {
-                      axios
-                        .get(nextApi, {
-                          headers: {
-                            Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
-                          },
-                        })
-                        .then((res) => {
-                          const moreData = res.data.photos;
-                          setPexels(pexelData.concat(moreData));
-                          setNextApi(res.data.next_page);
-                        });
-                    }
-                  }}
-                >
-                  Load more ...
-                </h6>
-              ))}
-          </>
-        )}
+              {!!nextApi ||
+                (smythsonian && (
+                  <h6
+                    className="read-more-pexel"
+                    onClick={() => {
+                      if (smythsonian) {
+                        setSmythCount(smythCount + 15);
+                      } else {
+                        axios
+                          .get(nextApi, {
+                            headers: {
+                              Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
+                            },
+                          })
+                          .then((res) => {
+                            const moreData = res.data.photos;
+                            setPexels(pexelData.concat(moreData));
+                            setNextApi(res.data.next_page);
+                          });
+                      }
+                    }}
+                  >
+                    Load more ...
+                  </h6>
+                ))}
+            </>
+          )}
+        </div>
       </div>
     </>
   );

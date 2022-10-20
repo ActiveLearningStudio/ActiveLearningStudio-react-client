@@ -1,3 +1,4 @@
+@import "assets/css/index";
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -57,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         left: 25px;
@@ -66,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         right: 25px;
@@ -251,4 +252,97 @@
   line-height: 20px;
   color: #084892;
   cursor: pointer;
+}
+
+.filter_smithsonian_section {
+  display: flex;
+  .filter_smithsonian {
+    width: 25%;
+  }
+  .thumbnails-img-box-pexels-smithsonian {
+    margin-left: 24px;
+    width: 75%;
+  }
+
+  // SmithsonianFilter
+  .smithsonian_filter_menu_detail {
+    .refine-search {
+      margin-top: 16px;
+
+      .list-item-keys {
+        padding: 5px 10px;
+
+        span {
+          margin: 0 11px;
+          box-shadow: 0 0 2px #0000000d;
+          opacity: 1;
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 20px;
+          color: #515151;
+          letter-spacing: 0;
+          cursor: pointer;
+        }
+
+        svg.fa-square {
+          color: #fff;
+          border: 2px solid #084892;
+          width: 18px;
+          height: 18px;
+        }
+        svg.fa-check-square {
+          border: 2px solid #084892;
+          width: 18px;
+          height: 18px;
+          color: $curriki-main-blue;
+        }
+      }
+      .card {
+        box-shadow: 0px 1px 6px 1px rgba(8, 72, 146, 0.16);
+        margin-top: 16px;
+      }
+      .card-header {
+        padding: 14px 24px;
+        background-color: #fff;
+        text-align: left;
+        color: $fun-blue-1;
+        cursor: pointer;
+        font-family: $rubik;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        border-bottom: 0;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-detail-header {
+        .card-header {
+          padding: 0px;
+        }
+        padding: 10px 8px;
+        border-radius: 4px;
+      }
+      .card-detail-list-options {
+        margin-top: 4px;
+        padding: 8px 10px 8px 8px;
+        border-radius: 4px;
+        .card-detail-list-text-icon {
+          display: flex;
+
+          .card-detail-list-icon {
+            margin-top: 4px;
+          }
+        }
+        .card-body {
+          padding: 0;
+        }
+      }
+    }
+  }
 }
