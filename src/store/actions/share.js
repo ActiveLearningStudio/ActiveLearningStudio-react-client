@@ -294,7 +294,7 @@ export const publishProjectPlaylistToCanvas = async (projectId, playlistId, sett
 //   }
 // };
 
-export const publishActivitytoMicrosoftTeam = async (projectId, classId) => {
+export const publishActivitytoMicrosoftTeam = async (publishTypeId, classId, publishType) => {
   Swal.fire({
     title: 'Publishing....',
     showCancelButton: false,
@@ -302,7 +302,7 @@ export const publishActivitytoMicrosoftTeam = async (projectId, classId) => {
     allowOutsideClick: false,
   });
   try {
-    const result = await searchService.publishActivitytoMSteam(projectId, classId);
+    const result = await searchService.publishActivitytoMSteam(publishTypeId, classId, publishType);
     if (result) {
       {
         Swal.fire({

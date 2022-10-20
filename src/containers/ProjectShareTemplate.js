@@ -75,7 +75,7 @@ function ProjectShareTemplate(props) {
             email: window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_DEMO_USER,
             password: window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_DEMO_PASS,
             domain: 'currikistudio',
-          })
+          }),
         );
       }
       const shareResult = await shareProjectsService.shareProjects(window.__RUNTIME_CONFIG__.REACT_APP_SHARED_PROJECT_USERID);
@@ -110,7 +110,7 @@ function ProjectShareTemplate(props) {
                       className="bg-img"
                       style={{
                         backgroundImage:
-                          !!index.thumb_url && index.thumb_url.includes('pexels.com') ? `url(${index.thumb_url})` : `url(${global.config.resourceUrl}${index.thumb_url})`,
+                          !!index.thumb_url && !index.thumb_url.includes('/storage/') ? `url(${index.thumb_url})` : `url(${global.config.resourceUrl}${index.thumb_url})`,
                       }}
                     />
                     <h1>{index.name}</h1>
@@ -134,7 +134,7 @@ function ProjectShareTemplate(props) {
                       className="bg-img"
                       style={{
                         backgroundImage:
-                          !!index.thumb_url && index.thumb_url.includes('pexels.com') ? `url(${index.thumb_url})` : `url(${global.config.resourceUrl}${index.thumb_url})`,
+                          !!index.thumb_url && !index.thumb_url.includes('/storage/') ? `url(${index.thumb_url})` : `url(${global.config.resourceUrl}${index.thumb_url})`,
                       }}
                     />
                     <h1>{index.name}</h1>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -59,11 +60,7 @@ function SearchIndex(props) {
     }
     if (source.droppableId === destination.droppableId) {
       if (source.droppableId === 'droppable2') {
-        const items = reorder(
-          playlist.activities,
-          source.index,
-          destination.index,
-        );
+        const items = reorder(playlist.activities, source.index, destination.index);
         const updatedOrder = origPlaylist.map((play) => {
           if (String(play.id) === match.params.playlistId) {
             return { ...play, activities: items };
@@ -72,15 +69,10 @@ function SearchIndex(props) {
         });
         dispatch(reorderPlaylistsAction(match.params.projectId, origPlaylist, updatedOrder));
         setPlaylist({ ...playlist, activities: items });
-      // eslint-disable-next-line
-      } }
-    else if (source.droppableId === 'droppable') {
-      const resultHorizantal = move(
-        search,
-        playlist.activities,
-        source,
-        destination,
-      );
+        // eslint-disable-next-line
+      }
+    } else if (source.droppableId === 'droppable') {
+      const resultHorizantal = move(search, playlist.activities, source, destination);
       const updatedOrder = origPlaylist.map((play) => {
         if (String(play.id) === match.params.playlistId) {
           return { ...play, activities: resultHorizantal.droppable2 };
@@ -110,42 +102,31 @@ function SearchIndex(props) {
                 >
                   {searchBuilder.searchQuery ? (
                     <>
-                      <h2>
-                        Your Search Result for
-                        {' '}
-                        {searchBuilder.searchQuery}
-                      </h2>
+                      <h2>Your Search Result for {searchBuilder.searchQuery}</h2>
                       <p>Drag & drop activity to build your playlist.</p>
                     </>
-                  ) : <p>Search Activity from above to use Existing.</p>}
-                  {!!search.length > 0
-                    ? search.map((res, index) => (
-                      <Draggable
-                        key={res.id}
-                        draggableId={String(res.id)}
-                        index={index}
-                      >
+                  ) : (
+                    <p>Search Activity from above to use Existing.</p>
+                  )}
+                  {!!search.length > 0 ? (
+                    search.map((res, index) => (
+                      <Draggable key={res.id} draggableId={String(res.id)} index={index}>
                         {(provided_) => (
-                          <div
-                            ref={provided_.innerRef}
-                            {...provided_.draggableProps}
-                            {...provided_.dragHandleProps}
-                          >
+                          <div ref={provided_.innerRef} {...provided_.draggableProps} {...provided_.dragHandleProps}>
                             <div className="box">
                               <div className="imgbox">
                                 {res.thumb_url ? (
                                   <div
                                     style={{
-                                      backgroundImage: res.thumb_url.includes('pexels.com')
-                                        ? `url(${res.thumb_url})`
-                                        : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                      backgroundImage: !res.thumb_url.includes('/storage/') ? `url(${res.thumb_url})` : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                     }}
                                   />
                                 ) : (
                                   <div
                                     style={{
                                       // eslint-disable-next-line max-len
-                                      backgroundImage: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                      backgroundImage:
+                                        'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
                                     }}
                                   />
                                 )}
@@ -157,8 +138,8 @@ function SearchIndex(props) {
                                       res.model === 'Activity'
                                         ? `/activity/${res.id}/shared`
                                         : res.model === 'Playlist'
-                                          ? `/playlist/${res.id}/preview/lti`
-                                          : `/project/${res.id}/shared`
+                                        ? `/playlist/${res.id}/preview/lti`
+                                        : `/project/${res.id}/shared`
                                     }
                                     target="_blank"
                                     rel="noreferrer"
@@ -168,11 +149,7 @@ function SearchIndex(props) {
                                   <ul>
                                     {res.user && (
                                       <li>
-                                        by
-                                        {' '}
-                                        <span className="author">
-                                          {res.user.first_name}
-                                        </span>
+                                        by <span className="author">{res.user.first_name}</span>
                                       </li>
                                     )}
                                   </ul>
@@ -182,7 +159,10 @@ function SearchIndex(props) {
                           </div>
                         )}
                       </Draggable>
-                    )) : <h2>{!!searchBuilder.searchQuery && <> No result found!</>}</h2>}
+                    ))
+                  ) : (
+                    <h2>{!!searchBuilder.searchQuery && <> No result found!</>}</h2>
+                  )}
                 </div>
               )}
             </Droppable>
@@ -195,15 +175,7 @@ function SearchIndex(props) {
                 >
                   <div className="playlist-host">
                     <h6>{!!playlist && playlist.title}</h6>
-                    {!!playlist && playlist.activities.map((resource, index) => (
-                      <ResourceCard
-                        resource={resource}
-                        key={resource.id}
-                        index={index}
-                        playlist={playlist}
-                        wizard
-                      />
-                    ))}
+                    {!!playlist && playlist.activities.map((resource, index) => <ResourceCard resource={resource} key={resource.id} index={index} playlist={playlist} wizard />)}
                   </div>
                 </div>
               )}

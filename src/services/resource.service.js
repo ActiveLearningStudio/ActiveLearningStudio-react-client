@@ -33,6 +33,15 @@ const create = (activity, playlistId) =>
       Promise.reject(err.response.data);
     });
 
+const smithsonian = (data) =>
+  httpService
+    .post(`/${apiVersion}/smithsonian/get-content-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const get = (id, playlistId) =>
   httpService
     .get(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
@@ -263,7 +272,7 @@ const h5pResourceSettingsShared = (activityId) =>
     .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`)
     .then(({ data }) => data)
     .catch((err) => {
-      Promise.reject(err.response.data);
+      return Promise.reject(err.response.data);
     });
 
 const h5pResourceSettingsEmbed = (activityId) =>
@@ -360,4 +369,5 @@ export default {
   searchPreviewActivity,
   searchPreviewIndependentActivity,
   getAllTypesIV,
+  smithsonian,
 };

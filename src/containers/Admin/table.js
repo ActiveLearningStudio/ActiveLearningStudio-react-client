@@ -557,7 +557,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -579,7 +579,7 @@ function Table(props) {
                         <td>{row.id}</td>
                         <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -624,7 +624,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -659,7 +659,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -794,7 +794,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',

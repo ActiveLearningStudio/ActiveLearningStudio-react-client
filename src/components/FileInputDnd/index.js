@@ -4,7 +4,7 @@ import UploadImg from "assets/images/upload1.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.scss';
 
-const FileInputDnd = ({ handleChange }) => {
+const FileInputDnd = ({ handleChange, acceptFormats }) => {
   const inputRef = useRef(null);
 
   const areaClick = (e) => {
@@ -41,7 +41,7 @@ const FileInputDnd = ({ handleChange }) => {
           <p>Drag & drop file or browse to upload</p>
         </div>
       </div>
-      <input className="file-upload-dnd-input" type="file" accept=".pdf" onChange={handleFileChange} ref={inputRef}/>
+      <input className="file-upload-dnd-input" type="file" accept={acceptFormats} onChange={handleFileChange} ref={inputRef}/>
     </>
   );
 };
