@@ -11,7 +11,7 @@ COPY . .
 RUN git log --graph -10 --decorate --pretty > log.txt
 
 RUN npm install --no-package-lock
-RUN npm run test
+RUN npm test .
 RUN set GENERATE_SOURCEMAP=false && npm run build
 
 COPY . .
