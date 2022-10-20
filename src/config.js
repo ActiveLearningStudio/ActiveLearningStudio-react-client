@@ -7,6 +7,8 @@ export default global.config = {
   apiVersion: window.__RUNTIME_CONFIG__?.REACT_APP_API_VERSION || process.env.REACT_APP_API_VERSION,
   gapiClientId: window.__RUNTIME_CONFIG__?.REACT_APP_GAPI_CLIENT_ID || process.env.REACT_APP_GAPI_CLIENT_ID,
   tsugiBaseUrl: window.__RUNTIME_CONFIG__?.REACT_APP_TSUGI_SERVER_URL || process.env.REACT_APP_TSUGI_SERVER_URL,
+  domainUrl: window.__RUNTIME_CONFIG__?.REACT_DOMAIN_URL || process.env.REACT_DOMAIN_URL,
+
   // Safelearn
   safeLearnAuthUrl: window.__RUNTIME_CONFIG__?.REACT_APP_SAFELEARN_AUTH || process.env.REACT_APP_SAFELEARN_AUTH,
   safeLearnCheckUrl: window.__RUNTIME_CONFIG__?.REACT_APP_SAFELEARN_CHECK || process.env.REACT_APP_SAFELEARN_CHECK,
