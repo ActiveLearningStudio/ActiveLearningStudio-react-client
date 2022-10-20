@@ -510,7 +510,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Subjects' && (
+          {type === 'Activities' && subType === 'Subjects' && permission?.Organization.includes('organization:edit-subject') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -571,7 +571,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Education Level' && (
+          {type === 'Activities' && subType === 'Education Level' && permission?.Organization.includes('organization:edit-education-level') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -632,7 +632,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Author Tags' && (
+          {type === 'Activities' && subType === 'Author Tags' && permission?.Organization.includes('organization:edit-author-tag') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -693,7 +693,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Activity Layouts' && (
+          {type === 'Activities' && subType === 'Activity Layouts' && permission?.Organization.includes('organization:edit-activity-layout') && (
             <>
               <Dropdown.Item
                 onClick={() => {

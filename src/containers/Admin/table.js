@@ -557,7 +557,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -794,7 +794,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url?.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',

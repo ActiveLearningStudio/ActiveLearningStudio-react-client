@@ -1,0 +1,36 @@
+.existing-activity-search-modal {
+  z-index: 1060;
+  position: fixed;
+  background: #0848928f;
+  top: 0;
+  width: 100%;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.existing-activity-search-modal .modal-header {
+  background-color: white;
+}
+
+.existing-activity-search-modal .modal-header svg {
+  cursor: pointer;
+}
+
+iframe.h5p-editor-iframe {
+  height: 997px !important;
+}
+body #root {
+  display: block !important;
+}
+
+.existing-activity-search-modal .modal-header .title {
+  background-color: white;
+}
+
+.existing-activity-search-modal .modal-header .close {
+  background-color: white;
+}
+
+.footer-info {
+  color: #084892; 
+}

@@ -133,7 +133,7 @@ const AddVideoCard = ({
         <div
           className={selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox ? 'addvideo-card-top apply-check-video' : 'addvideo-card-top apply-uncheck-video'}
           style={{
-            backgroundImage: `url(${data.thumb_url?.includes('pexels.com') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
+            backgroundImage: `url(${!data.thumb_url?.includes('/storage/') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
           }}
         >
           <div className="addvideo-card-dropdown">
@@ -185,19 +185,29 @@ const AddVideoCard = ({
                 </OverlayTrigger>
               )
             ) : (
-              <DropDownEdit
-                data={data}
-                iconColor="white"
-                activities={activities}
-                isActivityCard={isActivityCard}
-                setModalShow={setModalShow}
-                setCurrentActivity={setCurrentActivity}
-                setOpenVideo={setOpenVideo}
-                setScreenStatus={setScreenStatus}
-                permission={permission}
-                handleShow={handleShow}
-                setSelectedActivityId={setSelectedActivityId}
-              />
+              <>
+                {(
+                  !isActivityCard
+                  || (
+                    isActivityCard
+                    && permission?.['Independent Activity']?.includes('independent-activity:edit-author')
+                  )
+                ) && (
+                  <DropDownEdit
+                    data={data}
+                    iconColor="white"
+                    activities={activities}
+                    isActivityCard={isActivityCard}
+                    setModalShow={setModalShow}
+                    setCurrentActivity={setCurrentActivity}
+                    setOpenVideo={setOpenVideo}
+                    setScreenStatus={setScreenStatus}
+                    permission={permission}
+                    handleShow={handleShow}
+                    setSelectedActivityId={setSelectedActivityId}
+                  />
+                )}
+              </>
             )}
           </div>
           <div onClick={() => openEditor()} className="addvideo-card-title">

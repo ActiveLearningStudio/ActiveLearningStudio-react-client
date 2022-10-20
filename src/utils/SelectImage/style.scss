@@ -209,11 +209,26 @@
   flex-wrap: wrap;
   overflow-y: scroll;
   .thumbnails-watermark {
+    display: flex;
+    align-items: center;
+    position: relative;
     .thumbnails-watermark-img {
       width: 182px;
       height: 106.17px;
       border-radius: 8px;
       cursor: pointer;
+    }
+    span {
+      position: absolute;
+      bottom: 0;
+      padding: 2px 8px;
+      color: white;
+      background-color: #084892a6;
+      width: 100%;
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 

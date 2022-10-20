@@ -11,14 +11,24 @@ import Pagination from 'react-js-pagination';
 import HeadingThree from 'utils/HeadingThree/headingthree';
 import Buttons from 'utils/Buttons/buttons';
 import { useDispatch } from 'react-redux';
-import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos, getVimeoVideos } from 'store/actions/videos';
+import { getBrightCMS, getBrightVideos, getBrightVideosSearch, getKalturaVideos, getVimeoVideos, getKomodoVideos } from 'store/actions/videos';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const BrightcoveModel = (props) => {
   const dispatch = useDispatch();
-  const { platformName, showSidebar, setSelectedVideoIdKaltura, selectedVideoIdVimeo, selectedVideoIdKaltura, selectedVideoId } = props;
+  const {
+    platformName,
+    showSidebar,
+    setSelectedVideoIdKaltura,
+    selectedVideoIdVimeo,
+    selectedVideoIdKaltura,
+    selectedVideoId,
+    selectedVideoIdKomodo,
+    setSelectedVideoIdKomodo,
+  } = props;
   const [cms, setcms] = useState([]);
   const [kaltura, setkaltura] = useState(null);
   const [vimeo, setVimeo] = useState(null);
+  const [komodo, setKomodo] = useState(null);
   const [cmsVideo, setcmsVideo] = useState(null);
   const [activeCms, setActiveCms] = useState(null);
   const [offset, setOffset] = useState(0);
@@ -51,6 +61,16 @@ const BrightcoveModel = (props) => {
           setError('No record Found');
         } else {
           setVimeo(result);
+          console.log('Result:', result.data);
+        }
+      } else if (platformName == 'Komodo') {
+        setActiveCms(null);
+        const result = await dispatch(getKomodoVideos());
+        if (result?.errors) {
+          setKomodo([]);
+          setError('No record Found');
+        } else {
+          setKomodo(result);
           console.log('Result:', result.data);
         }
       }
@@ -131,7 +151,12 @@ const BrightcoveModel = (props) => {
                     </div>
                     <div className="NetSuite-section-searching">
                       <div className="section-input-search">
-                        <input value={searchId} onChange={(e) => setSearchId(e.target.value)} type="text" placeholder="Search by video name or video id..." />
+                        <input
+                          value={searchId}
+                          onChange={(e) => setSearchId(e.target.value)}
+                          type="text"
+                          placeholder={platformName == 'Komodo' ? 'Search by video name' : 'Search by video name or video id...'}
+                        />
                         <button
                           onClick={async () => {
                             if (platformName == 'Brightcove') {
@@ -167,6 +192,16 @@ const BrightcoveModel = (props) => {
                                 setVimeo([]);
                                 setError('No record Found');
                               }
+                            } else if (platformName == 'Komodo') {
+                              setKomodo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(getKomodoVideos(searchId));
+                              if (result.total_record) {
+                                setKomodo(result);
+                              } else {
+                                setKomodo([]);
+                                setError('No record Found');
+                              }
                             }
                           }}
                         >
@@ -200,6 +235,11 @@ const BrightcoveModel = (props) => {
                               setPaginationCounter(1);
                               const result = await dispatch(getVimeoVideos());
                               setVimeo(result);
+                            } else if (platformName == 'Komodo') {
+                              setKomodo(null);
+                              setPaginationCounter(1);
+                              const result = await dispatch(getKomodoVideos());
+                              setKomodo(result);
                             }
                           }}
                           className="reset-btn"
@@ -440,6 +480,81 @@ const BrightcoveModel = (props) => {
                                   setPaginationCounter(e);
                                   const result = await dispatch(getVimeoVideos('', e, 6));
                                   setVimeo(result);
+                                }}
+                              />
+                            )}
+                          </Card.Body>
+                        </Tab.Pane>
+                      </Tab.Content>
+                    )}
+                    {platformName == 'Komodo' && (
+                      <Tab.Content>
+                        <Tab.Pane eventKey="manual-1">
+                          <Card.Body style={{ padding: '0px' }}>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Created</th>
+                                  <th>Video Id</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {komodo ? (
+                                  komodo?.data?.length > 0 ? (
+                                    komodo?.data?.map((data) => {
+                                      var created = new Date(data.createdAt);
+
+                                      return (
+                                        <tr>
+                                          <td className="firstname">
+                                            <input
+                                              name="video"
+                                              onChange={() => {
+                                                setSelectedVideoIdKomodo(data.htmlUrl);
+                                              }}
+                                              type="radio"
+                                              checked={selectedVideoIdKomodo === data.htmlUrl ? true : false}
+                                            />
+                                            <img src={data?.previewUrl} className="image-size" />
+                                            <span>{data.title}</span>
+                                          </td>
+                                          <td>{created?.toLocaleDateString()}</td>
+                                          <td>{data.id}</td>
+                                        </tr>
+                                      );
+                                    })
+                                  ) : (
+                                    <tr>
+                                      <td colSpan="4">
+                                        <Alert variant="danger" colSpan={3}>
+                                          {error}
+                                        </Alert>
+                                      </td>
+                                    </tr>
+                                  )
+                                ) : (
+                                  <tr>
+                                    <td colSpan="4">
+                                      <Alert variant="primary" colSpan={4}>
+                                        Loading...
+                                      </Alert>
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+
+                            {komodo?.data?.length > 0 && (
+                              <Pagination
+                                activePage={paginationCounter}
+                                pageRangeDisplayed={7}
+                                itemsCountPerPage={6}
+                                totalItemsCount={komodo?.total_record}
+                                onChange={async (e) => {
+                                  setPaginationCounter(e);
+                                  const result = await dispatch(getKomodoVideos('', e, 6));
+                                  setKomodo(result);
                                 }}
                               />
                             )}

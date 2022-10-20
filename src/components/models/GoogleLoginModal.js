@@ -33,13 +33,6 @@ import {
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
-const tenantId = window.__RUNTIME_CONFIG__.REACT_MS_TENANT_ID;
-const config = {
-  appId: window.__RUNTIME_CONFIG__.REACT_MS_APP_ID,
-  redirectUri: `${domainName}org/currikistudio`,
-  scopes: ['user.read'],
-  authority: `https://login.microsoftonline.com/${tenantId}`,
-};
 
 const GoogleLoginModal = ({
   show,
@@ -47,7 +40,7 @@ const GoogleLoginModal = ({
   googleClassRoomLogin,
   googleClassRoomLoginFailure,
   googleClassRoomCourseTopics,
-  projectId,
+  projectId = 0,
   playlistId,
   activityId,
   selectedProjectPlaylistName,
@@ -58,6 +51,7 @@ const GoogleLoginModal = ({
   selectedPlaylistActivityName,
 }) => {
   const dataRedux = useSelector((state) => state);
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -72,6 +66,13 @@ const GoogleLoginModal = ({
   const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
 
+  const tenantId = activeOrganization?.msteam_tenant_id;
+  const config = {
+    appId: activeOrganization?.msteam_client_id,
+    redirectUri: `${domainName}org/currikistudio`,
+    scopes: ['user.read'],
+    authority: `https://login.microsoftonline.com/${tenantId}`,
+  };
   const publicClientApplication = new PublicClientApplication({
     auth: {
       clientId: config.appId,
@@ -254,10 +255,20 @@ const GoogleLoginModal = ({
   };
   const callPublishToMicorsoftTeam = (params) => {
     console.log('params', params);
-    if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
-      dispatch(publishActivitytoMicrosoftTeam(params.projectId));
-    } else if (params.values.course !== 'Create a new Course' && params.projectId) {
-      dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course));
+    if (params.projectId !== 0) {
+      if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
+        dispatch(publishActivitytoMicrosoftTeam(params.projectId, undefined, 'projects'));
+      } else if (params.values.course !== 'Create a new Course' && params.projectId) {
+        dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course, 'projects'));
+      }
+    } else {
+      if (params.activityId !== 0) {
+        if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
+          dispatch(publishActivitytoMicrosoftTeam(params.activityId, undefined, 'activities'));
+        } else if (params.values.course !== 'Create a new Course' && params.activityId) {
+          dispatch(publishActivitytoMicrosoftTeam(params.activityId, params.values.course, 'activities'));
+        }
+      }
     }
   };
 
@@ -278,7 +289,7 @@ const GoogleLoginModal = ({
         });
     } catch (err) {
       setShowForm(false);
-      console.log('err'.err);
+      console.log('err', err);
     }
   };
   return (
@@ -374,6 +385,8 @@ const GoogleLoginModal = ({
                       room: 'test',
                     }}
                     onSubmit={(values) => {
+                      setLoading(false);
+                      onHide();
                       if (isCanvas) {
                         callPublishToCanvas({ tokenTemp, values, projectId, playlistId, activityId });
                       } else if (sharetoMS) {
@@ -381,9 +394,6 @@ const GoogleLoginModal = ({
                       } else {
                         callPublishingMethod({ tokenTemp, values, projectId, playlistId, activityId });
                       }
-
-                      setLoading(false);
-                      onHide();
                     }}
                     // validate={(values) => {
                     //   const errors = {};

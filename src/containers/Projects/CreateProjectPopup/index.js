@@ -28,7 +28,7 @@ let imageValidation = '';
 const projectShare = true;
 
 const onSubmit = async (values, dispatch, props) => {
-  const { history, activity, project, searchView, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
+  const { history, thumbUrl, activity, project, searchView, fromTeam, addtoProject, selectedProjectstoAdd, selectedTeam, handleCloseProjectModal, currentOrganization } = props;
 
   const { name, description } = values;
   var result;
@@ -44,24 +44,19 @@ const onSubmit = async (values, dispatch, props) => {
     }).then(async (res) => {
       if (res.isConfirmed) {
         result = await dispatch(
-          project?.thumbUrl
-            ? createProjectAction({
-                name,
-                description,
-                thumb_url: project?.thumbUrl,
-                is_public: projectShare,
-                organization_visibility_type_id: 1,
-                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-              })
-            : createProjectAction({
-                name,
-                description,
-                is_public: projectShare,
-                organization_visibility_type_id: 1,
-                team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-                // eslint-disable-next-line max-len
-                thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-              }),
+          createProjectAction({
+            name,
+            description,
+            is_public: projectShare,
+            organization_visibility_type_id: 1,
+            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+            // eslint-disable-next-line max-len
+            thumb_url:
+              project?.thumbUrl ||
+              thumbUrl ||
+              project?.selectedProject.thumb_url ||
+              'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+          }),
         );
         if (result) {
           if (searchView) {
@@ -106,40 +101,44 @@ const onSubmit = async (values, dispatch, props) => {
     });
   } else {
     result = await dispatch(
-      project?.thumbUrl
-        ? createProjectAction({
-            name,
-            description,
-            thumb_url: project?.thumbUrl,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-          })
-        : createProjectAction({
-            name,
-            description,
-            is_public: projectShare,
-            organization_visibility_type_id: 1,
-            team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
-            // eslint-disable-next-line max-len
-            thumb_url: 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
-          }),
+      createProjectAction({
+        name,
+        description,
+        is_public: projectShare,
+        organization_visibility_type_id: 1,
+        team_id: fromTeam && selectedTeam ? selectedTeam?.id : null,
+        // eslint-disable-next-line max-len
+        thumb_url:
+          project?.thumbUrl ||
+          thumbUrl ||
+          project?.selectedProject.thumb_url ||
+          'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+      }),
     );
     if (handleCloseProjectModal) {
       handleCloseProjectModal(false);
     }
-    history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result.id}`);
+
+    if (result) {
+      history.push(`/org/${currentOrganization?.currentOrganization?.domain}/project/${result?.id}`);
+    }
   }
 };
-export const uploadThumb = async (e, permission, teamPermission, id, dispatch) => {
+export const uploadThumb = async (e, permission, teamPermission, id, dispatch, typeUpload = 'FILE_UPLOAD') => {
   const formData = new FormData();
   try {
-    formData.append('thumb', e.target.files[0]);
+    if (typeUpload === 'DRAG_DROP') {
+      formData.append('thumb', e[0]);
+    } else {
+      formData.append('thumb', e.target.files[0]);
+    }
+    // formData.append('thumb', e.target.files[0]);
     if (id) {
       formData.append('project_id', id);
     }
     imageValidation = '';
     const result = await dispatch(uploadProjectThumbnailAction(formData));
+
     return result;
   } catch (err) {
     Swal.fire({
@@ -155,7 +154,7 @@ export const uploadThumb = async (e, permission, teamPermission, id, dispatch) =
 };
 
 let CreateProjectPopup = (props) => {
-  const { isLoading, project, handleSubmit, addtoProject, handleCloseProjectModal, getProjectVisibilityTypes, vType } = props;
+  const { isLoading, testCasePropPermission, project, thumbUrl, handleSubmit, addtoProject, handleCloseProjectModal, getProjectVisibilityTypes, vType } = props;
 
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
@@ -184,8 +183,8 @@ let CreateProjectPopup = (props) => {
   }, [escFunction]);
   useMemo(() => {
     (async () => {
-      const { data } = await getProjectVisibilityTypes();
-      setVisibilityTypeArray(data.data);
+      const data = await getProjectVisibilityTypes();
+      setVisibilityTypeArray(data?.data?.data);
     })();
   }, [getProjectVisibilityTypes]);
 
@@ -198,8 +197,8 @@ let CreateProjectPopup = (props) => {
     }
   }, [mediaSources]);
 
-  return permission?.Project?.includes('project:create') ? (
-    <div className="create-program-wrapper">
+  return permission?.Project?.includes('project:create') || testCasePropPermission ? (
+    <div className="create-program-wrapper" data-testid="create-project-ui-test">
       <form className="create-playlist-form" onSubmit={handleSubmit} autoComplete="off">
         <div className="project-name">
           <Field
@@ -219,8 +218,14 @@ let CreateProjectPopup = (props) => {
         </div>
 
         <SelectImage
-          image={project.thumbUrl || 'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'}
+          image={
+            project?.thumbUrl ||
+            thumbUrl ||
+            project?.selectedProject.thumb_url ||
+            'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
+          }
           returnImage={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch)}
+          returnImageDragDrop={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch, 'DRAG_DROP')}
           returnImagePexel={(e) => dispatch(uploadProjectThumbnail(e))}
         />
         <div className="create-project-template-wrapper">
@@ -235,16 +240,6 @@ let CreateProjectPopup = (props) => {
       You are not authorized to access this.
     </Alert>
   );
-};
-
-CreateProjectPopup.propTypes = {
-  project: PropTypes.object.isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  handleCloseProjectModal: PropTypes.func.isRequired,
-  showCreateProjectModal: PropTypes.func.isRequired,
-  getProjectVisibilityTypes: PropTypes.func.isRequired,
-  vType: PropTypes.string,
 };
 
 CreateProjectPopup = reduxForm({

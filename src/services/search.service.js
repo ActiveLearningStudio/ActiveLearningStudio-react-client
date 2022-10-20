@@ -253,9 +253,9 @@ const createNewClasstoMicrosoftTeam = (playlistName) =>
       errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
-const publishActivitytoMSteam = (projectId, class_id) =>
+const publishActivitytoMSteam = (publishTypeId, class_id, publishType) =>
   httpService
-    .post(`/${apiVersion}/microsoft-team/projects/${projectId}/publish`, {
+    .post(`/${apiVersion}/microsoft-team/${publishType}/${publishTypeId}/publish`, {
       classId: class_id,
     })
     .then(({ data }) => data)

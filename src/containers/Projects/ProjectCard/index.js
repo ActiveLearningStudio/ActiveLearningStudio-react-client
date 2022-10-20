@@ -36,7 +36,7 @@ const ProjectCard = (props) => {
             <div
               className="myproject-card-top"
               style={{
-                backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                backgroundImage: !project.thumb_url.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
               }}
             >
               <div className="myproject-card-dropdown">

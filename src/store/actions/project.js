@@ -43,7 +43,7 @@ export const createProjectAction = (data) => async (dispatch) => {
     //   draggable: true,
     //   progress: undefined,
     // });
-    const { project } = await projectService.create(data, activeOrganization.id);
+    const { project } = await projectService.create(data, activeOrganization?.id);
     dispatch({
       type: actionTypes.CREATE_PROJECT_SUCCESS,
       payload: { project },
@@ -210,6 +210,15 @@ export const uploadProjectThumbnailAction = (formData) => async (dispatch) => {
   dispatch({
     type: actionTypes.UPLOAD_PROJECT_THUMBNAIL,
     payload: { thumbUrl },
+  });
+  toast.success('Project Edited', {
+    position: 'top-center',
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: true,
+    progress: undefined,
+    autoClose: 2500,
   });
   return thumbUrl;
 };

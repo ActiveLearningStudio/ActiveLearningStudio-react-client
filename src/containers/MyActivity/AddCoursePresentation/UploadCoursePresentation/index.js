@@ -14,7 +14,7 @@ const UploadCoursePresentation = ({ setEnableDescribeBtn, setLoading }) => {
     <div>
       <div className='row'>
         <div className='col'>
-          <FileUploadDnd handleChange={handleFileChange}/>
+          <FileUploadDnd handleChange={handleFileChange} acceptFormats=".pdf"/>
         </div>
         <div className="col">
           <FilePreviewAndStore file={selectedFile} setEnableDescribeBtn={setEnableDescribeBtn} setLoading={setLoading}/>

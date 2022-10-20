@@ -96,6 +96,15 @@ const updateOrganization = (organizationData, id) =>
       return Promise.reject(err.response.data);
     });
 
+const updateOrganizationGcrSettings = (organizationData, id) =>
+  httpService
+    .post(`/${apiVersion}/suborganizations/${id}/update-class-credentails`, organizationData)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
 const upload = (id, formData) =>
   httpService
     .post(`/${apiVersion}/suborganizations/${id}/upload-thumb`, formData, {
@@ -251,4 +260,5 @@ export default {
   searchUserInView,
   searchOrganization,
   getOrgsForDeepLinking,
+  updateOrganizationGcrSettings,
 };

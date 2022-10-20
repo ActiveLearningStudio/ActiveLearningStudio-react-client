@@ -43,7 +43,7 @@ import {
   showDescribeActivityAction,
   showBuildActivityAction,
 } from 'store/actions/resource';
-import { shareToCanvas, googleShare } from 'store/actions/gapi';
+import { shareToCanvas, googleShare, msTeamShare } from 'store/actions/gapi';
 import {
   showCreateProjectModalAction,
   loadProjectAction,
@@ -53,6 +53,7 @@ import {
   visibilityTypes,
   updateProjectAction,
   clearSelectedProject,
+  uploadProjectThumbnailAction,
 } from 'store/actions/project';
 import { closeSafariMontageToolAction } from 'store/actions/LMS/genericLMS';
 // import Footer from 'components/Footer';
@@ -456,6 +457,44 @@ function PlaylistsPage(props) {
     );
   };
 
+  const uploadThumbUpdate = async (e, permission, teamPermission, id, dispatch, typeUpload = 'FILE_UPLOAD') => {
+    const formData = new FormData();
+    try {
+      if (typeUpload === 'DRAG_DROP') {
+        formData.append('thumb', e[0]);
+      } else {
+        formData.append('thumb', e.target.files[0]);
+      }
+      // formData.append('thumb', e.target.files[0]);
+      if (id) {
+        formData.append('project_id', id);
+      }
+
+      const result = await dispatch(uploadProjectThumbnailAction(formData));
+      dispatch(
+        updateProjectAction(selectedProject?.id, {
+          name: selectedProject.name,
+          description: selectedProject.description,
+          thumb_url: result,
+          organization_visibility_type_id: selectedProject.organization_visibility_type_id || 1,
+        }),
+      );
+
+      console.log('result', result);
+      return result;
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        // eslint-disable-next-line max-len
+        text:
+          permission?.Project?.includes('project:upload-thumb') || teamPermission?.Team?.includes('team:view-project')
+            ? 'Image upload failed, kindly try again'
+            : 'You do not have permission to upload image',
+      });
+    }
+  };
+
   const handleShow = () => {
     setShow(true); //! state.show
   };
@@ -463,6 +502,7 @@ function PlaylistsPage(props) {
   const handleClose = () => {
     dispatch(shareToCanvas(false));
     dispatch(googleShare(false));
+    dispatch(msTeamShare(false));
     setShow(false);
     setprojectPlaylistPublishtoCanvas(false);
   };
@@ -575,7 +615,7 @@ function PlaylistsPage(props) {
                               <div
                                 title="project-img"
                                 style={{
-                                  backgroundImage: selectedProject.thumb_url?.includes('pexels.com')
+                                  backgroundImage: !selectedProject.thumb_url?.includes('/storage/')
                                     ? `url(${selectedProject.thumb_url})`
                                     : `url(${global.config.resourceUrl}${selectedProject.thumb_url})`,
                                 }}
@@ -587,12 +627,13 @@ function PlaylistsPage(props) {
                                   : permission?.Project?.includes('project:upload-thumb')) && (
                                   <SelectImage
                                     image={
-                                      selectedProject.thumb_url?.includes('pexels.com')
+                                      !selectedProject.thumb_url?.includes('/storage/')
                                         ? selectedProject.thumb_url
-                                        : global.config.resourceUrl + selectedProject.thumb_url ||
+                                        : selectedProject.thumb_url ||
                                           'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280'
                                     }
-                                    returnImage={(e) => uploadThumb(e)}
+                                    // returnImage={(e) => uploadThumb(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch)}
+                                    returnImage={(e) => uploadThumbUpdate(e, permission, teamPermission, projectState?.selectedProject?.id, dispatch)}
                                     returnImagePexel={(e) => setUploadImage(e)}
                                     containerType="Project"
                                   />
@@ -613,7 +654,7 @@ function PlaylistsPage(props) {
                                   <div
                                     style={{
                                       backgroundImage: `url(${
-                                        selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                        selectedProject.thumb_url && selectedProject.thumb_url?.includes('/storage/')
                                           ? selectedProject.thumb_url
                                           : global.config.resourceUrl + selectedProject.thumb_url
                                       })`,
@@ -624,7 +665,7 @@ function PlaylistsPage(props) {
                                     // alt="project-img"
                                     className="container-image"
                                     // src={
-                                    //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('pexels.com')
+                                    //   selectedProject.thumb_url && selectedProject.thumb_url?.includes('/storage/')
                                     //     ? selectedProject.thumb_url
                                     //     : global.config.resourceUrl + selectedProject.thumb_url
                                     // }

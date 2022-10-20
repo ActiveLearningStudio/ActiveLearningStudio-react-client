@@ -15,7 +15,7 @@ import SharePreviewPopup from 'components/SharePreviewPopup';
 import indActivityService from 'services/indActivities.service';
 import { visibilityTypes } from 'store/actions/project';
 import ActivityCard from 'components/ActivityCard';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
 import ShareLinkSmSvg from 'iconLibrary/dropDown/ShareLinkSmSvg';
 import RightAngleSmSvg from 'iconLibrary/dropDown/RightAngleSmSvg';
 import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
@@ -532,6 +532,17 @@ const DropDownEdit = ({
                   }}
                 >
                   <a>Google Classroom</a>
+                </li>
+                <li
+                  onClick={() => {
+                    handleShow();
+                    setSelectedActivityId(data.id);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
                 </li>
               </ul>
             </li>
