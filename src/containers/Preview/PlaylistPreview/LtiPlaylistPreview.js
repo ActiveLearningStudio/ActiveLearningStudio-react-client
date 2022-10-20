@@ -169,7 +169,7 @@ function LtiPlaylistPreview(props) {
                                 className="thumbnail"
                                 style={{
                                   backgroundImage:
-                                    !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                    !!data.thumb_url && !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
                               <p>{data.title}</p>
@@ -189,7 +189,7 @@ function LtiPlaylistPreview(props) {
                           className="thumbnail"
                           style={{
                             backgroundImage:
-                              !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                              !!data.thumb_url && !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                           }}
                         />
                       </Link>

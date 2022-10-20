@@ -29,7 +29,7 @@ const SelectImage = (props) => {
       });
     }
   }, [mediaSources]);
-  console.log('images', image);
+
   return (
     <>
       <div className="curriki-image-update-util">
@@ -38,7 +38,7 @@ const SelectImage = (props) => {
           <div className="box-section">
             <img
               style={{
-                backgroundImage: image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
+                backgroundImage: !image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
               }}
               className="thumbnail"
             />
@@ -52,22 +52,6 @@ const SelectImage = (props) => {
             </div>
           </div>
         </DragDropImage>
-        {/* <div className="box-section">
-          <img
-            style={{
-              backgroundImage: image.includes('/storage/') ? `url(${global.config.resourceUrl}${image})` : `url(${image})`,
-            }}
-            className="thumbnail"
-          />
-
-          <div className="overlay">
-            <img className="overlay-drag-image" src={dragImage} alt="drag" />
-            <h6 className="overlay-drag-image-title">Drag & drop Image</h6>
-            <h6 className="overlay-drag-image-or">Or</h6>
-          
-            <Buttons className="overlay-drag-brows-btn" text="Browse" onClick={() => setShow(true)} />
-          </div>
-        </div> */}
       </div>
       <Modal
         show={show}
