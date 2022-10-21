@@ -22,9 +22,8 @@ const ExistingActivityCard = (props) => {
       </div>
       <div className="col-7">
         <h3>
-          <a href={`/activity/${activity.id}/preview`} target="_blank" rel="noreferrer">
-            {activity.title}
-          </a>
+          {activity.location && (<a href={`/activity/${activity.id}/preview`} target="_blank" rel="noreferrer">{activity.title}</a>)}
+          {!activity.location && (<a href={`/activity/${activity.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">{activity.title}</a>)}
         </h3>
         <p>{activity.description}</p>
         <ul>
