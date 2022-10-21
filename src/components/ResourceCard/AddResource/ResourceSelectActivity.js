@@ -41,7 +41,7 @@ let ResourceSelectActivity = (props) => {
       setActivities(data);
       saveSearchKey(e.target.value.toLowerCase());
     },
-    [saveSearchKey, searchActivities]
+    [saveSearchKey, searchActivities],
   );
 
   // useEffect(() => {
@@ -85,7 +85,7 @@ let ResourceSelectActivity = (props) => {
             <div
               className="activity-img"
               style={{
-                backgroundImage: activity.image.includes('pexels.com') ? `url(${activity.image})` : `url(${global.config.resourceUrl}${activity.image})`,
+                backgroundImage: !activity.image.includes('/storage/') ? `url(${activity.image})` : `url(${global.config.resourceUrl}${activity.image})`,
               }}
             />
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { USER_TOKEN_KEY } from '../constants';
 
-const baseURL = window.__RUNTIME_CONFIG__.REACT_APP_API_URL;
+const baseURL = window.__RUNTIME_CONFIG__?.REACT_APP_API_URL;
 
 const http = axios.create({ baseURL: `${baseURL}/` });
 

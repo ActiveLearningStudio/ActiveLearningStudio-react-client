@@ -77,7 +77,7 @@ const ActivityCard = (props) => {
               className="sharedActivityImage"
               style={{
                 backgroundImage:
-                  !!activity.thumb_url && activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                  !!activity.thumb_url && !activity.thumb_url.includes('/storage/') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
               }}
             />
             <div className="textSharedActivity">{activity.metadata ? activity.metadata.title : activity.title}</div>
@@ -99,7 +99,7 @@ const ActivityCard = (props) => {
                   className="playimg playimage-update"
                   style={{
                     backgroundImage:
-                      !!activity.thumb_url && activity.thumb_url.includes('pexels.com') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                      !!activity.thumb_url && !activity.thumb_url.includes('/storage/') ? `url(${activity.thumb_url})` : `url(${global.config.resourceUrl}${activity.thumb_url})`,
                   }}
                 />
                 <div className=" plydet-update" id="plydet-update-id">

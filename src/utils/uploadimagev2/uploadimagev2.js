@@ -76,7 +76,7 @@ const UploadImageV2 = ({ className, setUploadImageStatus, formRef, thumb_url, se
   //       style={{
   //         backgroundImage: !uploadImage
   //           ? `url(${ActivityDefaultImg})`
-  //           : uploadImage.includes('pexels.com')
+  //           : uploadImage.includes('/storage/')
   //           ? `url(${uploadImage})`
   //           : `url(${global.config.resourceUrl}${uploadImage})`,
   //       }}

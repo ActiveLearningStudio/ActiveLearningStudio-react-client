@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,9 +22,7 @@ function ProjectList(props) {
       {shared ? (
         <Alert variant="info">
           A list of your
-          <strong>shared</strong>
-          {' '}
-          shared projects.
+          <strong>shared</strong> shared projects.
         </Alert>
       ) : (
         <Alert variant="info">A list of all your projects</Alert>
@@ -48,39 +47,42 @@ function ProjectList(props) {
             <div className="row">
               <div className="col p-4">
                 <input type="text" placeholder="Search" onChange={(e) => setQuery(e.currentTarget.value)} />
-                <button type="button" className="btn src-btn mt-4">Search</button>
+                <button type="button" className="btn src-btn mt-4">
+                  Search
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-8">
-          {projects.length > 0 && projects.map((project) => (
-            <div className="row m-4 pb-4 project-row">
-              <div className="col-2 img-col">
-                {project.thumb_url ? (
-                  <img src={project.thumb_url.includes('pexels.com') ? project.thumb_url : global.config.resourceUrl + project.thumb_url} alt="" />
-                ) : (
-                  <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
-                )}
-              </div>
+          {projects.length > 0 &&
+            projects.map((project) => (
+              <div className="row m-4 pb-4 project-row">
+                <div className="col-2 img-col">
+                  {project.thumb_url ? (
+                    <img src={!project.thumb_url.includes('/storage/') ? project.thumb_url : global.config.resourceUrl + project.thumb_url} alt="" />
+                  ) : (
+                    <img src="https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280" alt="" />
+                  )}
+                </div>
 
-              <div className="col">
-                <h2>
+                <div className="col">
+                  <h2>
+                    <a href={`/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
+                      {project.name}
+                    </a>
+                  </h2>
+                  <p>{project.description}</p>
+                </div>
+
+                <div className="col-2 text-right">
                   <a href={`/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
-                    {project.name}
+                    <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
                   </a>
-                </h2>
-                <p>{project.description}</p>
+                </div>
               </div>
-
-              <div className="col-2 text-right">
-                <a href={`/org/${organization.currentOrganization?.domain}/project/${project.id}`} target="_blank" rel="noreferrer">
-                  <FontAwesomeIcon className="project-go-icon" icon="arrow-right" />
-                </a>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
@@ -98,7 +100,7 @@ ProjectList.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  projects: (state.dashboard) ? state.dashboard.projects : [],
+  projects: state.dashboard ? state.dashboard.projects : [],
 });
 
 const mapDispatchToProps = (dispatch) => ({
