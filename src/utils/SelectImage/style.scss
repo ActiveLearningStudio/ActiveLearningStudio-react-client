@@ -257,11 +257,11 @@
 .filter_smithsonian_section {
   display: flex;
   .filter_smithsonian {
-    width: 25%;
+    width: 174px;
   }
   .thumbnails-img-box-pexels-smithsonian {
-    margin-left: 24px;
-    width: 75%;
+    margin-left: 16px;
+    // width: 75%;
   }
 
   // SmithsonianFilter
@@ -270,10 +270,11 @@
       margin-top: 16px;
 
       .list-item-keys {
-        padding: 5px 10px;
+        padding: 5px 0px;
 
         span {
-          margin: 0 11px;
+          // margin: 0 11px;
+          margin-left: 6px;
           box-shadow: 0 0 2px #0000000d;
           opacity: 1;
           font-family: $rubik;
@@ -301,7 +302,7 @@
       }
       .card {
         box-shadow: 0px 1px 6px 1px rgba(8, 72, 146, 0.16);
-        margin-top: 16px;
+        margin-top: 8px;
       }
       .card-header {
         padding: 14px 24px;
@@ -325,12 +326,13 @@
         .card-header {
           padding: 0px;
         }
-        padding: 10px 8px;
+        width: 174px;
+        padding: 10px 14px 8px 8px;
         border-radius: 4px;
       }
       .card-detail-list-options {
         margin-top: 4px;
-        padding: 8px 10px 8px 8px;
+        padding: 8px 8px 8px 8px;
         border-radius: 4px;
         .card-detail-list-text-icon {
           display: flex;
@@ -341,6 +343,37 @@
         }
         .card-body {
           padding: 0;
+        }
+
+        // Search box
+        .card-detail-list-search-icon {
+          width: 100%;
+          margin-bottom: 16px;
+          .card-detail-list-search {
+            // width: 224px;
+            height: 32px;
+            padding: 6px 40px 6px 8px;
+            border-bottom: 2px solid #515151;
+            position: relative;
+
+            input {
+              font-family: $rubik;
+              width: 100%;
+              border: none;
+              outline: none;
+              font-weight: 400;
+              font-size: 12px;
+              line-height: 16px;
+              color: #515151;
+            }
+          }
+          .card-detail-list-icon {
+            position: absolute;
+            top: 12px;
+            right: 13px;
+            width: 24px;
+            height: 24px;
+          }
         }
       }
     }
