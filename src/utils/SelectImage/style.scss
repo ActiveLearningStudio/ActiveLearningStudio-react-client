@@ -334,6 +334,8 @@
         margin-top: 4px;
         padding: 8px 8px 8px 8px;
         border-radius: 4px;
+        max-height: 400px;
+        overflow-y: scroll;
         .card-detail-list-text-icon {
           display: flex;
 

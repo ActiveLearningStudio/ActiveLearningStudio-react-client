@@ -17,6 +17,8 @@ function Pexels(props) {
   const [nextApi, setNextApi] = useState('');
   const [smythCount, setSmythCount] = useState(0);
 
+  const [smithsonianQuery, setSmithsonianQuery] = useState([]);
+
   const { returnImagePexel, handleClose, smythsonian, loader, setLoader, formRef } = props;
 
   useEffect(() => {
@@ -51,6 +53,24 @@ function Pexels(props) {
       });
     }
   }, [smythCount]);
+
+  useEffect(() => {
+    console.log('smithsonianQuery', smithsonianQuery);
+    let queryForSearchImage = '';
+    smithsonianQuery?.map((query) => {
+      if (query.data.length > 0) {
+        queryForSearchImage += ' AND (';
+        query?.data?.map((_sub, index) => {
+          queryForSearchImage += `${query.category}:"${_sub}"`;
+          if (query?.data?.length - 1 != index) {
+            queryForSearchImage += ' OR ';
+          }
+        });
+        queryForSearchImage += ')';
+      }
+    });
+    console.log('queryForSearchImage', queryForSearchImage);
+  }, [smithsonianQuery]);
 
   return (
     <>
@@ -131,7 +151,7 @@ function Pexels(props) {
       <div className="filter_smithsonian_section">
         {smythsonian && (
           <div className="filter_smithsonian">
-            <SmithsonianFilter />
+            <SmithsonianFilter setSmithsonianQuery={setSmithsonianQuery} />
           </div>
         )}
         <div className={`thumbnails-img-box-pexels ${smythsonian && 'thumbnails-img-box-pexels-smithsonian'}`}>

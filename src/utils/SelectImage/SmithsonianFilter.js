@@ -1,79 +1,16 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
 import React, { useState, useEffect } from 'react';
-import { Accordion, Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import { Accordion } from 'react-bootstrap';
+import resourceService from 'services/resource.service';
+import SmithsonianAccordion from './SmithsonianAccordion';
 
-const dataJson = [
-  {
-    value: 'Culture',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Data',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Media Type',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Museum/Unit',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Place',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Resource Type',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-  {
-    value: 'Topic',
-    data: [
-      { id: 1, name: 'African American Museum (22,640)' },
-      { id: 2, name: 'African Art Museum (70,441)' },
-      { id: 3, name: 'Air and Space Museum (48,084)' },
-      { id: 4, name: 'American Art Museum (87,497)' },
-    ],
-  },
-];
-const SmithsonianFilter = () => {
+const SmithsonianFilter = ({ setSmithsonianQuery }) => {
   const [toggleStates, setToggleStates] = useState({
     culture: true,
     date: false,
@@ -83,6 +20,36 @@ const SmithsonianFilter = () => {
     object_type: false,
     topic: false,
   });
+  const [toggleStatesV2, setToggleStatesV2] = useState([
+    {
+      key: 'culture',
+      status: true,
+    },
+    {
+      key: 'date',
+      status: false,
+    },
+    {
+      key: 'online_media_type',
+      status: false,
+    },
+    {
+      key: 'data_source',
+      status: false,
+    },
+    {
+      key: 'place',
+      status: false,
+    },
+    {
+      key: 'object_type',
+      status: false,
+    },
+    {
+      key: 'topic',
+      status: true,
+    },
+  ]);
   const [activeCulture, setActiveCulture] = useState([]);
   const [activeDate, setActiveDate] = useState([]);
   const [activeMediaType, setActiveMediaType] = useState([]);
@@ -91,7 +58,7 @@ const SmithsonianFilter = () => {
   const [activeResourceType, setActiveResourceType] = useState([]);
   const [activeTopic, setActiveTopic] = useState([]);
 
-  const [searchValue, setSearchValue] = useState();
+  // const [searchValue, setSearchValue] = useState();
 
   const [cultures, setCulture] = useState([]);
   const [dates, setDates] = useState([]);
@@ -100,656 +67,265 @@ const SmithsonianFilter = () => {
   const [places, setPlaces] = useState([]);
   const [resourceTypes, setResourceTypes] = useState([]);
   const [topics, setTopics] = useState([]);
+  const [filterForSearch, setFilterForSearch] = useState([]);
+  const getSmithsonianList = async (category) => {
+    const data = await resourceService.smithsonianList({ category });
+    if (data?.response.terms.length > 0) {
+      return data?.response.terms;
+    }
+    return [];
+  };
+
+  // Filter Selection
+  useEffect(() => {
+    // For culture
+
+    if (activeCulture.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'culture');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'culture') {
+              filterData.data = activeCulture;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'culture', data: activeCulture }]);
+      }
+    }
+
+    // else {
+    //   setFilterForSearch(filterForSearch.filter((filterData) => filterData?.category !== 'culture' && filterData));
+    // }
+
+    // date
+
+    if (activeDate.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'date');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'date') {
+              filterData.data = activeDate;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'date', data: activeDate }]);
+      }
+    }
+
+    // online_media_type
+
+    if (activeMediaType.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'online_media_type');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'online_media_type') {
+              filterData.data = activeMediaType;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'online_media_type', data: activeMediaType }]);
+      }
+    }
+
+    // data_source
+
+    if (activeMuseumUnit.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'data_source');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'data_source') {
+              filterData.data = activeMuseumUnit;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'data_source', data: activeMuseumUnit }]);
+      }
+    }
+    // place
+
+    if (activePlace.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'place');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'place') {
+              filterData.data = activePlace;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'place', data: activePlace }]);
+      }
+    }
+    // object_type
+
+    if (activeResourceType.length > 0) {
+      const findIndex = filterForSearch.findIndex((_data) => _data.category === 'object_type');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'object_type') {
+              filterData.data = activeResourceType;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'object_type', data: activeResourceType }]);
+      }
+    }
+    // topic
+
+    if (activeResourceType.length > 0) {
+      const findIndex = activeTopic.findIndex((_data) => _data.category === 'topic');
+      if (findIndex >= 0) {
+        setFilterForSearch(
+          filterForSearch.map((filterData) => {
+            if (filterData?.category === 'topic') {
+              filterData.data = activeTopic;
+            }
+            return filterData;
+          }),
+        );
+      } else {
+        setFilterForSearch([...filterForSearch, { category: 'topic', data: activeTopic }]);
+      }
+    }
+    setSmithsonianQuery(filterForSearch);
+    console.log('filerter:', filterForSearch);
+  }, [activeCulture, activeDate, activeMediaType, activeMuseumUnit, activePlace, activeResourceType, activeTopic]);
 
   useEffect(() => {
-    setCulture(dataJson[0].data);
-    setDates(dataJson[1].data);
-    setMediaTypes(dataJson[2].data);
-    setMuseumUnits(dataJson[3].data);
-    setPlaces(dataJson[4].data);
-    setResourceTypes(dataJson[5].data);
-    setTopics(dataJson[6].data);
+    async function fetchMyAPI() {
+      const data = await getSmithsonianList('culture');
+      setCulture(data);
+    }
+
+    fetchMyAPI();
+
+    // setCulture(dataJson[0].data);
+    setDates([]);
+    setMediaTypes([]);
+    setMuseumUnits([]);
+    setPlaces([]);
+    setResourceTypes([]);
+    setTopics([]);
   }, []);
 
   return (
     <div className="smithsonian_filter_menu_detail">
       <div className="refine-search">
         <Accordion defaultActiveKey="0">
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="0"
-                onClick={() => {
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: !toggleStates.culture,
-                    date: false,
-                    online_media_type: false,
-                    data_source: false,
-                    place: false,
-                    object_type: false,
-                    topic: false,
-                  });
-                  setCulture(dataJson[0].data);
-                  setSearchValue('');
-                }}
-              >
-                Culture
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.culture ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.culture && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setCulture(dataJson[0].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setCulture(dataJson[0].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {cultures?.length !== 0 &&
-                      cultures?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeCulture.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveCulture(
-                                  activeCulture.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveCulture(activeCulture.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveCulture([...activeCulture, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeCulture.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Culture"
+            category="culture"
+            activeTab="culture"
+            eventKey="0"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setCulture}
+            smithsonianAccordionData={cultures}
+            setActiveSmithsonianAccordion={setActiveCulture}
+            activeSmithsonianAccordion={activeCulture}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="1"
-                onClick={() => {
-                  setSearchValue('');
-                  setDates(dataJson[1].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: !toggleStates.date,
-                    online_media_type: false,
-                    data_source: false,
-                    place: false,
-                    object_type: false,
-                    topic: false,
-                  });
-                }}
-              >
-                Date
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.data ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.date && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="1">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setDates(dataJson[1].data.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setDates(dataJson[1].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {dates?.length !== 0 &&
-                      dates?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeDate.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveDate(
-                                  activeDate.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveDate(activeDate.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveDate([...activeDate, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeDate.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Date"
+            category="date"
+            activeTab="date"
+            eventKey="1"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setDates}
+            smithsonianAccordionData={dates}
+            setActiveSmithsonianAccordion={setActiveDate}
+            activeSmithsonianAccordion={activeDate}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="2"
-                onClick={() => {
-                  setSearchValue('');
-                  setMediaTypes(dataJson[2].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: false,
-                    online_media_type: !toggleStates.online_media_type,
-                    data_source: false,
-                    place: false,
-                    object_type: false,
-                    topic: false,
-                  });
-                }}
-              >
-                Media Type
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.online_media_type ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.online_media_type && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="2">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setMediaTypes(dataJson[2].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setMediaTypes(dataJson[2].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {mediaTypes?.length !== 0 &&
-                      mediaTypes?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeMediaType.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveMediaType(
-                                  activeMediaType.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveMediaType(activeMediaType.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveMediaType([...activeMediaType, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeMediaType.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Media Type"
+            category="online_media_type"
+            activeTab="online_media_type"
+            eventKey="2"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setMediaTypes}
+            smithsonianAccordionData={mediaTypes}
+            setActiveSmithsonianAccordion={setActiveMediaType}
+            activeSmithsonianAccordion={activeMediaType}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="3"
-                onClick={() => {
-                  setSearchValue('');
-                  setMuseumUnits(dataJson[3].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: false,
-                    online_media_type: false,
-                    data_source: !toggleStates.data_source,
-                    place: false,
-                    object_type: false,
-                    topic: false,
-                  });
-                }}
-              >
-                Museum/Unit
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.data_source ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.data_source && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="3">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setMuseumUnits(dataJson[3].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setMuseumUnits(dataJson[3].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {museumUnits?.length !== 0 &&
-                      museumUnits?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeMuseumUnit.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveMuseumUnit(
-                                  activeMuseumUnit.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveMuseumUnit(activeMuseumUnit.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveMuseumUnit([...activeMuseumUnit, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeMuseumUnit.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Museum/Unit"
+            category="data_source"
+            activeTab="data_source"
+            eventKey="3"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setMuseumUnits}
+            smithsonianAccordionData={museumUnits}
+            setActiveSmithsonianAccordion={setActiveMuseumUnit}
+            activeSmithsonianAccordion={activeMuseumUnit}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="4"
-                onClick={() => {
-                  setSearchValue('');
-                  setPlaces(dataJson[4].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: false,
-                    online_media_type: false,
-                    data_source: false,
-                    place: !toggleStates.place,
-                    object_type: false,
-                    topic: false,
-                  });
-                }}
-              >
-                Place
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.place ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.place && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="4">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setPlaces(dataJson[4].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setPlaces(dataJson[4].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {places?.length !== 0 &&
-                      places?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activePlace.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActivePlace(
-                                  activePlace.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActivePlace(activePlace.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActivePlace([...activePlace, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activePlace.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Place"
+            category="place"
+            activeTab="place"
+            eventKey="4"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setPlaces}
+            smithsonianAccordionData={places}
+            setActiveSmithsonianAccordion={setActivePlace}
+            activeSmithsonianAccordion={activePlace}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="5"
-                onClick={() => {
-                  setSearchValue('');
-                  setResourceTypes(dataJson[5].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: false,
-                    online_media_type: false,
-                    data_source: false,
-                    place: false,
-                    object_type: !toggleStates.object_type,
-                    topic: false,
-                  });
-                }}
-              >
-                Resource Type
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.object_type ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.object_type && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="5">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setResourceTypes(dataJson[5].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setResourceTypes(dataJson[5].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {resourceTypes?.length !== 0 &&
-                      resourceTypes?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeResourceType.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveResourceType(
-                                  activeResourceType.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveResourceType(activeResourceType.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveResourceType([...activeResourceType, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeResourceType.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Resource Type"
+            category="object_type"
+            activeTab="object_type"
+            eventKey="5"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setResourceTypes}
+            smithsonianAccordionData={resourceTypes}
+            setActiveSmithsonianAccordion={setActiveResourceType}
+            activeSmithsonianAccordion={activeResourceType}
+          />
 
-          <div>
-            <Card className="card-detail-header">
-              <Accordion.Toggle
-                as={Card.Header}
-                eventKey="6"
-                onClick={() => {
-                  setSearchValue('');
-                  setResourceTypes(dataJson[6].data);
-                  setToggleStates({
-                    ...toggleStates,
-                    culture: false,
-                    date: false,
-                    online_media_type: false,
-                    data_source: false,
-                    place: false,
-                    object_type: false,
-                    topic: !toggleStates.topic,
-                  });
-                }}
-              >
-                Topic
-                <FontAwesomeIcon className="ml-2" icon={toggleStates.topic ? 'chevron-up' : 'chevron-down'} />
-              </Accordion.Toggle>
-            </Card>
-            {toggleStates.topic && (
-              <Card className="card-detail-list-options">
-                <Accordion.Collapse eventKey="6">
-                  <Card.Body>
-                    <div className="card-detail-list-search-icon">
-                      <div className="card-detail-list-search">
-                        <input
-                          type="text"
-                          placeholder="Search..."
-                          value={searchValue}
-                          onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            if (e.target.value.length > 3) {
-                              setTopics(dataJson[6].data?.filter((search) => search.name.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                            }
-                            if (e.target.value.length < 1) {
-                              setTopics(dataJson[6].data);
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="card-detail-list-icon">
-                        <SearchInputMdSvg primaryColor="#515151" />
-                      </div>
-                    </div>
-                    {/* cultures?.length !== 0 && */}
-                    {topics?.length !== 0 &&
-                      topics?.map((data) => (
-                        <div
-                          className="list-item-keys"
-                          key={data.id}
-                          value={data.id}
-                          onClick={() => {
-                            if (activeTopic.includes(data.id)) {
-                              if (data.subject === 'Career & Technical Education') {
-                                setActiveTopic(
-                                  activeTopic.filter((index) => {
-                                    if (index === 'Career & Technical Education' || index === 'Career and Technical Education') {
-                                      return false;
-                                    }
-                                    return true;
-                                  }),
-                                );
-                              } else {
-                                setActiveTopic(activeTopic.filter((index) => index !== data.id));
-                              }
-                            } else {
-                              setActiveTopic([...activeTopic, data.id]);
-                            }
-                          }}
-                        >
-                          <div className="card-detail-list-text-icon">
-                            {activeTopic.includes(data.id) ? (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
-                            ) : (
-                              <FontAwesomeIcon className="card-detail-list-icon" icon="square" />
-                            )}
-                            <span>{data.name}</span>
-                          </div>
-                        </div>
-                      ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            )}
-          </div>
+          <SmithsonianAccordion
+            accordionTitle="Topic"
+            category="topic"
+            activeTab="topic"
+            eventKey="6"
+            toggleStatesV2={toggleStatesV2}
+            setToggleStatesV2={setToggleStatesV2}
+            getSmithsonianList={getSmithsonianList}
+            setSmithsonianAccordionData={setTopics}
+            smithsonianAccordionData={topics}
+            setActiveSmithsonianAccordion={setActiveTopic}
+            activeSmithsonianAccordion={activeTopic}
+          />
         </Accordion>
       </div>
     </div>
