@@ -16,7 +16,7 @@ const Tabview = (props) => {
       <Tabs className="tabs" defaultActiveKey="profile" id="uncontrolled-tab-example">
         <Tab eventKey="profile" title="Path" style={{ margin: '0' }}>
           <div className="tab-text">
-            <p>This is the path of the component,if you want to go this directory then follow this path onto your text editor.</p>
+            <p>This is the path of the component,if you want to go this directory then follow this path into your text editor.</p>
             <h4 className="url-header">{path}</h4>
           </div>
         </Tab>
