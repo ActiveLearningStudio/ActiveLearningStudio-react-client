@@ -32,6 +32,7 @@ import {
   createNewCoursetoCanvas,
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
+import share from 'store/reducers/share';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 
 const GoogleLoginModal = ({
@@ -52,6 +53,7 @@ const GoogleLoginModal = ({
 }) => {
   const dataRedux = useSelector((state) => state);
   const { activeOrganization } = useSelector((state) => state.organization);
+  const { share } = dataRedux;
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -112,7 +114,7 @@ const GoogleLoginModal = ({
     if (dataRedux?.share.isCanvas) {
       setisCanvas(true);
       setShowForm(true);
-      setcanvasSettingId(dataRedux?.share?.shareVendors[0]);
+      setcanvasSettingId(dataRedux?.share?.shareVendors?.filter((d) => d.site_name === share?.publishingLms?.site_name)?.[0]);
     } else {
       setisCanvas(false);
     }

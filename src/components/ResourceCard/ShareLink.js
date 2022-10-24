@@ -8,7 +8,7 @@ import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 import { publishProjectPlaylistToCanvas } from 'store/actions/share';
-import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, publishLmsSettings } from 'store/actions/gapi';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 
@@ -88,6 +88,7 @@ function ShareLink(props) {
                     onClick={async () => {
                       if (data.lms_name === 'canvas') {
                         dispatch(shareToCanvas(true));
+                        dispatch(publishLmsSettings(data));
                         setprojectPlaylistPublishtoCanvas(true);
                         setProjectPlaylistId(playlistId);
                         setProjectId(projectId);

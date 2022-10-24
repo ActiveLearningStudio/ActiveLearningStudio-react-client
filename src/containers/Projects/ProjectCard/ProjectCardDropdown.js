@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getProjectId, googleShare, shareToCanvas, msTeamShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
 import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
@@ -211,6 +211,7 @@ const ProjectCardDropdown = (props) => {
                                 handleShow();
                                 dispatch(googleShare(true));
                                 dispatch(shareToCanvas(true));
+                                dispatch(publishLmsSettings(data));
                                 setProjectId(props.project.id);
                                 setcanvasProjectName(project.name);
                               } else {
