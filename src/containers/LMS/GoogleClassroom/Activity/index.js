@@ -195,6 +195,9 @@ const Activity = (props) => {
             if (result.isConfirmed) {
               turnIn(params.classworkId, params.courseId, params.auth);
               Swal.fire('Saved!', '', 'success');
+              activityState.h5pObject.trigger('turnInSaved');
+            } else {
+              activityState.h5pObject.trigger('turnInCancelled');
             }
           });
         }
