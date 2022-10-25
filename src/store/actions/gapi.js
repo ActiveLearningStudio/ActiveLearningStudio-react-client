@@ -19,6 +19,7 @@ import {
   GET_OUTCOME_SUMMARY,
   SHARE_CANAVS,
   SHARE_MS_TEAM,
+  PUBLISH_LMS_SETTINGS,
 } from '../actionTypes';
 
 export const googleClassRoomLogin = (id) => ({
@@ -34,6 +35,11 @@ export const shareToCanvas = (value) => ({
   type: SHARE_CANAVS,
   value,
 });
+export const publishLmsSettings = (value) => ({
+  type: PUBLISH_LMS_SETTINGS,
+  value,
+});
+
 export const msTeamShare = (value) => ({
   type: SHARE_MS_TEAM,
   value,

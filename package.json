@@ -117,6 +117,7 @@
     "start:dev": "react-scripts start",
     "start": "node server/server.js",
     "build": "yarn run babel-node sitemap.js && GENERATE_SOURCEMAP=false react-scripts build",
+    "build:dev": "yarn run babel-node sitemap.js && react-scripts build",
     "start:prod": "node server.js",
     "test": "react-scripts test",
     "eject": "npm run build",
