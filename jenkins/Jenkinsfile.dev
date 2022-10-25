@@ -7,7 +7,7 @@ node("currikidev") {
     }  
     
     stage('Build image') { 
-        app = docker.build("quay.io/curriki/client -f Dockerfile.dev", "--build-arg DOMAIN=$domain .")
+        app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
         
     } 
     stage('Test image') {           
