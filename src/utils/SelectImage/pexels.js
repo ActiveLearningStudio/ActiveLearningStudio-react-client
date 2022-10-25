@@ -55,7 +55,6 @@ function Pexels(props) {
   }, [smythCount]);
 
   useEffect(() => {
-    console.log('smithsonianQuery', smithsonianQuery);
     let queryForSearchImage = '';
     smithsonianQuery?.map((query) => {
       if (query.data.length > 0) {
@@ -70,6 +69,14 @@ function Pexels(props) {
       }
     });
     console.log('queryForSearchImage', queryForSearchImage);
+    if (queryForSearchImage != '') {
+      setLoader(true);
+      resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${queryForSearchImage}` }).then((data) => {
+        setLoader(false);
+
+        setPexels(data?.response?.rows);
+      });
+    }
   }, [smithsonianQuery]);
 
   return (

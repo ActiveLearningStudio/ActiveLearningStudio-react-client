@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { Accordion } from 'react-bootstrap';
 import resourceService from 'services/resource.service';
 import SmithsonianAccordion from './SmithsonianAccordion';
+import smithsonianJsonData from './SmithsonianData';
 
 const SmithsonianFilter = ({ setSmithsonianQuery }) => {
   const [toggleStates, setToggleStates] = useState({
@@ -47,7 +48,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
     },
     {
       key: 'topic',
-      status: true,
+      status: false,
     },
   ]);
   const [activeCulture, setActiveCulture] = useState([]);
@@ -94,11 +95,13 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
       } else {
         setFilterForSearch([...filterForSearch, { category: 'culture', data: activeCulture }]);
       }
+    } else {
+      const getIndex = filterForSearch.findIndex((_data) => _data.category === 'culture');
+      if (getIndex >= 0) {
+        // It Not working
+        setFilterForSearch(filterForSearch.filter((filterData) => filterData?.category !== 'culture'));
+      }
     }
-
-    // else {
-    //   setFilterForSearch(filterForSearch.filter((filterData) => filterData?.category !== 'culture' && filterData));
-    // }
 
     // date
 
@@ -209,20 +212,20 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
   }, [activeCulture, activeDate, activeMediaType, activeMuseumUnit, activePlace, activeResourceType, activeTopic]);
 
   useEffect(() => {
-    async function fetchMyAPI() {
-      const data = await getSmithsonianList('culture');
-      setCulture(data);
-    }
+    // async function fetchMyAPI() {
+    //   const data = await getSmithsonianList('culture');
+    //   setCulture(data);
+    // }
 
-    fetchMyAPI();
+    // fetchMyAPI();
 
-    // setCulture(dataJson[0].data);
-    setDates([]);
-    setMediaTypes([]);
-    setMuseumUnits([]);
-    setPlaces([]);
-    setResourceTypes([]);
-    setTopics([]);
+    setCulture(smithsonianJsonData.culture);
+    setDates(smithsonianJsonData.date);
+    setMediaTypes(smithsonianJsonData.online_media_type);
+    setMuseumUnits(smithsonianJsonData.data_source);
+    setPlaces(smithsonianJsonData.place);
+    setResourceTypes(smithsonianJsonData.object_type);
+    setTopics(smithsonianJsonData.culture);
   }, []);
 
   return (
@@ -234,6 +237,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="culture"
             activeTab="culture"
             eventKey="0"
+            smithsonianData={smithsonianJsonData.culture}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -248,6 +252,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="date"
             activeTab="date"
             eventKey="1"
+            smithsonianData={smithsonianJsonData.date}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -262,6 +267,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="online_media_type"
             activeTab="online_media_type"
             eventKey="2"
+            smithsonianData={smithsonianJsonData.online_media_type}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -276,6 +282,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="data_source"
             activeTab="data_source"
             eventKey="3"
+            smithsonianData={smithsonianJsonData.data_source}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -290,6 +297,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="place"
             activeTab="place"
             eventKey="4"
+            smithsonianData={smithsonianJsonData.place}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -304,6 +312,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="object_type"
             activeTab="object_type"
             eventKey="5"
+            smithsonianData={smithsonianJsonData.object_type}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}
@@ -318,6 +327,7 @@ const SmithsonianFilter = ({ setSmithsonianQuery }) => {
             category="topic"
             activeTab="topic"
             eventKey="6"
+            smithsonianData={smithsonianJsonData.topic}
             toggleStatesV2={toggleStatesV2}
             setToggleStatesV2={setToggleStatesV2}
             getSmithsonianList={getSmithsonianList}

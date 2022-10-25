@@ -13,6 +13,7 @@ const SmithsonianAccordion = ({
   category,
   activeTab,
   eventKey,
+  smithsonianData,
   toggleStatesV2,
   setToggleStatesV2,
   getSmithsonianList,
@@ -22,17 +23,6 @@ const SmithsonianAccordion = ({
   setActiveSmithsonianAccordion,
 }) => {
   const [searchValue, setSearchValue] = useState();
-  // const [apiData, setApiData] = useState([]);
-  // useEffect(() => {
-  //   async function fetchMyAPI() {
-  //     const data = await getSmithsonianList(category);
-  //     console.log(category);
-  //     setApiData(data);
-  //   }
-
-  //   fetchMyAPI();
-  // }, []);
-
   return (
     <div>
       <Card className="card-detail-header">
@@ -40,8 +30,6 @@ const SmithsonianAccordion = ({
           as={Card.Header}
           eventKey={eventKey}
           onClick={async () => {
-            setSmithsonianAccordionData([]);
-
             setToggleStatesV2(
               toggleStatesV2.map((data) => {
                 if (data.key === activeTab) {
@@ -53,8 +41,8 @@ const SmithsonianAccordion = ({
                 return data;
               }),
             );
-            const getData = await getSmithsonianList(category);
-            setSmithsonianAccordionData(getData);
+            // const getData = await getSmithsonianList(category);
+            setSmithsonianAccordionData(smithsonianData);
 
             setSearchValue('');
           }}
@@ -76,13 +64,13 @@ const SmithsonianAccordion = ({
                     onChange={async (e) => {
                       setSearchValue(e.target.value);
                       if (e.target.value.length > 3) {
-                        setSmithsonianAccordionData(smithsonianAccordionData?.filter((search) => search.toLowerCase().match(e.target.value.toLowerCase()) && search));
-                        // setSmithsonianAccordionData(apiData?.filter((search) => search.toLowerCase().match(e.target.value.toLowerCase()) && search));
+                        // setSmithsonianAccordionData(smithsonianAccordionData?.filter((search) => search.toLowerCase().match(e.target.value.toLowerCase()) && search));
+                        setSmithsonianAccordionData(smithsonianData?.filter((search) => search.toLowerCase().match(e.target.value.toLowerCase()) && search));
                       }
                       if (e.target.value.length < 1) {
-                        const data = await getSmithsonianList(category);
-                        setSmithsonianAccordionData(data);
-                        // setSmithsonianAccordionData(apiData);
+                        // const data = await getSmithsonianList(category);
+                        // setSmithsonianAccordionData(data);
+                        setSmithsonianAccordionData(smithsonianData);
                       }
                     }}
                   />
