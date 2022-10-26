@@ -19,7 +19,7 @@ export const CloneModel = () => {
         customHooks={[
           {
             name: 'containers/Projects/CreateProjectPopup',
-            url: '',
+            url: '?path=/story/my-projects-createprojectpopup--index',
           },
         ]}
         reduxStore={[{ path: '/src/store/actions/search', pathCode: IndexStore }]}

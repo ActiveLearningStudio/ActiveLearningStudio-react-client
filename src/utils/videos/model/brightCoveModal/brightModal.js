@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import Tabview from '../../../tabview/Tabview';
-import CodeSnippet from '!!raw-loader!../../../../containers/Videos/formik/addvideo.js';
+import CodeSnippet from '!!raw-loader!../../../../containers/Videos/model/brightmodel.js';
 import AddvideoPng from './brightModal.png';
 import Stylesheetused from '!!raw-loader!../../../../containers/Videos/model/style.scss';
 import StoreSnippet from '!!raw-loader!../../../../store/actions/videos';

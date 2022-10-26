@@ -14,7 +14,7 @@ export const AddVideo = () => {
         description="This component is used in activity module. During activity creation you will see the option for add video where you will add video through different type of video soruce. So that part of user interface is develop through this component."
         codeSnippet={CodeSnippet}
         libraryUsed={['react-redux', 'react-bootstrap', 'formik']}
-        customHooks={[{ name: '../model/brightmodel', url: '' }]}
+        customHooks={[{ name: '../model/brightmodel', url: '?path=/story/videos-model-brightmodel--component' }]}
         reduxStore={[{ path: '/src/store/actions/admin', pathCode: StoreSnippet }]}
         apiUsed={[]}
         images={AddvideoPng}

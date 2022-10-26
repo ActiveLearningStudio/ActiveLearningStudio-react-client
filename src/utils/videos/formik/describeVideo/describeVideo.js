@@ -11,7 +11,7 @@ export const DescribeVideo = () => {
       <Tabview
         componentName="DescribeVideo"
         path="\src\containers\Videos\formik\describevideo.js"
-        description="IN this component, you will describe the description of the video like video title, vide details, video thumbnail etc. You will also see the screenshot added in screenshot tab"
+        description="In this component, you will describe the description of the video like video title, vide details, video thumbnail etc. You will also see the screenshot added in screenshot tab"
         codeSnippet={CodeSnippet}
         libraryUsed={['react-redux', 'formik']}
         customHooks={[{ name: 'containers/MyProject/model/previewlayout', url: '' }]}

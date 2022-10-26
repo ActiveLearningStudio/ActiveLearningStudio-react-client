@@ -15,14 +15,14 @@ export const Index = () => {
         codeSnippet={CodeSnippet}
         libraryUsed={['react-redux', 'react-bootstrap', 'react-router-dom', 'react-js-pagination', 'swal']}
         customHooks={[
-          { name: './formik/describevideo', url: '' },
+          { name: './formik/describevideo', url: '?path=/story/videos-formik-describevideo--component' },
           {
             name: './formik/addvideo',
-            url: '?path=/story/auth-logo--component',
+            url: '?path=/story/videos-formik-addvideo--component',
           },
           {
             name: 'components/models/GoogleLoginModal',
-            url: '',
+            url: '?path=/story/component-modals-googleloginmodal--component',
           },
         ]}
         reduxStore={[{ path: '/src/store/actions/videos', pathCode: StoreSnippet }]}
