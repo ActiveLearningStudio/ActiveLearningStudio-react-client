@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import PexelsAPI from 'pexels-api-wrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-
+import smithsonianJsonData from './SmithsonianData';
 import resourceService from 'services/resource.service';
-import dotsloader from 'assets/images/dotsloader.gif';
+import { Alert } from 'react-bootstrap';
 import SmithsonianFilter from './SmithsonianFilter';
 
 const pexelsClient = new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API || process.env.REACT_APP_PEXEL_API);
 
 function Pexels(props) {
-  const [pexelData, setPexels] = useState([]);
+  const [pexelData, setPexels] = useState(null);
 
   const [searchValue, setSearchValue] = useState('');
   const [nextApi, setNextApi] = useState('');
@@ -26,7 +26,7 @@ function Pexels(props) {
       if (smythCount === 0 && !searchValue) {
         resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true` }).then((data) => {
           setLoader(false);
-          const updatedPexels = pexelData.concat(data?.response?.rows);
+          const updatedPexels = pexelData?.concat(data?.response?.rows);
           setPexels(updatedPexels);
         });
       }
@@ -48,30 +48,47 @@ function Pexels(props) {
     if (smythsonian && smythCount > 0) {
       resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true${searchValue && ` AND ${searchValue}`}` }).then((data) => {
         setLoader(false);
-        const updatedPexels = pexelData.concat(data?.response?.rows);
+        const updatedPexels = pexelData?.concat(data?.response?.rows);
         setPexels(updatedPexels);
       });
     }
   }, [smythCount]);
 
   useEffect(() => {
+    let dummySet;
     let queryForSearchImage = '';
-    smithsonianQuery?.map((query) => {
-      if (query.data.length > 0) {
-        queryForSearchImage += ' AND (';
-        query?.data?.map((_sub, index) => {
-          queryForSearchImage += `${query.category}:"${_sub}"`;
-          if (query?.data?.length - 1 != index) {
-            queryForSearchImage += ' OR ';
+    if (smithsonianQuery.length) {
+      Object.keys(smithsonianJsonData).map((data) => {
+        if (dummySet) {
+          dummySet = { ...dummySet, [data]: smithsonianJsonData[data].filter((value) => smithsonianQuery.includes(value)) };
+        } else {
+          dummySet = { [data]: smithsonianJsonData[data].filter((value) => smithsonianQuery.includes(value)) };
+        }
+      });
+
+      Object.keys(dummySet).map((data) => {
+        let dummyfilters;
+        dummySet[data].map((filter, counter) => {
+          if (dummyfilters) {
+            dummyfilters = dummyfilters + `${data}:${filter} ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
+          } else {
+            dummyfilters = `${data}:${filter} ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
           }
         });
-        queryForSearchImage += ')';
-      }
-    });
-    console.log('queryForSearchImage', queryForSearchImage);
+        if (dummyfilters) {
+          if (queryForSearchImage) {
+            queryForSearchImage = queryForSearchImage + ` AND (${dummyfilters})`;
+          } else {
+            queryForSearchImage = ` AND (${dummyfilters})`;
+          }
+        }
+      });
+      console.log(queryForSearchImage);
+    }
+
     if (queryForSearchImage != '') {
       setLoader(true);
-      resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND ${queryForSearchImage}` }).then((data) => {
+      resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true ${queryForSearchImage}` }).then((data) => {
         setLoader(false);
 
         setPexels(data?.response?.rows);
@@ -94,7 +111,7 @@ function Pexels(props) {
                 if (smythsonian) {
                   resourceService.smithsonian({ rows: 15, start: 0, q: `online_visual_material:true` }).then((data) => {
                     setLoader(false);
-                    const updatedPexels = pexelData.concat(data?.response?.rows);
+                    const updatedPexels = pexelData?.concat(data?.response?.rows);
                     setPexels(updatedPexels);
                   });
                 }
@@ -158,14 +175,14 @@ function Pexels(props) {
       <div className="filter_smithsonian_section">
         {smythsonian && (
           <div className="filter_smithsonian">
-            <SmithsonianFilter setSmithsonianQuery={setSmithsonianQuery} />
+            <SmithsonianFilter setSmithsonianQuery={setSmithsonianQuery} smithsonianJsonData={smithsonianJsonData} />
           </div>
         )}
         <div className={`thumbnails-img-box-pexels ${smythsonian && 'thumbnails-img-box-pexels-smithsonian'}`}>
           {loader ? (
-            <img src={dotsloader} className="thumbnails-loader" alt="loader" />
+            <Alert variant="primary">Loading images...</Alert>
           ) : pexelData?.length === 0 ? (
-            <h6 className="read-more-pexel">No result found. You can still search other thumbnails.</h6>
+            <Alert variant="warning">No result found. You can still search other thumbnails.</Alert>
           ) : (
             <>
               {!!pexelData && (
@@ -225,7 +242,7 @@ function Pexels(props) {
                           })
                           .then((res) => {
                             const moreData = res.data.photos;
-                            setPexels(pexelData.concat(moreData));
+                            setPexels(pexelData?.concat(moreData));
                             setNextApi(res.data.next_page);
                           });
                       }

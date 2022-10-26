@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         right: 25px;
@@ -204,8 +204,7 @@
 
 .thumbnails-img-box-pexels {
   display: flex;
-  height: 350px;
-  min-height: 350px;
+  max-height: 485px;
   gap: 8px;
   flex-wrap: wrap;
   overflow-y: scroll;
@@ -261,7 +260,10 @@
   }
   .thumbnails-img-box-pexels-smithsonian {
     margin-left: 16px;
-    // width: 75%;
+    margin-top: 16px;
+  }
+  .alert {
+    height: 45px;
   }
 
   // SmithsonianFilter
@@ -331,11 +333,11 @@
         border-radius: 4px;
       }
       .card-detail-list-options {
+        position: relative;
         margin-top: 4px;
         padding: 8px 8px 8px 8px;
         border-radius: 4px;
-        max-height: 400px;
-        overflow-y: scroll;
+
         .card-detail-list-text-icon {
           display: flex;
 
@@ -346,11 +348,16 @@
         .card-body {
           padding: 0;
         }
+        .smithList {
+          max-height: 285px;
+          overflow-y: scroll;
+        }
 
         // Search box
         .card-detail-list-search-icon {
           width: 100%;
           margin-bottom: 16px;
+
           .card-detail-list-search {
             // width: 224px;
             height: 32px;
@@ -371,10 +378,10 @@
           }
           .card-detail-list-icon {
             position: absolute;
-            top: 12px;
-            right: 13px;
-            width: 24px;
-            height: 24px;
+            top: 0px;
+            right: 15px;
+            width: 20px;
+            height: 20px;
           }
         }
       }
