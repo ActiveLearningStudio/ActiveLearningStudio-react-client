@@ -17,7 +17,7 @@ You can go to all users, manage roles, and perform other functionalities which a
         codeSnippet={codeSnippet}
         libraryUsed={['react-bootstrap', 'react-redux', 'prop-types']}
         customHooks={[
-          { name: './starter', url: '' },
+          { name: './starter', url: '?path=/story/admin-starter--component' },
           { name: './column', url: '' },
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}

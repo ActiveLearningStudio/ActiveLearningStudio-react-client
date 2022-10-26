@@ -19,7 +19,7 @@ export const CanvasLtiLogin = () => {
         apiUsed={[]}
         images=""
         stylesheetUsed={Stylesheetused}
-        example="https://dev.currikistudio.org/forgot-password"
+        example=""
       />
     </>
   );

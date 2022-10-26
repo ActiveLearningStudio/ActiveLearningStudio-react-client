@@ -1,8 +1,8 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../tabview/Tabview";
-import CodeSnippet from "!!raw-loader!../../../components/InputField/index";
-import Screenshot from "./InputField.png";
+import React from 'react';
+import Tabview from '../../tabview/Tabview';
+import CodeSnippet from '!!raw-loader!../../../components/InputField/index';
+import Screenshot from './InputField.png';
 export const Index = () => {
   return (
     <>
@@ -13,13 +13,13 @@ export const Index = () => {
          In most cases, when you need any input box then you can call this component. 
          You will send your props to this component and then this component will show the input box accordingly."
         codeSnippet={CodeSnippet}
-        libraryUsed={["prop-types"]}
+        libraryUsed={['prop-types']}
         customHooks={[]}
         reduxStore={[]}
         apiUsed={[]}
         images={Screenshot}
         stylesheetUsed=""
-        example="https://dev.currikistudio.org/org/testsuborg/project/6091/playlist/12960/activity/create"
+        example=""
       />
     </>
   );

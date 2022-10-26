@@ -1,5 +1,5 @@
 /* eslint-disable */
-import Tabview from "../../tabview/Tabview";
+import Tabview from '../../tabview/Tabview';
 export const ProjCard = (props) => {
   return (
     <>
@@ -15,7 +15,7 @@ export const ProjCard = (props) => {
         apiUsed={props.apiUsed}
         images={props.images}
         stylesheetUsed={props.stylesheetUsed}
-        examples={props.examples}
+        example={props.example}
       />
     </>
   );

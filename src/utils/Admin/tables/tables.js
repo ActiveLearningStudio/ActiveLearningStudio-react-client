@@ -25,7 +25,7 @@ In the header of the table, you will find the name, domain, admin, project, sub 
         apiUsed={[{ path: '/src/services/admin.service', apicode: ApiCode }]}
         images={TablePageimg}
         stylesheetUsed={Stylesheetused}
-        examples="https://dev.currikistudio.org/org/currikistudio/admin"
+        example="https://dev.currikistudio.org/org/currikistudio/admin"
       />
     </>
   );

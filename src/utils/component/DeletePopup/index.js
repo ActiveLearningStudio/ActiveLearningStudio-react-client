@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../tabview/Tabview";
-import CodeSnippet from "!!raw-loader!../../../components/DeletePopup/index";
-import DelPopup from "./deletepopup.png";
-import Stylesheetused from "!!raw-loader!../../../components/DeletePopup/style.scss";
+import React from 'react';
+import Tabview from '../../tabview/Tabview';
+import CodeSnippet from '!!raw-loader!../../../components/DeletePopup/index';
+import DelPopup from './deletepopup.png';
+import Stylesheetused from '!!raw-loader!../../../components/DeletePopup/style.scss';
 export const Index = () => {
   return (
     <>
@@ -16,11 +16,11 @@ export const Index = () => {
           If you are sure to delete the playlist then click on the delete button then your 
           playlist will be deleted."
         codeSnippet={CodeSnippet}
-        libraryUsed={["prop-types"]}
+        libraryUsed={['prop-types']}
         customHooks={[
           {
-            name: "/src/utils/index",
-            url: "?path=/story/utils-index--component",
+            name: '/src/utils/index',
+            url: '?path=/story/utils-index--component',
           },
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
@@ -28,7 +28,7 @@ export const Index = () => {
         apiUsed={[]}
         images={DelPopup}
         stylesheetUsed={Stylesheetused}
-        example="https://dev.currikistudio.org/org/currikistudio"
+        example="https://dev.currikistudio.org/org/currikistudio/project/8654"
       />
     </>
   );

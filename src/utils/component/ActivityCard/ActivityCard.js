@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../tabview/Tabview";
-import CodeSnippet from "!!raw-loader!../../../components/ActivityCard/index";
-import Stylesheetused from "!!raw-loader!../../../components/ActivityCard/style.scss";
-import Screenshot from "./ActivityCard.png";
+import React from 'react';
+import Tabview from '../../tabview/Tabview';
+import CodeSnippet from '!!raw-loader!../../../components/ActivityCard/index';
+import Stylesheetused from '!!raw-loader!../../../components/ActivityCard/style.scss';
+import Screenshot from './activityCard.png';
 export const ActivityCard = () => {
   return (
     <>
@@ -15,12 +15,11 @@ export const ActivityCard = () => {
           and one dropdown to perform quick action on the activity. Through these actions, you can remove, 
           preview, and edit activities attach to the playlist."
         codeSnippet={CodeSnippet}
-        libraryUsed={["prop-types", "react-router-dom", "react-redux"]}
+        libraryUsed={['prop-types', 'react-router-dom', 'react-redux']}
         customHooks={[
           {
-            name: "/src/components/ResourceCard/ResourceCardDropdown",
-            url:
-              "?path=/story/component-resourcecard-resourcecarddropdown--component",
+            name: '/src/components/ResourceCard/ResourceCardDropdown',
+            url: '?path=/story/component-resourcecard-resourcecarddropdown--component',
           },
         ]}
         reduxStore={[]}

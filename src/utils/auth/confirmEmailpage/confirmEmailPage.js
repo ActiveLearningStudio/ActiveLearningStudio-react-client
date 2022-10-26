@@ -19,7 +19,7 @@ export const ConfirmEmail = () => {
         apiUsed={[]}
         images=""
         stylesheetUsed={Stylesheetused}
-        example="https://dev.currikistudio.org/forgot-password"
+        example=""
       />
     </>
   );

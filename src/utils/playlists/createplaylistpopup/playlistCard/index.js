@@ -1,10 +1,10 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../../tabview/Tabview";
-import codeSnippet from "!!raw-loader!../../../../containers/Playlists/PlaylistCard/index";
-import PlaylistCard from "./PlaylistCard.png";
-import CardStore from "!!raw-loader!../../../../store/actions/resource";
-import Stylesheetused from "!!raw-loader!../../../../containers/Playlists/PlaylistCard/style.scss";
+import React from 'react';
+import Tabview from '../../../tabview/Tabview';
+import codeSnippet from '!!raw-loader!../../../../containers/Playlists/PlaylistCard/index';
+import PlaylistCard from './playlistCard.png';
+import CardStore from '!!raw-loader!../../../../store/actions/resource';
+import Stylesheetused from '!!raw-loader!../../../../containers/Playlists/PlaylistCard/style.scss';
 export const Index = () => {
   return (
     <>
@@ -18,20 +18,10 @@ export const Index = () => {
      In the card,you will see the title of the playlist and then the list of activities 
      related to that playlist."
         codeSnippet={codeSnippet}
-        libraryUsed={[
-          "react-bootstrap",
-          "react-redux",
-          "react-fontawesome",
-          "react-router-dom",
-          "prop-types",
-          "swal",
-          "react-beautiful-dnd",
-        ]}
-        customHooks={[{ name: "/src/components/ResourceCard/index", url: "" }]}
+        libraryUsed={['react-bootstrap', 'react-redux', 'react-fontawesome', 'react-router-dom', 'prop-types', 'swal', 'react-beautiful-dnd']}
+        customHooks={[{ name: '/src/components/ResourceCard/index', url: '' }]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}
-        reduxStore={[
-          { path: "/src/store/actions/resource", pathCode: CardStore },
-        ]}
+        reduxStore={[{ path: '/src/store/actions/resource', pathCode: CardStore }]}
         apiUsed={[]}
         images={PlaylistCard}
         stylesheetUsed={Stylesheetused}

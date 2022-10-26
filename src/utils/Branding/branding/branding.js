@@ -19,7 +19,7 @@ export const Branding = () => {
         apiUsed={[]}
         images=""
         stylesheetUsed={Stylesheetused}
-        example="https://dev.currikistudio.org/forgot-password"
+        example="https://dev.currikistudio.org/org/currikistudio/admin"
       />
     </>
   );

@@ -1,9 +1,9 @@
 /* eslint-disable */
-import React from "react";
-import Tabview from "../../../../../../tabview/Tabview";
-import CodeSnippet from "!!raw-loader!../../../../../../../components/ResourceCard/AddResource/Editors/TinyEditor";
-import ResourceStore from "!!raw-loader!../../../../../../../store/actions/resource";
-import Stylesheetused from "!!raw-loader!../../../../../../../components/ResourceCard/AddResource/style.scss";
+import React from 'react';
+import Tabview from '../../../../../../tabview/Tabview';
+import CodeSnippet from '!!raw-loader!../../../../../../../components/ResourceCard/AddResource/Editors/TinyEditor';
+import ResourceStore from '!!raw-loader!../../../../../../../store/actions/resource';
+import Stylesheetused from '!!raw-loader!../../../../../../../components/ResourceCard/AddResource/style.scss';
 export const TinyEditor = () => {
   return (
     <>
@@ -14,20 +14,13 @@ export const TinyEditor = () => {
          When we need to display data then this component will be used to load resource data in 
          the tiny editor through an iframe."
         codeSnippet={CodeSnippet}
-        libraryUsed={[
-          "prop-types",
-          "react-redux",
-          "react-router-dom",
-          "tinymce-react",
-        ]}
+        libraryUsed={['prop-types', 'react-redux', 'react-router-dom', 'tinymce-react']}
         customHooks={[]}
-        reduxStore={[
-          { path: "/src/store/actions/resource", pathCode: ResourceStore },
-        ]}
+        reduxStore={[{ path: '/src/store/actions/resource', pathCode: ResourceStore }]}
         apiUsed={[]}
         images=""
         stylesheetUsed={Stylesheetused}
-        example="https://dev.currikistudio.org/org/testsuborg/project/6091/playlist/12960/activity/create"
+        example=""
       />
     </>
   );

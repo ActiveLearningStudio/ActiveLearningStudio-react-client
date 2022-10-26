@@ -19,25 +19,25 @@ export const Index = () => {
         customHooks={[
           {
             name: './formik/createActivityItem',
-            url: '?path=/story/admin-formik--create-activity-item',
+            url: '?path=/story/admin-formik-createactivityitem--component',
           },
           {
             name: './formik/createOrg',
-            url: '?path=/story/admin-formik--create-org',
+            url: '?path=/story/admin-formik-createorg--component',
           },
           {
             name: './formik/addRole',
-            url: '?path=/story/admin-formik--add-role',
+            url: '?path=/story/admin-formik-addrole--component',
           },
           {
             name: './formik/createuser',
-            url: '?path=/story/admin-formik--create-user',
+            url: '?path=/story/admin-formik-createuser--component',
           },
           {
             name: './formik/createDefaultSso',
-            url: '',
+            url: '?path=/story/admin-formik-createdefaultsso--component',
           },
-          { name: './pills', url: '' },
+          { name: './pills', url: '?path=/story/admin-pills--component' },
           { name: '/model/EditTeamModel', url: '' },
         ]}
         //customHooks={['./formik/createOrg','removeActiveAdminForm']}

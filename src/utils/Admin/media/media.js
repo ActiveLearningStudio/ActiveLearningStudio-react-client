@@ -11,19 +11,10 @@ export const Media = () => {
       <Tabview
         componentName="Media"
         path="\src\containers\Admin\media.js"
-        description="This is the media component, which is used to video sources, image sources etc. And it done to update the video source and image source which is select the sources."
+        description="This is the media component, which is used to update video sources, image sources from the admin panel. You will find this component under admin > integeration tab > and then media sources."
         codeSnippet={codeSnippet}
         libraryUsed={['react-bootstrap', 'react-redux', 'swal']}
-        customHooks={[
-          {
-            name: '/src/containers/ManageOrganization/inviteAdmin',
-            url: '',
-          },
-          {
-            name: '/src/containers/ManageOrganization/addUser',
-            url: '',
-          },
-        ]}
+        customHooks={[]}
         reduxStore={[{ path: '/src/store/actions/admin', pathCode: MediaStore }]}
         apiUsed={[]}
         stylesheetUsed={Stylesheetused}
