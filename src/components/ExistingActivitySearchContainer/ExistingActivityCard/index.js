@@ -9,7 +9,7 @@ import './style.scss';
 
 const ExistingActivityCard = (props) => {
   const { activity, activityType, getActivityData, className } = props;
-  const thumbnail = !activity.thumb_url.includes('/storage/') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`;
+  const thumbnail = activity.thumb_url?.includes('/storage/') ? `${global.config.resourceUrl}${activity.thumb_url}` : activity.thumb_url;
 
   const handleAddClick = () => {
     getActivityData(activity.id, activityType);
