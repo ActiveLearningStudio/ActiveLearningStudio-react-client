@@ -185,6 +185,7 @@ const Activity = (props) => {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
         }
 
+        const h5pCurrentInstance = this;
         // Ask the user if he wants to turn-in the work to google classroom
         if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
           Swal.fire({
@@ -195,9 +196,9 @@ const Activity = (props) => {
             if (result.isConfirmed) {
               turnIn(params.classworkId, params.courseId, params.auth);
               Swal.fire('Saved!', '', 'success');
-              activityState.h5pObject.trigger('turnInSaved');
+              h5pCurrentInstance.trigger('turnInSaved');
             } else {
-              activityState.h5pObject.trigger('turnInCancelled');
+              h5pCurrentInstance.trigger('turnInCancelled');
             }
           });
         }
