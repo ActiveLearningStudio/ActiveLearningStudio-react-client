@@ -32,6 +32,7 @@ import {
   createNewCoursetoCanvas,
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
+import share from 'store/reducers/share';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 
 const GoogleLoginModal = ({
@@ -52,6 +53,7 @@ const GoogleLoginModal = ({
 }) => {
   const dataRedux = useSelector((state) => state);
   const { activeOrganization } = useSelector((state) => state.organization);
+  const { share } = dataRedux;
   const [tokenTemp, setTokenTemp] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -112,11 +114,15 @@ const GoogleLoginModal = ({
     if (dataRedux?.share.isCanvas) {
       setisCanvas(true);
       setShowForm(true);
-      setcanvasSettingId(dataRedux?.share?.shareVendors[0]);
     } else {
       setisCanvas(false);
     }
   }, [dataRedux?.share.isCanvas]);
+  useEffect(() => {
+    if (share?.publishingLms) {
+      setcanvasSettingId(dataRedux?.share?.shareVendors?.filter((d) => d.site_name === share?.publishingLms?.site_name)?.[0]);
+    }
+  }, [share?.publishingLms]);
   useEffect(() => {
     if (dataRedux.share.courses) {
       setCourses(dataRedux.share.courses);
@@ -163,9 +169,11 @@ const GoogleLoginModal = ({
       setCourses([]);
       setTopics([]);
       setIsShowPlaylistSelector(false);
-      dispatch(fetchCanvasCourses(canvasSettingId?.id));
+      if (canvasSettingId) {
+        dispatch(fetchCanvasCourses(canvasSettingId?.id));
+      }
     }
-  }, [show, isCanvas]);
+  }, [show, isCanvas, canvasSettingId]);
   const callPublishingMethod = (params) => {
     if ((typeof params.playlistId == 'undefined' && typeof params.activityId == 'undefined') || (params.playlistId === 0 && params.activityId === 0)) {
       if (params.values.course === 'Create a new class') {

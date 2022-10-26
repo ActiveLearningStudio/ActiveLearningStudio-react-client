@@ -6,8 +6,8 @@ node("currikidev") {
         checkout scm    
     }  
     
-    stage('Build image') {         
-        app = docker.build("quay.io/curriki/client")    
+    stage('Build image') { 
+        app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
         
     } 
     stage('Test image') {           
@@ -18,24 +18,24 @@ node("currikidev") {
     stage('Push image') {	
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             app.push("${env.BUILD_NUMBER}")            
-            app.push("develop")        
+            app.push("${tag}")        
         }    
          
     }
     
     parallel(
             "StageA": {
-                if(Jenkins.instance.getNode('currikidev').toComputer().isOnline()){
-                    node('currikidev') {
-                        stage ('currikidev') {
+                if(Jenkins.instance.getNode("${node}").toComputer().isOnline()){
+                    node("${node}") {
+                        stage ("${node}") {
                                 echo 'Copy'
-                                sh "yes | docker stack deploy --compose-file ~/curriki/docker-compose-dev.yml currikistack" 
+                                sh "yes | docker service update --image quay.io/curriki/client:${tag} currikistack_currikiprod-client" 
                                 echo 'Copy completed'
                         }
                     }
                 } else {
-                    stage ('currikidev') {
-                        echo "currikidev is offline"
+                    stage ("${node}") {
+                        echo "${node} is offline"
                         exit 1
                     }
                 }
@@ -44,4 +44,3 @@ node("currikidev") {
     )
     
 }
-

@@ -329,6 +329,12 @@ const searchPreviewIndependentActivity = (subOrgId, independent_activity) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const smithsonianList = (body) =>
+  httpService
+    .post(`/${apiVersion}/smithsonian/get-search-filter-data`, body)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 export default {
   getAll,
   create,
@@ -370,4 +376,5 @@ export default {
   searchPreviewIndependentActivity,
   getAllTypesIV,
   smithsonian,
+  smithsonianList,
 };
