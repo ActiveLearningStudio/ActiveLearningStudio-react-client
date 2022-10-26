@@ -82,7 +82,7 @@ const ExistingActivitySearchContainer = (props) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} />
+        <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} layout={layout} />
       </Modal.Body>
       <Modal.Footer>
         <div className="row">

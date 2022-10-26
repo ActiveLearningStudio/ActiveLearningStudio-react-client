@@ -20,11 +20,13 @@ const ExistingActivitySearchResults = (props) => {
     projectActivitiesTotal,
     getActivities,
     setParams,
+    layout,
   } = props;
 
   const [key, setKey] = useState('independent-activities');
   const [independentActivitiesTabTitle, setIndependentActivitiesTabTitle] = useState('My Activities');
   const [projectActivitiesTabTitle, setProjectActivitiesTabTitle] = useState('My Project Activities');
+  const [filterError, setFilterError] = useState(false);
 
   const handlePageChange = (i) => {
     const newParams = {
@@ -43,7 +45,12 @@ const ExistingActivitySearchResults = (props) => {
   };
 
   useEffect(() => {
-    if (filters.types.length === 0) return; // Activity type filters needed for compatibility
+    if (filters.types.length === 0) { 
+      // Activity type filters needed for compatibility
+      setFilterError(true);
+      return;
+    }
+    setFilterError(false);
 
     getActivities(params, key);
   }, [params, filters]);
@@ -65,76 +72,83 @@ const ExistingActivitySearchResults = (props) => {
   return (
     <div className='row existing-activity-search-results'>
       <div className='col'>
-        <Tabs
-          defaultActiveKey="independent-activities"
-          className="main-tabs"
-          onSelect={handleTabChange}
-        >
-          <Tab eventKey="independent-activities" title={independentActivitiesTabTitle}>
-            {loading && (
-              <Spinner animation="border" role="status" />
-            )}
-            {!loading && independentActivities.length < 1 && (
-              <Alert className="alert" variant="info">
-                No activities found matching the search criteria.
-              </Alert>
-            )}
-            {!loading && independentActivities.length > 0 && (
-              <>
-                <div className='row'>
-                  <div className='col'>
-                    {independentActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="independent" /> ))}
+        {filterError && (
+          <Alert className="alert" variant="danger">
+            Activity import is not supported for this activity type: {layout.title}
+          </Alert>
+        )}
+        {!filterError && (
+          <Tabs
+            defaultActiveKey="independent-activities"
+            className="main-tabs"
+            onSelect={handleTabChange}
+          >
+            <Tab eventKey="independent-activities" title={independentActivitiesTabTitle}>
+              {loading && (
+                <Spinner animation="border" role="status" />
+              )}
+              {!loading && independentActivities.length < 1 && (
+                <Alert className="alert" variant="info">
+                  No activities found matching the search criteria.
+                </Alert>
+              )}
+              {!loading && independentActivities.length > 0 && (
+                <>
+                  <div className='row'>
+                    <div className='col'>
+                      {independentActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="independent" /> ))}
+                    </div>
                   </div>
-                </div>
-                <div className='row'>
-                  <div className='col pagination-div'>
-                    <Pagination
-                      activePage={Math.ceil((params.from + 1) / params.size)}
-                      itemsCountPerPage={params.size}
-                      totalItemsCount={independentActivitiesTotal}
-                      pageRangeDisplayed={10}
-                      onChange={handlePageChange}
-                      itemClass="page-item"
-                      linkClass="page-link"
-                    />
+                  <div className='row'>
+                    <div className='col pagination-div'>
+                      <Pagination
+                        activePage={Math.ceil((params.from + 1) / params.size)}
+                        itemsCountPerPage={params.size}
+                        totalItemsCount={independentActivitiesTotal}
+                        pageRangeDisplayed={10}
+                        onChange={handlePageChange}
+                        itemClass="page-item"
+                        linkClass="page-link"
+                      />
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
-          </Tab>
-          <Tab eventKey="projects" title={projectActivitiesTabTitle}>
-            {loading && (
-              <Spinner animation="border" role="status" />
-            )}
-            {!loading && projectActivities.length < 1 && (
-              <Alert className="alert" variant="info">
-                No activities found matching the search criteria.
-              </Alert>
-            )}
-            {!loading && projectActivities.length > 0 && (
-              <>
-                <div className='row'>
-                  <div className='col'>
-                    {projectActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="project" /> ))}
+                </>
+              )}
+            </Tab>
+            <Tab eventKey="projects" title={projectActivitiesTabTitle}>
+              {loading && (
+                <Spinner animation="border" role="status" />
+              )}
+              {!loading && projectActivities.length < 1 && (
+                <Alert className="alert" variant="info">
+                  No activities found matching the search criteria.
+                </Alert>
+              )}
+              {!loading && projectActivities.length > 0 && (
+                <>
+                  <div className='row'>
+                    <div className='col'>
+                      {projectActivities.map((activity) => ( <ExistingActivityCard className="mb-2" key={activity.id} activity={activity} activityType="project" /> ))}
+                    </div>
                   </div>
-                </div>
-                <div className='row'>
-                  <div className='col pagination-div'>
-                    <Pagination
-                      activePage={Math.ceil((params.from + 1) / params.size)}
-                      itemsCountPerPage={params.size}
-                      totalItemsCount={projectActivitiesTotal}
-                      pageRangeDisplayed={10}
-                      onChange={handlePageChange}
-                      itemClass="page-item"
-                      linkClass="page-link"
-                    />
+                  <div className='row'>
+                    <div className='col pagination-div'>
+                      <Pagination
+                        activePage={Math.ceil((params.from + 1) / params.size)}
+                        itemsCountPerPage={params.size}
+                        totalItemsCount={projectActivitiesTotal}
+                        pageRangeDisplayed={10}
+                        onChange={handlePageChange}
+                        itemClass="page-item"
+                        linkClass="page-link"
+                      />
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
-          </Tab>
-       </Tabs>
+                </>
+              )}
+            </Tab>
+          </Tabs>
+        )}
       </div>      
     </div>
   );

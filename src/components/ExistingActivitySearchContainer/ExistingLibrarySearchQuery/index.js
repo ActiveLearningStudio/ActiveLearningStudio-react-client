@@ -58,7 +58,10 @@ const ExistingLibrarySearchQuery = (props) => {
       })
     };
 
-    const newParams = { ...params };
+    const newParams = {
+      ...params,
+      from: 0,
+    };
     newParams.subjectArray = newParams.subjectIds = newFilters.subjects.filter((filter) => filter.checked).map((filter) => filter.id);
     newParams.gradeArray = newParams.educationLevelIds = newFilters.levels.filter((filter) => filter.checked).map((filter) => filter.id);
     newParams.authorTagsIds = newFilters.tags.filter((filter) => filter.checked).map((filter) => filter.id);
