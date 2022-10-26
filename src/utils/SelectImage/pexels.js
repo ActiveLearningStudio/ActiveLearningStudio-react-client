@@ -15,18 +15,30 @@ function Pexels(props) {
   const [searchValue, setSearchValue] = useState('');
   const [nextApi, setNextApi] = useState('');
   const [smythCount, setSmythCount] = useState(0);
+  const [clearSelection, setClearSelection] = useState(false);
 
   const [smithsonianQuery, setSmithsonianQuery] = useState([]);
 
   const { returnImagePexel, handleClose, smythsonian, loader, setLoader, formRef } = props;
 
+  const clearSmythsonian = () => {
+    setLoader(true);
+    setClearSelection(true);
+    setSearchValue('');
+    setSmithsonianQuery([]);
+    resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true` }).then((data) => {
+      setLoader(false);
+      setPexels(data?.response?.rows);
+    });
+  };
   useEffect(() => {
     if (smythsonian) {
       if (smythCount === 0 && !searchValue) {
-        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true` }).then((data) => {
+        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND (culture:Acoma Indians )` }).then((data) => {
+          //const updatedPexels = pexelData?.concat(data?.response?.rows);
+          // setPexels(updatedPexels);
+          setPexels(data?.response?.rows);
           setLoader(false);
-          const updatedPexels = pexelData?.concat(data?.response?.rows);
-          setPexels(updatedPexels);
         });
       }
     } else {
@@ -89,7 +101,6 @@ function Pexels(props) {
       setLoader(true);
       resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true ${queryForSearchImage}` }).then((data) => {
         setLoader(false);
-
         setPexels(data?.response?.rows);
       });
     }
@@ -169,12 +180,29 @@ function Pexels(props) {
             />
           </div>
         </div>
+        {smythsonian && (
+          <div className="smithsonian-clear">
+            <button
+              type="button"
+              onClick={() => {
+                clearSmythsonian();
+              }}
+            >
+              Clear
+            </button>
+          </div>
+        )}
       </div>
       {/* Add filter Contion */}
       <div className="filter_smithsonian_section">
         {smythsonian && (
           <div className="filter_smithsonian">
-            <SmithsonianFilter setSmithsonianQuery={setSmithsonianQuery} smithsonianJsonData={smithsonianJsonData} />
+            <SmithsonianFilter
+              setSmithsonianQuery={setSmithsonianQuery}
+              smithsonianJsonData={smithsonianJsonData}
+              clearSelection={clearSelection}
+              setClearSelection={setClearSelection}
+            />
           </div>
         )}
         <div className={`thumbnails-img-box-pexels ${smythsonian && 'thumbnails-img-box-pexels-smithsonian'}`}>
@@ -188,7 +216,44 @@ function Pexels(props) {
                 <>
                   {pexelData.map((images) => (
                     <div className="thumbnails-watermark" key={images.id}>
-                      <img
+                      {smythsonian ? (
+                        <>
+                          {' '}
+                          <div
+                            className="addvideo-card-top "
+                            onClick={() => {
+                              if (smythsonian) {
+                                if (formRef) {
+                                  formRef?.current.setFieldValue('thumb_url', images?.content?.descriptiveNonRepeating?.online_media.media[0]?.thumbnail);
+                                }
+                                returnImagePexel(images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail);
+                              }
+                              handleClose();
+                            }}
+                            style={{
+                              backgroundImage: `url(${images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail})`,
+                            }}
+                          ></div>
+                        </>
+                      ) : (
+                        <>
+                          {' '}
+                          <img
+                            className="thumbnails-watermark-img"
+                            src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail : images.src.tiny}
+                            onClick={() => {
+                              if (formRef) {
+                                formRef?.current.setFieldValue('thumb_url', images.src.tiny);
+                              }
+                              returnImagePexel(images.src.tiny);
+
+                              handleClose();
+                            }}
+                            alt="pexel"
+                          />
+                        </>
+                      )}
+                      {/* <img
                         className="thumbnails-watermark-img"
                         src={smythsonian ? images?.content?.descriptiveNonRepeating?.online_media?.media[0]?.thumbnail : images.src.tiny}
                         onClick={() => {
@@ -207,7 +272,8 @@ function Pexels(props) {
                           handleClose();
                         }}
                         alt="pexel"
-                      />
+                      /> */}
+
                       {smythsonian && <span>{images.title}</span>}
                       {/* {smythsonian ? (
                       <a href="#" target="_blank" rel="noopener noreferrer">

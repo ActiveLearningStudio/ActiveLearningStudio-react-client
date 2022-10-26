@@ -5,7 +5,7 @@ import { Accordion } from 'react-bootstrap';
 
 import SmithsonianAccordion from './SmithsonianAccordion';
 
-const SmithsonianFilter = ({ setSmithsonianQuery, smithsonianJsonData }) => {
+const SmithsonianFilter = ({ setSmithsonianQuery, smithsonianJsonData, clearSelection, setClearSelection }) => {
   const [activeSearch, setactiveSearch] = useState([]);
 
   useEffect(() => {
@@ -13,6 +13,13 @@ const SmithsonianFilter = ({ setSmithsonianQuery, smithsonianJsonData }) => {
       setSmithsonianQuery(activeSearch);
     }
   }, [activeSearch]);
+
+  useEffect(() => {
+    if (clearSelection) {
+      setactiveSearch([]);
+      setClearSelection(false);
+    }
+  }, [clearSelection]);
 
   return (
     <div className="smithsonian_filter_menu_detail">
