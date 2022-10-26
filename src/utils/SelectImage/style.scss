@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         right: 25px;
@@ -175,6 +175,7 @@
   background: #f7faff;
   border-radius: 4px;
   margin-bottom: 16px;
+  display: flex;
 
   .thumbnails-search-pixels {
     width: 224px;
@@ -198,6 +199,26 @@
       right: 0;
       width: 24px;
       height: 24px;
+    }
+  }
+  .smithsonian-clear {
+    margin-left: 18px;
+    button {
+      cursor: pointer;
+      background: #e5eeff;
+      border-radius: 4px;
+      width: 66px;
+      height: 32px;
+      padding: 8px 16px;
+      border: none;
+
+      // Font
+      font-family: $rubik;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: #084892;
     }
   }
 }
@@ -229,6 +250,17 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+    }
+
+    // Bg-Image
+    .addvideo-card-top {
+      width: 182px;
+      // height: 106px;
+      border-radius: 5px;
+      // background-image: url("../../assets/images/cardlistimg.png");
+      background-size: 100% 100%;
+      position: relative;
+      height: 156px;
     }
   }
 
