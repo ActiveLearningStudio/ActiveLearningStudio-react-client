@@ -7,6 +7,8 @@ import smithsonianJsonData from './SmithsonianData';
 import resourceService from 'services/resource.service';
 import { Alert } from 'react-bootstrap';
 import SmithsonianFilter from './SmithsonianFilter';
+import SearchSmSvg from 'iconLibrary/mainContainer/SearchSmSvg';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const pexelsClient = window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API && new PexelsAPI(window.__RUNTIME_CONFIG__?.REACT_APP_PEXEL_API);
 function Pexels(props) {
@@ -115,6 +117,7 @@ function Pexels(props) {
       }
     }
   }, [smithsonianQuery, smythCount]);
+  const primaryColor = getGlobalColor('--main-primary-color');
 
   return (
     <>
@@ -163,8 +166,9 @@ function Pexels(props) {
             }}
           />
           <div className="search-icon">
-            <FontAwesomeIcon
-              icon="search"
+            <SearchSmSvg
+              style={{ cursor: 'pointer' }}
+              primaryColor={primaryColor}
               onClick={() => {
                 setLoader(true);
                 setSmythCount(0);
@@ -188,6 +192,31 @@ function Pexels(props) {
                 }
               }}
             />
+            {/* <FontAwesomeIcon
+              icon="search"
+              onClick={() => {
+                setLoader(true);
+                setSmythCount(0);
+                if (smythsonian && searchValue) {
+                  resourceService.smithsonian({ rows: 15, start: 0, q: `online_visual_material:true${searchValue && ` AND ${searchValue}`}` }).then((data) => {
+                    setLoader(false);
+                    setPexels(data?.response?.rows);
+                  });
+                } else {
+                  pexelsClient
+                    .search(searchValue, 10, 1)
+                    .then((result) => {
+                      setLoader(false);
+                      const allPhotos = !!result.photos && result.photos.map((data) => data);
+                      setPexels(allPhotos);
+                      setNextApi(result.next_page);
+                    })
+                    .catch(() => {
+                      // console.err(e);
+                    });
+                }
+              }}
+            /> */}
           </div>
         </div>
         {smythsonian && (
