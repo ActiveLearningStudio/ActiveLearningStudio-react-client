@@ -13,6 +13,7 @@ function Pexels(props) {
   const [pexelData, setPexels] = useState(null);
 
   const [searchValue, setSearchValue] = useState('');
+  const [smythRows, setSmythRows] = useState('');
   const [nextApi, setNextApi] = useState('');
   const [smythCount, setSmythCount] = useState(0);
   const [clearSelection, setClearSelection] = useState(false);
@@ -29,15 +30,17 @@ function Pexels(props) {
     resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true` }).then((data) => {
       setLoader(false);
       setPexels(data?.response?.rows);
+      setSmythRows(data?.response?.rowCount);
     });
   };
   useEffect(() => {
     if (smythsonian) {
       if (smythCount === 0 && !searchValue) {
-        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true AND (culture:Acoma Indians )` }).then((data) => {
+        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true` }).then((data) => {
           //const updatedPexels = pexelData?.concat(data?.response?.rows);
           // setPexels(updatedPexels);
           setPexels(data?.response?.rows);
+          setSmythRows(data?.response?.rowCount);
           setLoader(false);
         });
       }
@@ -55,15 +58,6 @@ function Pexels(props) {
         });
     }
   }, [smythsonian, smythCount]);
-  useEffect(() => {
-    if (smythsonian && smythCount > 0) {
-      resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true${searchValue && ` AND ${searchValue}`}` }).then((data) => {
-        setLoader(false);
-        const updatedPexels = pexelData?.concat(data?.response?.rows);
-        setPexels(updatedPexels);
-      });
-    }
-  }, [smythCount]);
 
   useEffect(() => {
     let dummySet;
@@ -97,14 +91,30 @@ function Pexels(props) {
       console.log(queryForSearchImage);
     }
 
-    if (queryForSearchImage != '') {
+    if (queryForSearchImage != '' && smythCount === 0) {
       setLoader(true);
       resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true ${queryForSearchImage}` }).then((data) => {
         setLoader(false);
         setPexels(data?.response?.rows);
+        setSmythRows(data?.response?.rowCount);
       });
     }
-  }, [smithsonianQuery]);
+    if (smythsonian && smythCount > 0) {
+      if (queryForSearchImage) {
+        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true ${queryForSearchImage}` }).then((data) => {
+          setLoader(false);
+          const updatedPexels = pexelData?.concat(data?.response?.rows);
+          setPexels(updatedPexels);
+        });
+      } else {
+        resourceService.smithsonian({ rows: 15, start: smythCount, q: `online_visual_material:true ${searchValue && ` AND ${searchValue}`}` }).then((data) => {
+          setLoader(false);
+          const updatedPexels = pexelData?.concat(data?.response?.rows);
+          setPexels(updatedPexels);
+        });
+      }
+    }
+  }, [smithsonianQuery, smythCount]);
 
   return (
     <>
@@ -202,6 +212,7 @@ function Pexels(props) {
               smithsonianJsonData={smithsonianJsonData}
               clearSelection={clearSelection}
               setClearSelection={setClearSelection}
+              setSmythCount={setSmythCount}
             />
           </div>
         )}
@@ -291,31 +302,30 @@ function Pexels(props) {
                 </>
               )}
 
-              {!!nextApi ||
-                (smythsonian && (
-                  <h6
-                    className="read-more-pexel"
-                    onClick={() => {
-                      if (smythsonian) {
-                        setSmythCount(smythCount + 15);
-                      } else {
-                        axios
-                          .get(nextApi, {
-                            headers: {
-                              Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
-                            },
-                          })
-                          .then((res) => {
-                            const moreData = res.data.photos;
-                            setPexels(pexelData?.concat(moreData));
-                            setNextApi(res.data.next_page);
-                          });
-                      }
-                    }}
-                  >
-                    Load more ...
-                  </h6>
-                ))}
+              {(!!nextApi || (smythsonian && smythRows > 15)) && (
+                <h6
+                  className="read-more-pexel"
+                  onClick={() => {
+                    if (smythsonian) {
+                      setSmythCount(smythCount + 15);
+                    } else {
+                      axios
+                        .get(nextApi, {
+                          headers: {
+                            Authorization: window.__RUNTIME_CONFIG__.REACT_APP_PEXEL_API,
+                          },
+                        })
+                        .then((res) => {
+                          const moreData = res.data.photos;
+                          setPexels(pexelData?.concat(moreData));
+                          setNextApi(res.data.next_page);
+                        });
+                    }
+                  }}
+                >
+                  Load more ...
+                </h6>
+              )}
             </>
           )}
         </div>

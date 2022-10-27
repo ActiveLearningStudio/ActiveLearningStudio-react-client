@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         right: 25px;
@@ -225,7 +225,7 @@
 
 .thumbnails-img-box-pexels {
   display: flex;
-  max-height: 485px;
+  max-height: 680px;
   gap: 8px;
   flex-wrap: wrap;
   overflow-y: scroll;

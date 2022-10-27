@@ -7,7 +7,7 @@ import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 
 const SmithsonianAccordion = ({
   accordionTitle,
-
+  setSmythCount,
   eventKey,
   smithsonianData,
 
@@ -17,6 +17,7 @@ const SmithsonianAccordion = ({
   const [searchValue, setSearchValue] = useState();
 
   const updateSearchList = (value) => {
+    setSmythCount(0);
     if (activeSmithsonianAccordion.includes(value)) {
       setActiveSmithsonianAccordion(activeSmithsonianAccordion.filter((data) => data !== value));
     } else {
@@ -53,7 +54,7 @@ const SmithsonianAccordion = ({
                 ? smithsonianData?.map(
                     (data) =>
                       data.toLowerCase()?.includes(searchValue.toLowerCase()) && (
-                        <div className="list-item-keys" key={data} v onClick={() => updateSearchList(data)}>
+                        <div className="list-item-keys" key={data} onClick={() => updateSearchList(data)}>
                           <div className="card-detail-list-text-icon">
                             {activeSmithsonianAccordion.includes(data) ? (
                               <FontAwesomeIcon className="card-detail-list-icon" icon="check-square" />
