@@ -57,7 +57,7 @@ export default function Pills(props) {
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport, allbrightCove, teams, indActivities, exportedActivities } = useSelector((state) => state.admin);
+  const { activityTypes, activityItems, usersReport, allbrightCove, teams, indActivities, exportedActivities, newlyEdit } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -995,6 +995,20 @@ export default function Pills(props) {
 
     dispatch(adminIntActivities(activeOrganization?.id, activePage, size));
   };
+
+  // After Edit LMS Setting
+  useEffect(() => {
+    if (subTypeState === 'LMS settings') {
+      const updateNewLmsProject = lmsProject?.data.map((_lms) => {
+        if (_lms.id === newlyEdit.id) {
+          _lms = newlyEdit;
+        }
+        return _lms;
+      });
+
+      setLmsProject({ ...lmsProject, data: updateNewLmsProject });
+    }
+  }, [newlyEdit]);
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
