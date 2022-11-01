@@ -100,6 +100,27 @@
       margin-top: 16px;
       // margin: 16px 0px 22px;
       background-color: #f7faff;
+      .search-bar-clear-btn {
+        display: flex;
+        align-items: center;
+        .clr-btn {
+          cursor: pointer;
+          background: #e5eeff;
+          border-radius: 4px;
+          width: 66px;
+          height: 32px;
+          padding: 8px 16px;
+          border: none;
+
+          // Font
+          font-family: $rubik;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 16px;
+          color: #084892;
+        }
+      }
       .searc_bar_move_activities {
         display: flex;
         .cutom_checkbox {
@@ -125,7 +146,7 @@
       }
       .search-bar {
         position: relative;
-        margin-right: 33px;
+        margin-right: 17px;
         input {
           border: none;
           color: $fun-blue-1;
@@ -536,7 +557,7 @@
           letter-spacing: 0.02em;
           color: #2e68bf;
         }
-        @media (max-width: 1024px){
+        @media (max-width: 1024px) {
           width: 30%;
         }
       }
@@ -877,6 +898,7 @@
     position: absolute;
     bottom: 80px;
     right: 80px;
+
     .describe-btn {
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
     }
@@ -979,6 +1001,13 @@
       max-width: 536px;
       margin-top: 32px;
       width: 70%;
+
+      .activity-add-edit-btn {
+        display: flex;
+        .ml-32 {
+          margin-left: 32px;
+        }
+      }
 
       .interactive-video-heading-two {
         font-weight: 500;

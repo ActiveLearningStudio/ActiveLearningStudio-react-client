@@ -33,7 +33,7 @@ const ModalImage = (props) => {
             </div>
           </div>
           {activeKey !== 'My device' ? (
-            <p className="thumbnails-text">You are currently viewing Thumbnails form {activeKey} Library. You can search other thumbnails below as well.</p>
+            <p className="thumbnails-text">You are currently viewing images form {activeKey} library.</p>
           ) : (
             <p className="thumbnails-text">Kindly upload the image</p>
           )}
@@ -44,6 +44,7 @@ const ModalImage = (props) => {
             onSelect={(k) => {
               if (k === 'My device') {
                 openFile.current?.click();
+                setactiveKey(k);
               } else {
                 setLoader(false);
                 setactiveKey(k);

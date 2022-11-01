@@ -632,10 +632,32 @@
       .search-and-filters {
         display: flex;
         justify-content: space-between;
+
+        .search-bar-clear-btn {
+          display: flex;
+          align-items: center;
+          .clr-btn {
+            cursor: pointer;
+            background: #e5eeff;
+            border-radius: 4px;
+            width: 66px;
+            height: 32px;
+            padding: 8px 16px;
+            border: none;
+
+            // Font
+            font-family: $rubik;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
+            color: #084892;
+          }
+        }
         .search-bar {
           position: relative;
           input {
-            margin-right: 39.17px;
+            margin-right: 17px;
             max-width: 358px;
             min-width: 258px;
             border: none;
@@ -652,8 +674,8 @@
           }
           svg {
             position: absolute;
-            right: 40px;
-            bottom: 12px;
+            right: 24px;
+            bottom: 6px;
           }
           .svg_icon {
             position: absolute;
