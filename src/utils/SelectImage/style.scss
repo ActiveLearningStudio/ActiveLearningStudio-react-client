@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         right: 25px;
@@ -156,7 +156,7 @@
         width: 140px;
         height: 32px;
         background: #084892;
-        border: 1px solid #084892 !important;
+        // border: 1px solid #084892 !important;
         border-radius: 16px;
         font-weight: 400 !important;
         font-size: 14px;
@@ -367,20 +367,21 @@
       .card-detail-list-options {
         position: relative;
         margin-top: 4px;
-        padding: 8px 8px 8px 8px;
+        // padding: 8px 8px 8px 8px;
         border-radius: 4px;
 
         .card-detail-list-text-icon {
           display: flex;
 
           .card-detail-list-icon {
-            margin-top: 4px;
+            // margin-top: 4px;
           }
         }
         .card-body {
           padding: 0;
         }
         .smithList {
+          padding: 0px 8px 8px 8px;
           max-height: 285px;
           overflow-y: scroll;
         }
@@ -393,7 +394,7 @@
           .card-detail-list-search {
             // width: 224px;
             height: 32px;
-            padding: 6px 40px 6px 8px;
+            padding: 6px 40px 6px 0px;
             border-bottom: 2px solid #515151;
             position: relative;
 
@@ -410,8 +411,8 @@
           }
           .card-detail-list-icon {
             position: absolute;
-            top: 0px;
-            right: 15px;
+            top: 4px;
+            right: 5px;
             width: 20px;
             height: 20px;
           }
