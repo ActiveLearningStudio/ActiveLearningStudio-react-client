@@ -7,7 +7,7 @@ node("currikidev") {
     }  
     
     stage('Build image') { 
-        if(params.enable_storybook == 1){
+        if(params.enable_storybook){
           story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
         }
         app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
