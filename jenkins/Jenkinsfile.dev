@@ -7,10 +7,11 @@ node("currikidev") {
     }  
     
     stage('Build image') { 
-        app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
-        if(${enable_storybook} == 1){
+        if($enable_storybook == 1){
           story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
         }
+        app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
+        
         
     } 
     stage('Test image') {           
