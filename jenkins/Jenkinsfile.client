@@ -8,26 +8,34 @@ node("currikidev") {
     
     stage('Build image') { 
         app = docker.build("quay.io/curriki/client", "--build-arg DOMAIN=$domain .")
-        story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
+        if(${enable_storybook} == 1){
+          story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
+        }
+        
         
     } 
     stage('Test image') {           
         app.inside { 
                 sh 'echo "Api Tests passed"'        
         }    
-        story.inside { 
-                sh 'echo "Story Tests passed"'        
-        }    
+        if(${enable_storybook} == 1){
+          story.inside { 
+                  sh 'echo "Story Tests passed"'        
+          }    
+        }
     } 
     stage('Push image') {	
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             app.push("${env.BUILD_NUMBER}")            
             app.push("${tag}")        
-        }    
-        docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
-            story.push("${env.BUILD_NUMBER}")            
-            story.push("${tag}")        
-        }    
+        }
+
+        if(${enable_storybook} == 1){
+          docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
+              story.push("${env.BUILD_NUMBER}")            
+              story.push("${tag}")        
+          }    
+        }
     }
     
     parallel(
@@ -37,8 +45,12 @@ node("currikidev") {
                         stage ("${node}") {
                                 echo 'Copy'
                                 sh "yes | docker service update --image quay.io/curriki/client:${tag} currikistack_currikiprod-client"
-                                sh "yes | docker service update --image quay.io/curriki/clientdocs:${tag} currikistack_currikiprod-clientdocs"
-                                echo 'Copy completed'
+                                echo 'Client Copy completed'
+                                if(${enable_storybook} == 1){
+                                  sh "yes | docker service update --image quay.io/curriki/clientdocs:${tag} currikistack_currikiprod-clientdocs"
+                                  echo 'Storybook Copy completed'
+                                }
+                                
                         }
                     }
                 } else {
