@@ -4,7 +4,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY ./package*.json ./
 RUN npm install --no-package-lock
 COPY . .
-RUN npm run build
+RUN npm run build-storybook
 RUN mkdir -p /app/html
 RUN cp -rf /app/storybook-static/* /app/html
 
@@ -15,7 +15,7 @@ RUN cp -rf /app/storybook-static/* /app/html
 EXPOSE 2000
 #CMD ["nginx", "-g", "daemon off;"]
 
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:storybook"]
 #COPY ./entrypoint.client.sh ./
 #RUN chmod +x /app/entrypoint.client.sh
 #ENTRYPOINT ["sh", "/app/entrypoint.client.sh"]
