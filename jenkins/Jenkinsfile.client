@@ -8,7 +8,7 @@ node("currikidev") {
     
     stage('Build image') { 
         app = docker.build("quay.io/curriki/client", "--build-arg DOMAIN=$domain .")
-        if(${enable_storybook} == 1){
+        if(params.enable_storybook){
           story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
         }
         
@@ -18,7 +18,7 @@ node("currikidev") {
         app.inside { 
                 sh 'echo "Api Tests passed"'        
         }    
-        if(${enable_storybook} == 1){
+        if(params.enable_storybook){
           story.inside { 
                   sh 'echo "Story Tests passed"'        
           }    
@@ -30,7 +30,7 @@ node("currikidev") {
             app.push("${tag}")        
         }
 
-        if(${enable_storybook} == 1){
+        if(params.enable_storybook){
           docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
               story.push("${env.BUILD_NUMBER}")            
               story.push("${tag}")        
@@ -46,7 +46,7 @@ node("currikidev") {
                                 echo 'Copy'
                                 sh "yes | docker service update --image quay.io/curriki/client:${tag} currikistack_currikiprod-client"
                                 echo 'Client Copy completed'
-                                if(${enable_storybook} == 1){
+                                if(params.enable_storybook){
                                   sh "yes | docker service update --image quay.io/curriki/clientdocs:${tag} currikistack_currikiprod-clientdocs"
                                   echo 'Storybook Copy completed'
                                 }
