@@ -77,9 +77,9 @@ function Pexels(props) {
         let dummyfilters;
         dummySet[data].map((filter, counter) => {
           if (dummyfilters) {
-            dummyfilters = dummyfilters + `${data}:${filter} ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
+            dummyfilters = dummyfilters + `${data}:"${filter}" ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
           } else {
-            dummyfilters = `${data}:${filter} ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
+            dummyfilters = `${data}:"${filter}" ${dummySet[data].length === counter + 1 ? '' : ' OR '}`;
           }
         });
         if (dummyfilters) {

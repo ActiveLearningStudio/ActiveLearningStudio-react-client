@@ -21,7 +21,7 @@ function CreatePlaylistPopup(props) {
         handleHideCreatePlaylistModal();
       }
     },
-    [handleHideCreatePlaylistModal]
+    [handleHideCreatePlaylistModal],
   );
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function CreatePlaylistPopup(props) {
   }, [escFunction]);
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   return (
-    <div className="playlist-modal">
+    <div className="playlist-modal" data-testid="create-playlist-ui-test">
       <div className="modal fade right" role="dialog" aria-hidden="true">
         <div className="modal-dialog" role="document">
           <BouncyDiv className="modal-content">

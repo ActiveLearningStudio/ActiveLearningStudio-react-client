@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: " ";
+        content: ' ';
         position: absolute;
         top: 50%;
         right: 25px;
@@ -162,7 +162,7 @@
         font-size: 14px;
         line-height: 15px;
         text-align: center;
-        color: #ffffff;
+        color: #ffffff !important;
         margin: 0 !important;
       }
     }
@@ -233,6 +233,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    height: fit-content;
     .thumbnails-watermark-img {
       width: 182px;
       height: 106.17px;
@@ -373,8 +374,8 @@
         .card-detail-list-text-icon {
           display: flex;
 
-          .card-detail-list-icon {
-            // margin-top: 4px;
+          svg {
+            flex-shrink: 0;
           }
         }
         .card-body {
