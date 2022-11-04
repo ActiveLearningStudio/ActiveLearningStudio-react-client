@@ -37,7 +37,7 @@ const ProjectCardDropdown = (props) => {
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
   const { selectedTeam } = useSelector((state) => state.team);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const dispatch = useDispatch();
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
@@ -170,7 +170,7 @@ const ProjectCardDropdown = (props) => {
               Publish
             </a>
             <ul className="dropdown-menu check">
-              {project?.gcr_project_visibility && (
+              {activeOrganization?.gcr_project_visibility && (
                 <li
                   key={`googleclassroom +${project.id}`}
                   onClick={() => {
@@ -185,18 +185,21 @@ const ProjectCardDropdown = (props) => {
                   <a>Google Classroom</a>
                 </li>
               )}
-              <li
-                onClick={() => {
-                  handleShow();
-                  setProjectId(props.project.id);
-                  setcanvasProjectName(project.name);
-                  dispatch(msTeamShare(true));
-                  dispatch(googleShare(true));
-                  dispatch(shareToCanvas(false));
-                }}
-              >
-                <a>Microsoft Teams</a>
-              </li>
+              {activeOrganization?.msteam_project_visibility && (
+                <li
+                  onClick={() => {
+                    handleShow();
+                    setProjectId(props.project.id);
+                    setcanvasProjectName(project.name);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
+                </li>
+              )}
+
               {allLms.shareVendors &&
                 allLms.shareVendors.map(
                   (data) =>

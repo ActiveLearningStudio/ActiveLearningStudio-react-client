@@ -55,7 +55,7 @@ const ResourceCardDropdown = (props) => {
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const ResourceCardDropdown = (props) => {
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
-                {resource?.gcr_activity_visibility && (
+                {activeOrganization?.gcr_activity_visibility && (
                   <li
                     onClick={() => {
                       handleShow();
@@ -173,20 +173,22 @@ const ResourceCardDropdown = (props) => {
                     <a>Google Classroom</a>
                   </li>
                 )}
-                <li
-                  onClick={() => {
-                    handleShow();
-                    // getProjectId(match.params.projectId);
-                    // setProjectId(match.params.projectId);
-                    // setProjectPlaylistId(playlist.id);
-                    setProjectPlaylistActivityId(resource.id);
-                    dispatch(msTeamShare(true));
-                    dispatch(googleShare(true));
-                    dispatch(shareToCanvas(false));
-                  }}
-                >
-                  <a>Microsoft Teams</a>
-                </li>
+                {activeOrganization?.msteam_activity_visibility && (
+                  <li
+                    onClick={() => {
+                      handleShow();
+                      // getProjectId(match.params.projectId);
+                      // setProjectId(match.params.projectId);
+                      // setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistActivityId(resource.id);
+                      dispatch(msTeamShare(true));
+                      dispatch(googleShare(true));
+                      dispatch(shareToCanvas(false));
+                    }}
+                  >
+                    <a>Microsoft Teams</a>
+                  </li>
+                )}
                 {/* <li
                   onClick={() => {
                     handleShow();
