@@ -6,6 +6,8 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import FileUpload from './fileUpload';
 import Pexels from './pexels';
+import CloseSmSvg from 'iconLibrary/mainContainer/CloseSmSvg';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const ModalImage = (props) => {
   const { show, handleClose, mediaSources } = props;
@@ -21,7 +23,7 @@ const ModalImage = (props) => {
       setactiveKey('My device');
     }
   }, [mediaSources, openFile]);
-
+  const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   return (
     <>
       <Modal className="thumbnails-modal" show={show} backdrop="static" keyboard={false} size="xl" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -29,11 +31,12 @@ const ModalImage = (props) => {
           <div className="thumbnails-close">
             <h4 className="thumbnails-heading">Browse Images</h4>
             <div className="thumb-close-button">
-              <FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} />
+              <CloseSmSvg primaryColor={paragraphColor} onClick={handleClose} />
+              {/* <FontAwesomeIcon className="ml-2" icon="times" onClick={handleClose} /> */}
             </div>
           </div>
           {activeKey !== 'My device' ? (
-            <p className="thumbnails-text">You are currently viewing Thumbnails form {activeKey} Library. You can search other thumbnails below as well.</p>
+            <p className="thumbnails-text">You are currently viewing images form {activeKey} library.</p>
           ) : (
             <p className="thumbnails-text">Kindly upload the image</p>
           )}
@@ -44,6 +47,7 @@ const ModalImage = (props) => {
             onSelect={(k) => {
               if (k === 'My device') {
                 openFile.current?.click();
+                setactiveKey(k);
               } else {
                 setLoader(false);
                 setactiveKey(k);

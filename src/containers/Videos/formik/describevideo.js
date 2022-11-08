@@ -18,6 +18,8 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
+import { editIndActivityItem } from 'store/actions/indActivities';
+import { edith5pVideoActivityMetaData } from 'store/actions/videos';
 
 const DescribeVideo = ({
   setUploadImageStatus,
@@ -62,6 +64,13 @@ const DescribeVideo = ({
     return ids;
   };
 
+  const formatApiDataValue = (data) => {
+    let ids = [];
+    data.map((datum) => {
+      ids.push(datum.value);
+    });
+    return ids;
+  };
   useEffect(() => {
     if (!subjects) {
       const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
@@ -135,6 +144,15 @@ const DescribeVideo = ({
   const primaryColor = getGlobalColor('--main-primary-color');
   console.log('siback', isbackHide);
   const formRef = useRef();
+  const formatSelectBoxData = (data) => {
+    let ids = [];
+    if (data.length > 0) {
+      data?.map((datum) => {
+        ids.push(datum.value);
+      });
+    }
+    return ids;
+  };
 
   return (
     <>
@@ -157,7 +175,7 @@ const DescribeVideo = ({
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading text={activityPreview ? '1. Add an activity' : '1. Add a video'} tabActive={true} />
+          <TabsHeading text={activityPreview ? `1. ${editVideo ? 'Edit' : 'Add'} an activity` : `1. ${editVideo ? 'Edit' : 'Add'} a video`} tabActive={true} />
           <TabsHeading text={activityPreview ? '2. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
@@ -351,7 +369,61 @@ const DescribeVideo = ({
                   <div className="describe-video">
                     <h4 className="interactive-video-heading-two">Add Interactions</h4>
                     <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
-                    <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                    <div className="activity-add-edit-btn">
+                      <div>
+                        <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                      </div>
+                      {editVideo && (
+                        <>
+                          <div>
+                            <Buttons
+                              onClick={async () => {
+                                const h5pdata = {
+                                  library: `${editVideo.library_name} ${editVideo.major_version}.${editVideo.minor_version}`,
+                                  parameters: editVideo.h5p,
+                                  action: 'create',
+                                };
+                                if (activityPreview) {
+                                  await dispatch(
+                                    editIndActivityItem(editVideo.id, {
+                                      ...values,
+                                      organization_visibility_type_id: editVideo.organization_visibility_type_id || 1,
+                                      data: h5pdata,
+                                      type: 'h5p',
+                                      content: 'place_holder',
+                                      subject_id: formatApiDataValue(values?.subject_id),
+                                      education_level_id: formatApiDataValue(values?.education_level_id),
+                                      author_tag_id: formatApiDataValue(values?.author_tag_id),
+                                    }),
+                                  );
+                                  setOpenVideo(false);
+                                } else {
+                                  await dispatch(
+                                    edith5pVideoActivityMetaData(
+                                      editVideo.id,
+                                      {
+                                        ...values,
+                                        subject_id: formatApiDataValue(values?.subject_id),
+                                        education_level_id: formatApiDataValue(values?.education_level_id),
+                                        author_tag_id: formatApiDataValue(values?.author_tag_id),
+                                      },
+                                      h5pdata,
+                                    ),
+                                  );
+                                  setOpenVideo(false);
+                                }
+                              }}
+                              text="Save"
+                              secondary={true}
+                              width="142px"
+                              height="35px"
+                              className="ml-32"
+                              type="button"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </form>
               )}

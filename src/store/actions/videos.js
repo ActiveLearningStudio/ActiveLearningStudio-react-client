@@ -187,6 +187,33 @@ export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
   });
 };
 
+export const edith5pVideoActivityMetaData = (videoID, formData, h5pdata) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
+  const result = await videoServices.edith5pVideoActivity(activeOrganization.id, videoID, {
+    ...formData,
+    data: h5pdata,
+    type: 'h5p_standalone',
+    content: 'place_holder',
+  });
+  toast.dismiss();
+
+  dispatch({
+    type: actionTypes.EDIT_VIDEO_ACTIVITY,
+    payload: result.activity,
+  });
+};
 export const allBrightCove = (orgId, size, page) => async (dispatch) => {
   const result = await videoServices.allBrightCove(orgId, size, page);
   dispatch({

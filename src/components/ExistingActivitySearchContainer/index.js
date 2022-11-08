@@ -33,17 +33,34 @@ const ExistingActivitySearchContainer = (props) => {
   useEffect(() => {
     if (selectedActivity === null) return;
 
-    const data = {
-      specific: {
-        action: {
-          params: JSON.parse(selectedActivity.h5p.params),
-          library: `${selectedActivity.h5p.library.name} ${selectedActivity.h5p.library.majorVersion}.${selectedActivity.h5p.library.minorVersion}`,
-          metadata: { ...selectedActivity.h5p.metadata},
-          subContentId: '',
-        }
-      },
-      generic: 'action',
-    };
+    let data = null;
+
+    if (selectedActivity.activityType === 'independent') {
+      const contentKey = Object.getOwnPropertyNames(selectedActivity.h5p.settings.contents)[0];
+      data = {
+        specific: {
+          action: {
+            params: JSON.parse(selectedActivity.activity.h5p_content.parameters),
+            library: selectedActivity.h5p.settings.contents[contentKey].library,
+            metadata: { ...selectedActivity.h5p.settings.contents[contentKey].metadata},
+            subContentId: '',
+          }
+        },
+        generic: 'action',
+      };
+    } else {
+      data = {
+        specific: {
+          action: {
+            params: JSON.parse(selectedActivity.h5p.params),
+            library: `${selectedActivity.h5p.library.name} ${selectedActivity.h5p.library.majorVersion}.${selectedActivity.h5p.library.minorVersion}`,
+            metadata: { ...selectedActivity.h5p.metadata},
+            subContentId: '',
+          }
+        },
+        generic: 'action',
+      };
+    }
     insertActivityCallback(data);
     resetActivityData();
     clearSearch();
@@ -65,7 +82,7 @@ const ExistingActivitySearchContainer = (props) => {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} />
+        <ExistingLibrarySearch addActivity={handleAddActivity} libraries={libraries} layout={layout} />
       </Modal.Body>
       <Modal.Footer>
         <div className="row">

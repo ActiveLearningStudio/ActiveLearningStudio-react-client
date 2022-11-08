@@ -8,7 +8,7 @@ import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 import { publishProjectPlaylistToCanvas } from 'store/actions/share';
-import { getProjectId, googleShare, shareToCanvas } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, publishLmsSettings } from 'store/actions/gapi';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 
@@ -29,6 +29,7 @@ function ShareLink(props) {
   } = props;
 
   const AllLms = useSelector((state) => state.share);
+  const { activeOrganization } = useSelector((state) => state.organization);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
     const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
@@ -63,7 +64,7 @@ function ShareLink(props) {
       </a>
 
       <ul className="dropdown-menu check">
-        {gcr_playlist_visibility && (
+        {activeOrganization?.gcr_playlist_visibility && (
           <li
             onClick={() => {
               handleShow();
@@ -88,6 +89,7 @@ function ShareLink(props) {
                     onClick={async () => {
                       if (data.lms_name === 'canvas') {
                         dispatch(shareToCanvas(true));
+                        dispatch(publishLmsSettings(data));
                         setprojectPlaylistPublishtoCanvas(true);
                         setProjectPlaylistId(playlistId);
                         setProjectId(projectId);

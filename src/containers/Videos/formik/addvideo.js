@@ -87,13 +87,13 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
       />
       <div className="add-video-form">
         <div className="add-video-tabs">
-          <TabsHeading text="1. Add a video" tabActive />
+          <TabsHeading text={`1. ${editVideo ? 'Edit' : 'Add'} a video`} tabActive />
           <TabsHeading text="2. Describe video" className="ml-10" />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-video-title-select upload-back-button">
           <div className="add-video-title">
-            <HeadingTwo text="Add a video" color="#084892" />
+            <HeadingTwo text={`${editVideo ? 'Edit' : 'Add'} a video`} color="#084892" />
           </div>
           {/* <div className="add-video-tour">
             <span>

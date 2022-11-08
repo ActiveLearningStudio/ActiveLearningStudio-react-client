@@ -8,11 +8,11 @@ import { existingActivitySearchGetAction } from 'store/actions/search';
 import './style.scss';
 
 const ExistingActivityCard = (props) => {
-  const { activity, getActivityData, className } = props;
-  const thumbnail = !activity.thumb_url.includes('/storage/') ? activity.thumb_url : `${global.config.resourceUrl}${activity.thumb_url}`;
+  const { activity, activityType, getActivityData, className } = props;
+  const thumbnail = activity.thumb_url?.includes('/storage/') ? `${global.config.resourceUrl}${activity.thumb_url}` : activity.thumb_url;
 
   const handleAddClick = () => {
-    getActivityData(activity.id);
+    getActivityData(activity.id, activityType);
   };
 
   return (
@@ -22,9 +22,8 @@ const ExistingActivityCard = (props) => {
       </div>
       <div className="col-7">
         <h3>
-          <a href={`/activity/${activity.id}/preview`} target="_blank" rel="noreferrer">
-            {activity.title}
-          </a>
+          {activity.location && (<a href={`/activity/${activity.id}/preview`} target="_blank" rel="noreferrer">{activity.title}</a>)}
+          {!activity.location && (<a href={`/activity/${activity.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">{activity.title}</a>)}
         </h3>
         <p>{activity.description}</p>
         <ul>
@@ -49,7 +48,7 @@ ExistingActivityCard.propTypes = {};
 ExistingActivityCard.defaultProps = {};
 
 const mapDispatchToProps = (dispatch) => ({
-  getActivityData: (activityId) => dispatch(existingActivitySearchGetAction(activityId)),
+  getActivityData: (activityId, activityType) => dispatch(existingActivitySearchGetAction(activityId, activityType)),  
 });
 
 const mapStateToProps = (state) => ({});

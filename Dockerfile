@@ -7,12 +7,11 @@ ENV DOMAIN_URL=$DOMAIN
 COPY ./package*.json ./
 RUN npm install
 RUN apt-get install git -y
-
 COPY . .
 RUN git log --graph -10 --decorate --pretty > log.txt
 
 RUN npm install --no-package-lock
-RUN set GENERATE_SOURCEMAP=false && npm run build
+RUN CI=true npm test a && set GENERATE_SOURCEMAP=false && npm run build
 
 COPY . .
 RUN mv log.txt build/

@@ -8,7 +8,7 @@ import ExistingLibrarySearchResults from '../ExistingLibrarySearchResults';
 import { setCompatibleLibrariesAction } from 'store/actions/existingActivitySearch';
 
 const ExistingLibrarySearch = (props) => {
-  const { libraries, setCompatibleLibraries } = props;
+  const { libraries, setCompatibleLibraries, layout } = props;
 
   useEffect(() => {
     setCompatibleLibraries(libraries);
@@ -20,7 +20,7 @@ const ExistingLibrarySearch = (props) => {
         <ExistingLibrarySearchQuery />
       </div>
       <div className='col-8'>
-        <ExistingLibrarySearchResults />
+        <ExistingLibrarySearchResults layout={layout} />
       </div>      
     </div>
   );

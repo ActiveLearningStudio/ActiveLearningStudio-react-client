@@ -524,26 +524,30 @@ const DropDownEdit = ({
                 &nbsp; Publish
               </a>
               <ul className="dropdown-menu check">
-                <li
-                  onClick={() => {
-                    handleShow();
-                    setSelectedActivityId(data.id);
-                    dispatch(googleShare(false));
-                  }}
-                >
-                  <a>Google Classroom</a>
-                </li>
-                <li
-                  onClick={() => {
-                    handleShow();
-                    setSelectedActivityId(data.id);
-                    dispatch(msTeamShare(true));
-                    dispatch(googleShare(true));
-                    dispatch(shareToCanvas(false));
-                  }}
-                >
-                  <a>Microsoft Teams</a>
-                </li>
+                {activeOrganization?.gcr_activity_visibility && (
+                  <li
+                    onClick={() => {
+                      handleShow();
+                      setSelectedActivityId(data.id);
+                      dispatch(googleShare(false));
+                    }}
+                  >
+                    <a>Google Classroom</a>
+                  </li>
+                )}
+                {activeOrganization?.msteam_activity_visibility && (
+                  <li
+                    onClick={() => {
+                      handleShow();
+                      setSelectedActivityId(data.id);
+                      dispatch(msTeamShare(true));
+                      dispatch(googleShare(true));
+                      dispatch(shareToCanvas(false));
+                    }}
+                  >
+                    <a>Microsoft Teams</a>
+                  </li>
+                )}
               </ul>
             </li>
           )}

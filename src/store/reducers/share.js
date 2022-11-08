@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE, ALL_COURSES, GET_COURSE_TOPICS, SHARE_CANAVS, SHARE_MS_TEAM } from '../actionTypes';
+import { SHOW_LMS, CHANGE_LOADING, GOOGLE_SHARE, ALL_COURSES, GET_COURSE_TOPICS, SHARE_CANAVS, SHARE_MS_TEAM, PUBLISH_LMS_SETTINGS } from '../actionTypes';
 
 const INITIAL_STATE = {
   shareVendors: [],
@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   topics: false,
   isCanvas: false,
   msTeamShare: false,
+  publishingLms: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -39,6 +40,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isCanvas: action.value,
+      };
+    case PUBLISH_LMS_SETTINGS:
+      return {
+        ...state,
+        publishingLms: action.value,
       };
 
     case ALL_COURSES:
