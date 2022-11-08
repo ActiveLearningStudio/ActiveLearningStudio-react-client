@@ -1,5 +1,56 @@
 @import "assets/css/index";
+// C-CSS-Start
+.modal {
+  padding-top: 15px !important;
+  padding-right: 15px !important;
+  display: block !important;
+  background-color: #263b4eeb !important;
+  opacity: 1 !important;
 
+  &.left .modal-dialog,
+  &.right .modal-dialog {
+    position: relative;
+    max-width: none !important;
+    height: 100%;
+    margin-top: 0;
+    padding-left: 346px;
+    transform: translate3d(0%, 0, 0) !important;
+  }
+
+  &.left .modal-content,
+  &.right .modal-content {
+    width: 550px;
+    height: 100%;
+    overflow-y: auto;
+    border: 0;
+    border-radius: 0;
+  }
+
+  &.left .modal-body,
+  &.right .modal-body,
+  &.left .modal-title,
+  &.right .modal-title {
+    padding: 15px;
+  }
+
+  &.right.fade {
+    .modal-dialog {
+      right: 0;
+      padding-top: 0 !important;
+      transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
+
+    &.in .modal-dialog {
+      right: 0;
+    }
+  }
+}
+
+.modal-header {
+  background-color: #fafafa;
+  border-bottom-color: #eeeeee;
+}
+// C-CSS-End
 .inner-content {
   background: $white;
   // padding: 32px;

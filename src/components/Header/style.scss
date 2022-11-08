@@ -1,5 +1,8 @@
 @import "assets/css/index";
 
+.container-fluid {
+  padding: 0 !important;
+}
 .top-header {
   position: fixed !important;
   width: 100%;
