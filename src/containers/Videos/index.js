@@ -336,31 +336,44 @@ const Index = ({ activities }) => {
                   (allActivities?.data?.length > 0 || allActivities?.links?.first?.includes('query')) && (
                     <>
                       <div className="video-cards-top-search-filter">
-                        <div className="search-bar">
-                          <input
-                            className=""
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                              setActivePage(1);
-                              if (!e.target.value) {
+                        <div className="search-bar-clear-btn">
+                          <div className="search-bar">
+                            <input
+                              className=""
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                setActivePage(1);
+                                if (!e.target.value) {
+                                  setActiveScreenPage(null);
+                                  dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
+                                }
+                              }}
+                              placeholder="Search My Activities..."
+                            />
+                            <SearchInputMdSvg
+                              primaryColor={primaryColor}
+                              onClick={() => {
+                                if (currentOrganization) {
+                                  setActiveScreenPage(null);
+                                  dispatch(allIndActivity(currentOrganization?.id, ActivePage, defaultSize, searchQuery));
+                                }
+                              }}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </div>
+                          <div>
+                            <Buttons
+                              text="Clear"
+                              className="clr-btn"
+                              onClick={() => {
+                                setSearchQuery('');
                                 setActiveScreenPage(null);
                                 dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
-                              }
-                            }}
-                            placeholder="Search My Activities..."
-                          />
-                          <SearchInputMdSvg
-                            primaryColor={primaryColor}
-                            onClick={() => {
-                              if (currentOrganization) {
-                                setActiveScreenPage(null);
-                                dispatch(allIndActivity(currentOrganization?.id, ActivePage, defaultSize, searchQuery));
-                              }
-                            }}
-                            style={{ cursor: 'pointer' }}
-                          />
+                              }}
+                            />
+                          </div>
                         </div>
 
                         <div className="searc_bar_move_activities">

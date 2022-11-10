@@ -1,25 +1,40 @@
 node("currikidev") {
     def app
-    
+    def story
     
     stage('Clone repository') {               
         checkout scm    
     }  
     
     stage('Build image') { 
+        if(params.enable_storybook){
+          story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
+        }
         app = docker.build("quay.io/curriki/client", "-f Dockerfile.dev --build-arg DOMAIN=$domain .")
+        
         
     } 
     stage('Test image') {           
         app.inside { 
                 sh 'echo "Api Tests passed"'        
         }    
+        if(params.enable_storybook){
+          story.inside { 
+                  sh 'echo "Story Tests passed"'        
+          }    
+        }
     } 
     stage('Push image') {	
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             app.push("${env.BUILD_NUMBER}")            
             app.push("${tag}")        
         }    
+        if(params.enable_storybook){
+          docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
+              story.push("${env.BUILD_NUMBER}")            
+              story.push("${tag}")        
+          }    
+        }
          
     }
     
@@ -31,6 +46,10 @@ node("currikidev") {
                                 echo 'Copy'
                                 sh "yes | docker service update --image quay.io/curriki/client:${tag} currikistack_currikiprod-client" 
                                 echo 'Copy completed'
+                                if(params.enable_storybook){
+                                  sh "yes | docker service update --image quay.io/curriki/clientdocs:${tag} currikistack_currikiprod-clientdocs"
+                                  echo 'Storybook Copy completed'
+                                }
                         }
                     }
                 } else {

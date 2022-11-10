@@ -105,28 +105,40 @@ function LtiProjectShared(props) {
             )}
             <div className={`clone-searching-section ${clone.ind ? 'clone-searching-section-margin-ind' : 'clone-searching-section-margin'}`}>
               <div className="search-and-filters">
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search Project..."
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setpage(1);
-                      // handlerSearchResult(e.target.value);
-                    }}
-                  />
-                  <SearchInputMdSvg
-                    primaryColor={primaryColor}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      dispatch(
-                        loadMyCloneProjectsAction(page, defaultSize, searchQuery),
-                        // loadMyProjectsAction(),
-                      )
-                    }
-                  />
+                <div className="search-bar-clear-btn">
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search Project..."
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setpage(1);
+                        // handlerSearchResult(e.target.value);
+                      }}
+                    />
+                    <SearchInputMdSvg
+                      primaryColor={primaryColor}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() =>
+                        dispatch(
+                          loadMyCloneProjectsAction(page, defaultSize, searchQuery),
+                          // loadMyProjectsAction(),
+                        )
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Buttons
+                      text="Clear"
+                      className="clr-btn"
+                      onClick={() => {
+                        setSearchQuery('');
+                        loadMyCloneProjectsAction(1, 10);
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <div>

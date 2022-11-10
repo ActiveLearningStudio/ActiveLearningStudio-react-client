@@ -5,7 +5,7 @@ const cluster = require('cluster');
 const path = require('path');
 const logger = require('morgan');
 
-const port = 3000;
+const port = 2000;
 // const root = path.dirname( __dirname );
 const cCPUs = require('os').cpus().length;
 
@@ -32,4 +32,3 @@ if (cluster.isMaster) {
 
   app.use(bodyParser).listen(port);
 }
-
