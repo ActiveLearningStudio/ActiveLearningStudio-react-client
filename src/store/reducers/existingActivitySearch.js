@@ -30,6 +30,7 @@ const INITIAL_STATE = {
   compatibleLibraries: [],
   loading: false,
   library: false,
+  typesLoaded: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -41,6 +42,12 @@ export default (state = INITIAL_STATE, action) => {
           ...state.filters,
           ...action.filters,
         },
+      };
+
+    case actionTypes.EXISTING_ACTIVITY_SEARCH_TYPES_LOADED:
+      return {
+        ...state,
+        typesLoaded: true,
       };
 
     case actionTypes.EXISTING_ACTIVITY_SEARCH_GET_INDEPENDENT_ACTIVITIES:
