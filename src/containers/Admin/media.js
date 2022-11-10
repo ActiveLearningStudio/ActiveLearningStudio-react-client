@@ -35,9 +35,6 @@ const Media = () => {
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
   useEffect(() => {
-    console.log('orgMediaSources', orgMediaSources);
-    console.log('allMediaSources', allMediaSources);
-
     setVideoSourceLTI(
       videoSourceLTI?.map((_lti) => {
         const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
