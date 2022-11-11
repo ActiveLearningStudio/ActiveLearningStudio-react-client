@@ -77,6 +77,7 @@ const ManageOrganization = loadable(() => import('../containers/ManageOrganizati
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
+const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
 
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
