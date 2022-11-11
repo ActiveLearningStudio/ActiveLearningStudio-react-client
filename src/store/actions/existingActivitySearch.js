@@ -89,6 +89,7 @@ export const getFiltersAction = (org) => async (dispatch, getState) => {
         type: actionTypes.EXISTING_ACTIVITY_SEARCH_GET_FILTER,
         filters: { types },
       });
+      dispatch({ type: actionTypes.EXISTING_ACTIVITY_SEARCH_TYPES_LOADED });
     }).catch((e) => {
       console.log('Error getting activity types for filtering');
       console.log(e);
@@ -96,6 +97,7 @@ export const getFiltersAction = (org) => async (dispatch, getState) => {
         type: actionTypes.EXISTING_ACTIVITY_SEARCH_GET_FILTER,
         filters: { types: [] },
       });
+      dispatch({ type: actionTypes.EXISTING_ACTIVITY_SEARCH_TYPES_LOADED });
     });
 };
 
