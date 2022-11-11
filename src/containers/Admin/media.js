@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable array-callback-return */
 /* eslint-disable camelcase */
@@ -8,6 +10,8 @@ import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import HeadingThree from 'utils/HeadingThree/headingthree';
 import { updateOrganizationMedaiSource } from 'store/actions/admin';
+import Switch from 'react-switch';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const Media = () => {
   const dispatch = useDispatch();
@@ -18,10 +22,29 @@ const Media = () => {
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([
+    { name: 'My device', value: false },
+    { name: 'YouTube', value: false },
+    { name: 'Kaltura', value: false },
+    { name: 'BrightCove', value: false },
+    { name: 'Vimeo', value: false },
+    { name: 'Komodo', value: false },
+  ]);
 
   const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
+  useEffect(() => {
+    setVideoSourceLTI(
+      videoSourceLTI?.map((_lti) => {
+        const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
+        if (Index >= 0) {
+          _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
+        }
+        return _lti;
+      }),
+    );
+  }, []);
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -45,6 +68,8 @@ const Media = () => {
   }, [allMediaSources]);
 
   const mediaLibrary = (sourceName) => updateLibrary?.filter((data) => data.name === sourceName)[0]?.pivot?.h5p_library;
+  const secondaryColorIcon = getGlobalColor('--main-secondary-color');
+  // const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <div className="media-section">
@@ -83,6 +108,9 @@ const Media = () => {
                           <div className="h5p-heading-text">
                             <HeadingThree text="H5P library" color="#515151" className="textField-title" />
                           </div>
+                          <div className="lti-tool-heading-text ">
+                            <HeadingThree text="LTI tool" color="#515151" className="textField-title" />
+                          </div>
                         </div>
                         {permission?.Organization?.includes('organization:edit-media') && (
                           <div className="btn-text">
@@ -92,7 +120,13 @@ const Media = () => {
                                 e.preventDefault();
                                 let updatedMediasSource = [];
                                 const media_ids = [];
-                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
+                                orgVideoSource?.map((videoSource) => {
+                                  media_ids.push({
+                                    media_source_id: videoSource.id,
+                                    h5p_library: mediaLibrary(videoSource.name),
+                                    lti_tool_settings_status: videoSourceLTI.filter((_lti) => _lti.name === videoSource.name)[0].value ? 1 : 0,
+                                  });
+                                });
                                 orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
                                 updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                                 if (orgVideoSource.length === 0) {
@@ -122,6 +156,7 @@ const Media = () => {
                           {allMediaSources?.mediaSources?.Video?.map((source, counter) => {
                             const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
                             if (source.name !== 'Safari Montage') {
+                              const findVideoLTIIndex = videoSourceLTI?.findIndex((_lti) => _lti.name === source.name && source?.media_type === 'Video');
                               return (
                                 <div className="media-version-options">
                                   <div className="media-field-checkbox" key={counter}>
@@ -166,6 +201,31 @@ const Media = () => {
                                         </option>
                                       ))}
                                     </select>
+                                  </div>
+                                  {/* LTI tool */}
+                                  <div className="lti-tool-switch">
+                                    <div className="custom-toggle-button toggle-style">
+                                      <Switch
+                                        checked={videoSourceLTI[findVideoLTIIndex]?.value}
+                                        onChange={() => {
+                                          setVideoSourceLTI(
+                                            videoSourceLTI?.map((_lti) => {
+                                              if (_lti.name === source.name) {
+                                                _lti.value = !_lti.value;
+                                              }
+                                              return _lti;
+                                            }),
+                                          );
+                                          // setFieldValue('self_registration', !videoSourceLTI[findVideoLTIIndex].value);
+                                        }}
+                                        className="react-switch"
+                                        handleDiameter={30}
+                                        offColor="#888"
+                                        onColor={secondaryColorIcon}
+                                        onHandleColor={secondaryColorIcon}
+                                        offHandleColor="#666"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               );
