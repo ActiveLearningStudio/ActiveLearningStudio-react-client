@@ -34,18 +34,23 @@ export default function CreateLtiTool(prop) {
     //   }),
     // );
     if (editMode && activeEdit?.media_source_id) {
-      const editmodeLti = ltiToolsTypes
-        .filter((type) => {
-          // if (type.name !== 'My device' && type.name !== 'BrightCove' && type.id !== activeEdit?.media_source_id) {
-          //   return type;
-          // }
-          if (type.id !== activeEdit?.media_source_id) {
-            return type;
-          }
-        })
-        ?.concat(activeEdit?.media_sources);
-      // console.log('editmodeLti', editmodeLti);
-      setLtiToolTypesGroup(editmodeLti);
+      console.log('ltiToolsTypes', ltiToolsTypes);
+
+      // Old-code
+      // const editmodeLti = ltiToolsTypes
+      //   .filter((type) => {
+      //     // if (type.name !== 'My device' && type.name !== 'BrightCove' && type.id !== activeEdit?.media_source_id) {
+      //     //   return type;
+      //     // }
+      //     if (type.id !== activeEdit?.media_source_id) {
+      //       return type;
+      //     }
+      //   })
+      //   ?.concat(activeEdit?.media_sources);
+      // setLtiToolTypesGroup(editmodeLti);
+
+      // New Updpate
+      setLtiToolTypesGroup(ltiToolsTypes);
     }
   }, [ltiToolsTypes, editMode]);
   return (
