@@ -77,7 +77,9 @@ const LtiActivity = loadable(() => import('../containers/LMS/LTI/Activity'));
 const ManageOrganization = loadable(() => import('../containers/ManageOrganization'));
 const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
+const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
 const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
+
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
   useEffect(() => {
@@ -107,6 +109,7 @@ const AppRouter = (props) => {
         />
         {history?.location?.pathname?.includes('/login') && window.location?.host?.includes('my.currikistudio.org') && window.location.replace('https://currikistudio.org')}
         <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
+        <OpenRoute exact path="/msteams-sso" component={MSTeamsSSO} />
         <OpenRoute exact path="/org/:organization/terms-policy-content/:content" component={termsPolicyContent} />
         <OpenRoute exact path="/canvas-lti-sso" component={CanvasLtiLogin} />
         <OpenRoute exact path="/sso/dologin/:ssodata" component={SSOLogin} />

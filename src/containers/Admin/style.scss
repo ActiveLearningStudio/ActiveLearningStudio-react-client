@@ -2838,6 +2838,13 @@
               margin-left: 32px;
             }
           }
+          .lti-tool-switch {
+            margin-left: 72px;
+            // margin-bottom: 8px;
+            .toggle-style {
+              margin-top: 0px !important;
+            }
+          }
         }
       }
 
@@ -2874,6 +2881,13 @@
 
         .h5p-heading-text {
           margin-left: 127px;
+
+          h3 {
+            margin-bottom: 0px !important;
+          }
+        }
+        .lti-tool-heading-text {
+          margin-left: 240px;
 
           h3 {
             margin-bottom: 0px !important;

@@ -14,6 +14,7 @@ const ExistingActivitySearchResults = (props) => {
     params,
     filters,
     loading,
+    typesLoaded,
     independentActivities,
     independentActivitiesTotal,
     projectActivities,
@@ -45,7 +46,7 @@ const ExistingActivitySearchResults = (props) => {
   };
 
   useEffect(() => {
-    if (filters.types.length === 0) { 
+    if (typesLoaded && filters.types.length === 0) { 
       // Activity type filters needed for compatibility
       setFilterError(true);
       return;
@@ -171,6 +172,7 @@ const mapStateToProps = (state) => ({
   params: state.existingActivitySearch.searchParams,
   filters: state.existingActivitySearch.filters,
   loading: state.existingActivitySearch.loading,
+  typesLoaded: state.existingActivitySearch.typesLoaded,
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ExistingActivitySearchResults));
