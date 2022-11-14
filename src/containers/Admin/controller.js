@@ -135,7 +135,8 @@ function Controller(props) {
   // const secondaryColor = getGlobalColor('--main-secondary-color');
 
   useEffect(() => {
-    setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
+    setLtiToolTypes(ltiToolsTypes);
+    // setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
   }, [ltiToolsTypes]);
   return (
     <div className="controller">
