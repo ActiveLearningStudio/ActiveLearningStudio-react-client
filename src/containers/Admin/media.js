@@ -118,6 +118,25 @@ const Media = () => {
                               type="button"
                               onClick={(e) => {
                                 e.preventDefault();
+
+                                // Check if video source category is selected?
+
+                                let videoSourceLTIUnSelect = null;
+                                videoSourceLTI.forEach((_lti) => {
+                                  if (videoSourceLTIUnSelect == null && _lti.value === true && orgVideoSource.filter((_videoScr) => _videoScr.name === _lti.name).length <= 0) {
+                                    videoSourceLTIUnSelect = _lti.name;
+                                  }
+                                });
+                                if (videoSourceLTIUnSelect != null) {
+                                  // updatedMediasSource = orgImageSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please select respective checkbox to update this settings.',
+                                    allowOutsideClick: false,
+                                  });
+                                  return false;
+                                }
+                                // -----
                                 let updatedMediasSource = [];
                                 const media_ids = [];
                                 orgVideoSource?.map((videoSource) => {
@@ -128,7 +147,17 @@ const Media = () => {
                                   });
                                 });
                                 orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                // Update LTI Tool For Redux new Code
+                                const _updateOrgVideoSource = orgVideoSource.map((_videoScr) => {
+                                  const _index = videoSourceLTI.findIndex((_lti) => _videoScr.name === _lti?.name);
+                                  if (_index >= 0) {
+                                    _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
+                                  }
+                                  return _videoScr;
+                                });
+                                // updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
+                                console.log('updatedMediasSource', updatedMediasSource);
                                 if (orgVideoSource.length === 0) {
                                   // updatedMediasSource = orgImageSource;
                                   Swal.fire({
@@ -138,6 +167,7 @@ const Media = () => {
                                   });
                                   return false;
                                 }
+
                                 Swal.fire({
                                   title: 'Please Wait !',
                                   text: 'Updating view...!!!',
