@@ -148,15 +148,20 @@ const Media = () => {
                                 });
                                 orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
                                 // Update LTI Tool For Redux new Code
-                                const _updateOrgVideoSource = orgVideoSource.map((_videoScr) => {
-                                  const _index = videoSourceLTI.findIndex((_lti) => _videoScr.name === _lti?.name);
-                                  if (_index >= 0) {
-                                    _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
-                                  }
-                                  return _videoScr;
-                                });
-                                // updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                                updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
+                                console.log('orgVideoSource', orgVideoSource);
+                                // const _updateOrgVideoSource = orgVideoSource.map((_videoScr) => {
+                                //   const _index = videoSourceLTI.findIndex((_lti) => _videoScr.name === _lti?.name && _videoScr.media_type === 'Video');
+                                //   if (_index >= 0 && _videoScr.media_type === 'Video') {
+                                //     // console.log('_videoScr updaye:', _videoScr);
+                                //     _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
+                                //     // if (_videoScr?.pivot) {
+                                //     //   _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
+                                //     // }
+                                //   }
+                                //   return _videoScr;
+                                // });
+                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                // updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
                                 console.log('updatedMediasSource', updatedMediasSource);
                                 if (orgVideoSource.length === 0) {
                                   // updatedMediasSource = orgImageSource;
