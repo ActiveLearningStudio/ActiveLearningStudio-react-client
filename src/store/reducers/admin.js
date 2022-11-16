@@ -304,6 +304,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
       const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
+      // const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video' && source.pivot.lti_tool_settings_status === true);
       return {
         ...state,
         orgMediaSources: action.payload,
