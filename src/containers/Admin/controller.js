@@ -85,7 +85,7 @@ function Controller(props) {
   const [loaderImgUser, setLoaderImgUser] = useState(false);
   const [selectedFilterItem, setSelectedFilterItem] = useState('');
   const [ltiToolTypes, setLtiToolTypes] = useState();
-  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  const { orgMediaSources } = useSelector((state) => state.admin);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -135,9 +135,10 @@ function Controller(props) {
   // const secondaryColor = getGlobalColor('--main-secondary-color');
 
   useEffect(() => {
-    setLtiToolTypes(ltiToolsTypes);
-    // setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
-  }, [ltiToolsTypes]);
+    // setLtiToolTypes(ltiToolsTypes);
+    const filterdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+    setLtiToolTypes(filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
+  }, [orgMediaSources?.mediaSources]);
   return (
     <div className="controller">
       {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (

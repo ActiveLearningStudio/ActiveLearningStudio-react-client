@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,13 +10,7 @@ import logo from 'assets/images/logo.svg';
 // import './styles.scss';
 
 function GenericLMSActivityPage(props) {
-  const {
-    match,
-    showActivity,
-    showLogin,
-    doLogin,
-    errors,
-  } = props;
+  const { match, showActivity, showLogin, doLogin, errors } = props;
   const [loginParams, setLoginParams] = useState({});
 
   const handleChange = (event) => {
@@ -42,10 +37,7 @@ function GenericLMSActivityPage(props) {
     <div className="gclass-activity-container">
       <section className="main-page-content preview iframe-height-resource-shared">
         <Helmet>
-          <script
-            src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js"
-            charset="UTF-8"
-          />
+          <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
         </Helmet>
         <div className="flex-container previews">
           <div className="activity-bg left-vdo">
@@ -59,15 +51,14 @@ function GenericLMSActivityPage(props) {
                         <img className="curriki-logo" src={logo} alt="" />
                       </div>
                     </div>
-                    {errors && errors.map((err) => (
-                      <div className="row">
-                        <div className="col text-center">
-                          <Alert variant="warning">
-                            {err}
-                          </Alert>
+                    {errors &&
+                      errors.map((err) => (
+                        <div className="row">
+                          <div className="col text-center">
+                            <Alert variant="warning">{err}</Alert>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                     <div className="row">
                       <div className="col text-center">
                         <form onSubmit={handleLogin}>
@@ -79,7 +70,9 @@ function GenericLMSActivityPage(props) {
                             <label>Password</label>
                             <input className="form-control" type="password" name="password" onChange={handleChange} />
                           </div>
-                          <button type="submit" className="btn btn-primary">Login</button>
+                          <button type="submit" className="btn btn-primary">
+                            Login
+                          </button>
                         </form>
                       </div>
                     </div>
