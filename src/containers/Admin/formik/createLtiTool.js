@@ -22,9 +22,10 @@ export default function CreateLtiTool(prop) {
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [ltiToolTypeGroup, setLtiToolTypesGroup] = useState([]);
-  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  const { ltiToolsTypes, orgMediaSources } = useSelector((state) => state.admin);
   useEffect(() => {
-    setLtiToolTypesGroup(ltiToolsTypes);
+    const filterLTIdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+    setLtiToolTypesGroup(filterLTIdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
     // console.log('ltiToolsTypes', ltiToolsTypes);
     // setLtiToolTypesGroup(
     //   ltiToolsTypes.filter((type) => {
@@ -50,7 +51,9 @@ export default function CreateLtiTool(prop) {
       // setLtiToolTypesGroup(editmodeLti);
 
       // New Updpate
-      setLtiToolTypesGroup(ltiToolsTypes);
+      const filterdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+      setLtiToolTypesGroup(filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
+      // setLtiToolTypesGroup(ltiToolsTypes);
     }
   }, [ltiToolsTypes, editMode]);
   return (

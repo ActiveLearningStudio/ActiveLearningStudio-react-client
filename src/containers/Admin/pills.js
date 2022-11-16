@@ -613,6 +613,7 @@ export default function Pills(props) {
     } else {
       setSubTypeState(key);
     }
+    dispatch(getOrganizationMedaiSource(activeOrganization?.id));
   }, [activeTab, key]);
 
   useEffect(() => {
@@ -1028,6 +1029,7 @@ export default function Pills(props) {
             setLtiTool(data);
           });
         }
+
         setSearchQueryStats('');
         if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');

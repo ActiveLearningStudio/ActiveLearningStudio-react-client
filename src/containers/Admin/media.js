@@ -9,7 +9,7 @@ import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import HeadingThree from 'utils/HeadingThree/headingthree';
-import { updateOrganizationMedaiSource } from 'store/actions/admin';
+import { updateOrganizationMedaiSource, getOrganizationMedaiSource } from 'store/actions/admin';
 import Switch from 'react-switch';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
@@ -34,6 +34,7 @@ const Media = () => {
   const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
+
   useEffect(() => {
     setVideoSourceLTI(
       videoSourceLTI?.map((_lti) => {
@@ -45,6 +46,7 @@ const Media = () => {
       }),
     );
   }, []);
+
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -283,7 +285,7 @@ const Media = () => {
                             name="imageall"
                             type="checkbox"
                             label="Selectall"
-                            checked={orgImageSource?.length === 2}
+                            checked={orgImageSource?.length === 3}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource.filter((source) => source.name !== 'Safari Montage'));
