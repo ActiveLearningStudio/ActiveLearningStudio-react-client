@@ -75,7 +75,7 @@ const ExistingActivitySearchResults = (props) => {
       <div className='col'>
         {filterError && (
           <Alert className="alert" variant="danger">
-            Activity import is not supported for this activity type: {layout.title}
+            Activity import is not supported for this activity type {layout && (`: ${layout.title}`)}
           </Alert>
         )}
         {!filterError && (
