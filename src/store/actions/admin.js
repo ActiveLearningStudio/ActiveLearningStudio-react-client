@@ -275,6 +275,12 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
   });
   return result;
 };
+export const setLtiToolSettings = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_ORG_LTI_SETTINGS,
+    payload: data,
+  });
+};
 
 export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {
   const result = await adminService.updateOrgMediaSource(subOrgId, media_ids);

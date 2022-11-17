@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
+  orgLtiSettings: [],
   ltiToolsTypes: [],
   allIv: [],
   selectedFIlterLti: '',
@@ -298,9 +299,15 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.GET_ORG_MEDIA_SOURCE:
+      const filterdata = action.payload.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video');
+      const filteLti = state.orgLtiSettings.map((item) => {
+        const item2 = filterdata.find((t) => t.id === item.media_source_id)?.pivot;
+        return item2 ? { ...item, ...item2 } : item;
+      });
       return {
         ...state,
         orgMediaSources: action.payload,
+        orgLtiSettings: filteLti,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
       const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
@@ -410,6 +417,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiToolsReloadStatus: false,
+      };
+    case actionTypes.SET_ORG_LTI_SETTINGS:
+      return {
+        ...state,
+        orgLtiSettings: action.payload,
       };
 
     default:

@@ -14,8 +14,6 @@ import { getActivityItems, loadResourceTypesAction } from 'store/actions/resourc
 import { adminIntActivities, allAdminExportActivity } from 'store/actions/indActivities';
 import * as actionTypes from 'store/actionTypes';
 import {
-  getJobListing,
-  getLogsListing,
   getLtiTools,
   getUserReport,
   getDefaultSso,
@@ -560,7 +558,6 @@ export default function Pills(props) {
     // const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
     const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, item));
     result.then((data) => {
-      console.log('res', data);
       setLtiTool(data);
     });
   };
@@ -613,7 +610,9 @@ export default function Pills(props) {
     } else {
       setSubTypeState(key);
     }
-    dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    if (key === 'Media') {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+    }
   }, [activeTab, key]);
 
   useEffect(() => {
@@ -1024,6 +1023,7 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         if (key === 'LTI Tools') {
+          dispatch(getOrganizationMedaiSource(activeOrganization?.id));
           const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, filterLtiSettings?.id || '');
           result.then((data) => {
             setLtiTool(data);
