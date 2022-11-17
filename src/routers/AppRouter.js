@@ -61,6 +61,7 @@ const TeamsPage = loadable(() => import('../containers/Teams'));
 const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
 const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
+const RecordVideoPage = loadable(() => import('../containers/RecordVideo'));
 
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
@@ -213,6 +214,9 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/search" component={SearchResult} />
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
+
+                  {/* Record a Video */}
+                  <PrivateRoute exact path="/org/:organization/record-video" component={RecordVideoPage} />
 
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}/activities`} />
                 </Switch>
