@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable array-callback-return */
-/* eslint-disable camelcase */
+/* eslint-disable  */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
@@ -16,36 +16,37 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 const Media = () => {
   const dispatch = useDispatch();
 
-  const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
+  const { allMediaSources, orgMediaSources, allIv, orgLtiSettings } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
-  const [videoSourceLTI, setVideoSourceLTI] = useState([
-    { name: 'My device', value: false },
-    { name: 'YouTube', value: false },
-    { name: 'Kaltura', value: false },
-    { name: 'BrightCove', value: false },
-    { name: 'Vimeo', value: false },
-    { name: 'Komodo', value: false },
-  ]);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([]);
 
   const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
 
+  // useEffect(() => {
+  //   setVideoSourceLTI(
+  //     videoSourceLTI?.map((_lti) => {
+  //       const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
+  //       if (Index >= 0) {
+  //         _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
+  //       }
+  //       return _lti;
+  //     }),
+  //   );
+  // }, []);
+  console.log('orgLtiSettings', orgLtiSettings);
   useEffect(() => {
-    setVideoSourceLTI(
-      videoSourceLTI?.map((_lti) => {
-        const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
-        if (Index >= 0) {
-          _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
-        }
-        return _lti;
-      }),
-    );
-  }, []);
+    if (orgLtiSettings?.length > 0) {
+      setVideoSourceLTI(orgLtiSettings);
+    } else {
+      setVideoSourceLTI([]);
+    }
+  }, [orgLtiSettings]);
 
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
@@ -118,17 +119,22 @@ const Media = () => {
                           <div className="btn-text">
                             <button
                               type="button"
-                              onClick={(e) => {
+                              onClick={async (e) => {
                                 e.preventDefault();
 
                                 // Check if video source category is selected?
 
                                 let videoSourceLTIUnSelect = null;
                                 videoSourceLTI.forEach((_lti) => {
-                                  if (videoSourceLTIUnSelect == null && _lti.value === true && orgVideoSource.filter((_videoScr) => _videoScr.name === _lti.name).length <= 0) {
-                                    videoSourceLTIUnSelect = _lti.name;
+                                  if (
+                                    videoSourceLTIUnSelect == null &&
+                                    _lti.lti_tool_settings_status === true &&
+                                    orgVideoSource.filter((_videoScr) => _videoScr.id === _lti.media_source_id).length <= 0
+                                  ) {
+                                    videoSourceLTIUnSelect = _lti.media_source_id;
                                   }
                                 });
+
                                 if (videoSourceLTIUnSelect != null) {
                                   // updatedMediasSource = orgImageSource;
                                   Swal.fire({
@@ -145,26 +151,13 @@ const Media = () => {
                                   media_ids.push({
                                     media_source_id: videoSource.id,
                                     h5p_library: mediaLibrary(videoSource.name),
-                                    lti_tool_settings_status: videoSourceLTI.filter((_lti) => _lti.name === videoSource.name)[0].value ? 1 : 0,
+                                    lti_tool_settings_status: videoSourceLTI.filter((_lti) => _lti.media_source_id === videoSource.id)[0]?.lti_tool_settings_status ? 1 : 0,
                                   });
                                 });
                                 orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                                // Update LTI Tool For Redux new Code
-                                console.log('orgVideoSource', orgVideoSource);
-                                // const _updateOrgVideoSource = orgVideoSource.map((_videoScr) => {
-                                //   const _index = videoSourceLTI.findIndex((_lti) => _videoScr.name === _lti?.name && _videoScr.media_type === 'Video');
-                                //   if (_index >= 0 && _videoScr.media_type === 'Video') {
-                                //     // console.log('_videoScr updaye:', _videoScr);
-                                //     _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
-                                //     // if (_videoScr?.pivot) {
-                                //     //   _videoScr.pivot.lti_tool_settings_status = videoSourceLTI[_index].value;
-                                //     // }
-                                //   }
-                                //   return _videoScr;
-                                // });
+
                                 updatedMediasSource = orgVideoSource?.concat(orgImageSource);
                                 // updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
-                                console.log('updatedMediasSource', updatedMediasSource);
                                 if (orgVideoSource.length === 0) {
                                   // updatedMediasSource = orgImageSource;
                                   Swal.fire({
@@ -180,7 +173,8 @@ const Media = () => {
                                   text: 'Updating view...!!!',
                                   allowOutsideClick: false,
                                 });
-                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                await dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                await dispatch(getOrganizationMedaiSource(activeOrganization?.id));
                               }}
                             >
                               Update
@@ -193,7 +187,7 @@ const Media = () => {
                           {allMediaSources?.mediaSources?.Video?.map((source, counter) => {
                             const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
                             if (source.name !== 'Safari Montage') {
-                              const findVideoLTIIndex = videoSourceLTI?.findIndex((_lti) => _lti.name === source.name && source?.media_type === 'Video');
+                              const findVideoLTIIndex = videoSourceLTI?.filter((_lti) => _lti.media_source_id === source.id && source?.media_type === 'Video');
                               return (
                                 <div className="media-version-options">
                                   <div className="media-field-checkbox" key={counter}>
@@ -243,17 +237,16 @@ const Media = () => {
                                   <div className="lti-tool-switch">
                                     <div className="custom-toggle-button toggle-style">
                                       <Switch
-                                        checked={videoSourceLTI[findVideoLTIIndex]?.value}
+                                        checked={findVideoLTIIndex[0]?.lti_tool_settings_status}
                                         onChange={() => {
                                           setVideoSourceLTI(
                                             videoSourceLTI?.map((_lti) => {
-                                              if (_lti.name === source.name) {
-                                                _lti.value = !_lti.value;
+                                              if (_lti.media_source_id === source.id) {
+                                                _lti.lti_tool_settings_status = !_lti.lti_tool_settings_status;
                                               }
                                               return _lti;
                                             }),
                                           );
-                                          // setFieldValue('self_registration', !videoSourceLTI[findVideoLTIIndex].value);
                                         }}
                                         className="react-switch"
                                         handleDiameter={30}
