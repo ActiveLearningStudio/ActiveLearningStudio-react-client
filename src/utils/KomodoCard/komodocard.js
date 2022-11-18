@@ -13,6 +13,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 import ViewMdSvg from 'iconLibrary/mainContainer/ViewMdSvg';
 import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
+import KomodoIntgSnSvg from 'iconLibrary/mainContainer/KomodoIntgSnSvg';
 
 const KomodoCard = ({ className, data }) => {
   const currikiUtility = classNames('curriki-utility-komodo-card', className);
@@ -30,14 +31,14 @@ const KomodoCard = ({ className, data }) => {
           }}
         >
           <div className="komodo-card-dropdown">
-            <DropDownEdit />
+            <DropDownEdit iconColor="#fff" />
           </div>
           <div className="komodo-card-title">
             <h2>{data.title}</h2>
           </div>
         </div>
         <div className="komodo-card-detail">
-          {/* <p>{data.description?.slice(0, 50)}</p> */}
+          <p>Lorem ipsum dolor sit amet, consecte adipiscing elit.</p>
           <div className="updated-date">Updated date :{data?.createdAt?.split(',')[0]}</div>
         </div>
 
@@ -50,8 +51,8 @@ const KomodoCard = ({ className, data }) => {
                   <span className="textinButton">Preview</span>
                 </div>
                 <div className="komodo-card-add-share-options hover-apply">
-                  <EditMdSvg primaryColor={primaryColor} />
-                  <span className="textinButton">Edit</span>
+                  <KomodoIntgSnSvg primaryColor={primaryColor} />
+                  <span className="textinButton">komodo</span>
                 </div>
               </div>
             </div>
