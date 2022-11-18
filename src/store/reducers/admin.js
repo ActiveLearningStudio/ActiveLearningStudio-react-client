@@ -31,7 +31,13 @@ const INITIAL_STATE = {
   exportedActivities: null,
   allMediaSources: {},
   orgMediaSources: {},
+  orgLtiSettings: [],
   ltiToolsTypes: [],
+  allIv: [],
+  selectedFIlterLti: '',
+  dynamicPermission: null,
+  roleAddDynamicPermission: null,
+  ltiToolsReloadStatus: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,6 +46,30 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeForm: action.payload,
+      };
+    case actionTypes.SET_ALL_IV:
+      return {
+        ...state,
+        allIv: action.payload.filter((data) => data.name?.includes('InteractiveVideo')),
+      };
+    case actionTypes.SET_ALL_PERMISSION:
+      return {
+        ...state,
+        dynamicPermission: action.payload,
+      };
+    case actionTypes.UPDATE_PAGINATION_COUNT:
+      return {
+        ...state,
+        [action.reducer]: {
+          ...state[action.reducer],
+          meta: { ...state[action.reducer]?.meta, total: state[action.reducer]?.meta?.total + action.payload, to: state[action.reducer]?.meta?.to + action.payload },
+        },
+      };
+
+    case actionTypes.SET_ALL_DEFAULT_PERMISSION:
+      return {
+        ...state,
+        roleAddDynamicPermission: action.payload,
       };
     case actionTypes.NEWLY_CREATED_RESOURCE:
       return {
@@ -156,6 +186,7 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ltiTools: action.payload,
+        selectedFIlterLti: action.filterLti,
       };
     case actionTypes.GET_DEFAULT_SSO:
       return {
@@ -187,7 +218,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allbrightCove: {
           ...state.allbrightCove,
-          data: [...state.allbrightCove.data, action.payload],
+          data: [action.payload, ...state.allbrightCove.data],
         },
       };
     case actionTypes.DEL_BRIGHTCOVE:
@@ -268,12 +299,19 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.GET_ORG_MEDIA_SOURCE:
+      const filterdata = action.payload.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video');
+      const filteLti = state.orgLtiSettings.map((item) => {
+        const item2 = filterdata.find((t) => t.id === item.media_source_id)?.pivot;
+        return item2 ? { ...item, ...item2 } : item;
+      });
       return {
         ...state,
         orgMediaSources: action.payload,
+        orgLtiSettings: filteLti,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
       const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
+      // const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video' && source.pivot.lti_tool_settings_status === true);
       return {
         ...state,
         orgMediaSources: action.payload,
@@ -301,6 +339,91 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
       };
+    case actionTypes.LTI_TOOLS_PAGINATION_UPDATE:
+      let reloadStatus = false;
+      let setUpdateTotal = state.ltiTools.meta.total;
+      let updatedTo = state.ltiTools.meta.to;
+      // let updatedTo = state.ltiTools.meta.to != null ? state.ltiTools.meta.to : 0;
+      if (state.ltiTools.meta.to == null || state.ltiTools.meta.to == 0) {
+        reloadStatus = true;
+      } else if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
+        state.ltiTools.meta.total = setUpdateTotal + 1;
+        if (updatedTo === setUpdateTotal) {
+          state.ltiTools.meta.to = updatedTo + 1;
+        }
+      } else if (action.payload == 'DECREMENT') {
+        state.ltiTools.meta.total = setUpdateTotal - 1;
+        state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
+        if (updatedTo === setUpdateTotal) {
+          state.ltiTools.meta.to = updatedTo - 1;
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
+        } else if (state.selectedFIlterLti == '' || state.selectedFIlterLti == null) {
+          reloadStatus = true;
+        } else {
+          reloadStatus = true;
+        }
+      } else if (
+        action.payload == 'DECREMENT_TYPE_CHANGED' &&
+        state.selectedFIlterLti != null &&
+        state.selectedFIlterLti != '' &&
+        state.selectedFIlterLti != parseInt(action.ltitoolType)
+      ) {
+        state.ltiTools.meta.total = setUpdateTotal - 1;
+        // state.ltiTools.meta.to = updatedTo - 1;
+        if (updatedTo === setUpdateTotal) {
+          state.ltiTools.meta.to = updatedTo - 1;
+
+          if (state.ltiTools.meta.to == 0) {
+            reloadStatus = true;
+          } else {
+            reloadStatus = false;
+          }
+        } else {
+          reloadStatus = true;
+        }
+      }
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+        ltiToolsReloadStatus: reloadStatus,
+      };
+
+    // Add New Lti Tool in redux
+    case actionTypes.LTI_TOOLS_ADD_NEW:
+      state.ltiTools.data = [action.payload, ...state?.ltiTools?.data];
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+    case actionTypes.LTI_TOOLS_ADD_EDIT:
+      state.ltiTools.data = state?.ltiTools?.data?.map((data) => {
+        if (data.id == action.payload.id) {
+          data = action.payload;
+        }
+        return data;
+      });
+      return {
+        ...state,
+        ltiTools: { ...state.ltiTools },
+      };
+
+    // Status Lti tool false
+
+    case actionTypes.LTI_TOOLS_RELOAD_STATUS:
+      return {
+        ...state,
+        ltiToolsReloadStatus: false,
+      };
+    case actionTypes.SET_ORG_LTI_SETTINGS:
+      return {
+        ...state,
+        orgLtiSettings: action.payload,
+      };
+
     default:
       return state;
   }

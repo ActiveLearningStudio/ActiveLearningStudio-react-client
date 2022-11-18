@@ -1,8 +1,8 @@
 @import "assets/css/index";
 
 .curriki-utility-addvideo-card {
-  margin-right: 30px;
-  width: 250px;
+  margin-right: 15px;
+  width: 242px;
   min-height: 270px;
   background: $white;
   box-shadow: 0px 4px 8px 2px rgba(81, 81, 81, 0.16);
@@ -71,6 +71,13 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
+         @media (max-width: 1024px){
+          overflow:hidden;
+          white-space:nowrap;
+          display:inline-block;
+          text-overflow:ellipsis; 
+          width: 140px;
+        }
       }
     }
   }
@@ -84,6 +91,11 @@
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
+      overflow:hidden;
+      white-space:nowrap;
+      display:inline-block;
+      text-overflow:ellipsis;
+      width:100%;
     }
   }
   .addvideo-activity-menu-option {
@@ -181,6 +193,9 @@
         color: $curriki-main-blue;
       }
     }
+  }
+  @media (max-width: 1024px){
+    width: 30%;
   }
 }
 .hover-apply {

@@ -27,7 +27,7 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import GoogleModel from 'components/models/GoogleLoginModal';
 import SearchForm from 'components/Header/searchForm';
 import ProjectCardSkeleton from 'components/Skeletons/projectCard';
-
+import { googleShare, msTeamShare, shareToCanvas } from 'store/actions/gapi';
 import StartingPage from 'utils/StartingPage/startingpage';
 import { MyVerticallyCenteredModal } from 'containers/Search';
 import Buttons from 'utils/Buttons/buttons';
@@ -54,7 +54,7 @@ const Index = ({ activities }) => {
   const [modalShowClone, setModalShowClone] = useState(false);
   const [addToProjectCheckbox, setAddToProjectCheckbox] = useState(false);
   const videos = useSelector((state) => state.videos);
-  const { currentOrganization, activeOrganization, permission } = useSelector((state) => state.organization);
+  const { currentOrganization, permission } = useSelector((state) => state.organization);
   const { allActivities, isLoading, islazyLoader } = useSelector((state) => state.activities);
   const [activescreenType, setActiveScreenPage] = useState(null);
   const { allVideos } = videos;
@@ -70,13 +70,13 @@ const Index = ({ activities }) => {
   const history = useHistory();
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (activeOrganization && !activities) {
-      dispatch(getAllVideos(activeOrganization.id));
+    if (currentOrganization && !activities) {
+      dispatch(getAllVideos(currentOrganization.id));
     }
-    if (activeOrganization && activities) {
-      dispatch(allIndActivity(activeOrganization.id, ActivePage, defaultSize));
+    if (currentOrganization && activities) {
+      dispatch(allIndActivity(currentOrganization.id, ActivePage, defaultSize));
     }
-  }, [activeOrganization, activities]);
+  }, [currentOrganization, activities]);
 
   useEffect(() => {
     if (activities) {
@@ -104,6 +104,9 @@ const Index = ({ activities }) => {
 
   const handleClose = () => {
     setShow(false);
+    dispatch(shareToCanvas(false));
+    dispatch(msTeamShare(false));
+    dispatch(googleShare(false));
   };
 
   const setActivityId = (activityId) => {
@@ -124,7 +127,7 @@ const Index = ({ activities }) => {
 
   useEffect(() => {
     if (ActivePage !== 1) {
-      dispatch(allIndActivity(activeOrganization?.id, ActivePage, 10, searchQuery));
+      dispatch(allIndActivity(currentOrganization?.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
@@ -191,14 +194,14 @@ const Index = ({ activities }) => {
       )}
       <div className="myvideomain">
         <div className="content-wrapper">
-          <div style={{ paddingBottom: ' 66px' }} className="inner-content">
+          <div style={{ paddingBottom: ' 66px' }} className="inner-content m-auto">
             {permission?.[activities ? 'Independent Activity' : 'Video']?.includes(activities ? 'independent-activity:view-author' : 'video:view') ? (
               <>
                 <div className="topHeading-video-detail">
                   <div className="topHeading">
                     <div>
                       <TopHeading
-                        description={activeOrganization.name}
+                        description={currentOrganization.name}
                         image={VideoImage}
                         svgImage={
                           activities ? (
@@ -211,7 +214,7 @@ const Index = ({ activities }) => {
                         }
                         heading={activities ? 'My Activities' : 'My interactive videos'}
                         color="#084892"
-                        className={activeOrganization && 'video-top-heading-custom'}
+                        className={currentOrganization && 'video-top-heading-custom'}
                       />
                     </div>
                     <div className="search-bar-btn">
@@ -291,10 +294,10 @@ const Index = ({ activities }) => {
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
                           setActivePage(1);
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             if (!e.target.value.trim()) {
                               setActiveScreenPage(null);
-                              dispatch(getAllVideos(activeOrganization.id));
+                              dispatch(getAllVideos(currentOrganization.id));
                             }
                           }
                         }}
@@ -304,9 +307,9 @@ const Index = ({ activities }) => {
                         primaryColor={primaryColor}
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
-                          if (activeOrganization) {
+                          if (currentOrganization) {
                             setActiveScreenPage(null);
-                            dispatch(getSearchVideoCard(activeOrganization.id, searchQuery));
+                            dispatch(getSearchVideoCard(currentOrganization.id, searchQuery));
                           }
                         }}
                       />
@@ -333,31 +336,44 @@ const Index = ({ activities }) => {
                   (allActivities?.data?.length > 0 || allActivities?.links?.first?.includes('query')) && (
                     <>
                       <div className="video-cards-top-search-filter">
-                        <div className="search-bar">
-                          <input
-                            className=""
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value);
-                              setActivePage(1);
-                              if (!e.target.value) {
+                        <div className="search-bar-clear-btn">
+                          <div className="search-bar">
+                            <input
+                              className=""
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                setActivePage(1);
+                                if (!e.target.value) {
+                                  setActiveScreenPage(null);
+                                  dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
+                                }
+                              }}
+                              placeholder="Search My Activities..."
+                            />
+                            <SearchInputMdSvg
+                              primaryColor={primaryColor}
+                              onClick={() => {
+                                if (currentOrganization) {
+                                  setActiveScreenPage(null);
+                                  dispatch(allIndActivity(currentOrganization?.id, ActivePage, defaultSize, searchQuery));
+                                }
+                              }}
+                              style={{ cursor: 'pointer' }}
+                            />
+                          </div>
+                          <div>
+                            <Buttons
+                              text="Clear"
+                              className="clr-btn"
+                              onClick={() => {
+                                setSearchQuery('');
                                 setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, 1, defaultSize, ''));
-                              }
-                            }}
-                            placeholder="Search My Activities..."
-                          />
-                          <SearchInputMdSvg
-                            primaryColor={primaryColor}
-                            onClick={() => {
-                              if (activeOrganization) {
-                                setActiveScreenPage(null);
-                                dispatch(allIndActivity(activeOrganization?.id, ActivePage, defaultSize, searchQuery));
-                              }
-                            }}
-                            style={{ cursor: 'pointer' }}
-                          />
+                                dispatch(allIndActivity(currentOrganization?.id, 1, defaultSize, ''));
+                              }}
+                            />
+                          </div>
                         </div>
 
                         <div className="searc_bar_move_activities">
@@ -369,7 +385,7 @@ const Index = ({ activities }) => {
                             </label>
 
                             <p className="move_text" id="move_text_id_branding">
-                              Move to Project
+                              Move To Project
                             </p>
                           </div>
                           {addToProjectCheckbox && (
@@ -461,26 +477,44 @@ const Index = ({ activities }) => {
                     ) : (
                       <div className="video-cards-contianer">
                         <div className="video-cards-detail">
-                          {/* Adding New Design Add  */}
+                          <div className="row">
+                            {/* Adding New Design Add  */}
 
-                          {activities ? (
-                            permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                            {activities ? (
+                              permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                                <div
+                                  className="Add-video-interaction-section"
+                                  onClick={() => {
+                                    dispatch({
+                                      type: actionTypes.CLEAR_STATE,
+                                    });
+
+                                    dispatch({
+                                      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+                                      payload: 'layout',
+                                      playlist: {},
+                                      project: {},
+                                    });
+
+                                    dispatch(clearSearch());
+
+                                    dispatch({
+                                      type: 'SET_ACTIVE_VIDEO_SCREEN',
+                                      payload: '',
+                                    });
+                                  }}
+                                >
+                                  <PlusXlSvg primaryColor={primaryColor} />
+                                  <span>Create New Activity</span>
+                                </div>
+                              )
+                            ) : (
                               <div
                                 className="Add-video-interaction-section"
                                 onClick={() => {
-                                  dispatch({
-                                    type: actionTypes.CLEAR_STATE,
-                                  });
-
-                                  dispatch({
-                                    type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                                    payload: 'layout',
-                                    playlist: {},
-                                    project: {},
-                                  });
-
-                                  dispatch(clearSearch());
-
+                                  setOpenVideo(!openMyVideo);
+                                  setScreenStatus('AddVideo');
+                                  setisbackHide(true);
                                   dispatch({
                                     type: 'SET_ACTIVE_VIDEO_SCREEN',
                                     payload: '',
@@ -488,79 +522,63 @@ const Index = ({ activities }) => {
                                 }}
                               >
                                 <PlusXlSvg primaryColor={primaryColor} />
-                                <span>Create New Activity</span>
+                                <span>Create a video</span>
                               </div>
-                            )
-                          ) : (
-                            <div
-                              className="Add-video-interaction-section"
-                              onClick={() => {
-                                setOpenVideo(!openMyVideo);
-                                setScreenStatus('AddVideo');
-                                setisbackHide(true);
-                                dispatch({
-                                  type: 'SET_ACTIVE_VIDEO_SCREEN',
-                                  payload: '',
-                                });
-                              }}
-                            >
-                              <PlusXlSvg primaryColor={primaryColor} />
-                              <span>Create a video</span>
-                            </div>
-                          )}
+                            )}
 
-                          {activities
-                            ? allActivities?.data.map((activityData) => (
-                                <AddVideoCard
-                                  setModalShow={setModalShow}
-                                  setCurrentActivity={setCurrentActivity}
-                                  setScreenStatus={setScreenStatus}
-                                  setOpenVideo={setOpenVideo}
-                                  title={activityData.title}
-                                  data={activityData}
-                                  className="card-spacing"
-                                  activities={activities}
-                                  isActivityCard
-                                  permission={permission}
-                                  handleShow={handleShow}
-                                  setSelectedActivityId={setActivityId}
-                                  addToProjectCheckbox={addToProjectCheckbox}
-                                  selectedProjectstoAdd={selectedProjectstoAdd}
-                                  setSelectedProjectstoAdd={setSelectedProjectstoAdd}
-                                  sethideallothers={sethideallothers}
-                                  setisbackHide={setisbackHide}
-                                />
-                              ))
-                            : allVideos?.data?.map((video) => (
-                                <>
+                            {activities
+                              ? allActivities?.data.map((activityData) => (
                                   <AddVideoCard
                                     setModalShow={setModalShow}
                                     setCurrentActivity={setCurrentActivity}
                                     setScreenStatus={setScreenStatus}
                                     setOpenVideo={setOpenVideo}
-                                    title={video.title}
-                                    data={video}
+                                    title={activityData.title}
+                                    data={activityData}
                                     className="card-spacing"
+                                    activities={activities}
+                                    isActivityCard
+                                    permission={permission}
+                                    handleShow={handleShow}
+                                    setSelectedActivityId={setActivityId}
+                                    addToProjectCheckbox={addToProjectCheckbox}
+                                    selectedProjectstoAdd={selectedProjectstoAdd}
+                                    setSelectedProjectstoAdd={setSelectedProjectstoAdd}
                                     sethideallothers={sethideallothers}
                                     setisbackHide={setisbackHide}
                                   />
-                                </>
-                              ))}
-                        </div>
-                        {allVideos?.data && !activities && (
-                          <div style={{}} className="admin-panel ">
-                            <Pagination
-                              activePage={ActivePage}
-                              pageRangeDisplayed={5}
-                              itemsCountPerPage={allVideos?.meta?.per_page}
-                              totalItemsCount={allVideos?.meta?.total}
-                              onChange={(e) => {
-                                setActivePage(e);
-                                dispatch(getAllVideos(activeOrganization.id, e));
-                              }}
-                            />
+                                ))
+                              : allVideos?.data?.map((video) => (
+                                  <>
+                                    <AddVideoCard
+                                      setModalShow={setModalShow}
+                                      setCurrentActivity={setCurrentActivity}
+                                      setScreenStatus={setScreenStatus}
+                                      setOpenVideo={setOpenVideo}
+                                      title={video.title}
+                                      data={video}
+                                      className="card-spacing"
+                                      sethideallothers={sethideallothers}
+                                      setisbackHide={setisbackHide}
+                                    />
+                                  </>
+                                ))}
                           </div>
-                        )}
+                          {allVideos?.data && !activities && (
+                            <div style={{}} className="admin-panel ">
+                              <Pagination
+                                activePage={ActivePage}
+                                pageRangeDisplayed={5}
+                                itemsCountPerPage={allVideos?.meta?.per_page}
+                                totalItemsCount={allVideos?.meta?.total}
+                                onChange={(e) => {
+                                  setActivePage(e);
+                                  dispatch(getAllVideos(currentOrganization.id, e));
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )
                   ) : (

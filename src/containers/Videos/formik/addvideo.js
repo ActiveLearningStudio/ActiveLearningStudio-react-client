@@ -44,6 +44,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [modalShow, setModalShow] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState('');
   const [selectedVideoIdKaltura, setSelectedVideoIdKaltura] = useState('');
+  const [selectedVideoIdKomodo, setSelectedVideoIdKomodo] = useState('');
   const [selectedVideoIdVimeo, setSelectedVideoIdVimeo] = useState('');
   const [selectedVideoIdUpload, setSelectedVideoIdUpload] = useState('');
   const [showSidebar, setShowSidebar] = useState(true);
@@ -81,16 +82,18 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
         selectedVideoIdVimeo={selectedVideoIdVimeo}
         showSidebar={showSidebar}
         platformName={platformName}
+        setSelectedVideoIdKomodo={setSelectedVideoIdKomodo}
+        selectedVideoIdKomodo={selectedVideoIdKomodo}
       />
       <div className="add-video-form">
         <div className="add-video-tabs">
-          <TabsHeading text="1. Add a video" tabActive />
+          <TabsHeading text={`1. ${editVideo ? 'Edit' : 'Add'} a video`} tabActive />
           <TabsHeading text="2. Describe video" className="ml-10" />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-video-title-select upload-back-button">
           <div className="add-video-title">
-            <HeadingTwo text="Add a video" color="#084892" />
+            <HeadingTwo text={`${editVideo ? 'Edit' : 'Add'} a video`} color="#084892" />
           </div>
           {/* <div className="add-video-tour">
             <span>
@@ -444,7 +447,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     changeScreenHandler={changeScreenHandler}
                     type={AddVemeo}
                     setScreenStatus={setScreenStatus}
-                    selectedVideoId={videoId && platform === 'Komodo' ? videoId : selectedVideoIdVimeo}
+                    selectedVideoId={videoId && platform === 'Komodo' ? videoId : selectedVideoIdKomodo}
                     platformName={platformName}
                     placeholder="Enter here your Komodo link"
                     setisbackHide={setisbackHide}

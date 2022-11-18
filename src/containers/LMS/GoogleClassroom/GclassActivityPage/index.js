@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,11 +7,7 @@ import { GoogleLogin } from 'react-google-login';
 import { Alert } from 'react-bootstrap';
 
 import logo from 'assets/images/logo.svg';
-import {
-  setStudentAuthAction,
-  refreshStudentAuthTokenAction,
-  getStudentCoursesAction,
-} from 'store/actions/gapi';
+import { setStudentAuthAction, refreshStudentAuthTokenAction, getStudentCoursesAction } from 'store/actions/gapi';
 import Activity from 'containers/LMS/GoogleClassroom/Activity';
 
 import './styles.scss';
@@ -54,7 +51,7 @@ function GclassActivityPage(props) {
         }
       }
     }
-    setAuthorized((found && !teacher && !submissionError));
+    setAuthorized(found && !teacher && !submissionError);
     setIsTeacher(teacher);
   }, [courses, courseId, submissionError]);
 
@@ -75,10 +72,7 @@ function GclassActivityPage(props) {
       <div className="gclass-activity-container">
         <section className="main-page-content preview iframe-height-resource-shared defaultcontainer">
           <Helmet>
-            <script
-              src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js"
-              charset="UTF-8"
-            />
+            <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
           </Helmet>
           <div className="flex-container previews">
             <div className="activity-bg left-vdo">
@@ -97,10 +91,7 @@ function GclassActivityPage(props) {
                       {authorized === false && (
                         <div className="row m-4">
                           <div className="col text-center">
-                            <Alert variant="warning">
-                              You don&apos;t seem to be authorized to take this
-                              activity.
-                            </Alert>
+                            <Alert variant="warning">You don&apos;t seem to be authorized to take this activity.</Alert>
                           </div>
                         </div>
                       )}
@@ -108,9 +99,7 @@ function GclassActivityPage(props) {
                       {isTeacher === true && (
                         <div className="row m-4">
                           <div className="col text-center">
-                            <Alert variant="warning">
-                              You are the teacher for this activity. Please login as a student to take the activity.
-                            </Alert>
+                            <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
                           </div>
                         </div>
                       )}
@@ -118,9 +107,7 @@ function GclassActivityPage(props) {
                       {submissionError && (
                         <div className="row m-4">
                           <div className="col text-center">
-                            <Alert variant="warning">
-                              {submissionError}
-                            </Alert>
+                            <Alert variant="warning">{submissionError}</Alert>
                           </div>
                         </div>
                       )}
@@ -136,7 +123,6 @@ function GclassActivityPage(props) {
                             isSignedIn
                             scope="
                               https://www.googleapis.com/auth/classroom.courses.readonly
-                              https://www.googleapis.com/auth/classroom.courses
                               https://www.googleapis.com/auth/classroom.topics
                               https://www.googleapis.com/auth/classroom.coursework.me
                               https://www.googleapis.com/auth/classroom.coursework.students

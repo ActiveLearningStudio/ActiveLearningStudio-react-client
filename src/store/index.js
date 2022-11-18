@@ -11,7 +11,7 @@ const middlewareEnhancer = applyMiddleware(...middlewares);
 const enhancers = [middlewareEnhancer];
 const composedEnhancers = composeWithDevTools(...enhancers);
 const store = createStore(rootReducer, preloadedState, composedEnhancers);
-if (window.__RUNTIME_CONFIG__.NODE_ENV !== 'production' && module.hot) {
+if (window.__RUNTIME_CONFIG__?.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('./reducers', () => store.replaceReducer(rootReducer));
 }
 export default store;

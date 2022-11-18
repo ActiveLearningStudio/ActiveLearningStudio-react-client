@@ -17,30 +17,43 @@ export default function CreateLtiTool(prop) {
   const { editMode, clone } = prop;
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
+  const loggedUser = useSelector((state) => state.auth.user);
   const { activeEdit } = organization;
   const [loaderlmsImgUser, setLoaderlmsImgUser] = useState(false);
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [ltiToolTypeGroup, setLtiToolTypesGroup] = useState([]);
-  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  const { ltiToolsTypes, orgMediaSources } = useSelector((state) => state.admin);
   useEffect(() => {
-    // setLtiToolTypesGroup(ltiToolsTypes);
-    setLtiToolTypesGroup(
-      ltiToolsTypes.filter((type) => {
-        if (type.name !== 'My device' && type.name !== 'BrightCove') {
-          return type;
-        }
-      }),
-    );
+    const filterLTIdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+    setLtiToolTypesGroup(filterLTIdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
+    // console.log('ltiToolsTypes', ltiToolsTypes);
+    // setLtiToolTypesGroup(
+    //   ltiToolsTypes.filter((type) => {
+    //     if (type.name !== 'My device' && type.name !== 'BrightCove') {
+    //       return type;
+    //     }
+    //   }),
+    // );
     if (editMode && activeEdit?.media_source_id) {
-      const editmodeLti = ltiToolsTypes
-        .filter((type) => {
-          if (type.name !== 'My device' && type.name !== 'BrightCove' && type.id !== activeEdit?.media_source_id) {
-            return type;
-          }
-        })
-        ?.concat(activeEdit?.media_sources);
-      console.log('editmodeLti', editmodeLti);
-      setLtiToolTypesGroup(editmodeLti);
+      console.log('ltiToolsTypes', ltiToolsTypes);
+
+      // Old-code
+      // const editmodeLti = ltiToolsTypes
+      //   .filter((type) => {
+      //     // if (type.name !== 'My device' && type.name !== 'BrightCove' && type.id !== activeEdit?.media_source_id) {
+      //     //   return type;
+      //     // }
+      //     if (type.id !== activeEdit?.media_source_id) {
+      //       return type;
+      //     }
+      //   })
+      //   ?.concat(activeEdit?.media_sources);
+      // setLtiToolTypesGroup(editmodeLti);
+
+      // New Updpate
+      const filterdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+      setLtiToolTypesGroup(filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
+      // setLtiToolTypesGroup(ltiToolsTypes);
     }
   }, [ltiToolsTypes, editMode]);
   return (
@@ -56,16 +69,19 @@ export default function CreateLtiTool(prop) {
           tool_description: editMode ? activeEdit?.tool_description : '',
           // tool_type: editMode ? activeEdit?.tool_type : '',media_source_id
 
-          media_source_id: editMode
-            ? activeEdit?.media_source_id
-            : ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x).length > 0
-            ? ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x)['0'].id
-            : '',
+          // media_source_id: editMode
+          //   ? activeEdit?.media_source_id
+          //   : ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x).length > 0
+          //   ? ltiToolsTypes.filter((type) => type.name !== 'My device' && type.name !== 'BrightCove').map((x) => x)['0'].id
+          //   : '',
+
+          media_source_id: editMode ? activeEdit?.media_source_id : ltiToolsTypes.length > 0 ? ltiToolsTypes?.['0']?.id : '',
 
           tool_secret_key: editMode ? activeEdit?.tool_secret_key : '',
           organization_id: organization?.activeOrganization?.id,
-          user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
-          name: editMode ? (clone ? '' : activeEdit?.user?.name) : '',
+          user_id: loggedUser.id,
+          // user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
+          // name: editMode ? (clone ? '' : activeEdit?.user?.name) : '',
         }}
         validate={(values) => {
           const errors = {};
@@ -108,9 +124,19 @@ export default function CreateLtiTool(prop) {
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
               dispatch(removeActiveAdminForm());
+              // dispatch({
+              //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+              //   payload: res?.data,
+              // });
               dispatch({
-                type: actionTypes.NEWLY_EDIT_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_EDIT,
                 payload: res?.data,
+              });
+              console.log('values.media_source_id', values.media_source_id);
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'DECREMENT_TYPE_CHANGED',
+                ltitoolType: values.media_source_id,
               });
             });
           } else {
@@ -136,11 +162,21 @@ export default function CreateLtiTool(prop) {
                 },
               });
               // dispatch(getLtiTools(organization?.activeOrganization?.id));
+
+              dispatch({
+                type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                payload: 'INCREMENT',
+                ltitoolType: values.media_source_id,
+              });
               dispatch(removeActiveAdminForm());
               dispatch({
-                type: actionTypes.NEWLY_CREATED_RESOURCE,
+                type: actionTypes.LTI_TOOLS_ADD_NEW,
                 payload: res?.data,
               });
+              // dispatch({
+              //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+              //   payload: res?.data,
+              // });
             });
           }
         }}
@@ -273,7 +309,7 @@ export default function CreateLtiTool(prop) {
                     <div className="error">{errors.tool_content_selection_url && touched.tool_content_selection_url && errors.tool_content_selection_url}</div>
                   </div>
 
-                  <div className="form-group-create">
+                  {/* <div className="form-group-create">
                     <h3>User &nbsp; (search users from dropdown list only)</h3>
                     <input
                       type="text"
@@ -319,7 +355,7 @@ export default function CreateLtiTool(prop) {
                       </ul>
                     )}
                     <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

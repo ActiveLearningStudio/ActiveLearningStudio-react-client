@@ -173,6 +173,9 @@ const ActivityShared = (props) => {
               stopXapi();
 
               x.H5P.externalDispatcher.on('xAPI', (event) => {
+                if (event.ignoreStatement) {
+                  return;
+                }
                 if (counter > 0) {
                   const extendedStatement = xAPIHelper.extendSharedActivityStatement(this, event.data.statement, { path: match.path, activityId: match.params.activityId });
                   dispatch(loadH5pResourceXapi(JSON.stringify(extendedStatement)));
@@ -322,7 +325,7 @@ const ActivityShared = (props) => {
                                 className="thumbnail"
                                 style={{
                                   backgroundImage:
-                                    !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                    !!data.thumb_url && !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
                               <p>{data.title}</p>
@@ -349,7 +352,7 @@ const ActivityShared = (props) => {
                           className="thumbnail"
                           style={{
                             backgroundImage:
-                              !!data.thumb_url && data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                              !!data.thumb_url && !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                           }}
                         />
                       </Link>
@@ -373,7 +376,7 @@ const ActivityShared = (props) => {
                 }
               }}
             >
-              <Alert variant="primary"> Loading d Activity</Alert>
+              <Alert variant="primary"> Loading Activity</Alert>
             </div>
           )}
         </div>

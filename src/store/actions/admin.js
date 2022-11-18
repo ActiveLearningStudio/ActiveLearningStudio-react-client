@@ -156,6 +156,7 @@ export const getLtiTools = (subOrgId, page, size, query, column, orderBy, filter
   dispatch({
     type: actionTypes.GET_LTI_TOOLS,
     payload: result,
+    filterLti: filterBy,
   });
   return result;
 };
@@ -218,6 +219,21 @@ export const getAuthorTag = (subOrgId, page = '', size = '', query = '', column 
   return result;
 };
 
+export const gettAllDynamicPermisison = (subOrgId, roleId, add) => async (dispatch) => {
+  const result = await adminService.gettAllDynamicPermisison(subOrgId, roleId, add);
+  if (add) {
+    dispatch({
+      type: actionTypes.SET_ALL_DEFAULT_PERMISSION,
+      payload: result?.data,
+    });
+  } else {
+    dispatch({
+      type: actionTypes.SET_ALL_PERMISSION,
+      payload: result?.data,
+    });
+  }
+};
+
 export const getActivityLayout = (subOrgId, page = '', size = '', query = '', column = '', orderBy = '') => async (dispatch) => {
   const result = await adminService.getActivityLayout(subOrgId, page, size, query, column, orderBy);
   dispatch({
@@ -258,6 +274,12 @@ export const getOrganizationMedaiSource = (orgId) => async (dispatch) => {
     payload: result,
   });
   return result;
+};
+export const setLtiToolSettings = (data) => async (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_ORG_LTI_SETTINGS,
+    payload: data,
+  });
 };
 
 export const updateOrganizationMedaiSource = (subOrgId, media_ids, updatedMediasSource) => async (dispatch) => {

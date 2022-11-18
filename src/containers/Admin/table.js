@@ -69,16 +69,19 @@ function Table(props) {
     { indexing: 3, indexing_text: 'Approved' },
     { indexing: 2, indexing_text: 'Rejected' },
   ];
+  // useEffect(() => {
+  //   (async () => {
+  //     if (project?.visibilityTypes.length === 0) {
+  //       const { data } = await dispatch(visibilityTypes());
+  //       setVisibilityTypeArray(data.data);
+  //     } else {
+  //       setVisibilityTypeArray(project?.visibilityTypes?.data);
+  //     }
+  //   })();
+  // }, [project?.visibilityTypes]);
   useEffect(() => {
-    (async () => {
-      if (project?.visibilityTypes.length === 0) {
-        const { data } = await dispatch(visibilityTypes());
-        setVisibilityTypeArray(data.data);
-      } else {
-        setVisibilityTypeArray(project?.visibilityTypes?.data);
-      }
-    })();
-  }, [project?.visibilityTypes]);
+    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+  }, [activeOrganization]);
   useEffect(() => {
     if (allSuborgList?.data) {
       setLocalOrganizationList(allSuborgList);
@@ -86,30 +89,36 @@ function Table(props) {
   }, [allSuborgList]);
   //update table after crud
   useEffect(() => {
-    if (type === 'LMS') {
-      if (newlyCreated) {
-        setLocalStateData([newlyCreated, ...data?.data]);
-      } else if (newlyEdit) {
-        setLocalStateData(
-          data?.data.map((lms) => {
-            if (lms.id === newlyEdit?.id) {
-              return newlyEdit;
-            } else {
-              return lms;
-            }
-          }),
-        );
-      }
-    }
-    dispatch({
-      type: actionTypes.NEWLY_EDIT_RESOURCE,
-      payload: null,
-    });
-    dispatch({
-      type: actionTypes.NEWLY_CREATED_RESOURCE,
-      payload: null,
-    });
-  }, [newlyCreated, newlyEdit]);
+    setLocalStateData(data?.data);
+  }, [data?.data]);
+
+  // useEffect(() => {
+  //   if (type === 'LMS') {
+  //     if (newlyCreated) {
+  //       setLocalStateData([newlyCreated, ...data?.data]);
+  //     } else if (newlyEdit) {
+  //       console.log('newlyEdit');
+  //       setLocalStateData(
+  //         data?.data.map((lms) => {
+  //           console.log('lms', lms);
+  //           if (lms.id === newlyEdit?.id) {
+  //             return newlyEdit;
+  //           } else {
+  //             return lms;
+  //           }
+  //         }),
+  //       );
+  //     }
+  //   }
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_EDIT_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  //   // dispatch({
+  //   //   type: actionTypes.NEWLY_CREATED_RESOURCE,
+  //   //   payload: null,
+  //   // });
+  // }, [newlyCreated, newlyEdit]);
 
   //update table after search and first time
   useEffect(() => {
@@ -548,7 +557,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -570,7 +579,7 @@ function Table(props) {
                         <td>{row.id}</td>
                         <td>{row.team?.name ? `(T)${row.team?.name}` : row.users?.[0]?.name}</td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -615,7 +624,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -650,7 +659,7 @@ function Table(props) {
                           )}
                         </td>
                         <td>
-                          {permission?.Organization.includes('organization:edit-project') ? (
+                          {permission?.Organization?.includes('organization:edit-project') ? (
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
@@ -785,7 +794,7 @@ function Table(props) {
                           <div className="admin-name-img">
                             <div
                               style={{
-                                backgroundImage: row.thumb_url.includes('pexels.com') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
+                                backgroundImage: !row.thumb_url?.includes('/storage/') ? `url(${row.thumb_url})` : `url(${global.config.resourceUrl}${row.thumb_url})`,
                                 backgroundSize: 'cover',
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center',
@@ -1317,32 +1326,42 @@ function Table(props) {
               subType === 'LTI Tools' &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
-                      <td>{row.tool_name}</td>
-                      <td>{row.tool_url}</td>
-                      {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
-                      {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
+                  localStateData
+                    ?.filter((item) => {
+                      if (filterLtiSettings) {
+                        if (item?.media_sources?.name === filterLtiSettings?.name) {
+                          return item;
+                        }
+                      } else {
+                        return item;
+                      }
+                    })
+                    ?.map((row, counter) => (
+                      <tr key={counter} className="admin-panel-rows">
+                        <td>{row.tool_name}</td>
+                        <td>{row.tool_url}</td>
+                        {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
+                        {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
 
-                      <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
-                      <td>{row.tool_description}</td>
-                      <td>
-                        <div className="admin-panel-dropdown">
-                          {row.lti_version}
-                          <div>
-                            <AdminDropdown
-                              type={type}
-                              subType="LTI Tools"
-                              row={row}
-                              activePage={activePage}
-                              localStateData={localStateData}
-                              setLocalStateData={setLocalStateData}
-                            />
+                        <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
+                        <td>{row.tool_description}</td>
+                        <td>
+                          <div className="admin-panel-dropdown">
+                            {row.lti_version}
+                            <div>
+                              <AdminDropdown
+                                type={type}
+                                subType="LTI Tools"
+                                row={row}
+                                activePage={activePage}
+                                localStateData={localStateData}
+                                setLocalStateData={setLocalStateData}
+                              />
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                        </td>
+                      </tr>
+                    ))
                 ) : (
                   <tr>
                     <td colSpan="11">

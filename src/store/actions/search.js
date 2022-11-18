@@ -1,6 +1,5 @@
 /* eslint-disable object-curly-newline */
 import Swal from 'sweetalert2';
-
 import searchService from 'services/search.service';
 import resourceService from 'services/resource.service';
 import { SEARCH_REDUX, CLEAR_SEARCH, SELECT_EXISTING_ACTIVITY, RESET_EXISTING_ACTIVITY, SET_SEARCH_TYPE } from '../actionTypes';
@@ -191,11 +190,20 @@ export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
 
-export const existingActivitySearchGetAction = (activityId) => async (dispatch) => {
-  const result = await resourceService.h5pResourceSettings(activityId);
+export const existingActivitySearchGetAction = (activityId, activityType) => async (dispatch) => {
+  let result = null;
+  if (activityType === 'independent') {
+    result = await resourceService.independentH5pResourceSettings(activityId);
+  } else {
+    result = await resourceService.h5pResourceSettings(activityId);
+  }
+
   dispatch({
     type: SELECT_EXISTING_ACTIVITY,
-    activity: result,
+    activity: {
+      ...result,
+      activityType,
+    },
   });
 };
 

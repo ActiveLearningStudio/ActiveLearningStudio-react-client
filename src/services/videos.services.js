@@ -111,9 +111,13 @@ const allBrightCove = (orgId, size = 10, page) =>
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
-const allBrightCoveSearch = (orgId, search, size = 10, page) =>
+const allBrightCoveSearch = (orgId, search, size = 10, page, column, orderBy) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?query=${search}&size=${size}&page=${page}`)
+    .get(
+      `/${apiVersion}/suborganizations/${orgId}/brightcove-api-settings?query=${search}&size=${size}&page=${page}${column ? `&order_by_column=${column}` : ''}${
+        orderBy ? `&order_by_type=${orderBy}` : ''
+      }`,
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
@@ -137,6 +141,15 @@ const getKalturaVideos = (data) =>
 const getVimeoVideos = (data) =>
   httpService
     .post(`/${apiVersion}/vimeo/get-my-video-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      return Promise.reject(err.response.data);
+    });
+
+const getKomodoVideos = (data) =>
+  httpService
+    .post(`/${apiVersion}/komodo/get-my-video-list`, data)
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -192,4 +205,5 @@ export default {
   getKalturaVideos,
   getVimeoVideos,
   uploadvideoDirect,
+  getKomodoVideos,
 };

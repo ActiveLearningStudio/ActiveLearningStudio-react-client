@@ -17,12 +17,7 @@ import { lmsPlaylist } from 'store/actions/playlist';
 import { getProjectId, googleShare } from 'store/actions/gapi';
 
 function TeamProjectView(props) {
-  const {
-    team,
-    user,
-    removeProject,
-    removeMember,
-  } = props;
+  const { team, user, removeProject, removeMember } = props;
   const organization = useSelector((state) => state.organization);
   const { teamPermission, selectedForClone } = useSelector((state) => state.team);
   const { notification } = useSelector((state) => state.notification);
@@ -64,7 +59,7 @@ function TeamProjectView(props) {
         });
       });
     },
-    [team?.id, removeProject]
+    [team?.id, removeProject],
   );
 
   const removeMemberSubmit = useCallback(
@@ -77,7 +72,7 @@ function TeamProjectView(props) {
         });
       });
     },
-    [team?.id, removeMember]
+    [team?.id, removeMember],
   );
 
   return (
@@ -98,7 +93,7 @@ function TeamProjectView(props) {
               <div
                 className="project-img"
                 style={{
-                  backgroundImage: project.thumb_url?.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                  backgroundImage: !project.thumb_url?.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
                 }}
               />
 
@@ -159,7 +154,7 @@ function TeamProjectView(props) {
                                       {data.site_name}
                                     </a>
                                   </li>
-                                )
+                                ),
                             )}
                         </ul>
                       </li>

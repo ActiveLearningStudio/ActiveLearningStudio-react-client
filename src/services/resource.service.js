@@ -33,6 +33,15 @@ const create = (activity, playlistId) =>
       Promise.reject(err.response.data);
     });
 
+const smithsonian = (data) =>
+  httpService
+    .post(`/${apiVersion}/smithsonian/get-content-list`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const get = (id, playlistId) =>
   httpService
     .get(`/${apiVersion}/playlists/${playlistId}/activities/${id}`)
@@ -65,7 +74,7 @@ const upload = (formData, conf) =>
       {
         'Content-Type': 'multipart/form-data',
       },
-      conf
+      conf,
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -123,6 +132,12 @@ const getTypes = (subOrgId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
+const getAllTypesIV = () =>
+  httpService
+    .get(`/${apiVersion}/h5p/ajax/libraries`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 const createActivityType = (subOrgId, body) =>
   httpService
     .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`, body)
@@ -162,7 +177,7 @@ const getActivityItems = (subOrgId, query, page, size, column = '', orderBy = ''
       ${size ? `&size=${size}` : ''}
       ${column ? `&order_by_column=${column}` : ''}
       ${orderBy ? `&order_by_type=${orderBy}` : ''}
-      ${filterBy ? `&filter=${filterBy}` : ''}`
+      ${filterBy ? `&filter=${filterBy}` : ''}`,
     )
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -218,6 +233,19 @@ const h5pSettingsUpdate = (activityId, dataUpload, playlistId) =>
     .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
+
+const independentH5pResourceSettings = (activityId) =>
+  httpService
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Swal.fire({
+        title: 'Error',
+        icon: 'error',
+        html: err.message || 'Something went wrong! We are unable to load activity.',
+      });
+      Promise.reject(err.response.data);
+    });
 
 const h5pResourceSettings = (activityId) =>
   httpService
@@ -295,10 +323,17 @@ const searchPreviewActivity = (subOrgId, activityId) =>
     .get(`/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`)
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
-const searchPreviewIndependentActivity = (subOrgId, independent_activity) => httpService
-  .get(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${independent_activity}/search-preview`)
-  .then(({ data }) => data)
-  .catch((err) => Promise.reject(err.response.data));
+const searchPreviewIndependentActivity = (subOrgId, independent_activity) =>
+  httpService
+    .get(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${independent_activity}/search-preview`)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
+const smithsonianList = (body) =>
+  httpService
+    .post(`/${apiVersion}/smithsonian/get-search-filter-data`, body)
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
 
 export default {
   getAll,
@@ -325,6 +360,7 @@ export default {
   h5pSettings,
   h5pResource,
   h5pSettingsUpdate,
+  independentH5pResourceSettings,
   h5pResourceSettings,
   h5pResourceSettingsOpen,
   h5pResourceSettingsShared,
@@ -338,4 +374,7 @@ export default {
   getSingleLayout,
   searchPreviewActivity,
   searchPreviewIndependentActivity,
+  getAllTypesIV,
+  smithsonian,
+  smithsonianList,
 };

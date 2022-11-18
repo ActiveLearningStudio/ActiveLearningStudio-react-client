@@ -1,25 +1,53 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable array-callback-return */
-/* eslint-disable camelcase */
+/* eslint-disable  */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import HeadingThree from 'utils/HeadingThree/headingthree';
-import { updateOrganizationMedaiSource } from 'store/actions/admin';
+import { updateOrganizationMedaiSource, getOrganizationMedaiSource } from 'store/actions/admin';
+import Switch from 'react-switch';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const Media = () => {
   const dispatch = useDispatch();
-  const { allMediaSources, orgMediaSources } = useSelector((state) => state.admin);
+
+  const { allMediaSources, orgMediaSources, allIv, orgLtiSettings } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([]);
 
-  const { activeOrganization } = organization;
+  const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
+
+  // useEffect(() => {
+  //   setVideoSourceLTI(
+  //     videoSourceLTI?.map((_lti) => {
+  //       const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
+  //       if (Index >= 0) {
+  //         _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
+  //       }
+  //       return _lti;
+  //     }),
+  //   );
+  // }, []);
+  console.log('orgLtiSettings', orgLtiSettings);
+  useEffect(() => {
+    if (orgLtiSettings?.length > 0) {
+      setVideoSourceLTI(orgLtiSettings);
+    } else {
+      setVideoSourceLTI([]);
+    }
+  }, [orgLtiSettings]);
+
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -43,6 +71,8 @@ const Media = () => {
   }, [allMediaSources]);
 
   const mediaLibrary = (sourceName) => updateLibrary?.filter((data) => data.name === sourceName)[0]?.pivot?.h5p_library;
+  const secondaryColorIcon = getGlobalColor('--main-secondary-color');
+  // const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <div className="media-section">
@@ -81,43 +111,83 @@ const Media = () => {
                           <div className="h5p-heading-text">
                             <HeadingThree text="H5P library" color="#515151" className="textField-title" />
                           </div>
+                          <div className="lti-tool-heading-text ">
+                            <HeadingThree text="LTI tool" color="#515151" className="textField-title" />
+                          </div>
                         </div>
-                        <div className="btn-text">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              let updatedMediasSource = [];
-                              const media_ids = [];
-                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                              if (orgVideoSource.length === 0) {
-                                // updatedMediasSource = orgImageSource;
+                        {permission?.Organization?.includes('organization:edit-media') && (
+                          <div className="btn-text">
+                            <button
+                              type="button"
+                              onClick={async (e) => {
+                                e.preventDefault();
+
+                                // Check if video source category is selected?
+
+                                let videoSourceLTIUnSelect = null;
+                                videoSourceLTI.forEach((_lti) => {
+                                  if (
+                                    videoSourceLTIUnSelect == null &&
+                                    _lti.lti_tool_settings_status === true &&
+                                    orgVideoSource.filter((_videoScr) => _videoScr.id === _lti.media_source_id).length <= 0
+                                  ) {
+                                    videoSourceLTIUnSelect = _lti.media_source_id;
+                                  }
+                                });
+
+                                if (videoSourceLTIUnSelect != null) {
+                                  // updatedMediasSource = orgImageSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please select respective checkbox to update this settings.',
+                                    allowOutsideClick: false,
+                                  });
+                                  return false;
+                                }
+                                // -----
+                                let updatedMediasSource = [];
+                                const media_ids = [];
+                                orgVideoSource?.map((videoSource) => {
+                                  media_ids.push({
+                                    media_source_id: videoSource.id,
+                                    h5p_library: mediaLibrary(videoSource.name),
+                                    lti_tool_settings_status: videoSourceLTI.filter((_lti) => _lti.media_source_id === videoSource.id)[0]?.lti_tool_settings_status ? 1 : 0,
+                                  });
+                                });
+                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
+
+                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                // updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
+                                if (orgVideoSource.length === 0) {
+                                  // updatedMediasSource = orgImageSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please Select Atleast One Media Source to Continue...!!',
+                                    allowOutsideClick: false,
+                                  });
+                                  return false;
+                                }
+
                                 Swal.fire({
-                                  icon: 'warning',
-                                  text: 'Please Select Atleast One Media Source to Continue...!!',
+                                  title: 'Please Wait !',
+                                  text: 'Updating view...!!!',
                                   allowOutsideClick: false,
                                 });
-                                return false;
-                              }
-                              Swal.fire({
-                                title: 'Please Wait !',
-                                text: 'Updating view...!!!',
-                                allowOutsideClick: false,
-                              });
-                              dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
-                            }}
-                          >
-                            Update
-                          </button>
-                        </div>
+                                await dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                await dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+                              }}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="sources-sub">
                         <div>
                           {allMediaSources?.mediaSources?.Video?.map((source, counter) => {
                             const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
                             if (source.name !== 'Safari Montage') {
+                              const findVideoLTIIndex = videoSourceLTI?.filter((_lti) => _lti.media_source_id === source.id && source?.media_type === 'Video');
                               return (
                                 <div className="media-version-options">
                                   <div className="media-field-checkbox" key={counter}>
@@ -140,8 +210,7 @@ const Media = () => {
                                     </span>
                                   </div>
                                   <div className="h5p-title-formik-textField">
-                                    <input
-                                      type="text"
+                                    <select
                                       name={source.name}
                                       onChange={(e) => {
                                         setUpdateLibrary(
@@ -155,7 +224,38 @@ const Media = () => {
                                       }}
                                       onBlur={handleBlur}
                                       value={mediaLibrary(source.name)}
-                                    />
+                                    >
+                                      {allIv?.map((src) => (
+                                        <option value={`${src.name} ${src.majorVersion}.${src.minorVersion}`}>
+                                          {src.name}&nbsp;
+                                          {src.majorVersion}.{src.minorVersion}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  {/* LTI tool */}
+                                  <div className="lti-tool-switch">
+                                    <div className="custom-toggle-button toggle-style">
+                                      <Switch
+                                        checked={findVideoLTIIndex[0]?.lti_tool_settings_status}
+                                        onChange={() => {
+                                          setVideoSourceLTI(
+                                            videoSourceLTI?.map((_lti) => {
+                                              if (_lti.media_source_id === source.id) {
+                                                _lti.lti_tool_settings_status = !_lti.lti_tool_settings_status;
+                                              }
+                                              return _lti;
+                                            }),
+                                          );
+                                        }}
+                                        className="react-switch"
+                                        handleDiameter={30}
+                                        offColor="#888"
+                                        onColor={secondaryColorIcon}
+                                        onHandleColor={secondaryColorIcon}
+                                        offHandleColor="#666"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -178,7 +278,7 @@ const Media = () => {
                             name="imageall"
                             type="checkbox"
                             label="Selectall"
-                            checked={orgImageSource?.length === 2}
+                            checked={orgImageSource?.length === 3}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource.filter((source) => source.name !== 'Safari Montage'));
@@ -189,32 +289,34 @@ const Media = () => {
                           />
                           <span className="span-heading">Select all</span>
                         </div>
-                        <div className="btn-text">
-                          <button
-                            type="button"
-                            name="update"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              let updatedMediasSource = [];
-                              const media_ids = [];
-                              orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                              orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                              updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                              if (orgImageSource.length === 0) {
-                                // updatedMediasSource = orgVideoSource;
-                                Swal.fire({
-                                  icon: 'warning',
-                                  text: 'Please Select Atleast One Media Source to Continue...!!',
-                                  allowOutsideClick: false,
-                                });
-                              } else {
-                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
-                              }
-                            }}
-                          >
-                            Update
-                          </button>
-                        </div>
+                        {permission?.Organization?.includes('organization:edit-media') && (
+                          <div className="btn-text">
+                            <button
+                              type="button"
+                              name="update"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                let updatedMediasSource = [];
+                                const media_ids = [];
+                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
+                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
+                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+                                if (orgImageSource.length === 0) {
+                                  // updatedMediasSource = orgVideoSource;
+                                  Swal.fire({
+                                    icon: 'warning',
+                                    text: 'Please Select Atleast One Media Source to Continue...!!',
+                                    allowOutsideClick: false,
+                                  });
+                                } else {
+                                  dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                }
+                              }}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="sources-sub">
                         <div>

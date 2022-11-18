@@ -158,7 +158,7 @@ function ProjectPreviewShared(props) {
                   <div
                     className="project-thumbnail"
                     style={{
-                      backgroundImage: currentProject.thumb_url?.includes('pexels.com')
+                      backgroundImage: !currentProject.thumb_url?.includes('/storage/')
                         ? `url(${currentProject.thumb_url})`
                         : `url(${global.config.resourceUrl}${currentProject.thumb_url})`,
                     }}
@@ -176,7 +176,7 @@ function ProjectPreviewShared(props) {
               </div>
             ) : project.isSharedProject === false ? (
               <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
-                Project is not sharable.
+                Project is not shareable.
               </Alert>
             ) : (
               <Alert variant="primary" style={{ marginTop: '20px' }}>

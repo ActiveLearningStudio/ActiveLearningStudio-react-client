@@ -7,13 +7,13 @@ import adminService from 'services/admin.service';
 import indActivity from 'services/indActivities.service';
 import Starter from './starter';
 import { columnData } from './column';
+import GcrPublishing from './publishing/gcrPublishing';
+import MsTeamPublishing from './publishing/msTeamPublishing';
 import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
 import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
 import { adminIntActivities, allAdminExportActivity } from 'store/actions/indActivities';
 import * as actionTypes from 'store/actionTypes';
 import {
-  getJobListing,
-  getLogsListing,
   getLtiTools,
   getUserReport,
   getDefaultSso,
@@ -55,7 +55,7 @@ export default function Pills(props) {
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport, allbrightCove, teams, indActivities, exportedActivities } = useSelector((state) => state.admin);
+  const { activityTypes, activityItems, usersReport, allbrightCove, teams, indActivities, exportedActivities, newlyEdit } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -501,14 +501,16 @@ export default function Pills(props) {
         setActivePage(1);
         const encodeQuery = encodeURI(target.value);
         // setsearchLtiquery(encodeQuery);
-        const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+        // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+        const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
         result.then((data) => {
           setLtiTool(data);
         });
       }
     } else {
       setsearchLtiquery('');
-      const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+      // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
+      const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
       result.then((data) => {
         setLtiTool(data);
       });
@@ -553,12 +555,25 @@ export default function Pills(props) {
     setActivePage(1);
     setLtiToolFilterBy(item);
     // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
-    const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
-
+    // const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
+    const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, item));
     result.then((data) => {
       setLtiTool(data);
     });
   };
+  useEffect(() => {
+    if (admin.ltiToolsReloadStatus == true) {
+      if (admin.selectedFIlterLti != null && admin.selectedFIlterLti != '') {
+        filterLtiTool(admin.selectedFIlterLti);
+      } else {
+        filterLtiTool(null);
+      }
+
+      dispatch({
+        type: actionTypes.LTI_TOOLS_RELOAD_STATUS,
+      });
+    }
+  }, [admin.ltiToolsReloadStatus]);
 
   const filterDefaultSso = (filterBy) => {
     setDefaultSso(null);
@@ -594,6 +609,9 @@ export default function Pills(props) {
       setLibraryReqSelected(false);
     } else {
       setSubTypeState(key);
+    }
+    if (key === 'Media') {
+      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
     }
   }, [activeTab, key]);
 
@@ -821,6 +839,24 @@ export default function Pills(props) {
       let order = orderBy == 'asc' ? 'desc' : 'asc';
       setOrderBy(order);
       setOrderByColumn(col);
+    } else if (subType == 'BrightCove') {
+      //mapping column with db column for making it dynamic
+      let col = '';
+
+      switch (column) {
+        case 'Type':
+          col = 'account_name';
+          break;
+        default:
+          col = 'account_name';
+      }
+
+      dispatch(allBrightCoveSearch(activeOrganization?.id, searchQuery, size, activePage || 1, col, orderBy));
+
+      setCurrentOrderBy(orderBy);
+      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      setOrderBy(order);
+      setOrderByColumn(col);
     } else if (subType == 'All Users') {
       //mapping column with db column for making it dynamic
       let col = '';
@@ -959,6 +995,20 @@ export default function Pills(props) {
 
     dispatch(adminIntActivities(activeOrganization?.id, activePage, size));
   };
+
+  // After Edit LMS Setting
+  useEffect(() => {
+    if (subTypeState === 'LMS settings') {
+      const updateNewLmsProject = lmsProject?.data.map((_lms) => {
+        if (_lms.id === newlyEdit.id) {
+          _lms = newlyEdit;
+        }
+        return _lms;
+      });
+
+      setLmsProject({ ...lmsProject, data: updateNewLmsProject });
+    }
+  }, [newlyEdit]);
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
@@ -973,11 +1023,13 @@ export default function Pills(props) {
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
         if (key === 'LTI Tools') {
+          dispatch(getOrganizationMedaiSource(activeOrganization?.id));
           const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, filterLtiSettings?.id || '');
           result.then((data) => {
             setLtiTool(data);
           });
         }
+
         setSearchQueryStats('');
         if (key === 'Exported Projects') {
           setCurrentTab('Exported Projects');
@@ -1103,7 +1155,7 @@ export default function Pills(props) {
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
-                  sortCol={[]}
+                  sortCol={columnData.sortIntegrationBrightCove}
                   handleSort={handleSort}
                   data={lmsBrightCove}
                   type={type}
@@ -1115,6 +1167,8 @@ export default function Pills(props) {
               )}
               {/* Media Start */}
               {type === 'LMS' && subTypeState === 'Media' && <Media />}
+              {type === 'LMS' && subTypeState === 'Google Classroom' && <GcrPublishing />}
+              {type === 'LMS' && subTypeState === 'Microsoft Teams' && <MsTeamPublishing />}
               {/* Media End */}
 
               {type === 'Projects' && subTypeState === 'All Projects' && (

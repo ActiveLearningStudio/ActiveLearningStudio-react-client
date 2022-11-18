@@ -22,7 +22,7 @@ import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
 import ShareLinkMdSvg from 'iconLibrary/mainContainer/ShareLinkMdSvg';
 
 const ProjectCard = (props) => {
-  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission, adminPanel } = props;
+  const { project, showDeletePopup, handleShow, setProjectId, setCreateProject, teamPermission, adminPanel, setprojectPlaylistPublishtoCanvas, setcanvasProjectName } = props;
   const ImgLoader = () => <img src={loader} alt="" />;
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ const ProjectCard = (props) => {
             <div
               className="myproject-card-top"
               style={{
-                backgroundImage: project.thumb_url.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                backgroundImage: !project.thumb_url.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
               }}
             >
               <div className="myproject-card-dropdown">
@@ -49,6 +49,8 @@ const ProjectCard = (props) => {
                     iconColor="#ffffff"
                     setCreateProject={setCreateProject}
                     teamPermission={teamPermission || {}}
+                    setprojectPublishtoCanvas={setprojectPlaylistPublishtoCanvas}
+                    setcanvasProjectName={setcanvasProjectName}
                   />
                 )}
               </div>

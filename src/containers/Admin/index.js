@@ -33,7 +33,9 @@ import CreateActivityLayout from './formik/createActivityLayout';
 import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
-import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
+import { getAllMediaSources, getOrganizationMedaiSource, setLtiToolSettings } from 'store/actions/admin';
+import { getAllIV } from 'store/actions/resource';
+
 import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
 
 function AdminPanel({ showSSO }) {
@@ -52,6 +54,14 @@ function AdminPanel({ showSSO }) {
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([
+    { media_source_id: 1, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 2, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 3, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 5, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 6, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 10, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+  ]);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -63,24 +73,30 @@ function AdminPanel({ showSSO }) {
     if (tab) {
       dispatch(setActiveTab(tab));
     }
+    dispatch(getAllIV());
   }, []);
   useEffect(() => {
-    if (paginations?.length <= 1 || !paginations) {
-      dispatch({
-        type: actionTypes.UPDATE_PAGINATION,
-        payload: [currentOrganization || []],
-      });
-    }
-    dispatch(getAllMediaSources());
-    if (activeOrganization?.id) {
-      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
-    }
+    (async () => {
+      if (paginations?.length <= 1 || !paginations) {
+        dispatch({
+          type: actionTypes.UPDATE_PAGINATION,
+          payload: [currentOrganization || []],
+        });
+      }
+      await dispatch(setLtiToolSettings(videoSourceLTI));
+      await dispatch(getAllMediaSources());
+      if (activeOrganization?.id) {
+        dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+      }
+    })();
   }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
   // ltiToolType calling
   useEffect(() => {
-    dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+    if (activeOrganization?.id) {
+      dispatch(ltiToolType(activeOrganization?.id || currentOrganization?.id));
+    }
   }, [activeOrganization, currentOrganization]);
   return (
     <div className="admin-panel">
@@ -165,17 +181,20 @@ function AdminPanel({ showSSO }) {
                   {/* Ind.Activity End*/}
                   {(permission?.Organization?.includes('organization:view-activity-item') ||
                     permission?.Organization?.includes('organization:view-activity-type') ||
-                    permission?.Organization?.includes('organization:view-activity-type')) && (
+                    permission?.Organization?.includes('organization:view-activity-layout') ||
+                    permission?.Organization?.includes('organization:view-subject') ||
+                    permission?.Organization?.includes('organization:view-education-level') ||
+                    permission?.Organization?.includes('organization:view-author-tag')) && (
                     <Tab eventKey="Activities" title="Ref. tables">
                       <div className="module-content">
                         <Pills
                           modules={[
-                            'Activity Layouts',
+                            permission?.Organization?.includes('organization:view-activity-layout') && 'Activity Layouts',
                             permission?.Organization?.includes('organization:view-activity-type') && 'Activity Types',
                             permission?.Organization?.includes('organization:view-activity-item') && 'Activity Items',
-                            'Subjects',
-                            'Education Level',
-                            'Author Tags',
+                            permission?.Organization?.includes('organization:view-subject') && 'Subjects',
+                            permission?.Organization?.includes('organization:view-education-level') && 'Education Level',
+                            permission?.Organization?.includes('organization:view-author-tag') && 'Author Tags',
                           ]}
                           type="Activities"
                         />
@@ -205,7 +224,9 @@ function AdminPanel({ showSSO }) {
                       </div>
                     </Tab>
                   )}
-                  {(permission?.Organization?.includes('organization:view-lms-setting') || permission?.Organization?.includes('organization:view-all-setting')) && (
+                  {(permission?.Organization?.includes('organization:view-lms-setting') ||
+                    permission?.Organization?.includes('organization:view-all-setting') ||
+                    permission?.Organization?.includes('organization:view-media')) && (
                     <Tab eventKey="LMS" title="Integrations">
                       <div className="module-content">
                         <Pills
@@ -213,21 +234,15 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes('organization:view-lms-setting') && 'LMS settings',
                             permission?.Organization?.includes('organization:view-all-setting') && 'LTI Tools',
                             permission?.Organization?.includes('organization:view-brightcove-setting') && 'BrightCove',
-                            'Media',
+                            permission?.Organization?.includes('organization:view-media') && 'Media',
+                            permission?.Organization?.includes('organization:view-google-classroom') && 'Google Classroom',
+                            permission?.Organization?.includes('organization:view-microsoft-team') && 'Microsoft Teams',
                           ]}
                           type="LMS"
                         />
-                        {/* <Pills modules={['All settings', 'LTI Tools']} type="LMS" /> */}
                       </div>
                     </Tab>
                   )}
-
-                  {/* <Tab eventKey="Settings" title="Settings">
-                  <div className="module-content">
-                    <h2>Settings</h2>
-                    <Pills modules={["All settings"]} type="Settings" />
-                  </div>
-                </Tab> */}
                 </Tabs>
               ) : (
                 <Tabs
@@ -354,6 +369,13 @@ function AdminPanel({ showSSO }) {
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
                 <BrightCove mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === 'clone_brightcove' && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <BrightCove mode={activeForm} clone />
               </div>
             </div>
           )}

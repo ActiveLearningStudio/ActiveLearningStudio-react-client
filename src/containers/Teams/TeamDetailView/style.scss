@@ -127,20 +127,19 @@
       cursor: pointer;
     }
   }
-  .team-organization-back-link{
+  .team-organization-back-link {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .team-back-to-option{
+  .team-back-to-option {
     margin-right: 30px;
-    .team-back-to-option-link{
+    .team-back-to-option-link {
       color: #084892;
     }
-    .mr-8{
+    .mr-8 {
       margin-right: 8px;
     }
-    
   }
   .flex-button-top {
     display: flex;
@@ -150,12 +149,13 @@
     }
     .team-controller {
       display: flex;
+      flex-wrap: wrap;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
       padding: 16px;
       width: 100%;
-      height: 64px;
+      // height: 64px;
       background: #f7faff;
       border-radius: 4px;
       // margin-bottom: 16p132pxx;
@@ -190,18 +190,25 @@
     .team-project-btns {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       .mr-16 {
         margin-right: 16px;
       }
+      .team_search_btn {
+        @media (max-width: 1367px) {
+          margin-top: 16px;
+        }
+      }
     }
   }
   .team-cards {
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
     // justify-content: space-evenly;
     margin-right: 10px;
+    margin-top: 10px;
     .mt-16 {
       margin-top: 16px;
       margin-right: 10px;

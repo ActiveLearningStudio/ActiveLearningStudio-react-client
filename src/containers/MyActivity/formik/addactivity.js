@@ -51,7 +51,7 @@ const AddActivity = (props) => {
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
   const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
   const [exploreCheck, setExploreCheck] = useState(true);
-
+  const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
   useEffect(() => {
     // Check if selectedLayout is selected from explore or not
     setExploreCheck(true);
@@ -373,7 +373,13 @@ const AddActivity = (props) => {
                     </div>
                   </div>
                   <div className="formik-uploadimage">
-                    <UploadImageV2 formRef={formRef} setUploadImageStatus={setUploadImageStatus} thumb_url={activity?.thumb_url} />
+                    <UploadImageV2
+                      formRef={formRef}
+                      setUploadImageStatus={setUploadImageStatus}
+                      thumb_url={activity?.thumb_url}
+                      containerType="Activity"
+                      setshowSmythsonianModal={setshowSmythsonianModal}
+                    />
                   </div>
                 </form>
               )}
@@ -409,7 +415,9 @@ const AddActivity = (props) => {
                     onClick={() => {
                       formRef.current.handleSubmit();
                       if (formRef.current.values.title && formRef.current.values.title.length < 255) {
-                        setModalShow(true);
+                        if (!showSmythsonianModal) {
+                          setModalShow(true);
+                        }
                       }
                     }}
                     hover={true}

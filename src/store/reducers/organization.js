@@ -202,6 +202,19 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activePage: 1,
       };
+    case actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE:
+      state.activeOrganization.allowed_visibility_type_id = action.payload;
+      return {
+        ...state,
+        activeOrganization: { ...state.activeOrganization },
+      };
+    case actionTypes.ORG_UPDATE_GCR_SETTINGS:
+      const filterGcrSettings = action.payload;
+      return {
+        ...state,
+        activeOrganization: { ...state.activeOrganization, ...filterGcrSettings },
+      };
+
     default:
       return state;
   }

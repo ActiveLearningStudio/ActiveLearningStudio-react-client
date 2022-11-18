@@ -10,6 +10,10 @@
   overflow: hidden;
 }
 
+.container-fluid {
+  padding: 0 !important;
+}
+
 .modal {
   padding-top: 15px !important;
   padding-right: 15px !important;
@@ -558,7 +562,6 @@
 
 .main-content-wrapper {
   width: 100%;
-  padding-top: 80px;
   // padding-bottom: 45px;
   // display: flex;
   float: left;
@@ -971,7 +974,7 @@ body {
 }
 
 .top-header {
-  position: fixed;
+  position: fixed !important;
   width: 100%;
   height: 80px;
   box-shadow: 0 5px 6px #00000026;
@@ -1243,6 +1246,7 @@ header {
   .flex-div {
     flex-wrap: nowrap;
   }
+  height: 80px;
 }
 
 .menuoverlay:before {
@@ -2916,7 +2920,7 @@ a:hover {
 .hover-control-caption.no-data {
   width: 235px;
   min-height: auto !important;
-  left: -200px;
+  left: -50px;
   padding: 0;
 }
 
@@ -3433,7 +3437,7 @@ a:hover {
   display: none;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .mobile-app-alert {
     background-color: #eee;
     color: #333;

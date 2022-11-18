@@ -83,7 +83,7 @@ function LtiProjectShared(props) {
                   <div
                     className="backgroundimg-clone"
                     style={{
-                      backgroundImage: clone.clone.thumb_url?.includes('pexels.com')
+                      backgroundImage: !clone.clone.thumb_url?.includes('/storage/')
                         ? `url(${clone.clone.thumb_url})`
                         : `url(${global.config.resourceUrl}${clone.clone.thumb_url})`,
                     }}
@@ -105,28 +105,40 @@ function LtiProjectShared(props) {
             )}
             <div className={`clone-searching-section ${clone.ind ? 'clone-searching-section-margin-ind' : 'clone-searching-section-margin'}`}>
               <div className="search-and-filters">
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Search Project..."
-                    value={searchQuery}
-                    onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      setpage(1);
-                      // handlerSearchResult(e.target.value);
-                    }}
-                  />
-                  <SearchInputMdSvg
-                    primaryColor={primaryColor}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() =>
-                      dispatch(
-                        loadMyCloneProjectsAction(page, defaultSize, searchQuery),
-                        // loadMyProjectsAction(),
-                      )
-                    }
-                  />
+                <div className="search-bar-clear-btn">
+                  <div className="search-bar">
+                    <input
+                      type="text"
+                      className="search-input"
+                      placeholder="Search Project..."
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setpage(1);
+                        // handlerSearchResult(e.target.value);
+                      }}
+                    />
+                    <SearchInputMdSvg
+                      primaryColor={primaryColor}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() =>
+                        dispatch(
+                          loadMyCloneProjectsAction(page, defaultSize, searchQuery),
+                          // loadMyProjectsAction(),
+                        )
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Buttons
+                      text="Clear"
+                      className="clr-btn"
+                      onClick={() => {
+                        setSearchQuery('');
+                        loadMyCloneProjectsAction(1, 10);
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -178,7 +190,7 @@ function LtiProjectShared(props) {
                                   <div
                                     className="backgroundimg-clone"
                                     style={{
-                                      backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                      backgroundImage: !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                     }}
                                   />
                                   <div className="active-resource-detail">
@@ -324,7 +336,7 @@ function LtiProjectShared(props) {
                               <div
                                 className="backgroundimg-clone"
                                 style={{
-                                  backgroundImage: data.thumb_url.includes('pexels.com') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
+                                  backgroundImage: !data.thumb_url.includes('/storage/') ? `url(${data.thumb_url})` : `url(${global.config.resourceUrl}${data.thumb_url})`,
                                 }}
                               />
                               <div className="active-resource-detail">
@@ -346,7 +358,7 @@ function LtiProjectShared(props) {
                                       icon: 'info',
                                     }).then(async (result) => {
                                       if (result.isConfirmed) {
-                                        clonePlaylist(currentProject.id, clone?.clone?.id);
+                                        clonePlaylist(data.id, clone?.clone?.id);
                                       }
                                     });
                                   }}

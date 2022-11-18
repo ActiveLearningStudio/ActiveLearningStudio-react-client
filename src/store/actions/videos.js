@@ -47,7 +47,7 @@ export const getBrightVideos = (brightId, offset) => async (dispatch) => {
       id: brightId,
       query_param: `query=-tags:curriki&limit=6&offset=${offset}`,
     },
-    offset
+    offset,
   );
   console.log('result', result);
   return result;
@@ -83,6 +83,26 @@ export const getVimeoVideos = (searchText = '', page = 1, size = 6) => async (di
     result = await videoServices.getVimeoVideos({
       organization_id: activeOrganization.id,
       query: searchText,
+      page: page,
+      per_page: size,
+    });
+  } catch (e) {
+    result = e;
+  }
+
+  return result;
+};
+
+export const getKomodoVideos = (searchText = '', page = 1, size = 6) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+  var result;
+  try {
+    result = await videoServices.getKomodoVideos({
+      organization_id: activeOrganization.id,
+      search: searchText,
       page: page,
       per_page: size,
     });
@@ -167,6 +187,33 @@ export const edith5pVideoActivity = (videoID, formData) => async (dispatch) => {
   });
 };
 
+export const edith5pVideoActivityMetaData = (videoID, formData, h5pdata) => async (dispatch) => {
+  const centralizedState = store.getState();
+  const {
+    organization: { activeOrganization },
+  } = centralizedState;
+
+  toast.info('Updating  Activity ...', {
+    className: 'project-loading',
+    closeOnClick: false,
+    closeButton: false,
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 100000,
+    icon: '',
+  });
+  const result = await videoServices.edith5pVideoActivity(activeOrganization.id, videoID, {
+    ...formData,
+    data: h5pdata,
+    type: 'h5p_standalone',
+    content: 'place_holder',
+  });
+  toast.dismiss();
+
+  dispatch({
+    type: actionTypes.EDIT_VIDEO_ACTIVITY,
+    payload: result.activity,
+  });
+};
 export const allBrightCove = (orgId, size, page) => async (dispatch) => {
   const result = await videoServices.allBrightCove(orgId, size, page);
   dispatch({
@@ -174,8 +221,8 @@ export const allBrightCove = (orgId, size, page) => async (dispatch) => {
     payload: result,
   });
 };
-export const allBrightCoveSearch = (orgId, search, size, page) => async (dispatch) => {
-  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page);
+export const allBrightCoveSearch = (orgId, search, size, page, col, order) => async (dispatch) => {
+  const result = await videoServices.allBrightCoveSearch(orgId, search, size, page, col, order);
   dispatch({
     type: actionTypes.UP_ALL_BRIGHTCOVE,
     payload: result,
@@ -187,6 +234,11 @@ export const addBrightCove = (orgId, data) => async (dispatch) => {
     type: actionTypes.NEW_BRIGHTCOVE,
     payload: result.data,
   });
+  dispatch({
+    type: actionTypes.UPDATE_PAGINATION_COUNT,
+    payload: 1,
+    reducer: 'allbrightCove',
+  });
   return result;
 };
 
@@ -196,6 +248,11 @@ export const deleteBrightCove = (orgId, settingId) => async (dispatch) => {
     dispatch({
       type: actionTypes.DEL_BRIGHTCOVE,
       payload: settingId,
+    });
+    dispatch({
+      type: actionTypes.UPDATE_PAGINATION_COUNT,
+      payload: -1,
+      reducer: 'allbrightCove',
     });
   }
   return result;

@@ -186,6 +186,9 @@ const H5PPreview = (props) => {
     if (activityState.h5pObject.externalDispatcher && xAPIHelper.isxAPINeeded(props.match.path)) {
       // eslint-disable-next-line no-use-before-define
       activityState.h5pObject.externalDispatcher.on('xAPI', (event) => {
+        if (event.ignoreStatement) {
+          return;
+        }
         if (counter > 0) {
           dispatch(loadH5pResourceXapi(JSON.stringify(xAPIHelper.extendStatement(event.data.statement, { ...props }))));
         }

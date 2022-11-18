@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 .admin-panel {
   .main-heading {
@@ -500,7 +500,7 @@
           margin-right: 8px;
 
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -532,7 +532,7 @@
           width: 50%;
 
           span {
-            font-family: "Open sans";
+            font-family: 'Open sans';
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -599,7 +599,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -627,7 +627,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: "Open Sans";
+              font-family: 'Open Sans';
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -989,7 +989,7 @@
         font-size: 14px;
         line-height: 20px;
         color: #767676;
-        font-family: "Open Sans";
+        font-family: 'Open Sans';
 
         span {
           display: flex;
@@ -1037,7 +1037,7 @@
           }
 
           .admin-name {
-            font-family: "Open Sans";
+            font-family: 'Open Sans';
             font-size: 14px;
             line-height: 20px;
             color: #084892;
@@ -1060,7 +1060,7 @@
           margin-top: 5px;
           border-radius: 7px;
           cursor: pointer;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-weight: normal;
           font-size: 14px;
           line-height: 20px;
@@ -1157,7 +1157,7 @@
             margin-left: auto;
             background-image: none !important;
             margin-top: 5px;
-            content: "";
+            content: '';
             border: none;
           }
         }
@@ -1311,7 +1311,7 @@
       .create-form {
         width: 100%;
         height: 100%;
-
+        min-width: auto;
         .all-users-list {
           background: #fff;
           padding: 10px;
@@ -1376,7 +1376,7 @@
             padding: 0 10px;
           }
 
-          input[type="checkbox"] {
+          input[type='checkbox'] {
             width: 20px;
             height: 20px;
             border: 1px solid #888888;
@@ -1484,6 +1484,11 @@
           button.favicon {
             color: black;
             background: #fff;
+          }
+        }
+        @media screen and (max-width: 882px) {
+          form {
+            padding-left: 100px;
           }
         }
       }
@@ -1829,7 +1834,7 @@
     position: relative;
 
     &::before {
-      content: " ";
+      content: ' ';
       position: absolute;
       top: -11px;
       right: 10px;
@@ -1856,7 +1861,7 @@
   background: #eff6f0;
   border: 1px solid #12b347;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1869,7 +1874,7 @@
   background: #f1f1f1;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -1885,7 +1890,7 @@
   background: #e5eeff;
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -1899,7 +1904,7 @@
   background: rgba(255, 64, 59, 0.08);
   border-radius: 4px;
   text-align: center;
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -2031,7 +2036,7 @@
       position: absolute;
       right: 5px;
       top: 10px;
-      content: url("../../assets/images/svg/VectorAngleRight.svg");
+      content: url('../../assets/images/svg/VectorAngleRight.svg');
     }
   }
 }
@@ -2060,7 +2065,7 @@
     position: absolute;
     right: 5px;
     top: 15px;
-    content: url("../../assets/images/svg/angledown.svg");
+    content: url('../../assets/images/svg/angledown.svg');
   }
 }
 
@@ -2148,7 +2153,7 @@
   width: 260px;
   display: flex;
   align-items: center;
-  margin-bottom: 0 !important;
+  margin-bottom: 5px !important;
 
   // margin-right: 40px;
   select {
@@ -2299,7 +2304,7 @@
   }
 
   input:radio {
-    content: "\f00c";
+    content: '\f00c';
     position: absolute;
     display: none;
   }
@@ -2327,7 +2332,7 @@
 
   .checkbox-custom + .checkbox-custom-label:before,
   .radio-custom + .radio-custom-label:before {
-    content: "";
+    content: '';
     background: #fff;
     border: 2px solid #084892;
     display: inline-block;
@@ -2342,7 +2347,7 @@
   }
 
   .checkbox-custom:checked + .checkbox-custom-label:before {
-    content: "\f00c";
+    content: '\f00c';
     font-family: $fontawesome;
     background: #084892;
     color: #fff;
@@ -2354,7 +2359,7 @@
   }
 
   .radio-custom:checked + .radio-custom-label:before {
-    content: "\f00c";
+    content: '\f00c';
     font-family: $fontawesome;
     color: #fff;
     background: #084892;
@@ -2363,7 +2368,7 @@
 }
 
 .sorting-icon:after {
-  content: "\f0dc";
+  content: '\f0dc';
   font-family: $fontawesome;
   padding-left: 10px !important;
   vertical-align: middle;
@@ -2614,7 +2619,7 @@
       align-items: center;
       display: flex;
 
-      input[type="color"] {
+      input[type='color'] {
         background-color: transparent;
         border: none !important;
         width: 60px;
@@ -2624,7 +2629,7 @@
         outline: none;
       }
 
-      input[type="text"] {
+      input[type='text'] {
         // flex: 1;
         width: 161px;
         text-indent: 15px;
@@ -2713,7 +2718,27 @@
       line-height: 24px;
       color: $curriki-main-blue;
     }
-
+    .button-group {
+      .update-permission {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 16px;
+        width: 118px;
+        height: 32px;
+        background: #e5eeff;
+        border-radius: 4px;
+        border: none;
+      }
+      span {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        text-align: center;
+        color: #084892;
+      }
+    }
     .sources-options {
       padding: 19px 27px;
       background: #f7faff;
@@ -2735,6 +2760,16 @@
             color: $white;
             padding: 0px 20px;
             min-height: 32px;
+          }
+        }
+        .ms-team-lti-heading {
+          margin-left: 170px;
+          h3 {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: #084892;
           }
         }
       }
@@ -2780,8 +2815,30 @@
               color: #959595;
             }
 
+            select {
+              height: 28px;
+              background: #e5eeff;
+              flex-shrink: 0;
+              border-radius: 4px;
+              font-family: 'rubic';
+              font-style: normal;
+              font-weight: normal;
+              font-size: 14px;
+              line-height: 20px;
+              color: #084892;
+              border: none;
+              padding: 4px 6px 4px 8px;
+            }
+
             .ml-32 {
               margin-left: 32px;
+            }
+          }
+          .lti-tool-switch {
+            margin-left: 72px;
+            // margin-bottom: 8px;
+            .toggle-style {
+              margin-top: 0px !important;
             }
           }
         }
@@ -2806,7 +2863,7 @@
 
         .span-sub {
           margin-left: 11px;
-          font-family: "Open Sans";
+          font-family: 'Open Sans';
           font-style: normal;
           font-weight: 400;
           font-size: 14px;
@@ -2825,18 +2882,51 @@
             margin-bottom: 0px !important;
           }
         }
+        .lti-tool-heading-text {
+          margin-left: 240px;
 
-        // .media-sources-checkboxes{
-        //   width
-        // }
+          h3 {
+            margin-bottom: 0px !important;
+          }
+        }
       }
 
-      input[type="checkbox"] {
+      input[type='checkbox'] {
         transform: scale(1.6);
         -ms-transform: scale(1.6);
         -webkit-transform: scale(1.6);
         padding: 10px;
         accent-color: $curriki-main-blue;
+      }
+      .gcr-pblishing-feature {
+        max-width: 500px;
+        display: flex;
+        justify-content: space-between;
+        .ms-team-settings {
+          margin-top: 25px;
+          .ms-team-lti-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+            input {
+              width: 240px;
+              height: 34px;
+              background: #ffffff;
+              border: 1px solid #959595;
+              border-radius: 4px;
+              padding: 8px;
+              color: #515151;
+            }
+            label {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 20px;
+              color: #515151;
+              margin-bottom: 2px;
+            }
+          }
+        }
       }
     }
   }
@@ -2888,3 +2978,7 @@
 }
 
 // Media Style End
+.activeNone {
+  background: #f1f1f1 !important;
+  color: #333 !important;
+}

@@ -1,13 +1,14 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Dropdown } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
 import { cloneProject } from 'store/actions/search';
 import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
 import { lmsPlaylist } from 'store/actions/playlist';
@@ -30,16 +31,26 @@ const ProjectCardDropdown = (props) => {
     teamPermission,
     // text,
     iconColor,
+    setprojectPublishtoCanvas,
+    setcanvasProjectName,
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
   const { selectedTeam } = useSelector((state) => state.team);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const dispatch = useDispatch();
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
-    setAllLms(AllLms);
+    const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
+    // QUICK FIX: filtering out wordpress integration from this component
+    // find better solution
+    setAllLms({
+      ...AllLms,
+      shareVendors: filteredShareVendors,
+    });
+
+    // setAllLms(AllLms);
   }, [AllLms]);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
@@ -159,10 +170,11 @@ const ProjectCardDropdown = (props) => {
               Publish
             </a>
             <ul className="dropdown-menu check">
-              {project?.gcr_project_visibility && (
+              {activeOrganization?.gcr_project_visibility && (
                 <li
                   key={`googleclassroom +${project.id}`}
                   onClick={() => {
+                    dispatch(shareToCanvas(false));
                     handleShow();
                     getProjectId(project.id);
                     // eslint-disable-next-line react/destructuring-assignment
@@ -171,6 +183,20 @@ const ProjectCardDropdown = (props) => {
                   }}
                 >
                   <a>Google Classroom</a>
+                </li>
+              )}
+              {activeOrganization?.msteam_project_visibility && (
+                <li
+                  onClick={() => {
+                    handleShow();
+                    setProjectId(props.project.id);
+                    setcanvasProjectName(project.name);
+                    dispatch(msTeamShare(true));
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(false));
+                  }}
+                >
+                  <a>Microsoft Teams</a>
                 </li>
               )}
 
@@ -183,7 +209,17 @@ const ProjectCardDropdown = (props) => {
                           onClick={async () => {
                             const allPlaylist = await dispatch(lmsPlaylist(project.id));
                             if (allPlaylist) {
-                              dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              if (data.lms_name === 'canvas') {
+                                setprojectPublishtoCanvas(true);
+                                handleShow();
+                                dispatch(googleShare(true));
+                                dispatch(shareToCanvas(true));
+                                dispatch(publishLmsSettings(data));
+                                setProjectId(props.project.id);
+                                setcanvasProjectName(project.name);
+                              } else {
+                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                              }
                             }
                           }}
                         >
@@ -232,6 +268,7 @@ ProjectCardDropdown.propTypes = {
   setProjectId: PropTypes.func.isRequired,
   teamPermission: PropTypes.object,
   iconColor: PropTypes.string.isRequired,
+  // setprojectPublishtoCanvas: PropTypes.func.isRequired,
   // text: propTypes.string,
 };
 

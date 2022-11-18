@@ -611,7 +611,26 @@ const getMediaSources = (subOrgId, page, size, query, column, orderBy) =>
     .catch((err) => {
       Promise.reject(err.response.data);
     });
+
+const gettAllDynamicPermisison = (subOrgId, roleId, add) =>
+  httpService
+    .get(`/${apiVersion}/suborganizations/${subOrgId}/role/${roleId}/permissions${add ? '?view=all' : ''}`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      // errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const updateAllDynamicPermisison = (subOrgId, data) =>
+  httpService
+    .put(`/${apiVersion}/suborganizations/${subOrgId}/update-role-ui-permissions`, data)
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
 export default {
+  gettAllDynamicPermisison,
+  updateAllDynamicPermisison,
   addUserInOrganization,
   editUserInOrganization,
   getAllProject,

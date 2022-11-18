@@ -145,12 +145,24 @@ const TeamDetail = ({
   // Deleting current team project handler
   const showDeletePopup = useCallback(
     (projectId) => {
-      removeProject(team?.id, projectId).catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to remove project.',
-        });
+      Swal.fire({
+        icon: 'warning',
+        title: 'Are you sure you want to delete this project?',
+        // eslint-disable-next-line max-len
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          removeProject(team?.id, projectId).catch(() => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to remove project.',
+            });
+          });
+        }
       });
     },
     [removeProject, team?.id],
@@ -479,7 +491,7 @@ const TeamDetail = ({
                         secondary
                         width="168px"
                         height="32px"
-                        className="mr-16"
+                        className="mr-16 team_search_btn"
                         hover
                         onClick={() => {
                           assignWhiteBoardUrl(organization?.id, team?.id, auth.user?.id, 'team');
@@ -492,7 +504,7 @@ const TeamDetail = ({
                           secondary
                           width="128px"
                           height="32px"
-                          className="mr-16"
+                          className="mr-16 team_search_btn"
                           hover
                           onClick={() => {
                             if (team?.id) {
@@ -525,10 +537,9 @@ const TeamDetail = ({
                           iconColor={secondaryColor}
                           text="Create Project"
                           primary
-                          width="148px"
                           height="32px"
                           hover
-                          // className="mr-16"
+                          className="team_search_btn"
                           onClick={() => {
                             setCreateProject(true);
                           }}

@@ -25,9 +25,7 @@ export default function TermsPolicyContent(props) {
     }
   });
 
-  return (
-    <div className="terms-policy-container" dangerouslySetInnerHTML={{ __html: content }} />
-    );
+  return <div className="terms-policy-container" dangerouslySetInnerHTML={{ __html: content }} />;
 }
 
 TermsPolicyContent.propTypes = {

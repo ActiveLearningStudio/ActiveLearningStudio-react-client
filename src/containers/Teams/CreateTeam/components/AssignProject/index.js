@@ -17,7 +17,7 @@ function AssignProject(props) {
     (e) => {
       setSearch(e.target.value);
     },
-    [setSearch]
+    [setSearch],
   );
   const [filteredProjects, setFilteredProjects] = useState(null);
   const selectProject = useCallback(
@@ -32,7 +32,7 @@ function AssignProject(props) {
         setSelectedProjects(newProjects);
       }
     },
-    [selectedProjects]
+    [selectedProjects],
   );
 
   const onFinish = useCallback(() => {
@@ -87,7 +87,7 @@ function AssignProject(props) {
                     <div
                       className="project-img"
                       style={{
-                        backgroundImage: project.thumb_url?.includes('pexels.com') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
+                        backgroundImage: !project.thumb_url?.includes('/storage/') ? `url(${project.thumb_url})` : `url(${global.config.resourceUrl}${project.thumb_url})`,
                       }}
                     />
 

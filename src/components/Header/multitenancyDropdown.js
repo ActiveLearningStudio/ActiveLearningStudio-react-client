@@ -52,8 +52,7 @@ export default function MultitenancyDropdown() {
       <Dropdown.Toggle id="dropdown-basic">
         <ChangeOrgSvg primaryColor={primaryColor} />
         <div className="text" title={selectOrg}>
-          {/* {selectOrg} */}
-          Change Organization
+          {selectOrg}
         </div>
       </Dropdown.Toggle>
       <Dropdown.Menu>

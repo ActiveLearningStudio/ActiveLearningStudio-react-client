@@ -77,6 +77,7 @@ const AdminDropdown = (props) => {
 
   const [projectID, setProjectID] = useState('');
   const primaryColor = getGlobalColor('--main-primary-color');
+
   return (
     <>
       <Dropdown drop="start" className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
@@ -509,7 +510,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Subjects' && (
+          {type === 'Activities' && subType === 'Subjects' && permission?.Organization.includes('organization:edit-subject') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -570,7 +571,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Education Level' && (
+          {type === 'Activities' && subType === 'Education Level' && permission?.Organization.includes('organization:edit-education-level') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -631,7 +632,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Author Tags' && (
+          {type === 'Activities' && subType === 'Author Tags' && permission?.Organization.includes('organization:edit-author-tag') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -692,7 +693,7 @@ const AdminDropdown = (props) => {
             </>
           )}
 
-          {type === 'Activities' && subType === 'Activity Layouts' && (
+          {type === 'Activities' && subType === 'Activity Layouts' && permission?.Organization.includes('organization:edit-activity-layout') && (
             <>
               <Dropdown.Item
                 onClick={() => {
@@ -991,8 +992,16 @@ const AdminDropdown = (props) => {
                                 confirmButton: 'confirmation-close-btn',
                               },
                             });
+
                             const filterLMS = localStateData.filter((each) => each.id != row.id);
+
                             setLocalStateData(filterLMS);
+
+                            dispatch({
+                              type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                              payload: 'DECREMENT',
+                              id: row.id,
+                            });
                           })
                           .catch((err) => console.log(err));
                       }
@@ -1018,6 +1027,20 @@ const AdminDropdown = (props) => {
               >
                 <EditDpDnMdSvg primaryColor={primaryColor} className="menue-img" />
                 Edit
+              </Dropdown.Item>
+
+              <Dropdown.Item
+                to="#"
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTIVE_EDIT',
+                    payload: row,
+                  });
+                  dispatch(setActiveAdminForm('clone_brightcove'));
+                }}
+              >
+                <CloneSmSvg primaryColor={primaryColor} className="menue-img" />
+                Clone
               </Dropdown.Item>
 
               <Dropdown.Item

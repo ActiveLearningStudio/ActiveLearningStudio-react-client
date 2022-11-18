@@ -13,7 +13,7 @@ import config from 'config';
 import { shareActivity, deleteResourceAction } from 'store/actions/resource';
 import { cloneActivity } from 'store/actions/search';
 import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
 import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
 
 import Preview from '../../assets/images/menu-pre.svg';
@@ -50,10 +50,12 @@ const ResourceCardDropdown = (props) => {
     setProjectId,
     setProjectPlaylistId,
     setProjectPlaylistActivityId,
+    setselectedProjectPlaylistName,
+    setselectedPlaylistActivityName,
   } = props;
   const organization = useSelector((state) => state.organization);
   const { selectedProject } = useSelector((state) => state.project);
-  const { permission } = organization;
+  const { permission, activeOrganization } = organization;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -156,7 +158,7 @@ const ResourceCardDropdown = (props) => {
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
-                {resource?.gcr_activity_visibility && (
+                {activeOrganization?.gcr_activity_visibility && (
                   <li
                     onClick={() => {
                       handleShow();
@@ -165,26 +167,73 @@ const ResourceCardDropdown = (props) => {
                       setProjectPlaylistId(playlist.id);
                       setProjectPlaylistActivityId(resource.id);
                       dispatch(googleShare(false));
+                      dispatch(shareToCanvas(false));
                     }}
                   >
                     <a>Google Classroom</a>
                   </li>
                 )}
+                {activeOrganization?.msteam_activity_visibility && (
+                  <li
+                    onClick={() => {
+                      handleShow();
+                      // getProjectId(match.params.projectId);
+                      // setProjectId(match.params.projectId);
+                      // setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistActivityId(resource.id);
+                      dispatch(msTeamShare(true));
+                      dispatch(googleShare(true));
+                      dispatch(shareToCanvas(false));
+                    }}
+                  >
+                    <a>Microsoft Teams</a>
+                  </li>
+                )}
+                {/* <li
+                  onClick={() => {
+                    handleShow();
+                    console.log('res', resource);
+                    setselectedPlaylistActivityName(resource.title);
+                    getProjectId(match.params.projectId);
+                    setProjectId(match.params.projectId);
+                    setProjectPlaylistId(playlist.id);
+                    dispatch(publishLmsSettings(data));
+                    setselectedProjectPlaylistName(playlist.title);
+                    setProjectPlaylistActivityId(resource.id);
+                    dispatch(googleShare(true));
+                    dispatch(shareToCanvas(true));
+                  }}
+                >
+                  <a>Curriki Canvas</a>
+                </li> */}
                 {lmsSettings.map((data) => {
-                  return (
-                    data.lms_name === 'safarimontage' &&
-                    data.activity_visibility && (
+                  if ((data.lms_name === 'canvas' && data.activity_visibility) || (data.lms_name === 'canvas' && data.activity_visibility)) {
+                    return (
                       <li>
                         <a
                           onClick={() => {
-                            loadSafariMontagePublishTool(playlist.project.id, playlist.id, resource.id, data.id);
+                            if (data.lms_name === 'canvas') {
+                              handleShow();
+                              console.log('res', resource);
+                              setselectedPlaylistActivityName(resource.title);
+                              getProjectId(match.params.projectId);
+                              setProjectId(match.params.projectId);
+                              setProjectPlaylistId(playlist.id);
+                              dispatch(publishLmsSettings(data));
+                              setselectedProjectPlaylistName(playlist.title);
+                              setProjectPlaylistActivityId(resource.id);
+                              dispatch(googleShare(true));
+                              dispatch(shareToCanvas(true));
+                            } else {
+                              loadSafariMontagePublishTool(playlist.project.id, playlist.id, resource.id, data.id);
+                            }
                           }}
                         >
                           {data.site_name}
                         </a>
                       </li>
-                    )
-                  );
+                    );
+                  }
                 })}
               </ul>
             </li>

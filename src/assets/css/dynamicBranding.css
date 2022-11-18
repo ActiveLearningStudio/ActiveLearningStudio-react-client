@@ -2081,3 +2081,40 @@ textarea,
   font-family: var(--main-text-font) !important;
   color: var(--main-paragraph-text-color) !important;
 }
+
+/* For Browse Image */
+.thumbnails-modal .thumbnails-modal-body .thumbnails-close .thumbnails-heading{
+  color: var(--main-primary-color) !important;
+}
+.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link.active{
+  background-color: var(--main-primary-color) !important;
+  border: 1px solid var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link{
+ color: var(--main-paragraph-text-color) !important;
+
+  font-family: var(--main-heading-font) !important;
+}
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-header .card-header{
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.search-box .smithsonian-clear button{
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .list-item-keys span{
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-list-options .card-detail-list-search-icon .card-detail-list-search{
+  border-bottom: 1px solid var(--main-paragraph-text-color) !important ;
+}
+.read-more-pexel{
+  color: var(--main-primary-color) !important;
+}
+.thumbnails-img-box-pexels .thumbnails-watermark span{
+  background-color: var(--main-primary-color) !important;
+  opacity: 0.7;
+}

@@ -42,6 +42,7 @@ const SearchLibrary = (props) => {
     setNoWords,
     noWords,
     setisLoader,
+    activeModel,
   } = props;
 
   const onSubmit = async () => {
@@ -73,9 +74,10 @@ const SearchLibrary = (props) => {
         type: searchType,
         from: 0,
         size: 20,
+        model: activeModel === 'total' ? undefined : activeModel || undefined,
         no_words: noWords || undefined,
       };
-      console.log(dataSend);
+      console.log('dataSend', dataSend);
       const result = await dispatch(simpleSearchAction(dataSend));
       setTotalCount(result.meta?.total);
       const tempEducation = [];
@@ -142,6 +144,7 @@ const SearchLibrary = (props) => {
         authors: authorName || undefined,
         standardArray: activeType,
         from: 0,
+        model: activeModel === 'total' ? undefined : activeModel || undefined,
         size: 20,
         no_words: noWords || undefined,
       };
