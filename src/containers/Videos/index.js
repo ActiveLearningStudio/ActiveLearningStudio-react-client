@@ -38,7 +38,10 @@ import MyActivityLgSvg from 'iconLibrary/mainContainer/MyActivityLgSvg';
 import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 import PlusXlSvg from 'iconLibrary/mainContainer/PlusXlSvg';
 import MyInteractiveVideoLgSvg from 'iconLibrary/mainContainer/MyInteractiveVideoLgSvg';
+import ReactJoyride from 'react-joyride';
+
 const ImgLoader = () => <img src={loader} alt="loader" />;
+
 // eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
   const [videoTitle, setVideoTitle] = useState('');
@@ -139,6 +142,28 @@ const Index = ({ activities }) => {
     }
   }, [activities, permission]);
 
+  const [steps, setSteps] = useState([
+    // {
+    //   target: '.searc_bar_move_activities',
+    //   content: 'This another awesome featuess!',
+    //   event: 'hover',
+    //   placement: 'left-end',
+    // },
+    {
+      content: (
+        <div>
+          <h6>Move To Project</h6>
+          <p>Click on this checkbox and than select those activities which you want to add to any project</p>
+          <p>
+            <strong>Note:</strong> To move activities, sharing should be disable and and library preference should be private.
+          </p>
+        </div>
+      ),
+      target: '.searc_bar_move_activities',
+      event: 'hover',
+      placement: 'left-end',
+    },
+  ]);
   return (
     <>
       {openMyVideo && (
@@ -378,6 +403,24 @@ const Index = ({ activities }) => {
 
                         <div className="searc_bar_move_activities">
                           <div className="move_activities">
+                            <ReactJoyride
+                              steps={steps}
+                              disableCloseOnEsc={true}
+                              //continuous={true}
+                              disableScrolling={true}
+                              // hideBackButton={true}
+                              showSkipButton={true}
+                              // run={run}
+                              // scrollToFirstStep
+                              // showProgress
+                              styles={{
+                                options: {
+                                  // width: '300px',
+                                  primaryColor: primaryColor,
+                                  zIndex: 1000,
+                                },
+                              }}
+                            />
                             <label className="cutom_checkbox">
                               <input type="checkbox" onChange={() => setAddToProjectCheckbox(!addToProjectCheckbox)} />
 

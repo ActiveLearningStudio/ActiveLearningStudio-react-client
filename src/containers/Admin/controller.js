@@ -85,7 +85,7 @@ function Controller(props) {
   const [loaderImgUser, setLoaderImgUser] = useState(false);
   const [selectedFilterItem, setSelectedFilterItem] = useState('');
   const [ltiToolTypes, setLtiToolTypes] = useState();
-  const { ltiToolsTypes } = useSelector((state) => state.admin);
+  const { orgMediaSources } = useSelector((state) => state.admin);
   useMemo(() => {
     if (type === 'Users') {
       dispatch(getRoles());
@@ -105,10 +105,7 @@ function Controller(props) {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
   }, [roles, adminState?.activeTab, subTypeState, activeRole, setActiveRole]);
-  // sabtype
-  // const sab = subType;
-  // console.log(subTypeState);
-  // console.log(subType);
+
   const searchUserProjectFilter = useCallback(async () => {
     if (authorName.length >= 2) {
       setLoaderImgUser(true);
@@ -135,47 +132,12 @@ function Controller(props) {
   // const secondaryColor = getGlobalColor('--main-secondary-color');
 
   useEffect(() => {
-    setLtiToolTypes(ltiToolsTypes);
-    // setLtiToolTypes(ltiToolsTypes?.filter((t) => t.name != 'My device' && t.name != 'BrightCove'));
-  }, [ltiToolsTypes]);
+    // setLtiToolTypes(ltiToolsTypes);
+    const filterdata = orgMediaSources?.mediaSources?.filter((t) => t.name !== 'My device');
+    setLtiToolTypes(filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true));
+  }, []);
   return (
     <div className="controller">
-      {/* {(currentOrganization?.id !== activeOrganization?.id && type !== 'Users' ) && (
-        <div className="btn-text">
-          <button
-            onClick={async () => {
-              await dispatch(getOrganization(currentOrganization?.id));
-              dispatch(clearOrganizationState());
-              dispatch(getRoles());
-            }}
-          >
-            Go to root organization
-          </button>
-        </div>
-      )} */}
-
-      {/* {!!filter && (
-        <div className="filter-dropdown drop-counter ">
-          Fillter by:
-          <span>
-            <Dropdown>
-              <Dropdown.Toggle id="dropdown-basic">
-                Select value
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <form className="radio-filter">
-                  {tableHead?.map((head) => (
-                    <div className="group">
-                      <label>{head}</label>
-                      <input type="checkbox" name="filter-table" />
-                    </div>
-                  ))}
-                </form>
-              </Dropdown.Menu>
-            </Dropdown>
-          </span>
-        </div>
-      )} */}
       {/* LEFT SIDE OF CONTROLLER GOES HERE */}
       <div className="controller-left-side">
         {!!search && type === 'Users' && (

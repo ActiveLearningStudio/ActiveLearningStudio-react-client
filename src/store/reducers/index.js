@@ -24,6 +24,7 @@ import myactivities from './myactivities';
 import videos from './videos';
 import activities from './indActivities';
 import existingActivitySearch from './existingActivitySearch';
+import komodo from './komodo';
 
 export default combineReducers({
   auth,
@@ -50,4 +51,5 @@ export default combineReducers({
   videos,
   activities,
   existingActivitySearch,
+  komodo,
 });

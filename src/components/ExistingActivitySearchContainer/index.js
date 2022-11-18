@@ -88,7 +88,8 @@ const ExistingActivitySearchContainer = (props) => {
         <div className="row">
           <div className="col footer-info">
             <FontAwesomeIcon className="mr-2" icon="info-circle" />
-            {`You're searching for existing activities compatible with ${layout.title}`}
+            {layout && (`You're searching for existing activities compatible with ${layout.title}`)}
+            {!layout && (`You're searching for existing activities compatible with the parent layout.`)}
           </div>
         </div>
       </Modal.Footer>
