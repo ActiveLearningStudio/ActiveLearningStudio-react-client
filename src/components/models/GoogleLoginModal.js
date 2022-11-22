@@ -67,11 +67,10 @@ const GoogleLoginModal = ({
   const [selectedAssignmentId, setselectedAssignmentId] = useState();
   const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
-
   const tenantId = activeOrganization?.msteam_tenant_id;
   const config = {
     appId: activeOrganization?.msteam_client_id,
-    redirectUri: `http://localhost:3000/org/currikistudio`,
+    redirectUri: `${domainName}org/currikistudio`,
     scopes: ['user.read'],
     authority: `https://login.microsoftonline.com/${tenantId}`,
   };
