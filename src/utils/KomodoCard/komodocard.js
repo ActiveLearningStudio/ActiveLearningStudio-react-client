@@ -1,25 +1,21 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/require-default-props */
-/* eslint-disable max-len */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/prop-types */
+/* eslint-disable */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
+import { useDispatch } from 'react-redux';
 import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
 import './komodocard.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 import ViewMdSvg from 'iconLibrary/mainContainer/ViewMdSvg';
-import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
+
 import KomodoIntgSnSvg from 'iconLibrary/mainContainer/KomodoIntgSnSvg';
 
-const KomodoCard = ({ className, data }) => {
+const KomodoCard = ({ openEditor, className, data, setModalShow, setCurrentActivity }) => {
   const currikiUtility = classNames('curriki-utility-komodo-card', className);
-
+  const dispatch = useDispatch();
   const primaryColor = getGlobalColor('--main-primary-color');
-  const prapagraphColor = getGlobalColor('--main-paragraph-text-color');
 
   return (
     <>
@@ -46,13 +42,37 @@ const KomodoCard = ({ className, data }) => {
           <div className="btn-box">
             <div className="komodo-activity-menu-option">
               <div className="komodo-card-add-share-options-parent ">
-                <div className="komodo-card-add-share-options hover-apply">
-                  <ViewMdSvg primaryColor={primaryColor} />
-                  <span className="textinButton">Preview</span>
-                </div>
-                <div className="komodo-card-add-share-options hover-apply">
+                <a href={data.htmlUrl} target="_blank">
+                  <div
+                    className="komodo-card-add-share-options hover-apply"
+                    // onClick={() => {
+                    //   setCurrentActivity(data);
+                    //   setModalShow(true);
+                    // }}
+                  >
+                    <ViewMdSvg primaryColor={primaryColor} />
+                    <span className="textinButton">Preview</span>
+                  </div>
+                </a>
+                <div
+                  onClick={() => {
+                    // openEditor(data);
+                    dispatch({
+                      type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                      payload: 'describevideo',
+                      playlist: {},
+                      project: {},
+                    });
+                    dispatch({
+                      type: 'ADD_VIDEO_URL',
+                      payload: data.htmlUrl,
+                      platformName: 'Komodo',
+                    });
+                  }}
+                  className="komodo-card-add-share-options hover-apply"
+                >
                   <KomodoIntgSnSvg primaryColor={primaryColor} />
-                  <span className="textinButton">komodo</span>
+                  <span className="textinButton">Add Interaction</span>
                 </div>
               </div>
             </div>
