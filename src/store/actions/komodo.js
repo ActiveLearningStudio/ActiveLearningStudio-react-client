@@ -4,24 +4,11 @@ import komodoService from 'services/komodo.service';
 import * as actionTypes from '../actionTypes';
 import store from '../index';
 
-export const getKomdoVideoList = () => async (dispatch) => {
-  const centralizedState = store.getState();
-  const {
-    organization: { activeOrganization },
-  } = centralizedState;
+export const getKomdoVideoList = (orgId) => async (dispatch) => {
+  const komodoResult = await komodoService.getKomdoVideoList(orgId);
+
   dispatch({
-    type: actionTypes.KOMODO_VIDEO_GET_REQUEST,
+    type: actionTypes.KOMODO_VIDEO_GET_SUCCESS,
+    payload: komodoResult,
   });
-  try {
-    const komodoResult = await komodoService.getKomdoVideoList(activeOrganization.id);
-    console.log('komodoResult', komodoResult);
-    dispatch({
-      type: actionTypes.KOMODO_VIDEO_GET_SUCCESS,
-      payload: komodoResult,
-    });
-  } catch (e) {
-    dispatch({
-      type: actionTypes.KOMODO_VIDEO_GET_FAIL,
-    });
-  }
 };
