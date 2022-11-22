@@ -1121,3 +1121,14 @@ ul {
 a {
   text-decoration: none;
 }
+
+//toasitify styles
+.project-loading {
+  background: $fun-blue-1 !important;
+  color: #fff !important;
+  box-shadow: 0 1px 10px 0 #000000 !important;
+
+  .Toastify__progress-bar {
+    background: #fff !important;
+  }
+}

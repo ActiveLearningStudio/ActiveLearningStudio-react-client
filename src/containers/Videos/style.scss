@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 // C-CSS-start
 .container-fluid {
@@ -238,7 +238,7 @@
           input {
             display: none;
             &:checked + span {
-              background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+              background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
               background-color: $curriki-main-blue;
             }
           }
@@ -464,7 +464,7 @@
             width: 50%;
             margin-right: 8px;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -492,7 +492,7 @@
             flex-direction: column;
             width: 50%;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -553,7 +553,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -577,7 +577,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -1346,7 +1346,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
 
       input {
         border: none;

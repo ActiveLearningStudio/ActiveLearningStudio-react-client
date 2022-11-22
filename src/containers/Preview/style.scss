@@ -1,5 +1,54 @@
 @import "assets/css/index";
+// C-CSS-start
+.slider-hover-section {
+  position: relative;
+  padding: 18px 20px;
+}
 
+.slider-hover-section {
+  .hover-control-caption {
+    top: 13px;
+    left: -125px;
+  }
+
+  &:hover {
+    .hover-control-caption {
+      display: block;
+    }
+  }
+}
+
+.hover-control-caption.no-data {
+  width: 235px;
+  min-height: auto !important;
+  left: -50px;
+  padding: 0;
+}
+
+.hover-control-caption.no-data.prev a i {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+@media (max-width: 767px) {
+  .main-page-content.preview {
+    .both-p,
+    .act-top-header {
+      display: none !important;
+    }
+    .container-flex-upper,
+    .flex-container-preview {
+      justify-content: flex-end;
+
+      .slider-hover-section {
+        position: relative;
+        padding: 18px 10px;
+      }
+    }
+  }
+}
+
+// C-CSS-End
 .site-container-preview {
   width: calc(100% - 158px);
   transition: all ease-out 0.3s !important;
