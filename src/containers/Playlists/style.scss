@@ -69,6 +69,84 @@
     background: #fff !important;
   }
 }
+
+.model-box-view {
+  background-color: #3c3d3e00 !important;
+
+  .modal-header img {
+    max-width: 110px;
+  }
+
+  .modal-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 15px;
+
+    p {
+      padding-bottom: 15px;
+    }
+
+    button span {
+      width: 80px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold !important;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+  }
+
+  .classroom-form {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #b5b4b4;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      height: auto;
+    }
+
+    .form-error {
+      color: red;
+      font-size: 12px;
+      text-align: left;
+      margin-top: -20px;
+    }
+
+    button {
+      background-color: #5952c6;
+      color: #fff;
+      width: 150px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+  }
+}
 // C-CSS-End
 .inner-content {
   background: $white;

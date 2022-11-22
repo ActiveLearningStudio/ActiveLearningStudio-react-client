@@ -100,6 +100,54 @@
     }
   }
 }
+.modal-header {
+  background-color: #fafafa;
+  border-bottom-color: #eeeeee;
+}
+.video_activity.modal {
+  .modal-xl {
+    max-width: 1440px !important;
+    width: 100% !important;
+  }
+  nav {
+    margin: 0;
+    padding: 0 0 0 0;
+    border: none;
+    margin-bottom: 15px;
+
+    a.active {
+      border-bottom: 2px solid #f8af2c;
+      color: #084892;
+      font-weight: 500;
+    }
+
+    a {
+      color: #084892;
+      font-weight: 400;
+      border: none;
+      padding: 0px 45px;
+      border-bottom: 1px solid #084892;
+    }
+  }
+
+  .modal-title img {
+    width: 80px;
+  }
+
+  iframe {
+    width: 100%;
+    min-height: 500px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+}
+.video_activity .interactivevideoreferce {
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
+}
+
 // C-CSS-End
 .myvideomain {
   // .content-wrapper {
