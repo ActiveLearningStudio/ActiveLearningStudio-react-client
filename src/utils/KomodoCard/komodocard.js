@@ -49,7 +49,7 @@ const KomodoCard = ({ className, data }) => {
                       setTimeout(() => {
                         Swal.close();
 
-                        window.open('http://stackoverflow.com', '_blank');
+                        window.open('https://komododecks.com/recordings', '_blank');
                       }, 2000);
                     }}
                   >
