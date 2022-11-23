@@ -8,7 +8,7 @@ import Buttons from 'utils/Buttons/buttons';
 
 export default function PageHeadline() {
   const organization = useSelector((state) => state.organization);
-  const { currentOrganization, permission } = organization;
+  const { currentOrganization } = organization;
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>

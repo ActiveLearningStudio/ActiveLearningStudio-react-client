@@ -4,15 +4,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
+import { Dropdown } from 'react-bootstrap';
 import './komodocard.scss';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ViewMdSvg from 'iconLibrary/mainContainer/ViewMdSvg';
-
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
 import KomodoIntgSnSvg from 'iconLibrary/mainContainer/KomodoIntgSnSvg';
+import Swal from 'sweetalert2';
 
-const KomodoCard = ({ openEditor, className, data, setModalShow, setCurrentActivity }) => {
+import 'utils/DropDownEdit/dropdownedit.scss';
+
+const KomodoCard = ({ className, data }) => {
   const currikiUtility = classNames('curriki-utility-komodo-card', className);
   const dispatch = useDispatch();
   const primaryColor = getGlobalColor('--main-primary-color');
@@ -27,14 +31,40 @@ const KomodoCard = ({ openEditor, className, data, setModalShow, setCurrentActiv
           }}
         >
           <div className="komodo-card-dropdown">
-            <DropDownEdit iconColor="#fff" />
+            <div className="curriki-utility-activity-dropdown">
+              <Dropdown className="activity-dropdown check ">
+                <Dropdown.Toggle className="activity-dropdown-btn">
+                  <FontAwesomeIcon icon={faEllipsisV} style={{ fontSize: '13px', color: '#fff', marginLeft: '5px' }} />
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    className
+                    onClick={() => {
+                      Swal.fire({
+                        title: 'Redirecting to Komodo Dashboard for deletion',
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                      });
+                      setTimeout(() => {
+                        Swal.close();
+
+                        window.open('http://stackoverflow.com', '_blank');
+                      }, 2000);
+                    }}
+                  >
+                    <DeleteSmSvg primaryColor={primaryColor} className="mr-2" />
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
           <div className="komodo-card-title">
             <h2>{data.title}</h2>
           </div>
         </div>
         <div className="komodo-card-detail">
-          <p>Lorem ipsum dolor sit amet, consecte adipiscing elit.</p>
           <div className="updated-date">Updated date :{data?.createdAt?.split(',')[0]}</div>
         </div>
 
@@ -56,7 +86,6 @@ const KomodoCard = ({ openEditor, className, data, setModalShow, setCurrentActiv
                 </a>
                 <div
                   onClick={() => {
-                    // openEditor(data);
                     dispatch({
                       type: 'SET_ACTIVE_ACTIVITY_SCREEN',
                       payload: 'describevideo',

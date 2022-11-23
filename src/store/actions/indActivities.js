@@ -8,7 +8,7 @@ import indResourceService from 'services/indActivities.service';
 import store from '../index';
 import * as actionTypes from '../actionTypes';
 
-export const createIndResourceAction = (metadata, hide, accountId, settingId) => async (dispatch) => {
+export const createIndResourceAction = (metadata, hide, accountId, settingId, redirecttoactivity) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -69,6 +69,9 @@ export const createIndResourceAction = (metadata, hide, accountId, settingId) =>
       type: 'ADD_VIDEO_URL',
       payload: '',
     });
+    if (redirecttoactivity) {
+      window.location.href = '/';
+    }
   }
 };
 

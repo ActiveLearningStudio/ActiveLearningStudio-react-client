@@ -14,11 +14,11 @@ export default (state = INITIAL_STATE, action) => {
         komodoVideoList: action.payload,
       };
 
-    case actionTypes.KOMODO_VIDEO_GET_FAIL:
+    case actionTypes.KOMODO_VIDEO_LOAD:
       return {
         ...state,
-        isLoading: false,
-        komodoVideoList: [],
+
+        komodoVideoList: null,
       };
     default:
       return state;

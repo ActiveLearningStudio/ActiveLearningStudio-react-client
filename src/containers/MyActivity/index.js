@@ -28,7 +28,7 @@ import UploadInteractiveVideo from './formik/uploadinteractivevideo';
 import 'containers/Videos/style.scss';
 import './styles.scss';
 
-const MyActivity = ({ playlistPreview, activityPreview }) => {
+const MyActivity = ({ playlistPreview, activityPreview, redirecttoactivity }) => {
   const [edit, setEdit] = useState(false);
 
   const params = useParams();
@@ -142,7 +142,6 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                   <DescribeVideo
                     playlistPreview={!!activity}
                     reverseType
-                    showback
                     changeScreenHandler={changeScreenHandler}
                     setUploadImageStatus={setUploadImageStatus}
                     activityPreview={activityPreview}
@@ -157,6 +156,8 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     eduLevel={eduLevel}
                     seteduLevel={seteduLevel}
                     isbackHide={isbackHide}
+                    redirecttoactivity
+                    showback={redirecttoactivity ? false : true}
                   />
                 </div>
               )}

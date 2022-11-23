@@ -16,7 +16,7 @@ const PreviewLayoutModel = (props) => {
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const { platform, videoId } = useSelector((state) => state.videos);
   const dispatch = useDispatch();
-  const { type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData, activityPreview, setisSubmitActivty } = props;
+  const { redirecttoactivity, type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData, activityPreview, setisSubmitActivty } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
   const [showActivitySearch, setShowActivitySearch] = useState(false);
@@ -282,6 +282,7 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
+                    redirecttoactivity
                   />
                 )}
                 {/* Vimeo */}

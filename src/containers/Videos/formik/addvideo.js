@@ -20,25 +20,10 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getMediaSources } from 'store/actions/admin';
 import BrightcoveModel from '../model/brightmodel';
 import KomodoLogo from '../../../assets/images/svg/komodo.svg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleDown,
-  faCamera,
-  faCross,
-  faEyeSlash,
-  faHourglass,
-  faHourglassHalf,
-  faLock,
-  faMicrophoneSlash,
-  faPause,
-  faPlay,
-  faVideo,
-  faVideoSlash,
-} from '@fortawesome/free-solid-svg-icons';
-import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
+
 import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
-const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide, isbackHide }) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide }) => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
@@ -606,258 +591,29 @@ const FormikVideo = ({
             }}
           >
             {komodo && (
-              <>
-                <div className="komodo-section">
-                  <div className="komodo-left">
-                    <div className="komodo-top-logo">
-                      <img src={KomodoLogo} alt="komodo" />
+              <div className="layout-title-formik-textField">
+                <img src={KomodoLogo} alt="komodo" />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
 
-                      <div className="komodo-new-video">
-                        <span>Create a new video</span>
-                        <div>
-                          <button
-                            className="komodo-record-btn"
-                            onClick={() => {
-                              setRecord(!record);
-                              setPlay(false);
-                              setStartRecord(false);
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faVideo} className="record-icon-color" />
-                            <span
-                              style={{
-                                marginLeft: '8px',
-                              }}
-                            >
-                              Record
-                            </span>
-                          </button>
-                        </div>
-                        <div class="komodo-parent-div">
-                          <p>or</p>
-                          <div class="komodo-line"></div>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="komodo-text-field">
-                          <label
-                            style={{
-                              display: 'block',
-                            }}
-                          >
-                            Add with a link
-                          </label>
-                          <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
-                        </div>
-                        <div className="error mt-1" style={{ color: 'red' }}>
-                          {errors.videoUrl && touched.videoUrl && errors.videoUrl}
-                        </div>
-                        <div class="komodo-parent-div">
-                          <p>or</p>
-                          <div class="komodo-line"></div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <span>Search in Library</span>
-                        <Buttons
-                          type="button"
-                          secondary
-                          text="Open browser"
-                          width="146px"
-                          height="35px"
-                          hover
-                          className={`${'ml-32'} ${'search-btn'}`}
-                          onClick={() => {
-                            setModalShow(true);
-                          }}
-                        />
-                      </div>
-                      {record && (
-                        <>
-                          <div className="komodo-record-section">
-                            {startRecord && (
-                              <>
-                                <div className="record-time">
-                                  <span>00:05</span>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(false);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faMicrophoneSlash}
-                                      // className="micro-icon-colo"
-                                    />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faPause} />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faPlay} />
-                                  </button>
-                                </div>
-
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faEyeSlash} />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faWindowClose} />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {!play && !startRecord && (
-                              <>
-                                <div>
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(true);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faPlay} className="play-icon-color" />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {play && (
-                              <>
-                                <div>
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(false);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faMicrophoneSlash} className="micro-icon-color" />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faHourglassHalf} />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {!startRecord && (
-                              <div
-                                style={{
-                                  marginLeft: '8px',
-                                }}
-                              >
-                                <button className="komodo-rounded-btn">
-                                  <FontAwesomeIcon icon={faEyeSlash} />
-                                </button>
-                              </div>
-                            )}
-                            {!play && !startRecord && (
-                              <>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn-space">
-                                    <span>Space: </span>
-                                    <span>
-                                      None <FontAwesomeIcon icon={faAngleDown} />
-                                    </span>
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </>
-                      )}
-                    </div>
+                  <div className="error mt-1" style={{ color: 'red' }}>
+                    {errors.videoUrl && touched.videoUrl && errors.videoUrl}
                   </div>
-                  {play && (
-                    <>
-                      <div className="komodo-right">
-                        <div className="play-screen">
-                          <div className="choose-top-heading">
-                            <span>Choose what to share</span>
-                          </div>
-                          <div className="choose-second-heading">
-                            <strong
-                              style={{
-                                display: 'block',
-                              }}
-                            >
-                              Choose what to share
-                            </strong>
-                            <span className="second-heading-detail">Chrome extension ://kjsdfjksdf want to share the content of your screen</span>
-                          </div>
-                          <div className="play-tabs-section">
-                            <Tabs className="main-tabs" defaultActiveKey={selectTab} activeKey={selectTab} id="uncontrolled-tab-example" onSelect={(k) => setSelectTab(k)}>
-                              <Tab eventKey="enterscreen" title="Enter Screen">
-                                <div className="play-tabs-detail">
-                                  enterscreen
-                                  <span
-                                    className="dumy-add-next"
-                                    onClick={() => {
-                                      setStartRecord(true);
-                                      setPlay(false);
-                                      // setRecord(false);
-                                    }}
-                                  >
-                                    Start Record
-                                  </span>
-                                </div>
-                              </Tab>
-                              <Tab eventKey="window" title="Windows">
-                                <div className="play-tabs-detail">Windows</div>
-                              </Tab>
-                              <Tab eventKey="chrometab" title="Chrome Tab">
-                                <div className="play-tabs-detail">chrometab</div>
-                              </Tab>
-                            </Tabs>
-                          </div>
-                          <div className="play-screen-btn">
-                            <Buttons type="button" secondary text="Cancel" width="86px" height="35px" hover className="screen-btn screen-btn-cancel " />
-                            <Buttons type="button" defaultgrey text="Share" width="86px" height="35px" hover className="screen-btn" />
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
                 </div>
-              </>
+
+                <Buttons
+                  type="button"
+                  primary
+                  text="Browse videos"
+                  width="146px"
+                  height="35px"
+                  hover
+                  className="ml-32"
+                  onClick={() => {
+                    setModalShow(true);
+                  }}
+                />
+              </div>
             )}
             <div className="layout-title-formik-textField">
               {Input && (
