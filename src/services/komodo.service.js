@@ -8,7 +8,12 @@ const { apiVersion } = config;
 
 const getKomdoVideoList = (id, page = 1, size = 10, search) =>
   httpService
-    .post(`${apiVersion}/komodo/get-my-video-list?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}`, { organization_id: id })
+    .post(`${apiVersion}/komodo/get-my-video-list`, {
+      organization_id: id,
+      page: page,
+      per_page: size,
+      search: search?.replace(/#/, '%23'),
+    })
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
