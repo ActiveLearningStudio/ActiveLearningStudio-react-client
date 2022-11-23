@@ -19,6 +19,7 @@ import Sidebar from 'components/Sidebar';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
+import './style.scss';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {

@@ -37,7 +37,7 @@ const RecordVideoPage = () => {
 
   return (
     <>
-      <div className="content-wrapper">
+      <div className="content-wrapper record-content-wrapper">
         <div className="inner-content">
           <div className="record-page-section">
             <PageHeadline />

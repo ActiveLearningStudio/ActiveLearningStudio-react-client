@@ -13,8 +13,8 @@ import { getBranding, getOrganizationFirstTime, getAllPermission } from 'store/a
 
 import AppRouter from 'routers/AppRouter';
 import Help from './help';
-
-import './style.scss';
+import './app-style.scss';
+// import './style.scss';
 import { DynamicBrandingApply } from './DynamicBrandingApply';
 
 let runOnce = true;
