@@ -702,8 +702,7 @@
 
     .layout-title-formik-textField {
       display: flex;
-      align-items: center;
-      margin-top: 24px;
+
       img {
         width: 76px;
         height: 32px;
@@ -738,161 +737,6 @@
     .search-btn {
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
       font-weight: 500;
-    }
-    .komodo-top-logo {
-      margin-top: 50px;
-    }
-    .komodo-new-video {
-      margin-top: 26px;
-      .komodo-record-btn {
-        width: 85px;
-        height: 32px;
-        border-radius: 4px;
-        background-color: #73d66f;
-        border: none;
-        color: #fff;
-      }
-      .record-icon-color {
-        color: #fff !important;
-      }
-    }
-    .komodo-parent-div {
-      // border: 1px solid red;
-      position: relative;
-      max-width: 222px;
-      margin-top: 34px;
-      margin-bottom: 34px;
-      p {
-        background-color: #ffff;
-        max-width: 62px;
-        margin: 0 auto;
-        color: $curriki-main-blue !important;
-        text-align: center;
-      }
-    }
-
-    .komodo-line {
-      background-color: #084892;
-      position: absolute;
-      height: 1px;
-      width: 100%;
-      top: 8px;
-      z-index: -7;
-    }
-    .komodo-text-field {
-      input {
-        width: 380px;
-        height: 36px;
-        color: $lightgray !important;
-        outline: none;
-        background: #ffffff;
-        border: 1px solid $lightgray;
-        border-radius: 4px;
-        text-indent: 10px;
-      }
-      ::placeholder {
-        color: $lightgray !important;
-        opacity: 1 !important;
-      }
-    }
-    .komodo-record-section {
-      display: flex;
-      margin-top: 60px;
-
-      .komodo-rounded-btn {
-        width: 48px;
-        height: 48px;
-        background-color: #fff;
-        box-shadow: 0px 2px 8px 1px rgba(81, 81, 81, 0.16);
-        border-radius: 67px;
-        border: none;
-      }
-      .play-icon-color {
-        color: #73d66f !important;
-      }
-      .micro-icon-color {
-        color: red !important;
-      }
-      .komodo-rounded-btn-space {
-        width: 133px;
-        height: 48px;
-        background-color: #fff;
-        box-shadow: 0px 2px 8px 1px rgba(81, 81, 81, 0.16);
-        border-radius: 67px;
-        border: none;
-      }
-      .record-time {
-        width: 78px;
-        height: 32px;
-        background-color: #fff;
-        box-shadow: 0px 2px 8px 1px rgba(81, 81, 81, 0.16);
-        border-radius: 67px;
-        border: none;
-        text-align: center;
-        margin-top: 8px;
-        padding-top: 6px;
-      }
-    }
-    .komodo-section {
-      display: flex;
-      .komodo-right {
-        .play-screen {
-          background: #191919;
-          width: 480px;
-          height: 424.74px;
-          border-radius: 8px;
-
-          .choose-top-heading {
-            width: 100;
-            background-color: #515151;
-            border-radius: 4px;
-            color: #8c8c8c;
-            text-align: center;
-          }
-          .choose-second-heading {
-            padding-left: 8px;
-            padding-right: 8px;
-            color: #fff;
-            .second-heading-detail {
-              font-size: 12px;
-            }
-          }
-          .play-tabs-section {
-            padding-left: 8px;
-            padding-right: 8px;
-            .play-tabs-detail {
-              border: 1px solid #515151;
-              height: 216px;
-              width: 100%;
-              .dumy-add-next {
-                display: block;
-                font-size: 20px;
-                cursor: pointer;
-                color: #515151;
-                &:hover {
-                  color: #084892;
-                }
-              }
-            }
-          }
-          .play-screen-btn {
-            padding-left: 8px;
-            padding-right: 8px;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 24px;
-            .screen-btn {
-              border-radius: 4px !important;
-            }
-            .screen-btn-cancel {
-              margin-right: 8px;
-              background-color: transparent !important;
-              border-color: #515151 !important;
-              color: #515151 !important;
-            }
-          }
-        }
-      }
     }
   }
   .describe-video {
@@ -1305,4 +1149,5 @@
 
 span[x-placement='left-end'] {
   z-index: 1 !important;
+  top: 5px !important;
 }

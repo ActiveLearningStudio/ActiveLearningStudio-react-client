@@ -4,10 +4,9 @@ import { Tabs, Tab, Modal } from 'react-bootstrap';
 import PageHeadline from './pageHeadline';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import KomodoCard from 'utils/KomodoCard/komodocard';
-import MyVerticallyCenteredModals from 'components/models/videoH5pmodal';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
 import { useDispatch, useSelector } from 'react-redux';
-import intActivityServices from 'services/indActivities.service';
-import DescribeVideo from 'containers/Videos/formik/describevideo';
+import Buttons from 'utils/Buttons/buttons';
 import ProjectCardSkeleton from 'components/Skeletons/projectCard';
 import { getKomdoVideoList } from 'store/actions/komodo';
 import WelcomeScreen from './WelcomeScreen';
@@ -18,45 +17,23 @@ import './style.scss';
 const RecordVideoPage = () => {
   const dispatch = useDispatch();
   const { komodoVideoList } = useSelector((state) => state.komodo);
-  const { activeOrganization } = useSelector((state) => state.organization);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [screenStatus, setScreenStatus] = useState('');
-  const [currentActivity, setCurrentActivity] = useState(null);
+  const { currentOrganization } = useSelector((state) => state.organization);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // const [currentActivity, setCurrentActivity] = useState(null);
+
   const [activeTab, setActiveTab] = useState('Komodo library');
   const [type, setType] = useState([]);
   const [show, setShow] = useState(false);
-  const [subName, setsubName] = useState('');
-  const [authortagName, setauthortagName] = useState('');
-  const [eduLevel, seteduLevel] = useState('');
+  const [ActivePage, setActivePage] = useState(1);
+
   useEffect(() => {
-    if (activeOrganization) {
-      dispatch(getKomdoVideoList(activeOrganization.id));
+    if (currentOrganization) {
+      dispatch(getKomdoVideoList(currentOrganization.id));
     }
-  }, [activeOrganization]);
+  }, [currentOrganization]);
 
-  const openEditor = async (data) => {
-    toast.dismiss();
-    toast.info('Loading Activity ...', {
-      className: 'project-loading',
-      closeOnClick: false,
-      closeButton: false,
-      position: toast.POSITION.BOTTOM_RIGHT,
-      autoClose: 10000,
-      icon: '',
-    });
-
-    const result = await intActivityServices.intActivityDetail(activeOrganization.id, 66141);
-    if (result?.['independent-activity']) {
-      toast.dismiss();
-      dispatch({
-        type: 'SET_ACTIVE_VIDEO_SCREEN',
-        payload: result['independent-activity'],
-      });
-
-      setScreenStatus('DescribeVideo');
-    }
-  };
+  const primaryColor = getGlobalColor('--main-primary-color');
 
   return (
     <>
@@ -64,6 +41,41 @@ const RecordVideoPage = () => {
         <div className="inner-content">
           <div className="record-page-section">
             <PageHeadline />
+            <div className="video-cards-top-search-filter">
+              <div className="search-bar-clear-btn">
+                <div className="search-bar">
+                  <input
+                    className=""
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                    }}
+                    placeholder="Search recorded videos"
+                  />
+                  <SearchInputMdSvg
+                    primaryColor={primaryColor}
+                    onClick={() => {
+                      if (currentOrganization) {
+                        dispatch(getKomdoVideoList(currentOrganization?.id, ActivePage, 30, searchQuery));
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </div>
+                <div>
+                  <Buttons
+                    text="Clear"
+                    className="clr-btn"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setActivePage(1);
+                      dispatch(getKomdoVideoList(currentOrganization?.id, 1, 30, ''));
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
             <div className="tab-div">
               <Tabs
                 onSelect={(eventKey) => {
@@ -88,7 +100,11 @@ const RecordVideoPage = () => {
                             <div className="row">
                               {komodoVideoList?.data?.map((data) => (
                                 <div className="mt-16">
-                                  <KomodoCard data={data} setModalShow={setShow} setCurrentActivity={setCurrentActivity} />
+                                  <KomodoCard
+                                    data={data}
+                                    setModalShow={setShow}
+                                    // setCurrentActivity={setCurrentActivity}
+                                  />
                                 </div>
                               ))}
                             </div>
@@ -105,7 +121,7 @@ const RecordVideoPage = () => {
           </div>
         </div>
       </div>
-      <MyActivity playlistPreview activityPreview />
+      <MyActivity playlistPreview activityPreview redirecttoactivity />
       {/* <Modal size="lg" aria-labelledby="contained-modal-title-vcenter" centered show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{currentActivity.title}</Modal.Title>

@@ -153,9 +153,9 @@ const Index = ({ activities }) => {
       content: (
         <div>
           <h6>Move To Project</h6>
-          <p>Click on this checkbox and than select those activities which you want to add to any project</p>
+          <p>Click on this checkbox and select activities which you want to add to My projects</p>
           <p>
-            <strong>Note:</strong> To move activities, sharing should be disable and and library preference should be private.
+            <strong>Note:</strong> To move activities, sharing should be disabled and library preference should be private.
           </p>
         </div>
       ),

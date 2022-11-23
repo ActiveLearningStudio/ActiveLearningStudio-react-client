@@ -41,6 +41,7 @@ const DescribeVideo = ({
   eduLevel,
   seteduLevel,
   isbackHide,
+  redirecttoactivity,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
@@ -172,6 +173,7 @@ const DescribeVideo = ({
         settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
         reverseType={reverseType}
         setisSubmitActivty={setisSubmitActivty}
+        redirecttoactivity
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
