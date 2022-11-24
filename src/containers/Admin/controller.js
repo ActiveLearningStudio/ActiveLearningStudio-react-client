@@ -162,7 +162,6 @@ function Controller(props) {
       filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true)
     );
   }, []);
-  console.log(" orgMediaSources?.mediaSources", orgMediaSources?.mediaSources);
   return (
     <div className="controller">
       {/* LEFT SIDE OF CONTROLLER GOES HERE */}
