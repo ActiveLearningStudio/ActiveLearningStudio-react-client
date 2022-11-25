@@ -36,6 +36,7 @@ const H5PEditor = (props) => {
     activityPreview,
     setisSubmitActivty,
     redirecttoactivity,
+    fullWidth,
   } = props;
 
   const uploadFile = useRef();
@@ -122,7 +123,7 @@ const H5PEditor = (props) => {
           h5pFile,
         };
         if (activityPreview) {
-          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId, redirecttoactivity));
+          dispatch(createIndResourceAction({ ...formData, title: metadata?.title || formData.title }, hide, accountId, settingId, redirecttoactivity, fullWidth));
         } else {
           handleCreateResourceSubmit(playlistId, h5pLib, h5pLibType, payload, { ...formData, title: metadata?.title || formData.title }, projectId, hide, reverseType);
         }
