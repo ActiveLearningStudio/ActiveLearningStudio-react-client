@@ -12,11 +12,25 @@ import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 
 const PreviewLayoutModel = (props) => {
-  const resource = useSelector((state) => state.resource);
   const { selectedLayout, layout, playlist, project, activity } = useSelector((state) => state.myactivities);
   const { platform, videoId } = useSelector((state) => state.videos);
-  const dispatch = useDispatch();
-  const { redirecttoactivity, type, title, video, editVideo, setOpenVideo, accountId, settingId, reverseType, onHide, formData, activityPreview, setisSubmitActivty } = props;
+
+  const {
+    redirecttoactivity,
+    fullWidth,
+    type,
+    title,
+    video,
+    editVideo,
+    setOpenVideo,
+    accountId,
+    settingId,
+    reverseType,
+    onHide,
+    formData,
+    activityPreview,
+    setisSubmitActivty,
+  } = props;
   var counter = 0;
   const [edith5p, setEditH5p] = useState(editVideo?.h5p);
   const [showActivitySearch, setShowActivitySearch] = useState(false);
@@ -31,6 +45,7 @@ const PreviewLayoutModel = (props) => {
   //   }
   // }, []);
   const submitForm = useRef(null);
+
   useEffect(() => {
     var replaceH5p;
     if (editVideo) {
@@ -219,6 +234,7 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
+                    fullWidth={fullWidth}
                   />
                 )}
                 {platform === 'Brightcove' && !editVideo && (
@@ -241,6 +257,7 @@ const PreviewLayoutModel = (props) => {
                       submitForm={submitForm}
                       activityPreview={activityPreview}
                       setisSubmitActivty={setisSubmitActivty}
+                      fullWidth={fullWidth}
                     />
                   </div>
                 )}
@@ -262,6 +279,7 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
+                    fullWidth={fullWidth}
                   />
                 )}
                 {platform === 'Komodo' && !editVideo && (
@@ -282,7 +300,8 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
-                    redirecttoactivity
+                    redirecttoactivity={redirecttoactivity}
+                    fullWidth={fullWidth}
                   />
                 )}
                 {/* Vimeo */}
@@ -304,6 +323,7 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
+                    fullWidth={fullWidth}
                   />
                 )}
 
@@ -325,6 +345,7 @@ const PreviewLayoutModel = (props) => {
                     submitForm={submitForm}
                     activityPreview={activityPreview}
                     setisSubmitActivty={setisSubmitActivty}
+                    fullWidth={fullWidth}
                   />
                 )}
                 {editVideo && (
@@ -341,6 +362,7 @@ const PreviewLayoutModel = (props) => {
                     contentId={editVideo?.h5p_content?.id}
                     submitForm={submitForm}
                     activityPreview={activityPreview}
+                    fullWidth={fullWidth}
                   />
                 )}
               </>
@@ -388,6 +410,7 @@ const PreviewLayoutModel = (props) => {
                   contentId={activity?.h5p_content?.id}
                   submitForm={submitForm}
                   activityPreview={activityPreview}
+                  fullWidth={fullWidth}
                 />
               </>
             )}

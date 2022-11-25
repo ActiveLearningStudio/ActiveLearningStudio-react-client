@@ -78,7 +78,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allActivities: {
           ...state.allActivities,
-          data: [action.payload, ...state.allActivities.data],
+          data: [action.payload, ...state.allActivities?.data],
         },
       };
 
