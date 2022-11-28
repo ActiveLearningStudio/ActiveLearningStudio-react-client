@@ -1,11 +1,13 @@
-/* eslint-disable no-unused-vars */
-import * as actionTypes from '../actionTypes';
+/* eslint-disable */
+import * as actionTypes from "../actionTypes";
 
 const INITIAL_STATE = {
   isLoading: true,
   komodoVideoList: null,
+  isLazyLoading: false,
 };
 export default (state = INITIAL_STATE, action) => {
+  const { komodoVideoList } = state;
   switch (action.type) {
     case actionTypes.KOMODO_VIDEO_GET_SUCCESS:
       return {
@@ -17,9 +19,21 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.KOMODO_VIDEO_LOAD:
       return {
         ...state,
-
-        komodoVideoList: null,
+        isLazyLoading: true,
       };
+    case actionTypes.ADD_MORE_KOMODO_VIDEO:
+      if (komodoVideoList) {
+        const oldKmodoVideos = komodoVideoList?.data;
+        return {
+          ...state,
+          komodoVideoList: {
+            ...action.payload,
+            data: oldKmodoVideos?.concat(action.payload.data),
+          },
+          isLazyLoading: false,
+        };
+      }
+
     default:
       return state;
   }
