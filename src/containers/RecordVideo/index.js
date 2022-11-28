@@ -1,30 +1,28 @@
 /* eslint-disable */
-import React, { useState, useEffect } from "react";
-import { Tabs, Tab, Modal } from "react-bootstrap";
-import PageHeadline from "./pageHeadline";
-import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import KomodoCard from "utils/KomodoCard/komodocard";
-import SearchInputMdSvg from "iconLibrary/mainContainer/SearchInputMdSvg";
-import { useDispatch, useSelector } from "react-redux";
-import Buttons from "utils/Buttons/buttons";
-import ProjectCardSkeleton from "components/Skeletons/projectCard";
-import { getKomdoVideoList } from "store/actions/komodo";
-import WelcomeScreen from "./WelcomeScreen";
-import MyActivity from "containers/MyActivity";
-import loader from "assets/images/loader.svg";
-import "./style.scss";
+import React, { useState, useEffect } from 'react';
+import { Tabs, Tab, Modal } from 'react-bootstrap';
+import PageHeadline from './pageHeadline';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import KomodoCard from 'utils/KomodoCard/komodocard';
+import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import { useDispatch, useSelector } from 'react-redux';
+import Buttons from 'utils/Buttons/buttons';
+import ProjectCardSkeleton from 'components/Skeletons/projectCard';
+import { getKomdoVideoList } from 'store/actions/komodo';
+import WelcomeScreen from './WelcomeScreen';
+import MyActivity from 'containers/MyActivity';
+import loader from 'assets/images/loader.svg';
+import './style.scss';
 const ImgLoader = () => <img src={loader} alt="loader" />;
 const RecordVideoPage = () => {
   const dispatch = useDispatch();
-  const { komodoVideoList, isLazyLoading } = useSelector(
-    (state) => state.komodo
-  );
-  const { currentOrganization } = useSelector((state) => state.organization);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { komodoVideoList, isLazyLoading } = useSelector((state) => state.komodo);
+  const { permission, currentOrganization } = useSelector((state) => state.organization);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // const [currentActivity, setCurrentActivity] = useState(null);
 
-  const [activeTab, setActiveTab] = useState("Komodo library");
+  const [activeTab, setActiveTab] = useState('Komodo library');
   const [type, setType] = useState([]);
   const [show, setShow] = useState(false);
   const [ActivePage, setActivePage] = useState(1);
@@ -32,28 +30,18 @@ const RecordVideoPage = () => {
 
   useEffect(() => {
     if (currentOrganization) {
-      dispatch(
-        getKomdoVideoList(currentOrganization.id, ActivePage, size, searchQuery)
-      );
+      dispatch(getKomdoVideoList(currentOrganization.id, ActivePage, size, searchQuery));
     }
   }, [currentOrganization]);
   useEffect(() => {
     if (currentOrganization && ActivePage > 1) {
-      dispatch(
-        getKomdoVideoList(currentOrganization.id, ActivePage, 10, searchQuery)
-      );
+      dispatch(getKomdoVideoList(currentOrganization.id, ActivePage, 10, searchQuery));
     }
   }, [ActivePage]);
 
   window.onscroll = function () {
-    if (
-      komodoVideoList?.data?.length > 0 &&
-      komodoVideoList?.data?.length < komodoVideoList.total_record
-    ) {
-      if (
-        window.innerHeight + Math.ceil(window.scrollY) >=
-        document.body.scrollHeight
-      ) {
+    if (komodoVideoList?.data?.length > 0 && komodoVideoList?.data?.length < komodoVideoList.total_record) {
+      if (window.innerHeight + Math.ceil(window.scrollY) >= document.body.scrollHeight) {
         // if (ActivePage === 1) {
         //   setActivePage(ActivePage + 1);
         // } else {
@@ -62,8 +50,7 @@ const RecordVideoPage = () => {
       }
     }
   };
-  const primaryColor = getGlobalColor("--main-primary-color");
-  console.log("komodoVideoList", komodoVideoList);
+  const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <div className="content-wrapper record-content-wrapper">
@@ -86,17 +73,10 @@ const RecordVideoPage = () => {
                     primaryColor={primaryColor}
                     onClick={() => {
                       if (currentOrganization) {
-                        dispatch(
-                          getKomdoVideoList(
-                            currentOrganization?.id,
-                            ActivePage,
-                            30,
-                            searchQuery
-                          )
-                        );
+                        dispatch(getKomdoVideoList(currentOrganization?.id, ActivePage, 30, searchQuery));
                       }
                     }}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   />
                 </div>
                 <div>
@@ -104,11 +84,9 @@ const RecordVideoPage = () => {
                     text="Clear"
                     className="clr-btn"
                     onClick={() => {
-                      setSearchQuery("");
+                      setSearchQuery('');
                       setActivePage(1);
-                      dispatch(
-                        getKomdoVideoList(currentOrganization?.id, 1, 30, "")
-                      );
+                      dispatch(getKomdoVideoList(currentOrganization?.id, 1, 30, ''));
                     }}
                   />
                 </div>
@@ -117,7 +95,7 @@ const RecordVideoPage = () => {
             <div className="tab-div">
               <Tabs
                 onSelect={(eventKey) => {
-                  setType("sample");
+                  setType('sample');
                 }}
                 className="main-tabs"
                 defaultActiveKey={activeTab}
@@ -141,6 +119,7 @@ const RecordVideoPage = () => {
                                   <KomodoCard
                                     data={data}
                                     setModalShow={setShow}
+                                    permission={permission}
                                     // setCurrentActivity={setCurrentActivity}
                                   />
                                 </div>

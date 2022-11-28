@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 
 import 'utils/DropDownEdit/dropdownedit.scss';
 
-const KomodoCard = ({ className, data }) => {
+const KomodoCard = ({ className, data, permission }) => {
   const currikiUtility = classNames('curriki-utility-komodo-card', className);
   const dispatch = useDispatch();
   const primaryColor = getGlobalColor('--main-primary-color');
@@ -32,32 +32,34 @@ const KomodoCard = ({ className, data }) => {
         >
           <div className="komodo-card-dropdown">
             <div className="curriki-utility-activity-dropdown">
-              <Dropdown className="activity-dropdown check ">
-                <Dropdown.Toggle className="activity-dropdown-btn">
-                  <FontAwesomeIcon icon={faEllipsisV} style={{ fontSize: '13px', color: '#fff', marginLeft: '5px' }} />
-                </Dropdown.Toggle>
+              {permission?.['Record a Video']?.includes('record-video:edit') && (
+                <Dropdown className="activity-dropdown check ">
+                  <Dropdown.Toggle className="activity-dropdown-btn">
+                    <FontAwesomeIcon icon={faEllipsisV} style={{ fontSize: '13px', color: '#fff', marginLeft: '5px' }} />
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    className
-                    onClick={() => {
-                      Swal.fire({
-                        title: 'Redirecting to Komodo Dashboard for deletion',
-                        showConfirmButton: false,
-                        showCancelButton: false,
-                      });
-                      setTimeout(() => {
-                        Swal.close();
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      className
+                      onClick={() => {
+                        Swal.fire({
+                          title: 'Redirecting to Komodo Dashboard for deletion',
+                          showConfirmButton: false,
+                          showCancelButton: false,
+                        });
+                        setTimeout(() => {
+                          Swal.close();
 
-                        window.open('https://komododecks.com/recordings', '_blank');
-                      }, 2000);
-                    }}
-                  >
-                    <DeleteSmSvg primaryColor={primaryColor} className="mr-2" />
-                    Delete
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                          window.open('https://komododecks.com/recordings', '_blank');
+                        }, 2000);
+                      }}
+                    >
+                      <DeleteSmSvg primaryColor={primaryColor} className="mr-2" />
+                      Delete
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
             </div>
           </div>
           <div className="komodo-card-title">
@@ -84,25 +86,27 @@ const KomodoCard = ({ className, data }) => {
                     <span className="textinButton">Preview</span>
                   </div>
                 </a>
-                <div
-                  onClick={() => {
-                    dispatch({
-                      type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-                      payload: 'describevideo',
-                      playlist: {},
-                      project: {},
-                    });
-                    dispatch({
-                      type: 'ADD_VIDEO_URL',
-                      payload: data.htmlUrl,
-                      platformName: 'Komodo',
-                    });
-                  }}
-                  className="komodo-card-add-share-options hover-apply"
-                >
-                  <KomodoIntgSnSvg primaryColor={primaryColor} />
-                  <span className="textinButton">Add Interaction</span>
-                </div>
+                {permission?.['Record a Video']?.includes('record-video:edit') && (
+                  <div
+                    onClick={() => {
+                      dispatch({
+                        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
+                        payload: 'describevideo',
+                        playlist: {},
+                        project: {},
+                      });
+                      dispatch({
+                        type: 'ADD_VIDEO_URL',
+                        payload: data.htmlUrl,
+                        platformName: 'Komodo',
+                      });
+                    }}
+                    className="komodo-card-add-share-options hover-apply"
+                  >
+                    <KomodoIntgSnSvg primaryColor={primaryColor} />
+                    <span className="textinButton">Add Interaction</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

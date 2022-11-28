@@ -8,8 +8,9 @@ import Buttons from 'utils/Buttons/buttons';
 
 export default function PageHeadline() {
   const organization = useSelector((state) => state.organization);
-  const { currentOrganization } = organization;
+  const { permission, currentOrganization } = organization;
   const primaryColor = getGlobalColor('--main-primary-color');
+
   return (
     <>
       <div className="record-headline">
@@ -21,11 +22,13 @@ export default function PageHeadline() {
             <RecordVideoMdSvg primaryColor={primaryColor} />
             <Headings text="Record a video" headingType="h2" className="record-title-heading" color="#084892" />
           </div>
-          <div className="komodo-ext-btn">
-            {/* <Buttons primary text="Add Komodo extension" iconColor="#FF0000" width="auto" height="32px" hover />
-             */}
-            <iframe width="165" height="55" src="https://komododecks.com/embed/record?partnerId=curriki&trackId=uniqSomeId123" title="Komodo" frameborder="0"></iframe>
-          </div>
+          {permission?.['Record a Video']?.includes('record-video:edit') && (
+            <div className="komodo-ext-btn">
+              {/* <Buttons primary text="Add Komodo extension" iconColor="#FF0000" width="auto" height="32px" hover />
+               */}
+              <iframe width="165" height="55" src="https://komododecks.com/embed/record?partnerId=curriki&trackId=uniqSomeId123" title="Komodo" frameborder="0"></iframe>
+            </div>
+          )}
         </div>
 
         <div className="heading-detail">
