@@ -133,22 +133,23 @@ function Sidebar(props) {
           </Link>
         </>
       )}
-
-      <Link
-        to={`/org/${allState.organization.currentOrganization?.domain}/record-video`}
-        onClick={() => {
-          clearStatesOnSidebarClick();
-          dispatch(clearTeamPermissions());
-        }}
-      >
-        <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'row-sidebar activeLink' : 'row-sidebar'}>
-          <RecordSvg primaryColor={primaryColor} />
-          <div className="sidebar-headings">
-            Record a<br />
-            video
+      {permission?.['Record a Video']?.includes('record-video:view') && (
+        <Link
+          to={`/org/${allState.organization.currentOrganization?.domain}/record-video`}
+          onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions());
+          }}
+        >
+          <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'row-sidebar activeLink' : 'row-sidebar'}>
+            <RecordSvg primaryColor={primaryColor} />
+            <div className="sidebar-headings">
+              Record a<br />
+              video
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      )}
       {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/search`} onClick={() => {}}>

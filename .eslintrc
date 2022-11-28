@@ -36,6 +36,7 @@
     "react/no-array-index-key": 1,
     "linebreak-style": 0,
     "template-curly-spacing": "off",
-    "indent": "off"
+    "indent": "off",
+    "eqeqeq": "off"
   }
 }
