@@ -30,7 +30,7 @@ import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 // ];
 
 const AddActivity = (props) => {
-  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview } = props;
+  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview, redirecttoactivity, fullWidth } = props;
   const { layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
@@ -155,6 +155,8 @@ const AddActivity = (props) => {
         formData={formData}
         searchName="abstract"
         setSuccessMessage={setSuccessMessage}
+        redirecttoactivity={redirecttoactivity}
+        fullWidth={fullWidth}
       />
       <div className="add-activity-form">
         {activtyMethod === 'upload' ? (
@@ -213,7 +215,7 @@ const AddActivity = (props) => {
                     });
                   }}
                 >
-                
+
                   {layout?.map((data) => {
                     return (
                       <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>

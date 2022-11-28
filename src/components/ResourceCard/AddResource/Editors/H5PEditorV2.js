@@ -39,6 +39,7 @@ const H5PEditor = (props) => {
     activityPreview,
     setisSubmitActivty,
     redirecttoactivity,
+    fullWidth,
   } = props;
 
   const uploadFile = useRef();
@@ -160,7 +161,8 @@ const H5PEditor = (props) => {
               hide,
               accountId,
               settingId,
-              redirecttoactivity
+              redirecttoactivity,
+              fullWidth
             )
           );
         } else {

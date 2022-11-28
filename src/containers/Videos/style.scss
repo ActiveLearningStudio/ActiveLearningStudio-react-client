@@ -1,4 +1,4 @@
-@import "assets/css/index";
+@import 'assets/css/index';
 
 // C-CSS-start
 .container-fluid {
@@ -86,7 +86,7 @@
     color: #fff !important;
 
     &:after {
-      content: "";
+      content: '';
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -286,7 +286,7 @@
           input {
             display: none;
             &:checked + span {
-              background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
+              background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
               background-color: $curriki-main-blue;
             }
           }
@@ -512,7 +512,7 @@
             width: 50%;
             margin-right: 8px;
             span {
-              font-family: "Open sans";
+              font-family: 'Open sans';
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -540,7 +540,7 @@
             flex-direction: column;
             width: 50%;
             span {
-              font-family: "Open sans";
+              font-family: 'Open sans';
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -601,7 +601,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: "Open Sans";
+                font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -625,7 +625,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: "Open Sans";
+                font-family: 'Open Sans';
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -809,6 +809,7 @@
     .main-tabs {
       border-bottom: 1px solid $curriki-main-blue;
       width: max-content;
+      margin-bottom: 48px !important;
       .nav-item {
         margin-top: 24px;
         background: transparent !important;
@@ -859,6 +860,12 @@
 
     .layout-title-formik-textField {
       display: flex;
+      align-items: center;
+
+      .komodo-img {
+        width: 127px !important;
+        height: 32px;
+      }
 
       img {
         width: 76px;
@@ -894,6 +901,54 @@
     .search-btn {
       box-shadow: 0px 2px 8px 1px rgba(8, 72, 146, 0.16);
       font-weight: 500;
+    }
+
+    .komodo-go-to-about {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 94px;
+
+      .komodo-go-to-img {
+        width: auto;
+        height: auto;
+      }
+
+      .komodo-go-to-details {
+        max-width: 356px;
+
+        .detais-heading {
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 24px;
+          margin: 0 0 8px;
+        }
+
+        .detail-text {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          margin: 0 0 20px;
+        }
+
+        .record-box {
+          text-align: center;
+          width: 74px;
+          margin-right: auto;
+          cursor: pointer;
+
+          .record-img {
+            width: 24px;
+            height: 24px;
+          }
+          .record-text {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            margin: 0;
+          }
+        }
+      }
     }
   }
   .describe-video {
@@ -1238,7 +1293,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: "Open Sans", sans-serif;
+      font-family: 'Open Sans', sans-serif;
 
       input {
         border: none;
