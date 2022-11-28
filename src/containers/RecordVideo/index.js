@@ -28,7 +28,7 @@ const RecordVideoPage = () => {
   const [type, setType] = useState([]);
   const [show, setShow] = useState(false);
   const [ActivePage, setActivePage] = useState(1);
-  const [size, setSize] = useState(2);
+  const [size, setSize] = useState(30);
 
   useEffect(() => {
     if (currentOrganization) {
@@ -40,16 +40,16 @@ const RecordVideoPage = () => {
   useEffect(() => {
     if (currentOrganization && ActivePage > 1) {
       dispatch(
-        getKomdoVideoList(currentOrganization.id, ActivePage, size, searchQuery)
+        getKomdoVideoList(currentOrganization.id, ActivePage, 10, searchQuery)
       );
     }
   }, [ActivePage]);
 
   window.onscroll = function () {
-    const lastPage = komodoVideoList?.paging.last.split(
-      "/api/curriki/v1/recordings?per_page=2&page="
-    )?.[1];
-    if (komodoVideoList?.data?.length > 0 && ActivePage < lastPage - 1) {
+    if (
+      komodoVideoList?.data?.length > 0 &&
+      komodoVideoList?.data?.length < komodoVideoList.total_record
+    ) {
       if (
         window.innerHeight + Math.ceil(window.scrollY) >=
         document.body.scrollHeight
