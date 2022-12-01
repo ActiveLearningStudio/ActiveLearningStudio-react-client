@@ -184,7 +184,7 @@ export const createNewCoursetoCanvas = async (canvasProjectName, courseId, proje
     });
     const res = await searchService.canvasCreateNewCourse(id, playlistName || canvasProjectName);
 
-    if (res.response_code === 200) {
+    if (res?.response_code === 200) {
       if (!!projectPlaylistPublish) {
         publishProjectPlaylistToCanvas(projectId, playlistId, settings, res.data.id, canvasProjectName);
       } else {
