@@ -139,7 +139,7 @@ const ActivityShared = (props) => {
           indResourceService
             .h5pResourceSettingsSharedIndActivity(match.params.activityId)
             .then(async (data) => {
-              if (data) {
+              if (data && !data?.errors) {
                 h5pInsertion(data);
               } else {
                 setAuthorized(data);
@@ -166,8 +166,8 @@ const ActivityShared = (props) => {
 
       const checkXapi = setInterval(() => {
         try {
-          const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
-          if (x.H5P) {
+          const x = document.getElementsByClassName('h5p-iframe')[0]?.contentWindow;
+          if (x?.H5P) {
             if (x.H5P.externalDispatcher && xAPIHelper.isxAPINeeded(match.path)) {
               // eslint-disable-next-line no-use-before-define
               stopXapi();
@@ -364,7 +364,15 @@ const ActivityShared = (props) => {
           </div>
         </div>
       ) : (
-        <div className="curriki-activity-share">
+        <div
+          className="curriki-activity-share"
+          id="curriki-h5p-wrapper"
+          ref={(el) => {
+            if (el) {
+              currikiH5PWrapper.current = el;
+            }
+          }}
+        >
           {authorized?.errors ? (
             <Alert variant="danger">{authorized.errors?.[0]}</Alert>
           ) : (
