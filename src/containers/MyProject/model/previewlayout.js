@@ -210,8 +210,8 @@ const PreviewLayoutModel = (props) => {
               <>
                 <div className="add-activity-form">
                   <div className="add-activity-tabs" style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Tabs text={activityPreview ? '1. Add an activity' : '1. Add a video'} className="m-2" tabActive={true} />
-                    <Tabs text={activityPreview ? '1. Describe activity' : '2. Describe video'} className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? `1. ${editVideo ? 'Edit' : 'Add'}  a video` : `1. ${editVideo ? 'Edit' : 'Add'}  a video`} className="m-2" tabActive={true} />
+                    <Tabs text={activityPreview ? '2. Describe activity' : '2. Describe video'} className="m-2" tabActive={true} />
 
                     <Tabs text="3. Add interaction" className="m-2" tabActive={true} />
                   </div>
@@ -370,7 +370,7 @@ const PreviewLayoutModel = (props) => {
               <>
                 <div className="add-activity-form">
                   <div className="add-activity-tabs">
-                    <Tabs text="1. Select  layout" tabActive={true} />
+                    <Tabs text={counter === 0 ? `${editVideo ? '1. Edit a video' : '1. Select activity'}` : '1. Select layout'} tabActive={true} />
                     {
                       ((counter = 0),
                       layout?.map((data) => {
@@ -378,7 +378,8 @@ const PreviewLayoutModel = (props) => {
                           counter++;
                           return (
                             <>
-                              <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                              <Tabs text={editVideo ? '2. Describe video' : '2. Describe and  create activity'} className="ml-10" tabActive={true} />
+                              <Tabs text="3. Add interaction" className="ml-10" tabActive={true} />
                             </>
                           );
                         }
@@ -386,8 +387,15 @@ const PreviewLayoutModel = (props) => {
                     }
                     {counter === 0 && (
                       <>
-                        <Tabs text="2. Select activity" className="ml-10" tabActive={true} />
-                        <Tabs text="3. Describe and  create activity" className="ml-10" tabActive={true} />
+                        {/*  <Tabs text="1. Select activity" className="ml-10" tabActive={true} /> */}
+                        {editVideo ? (
+                          <>
+                            <Tabs text="2. Describe video" className="ml-10" tabActive={true} />
+                            <Tabs text="3. Add interaction" className="ml-10" tabActive={true} />
+                          </>
+                        ) : (
+                          <Tabs text="2. Describe and  create activity" className="ml-10" tabActive={true} />
+                        )}
                       </>
                     )}
                   </div>

@@ -64,6 +64,7 @@ const ActivityLayout = (props) => {
       <div className="activity-layout-tabs">
         <Tabs text="1. Select Activity" tabActive />
         <Tabs text="2. Describe and Create Activity" className="ml-10 " />
+        <Tabs text="3. Add interactions" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
         <HeadingTwo text="Select layout" color="#084892" className="select_activity_title_style" />
