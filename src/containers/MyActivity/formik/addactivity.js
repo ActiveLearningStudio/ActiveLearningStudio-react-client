@@ -173,7 +173,8 @@ const AddActivity = (props) => {
                   counter++;
                   return (
                     <>
-                      <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                      <Tabs text="2. Describe and  create Activity" className="ml-10" tabActive={true} />
+                      <Tabs text="3. Add interactions" className="ml-10" tabActive={false} />
                     </>
                   );
                 }
