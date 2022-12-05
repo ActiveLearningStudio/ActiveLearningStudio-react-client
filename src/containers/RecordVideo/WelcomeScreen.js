@@ -34,7 +34,7 @@ const WelcomeScreen = () => {
               Log in / Sign up
 
             </button> */}
-            <a className="anchor-btn" target="_blank" href="https://komododecks.com/embed/record?partnerId=curriki&trackId=uniqSomeId123" rel="noreferrer">
+            <a className="anchor-btn" target="_blank" href="https://komododecks.com/login?partnerId=curriki&trackId=some-id" rel="noreferrer">
               <LoginRecSMSvg primaryColor={primaryColor} />
               Log in / Sign up
             </a>
