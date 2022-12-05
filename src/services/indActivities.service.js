@@ -161,6 +161,7 @@ const h5pResourceSettingsSharedIndActivity = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);
+      return err.response.data;
     });
 
 export default {
