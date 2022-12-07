@@ -326,6 +326,11 @@ export const uploadActivityTypeFileAction = (formData) => async (dispatch) => {
 };
 
 export const uploadResourceThumbnailAction = (formData) => async () => {
+  const centralizedState = store.getState();
+  const {
+    myactivities: { screenSelectionType },
+  } = centralizedState;
+
   toast.info('Uploading Image ...', {
     className: 'project-loading',
     closeOnClick: false,
@@ -334,7 +339,18 @@ export const uploadResourceThumbnailAction = (formData) => async () => {
     autoClose: 100000,
     icon: '',
   });
-  const { thumbUrl } = await resourceService.upload(formData);
+  // const { thumbUrl } = await resourceService.upload(formData);
+  // toast.dismiss();
+  // return thumbUrl;
+
+  let thumbUrl;
+
+  if (screenSelectionType === 'MY_ACTIVITY_SCREEN') {
+    ({ thumbUrl } = await resourceService.uploadThumbActivity(formData));
+  } else {
+    ({ thumbUrl } = await resourceService.upload(formData));
+  }
+
   toast.dismiss();
   return thumbUrl;
 };
