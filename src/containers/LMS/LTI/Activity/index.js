@@ -204,7 +204,12 @@ const Activity = (props) => {
           const jsonStatement = JSON.stringify(xapiData);
           sendStatement(jsonStatement);
           if (h5pSettings?.organization?.api_key) {
-            sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, params.studentId);
+            let StudentNameCustom = '';
+            if (customPersonNameGiven) {
+              StudentNameCustom = customPersonNameGiven;
+            }
+
+            sendScreenshot(h5pSettings.organization, jsonStatement, h5pSettings.activity.title, StudentNameCustom || params.studentId);
           }
         }
       });
