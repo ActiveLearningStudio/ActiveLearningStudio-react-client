@@ -136,6 +136,7 @@ const ActivityLayout = (props) => {
                 dispatch({
                   type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
                   payload: 'singleActivity',
+                  screenSelectionType: screenSelectionType || '',
                 });
               }}
             >
@@ -256,7 +257,7 @@ const ActivityLayout = (props) => {
                     dispatch({
                       type: actionTypes.SET_SELECTED_ACTIVITY,
                       payload: layout,
-                      screenSelectionType: screenSelectionType || '',
+                      // screenSelectionType: screenSelectionType || '',
                     });
                   }}
                   hover
