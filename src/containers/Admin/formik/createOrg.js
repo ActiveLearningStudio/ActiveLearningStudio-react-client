@@ -556,7 +556,7 @@ export default function CreateOrg(prop) {
                                   />
                                   <h3>My Organization</h3>
                                 </div>
-                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                {/* <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.lp_my_org_parent}
                                     onChange={() => {
@@ -573,7 +573,7 @@ export default function CreateOrg(prop) {
                                     offHandleColor="#666"
                                   />
                                   <h3>My Org + Parent & Child Org </h3>
-                                </div>
+                                </div> */}
                                 <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                                   <Switch
                                     checked={values.lp_all}
@@ -591,7 +591,8 @@ export default function CreateOrg(prop) {
                                     offHandleColor="#666"
                                     // style={{ transform: checkedAll ? 'translateX(22px)' : 'translateX(0px)' }}
                                   />
-                                  <h3>All </h3>
+                                  {/* <h3>All </h3> */}
+                                  <h3>Public </h3>
                                 </div>
                               </div>
                             </div>
