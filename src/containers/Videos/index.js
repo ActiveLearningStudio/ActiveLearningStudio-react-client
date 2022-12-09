@@ -479,6 +479,7 @@ const Index = ({ activities }) => {
                                     payload: 'layout',
                                     playlist: {},
                                     project: {},
+                                    screenSelectionType: 'MY_ACTIVITY_SCREEN',
                                   });
 
                                   dispatch(clearSearch());
@@ -537,6 +538,7 @@ const Index = ({ activities }) => {
                                       payload: 'layout',
                                       playlist: {},
                                       project: {},
+                                      screenSelectionType: 'MY_ACTIVITY_SCREEN',
                                     });
 
                                     dispatch(clearSearch());

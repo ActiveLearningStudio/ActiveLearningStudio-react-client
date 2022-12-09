@@ -50,12 +50,13 @@ const MyActivity = ({ playlistPreview, activityPreview, redirecttoactivity, full
   const [currentActivity, setCurrentActivity] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [isbackHide, setisbackHide] = useState(true);
-  const { screenState, activity } = useSelector((state) => state.myactivities);
+  const { screenSelectionType, screenState, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
   const changeScreenHandler = (payload, method) => {
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
       payload,
+      screenSelectionType: screenSelectionType || '',
     });
     if (method === 'upload') {
       setActivityMethod('upload');

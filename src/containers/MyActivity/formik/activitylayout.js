@@ -51,7 +51,7 @@ const ActivityLayout = (props) => {
     dispatch(getLayoutActivities());
   }, []);
   const activityLayouts = useSelector((state) => state.myactivities.layout);
-
+  const screenSelectionType = useSelector((state) => state.myactivities.screenSelectionType);
   useMemo(() => {
     setLayout(activityLayouts?.[0] || null);
     if (activityLayouts) {
@@ -136,6 +136,7 @@ const ActivityLayout = (props) => {
                 dispatch({
                   type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
                   payload: 'singleActivity',
+                  screenSelectionType: screenSelectionType || '',
                 });
               }}
             >
@@ -256,6 +257,7 @@ const ActivityLayout = (props) => {
                     dispatch({
                       type: actionTypes.SET_SELECTED_ACTIVITY,
                       payload: layout,
+                      // screenSelectionType: screenSelectionType || '',
                     });
                   }}
                   hover

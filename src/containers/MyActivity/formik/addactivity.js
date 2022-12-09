@@ -31,7 +31,7 @@ import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
 const AddActivity = (props) => {
   const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview, redirecttoactivity, fullWidth } = props;
-  const { layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
+  const { screenSelectionType, layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
