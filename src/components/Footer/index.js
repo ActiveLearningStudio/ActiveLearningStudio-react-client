@@ -33,7 +33,8 @@ function Footer() {
           Privacy Policy
         </a>
 
-        <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer">
+        {/* <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer"> */}
+        <a target="_blank" href="https://www.currikistudio.org/help/" rel="noopener noreferrer">
           Help Center
         </a>
       </footer>
