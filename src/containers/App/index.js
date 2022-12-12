@@ -109,16 +109,16 @@ function App(props) {
         });
       }
     }
-    if (window.HubSpotConversations) {
-      // console.log('The api is ready already');
-    } else {
-      window.hsConversationsOnReady = [
-        () => {
-          // console.log('Now the api is ready');
-          window.HubSpotConversations.widget.load();
-        },
-      ];
-    }
+    // if (window.HubSpotConversations) {
+    //   // console.log('The api is ready already');
+    // } else {
+    //   window.hsConversationsOnReady = [
+    //     () => {
+    //       // console.log('Now the api is ready');
+    //       window.HubSpotConversations.widget.load();
+    //     },
+    //   ];
+    // }
   }, [window.location.href]);
 
   return (
