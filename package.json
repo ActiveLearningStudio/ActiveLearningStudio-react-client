@@ -24,7 +24,7 @@
     "classnames": "^2.2.6",
     "compression": "^1.7.4",
     "curriki-design-system": "^1.0.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "formik": "^2.1.5",
     "glamor": "^2.20.40",
     "history": "^5.0.0",
