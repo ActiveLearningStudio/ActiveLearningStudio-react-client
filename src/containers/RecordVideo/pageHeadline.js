@@ -8,9 +8,9 @@ import Buttons from 'utils/Buttons/buttons';
 
 export default function PageHeadline() {
   const organization = useSelector((state) => state.organization);
+  const { user } = useSelector((state) => state.auth);
   const { permission, currentOrganization } = organization;
   const primaryColor = getGlobalColor('--main-primary-color');
-
   return (
     <>
       <div className="record-headline">
@@ -26,7 +26,7 @@ export default function PageHeadline() {
             <div className="komodo-ext-btn">
               {/* <Buttons primary text="Add Komodo extension" iconColor="#FF0000" width="auto" height="32px" hover />
                */}
-              <iframe width="165" height="55" src="https://komododecks.com/embed/record?partnerId=curriki&trackId=uniqSomeId123" title="Komodo" frameborder="0"></iframe>
+              <iframe width="165" height="55" src={`https://komododecks.com/embed/record?partnerId=curriki&trackId=${user?.email}`} title="Komodo" frameborder="0"></iframe>
             </div>
           )}
         </div>

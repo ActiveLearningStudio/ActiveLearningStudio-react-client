@@ -1,5 +1,6 @@
 /* eslint-disable import/order */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import HelpRecSmSvg from 'iconLibrary/mainContainer/HelpRecSmSvg';
 import LoginRecSMSvg from 'iconLibrary/mainContainer/LoginRecSMSvg';
 import Image1 from '../../assets/images/record_1.png';
@@ -7,6 +8,7 @@ import Image2 from '../../assets/images/record_2.png';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const WelcomeScreen = () => {
+  const { user } = useSelector((state) => state.auth);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <div className="komodo-lib">
@@ -34,7 +36,7 @@ const WelcomeScreen = () => {
               Log in / Sign up
 
             </button> */}
-            <a className="anchor-btn" target="_blank" href="https://komododecks.com/login?partnerId=curriki&trackId=some-id" rel="noreferrer">
+            <a className="anchor-btn" target="_blank" href={`https://komododecks.com/login?partnerId=curriki&trackId=${user?.email}`} rel="noreferrer">
               <LoginRecSMSvg primaryColor={primaryColor} />
               Log in / Sign up
             </a>
