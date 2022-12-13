@@ -541,7 +541,7 @@ const FormikVideo = ({
         validate={(values) => {
           const errors = {};
           let youtubeLinkformat = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/;
+          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(player\.vimeo\.com\/video\/)([0-9]+\?h=[A-Za-z0-9]+)$/;
           let komodoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(komododecks\.com\/recordings\/)([A-Za-z0-9]+)$/;
           let kalturaformat = /^[0-9]+$/;
           if (!values.videoUrl) {
