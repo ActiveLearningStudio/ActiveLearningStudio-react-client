@@ -157,9 +157,9 @@ function PlaylistsPage(props) {
   }, [projectState.thumbUrl]);
   useEffect(() => {
     setActiveShared(projectState.selectedProject.shared);
-    if (projectState.selectedProject.organization_visibility_type_id === 2) {
+    if (projectState.selectedProject.organization_visibility_type_id === 3) {
       setVisibility('My organization');
-    } else if (projectState.selectedProject.organization_visibility_type_id === 3) {
+    } else if (projectState.selectedProject.organization_visibility_type_id === 2) {
       setVisibility('My Org + Parent and Child Org');
     } else if (projectState.selectedProject.organization_visibility_type_id === 1) {
       setVisibility('Private (only Me)');
