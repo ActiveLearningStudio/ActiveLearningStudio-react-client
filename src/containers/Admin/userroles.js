@@ -277,7 +277,7 @@ export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission,
                 if (data.title === parent) {
                   const updateGeneric = data.ui_sub_modules.map((mod) => {
                     return mod.ui_module_permissions.map((per) => {
-                      if (mod.title === title || mod.title === 'Organiziation') {
+                      if (mod.title === title || mod.title === 'Organization') {
                         if (String(per.id) === String(e.target.value)) {
                           return { ...per, selected: true };
                         }
@@ -305,7 +305,7 @@ export const DynamicEdit = ({ parent, subData, title, bold, allActivePermission,
                       return {
                         ...mod,
                         ui_module_permissions: mod.ui_module_permissions.map((per) => {
-                          if (mod.title === title || mod.title === 'Organiziation') {
+                          if (mod.title === title || mod.title === 'Organization') {
                             if (String(per.id) === String(e.target.value)) {
                               return { ...per, selected: true };
                             } else {
