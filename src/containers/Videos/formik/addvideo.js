@@ -62,7 +62,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
     if (mediaSources.length === 0) {
       const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
       result.then((data) => {
-        setMediaSources(data.mediaSources);
+        console.log('dta', data);
+        setMediaSources(data.mediaSources.filter((source) => source.pivot.media_sources_show_status === true && source.media_type === 'Video'));
       });
     }
   }, [mediaSources]);

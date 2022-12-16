@@ -8,7 +8,7 @@ import Publish from '../../assets/images/menu-publish.svg';
 
 import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
 import { publishProjectPlaylistToCanvas } from 'store/actions/share';
-import { getProjectId, googleShare, shareToCanvas, publishLmsSettings } from 'store/actions/gapi';
+import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
 
@@ -77,6 +77,20 @@ function ShareLink(props) {
             }}
           >
             <a>Google Classroom</a>
+          </li>
+        )}
+        {activeOrganization?.msteam_playlist_visibility && (
+          <li
+            onClick={() => {
+              handleShow();
+              dispatch(msTeamShare(true));
+              dispatch(googleShare(true));
+              dispatch(shareToCanvas(false));
+              setProjectPlaylistId(playlistId);
+              setProjectPlaylistActivityId(0);
+            }}
+          >
+            <a>Microsoft Teams</a>
           </li>
         )}
         {allLms.shareVendors &&
