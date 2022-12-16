@@ -82,6 +82,22 @@ const upload = (formData, conf) =>
       Promise.reject(err.response.data);
     });
 
+const uploadThumbActivity = (formData, conf) =>
+  httpService
+    .post(
+      `/${apiVersion}/independent-activities/upload-thumb`,
+      formData,
+      {
+        'Content-Type': 'multipart/form-data',
+      },
+      conf,
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 const uploadActivityTypeThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-thumb`, formData, {
@@ -342,6 +358,7 @@ export default {
   update,
   remove,
   upload,
+  uploadThumbActivity,
   getTypes,
   uploadActivityTypeFile,
   createActivityType,

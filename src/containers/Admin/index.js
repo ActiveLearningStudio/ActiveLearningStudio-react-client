@@ -33,7 +33,7 @@ import CreateActivityLayout from './formik/createActivityLayout';
 import EditTeamModel from './model/EditTeamModel';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import MyVerticallyCenteredModal from 'components/models/videoH5pmodal';
-import { getAllMediaSources, getOrganizationMedaiSource } from 'store/actions/admin';
+import { getAllMediaSources, getOrganizationMedaiSource, setLtiToolSettings } from 'store/actions/admin';
 import { getAllIV } from 'store/actions/resource';
 
 import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
@@ -54,6 +54,14 @@ function AdminPanel({ showSSO }) {
   const [rowData, setrowData] = useState(false);
   const [activePageNumber, setActivePageNumber] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([
+    { media_source_id: 1, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 2, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 3, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 5, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 6, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+    { media_source_id: 10, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
+  ]);
   useEffect(() => {
     if ((roles?.length === 0 && activeOrganization?.id) || activeOrganization?.id !== currentOrganization?.id) {
       dispatch(getRoles());
@@ -68,16 +76,19 @@ function AdminPanel({ showSSO }) {
     dispatch(getAllIV());
   }, []);
   useEffect(() => {
-    if (paginations?.length <= 1 || !paginations) {
-      dispatch({
-        type: actionTypes.UPDATE_PAGINATION,
-        payload: [currentOrganization || []],
-      });
-    }
-    dispatch(getAllMediaSources());
-    if (activeOrganization?.id) {
-      dispatch(getOrganizationMedaiSource(activeOrganization?.id));
-    }
+    (async () => {
+      if (paginations?.length <= 1 || !paginations) {
+        dispatch({
+          type: actionTypes.UPDATE_PAGINATION,
+          payload: [currentOrganization || []],
+        });
+      }
+      await dispatch(setLtiToolSettings(videoSourceLTI));
+      await dispatch(getAllMediaSources());
+      if (activeOrganization?.id) {
+        dispatch(getOrganizationMedaiSource(activeOrganization?.id));
+      }
+    })();
   }, [activeOrganization]);
 
   const paragraphColor = getGlobalColor('--main-paragraph-text-color');
@@ -91,7 +102,7 @@ function AdminPanel({ showSSO }) {
     <div className="admin-panel">
       {true ? (
         <>
-          <div className="content-wrapper">
+          <div className="content-wrapper content-wrapper-admin">
             <div className="inner-content">
               <Breadcrump />
               <Heading />

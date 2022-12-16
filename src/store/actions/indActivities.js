@@ -8,7 +8,7 @@ import indResourceService from 'services/indActivities.service';
 import store from '../index';
 import * as actionTypes from '../actionTypes';
 
-export const createIndResourceAction = (metadata, hide, accountId, settingId) => async (dispatch) => {
+export const createIndResourceAction = (metadata, hide, accountId, settingId, redirecttoactivity, fullWidth) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -56,19 +56,33 @@ export const createIndResourceAction = (metadata, hide, accountId, settingId) =>
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 4000,
     });
-    dispatch({
-      type: actionTypes.ADD_IND_ACTIVITIES,
-      payload: result['independent-activity'],
-    });
-    hide();
-    dispatch({
-      type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-      payload: '',
-    });
-    dispatch({
-      type: 'ADD_VIDEO_URL',
-      payload: '',
-    });
+
+    if (fullWidth) {
+      setTimeout(() => {
+        Swal.fire({
+          title: 'We can close the window here now',
+          showConfirmButton: false,
+          showCancelButton: false,
+        });
+      }, [1500]);
+    } else {
+      dispatch({
+        type: actionTypes.ADD_IND_ACTIVITIES,
+        payload: result['independent-activity'],
+      });
+      hide();
+      dispatch({
+        type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
+        payload: '',
+      });
+      dispatch({
+        type: 'ADD_VIDEO_URL',
+        payload: '',
+      });
+      if (redirecttoactivity) {
+        window.location.href = '/';
+      }
+    }
   }
 };
 

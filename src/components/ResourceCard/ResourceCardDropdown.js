@@ -179,7 +179,7 @@ const ResourceCardDropdown = (props) => {
                       handleShow();
                       // getProjectId(match.params.projectId);
                       // setProjectId(match.params.projectId);
-                      // setProjectPlaylistId(playlist.id);
+                      setProjectPlaylistId(0);
                       setProjectPlaylistActivityId(resource.id);
                       dispatch(msTeamShare(true));
                       dispatch(googleShare(true));

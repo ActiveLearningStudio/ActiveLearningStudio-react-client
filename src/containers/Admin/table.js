@@ -628,29 +628,56 @@ function Table(props) {
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
-                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  {/* {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name} */}
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name === 'All'
+                                    ? 'Public'
+                                    : visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {visibilityTypeArray?.map((element) => (
-                                    <Dropdown.Item
-                                      onClick={async () => {
-                                        Swal.showLoading();
-                                        const result = await dispatch(
-                                          updateProjectAction(row.id, {
-                                            ...row,
-                                            organization_visibility_type_id: element.id,
-                                          }),
-                                        );
-                                        if (result) {
-                                          setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
-                                        }
-                                        Swal.close();
-                                      }}
-                                    >
-                                      {element.display_name}
-                                    </Dropdown.Item>
-                                  ))}
+                                  {visibilityTypeArray?.map((element) => {
+                                    if (element.display_name !== 'My Org + Parent and Child Org') {
+                                      return (
+                                        <Dropdown.Item
+                                          onClick={async () => {
+                                            Swal.showLoading();
+                                            const result = await dispatch(
+                                              updateProjectAction(row.id, {
+                                                ...row,
+                                                organization_visibility_type_id: element.id,
+                                              }),
+                                            );
+                                            if (result) {
+                                              setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
+                                            }
+                                            Swal.close();
+                                          }}
+                                        >
+                                          {element.display_name === 'All' ? 'Public' : element.display_name}
+                                        </Dropdown.Item>
+                                      );
+                                    }
+
+                                    // (
+                                    //   <Dropdown.Item
+                                    //     onClick={async () => {
+                                    //       Swal.showLoading();
+                                    //       const result = await dispatch(
+                                    //         updateProjectAction(row.id, {
+                                    //           ...row,
+                                    //           organization_visibility_type_id: element.id,
+                                    //         }),
+                                    //       );
+                                    //       if (result) {
+                                    //         setLocalStateData(localStateData.map((element1) => (element1.id === row.id ? result : element1)));
+                                    //       }
+                                    //       Swal.close();
+                                    //     }}
+                                    //   >
+                                    //     {element.display_name}
+                                    //   </Dropdown.Item>
+                                    // )
+                                  })}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>
@@ -843,29 +870,56 @@ function Table(props) {
                             <div className="filter-dropdown-table" id="filter-dropdown-table-id">
                               <Dropdown>
                                 <Dropdown.Toggle id="dropdown-basic">
-                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
+                                  {/* {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name} */}
+                                  {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name === 'All'
+                                    ? 'Public'
+                                    : visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {visibilityTypeArray?.map((element) => (
-                                    <Dropdown.Item
-                                      onClick={() => {
-                                        dispatch(
-                                          editIndActivityItem(
-                                            row.id,
-                                            {
-                                              ...row,
-                                              data: '',
-                                              organization_visibility_type_id: element.id,
-                                            },
-                                            'admin',
-                                          ),
-                                        );
-                                      }}
-                                    >
-                                      {element.display_name}
-                                    </Dropdown.Item>
-                                  ))}
+                                  {visibilityTypeArray?.map((element) => {
+                                    if (element?.display_name !== 'My Org + Parent and Child Org') {
+                                      return (
+                                        <Dropdown.Item
+                                          onClick={() => {
+                                            dispatch(
+                                              editIndActivityItem(
+                                                row.id,
+                                                {
+                                                  ...row,
+                                                  data: '',
+                                                  organization_visibility_type_id: element.id,
+                                                },
+                                                'admin',
+                                              ),
+                                            );
+                                          }}
+                                        >
+                                          {element.display_name === 'All' ? 'Public' : element.display_name}
+                                        </Dropdown.Item>
+                                      );
+                                    }
+
+                                    // (
+                                    //   <Dropdown.Item
+                                    //     onClick={() => {
+                                    //       dispatch(
+                                    //         editIndActivityItem(
+                                    //           row.id,
+                                    //           {
+                                    //             ...row,
+                                    //             data: '',
+                                    //             organization_visibility_type_id: element.id,
+                                    //           },
+                                    //           'admin',
+                                    //         ),
+                                    //       );
+                                    //     }}
+                                    //   >
+                                    //     {element.display_name}
+                                    //   </Dropdown.Item>
+                                    // )
+                                  })}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </div>
@@ -1343,7 +1397,7 @@ function Table(props) {
                         {/* <td>{toolTypeArray.filter((type) => type.key === row.tool_type)[0]?.value}</td> */}
                         {!filterLtiSettings ? <td>{row?.media_sources?.name}</td> : <td>{ltiToolTypes?.filter((type) => type.id == row.media_source_id)[0]?.name}</td>}
 
-                        <td>{`${row.user.first_name} ${row.user.last_name}`}</td>
+                        {/* <td>{`${row.user.first_name} ${row.user.last_name}`}</td> */}
                         <td>{row.tool_description}</td>
                         <td>
                           <div className="admin-panel-dropdown">

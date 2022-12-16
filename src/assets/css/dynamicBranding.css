@@ -56,7 +56,7 @@
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-.admin-panel .table-data table #filter-dropdown-table-id .dropdown button{
+.admin-panel .table-data table #filter-dropdown-table-id .dropdown button {
   font-family: var(--main-text-font) !important;
 }
 
@@ -189,7 +189,10 @@ p {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
-
+.add-video-form .add-video-layout-formik .komodo-go-to-about .komodo-go-to-details .record-box .record-text {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-text-font) !important;
+}
 .user-dropdown-item-name .email {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
@@ -222,6 +225,15 @@ p {
 
 /* My Projects branding */
 
+.add-video-form .add-video-layout-formik .komodo-go-to-about .komodo-go-to-details .detais-heading {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.add-video-form .add-video-layout-formik .komodo-go-to-about .komodo-go-to-details .detail-text {
+  color: var(--main-paragraph-text-color) !important;
+  font-family: var(--main-text-font) !important;
+}
+
 .curriki-utility-headings.paragraph-two {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
@@ -250,7 +262,7 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-videoTag .layout-add-activity-title h3{
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-videoTag .layout-add-activity-title h3 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
@@ -367,7 +379,8 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.upload-thumbnail.check .upload_placeholder .gallery p, .upload-thumbnail.check .upload_placeholder .pexel p{
+.upload-thumbnail.check .upload_placeholder .gallery p,
+.upload-thumbnail.check .upload_placeholder .pexel p {
   font-family: var(--main-heading-font) !important;
 }
 
@@ -430,17 +443,17 @@ p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.new-playlist .dropdown .btn-primary{
+.new-playlist .dropdown .btn-primary {
   font-family: var(--main-text-font) !important;
 }
-.library-status .requested{
+.library-status .requested {
   font-family: var(--main-heading-font) !important;
 }
-.playlist-header-icon-section .hover-text .span-show{
+.playlist-header-icon-section .hover-text .span-show {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.playlist-no-resource{
+.playlist-no-resource {
   font-family: var(--main-text-font) !important;
 }
 
@@ -532,7 +545,7 @@ p {
   font-family: var(--main-text-font) !important;
 }
 
-.sce_cont .configuration .config-content .go-back-button-preview{
+.sce_cont .configuration .config-content .go-back-button-preview {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -622,7 +635,7 @@ p {
   font-family: var(--main-text-font) !important;
 }
 #layout-formik-select-id-btn button {
-  /* color: var(--main-paragraph-text-color) !important; */  
+  /* color: var(--main-paragraph-text-color) !important; */
   color: var(--main-search-input-color) !important;
   border: 1px solid var(--main-paragraph-text-color) !important;
 }
@@ -636,12 +649,12 @@ p {
   accent-color: var(--main-paragraph-text-color) !important;
   /* border-color: var(--main-paragraph-text-color) !important; */
 }
-.my-project-cards-top-search-filter .search-bar input{
+.my-project-cards-top-search-filter .search-bar input {
   border-bottom: 1px solid var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
-.curriki-utility-teamproject-card .teamproject-card-top .teamproject-card-title h2{
+.curriki-utility-teamproject-card .teamproject-card-top .teamproject-card-title h2 {
   font-family: var(--main-heading-font) !important;
   color: var(--main-white-color) !important;
 }
@@ -724,18 +737,18 @@ p {
 .add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-title-formik-textField .textField-detailText p {
   color: var(--main-paragraph-text-color) !important;
   /* font-family: var(--main-text-font) !important; */
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
-.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .dec-title-formik-textField span{
+.add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .dec-title-formik-textField span {
   color: var(--main-paragraph-text-color) !important;
 
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
 .add-activity-form .add-activity-layout-formik-videoTag .add-activity-layout-formik .layout-formik-select .formik-select .formik-select-title {
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
 
-.modal-content .modal-body h5{
+.modal-content .modal-body h5 {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-text-font) !important;
 }
@@ -743,14 +756,14 @@ p {
   color: var(--main-paragraph-text-color) !important;
   /* font-family: var(--main-heading-font) !important; */
 }
-.img-upload-form p{
+.img-upload-form p {
   font-family: var(--main-heading-font) !important;
 }
-.swal2-popup .swal2-html-container p{
+.swal2-popup .swal2-html-container p {
   font-family: var(--main-heading-font) !important;
 }
 
-.add-team-page .add-team-detail .team-detail p{
+.add-team-page .add-team-detail .team-detail p {
   font-family: var(--main-text-font) !important;
 }
 /* Admin Panel branding */
@@ -988,34 +1001,32 @@ ul.pagination .page-item.active .page-link {
 .role-permission-tab-name .nav-item .nav-link {
   color: var(--main-paragraph-text-color) !important;
   /* font-family: var(--main-text-font) !important; */
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
 
 .roles-permission-tab #role-permission-tab-id .nav-link.active {
   /* font-family: var(--main-text-font) !important; */
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
 
-
-
-.custom-select-style-for-sub p{
+.custom-select-style-for-sub p {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
-.custom-select-style-for-sub h6{
+.custom-select-style-for-sub h6 {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.dynamic-roles .card-body .permission h6{
+.dynamic-roles .card-body .permission h6 {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.detail-permission-tab .all-permission-heading h6{
+.detail-permission-tab .all-permission-heading h6 {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.media-section .sources-section .sources-options .sources-sub .media-version-options .h5p-title-formik-textField select{
+.media-section .sources-section .sources-options .sources-sub .media-version-options .h5p-title-formik-textField select {
   font-family: var(--main-text-font) !important;
 }
 
@@ -1023,7 +1034,7 @@ ul.pagination .page-item.active .page-link {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
-.custom-select-style-for-sub select{
+.custom-select-style-for-sub select {
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -1131,22 +1142,21 @@ ul.pagination .page-item.active .page-link {
   background-color: var(--main-primary-color) !important;
 }
 
-.curriki-utility-addvideo-card .addvideo-card-add-share-options-ind
-{ color: var(--main-primary-color) !important;
-  font-family: var(--main-heading-font) !important;
-  
-}
-#meta-style-td-id span{
+.curriki-utility-addvideo-card .addvideo-card-add-share-options-ind {
+  color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-#filter-dropdown-user-id-style button{
+#meta-style-td-id span {
+  font-family: var(--main-heading-font) !important;
+}
+#filter-dropdown-user-id-style button {
   font-family: var(--main-text-font) !important;
 }
-.remove-user-modal h1{
+.remove-user-modal h1 {
   font-family: var(--main-heading-font) !important;
 }
 /* Edit organization */
-#custom-toggle-button-id-br-style h3{
+#custom-toggle-button-id-br-style h3 {
   font-family: var(--main-text-font) !important;
 }
 .admin-panel .form-new-popup-admin .inner-form-content .create-form h2,
@@ -1285,26 +1295,26 @@ textarea,
   /* font-family: var(--main-heading-font) !important; */
   font-family: var(--main-text-font) !important;
 }
-.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select .formik-select-title p{
+.add-describevideo-form .add-describevideo-section-layout-formik .add-describevideo-layout-formik .layout-formik-select .formik-select .formik-select-title p {
   font-family: var(--main-heading-font) !important;
 }
-.curriki-utility-uploadimageV2 h3{
+.curriki-utility-uploadimageV2 h3 {
   font-family: var(--main-heading-font) !important;
 }
-.activity-layout-form .upload-back-button .back-button p{
+.activity-layout-form .upload-back-button .back-button p {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.search-card-singleActivity .dropdown-activity-select .dropdown-activity-select-inner-div .filter_title{
+.search-card-singleActivity .dropdown-activity-select .dropdown-activity-select-inner-div .filter_title {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
-.activity-layout-form .layout-cards-process-btn .activity-layout-cards .card-btn .btn{
+.activity-layout-form .layout-cards-process-btn .activity-layout-cards .card-btn .btn {
   font-family: var(--main-text-font) !important;
 }
-.back-button p{
+.back-button p {
   color: var(--main-primary-color) !important;
-  font-family: var(--main-heading-font) !important; 
+  font-family: var(--main-heading-font) !important;
 }
 .myvideomain .inner-content .my-interactive-videos .top-tabs {
   border-color: var(--main-primary-color) !important;
@@ -1444,7 +1454,7 @@ textarea,
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.curriki-utility-uploadimageV2 .uploadimage-option button{
+.curriki-utility-uploadimageV2 .uploadimage-option button {
   font-family: var(--main-heading-font) !important;
 }
 .curriki-utility-uploadimageV2 .uploadimage-option button:hover {
@@ -1458,45 +1468,44 @@ textarea,
   opacity: 0.7 !important;
   color: var(--main-white-color) !important;
 }
-.clone-lti .modal-title{
+.clone-lti .modal-title {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.lti-all-project .information-clone-model .clone-searching-section .search-and-filters .search-bar input{
+.lti-all-project .information-clone-model .clone-searching-section .search-and-filters .search-bar input {
   border-bottom: 2px solid var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
-#information-clone-model-parap{
+#information-clone-model-parap {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.active-resource-update .active-resource-detail h6{
+.active-resource-update .active-resource-detail h6 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.active-resource-update .active-resource-detail p span{
+.active-resource-update .active-resource-detail p span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-text-font) !important;
 }
 
-.active-resource-update .active-resource-detail .model-name-activity-selection .model-name-activity-playlist span{
-  color: var(--main-primary-color) !important;
-  font-family: var(--main-heading-font) !important;
- 
-}
-.activity-project-playlist .activity-project-playlist-title{
+.active-resource-update .active-resource-detail .model-name-activity-selection .model-name-activity-playlist span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.activity-project-playlist .playlist-title-copy-text .copy-here .copy-here-span{
+.activity-project-playlist .activity-project-playlist-title {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.lti-all-project .information-clone-model .clone-back-option-project span{
+.activity-project-playlist .playlist-title-copy-text .copy-here .copy-here-span {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.lti-all-project .information-clone-model .clone-create-project-headng{
+.lti-all-project .information-clone-model .clone-back-option-project span {
+  color: var(--main-primary-color) !important;
+  font-family: var(--main-heading-font) !important;
+}
+.lti-all-project .information-clone-model .clone-create-project-headng {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
   border-bottom: 4px solid var(--main-secondary-color) !important;
@@ -1527,7 +1536,7 @@ textarea,
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.activity-layout-form .activity-layout-detail h5{
+.activity-layout-form .activity-layout-detail h5 {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
@@ -1762,7 +1771,7 @@ textarea,
   font-family: var(--main-heading-font) !important;
   border-bottom: 2px solid var(--main-secondary-color) !important;
 }
-.team-modal .modal-body .label-title{
+.team-modal .modal-body .label-title {
   font-family: var(--main-heading-font) !important;
 }
 .team-modal .modal-footer .add-team-btn {
@@ -1853,28 +1862,29 @@ textarea,
   color: var(--main-white-color) !important;
   background-color: var(--main-primary-color) !important;
 }
-.auth-page .auth-container .form-group span{
+.auth-page .auth-container .form-group span {
   font-family: var(--main-heading-font) !important;
 }
-.auth-page .auth-container .form-group .show-password{
+.auth-page .auth-container .form-group .show-password {
   font-family: var(--main-text-font) !important;
 }
-.auth-page .auth-container .remember-me a, .auth-page .auth-container .remember-me label{
+.auth-page .auth-container .remember-me a,
+.auth-page .auth-container .remember-me label {
   font-family: var(--main-text-font) !important;
 }
-.auth-page .auth-container .login-separator-box .text-separator{
+.auth-page .auth-container .login-separator-box .text-separator {
   font-family: var(--main-heading-font) !important;
 }
-.auth-page .auth-container .termsandcondition{
+.auth-page .auth-container .termsandcondition {
   font-family: var(--main-text-font) !important;
 }
-.auth-page .auth-container .google-button div{
+.auth-page .auth-container .google-button div {
   font-family: var(--main-heading-font) !important;
 }
-.password_detail span{
+.password_detail span {
   font-family: var(--main-text-font) !important;
 }
-.password_detail ul li{
+.password_detail ul li {
   font-family: var(--main-text-font) !important;
 }
 /* Searching */
@@ -1896,7 +1906,7 @@ textarea,
   font-family: var(--main-heading-font) !important;
   color: var(--main-primary-color) !important;
 }
-.search-result-main .search-library .card-body .author-label{
+.search-result-main .search-library .card-body .author-label {
   font-family: var(--main-heading-font) !important;
 }
 
@@ -1938,10 +1948,12 @@ textarea,
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.search-content-by,.search-content-type{
+.search-content-by,
+.search-content-type {
   font-family: var(--main-text-font) !important;
 }
-.search-content-by span,.search-content-type span {
+.search-content-by span,
+.search-content-type span {
   font-family: var(--main-text-font) !important;
   color: var(--main-primary-color) !important;
 }
@@ -2083,38 +2095,38 @@ textarea,
 }
 
 /* For Browse Image */
-.thumbnails-modal .thumbnails-modal-body .thumbnails-close .thumbnails-heading{
+.thumbnails-modal .thumbnails-modal-body .thumbnails-close .thumbnails-heading {
   color: var(--main-primary-color) !important;
 }
-.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link.active{
+.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link.active {
   background-color: var(--main-primary-color) !important;
   border: 1px solid var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link{
- color: var(--main-paragraph-text-color) !important;
+.thumbnails-modal .thumbnails-modal-body .thumbnails-tabs .nav-link {
+  color: var(--main-paragraph-text-color) !important;
 
   font-family: var(--main-heading-font) !important;
 }
-.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-header .card-header{
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-header .card-header {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.search-box .smithsonian-clear button{
+.search-box .smithsonian-clear button {
   color: var(--main-primary-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .list-item-keys span{
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .list-item-keys span {
   color: var(--main-paragraph-text-color) !important;
   font-family: var(--main-heading-font) !important;
 }
-.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-list-options .card-detail-list-search-icon .card-detail-list-search{
+.filter_smithsonian_section .smithsonian_filter_menu_detail .refine-search .card-detail-list-options .card-detail-list-search-icon .card-detail-list-search {
   border-bottom: 1px solid var(--main-paragraph-text-color) !important ;
 }
-.read-more-pexel{
+.read-more-pexel {
   color: var(--main-primary-color) !important;
 }
-.thumbnails-img-box-pexels .thumbnails-watermark span{
+.thumbnails-img-box-pexels .thumbnails-watermark span {
   background-color: var(--main-primary-color) !important;
   opacity: 0.7;
 }

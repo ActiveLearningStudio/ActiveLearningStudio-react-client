@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import logo from 'assets/images/footerlogo.png';
+import './style.scss';
 
 function Footer() {
   const organization = useSelector((state) => state.organization);
@@ -32,7 +33,7 @@ function Footer() {
           Privacy Policy
         </a>
 
-        <a target="_blank" href="https://support.curriki.org/" rel="noopener noreferrer">
+        <a target="_blank" href="https://www.currikistudio.org/help/" rel="noopener noreferrer">
           Help Center
         </a>
       </footer>

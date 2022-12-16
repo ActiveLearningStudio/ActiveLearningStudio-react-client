@@ -10,7 +10,7 @@ import help5 from 'assets/images/help/help5.png';
 import { HIDE_HELP } from 'store/actionTypes';
 // import cross from 'assets/images/help/cross.png';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import './style.scss';
+// import './style.scss';
 
 function Help() {
   const dispatch = useDispatch();

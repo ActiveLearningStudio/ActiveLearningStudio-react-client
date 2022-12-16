@@ -157,14 +157,15 @@ function PlaylistsPage(props) {
   }, [projectState.thumbUrl]);
   useEffect(() => {
     setActiveShared(projectState.selectedProject.shared);
-    if (projectState.selectedProject.organization_visibility_type_id === 2) {
+    if (projectState.selectedProject.organization_visibility_type_id === 3) {
       setVisibility('My organization');
-    } else if (projectState.selectedProject.organization_visibility_type_id === 3) {
+    } else if (projectState.selectedProject.organization_visibility_type_id === 2) {
       setVisibility('My Org + Parent and Child Org');
     } else if (projectState.selectedProject.organization_visibility_type_id === 1) {
       setVisibility('Private (only Me)');
     } else {
-      setVisibility('All');
+      // setVisibility('All');
+      setVisibility('Public');
     }
   }, [projectState.selectedProject]);
 
@@ -772,18 +773,24 @@ function PlaylistsPage(props) {
                               <Dropdown className="d-inline mx-2" autoClose="outside">
                                 <Dropdown.Toggle id="dropdown-autoclose-outside">{visibility}</Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {visibilityTypeArray?.map((type) => (
-                                    <Dropdown.Item>
-                                      <div
-                                        onClick={() => {
-                                          editVisibility(type.id);
-                                          setVisibility(type.display_name);
-                                        }}
-                                      >
-                                        {type.display_name}
-                                      </div>
-                                    </Dropdown.Item>
-                                  ))}
+                                  {visibilityTypeArray?.map((type) => {
+                                    if (type?.display_name !== 'My Org + Parent and Child Org') {
+                                      return (
+                                        <Dropdown.Item>
+                                          <div
+                                            onClick={() => {
+                                              editVisibility(type.id);
+                                              // setVisibility(type.display_name);
+                                              setVisibility(type.display_name === 'All' ? 'Public' : type.display_name);
+                                            }}
+                                          >
+                                            {/* {type.display_name} */}
+                                            {type.display_name === 'All' ? 'Public' : type.display_name}
+                                          </div>
+                                        </Dropdown.Item>
+                                      );
+                                    }
+                                  })}
                                   {/* {projectState.visibilityTypes?.data?.map((type) => (
                                     <Dropdown.Item>
                                       <div

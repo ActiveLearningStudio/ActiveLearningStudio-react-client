@@ -1,27 +1,52 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable array-callback-return */
-/* eslint-disable camelcase */
+/* eslint-disable  */
 import React, { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { Alert } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import HeadingThree from 'utils/HeadingThree/headingthree';
-import { updateOrganizationMedaiSource } from 'store/actions/admin';
+import { updateOrganizationMedaiSource, getOrganizationMedaiSource } from 'store/actions/admin';
+import Switch from 'react-switch';
+import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 
 const Media = () => {
   const dispatch = useDispatch();
 
-  const { allMediaSources, orgMediaSources, allIv } = useSelector((state) => state.admin);
+  const { allMediaSources, orgMediaSources, allIv, orgLtiSettings } = useSelector((state) => state.admin);
   const organization = useSelector((state) => state.organization);
   const [allVideoSource, setallVideoSource] = useState([]);
   const [allImageSource, setallImageSource] = useState([]);
   const [orgVideoSource, setorgVideoSource] = useState([]);
   const [orgImageSource, setorgImageSource] = useState([]);
+  const [videoSourceLTI, setVideoSourceLTI] = useState([]);
 
   const { activeOrganization, permission } = organization;
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
+
+  // useEffect(() => {
+  //   setVideoSourceLTI(
+  //     videoSourceLTI?.map((_lti) => {
+  //       const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
+  //       if (Index >= 0) {
+  //         _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
+  //       }
+  //       return _lti;
+  //     }),
+  //   );
+  // }, []);
+  useEffect(() => {
+    if (orgLtiSettings?.length > 0) {
+      setVideoSourceLTI(orgLtiSettings);
+    } else {
+      setVideoSourceLTI([]);
+    }
+  }, [orgLtiSettings]);
+
   useEffect(() => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(orgMediaSources?.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video'));
@@ -45,6 +70,65 @@ const Media = () => {
   }, [allMediaSources]);
 
   const mediaLibrary = (sourceName) => updateLibrary?.filter((data) => data.name === sourceName)[0]?.pivot?.h5p_library;
+  const onUpdateMediaSources = async () => {
+    let updatedMediasSource = [];
+    const media_ids = [];
+    orgVideoSource?.map((videoSource) => {
+      media_ids.push({
+        media_source_id: videoSource.id,
+        h5p_library: mediaLibrary(videoSource.name),
+        lti_tool_settings_status: videoSource.pivot.lti_tool_settings_status ? 1 : 0,
+        media_sources_show_status: videoSource.pivot.media_sources_show_status ? 1 : 0,
+      });
+    });
+    orgImageSource?.map((imgSource) =>
+      media_ids.push({
+        media_source_id: imgSource.id,
+      }),
+    );
+
+    updatedMediasSource = orgVideoSource?.concat(orgImageSource);
+    // updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
+    if (orgVideoSource?.filter((source) => source.pivot.media_sources_show_status === false)?.length === 6) {
+      // updatedMediasSource = orgImageSource;
+      Swal.fire({
+        icon: 'warning',
+        text: 'Please Select Atleast One Media Source to Continue...!!',
+        allowOutsideClick: false,
+      });
+      return false;
+    }
+    if (orgVideoSource?.filter((source) => source.pivot.lti_tool_settings_status === false)?.length === 6) {
+      // updatedMediasSource = orgImageSource;
+      Swal.fire({
+        icon: 'warning',
+        text: 'Please Select Atleast One Lti Tool to Continue...!!',
+        allowOutsideClick: false,
+      });
+      return false;
+    }
+    if (orgImageSource.length === 0) {
+      // updatedMediasSource = orgVideoSource;
+      Swal.fire({
+        icon: 'warning',
+        text: 'Please Select Atleast One Image Source to Continue...!!',
+        allowOutsideClick: false,
+      });
+      return false;
+    }
+    Swal.fire({
+      title: 'Please Wait !',
+      text: 'Updating view...!!!',
+      allowOutsideClick: false,
+    });
+    await dispatch(
+      updateOrganizationMedaiSource(activeOrganization?.id, media_ids, {
+        mediaSources: updatedMediasSource,
+      }),
+    );
+  };
+  const secondaryColorIcon = getGlobalColor('--main-secondary-color');
+  // const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
       <div className="media-section">
@@ -60,7 +144,7 @@ const Media = () => {
               <form onSubmit={handleSubmit}>
                 <div className="sources-section">
                   <h3>Video sources</h3>
-                  {allMediaSources?.mediaSources?.Video ? (
+                  {allVideoSource ? (
                     <div className="sources-options">
                       <div className="sources-options-all">
                         <div className="media-field-checkbox">
@@ -69,12 +153,20 @@ const Media = () => {
                               name="videoall"
                               type="checkbox"
                               label="Selectall"
-                              checked={orgVideoSource?.length === 6}
+                              checked={orgVideoSource?.filter((source) => source.pivot.media_sources_show_status === true)?.length === 6}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  setorgVideoSource(allVideoSource.filter((source) => source.name !== 'Safari Montage'));
+                                  const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                    orgMedia.pivot.media_sources_show_status = true;
+                                    return orgMedia;
+                                  });
+                                  setorgVideoSource(updateMedia);
                                 } else {
-                                  setorgVideoSource([]);
+                                  const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                    orgMedia.pivot.media_sources_show_status = false;
+                                    return orgMedia;
+                                  });
+                                  setorgVideoSource(updateMedia);
                                 }
                               }}
                             />
@@ -83,33 +175,17 @@ const Media = () => {
                           <div className="h5p-heading-text">
                             <HeadingThree text="H5P library" color="#515151" className="textField-title" />
                           </div>
+                          <div className="lti-tool-heading-text ">
+                            <HeadingThree text="LTI tool" color="#515151" className="textField-title" />
+                          </div>
                         </div>
                         {permission?.Organization?.includes('organization:edit-media') && (
                           <div className="btn-text">
                             <button
                               type="button"
-                              onClick={(e) => {
+                              onClick={async (e) => {
                                 e.preventDefault();
-                                let updatedMediasSource = [];
-                                const media_ids = [];
-                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                                if (orgVideoSource.length === 0) {
-                                  // updatedMediasSource = orgImageSource;
-                                  Swal.fire({
-                                    icon: 'warning',
-                                    text: 'Please Select Atleast One Media Source to Continue...!!',
-                                    allowOutsideClick: false,
-                                  });
-                                  return false;
-                                }
-                                Swal.fire({
-                                  title: 'Please Wait !',
-                                  text: 'Updating view...!!!',
-                                  allowOutsideClick: false,
-                                });
-                                dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
+                                onUpdateMediaSources();
                               }}
                             >
                               Update
@@ -119,9 +195,15 @@ const Media = () => {
                       </div>
                       <div className="sources-sub">
                         <div>
-                          {allMediaSources?.mediaSources?.Video?.map((source, counter) => {
-                            const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name);
+                          {allVideoSource?.map((source, counter) => {
+                            const isVideoSource = orgVideoSource?.filter((orgVideo) => orgVideo.name === source.name)?.[0];
+
                             if (source.name !== 'Safari Montage') {
+                              // const findVideoLTIIndex = videoSourceLTI?.filter(
+                              //   (_lti) =>
+                              //     _lti.media_source_id === source.id &&
+                              //     source?.media_type === "Video"
+                              // );
                               return (
                                 <div className="media-version-options">
                                   <div className="media-field-checkbox" key={counter}>
@@ -129,17 +211,34 @@ const Media = () => {
                                       name={source.name}
                                       type="checkbox"
                                       className="media-sources-checkboxes "
-                                      checked={isVideoSource?.length > 0}
+                                      checked={isVideoSource?.pivot.media_sources_show_status}
                                       onChange={(e) => {
                                         if (e.target.checked) {
-                                          setorgVideoSource([...orgVideoSource, source]);
+                                          isVideoSource.pivot.media_sources_show_status = true;
+                                          const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                            if (orgMedia.name === source.name) {
+                                              return isVideoSource;
+                                            } else {
+                                              return orgMedia;
+                                            }
+                                          });
+                                          setorgVideoSource(updateMedia);
                                         } else {
-                                          setorgVideoSource(orgVideoSource?.filter((videoSource) => videoSource.name !== source.name));
+                                          isVideoSource.pivot.media_sources_show_status = false;
+                                          const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                            if (orgMedia.name === source.name) {
+                                              return isVideoSource;
+                                            } else {
+                                              return orgMedia;
+                                            }
+                                          });
+
+                                          setorgVideoSource(updateMedia);
                                         }
                                       }}
                                       disabled={source.name === 'Safari Montage'}
                                     />
-                                    <span id={isVideoSource.length > 0 && 'span-sub-selected'} className="span-sub">
+                                    <span id={isVideoSource?.id && 'span-sub-selected'} className="span-sub">
                                       {source.name}
                                     </span>
                                   </div>
@@ -150,7 +249,13 @@ const Media = () => {
                                         setUpdateLibrary(
                                           updateLibrary.map((data) => {
                                             if (data.name === source.name) {
-                                              return { ...data, pivot: { ...data.pivot, h5p_library: e.target.value } };
+                                              return {
+                                                ...data,
+                                                pivot: {
+                                                  ...data.pivot,
+                                                  h5p_library: e.target.value,
+                                                },
+                                              };
                                             }
                                             return data;
                                           }),
@@ -166,6 +271,45 @@ const Media = () => {
                                         </option>
                                       ))}
                                     </select>
+                                  </div>
+                                  {/* LTI tool */}
+                                  <div className="lti-tool-switch">
+                                    <div className="custom-toggle-button toggle-style">
+                                      <Switch
+                                        disabled={isVideoSource?.name === 'My device' || isVideoSource.name === 'YouTube' ? true : false}
+                                        checked={isVideoSource?.pivot.lti_tool_settings_status ? true : false}
+                                        onChange={(e) => {
+                                          if (e) {
+                                            isVideoSource.pivot.lti_tool_settings_status = true;
+                                            const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                              if (orgMedia.name === source.name) {
+                                                return isVideoSource;
+                                              } else {
+                                                return orgMedia;
+                                              }
+                                            });
+                                            setorgVideoSource(updateMedia);
+                                          } else {
+                                            isVideoSource.pivot.lti_tool_settings_status = false;
+                                            const updateMedia = orgVideoSource?.map((orgMedia) => {
+                                              if (orgMedia.name === source.name) {
+                                                return isVideoSource;
+                                              } else {
+                                                return orgMedia;
+                                              }
+                                            });
+
+                                            setorgVideoSource(updateMedia);
+                                          }
+                                        }}
+                                        className="react-switch"
+                                        handleDiameter={30}
+                                        offColor="#888"
+                                        onColor={secondaryColorIcon}
+                                        onHandleColor={secondaryColorIcon}
+                                        offHandleColor="#666"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -188,7 +332,7 @@ const Media = () => {
                             name="imageall"
                             type="checkbox"
                             label="Selectall"
-                            checked={orgImageSource?.length === 2}
+                            checked={orgImageSource?.length === 3}
                             onChange={(e) => {
                               if (e.target.checked) {
                                 setorgImageSource(allImageSource.filter((source) => source.name !== 'Safari Montage'));
@@ -206,21 +350,7 @@ const Media = () => {
                               name="update"
                               onClick={(e) => {
                                 e.preventDefault();
-                                let updatedMediasSource = [];
-                                const media_ids = [];
-                                orgImageSource?.map((imgSource) => media_ids.push({ media_source_id: imgSource.id }));
-                                orgVideoSource?.map((videoSource) => media_ids.push({ media_source_id: videoSource.id, h5p_library: mediaLibrary(videoSource.name) }));
-                                updatedMediasSource = orgVideoSource?.concat(orgImageSource);
-                                if (orgImageSource.length === 0) {
-                                  // updatedMediasSource = orgVideoSource;
-                                  Swal.fire({
-                                    icon: 'warning',
-                                    text: 'Please Select Atleast One Media Source to Continue...!!',
-                                    allowOutsideClick: false,
-                                  });
-                                } else {
-                                  dispatch(updateOrganizationMedaiSource(activeOrganization?.id, media_ids, { mediaSources: updatedMediasSource }));
-                                }
+                                onUpdateMediaSources();
                               }}
                             >
                               Update

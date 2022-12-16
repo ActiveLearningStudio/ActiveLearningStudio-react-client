@@ -49,7 +49,7 @@ function LtiPlaylistPreview(props) {
 
   if (playlist.isNonAvailablePlaylist) {
     return (
-      <div className="alert alert-danger" role="alert" style={{ fontSize: '1.5em' }}>
+      <div className="alert alert-danger mx-5 mt-3" role="alert" style={{ fontSize: '1.5em' }}>
         Playlist is not available.
       </div>
     );
@@ -57,7 +57,7 @@ function LtiPlaylistPreview(props) {
 
   if (!selectedPlaylist) {
     return (
-      <div className="alert alert-info" role="alert">
+      <div className="alert alert-info mx-5 mt-3" role="alert">
         Loading...
       </div>
     );

@@ -30,8 +30,8 @@ import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 // ];
 
 const AddActivity = (props) => {
-  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview } = props;
-  const { layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
+  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview, redirecttoactivity, fullWidth } = props;
+  const { screenSelectionType, layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
@@ -155,6 +155,8 @@ const AddActivity = (props) => {
         formData={formData}
         searchName="abstract"
         setSuccessMessage={setSuccessMessage}
+        redirecttoactivity={redirecttoactivity}
+        fullWidth={fullWidth}
       />
       <div className="add-activity-form">
         {activtyMethod === 'upload' ? (
@@ -171,7 +173,8 @@ const AddActivity = (props) => {
                   counter++;
                   return (
                     <>
-                      <Tabs text="2. Describe and  create layout" className="ml-10" tabActive={true} />
+                      <Tabs text="2. Describe and  create Activity" className="ml-10" tabActive={true} />
+                      <Tabs text="3. Add interactions" className="ml-10" tabActive={false} />
                     </>
                   );
                 }
@@ -213,7 +216,7 @@ const AddActivity = (props) => {
                     });
                   }}
                 >
-                
+
                   {layout?.map((data) => {
                     return (
                       <option key="" selected={data.title === title ? true : false} value={JSON.stringify(data)}>

@@ -24,6 +24,7 @@ import ExploreLibrarySvg from 'iconLibrary/sideBar/ExploreLibrarySvg';
 import TeamSvg from 'iconLibrary/sideBar/TeamSvg';
 import AdminSvg from 'iconLibrary/sideBar/AdminSvg';
 import InstanceAdminSvg from 'iconLibrary/sideBar/InstanceAdminSvg';
+import RecordSvg from 'iconLibrary/sideBar/RecordSvg';
 
 const PROJECTS = 'projects';
 const CHANNEL = 'channel';
@@ -131,6 +132,23 @@ function Sidebar(props) {
             </div>
           </Link>
         </>
+      )}
+      {permission?.['Record a Video']?.includes('record-video:view') && (
+        <Link
+          to={`/org/${allState.organization.currentOrganization?.domain}/record-video`}
+          onClick={() => {
+            clearStatesOnSidebarClick();
+            dispatch(clearTeamPermissions());
+          }}
+        >
+          <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'row-sidebar activeLink' : 'row-sidebar'}>
+            <RecordSvg primaryColor={primaryColor} />
+            <div className="sidebar-headings">
+              Record a<br />
+              video
+            </div>
+          </div>
+        </Link>
       )}
       {permission?.['Independent Activity']?.includes('independent-activity:view-author') && (
         <>
