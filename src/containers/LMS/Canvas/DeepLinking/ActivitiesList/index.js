@@ -63,7 +63,7 @@ const ActivitiesList = (props) => {
                   </p>
                   {activity.user && (
                     <p className="activity-detail-by-author">
-                      <label>By: </label>
+                      <label>Organization: </label>
                       &nbsp;{activity.organization_name}
                       <br />
                       <label>Type:</label>
