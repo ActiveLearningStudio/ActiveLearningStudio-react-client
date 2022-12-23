@@ -782,7 +782,7 @@ const FormikVideo = ({
                         fontWeight: 'bold',
                       }}
                     >
-                      {uploadedFile} &nbsp; is successfully uploaded.
+                      {uploadedFile}&nbsp;is successfully uploaded.
                     </div>
                   )}
                 </div>
