@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { showSearchProjectAction, showSearchPlaylistAction, setPreviewActivityAction } from 'store/actions/canvas';
 import './style.scss';
+import * as microsoftTeams from '@microsoft/teams-js';
 
 const Project = (props) => {
   const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
+  console.log('matching item:', match);
 
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
@@ -39,6 +41,31 @@ const Project = (props) => {
         window.location.href = finalUrl;
       }
     });
+  };
+
+  const addToMs = async (id) => {
+    await microsoftTeams.app.initialize();
+
+    const activityId = parseInt(id, 10);
+    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+
+    microsoftTeams.pages.config.setValidityState(true);
+    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+      const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
+      console.log('Hi ', finalUrl);
+      const configPromise = microsoftTeams.pages.config.setConfig({
+          websiteUrl: 'https://dev.currikistudio.org',
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          entityId: activity.id,
+          suggestedDisplayName: activity.title,
+      });
+      console.log('link ', `${config.domainUrl}msteam/launch/activity/${activity.id}`);
+      configPromise.then((result) => { 
+        saveEvent.notifySuccess();
+       })
+      // eslint-disable-next-line no-shadow
+      .catch((error) => { saveEvent.notifyFailure('failure message'); });
+  });
   };
 
   return (
@@ -135,7 +162,7 @@ const Project = (props) => {
                                             <FontAwesomeIcon icon="eye" className="action-icon" />
                                             Preview
                                           </Dropdown.Item>
-                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToMs}>
                                             <FontAwesomeIcon icon="plus" className="action-icon" />
                                             Add to Course
                                           </Dropdown.Item>
