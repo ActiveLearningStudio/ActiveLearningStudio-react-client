@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 // C-CSS-Start
 .record-content-wrapper {
@@ -60,7 +60,7 @@
         input {
           display: none;
           &:checked + span {
-            background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+            background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
             background-color: $curriki-main-blue;
           }
         }
@@ -286,7 +286,7 @@
           width: 50%;
           margin-right: 8px;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -314,7 +314,7 @@
           flex-direction: column;
           width: 50%;
           span {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
@@ -375,7 +375,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -399,7 +399,7 @@
             span {
               display: flex;
               align-items: center;
-              font-family: 'Open Sans';
+              font-family: "Open Sans";
               font-style: normal;
               font-weight: normal;
               font-size: 14px;
@@ -481,7 +481,7 @@
         }
         .lib-left-detail {
           p {
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: 400;
             font-size: 18px;
@@ -490,7 +490,7 @@
           }
           .sub-two {
             margin-top: 32px;
-            font-family: 'Open sans';
+            font-family: "Open sans";
             font-style: normal;
             font-weight: 400;
             font-size: 18px;
@@ -521,7 +521,7 @@
             color: #285aa5;
           }
           p {
-            font-family: 'Open Sans';
+            font-family: "Open Sans";
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -623,10 +623,28 @@
     margin-top: 18px;
     margin-bottom: 24px;
     p {
-      font-family: 'Open sans';
+      font-family: "Open sans";
       font-weight: 400;
       font-size: 16px;
       line-height: 24px;
+    }
+  }
+}
+
+/*
+Message Box Style
+*/
+.steps--message_box {
+  .message--box_links {
+    a {
+      background-color: #e5eeff;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: $curriki-main-blue;
+      border-radius: 4px;
+    }
+    .mr-12 {
+      margin-right: 12px;
     }
   }
 }
