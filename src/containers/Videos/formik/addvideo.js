@@ -194,6 +194,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     uploadFile
                     platformName={platformName}
                     setisbackHide={setisbackHide}
+                    selectedVideoId={videoId && platform === 'Mydevice' ? videoId : ''}
                   />
                 </Tab>
               ) : (
@@ -514,8 +515,10 @@ const FormikVideo = ({
   useEffect(() => {
     if (editVideo && platformName === 'Mydevice') {
       setUploadedFile(editVideo);
+    } else {
+      setUploadedFile(selectedVideoId);
     }
-  }, [editVideo, platformName]);
+  }, [editVideo, platformName, selectedVideoId]);
 
   useEffect(() => {
     if (editVideo) {
@@ -570,9 +573,10 @@ const FormikVideo = ({
           } else {
             setScreenStatus('DescribeVideo');
           }
+          const videoId = uploadedFile ? uploadedFile : values.videoUrl;
           dispatch({
             type: 'ADD_VIDEO_URL',
-            payload: values.videoUrl,
+            payload: videoId,
             platformName,
           });
           setisbackHide(true);
