@@ -117,10 +117,10 @@ function MsTeamActivityLaunch({ match }) {
   );
 }
 
-MsTeamsActivityPage.defaultProps = {
+MsTeamActivityLaunch.defaultProps = {
 };
 
-MsTeamsActivityPage.propTypes = {
+MsTeamActivityLaunch.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
