@@ -271,7 +271,7 @@ const DescribeVideo = ({
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">Describe layout</h4>
+                  <h4 className="interactive-video-heading-two">Describe activity</h4>
                   <div>
                     <div className="dec-title-formik-textField">
                       <div className="d-flex">

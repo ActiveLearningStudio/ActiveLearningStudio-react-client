@@ -15,6 +15,7 @@ import KomodoIntgSnSvg from 'iconLibrary/mainContainer/KomodoIntgSnSvg';
 import Swal from 'sweetalert2';
 
 import 'utils/DropDownEdit/dropdownedit.scss';
+import PlusSmSvg from 'iconLibrary/mainContainer/PlusSmSvg';
 
 const KomodoCard = ({ className, data, permission }) => {
   const currikiUtility = classNames('curriki-utility-komodo-card', className);
@@ -103,7 +104,8 @@ const KomodoCard = ({ className, data, permission }) => {
                     }}
                     className="komodo-card-add-share-options hover-apply"
                   >
-                    <KomodoIntgSnSvg primaryColor={primaryColor} />
+                    {/* <KomodoIntgSnSvg primaryColor={primaryColor} /> */}
+                    <PlusSmSvg primaryColor={primaryColor} />
                     <span className="textinButton">Add Interaction</span>
                   </div>
                 )}
