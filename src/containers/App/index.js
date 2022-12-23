@@ -149,7 +149,7 @@ function App(props) {
           <img src={loader} className="loader" alt="" />
         </div>
       )}
-      <div className="mobile-app-alert">
+      {/* <div className="mobile-app-alert">
         <img src={logo} alt="" />
 
         <div className="text-description">
@@ -166,7 +166,7 @@ function App(props) {
             <a href="https://curriki.org"> Curriki</a>
           </p>
         </div>
-      </div>
+      </div> */}
       {help && <Help />}
     </div>
   );
