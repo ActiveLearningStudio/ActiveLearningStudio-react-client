@@ -124,7 +124,8 @@ export default function Pills(props) {
 
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
-      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole, size, orderByColumn, currentOrderBy));
+      // const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole, size, orderByColumn, currentOrderBy));
+      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? page : 1, activeRole, size, orderByColumn, currentOrderBy));
       if (result?.data?.length > 0) {
         setUsers(result);
         setSearchAlertToggler(1);
@@ -139,8 +140,11 @@ export default function Pills(props) {
         setSearchQuery(target.value);
       }
 
-      searchUsersFromOrganization(target.value, activePage);
-      setActivePage(searchUsers ? activePage : 1);
+      console.log('activePage user,', activePage);
+      // searchUsersFromOrganization(target.value, activePage);
+      searchUsersFromOrganization(target.value, 1);
+      // setActivePage(searchUsers ? activePage : 1);
+      setActivePage(1);
       if (target.value.trim().length > 1) setUsers(null);
     } else {
       dispatch(clearSearchUserInOrganization());
