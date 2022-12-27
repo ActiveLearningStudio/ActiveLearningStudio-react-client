@@ -91,7 +91,8 @@ const ActivityShared = (props) => {
       const adjustedWidthVal = currentHeight * aspectRatio;
       const parentWidth = currikiH5PWrapper.current.parentElement.offsetWidth;
       if (adjustedWidthVal < parentWidth) {
-        currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+        // currikiH5PWrapper.current.style.width = `${adjustedWidthVal}px`; // eslint-disable-line no-param-reassign
+        currikiH5PWrapper.current.style.width = `${100}%`; // eslint-disable-line no-param-reassign
       }
     }
   }, [currikiH5PWrapper]);
