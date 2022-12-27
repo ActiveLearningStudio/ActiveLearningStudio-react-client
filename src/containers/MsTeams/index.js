@@ -14,9 +14,6 @@ const MsTeams = () => {
   // const lmsUrl = 'https%3A%2F%2Fcurriki.instructure.com';
   const lmsUrl = 'https%3A%2F%2Fteams.microsoft.com'; 
   const [ltiClientId, setLtiClientId] = useState(null);
-  const [courseId, setCourseId] = useState(176);
-  const [courseName, setCourseName] = useState('BS dev 1.7');
-  const [apiDomainUrl, setApiDomainUrl] = useState('teams.microsoft.com');
   const [redirectUrl, setRedirectUrl] = useState(null);
 
   // Get app context and auth token
@@ -41,10 +38,10 @@ const MsTeams = () => {
     const params = {
       user_email: msContext.user.userPrincipalName,
       lti_client_id: msContext.user.tenant.id,
-      api_domain_url: apiDomainUrl,
-      course_name: courseName,
-      course_id: courseId,
-      platform: 'meteams',
+      api_domain_url: 'teams.microsoft.com',
+      course_name: msContext.team.displayName,
+      course_id: msContext.team.groupId,
+      platform: 'msteams',
     };
     setRedirectUrl(new URLSearchParams(params).toString());
     console.log('context: ', msContext);
