@@ -140,7 +140,6 @@ export default function Pills(props) {
         setSearchQuery(target.value);
       }
 
-      console.log('activePage user,', activePage);
       // searchUsersFromOrganization(target.value, activePage);
       searchUsersFromOrganization(target.value, 1);
       // setActivePage(searchUsers ? activePage : 1);
@@ -616,9 +615,23 @@ export default function Pills(props) {
     }
   }, [activeTab, key]);
 
+  // useEffect(() => {
+  //   if (activeOrganization && type === 'Teams') {
+  //     console.log('searchQueryTeam', searchQueryTeam);
+  //     dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
+  //   }
+  // }, [size, activePage, activeOrganization, searchQueryTeam]);
+
+  const [searchQueryTeamStatus, setSearchQueryTeamStatus] = useState('');
   useEffect(() => {
     if (activeOrganization && type === 'Teams') {
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
+      if (searchQueryTeamStatus !== searchQueryTeam) {
+        setSearchQueryTeamStatus(searchQueryTeam);
+        dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, 1, size, orderByColumn, currentOrderBy));
+        setActivePage(1);
+      } else {
+        dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
+      }
     }
   }, [size, activePage, activeOrganization, searchQueryTeam]);
 
