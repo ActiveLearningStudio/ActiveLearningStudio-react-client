@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { setPreviewActivityAction } from 'store/actions/canvas';
 import './style.scss';
+import * as microsoftTeams from '@microsoft/teams-js';
 
 const ActivitiesList = (props) => {
   const { match, activity, setPreviewActivity } = props;
+  console.log('matching item activity:', match);
 
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
@@ -36,6 +38,31 @@ const ActivitiesList = (props) => {
         window.location.href = finalUrl;
       }
     });
+  };
+
+  const addToMsTeams = async (id) => {
+    await microsoftTeams.app.initialize();
+
+    const activityId = parseInt(id, 10);
+    if (!activityId) return;
+
+    microsoftTeams.pages.config.setValidityState(true);
+    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+      const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
+      console.log('redirectUrl: ', finalUrl);
+      const configPromise = microsoftTeams.pages.config.setConfig({
+          websiteUrl: config.domainUrl,
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          entityId: activity.id,
+          suggestedDisplayName: activity.title,
+      });
+      console.log('link ', `${config.domainUrl}msteam/launch/activity/${activity.id}`);
+      configPromise.then((result) => { 
+        saveEvent.notifySuccess();
+       })
+      // eslint-disable-next-line no-shadow
+      .catch((error) => { saveEvent.notifyFailure('failure message'); });
+  });
   };
 
   return (
@@ -85,7 +112,7 @@ const ActivitiesList = (props) => {
                     <FontAwesomeIcon icon="eye" className="action-icon" />
                     Preview
                   </Dropdown.Item>
-                  <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+                  <Dropdown.Item to="#" eventKey={activity.id} onSelect={match.params.lmsUrl.includes('microsoft') ? addToMsTeams : addToLMS}>
                     <FontAwesomeIcon icon="plus" className="action-icon" />
                     Add to Course
                   </Dropdown.Item>

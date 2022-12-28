@@ -6,6 +6,7 @@ export function allowedH5PActvityPaths() {
     '/lti-tools/independent_activity/:independentActivityId',
     '/activity/:activityId/shared',
     '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
+    '/msteam/activity/:activityId',
   ];
 }
 
