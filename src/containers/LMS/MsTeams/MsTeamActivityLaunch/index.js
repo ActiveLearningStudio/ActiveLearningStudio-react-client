@@ -14,48 +14,48 @@ import './styles.scss';
 
 function MsTeamActivityLaunch({match}) {
   const { activityId, classId } = match.params;
-  const [authorized, setAuthorized] = useState(null);
-  const [isTeacher, setIsTeacher] = useState(null);
-  const [activeCourse, setActiveCourse] = useState(null);
+  // const [authorized, setAuthorized] = useState(null);
+  // const [isTeacher, setIsTeacher] = useState(null);
+  // const [activeCourse, setActiveCourse] = useState(null);
   // Gets student courses
-  useEffect(() => {
-    if (student === null) return;
+  // useEffect(() => {
+  //   if (student === null) return;
 
-    getStudentCourses(student.auth.accessToken);
-  }, [student]);
+  //   getStudentCourses(student.auth.accessToken);
+  // }, [student]);
 
   // Checks user membership in the course
-  useEffect(() => {
-    if (courses === null) return;
+  // useEffect(() => {
+  //   if (courses === null) return;
 
-    let found = false;
-    let teacher = false;
-    // eslint-disable-next-line no-restricted-syntax
-    for (const i in courses) {
-      if (courses[i].id === courseId) {
-        found = true;
-        setActiveCourse(courses[i]);
+  //   let found = false;
+  //   let teacher = false;
+  //   // eslint-disable-next-line no-restricted-syntax
+  //   for (const i in courses) {
+  //     if (courses[i].id === courseId) {
+  //       found = true;
+  //       setActiveCourse(courses[i]);
 
-        if (courses[i].ownerId === student.auth.googleId) {
-          teacher = true;
-        }
-      }
-    }
-    setAuthorized(found && !teacher && !submissionError);
-    setIsTeacher(teacher);
-  }, [courses, courseId, submissionError]);
+  //       if (courses[i].ownerId === student.auth.googleId) {
+  //         teacher = true;
+  //       }
+  //     }
+  //   }
+  //   setAuthorized(found && !teacher && !submissionError);
+  //   setIsTeacher(teacher);
+  // }, [courses, courseId, submissionError]);
 
-  const handleLogin = (data) => {
-    if (!data) return;
+  // const handleLogin = (data) => {
+  //   if (!data) return;
 
-    setStudentAuth(data);
-    // Refresh token in less than half an hour
-    setInterval(() => {
-      data.reloadAuthResponse().then((newData) => {
-        refreshStudentAuthToken(newData);
-      });
-    }, 1000 * 60 * 15);
-  };
+  //   setStudentAuth(data);
+  //   // Refresh token in less than half an hour
+  //   setInterval(() => {
+  //     data.reloadAuthResponse().then((newData) => {
+  //       refreshStudentAuthToken(newData);
+  //     });
+  //   }, 1000 * 60 * 15);
+  // };
 
   return (
     <>
