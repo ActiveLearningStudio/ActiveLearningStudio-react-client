@@ -37,7 +37,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [showSidebar, setShowSidebar] = useState(true);
   const [platformName, setplatformName] = useState('Mydevice');
   const [mediaSources, setMediaSources] = useState([]);
-  const { editVideo, videoId, platform } = useSelector((state) => state.videos);
+  const { editVideo, videoId, platform, videoFile } = useSelector((state) => state.videos);
   const [activeKey, setActiveKey] = useState(platform ? platform : mediaSources[0]?.name);
   useEffect(() => {
     if (editVideo?.source_type) {
@@ -195,6 +195,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     platformName={platformName}
                     setisbackHide={setisbackHide}
                     selectedVideoId={videoId && platform === 'Mydevice' ? videoId : ''}
+                    selectedVideoFile={videoFile && platform === 'Mydevice' ? videoFile : ''}
                   />
                 </Tab>
               ) : (
@@ -501,6 +502,7 @@ const FormikVideo = ({
   placeholder,
   komodo,
   setisbackHide,
+  selectedVideoFile,
 }) => {
   const dispatch = useDispatch();
   const imgUpload = useRef();
@@ -516,7 +518,7 @@ const FormikVideo = ({
     if (editVideo && platformName === 'Mydevice') {
       setUploadedFile(editVideo);
     } else {
-      setUploadedFile(selectedVideoId);
+      setUploadedFile(selectedVideoFile);
     }
   }, [editVideo, platformName, selectedVideoId]);
 
@@ -573,12 +575,18 @@ const FormikVideo = ({
           } else {
             setScreenStatus('DescribeVideo');
           }
-          const videoId = uploadedFile ? uploadedFile : values.videoUrl;
           dispatch({
             type: 'ADD_VIDEO_URL',
-            payload: videoId,
+            payload: values.videoUrl,
             platformName,
           });
+          if (uploadedFile) {
+            dispatch({
+              type: 'ADD_VIDEO_FILE',
+              payload: uploadedFile,
+              platformName,
+            });
+          }
           setisbackHide(true);
         }}
       >
