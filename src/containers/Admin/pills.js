@@ -1014,7 +1014,7 @@ export default function Pills(props) {
   useEffect(() => {
     if (subTypeState === 'LMS settings') {
       const updateNewLmsProject = lmsProject?.data.map((_lms) => {
-        if (_lms.id === newlyEdit.id) {
+        if (_lms?.id === newlyEdit?.id) {
           _lms = newlyEdit;
         }
         return _lms;
