@@ -282,7 +282,7 @@ const DropDownEdit = ({
                         );
                       }}
                     >
-                      <a>{element.display_name}</a>
+                      <a>{element.id === 4 ? 'Public' : element.display_name}</a>
                     </li>
                   ))}
                   {/* <li>
