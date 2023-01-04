@@ -226,10 +226,10 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     libraryPreferences.push(1);
   }
   if (data.lp_my_org) {
-    libraryPreferences.push(2);
+    libraryPreferences.push(3);
   }
   if (data.lp_my_org_parent) {
-    libraryPreferences.push(3);
+    libraryPreferences.push(2);
   }
   if (data.lp_all) {
     libraryPreferences.push(4);
