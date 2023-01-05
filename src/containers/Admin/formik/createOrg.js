@@ -185,8 +185,8 @@ export default function CreateOrg(prop) {
 
           // lp_private: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 1) : true,
           lp_private: true,
-          lp_my_org: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 2) : false,
-          lp_my_org_parent: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 3) : false,
+          lp_my_org: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 3) : false,
+          lp_my_org_parent: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 2) : false,
           lp_all: editMode ? activeEdit?.allowed_visibility_type_id?.find((data) => data.id == 4) : false,
 
           tos_type: editMode ? (!activeEdit?.tos_type ? 'Parent' : activeEdit?.tos_type) : 'Parent',
