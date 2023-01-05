@@ -235,3 +235,80 @@
 .lti-deeplink-project-container .project-details-row label {
   font-weight: bolder;
 }
+
+.msteams-search-page {
+  .lti-deeplink-project-container {
+    border-bottom: solid 1px #5B5FC7;
+  }
+
+  .lti-deeplink-project-container .result .project .actions button {
+    background-color: white;
+    color: black;
+    border: 1px solid lightgray;
+  }
+
+  .lti-deeplink-project-container .result .project .actions button:hover {
+    background-color: #4F52B2;
+    color: white;
+  }
+
+  .lti-deeplink-project-container .result .project .selected-proj button {
+    background-color: #4F52B2;
+    color: white;
+  }
+
+  .lti-deeplink-project-container .playlists-row .playlists-container .card .active-2 {
+    background-color: white;
+  }  
+
+  .lti-deeplink-project-container .playlists-row .playlists-container .card .active-2 h5 {
+    color: #5B5FC7;
+  }
+  
+  .lti-deeplink-project-container .playlists-row .playlists-container .card .active {
+    cursor: pointer;
+  }
+
+  .lti-deeplink-project-container .playlists-row .playlists-container .card .active h5 {
+   color: black; 
+  }
+
+  .lti-deeplink-project-container .result {
+    border-bottom: 0;
+  }
+  
+  .lti-deeplink-project-container .result .project {
+    border: solid 1px lightgray;
+    border-radius: 5px;
+    padding: 1em;
+  }
+
+  .playlist-activities .activities {
+    border: 0;
+    cursor: pointer;
+  }
+
+  .playlist-activities .activities:hover {
+    background-color: #E8EBFA; 
+   }
+
+   .playlist-activities .selected {
+    background-color: #E8EBFA; 
+   }
+
+   .playlist-activities .selected .title p {
+    color: #5B5FC7 !important;
+   }
+
+   .playlist-activities .title p {
+    font-weight: bolder;
+   }
+
+  .playlist-activities .activities .title p {
+    border-bottom: 0;
+  }
+
+  .playlist-activities .activities .dropdown-icon {
+    display: none;
+  }
+}

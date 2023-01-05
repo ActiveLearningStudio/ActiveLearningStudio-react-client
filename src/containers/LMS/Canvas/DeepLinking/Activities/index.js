@@ -11,14 +11,19 @@ import './style.scss';
 
 const Activities = (props) => {
   const { match, browse, activities } = props;
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const [primaryColor, setPrimaryColor] = useState(getGlobalColor('--main-primary-color'));
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    const url = new URL(window.location.href);
-    const email = url.searchParams.get('user_email');
+    const params = new URLSearchParams(match.params.redirectUrl);
+    if (params.has('platform') && params.get('platform') === 'msteams') {
+      setPrimaryColor('#616161');
+    }
+
+    const email = params.get('user_email');
     browse({
       user_email: email,
       query: searchQuery || null,
@@ -62,8 +67,10 @@ const Activities = (props) => {
               </div>
             </div>
           )}
-          {activities !== null && activities.data.length === 0 && <Alert variant="warning">No activity found.</Alert>}
-          {activities !== null && activities.data.length > 0 && activities.data.map((data) => <ActivitiesList activity={data} key={data.id} />)}
+          {activities !== null && activities.data.length === 0 && <Alert className="mt-2" variant="warning">No activity found.</Alert>}
+          {activities !== null && activities.data.length > 0 && activities.data.map((data) => (
+            <ActivitiesList activity={data} key={data.id} selectedActivityId={selectedActivityId} setSelectedActivityId={setSelectedActivityId} />
+          ))}
         </div>
       </div>
     </>
