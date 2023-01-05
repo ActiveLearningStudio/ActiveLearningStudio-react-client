@@ -76,6 +76,7 @@ import MyDeviceSmSvg from 'iconLibrary/mainContainer/MyDeviceSmSvg';
 import EditSmSvg from 'iconLibrary/mainContainer/EditSmSvg';
 import ApprovedSmSvg from 'iconLibrary/mainContainer/ApprovedSmSvg';
 import PlusSmSvg from 'iconLibrary/mainContainer/PlusSmSvg';
+import sortVisibilityTypes from 'helpers/sortVisibility';
 
 function PlaylistsPage(props) {
   const dispatch = useDispatch();
@@ -523,7 +524,8 @@ function PlaylistsPage(props) {
   const secondaryColor = getGlobalColor('--main-secondary-color');
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   useEffect(() => {
-    setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+    // setVisibilityTypeArray(activeOrganization?.allowed_visibility_type_id);
+    setVisibilityTypeArray(sortVisibilityTypes(activeOrganization?.allowed_visibility_type_id));
   }, [activeOrganization]);
   return (
     <>
