@@ -38,6 +38,7 @@ const INITIAL_STATE = {
   dynamicPermission: null,
   roleAddDynamicPermission: null,
   ltiToolsReloadStatus: false,
+  subjectsAddStatus: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -422,6 +423,19 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         orgLtiSettings: action.payload,
+      };
+
+    // ADD SUBJECT STATUS:
+    case actionTypes.REF_TABLE_SUBJECT_ADD_NEW_SET:
+      return {
+        ...state,
+        subjectsAddStatus: true,
+      };
+
+    case actionTypes.REF_TABLE_SUBJECT_ADD_NEW_CLEAR:
+      return {
+        ...state,
+        subjectsAddStatus: false,
       };
 
     default:

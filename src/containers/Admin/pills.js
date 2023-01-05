@@ -404,7 +404,15 @@ export default function Pills(props) {
       setSubjects(dataRedux.admin.subjects);
     }
   }, [dataRedux.admin.subjects]);
-
+  // Add Subject status update pagination
+  useEffect(() => {
+    if (dataRedux.admin.subjectsAddStatus) {
+      setActivePage(1);
+      dispatch({
+        type: actionTypes.REF_TABLE_SUBJECT_ADD_NEW_CLEAR,
+      });
+    }
+  }, [dataRedux.admin.subjectsAddStatus]);
   useEffect(() => {
     if (dataRedux.admin.education_level) {
       setEducationLevel(dataRedux.admin.education_level);
