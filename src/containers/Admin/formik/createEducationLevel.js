@@ -4,7 +4,10 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as actionTypes from "store/actionTypes";
 
-import { getEducationLevel, removeActiveAdminForm } from "store/actions/admin";
+import {
+  getEducationLevel,
+  removeActiveAdminForm,
+} from "store/actions/admin";
 import Swal from "sweetalert2";
 import adminapi from "../../../services/admin.service";
 
@@ -96,13 +99,20 @@ export default function CreateEducationLevel(props) {
                   confirmButton: "confirmation-close-btn",
                 },
               });
+
               dispatch(
-                getEducationLevel(organization?.activeOrganization?.id, 1)
+                getEducationLevel(
+                  organization?.activeOrganization?.id,
+                  1
+                )
               );
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
                 payload: res?.data,
+              });
+              dispatch({
+                type: actionTypes.REF_TABLE_SUBJECT_ADD_NEW_SET,
               });
             });
           }
