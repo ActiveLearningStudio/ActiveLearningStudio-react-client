@@ -418,3 +418,27 @@
     color: #0f4392;
     cursor: pointer;
   }
+
+  .msteams-search-page {
+    .dropdown-icon {
+      display: none;
+    }
+
+    .activity:hover {
+      background-color: #E8EBFA;
+      cursor: pointer;
+    }
+
+    .selected {
+      background-color: #E8EBFA;
+      cursor: pointer;
+    }
+
+    .result {
+      border-bottom: solid 1px #5B5FC7;
+    }
+
+    .search-bar input::placeholder {
+      color: #616161;
+    }
+  }

@@ -46,3 +46,65 @@
   border-radius: 8px;
   padding: 1em;
 }
+
+.msteams-search-page {
+  .team {
+    border-bottom: solid 1px #5B5FC7;
+  }
+
+  .team-selector {
+    background-color: white;
+    padding: 0;
+  }
+
+  .team-selector .form-group {
+    label {
+      display: block;
+      color: #484644;
+      font-size: small;
+    }
+
+    select {
+      border: solid 1px;
+      border-color: #E0E0E0 !important;
+      color: black !important;
+      font-size: small;
+    }
+  }
+
+  .team-container {
+    border: solid 1px #E0E0E0;
+    border-radius: 5px;
+    padding: 1em;
+    display: block;
+
+    h1 {
+      color: black;
+    }
+
+    p {
+      color: #252423;
+    }
+
+    button {
+      border: solid 1px lightgray;
+      background-color: white;
+      color: black;
+      font-weight: 500;
+    }
+
+    button:hover {
+      border: 0;
+      background-color: #4F52B2;
+      color: white;
+      font-weight: 500;
+    }
+  }
+
+  .team.selected-team button {
+    border: 0;
+    background-color: #4F52B2;
+    color: white;
+    font-weight: 500;
+  }
+}

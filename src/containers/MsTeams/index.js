@@ -51,7 +51,7 @@ const MsTeams = () => {
   return (
     // eslint-disable-next-line object-curly-newline
     msContext && redirectUrl !== null && (
-    <Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${redirectUrl}?${redirectUrl}` }} />
+    <Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${redirectUrl}` }} />
     )
   );
 };

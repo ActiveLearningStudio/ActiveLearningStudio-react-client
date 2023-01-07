@@ -12,6 +12,7 @@ import * as microsoftTeams from '@microsoft/teams-js';
 
 const Project = (props) => {
   const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
   console.log('matching item:', match);
 
   const showActivityPreview = (id) => {
@@ -44,10 +45,14 @@ const Project = (props) => {
   };
 
   const addToMsTeams = async (id) => {
-    await microsoftTeams.app.initialize();
+    if (!match.params.lmsUrl.includes('microsoft'))
+      return;
 
     const activityId = parseInt(id, 10);
     const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+    setSelectedActivityId(activityId);
+
+    await microsoftTeams.app.initialize();
 
     microsoftTeams.pages.config.setValidityState(true);
     microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
@@ -106,7 +111,7 @@ const Project = (props) => {
             </div>
 
             {/* {selectedProject?.id !== project.id && ( */}
-            <div className=" text-right actions">
+            <div className={selectedProject?.id === project.id ? "text-right actions selected-proj" : " text-right actions"}>
               <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
                 View Playlists
               </button>
@@ -140,7 +145,7 @@ const Project = (props) => {
                             {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
                               <div className="playlist-activities">
                                 {playlist.activities.map((activity) => (
-                                  <div className="  activities" key={activity.id}>
+                                  <div className={ activity.id === selectedActivityId ? "activities selected": "  activities"} key={activity.id} onClick={() => { addToMsTeams(activity.id); }}>
                                     <div
                                       className="project-img"
                                       style={{
