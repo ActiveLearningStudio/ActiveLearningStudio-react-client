@@ -17,9 +17,9 @@ const Browse = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    const params = new URLSearchParams(match.params.redirectUrl);
+    const params = new URL(window.location.href).searchParams;
 
-    if (params.has('platform') && params.get('platform') === 'msteams') {
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
       setPrimaryColor('#616161');
     }
 

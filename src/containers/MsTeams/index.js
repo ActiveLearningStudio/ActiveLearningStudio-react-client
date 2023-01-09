@@ -41,17 +41,22 @@ const MsTeams = () => {
       api_domain_url: 'teams.microsoft.com',
       course_name: msContext.team.displayName,
       course_id: msContext.team.groupId,
-      platform: 'msteams',
+      platform: 'MS Teams',
     };
     setRedirectUrl(new URLSearchParams(params).toString());
     console.log('context: ', msContext);
-    }, [msContext]);
+  }, [msContext]);
 
   // eslint-disable-next-line react/react-in-jsx-scope
   return (
     // eslint-disable-next-line object-curly-newline
     msContext && redirectUrl !== null && (
-    <Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${redirectUrl}` }} />
+      <Redirect
+        to={{
+          pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${redirectUrl}`,
+          search: `?${redirectUrl}`,
+        }}
+      />
     )
   );
 };
