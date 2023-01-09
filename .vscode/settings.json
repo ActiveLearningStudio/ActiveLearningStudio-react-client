@@ -1,14 +1,44 @@
 {
-  "editor.detectIndentation": false,
-  "javascript.preferences.quoteStyle": "single",
-  "prettier.singleQuote": true,
-  "editor.tabSize": 2,
-  "prettier.printWidth": 180,
-  "editor.formatOnSave": true,
-  "prettier.trailingComma": "all",
-  "prettier.endOfLine": "auto",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+  "gitlens.advanced.messages": {
+    "suppressGitMissingWarning": true,
+    "suppressLineUncommittedWarning": true
   },
-  "eslint.validate": ["javascript"]
+  "editor.linkedEditing": true,
+  "editor.trimAutoWhitespace": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "editor.renderWhitespace": "all",
+  "editor.quickSuggestions": {
+    "other": true,
+    "strings": true
+  },
+
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "git.suggestSmartCommit": true,
+  "prettier.tabWidth": 2,
+  "editor.tabSize": 2,
+  "editor.wordWrapColumn": 5,
+  "prettier.useEditorConfig": false,
+  "prettier.singleQuote": false,
+  "html.format.wrapLineLength": 1,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "workbench.editorAssociations": {
+    "*.woff": "default"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "editor.suggestSelection": "first",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.formatOnSave": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "prettier.printWidth": 70
 }
