@@ -60,7 +60,6 @@ const MsTeamActivityLaunchScreen = (props) => {
     activityId,
     paramObj,
     context,
-    // classId,
     activeCourse,
     match,
     history,
@@ -112,13 +111,15 @@ const MsTeamActivityLaunchScreen = (props) => {
 
   // check if already submit
   useEffect(() => {
-    if (submission === null) return;
+    const classId = paramObj.classId;
+    const submissionId = paramObj.submissionId;
+    // if (submission === null) return;
 
     // If the activity has already been submitted to google classroom, redirect to summary page
-    if (submission && submission.state === 'TURNED_IN') {
-      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
+    // if (submission && submission.state === 'TURNED_IN') {
+      history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
       return;
-    }
+    // }
 
     loadH5pSettings(activityId, context.user.id, submission.id);
   }, [submission]);

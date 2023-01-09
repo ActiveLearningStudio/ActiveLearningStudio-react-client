@@ -48,15 +48,12 @@ const ActivitiesList = (props) => {
 
     microsoftTeams.pages.config.setValidityState(true);
     microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
-      const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
-      console.log('redirectUrl: ', finalUrl);
       const configPromise = microsoftTeams.pages.config.setConfig({
           websiteUrl: config.domainUrl,
           contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
           entityId: activity.id,
           suggestedDisplayName: activity.title,
       });
-      console.log('link ', `${config.domainUrl}msteam/launch/activity/${activity.id}`);
       configPromise.then((result) => { 
         saveEvent.notifySuccess();
        })

@@ -19,15 +19,16 @@ function MsTeamActivityLaunch({match}) {
   console.log('my params: ', match.params);
   const search = useLocation().search;
   const queryParams = new URLSearchParams(search);
-  console.log('classIdAssignment:', queryParams.get("classId"));
-  const [isTeacher, setIsTeacher] = useState(false);
+  const [isTeacher, setIsTeacher] = useState('teacher');
   const [msContext, setMsContext] = useState(null);
   
    // Get app context of login user
    useEffect(() => {
+
+    setIsTeacher(queryParams.get("userRole"));
+
     app.initialize().then(async () => {
       await app.getContext().then((response) => {
-        setIsTeacher(response.user.licenseType == 'Teacher' ? true : false);
         setMsContext(response);
         console.log('my context', response);
       });
@@ -53,27 +54,24 @@ function MsTeamActivityLaunch({match}) {
             <div className="activity-bg left-vdo">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
+                  
+                {isTeacher === 'student' && (
                   <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />
+                )}
 
-                  {/* {isTeacher === true && (
-                        <div className="row m-4">
-                          <div className="col text-center">
-                            <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
-                          </div>
-                        </div>
-                      )} */}
+                {isTeacher === 'teacher' && (
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
+                    </div>
+                  </div>
+                )}
                 </div>
               </div>
             </div>
           </div>
         </section>
       </div>
-      {/* {(orientation >= 90)
-      && (
-      <div className="coverallareas">
-        <Alert variant="warning">Please use Portrait mode!</Alert>
-      </div>
-      )} */}
     </>
   );
 }
@@ -83,7 +81,6 @@ MsTeamActivityLaunch.defaultProps = {
 
 MsTeamActivityLaunch.propTypes = {
   match: PropTypes.object.isRequired,
-  // orientation: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
