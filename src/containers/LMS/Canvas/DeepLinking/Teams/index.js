@@ -10,7 +10,7 @@ import './style.scss';
 
 const Teams = (props) => {
   const { match, teams, getTeams } = props;
-  const params = new URLSearchParams(match.params.redirectUrl);
+  const params = new URL(window.location.href).searchParams;
   const email = params.get('user_email');
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [filterTeamId, setFilterTeamId] = useState('all');

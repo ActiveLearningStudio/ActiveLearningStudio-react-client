@@ -26,7 +26,7 @@ const SearchPage = (props) => {
     const params = new URLSearchParams(match.params.redirectUrl);
     console.log('params', params);
 
-    if (params.has('platform') && params.get('platform') === 'msteams') {
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
       console.log('here');
       setPlatformStyle('msteams-search-page');
     }
