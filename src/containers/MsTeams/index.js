@@ -41,7 +41,7 @@ const MsTeams = () => {
       api_domain_url: 'teams.microsoft.com',
       course_name: msContext.team.displayName,
       course_id: msContext.team.groupId,
-      platform: 'msteams',
+      platform: 'MS Teams',
     };
     setRedirectUrl(new URLSearchParams(params).toString());
     console.log('context: ', msContext);
@@ -51,7 +51,7 @@ const MsTeams = () => {
   return (
     // eslint-disable-next-line object-curly-newline
     msContext && redirectUrl !== null && (
-    <Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${redirectUrl}?${redirectUrl}` }} />
+    <Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}?${redirectUrl}` }} />
     )
   );
 };
