@@ -10,8 +10,8 @@ import './style.scss';
 
 const Teams = (props) => {
   const { match, teams, getTeams } = props;
-  const url = new URL(window.location.href);
-  const email = url.searchParams.get('user_email');
+  const params = new URL(window.location.href).searchParams;
+  const email = params.get('user_email');
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [filterTeamId, setFilterTeamId] = useState('all');
 
@@ -66,7 +66,7 @@ const Teams = (props) => {
         </div>
       )}
       {teams?.length > 0 && teams.filter((team) => (filterTeamId === 'all' || filterTeamId === team.id.toString())).map((team) => (
-        <div key={team.id}>
+        <div key={team.id} className={selectedTeam?.id === team.id ? 'team selected-team' : 'team'}>
           <div className="row team-container">
             <div className="col">
               <h1>{team.name}</h1>

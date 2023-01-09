@@ -37,10 +37,18 @@ const MsTeams = () => {
     };
     setRedirectUrl(new URLSearchParams(params).toString());
     console.log('context: ', msContext);
-    }, [msContext]);
+  }, [msContext]);
 
   return (
-    msContext && redirectUrl !== null ? (<Redirect to={{ pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}?${redirectUrl}` }} />) : error
+    // eslint-disable-next-line object-curly-newline
+    msContext && redirectUrl !== null ? (
+      <Redirect
+        to={{
+          pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}`,
+          search: `?${redirectUrl}`,
+        }}
+      />
+    ) : error
   );
 };
 

@@ -1,18 +1,37 @@
 /* eslint-disable */
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { Tabs, Tab, Table } from 'react-bootstrap';
-import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import adminService from 'services/admin.service';
-import indActivity from 'services/indActivities.service';
-import Starter from './starter';
-import { columnData } from './column';
-import GcrPublishing from './publishing/gcrPublishing';
-import MsTeamPublishing from './publishing/msTeamPublishing';
-import { getOrgUsers, searchUserInOrganization, getsubOrgList, getRoles, clearSearchUserInOrganization, updatePageNumber, resetPageNumber } from 'store/actions/organization';
-import { getActivityItems, loadResourceTypesAction } from 'store/actions/resource';
-import { adminIntActivities, allAdminExportActivity } from 'store/actions/indActivities';
-import * as actionTypes from 'store/actionTypes';
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useCallback,
+} from "react";
+import { Tabs, Tab, Table } from "react-bootstrap";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import adminService from "services/admin.service";
+import indActivity from "services/indActivities.service";
+import Starter from "./starter";
+import { columnData } from "./column";
+import GcrPublishing from "./publishing/gcrPublishing";
+import MsTeamPublishing from "./publishing/msTeamPublishing";
+import {
+  getOrgUsers,
+  searchUserInOrganization,
+  getsubOrgList,
+  getRoles,
+  clearSearchUserInOrganization,
+  updatePageNumber,
+  resetPageNumber,
+} from "store/actions/organization";
+import {
+  getActivityItems,
+  loadResourceTypesAction,
+} from "store/actions/resource";
+import {
+  adminIntActivities,
+  allAdminExportActivity,
+} from "store/actions/indActivities";
+import * as actionTypes from "store/actionTypes";
 import {
   getLtiTools,
   getUserReport,
@@ -25,12 +44,15 @@ import {
   getActivityLayout,
   teamsActionAdminPanel,
   getOrganizationMedaiSource,
-} from 'store/actions/admin';
-import { allBrightCove, allBrightCoveSearch } from 'store/actions/videos';
-import { alphaNumeric } from 'utils';
-import { educationLevels } from 'components/ResourceCard/AddResource/dropdownData';
-import Media from './media';
-import { types } from '@babel/core';
+} from "store/actions/admin";
+import {
+  allBrightCove,
+  allBrightCoveSearch,
+} from "store/actions/videos";
+import { alphaNumeric } from "utils";
+import { educationLevels } from "components/ResourceCard/AddResource/dropdownData";
+import Media from "./media";
+import { types } from "@babel/core";
 
 export default function Pills(props) {
   const {
@@ -49,13 +71,24 @@ export default function Pills(props) {
     setUsers,
   } = props;
 
-  const [key, setKey] = useState(modules?.filter((data) => !!data)[0]);
+  const [key, setKey] = useState(
+    modules?.filter((data) => !!data)[0]
+  );
 
   const [subTypeState, setSubTypeState] = useState(subType);
   // All User Business Logic Start
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const { activityTypes, activityItems, usersReport, allbrightCove, teams, indActivities, exportedActivities, newlyEdit } = useSelector((state) => state.admin);
+  const {
+    activityTypes,
+    activityItems,
+    usersReport,
+    allbrightCove,
+    teams,
+    indActivities,
+    exportedActivities,
+    newlyEdit,
+  } = useSelector((state) => state.admin);
   const [userReportsStats, setUserReportStats] = useState(null);
   const admin = useSelector((state) => state.admin);
   const [activePage, setActivePage] = useState(1);
@@ -70,49 +103,80 @@ export default function Pills(props) {
     indexing: null,
     shared: null,
   });
-  const { activeOrganization, currentOrganization, roles, permission, searchUsers, allSuborgList } = organization;
-  const [activeRole, setActiveRole] = useState('');
+  const {
+    activeOrganization,
+    currentOrganization,
+    roles,
+    permission,
+    searchUsers,
+    allSuborgList,
+  } = organization;
+  const [activeRole, setActiveRole] = useState("");
   const { activeTab, activityType } = admin;
-  const [currentTab, setCurrentTab] = useState('All Projects');
+  const [currentTab, setCurrentTab] = useState("All Projects");
 
   const [searchAlertToggler, setSearchAlertToggler] = useState(1);
-  const [searchAlertTogglerStats, setSearchAlertTogglerStats] = useState(1);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchQueryProject, setSearchQueryProject] = useState('');
-  const [searchQueryStats, setSearchQueryStats] = useState('');
-  const [searchQueryActivities, setSearchQueryActivities] = useState('');
-  const [searchQueryTeam, setSearchQueryTeam] = useState('');
+  const [
+    searchAlertTogglerStats,
+    setSearchAlertTogglerStats,
+  ] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQueryProject, setSearchQueryProject] = useState("");
+  const [searchQueryStats, setSearchQueryStats] = useState("");
+  const [searchQueryActivities, setSearchQueryActivities] = useState(
+    ""
+  );
+  const [searchQueryTeam, setSearchQueryTeam] = useState("");
   const [allProjectUserTab, setAllProjectUserTab] = useState(null);
   const [allProjectIndexTab, setAllProjectIndexTab] = useState(null);
   const [libraryReqSelected, setLibraryReqSelected] = useState(false);
   const [lmsProject, setLmsProject] = useState(null);
   const [lmsBrightCove, setlmsBrightCove] = useState(null);
   const [defaultSso, setDefaultSso] = useState(null);
-  const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState('');
+  const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState("");
   const [ltiTool, setLtiTool] = useState(null);
-  const [ltiToolFilterBy, setLtiToolFilterBy] = useState('');
-  const [activityItemFilterBy, setActivityItemFilterBy] = useState('');
+  const [ltiToolFilterBy, setLtiToolFilterBy] = useState("");
+  const [activityItemFilterBy, setActivityItemFilterBy] = useState(
+    ""
+  );
   const [jobs, setJobs] = useState(null);
-  const [jobType, SetJobType] = useState({ value: 1, display_name: 'Pending' });
+  const [jobType, SetJobType] = useState({
+    value: 1,
+    display_name: "Pending",
+  });
   const [logs, setLogs] = useState(null);
-  const [logType, SetLogType] = useState({ value: 'all', display_name: 'All' });
-  const [changeIndexValue, setChangeIndexValue] = useState('0');
-  const [orderBy, setOrderBy] = useState('desc');
-  const [currentOrderBy, setCurrentOrderBy] = useState('');
-  const [orderByColumn, setOrderByColumn] = useState('');
+  const [logType, SetLogType] = useState({
+    value: "all",
+    display_name: "All",
+  });
+  const [changeIndexValue, setChangeIndexValue] = useState("0");
+  const [orderBy, setOrderBy] = useState("desc");
+  const [currentOrderBy, setCurrentOrderBy] = useState("");
+  const [orderByColumn, setOrderByColumn] = useState("");
   const dataRedux = useSelector((state) => state);
   const [subjects, setSubjects] = useState(null);
   const [educationLevel, setEducationLevel] = useState(null);
   const [authorTag, setAuthorTag] = useState(null);
   const [activityLayout, setActivityLayout] = useState(null);
-  const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState('');
-  const [searchLtiquery, setsearchLtiquery] = useState('');
-  const [searchLayoutQuery, setSearchLayoutQuery] = useState('');
-  const [searchSubjectsQuery, setSearchSubjectsQuery] = useState('');
-  const [searchAuthorTagQuery, setSearchAuthorTagQuery] = useState('');
-  const [searchEducationLevelQuery, setSearchEducationLevelQuery] = useState('');
-  const [searchActivityTypesQuery, setSearchActivityTypesQuery] = useState('');
-  const [searchActivityItemsQuery, setSearchActivityItemsQuery] = useState('');
+  const [lmsProjectFilterBy, setLmsProjectFilterBy] = useState("");
+  const [searchLtiquery, setsearchLtiquery] = useState("");
+  const [searchLayoutQuery, setSearchLayoutQuery] = useState("");
+  const [searchSubjectsQuery, setSearchSubjectsQuery] = useState("");
+  const [searchAuthorTagQuery, setSearchAuthorTagQuery] = useState(
+    ""
+  );
+  const [
+    searchEducationLevelQuery,
+    setSearchEducationLevelQuery,
+  ] = useState("");
+  const [
+    searchActivityTypesQuery,
+    setSearchActivityTypesQuery,
+  ] = useState("");
+  const [
+    searchActivityItemsQuery,
+    setSearchActivityItemsQuery,
+  ] = useState("");
   const [filterLtiSettings, setfilterLtiSettings] = useState(null);
   useEffect(() => {
     setKey(modules?.filter((data) => !!data)[0]);
@@ -125,7 +189,17 @@ export default function Pills(props) {
   const searchUsersFromOrganization = async (query, page) => {
     if (query.length > 1) {
       // const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? activePage : 1, activeRole, size, orderByColumn, currentOrderBy));
-      const result = await dispatch(searchUserInOrganization(activeOrganization?.id, query, searchUsers ? page : 1, activeRole, size, orderByColumn, currentOrderBy));
+      const result = await dispatch(
+        searchUserInOrganization(
+          activeOrganization?.id,
+          query,
+          searchUsers ? page : 1,
+          activeRole,
+          size,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
       if (result?.data?.length > 0) {
         setUsers(result);
         setSearchAlertToggler(1);
@@ -140,7 +214,6 @@ export default function Pills(props) {
         setSearchQuery(target.value);
       }
 
-      console.log('activePage user,', activePage);
       // searchUsersFromOrganization(target.value, activePage);
       searchUsersFromOrganization(target.value, 1);
       // setActivePage(searchUsers ? activePage : 1);
@@ -149,17 +222,38 @@ export default function Pills(props) {
     } else {
       dispatch(clearSearchUserInOrganization());
       setActivePage(1);
-      setSearchQuery('');
-      const result = await dispatch(getOrgUsers(activeOrganization?.id, 1, activeRole, size, target.value, orderByColumn, currentOrderBy));
+      setSearchQuery("");
+      const result = await dispatch(
+        getOrgUsers(
+          activeOrganization?.id,
+          1,
+          activeRole,
+          size,
+          target.value,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
       setUsers(result);
     }
   };
 
-  const searchProjectQueryChangeHandler = async (query, index, type) => {
-    if (type === 'All Projects') {
+  const searchProjectQueryChangeHandler = async (
+    query,
+    index,
+    type
+  ) => {
+    if (type === "All Projects") {
       if (!!query) {
         setAllProjectTab(null);
-        const allproject = adminService.getAllProjectSearch(activeOrganization?.id, 1, query, size, orderByColumn, currentOrderBy);
+        const allproject = adminService.getAllProjectSearch(
+          activeOrganization?.id,
+          1,
+          query,
+          size,
+          orderByColumn,
+          currentOrderBy
+        );
         allproject
           .then((data) => {
             setAllProjectTab(data);
@@ -167,15 +261,23 @@ export default function Pills(props) {
           .catch((e) => setAllProjectTab([]));
       } else {
         setActivePage(1);
-        const allproject = adminService.getAllProject(activeOrganization?.id, 1, size);
+        const allproject = adminService.getAllProject(
+          activeOrganization?.id,
+          1,
+          size
+        );
         allproject.then((data) => {
           setAllProjectTab(data);
         });
       }
-    } else if (type === 'user') {
+    } else if (type === "user") {
       if (!!query) {
         setAllProjectUserTab(null);
-        const userproject = adminService.getUserProjectSearch(activeOrganization?.id, activePage, query);
+        const userproject = adminService.getUserProjectSearch(
+          activeOrganization?.id,
+          activePage,
+          query
+        );
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
@@ -183,7 +285,10 @@ export default function Pills(props) {
           .catch((e) => setAllProjectUserTab([]));
       } else {
         setActivePage(1);
-        const userproject = adminService.getUserProject(activeOrganization?.id, 1);
+        const userproject = adminService.getUserProject(
+          activeOrganization?.id,
+          1
+        );
         userproject.then((data) => {
           setAllProjectUserTab(data);
         });
@@ -192,36 +297,92 @@ export default function Pills(props) {
   };
 
   useMemo(() => {
-    if (activeTab !== 'Users') setActiveRole(null);
+    if (activeTab !== "Users") setActiveRole(null);
   }, [activeTab]);
 
   useMemo(async () => {
-    if (activeOrganization && type === 'Users' && subTypeState === 'All Users') {
+    if (
+      activeOrganization &&
+      type === "Users" &&
+      subTypeState === "All Users"
+    ) {
       if (searchQuery.length > 1) {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, orderByColumn, currentOrderBy));
+        const result = await dispatch(
+          getOrgUsers(
+            activeOrganization?.id,
+            activePage,
+            activeRole,
+            size,
+            searchQuery,
+            orderByColumn,
+            currentOrderBy
+          )
+        );
         setSearchQuery(searchQuery);
         setUsers(result);
-      } else if (organization?.users?.data?.length > 0 && activePage === organization?.activePage && !activeRole) {
+      } else if (
+        organization?.users?.data?.length > 0 &&
+        activePage === organization?.activePage &&
+        !activeRole
+      ) {
         setUsers(organization?.users);
       } else if (activeRole) {
-        const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, orderByColumn, currentOrderBy));
+        const result = await dispatch(
+          getOrgUsers(
+            activeOrganization?.id,
+            activePage,
+            activeRole,
+            size,
+            searchQuery,
+            orderByColumn,
+            currentOrderBy
+          )
+        );
         setUsers(result);
       }
     }
-    if (type === 'Organization') {
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage, searchQuery, orderByColumn, currentOrderBy));
+    if (type === "Organization") {
+      dispatch(
+        getsubOrgList(
+          activeOrganization?.id,
+          size,
+          activePage,
+          searchQuery,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
     }
-  }, [activeOrganization, activePage, type, subTypeState, activeTab, activeRole, organization?.users?.length, size]);
+  }, [
+    activeOrganization,
+    activePage,
+    type,
+    subTypeState,
+    activeTab,
+    activeRole,
+    organization?.users?.length,
+    size,
+  ]);
   // All Users Business Logic End
 
   useMemo(async () => {
     setAllProjectTab && setAllProjectTab(null);
     setAllProjectUserTab(null);
     setAllProjectIndexTab(null);
-    if (activeOrganization && type === 'Projects' && currentTab == 'All Projects') {
+    if (
+      activeOrganization &&
+      type === "Projects" &&
+      currentTab == "All Projects"
+    ) {
       if (libraryReqSelected) {
         if (searchQueryProject) {
-          const allproject = adminService.userSerchIndexs(activeOrganization?.id, activePage, 1, searchQueryProject, size);
+          const allproject = adminService.userSerchIndexs(
+            activeOrganization?.id,
+            activePage,
+            1,
+            searchQueryProject,
+            size
+          );
           allproject
             .then((data) => {
               setAllProjectTab(data);
@@ -238,13 +399,20 @@ export default function Pills(props) {
             projectFilterObj.created_to || undefined,
             projectFilterObj.updated_from || undefined,
             projectFilterObj.updated_to || undefined,
-            projectFilterObj.shared,
+            projectFilterObj.shared
           );
           setAllProjectTab(result);
         }
       } else {
         if (searchQueryProject) {
-          const allproject = adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size, orderByColumn, currentOrderBy);
+          const allproject = adminService.getAllProjectSearch(
+            activeOrganization?.id,
+            activePage,
+            searchQueryProject,
+            size,
+            orderByColumn,
+            currentOrderBy
+          );
           allproject
             .then((data) => {
               setAllProjectTab(data);
@@ -264,28 +432,53 @@ export default function Pills(props) {
             projectFilterObj.indexing,
             searchQuery,
             orderByColumn,
-            currentOrderBy,
+            currentOrderBy
           );
           setAllProjectTab(result);
         }
       }
-    } else if (activeOrganization && type === 'Projects' && currentTab === 'Exported Projects') {
+    } else if (
+      activeOrganization &&
+      type === "Projects" &&
+      currentTab === "Exported Projects"
+    ) {
       if (searchQueryProject) {
-        const userproject = adminService.getAllExportedProject(activeOrganization?.id, activePage, size, searchQueryProject);
+        const userproject = adminService.getAllExportedProject(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject
+        );
         userproject
           .then((data) => {
             setAllProjectUserTab(data);
           })
           .catch((e) => setAllProjectUserTab([]));
       } else {
-        const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size);
+        const result = await adminService.getAllExportedProject(
+          activeOrganization?.id,
+          activePage || 1,
+          size
+        );
         setAllProjectUserTab(result);
       }
     }
-  }, [activeOrganization?.id, type, activePage, changeIndexValue, currentTab, size, searchQueryProject, libraryReqSelected]);
+  }, [
+    activeOrganization?.id,
+    type,
+    activePage,
+    changeIndexValue,
+    currentTab,
+    size,
+    searchQueryProject,
+    libraryReqSelected,
+  ]);
 
   useMemo(() => {
-    if (libraryReqSelected && subTypeState === 'All independent activities') {
+    if (
+      libraryReqSelected &&
+      subTypeState === "All independent activities"
+    ) {
       dispatch(
         adminIntActivities(
           activeOrganization?.id,
@@ -300,67 +493,187 @@ export default function Pills(props) {
           undefined,
           undefined,
           undefined,
-          1,
-        ),
+          1
+        )
       );
-    } else if (subTypeState === 'All independent activities' && activeOrganization?.id) {
-      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject, orderByColumn, currentOrderBy));
-    } else if (subTypeState === 'Exported activities' && activeOrganization?.id) {
-      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject, orderByColumn, currentOrderBy));
+    } else if (
+      subTypeState === "All independent activities" &&
+      activeOrganization?.id
+    ) {
+      dispatch(
+        adminIntActivities(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
+    } else if (
+      subTypeState === "Exported activities" &&
+      activeOrganization?.id
+    ) {
+      dispatch(
+        allAdminExportActivity(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
     }
-  }, [activeOrganization?.id, type, activePage, subTypeState, size, searchQueryProject, libraryReqSelected]);
+  }, [
+    activeOrganization?.id,
+    type,
+    activePage,
+    subTypeState,
+    size,
+    searchQueryProject,
+    libraryReqSelected,
+  ]);
 
   // Activity Tab Business Logic
   useEffect(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Items') {
+    if (type === "Activities" && subTypeState === "Activity Items") {
       //pagination
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy, activityItemFilterBy));
+      dispatch(
+        getActivityItems(
+          activeOrganization?.id,
+          searchActivityItemsQuery,
+          activePage,
+          size,
+          orderByColumn,
+          currentOrderBy,
+          activityItemFilterBy
+        )
+      );
       dispatch(updatePageNumber(activePage));
-    } else if (type === 'Activities' && subTypeState === 'Activity Items' && activePage === 1) {
+    } else if (
+      type === "Activities" &&
+      subTypeState === "Activity Items" &&
+      activePage === 1
+    ) {
       //on page 1
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, orderByColumn, currentOrderBy, activityItemFilterBy));
+      dispatch(
+        getActivityItems(
+          activeOrganization?.id,
+          searchActivityItemsQuery,
+          activePage,
+          size,
+          orderByColumn,
+          currentOrderBy,
+          activityItemFilterBy
+        )
+      );
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage, size, activeOrganization]);
   useEffect(() => {
-    if (type === 'Activities' && subTypeState === 'Activity Layouts' && activePage) {
+    if (
+      type === "Activities" &&
+      subTypeState === "Activity Layouts" &&
+      activePage
+    ) {
       //pagination
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery));
+      dispatch(
+        getActivityTypes(
+          activeOrganization?.id,
+          activePage,
+          size,
+          orderByColumn,
+          currentOrderBy,
+          searchActivityTypesQuery
+        )
+      );
       dispatch(updatePageNumber(activePage));
-    } else if (type === 'Activities' && subTypeState === 'Activity Types') {
+    } else if (
+      type === "Activities" &&
+      subTypeState === "Activity Types"
+    ) {
       //on page 1
       // dispatch(loadResourceTypesAction());
-      dispatch(getActivityTypes(activeOrganization?.id, activePage, size, orderByColumn, currentOrderBy, searchActivityTypesQuery));
+      dispatch(
+        getActivityTypes(
+          activeOrganization?.id,
+          activePage,
+          size,
+          orderByColumn,
+          currentOrderBy,
+          searchActivityTypesQuery
+        )
+      );
       dispatch(updatePageNumber(activePage));
     }
   }, [activePage, subTypeState, type, size, activeOrganization]);
-  const searchActivitiesQueryHandler = async (query, subTypeRecieved) => {
-    if (subTypeRecieved === 'Activity Types') {
+  const searchActivitiesQueryHandler = async (
+    query,
+    subTypeRecieved
+  ) => {
+    if (subTypeRecieved === "Activity Types") {
       if (query) {
-        await dispatch(loadResourceTypesAction(query, ''));
+        await dispatch(loadResourceTypesAction(query, ""));
       } else {
         await dispatch(loadResourceTypesAction());
       }
-    } else if (subTypeRecieved === 'Activity Items') {
+    } else if (subTypeRecieved === "Activity Items") {
       if (query) {
         const encodeQuery = encodeURI(searchQueryActivities);
-        await dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
-      } else if (query === '') {
-        await dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size));
+        await dispatch(
+          getActivityItems(
+            activeOrganization?.id,
+            encodeQuery,
+            activePage,
+            size
+          )
+        );
+      } else if (query === "") {
+        await dispatch(
+          getActivityItems(
+            activeOrganization?.id,
+            searchActivityItemsQuery,
+            activePage,
+            size
+          )
+        );
       }
     }
   };
 
   //LMS project ***************************************
   useMemo(async () => {
-    if (type === 'LMS') {
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, orderByColumn, currentOrderBy, lmsProjectFilterBy));
+    if (type === "LMS") {
+      dispatch(
+        getLmsProject(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchQuery,
+          orderByColumn,
+          currentOrderBy,
+          lmsProjectFilterBy
+        )
+      );
     }
-    if (type === 'LMS') {
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, ltiToolFilterBy));
+    if (type === "LMS") {
+      dispatch(
+        getLtiTools(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchLtiquery,
+          orderByColumn,
+          currentOrderBy,
+          ltiToolFilterBy
+        )
+      );
     }
-    if (type === 'LMS') {
-      dispatch(allBrightCove(activeOrganization?.id, size, activePage || 1));
+    if (type === "LMS") {
+      dispatch(
+        allBrightCove(activeOrganization?.id, size, activePage || 1)
+      );
     }
   }, [type, size, activePage, activeOrganization?.id]);
 
@@ -383,28 +696,85 @@ export default function Pills(props) {
   }, [dataRedux.admin.lmsIntegration]);
 
   useMemo(async () => {
-    if (subTypeState === 'Subjects') {
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, orderByColumn, currentOrderBy));
+    if (subTypeState === "Subjects") {
+      dispatch(
+        getSubjects(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchSubjectsQuery,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
       dispatch(updatePageNumber(activePage));
     }
-    if (subTypeState === 'Education Level') {
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, orderByColumn, currentOrderBy));
+    if (subTypeState === "Education Level") {
+      dispatch(
+        getEducationLevel(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchEducationLevelQuery,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
       dispatch(updatePageNumber(activePage));
     }
-    if (subTypeState === 'Author Tags') {
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, orderByColumn, currentOrderBy));
+    if (subTypeState === "Author Tags") {
+      dispatch(
+        getAuthorTag(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchAuthorTagQuery,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
       dispatch(updatePageNumber(activePage));
     }
-    if (type === 'Activities') {
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, orderByColumn, currentOrderBy));
+    if (type === "Activities") {
+      dispatch(
+        getActivityLayout(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchLayoutQuery,
+          orderByColumn,
+          currentOrderBy
+        )
+      );
     }
-  }, [type, subTypeState, activePage, activeOrganization?.id, size, currentOrderBy]);
+  }, [
+    type,
+    subTypeState,
+    activePage,
+    activeOrganization?.id,
+    size,
+    currentOrderBy,
+  ]);
 
   useEffect(() => {
     if (dataRedux.admin.subjects) {
       setSubjects(dataRedux.admin.subjects);
     }
   }, [dataRedux.admin.subjects]);
+  // Add Subject status update pagination
+  useEffect(() => {
+    if (
+      dataRedux.admin.subjectsAddStatus ||
+      dataRedux.admin.activity_layouts ||
+      dataRedux.admin.education_level ||
+      dataRedux.admin.author_tags
+    ) {
+      setActivePage(1);
+      dispatch({
+        type: actionTypes.REF_TABLE_SUBJECT_ADD_NEW_CLEAR,
+      });
+    }
+  }, [dataRedux.admin.subjectsAddStatus]);
 
   useEffect(() => {
     if (dataRedux.admin.education_level) {
@@ -429,7 +799,15 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchQuery(encodeQuery);
-    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, lmsProjectFilterBy);
+    const result = adminService.getLmsProject(
+      activeOrganization?.id,
+      1,
+      size,
+      encodeQuery,
+      orderByColumn,
+      currentOrderBy,
+      lmsProjectFilterBy
+    );
     result.then((data) => {
       setLmsProject(data);
     });
@@ -439,7 +817,14 @@ export default function Pills(props) {
     setlmsBrightCove(null);
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
-    dispatch(allBrightCoveSearch(activeOrganization?.id, encodeQuery, size, 1));
+    dispatch(
+      allBrightCoveSearch(
+        activeOrganization?.id,
+        encodeQuery,
+        size,
+        1
+      )
+    );
   };
 
   const searchQueryChangeHandlerActivityTypes = (search) => {
@@ -447,7 +832,16 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchActivityTypesQuery(encodeQuery);
-    dispatch(getActivityTypes(activeOrganization?.id, 1, size, '', '', encodeQuery));
+    dispatch(
+      getActivityTypes(
+        activeOrganization?.id,
+        1,
+        size,
+        "",
+        "",
+        encodeQuery
+      )
+    );
   };
 
   const searchQueryChangeHandlerActivityItems = (search) => {
@@ -455,13 +849,30 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchActivityItemsQuery(encodeQuery);
-    dispatch(getActivityItems(activeOrganization?.id, encodeQuery, activePage, size));
+    dispatch(
+      getActivityItems(
+        activeOrganization?.id,
+        encodeQuery,
+        activePage,
+        size
+      )
+    );
   };
 
   const filterActivityItems = (type) => {
     setActivePage(1);
     setActivityItemFilterBy(type);
-    dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage, size, '', '', type));
+    dispatch(
+      getActivityItems(
+        activeOrganization?.id,
+        searchActivityItemsQuery,
+        activePage,
+        size,
+        "",
+        "",
+        type
+      )
+    );
   };
 
   const searchQueryChangeHandlerActivityLayouts = (search) => {
@@ -469,20 +880,48 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchLayoutQuery(encodeQuery);
-    dispatch(getActivityLayout(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy));
+    dispatch(
+      getActivityLayout(
+        activeOrganization?.id,
+        1,
+        size,
+        encodeQuery,
+        orderByColumn,
+        currentOrderBy
+      )
+    );
   };
 
   const searchQueryChangeHandlerOrg = (search) => {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchQuery(encodeQuery);
-    dispatch(getsubOrgList(activeOrganization?.id, size, 1, encodeQuery, orderByColumn, currentOrderBy));
+    dispatch(
+      getsubOrgList(
+        activeOrganization?.id,
+        size,
+        1,
+        encodeQuery,
+        orderByColumn,
+        currentOrderBy
+      )
+    );
   };
 
   //Default SSO ***************************************
   useMemo(async () => {
-    if (type === 'DefaultSso') {
-      dispatch(getDefaultSso(activeOrganization?.id, activePage, size, searchQuery, orderByColumn, currentOrderBy, defaultSsoFilterBy));
+    if (type === "DefaultSso") {
+      dispatch(
+        getDefaultSso(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQuery,
+          orderByColumn,
+          currentOrderBy,
+          defaultSsoFilterBy
+        )
+      );
     }
   }, [type, activePage, activeOrganization?.id, size]);
 
@@ -491,7 +930,15 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchQuery(encodeQuery);
-    const result = adminService.getDefaultSso(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy, defaultSsoFilterBy);
+    const result = adminService.getDefaultSso(
+      activeOrganization?.id,
+      1,
+      size,
+      encodeQuery,
+      orderByColumn,
+      currentOrderBy,
+      defaultSsoFilterBy
+    );
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -506,15 +953,35 @@ export default function Pills(props) {
         const encodeQuery = encodeURI(target.value);
         // setsearchLtiquery(encodeQuery);
         // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
-        const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
+        const result = dispatch(
+          getLtiTools(
+            activeOrganization?.id,
+            activePage || 1,
+            size,
+            target.value,
+            orderByColumn,
+            currentOrderBy,
+            ltiToolFilterBy
+          )
+        );
         result.then((data) => {
           setLtiTool(data);
         });
       }
     } else {
-      setsearchLtiquery('');
+      setsearchLtiquery("");
       // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy);
-      const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, target.value, orderByColumn, currentOrderBy, ltiToolFilterBy));
+      const result = dispatch(
+        getLtiTools(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          target.value,
+          orderByColumn,
+          currentOrderBy,
+          ltiToolFilterBy
+        )
+      );
       result.then((data) => {
         setLtiTool(data);
       });
@@ -526,7 +993,14 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchSubjectsQuery(encodeQuery);
-    const result = adminService.getSubjects(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
+    const result = adminService.getSubjects(
+      activeOrganization?.id,
+      1,
+      size,
+      encodeQuery,
+      orderByColumn,
+      currentOrderBy
+    );
     result.then((data) => {
       setSubjects(data);
     });
@@ -537,7 +1011,14 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchEducationLevelQuery(encodeQuery);
-    const result = adminService.getEducationLevel(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
+    const result = adminService.getEducationLevel(
+      activeOrganization?.id,
+      1,
+      size,
+      encodeQuery,
+      orderByColumn,
+      currentOrderBy
+    );
     result.then((data) => {
       setEducationLevel(data);
     });
@@ -548,7 +1029,14 @@ export default function Pills(props) {
     setActivePage(1);
     const encodeQuery = encodeURI(search.target.value);
     setSearchAuthorTagQuery(encodeQuery);
-    const result = adminService.getAuthorTag(activeOrganization?.id, 1, size, encodeQuery, orderByColumn, currentOrderBy);
+    const result = adminService.getAuthorTag(
+      activeOrganization?.id,
+      1,
+      size,
+      encodeQuery,
+      orderByColumn,
+      currentOrderBy
+    );
     result.then((data) => {
       setAuthorTag(data);
     });
@@ -560,14 +1048,27 @@ export default function Pills(props) {
     setLtiToolFilterBy(item);
     // const result = adminService.getLtiTools(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, item);
     // const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, item);
-    const result = dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchLtiquery, orderByColumn, currentOrderBy, item));
+    const result = dispatch(
+      getLtiTools(
+        activeOrganization?.id,
+        activePage || 1,
+        size,
+        searchLtiquery,
+        orderByColumn,
+        currentOrderBy,
+        item
+      )
+    );
     result.then((data) => {
       setLtiTool(data);
     });
   };
   useEffect(() => {
     if (admin.ltiToolsReloadStatus == true) {
-      if (admin.selectedFIlterLti != null && admin.selectedFIlterLti != '') {
+      if (
+        admin.selectedFIlterLti != null &&
+        admin.selectedFIlterLti != ""
+      ) {
         filterLtiTool(admin.selectedFIlterLti);
       } else {
         filterLtiTool(null);
@@ -583,7 +1084,15 @@ export default function Pills(props) {
     setDefaultSso(null);
     setActivePage(1);
     setDefaultSsoFilterBy(filterBy);
-    const result = adminService.getDefaultSso(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, filterBy);
+    const result = adminService.getDefaultSso(
+      activeOrganization?.id,
+      1,
+      size,
+      searchQuery,
+      orderByColumn,
+      currentOrderBy,
+      filterBy
+    );
     result.then((data) => {
       setDefaultSso(data);
     });
@@ -593,21 +1102,29 @@ export default function Pills(props) {
     setLmsProject(null);
     setActivePage(1);
     setLmsProjectFilterBy(filterBy);
-    const result = adminService.getLmsProject(activeOrganization?.id, 1, size, searchQuery, orderByColumn, currentOrderBy, filterBy);
+    const result = adminService.getLmsProject(
+      activeOrganization?.id,
+      1,
+      size,
+      searchQuery,
+      orderByColumn,
+      currentOrderBy,
+      filterBy
+    );
     result.then((data) => {
       setLmsProject(data);
     });
   };
 
   useEffect(() => {
-    if (subTypeState === 'All Projects') {
+    if (subTypeState === "All Projects") {
       setActivePage(1);
-      setCurrentTab('All Projects');
-      setKey('All Projects');
+      setCurrentTab("All Projects");
+      setKey("All Projects");
     }
   }, [subTypeState]);
   useEffect(() => {
-    if (activeTab === 'Projects') {
+    if (activeTab === "Projects") {
       setSubTypeState(key);
       setCurrentTab(key);
       setLibraryReqSelected(false);
@@ -616,9 +1133,43 @@ export default function Pills(props) {
     }
   }, [activeTab, key]);
 
+  // useEffect(() => {
+  //   if (activeOrganization && type === 'Teams') {
+  //     console.log('searchQueryTeam', searchQueryTeam);
+  //     dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
+  //   }
+  // }, [size, activePage, activeOrganization, searchQueryTeam]);
+
+  const [searchQueryTeamStatus, setSearchQueryTeamStatus] = useState(
+    ""
+  );
   useEffect(() => {
-    if (activeOrganization && type === 'Teams') {
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, orderByColumn, currentOrderBy));
+    if (activeOrganization && type === "Teams") {
+      if (searchQueryTeamStatus !== searchQueryTeam) {
+        setSearchQueryTeamStatus(searchQueryTeam);
+        dispatch(
+          teamsActionAdminPanel(
+            activeOrganization?.id,
+            searchQueryTeam,
+            1,
+            size,
+            orderByColumn,
+            currentOrderBy
+          )
+        );
+        setActivePage(1);
+      } else {
+        dispatch(
+          teamsActionAdminPanel(
+            activeOrganization?.id,
+            searchQueryTeam,
+            activePage,
+            size,
+            orderByColumn,
+            currentOrderBy
+          )
+        );
+      }
     }
   }, [size, activePage, activeOrganization, searchQueryTeam]);
 
@@ -635,7 +1186,7 @@ export default function Pills(props) {
         projectFilterObj.created_to || undefined,
         projectFilterObj.updated_from || undefined,
         projectFilterObj.updated_to || undefined,
-        projectFilterObj.shared,
+        projectFilterObj.shared
       );
       libraryrequest
         .then((data) => {
@@ -653,7 +1204,7 @@ export default function Pills(props) {
         projectFilterObj.updated_from || null,
         projectFilterObj.updated_to || null,
         projectFilterObj.shared,
-        projectFilterObj.indexing,
+        projectFilterObj.indexing
       );
       allproject
         .then((data) => {
@@ -681,273 +1232,427 @@ export default function Pills(props) {
         projectFilterObj.updated_from || null,
         projectFilterObj.updated_to || null,
         projectFilterObj.shared,
-        projectFilterObj.indexing,
-      ),
+        projectFilterObj.indexing
+      )
     );
   }, [projectFilterObj]);
 
   const handleSort = async (column, subType) => {
-    if (subType == 'LTI Tools') {
+    if (subType == "LTI Tools") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Name':
-          col = 'tool_name';
+        case "Name":
+          col = "tool_name";
           break;
         default:
-          col = 'tool_name';
+          col = "tool_name";
       }
-      dispatch(getLtiTools(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, ltiToolFilterBy));
+      dispatch(
+        getLtiTools(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchQuery,
+          col,
+          orderBy,
+          ltiToolFilterBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Activity Types') {
+    } else if (subType == "Activity Types") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getActivityTypes(activeOrganization?.id, activePage || 1, size, col, orderBy, searchActivityTypesQuery));
+      dispatch(
+        getActivityTypes(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          col,
+          orderBy,
+          searchActivityTypesQuery
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Activity Items') {
+    } else if (subType == "Activity Items") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getActivityItems(activeOrganization?.id, searchActivityItemsQuery, activePage || 1, size, col, orderBy, activityItemFilterBy));
+      dispatch(
+        getActivityItems(
+          activeOrganization?.id,
+          searchActivityItemsQuery,
+          activePage || 1,
+          size,
+          col,
+          orderBy,
+          activityItemFilterBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Activity Layouts') {
+    } else if (subType == "Activity Layouts") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getActivityLayout(activeOrganization?.id, activePage || 1, size, searchLayoutQuery, col, orderBy));
+      dispatch(
+        getActivityLayout(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchLayoutQuery,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Subjects') {
+    } else if (subType == "Subjects") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getSubjects(activeOrganization?.id, activePage || 1, size, searchSubjectsQuery, col, orderBy));
+      dispatch(
+        getSubjects(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchSubjectsQuery,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Education Level') {
+    } else if (subType == "Education Level") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getEducationLevel(activeOrganization?.id, activePage || 1, size, searchEducationLevelQuery, col, orderBy));
+      dispatch(
+        getEducationLevel(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchEducationLevelQuery,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Author Tags') {
+    } else if (subType == "Author Tags") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Order':
-          col = 'order';
+        case "Order":
+          col = "order";
           break;
         default:
-          col = 'order';
+          col = "order";
       }
-      dispatch(getAuthorTag(activeOrganization?.id, activePage || 1, size, searchAuthorTagQuery, col, orderBy));
+      dispatch(
+        getAuthorTag(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchAuthorTagQuery,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Organization') {
+    } else if (subType == "Organization") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Name':
-          col = 'name';
+        case "Name":
+          col = "name";
           break;
-        case 'Domain':
-          col = 'domain';
+        case "Domain":
+          col = "domain";
           break;
         default:
-          col = 'name';
+          col = "name";
       }
-      dispatch(getsubOrgList(activeOrganization?.id, size, activePage || 1, searchQuery, col, orderBy));
+      dispatch(
+        getsubOrgList(
+          activeOrganization?.id,
+          size,
+          activePage || 1,
+          searchQuery,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'DefaultSso') {
+    } else if (subType == "DefaultSso") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Site Name':
-          col = 'site_name';
+        case "Site Name":
+          col = "site_name";
           break;
         default:
-          col = 'site_name';
+          col = "site_name";
       }
-      dispatch(getDefaultSso(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, defaultSsoFilterBy));
+      dispatch(
+        getDefaultSso(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchQuery,
+          col,
+          orderBy,
+          defaultSsoFilterBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'LMS settings') {
+    } else if (subType == "LMS settings") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Type':
-          col = 'lms_name';
+        case "Type":
+          col = "lms_name";
           break;
         default:
-          col = 'lms_name';
+          col = "lms_name";
       }
-      dispatch(getLmsProject(activeOrganization?.id, activePage || 1, size, searchQuery, col, orderBy, lmsProjectFilterBy));
+      dispatch(
+        getLmsProject(
+          activeOrganization?.id,
+          activePage || 1,
+          size,
+          searchQuery,
+          col,
+          orderBy,
+          lmsProjectFilterBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'BrightCove') {
+    } else if (subType == "BrightCove") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
 
       switch (column) {
-        case 'Type':
-          col = 'account_name';
+        case "Type":
+          col = "account_name";
           break;
         default:
-          col = 'account_name';
+          col = "account_name";
       }
 
-      dispatch(allBrightCoveSearch(activeOrganization?.id, searchQuery, size, activePage || 1, col, orderBy));
+      dispatch(
+        allBrightCoveSearch(
+          activeOrganization?.id,
+          searchQuery,
+          size,
+          activePage || 1,
+          col,
+          orderBy
+        )
+      );
 
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'All Users') {
+    } else if (subType == "All Users") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'First Name':
-          col = 'first_name';
+        case "First Name":
+          col = "first_name";
           break;
         default:
-          col = 'first_name';
+          col = "first_name";
       }
-      const result = await dispatch(getOrgUsers(activeOrganization?.id, activePage, activeRole, size, searchQuery, col, orderBy));
+      const result = await dispatch(
+        getOrgUsers(
+          activeOrganization?.id,
+          activePage,
+          activeRole,
+          size,
+          searchQuery,
+          col,
+          orderBy
+        )
+      );
       setUsers(result);
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'All Projects') {
+    } else if (subType == "All Projects") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Created':
-          col = 'created_at';
+        case "Created":
+          col = "created_at";
           break;
         default:
-          col = 'created_at';
+          col = "created_at";
       }
-      const result = await adminService.getAllProjectSearch(activeOrganization?.id, activePage, searchQueryProject, size, col, orderBy);
+      const result = await adminService.getAllProjectSearch(
+        activeOrganization?.id,
+        activePage,
+        searchQueryProject,
+        size,
+        col,
+        orderBy
+      );
       setAllProjectTab(result);
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Exported Projects') {
+    } else if (subType == "Exported Projects") {
       //mapping column with db column for making it dynamic
-      let col = '';
+      let col = "";
       switch (column) {
-        case 'Created Date':
-          col = 'created_at';
+        case "Created Date":
+          col = "created_at";
           break;
         default:
-          col = 'created_at';
+          col = "created_at";
       }
-      const result = await adminService.getAllExportedProject(activeOrganization?.id, activePage || 1, size, '', col, orderBy);
+      const result = await adminService.getAllExportedProject(
+        activeOrganization?.id,
+        activePage || 1,
+        size,
+        "",
+        col,
+        orderBy
+      );
       setAllProjectUserTab(result);
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'asc' ? 'desc' : 'asc';
+      let order = orderBy == "asc" ? "desc" : "asc";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'All teams') {
-      let col = '';
+    } else if (subType == "All teams") {
+      let col = "";
       switch (column) {
-        case 'Created':
-          col = 'created_at';
+        case "Created":
+          col = "created_at";
           break;
         default:
-          col = 'created_at';
+          col = "created_at";
       }
-      dispatch(teamsActionAdminPanel(activeOrganization?.id, searchQueryTeam, activePage, size, col, orderBy));
+      dispatch(
+        teamsActionAdminPanel(
+          activeOrganization?.id,
+          searchQueryTeam,
+          activePage,
+          size,
+          col,
+          orderBy
+        )
+      );
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == "ASC" ? "DESC" : "ASC";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'All independent activities') {
-      let col = '';
+    } else if (subType == "All independent activities") {
+      let col = "";
       switch (column) {
-        case 'Created':
-          col = 'created_at';
+        case "Created":
+          col = "created_at";
           break;
         default:
-          col = 'created_at';
+          col = "created_at";
       }
-      dispatch(adminIntActivities(activeOrganization?.id, activePage, size, searchQueryProject, col, orderBy));
+      dispatch(
+        adminIntActivities(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject,
+          col,
+          orderBy
+        )
+      );
 
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == "ASC" ? "DESC" : "ASC";
       setOrderBy(order);
       setOrderByColumn(col);
-    } else if (subType == 'Exported activities') {
-      let col = '';
+    } else if (subType == "Exported activities") {
+      let col = "";
       switch (column) {
-        case 'Created':
-          col = 'created_at';
+        case "Created":
+          col = "created_at";
           break;
         default:
-          col = 'created_at';
+          col = "created_at";
       }
-      dispatch(allAdminExportActivity(activeOrganization?.id, activePage, size, searchQueryProject, col, orderBy));
+      dispatch(
+        allAdminExportActivity(
+          activeOrganization?.id,
+          activePage,
+          size,
+          searchQueryProject,
+          col,
+          orderBy
+        )
+      );
 
       setCurrentOrderBy(orderBy);
-      let order = orderBy == 'ASC' ? 'DESC' : 'ASC';
+      let order = orderBy == "ASC" ? "DESC" : "ASC";
       setOrderBy(order);
       setOrderByColumn(col);
     }
@@ -964,14 +1669,23 @@ export default function Pills(props) {
       indexing: null,
     });
     if (libraryReqSelected) {
-      const libraryrequest = adminService.getAllProjectIndex(activeOrganization?.id, activePage, 1, size);
+      const libraryrequest = adminService.getAllProjectIndex(
+        activeOrganization?.id,
+        activePage,
+        1,
+        size
+      );
       libraryrequest
         .then((data) => {
           setAllProjectTab(data);
         })
         .catch((e) => setAllProjectTab([]));
     } else {
-      const allproject = adminService.getAllProject(activeOrganization?.id, activePage, size);
+      const allproject = adminService.getAllProject(
+        activeOrganization?.id,
+        activePage,
+        size
+      );
       allproject
         .then((data) => {
           setAllProjectTab(data);
@@ -994,14 +1708,16 @@ export default function Pills(props) {
       indexing: null,
     });
 
-    dispatch(adminIntActivities(activeOrganization?.id, activePage, size));
+    dispatch(
+      adminIntActivities(activeOrganization?.id, activePage, size)
+    );
   };
 
   // After Edit LMS Setting
   useEffect(() => {
-    if (subTypeState === 'LMS settings') {
+    if (subTypeState === "LMS settings") {
       const updateNewLmsProject = lmsProject?.data.map((_lms) => {
-        if (_lms.id === newlyEdit.id) {
+        if (_lms?.id === newlyEdit?.id) {
           _lms = newlyEdit;
         }
         return _lms;
@@ -1016,27 +1732,35 @@ export default function Pills(props) {
       id="controlled-tab-example"
       activeKey={key}
       onSelect={(key) => {
-        setSearchQuery('');
+        setSearchQuery("");
         setSubTypeState(key);
         setKey(key);
         setActivePage(1);
-        setSearchQueryProject('');
+        setSearchQueryProject("");
         setSearchAlertTogglerStats(1);
         dispatch(resetPageNumber());
-        if (key === 'LTI Tools') {
-          dispatch(getOrganizationMedaiSource(activeOrganization?.id));
-          const result = adminService.getLtiToolsMedia(activeOrganization?.id, 1, size, searchLtiquery, filterLtiSettings?.id || '');
+        if (key === "LTI Tools") {
+          dispatch(
+            getOrganizationMedaiSource(activeOrganization?.id)
+          );
+          const result = adminService.getLtiToolsMedia(
+            activeOrganization?.id,
+            1,
+            size,
+            searchLtiquery,
+            filterLtiSettings?.id || ""
+          );
           result.then((data) => {
             setLtiTool(data);
           });
         }
 
-        setSearchQueryStats('');
-        if (key === 'Exported Projects') {
-          setCurrentTab('Exported Projects');
+        setSearchQueryStats("");
+        if (key === "Exported Projects") {
+          setCurrentTab("Exported Projects");
           setLibraryReqSelected(false);
-        } else if (key === 'All Projects' || libraryReqSelected) {
-          setCurrentTab('All Projects');
+        } else if (key === "All Projects" || libraryReqSelected) {
+          setCurrentTab("All Projects");
           setLibraryReqSelected(false);
         }
       }}
@@ -1046,7 +1770,7 @@ export default function Pills(props) {
         ?.map((asset) => (
           <Tab key={asset} eventKey={asset} title={asset}>
             <div key={asset} className="module-content-inner">
-              {type === 'Users' && subTypeState === 'All Users' && (
+              {type === "Users" && subTypeState === "All Users" && (
                 <Starter
                   paginationCounter={true}
                   search={true}
@@ -1064,8 +1788,8 @@ export default function Pills(props) {
                   setSize={setSize}
                   activeRole={activeRole}
                   setActiveRole={setActiveRole}
-                  subTypeState={'All Users'}
-                  subType={'All Users'}
+                  subTypeState={"All Users"}
+                  subType={"All Users"}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
                   searchQueryChangeHandler={searchQueryChangeHandler}
@@ -1076,29 +1800,32 @@ export default function Pills(props) {
                   inviteUser={true}
                 />
               )}
-              {type === 'Users' && subTypeState === 'Manage Roles' && (
-                <Starter
-                  paginationCounter={false}
-                  search={false}
-                  print={false}
-                  btnText="Add Role"
-                  btnAction="add_role"
-                  importUser={false}
-                  filter={false}
-                  subTypeState={subTypeState}
-                  tableHead={[]}
-                  subType="Manage Roles"
-                  sortCol={[]}
-                  handleSort={handleSort}
-                  data={[]}
-                  activeRole={activeRole}
-                  setActiveRole={setActiveRole}
-                  type={type}
-                  roles={roles}
-                  permissionRender={permission?.Organization?.includes('organization:view-role')}
-                />
-              )}
-              {type === 'Organization' && (
+              {type === "Users" &&
+                subTypeState === "Manage Roles" && (
+                  <Starter
+                    paginationCounter={false}
+                    search={false}
+                    print={false}
+                    btnText="Add Role"
+                    btnAction="add_role"
+                    importUser={false}
+                    filter={false}
+                    subTypeState={subTypeState}
+                    tableHead={[]}
+                    subType="Manage Roles"
+                    sortCol={[]}
+                    handleSort={handleSort}
+                    data={[]}
+                    activeRole={activeRole}
+                    setActiveRole={setActiveRole}
+                    type={type}
+                    roles={roles}
+                    permissionRender={permission?.Organization?.includes(
+                      "organization:view-role"
+                    )}
+                  />
+                )}
+              {type === "Organization" && (
                 <Starter
                   search={true}
                   print={false}
@@ -1116,16 +1843,18 @@ export default function Pills(props) {
                   type={type}
                   activePage={activePage}
                   setActivePage={setActivePage}
-                  searchQueryChangeHandler={searchQueryChangeHandlerOrg}
+                  searchQueryChangeHandler={
+                    searchQueryChangeHandlerOrg
+                  }
                 />
               )}
 
-              {type === 'LMS' && subTypeState === 'LMS settings' && (
+              {type === "LMS" && subTypeState === "LMS settings" && (
                 <Starter
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  subType={'LMS settings'}
+                  subType={"LMS settings"}
                   search={true}
                   print={false}
                   btnText="Add LMS settings"
@@ -1139,16 +1868,18 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  searchQueryChangeHandler={searchQueryChangeHandlerLMS}
+                  searchQueryChangeHandler={
+                    searchQueryChangeHandlerLMS
+                  }
                   filteredItems={filterLmsSetting}
                 />
               )}
-              {type === 'LMS' && subTypeState === 'BrightCove' && (
+              {type === "LMS" && subTypeState === "BrightCove" && (
                 <Starter
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  subType={'BrightCove'}
+                  subType={"BrightCove"}
                   search={true}
                   print={false}
                   btnText="Add New Entry"
@@ -1163,281 +1894,348 @@ export default function Pills(props) {
                   searchQuery={searchQuery}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  searchQueryChangeHandler={searchQueryChangeHandlerLMSBrightCove}
+                  searchQueryChangeHandler={
+                    searchQueryChangeHandlerLMSBrightCove
+                  }
                 />
               )}
               {/* Media Start */}
-              {type === 'LMS' && subTypeState === 'Media' && <Media />}
-              {type === 'LMS' && subTypeState === 'Google Classroom' && <GcrPublishing />}
-              {type === 'LMS' && subTypeState === 'Microsoft Teams' && <MsTeamPublishing />}
+              {type === "LMS" && subTypeState === "Media" && (
+                <Media />
+              )}
+              {type === "LMS" &&
+                subTypeState === "Google Classroom" && (
+                  <GcrPublishing />
+                )}
+              {type === "LMS" &&
+                subTypeState === "Microsoft Teams" && (
+                  <MsTeamPublishing />
+                )}
               {/* Media End */}
 
-              {type === 'Projects' && subTypeState === 'All Projects' && (
-                <Starter
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  search={true}
-                  tableHead={columnData.projectAll}
-                  sortCol={columnData.projectAllSortCol}
-                  handleSort={handleSort}
-                  data={allProjectTab}
-                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-                  type={type}
-                  importUser={true}
-                  searchQueryProject={searchQueryProject}
-                  setSearchQueryProject={setSearchQueryProject}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  subType={'All Projects'}
-                  setSubTypeState={setSubTypeState}
-                  projectFilterObj={projectFilterObj}
-                  setProjectFilterObj={setProjectFilterObj}
-                  filterSearch={filterSearch}
-                  libraryReqSelected={libraryReqSelected}
-                  setLibraryReqSelected={setLibraryReqSelected}
-                  setCurrentTab={setCurrentTab}
-                  setAllProjectTab={setAllProjectTab}
-                  resetProjectFilter={resetProjectFilter}
-                  setModalShow={setModalShow}
-                  setrowData={setrowData}
-                  setActivePageNumber={setActivePageNumber}
-                />
-              )}
-              {type === 'Projects' && subTypeState === 'Exported Projects' && (
-                <Starter
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  tableHead={columnData.projectUser}
-                  sortCol={columnData.projectUserSortCol}
-                  search={true}
-                  handleSort={handleSort}
-                  data={allProjectUserTab}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  subType="Exported Projects"
-                  setCurrentTab={setCurrentTab}
-                  searchQueryProject={searchQueryProject}
-                  setSearchQueryProject={setSearchQueryProject}
-                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-                />
-              )}
+              {type === "Projects" &&
+                subTypeState === "All Projects" && (
+                  <Starter
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    search={true}
+                    tableHead={columnData.projectAll}
+                    sortCol={columnData.projectAllSortCol}
+                    handleSort={handleSort}
+                    data={allProjectTab}
+                    searchProjectQueryChangeHandler={
+                      searchProjectQueryChangeHandler
+                    }
+                    type={type}
+                    importUser={true}
+                    searchQueryProject={searchQueryProject}
+                    setSearchQueryProject={setSearchQueryProject}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    subType={"All Projects"}
+                    setSubTypeState={setSubTypeState}
+                    projectFilterObj={projectFilterObj}
+                    setProjectFilterObj={setProjectFilterObj}
+                    filterSearch={filterSearch}
+                    libraryReqSelected={libraryReqSelected}
+                    setLibraryReqSelected={setLibraryReqSelected}
+                    setCurrentTab={setCurrentTab}
+                    setAllProjectTab={setAllProjectTab}
+                    resetProjectFilter={resetProjectFilter}
+                    setModalShow={setModalShow}
+                    setrowData={setrowData}
+                    setActivePageNumber={setActivePageNumber}
+                  />
+                )}
+              {type === "Projects" &&
+                subTypeState === "Exported Projects" && (
+                  <Starter
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    tableHead={columnData.projectUser}
+                    sortCol={columnData.projectUserSortCol}
+                    search={true}
+                    handleSort={handleSort}
+                    data={allProjectUserTab}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    subType="Exported Projects"
+                    setCurrentTab={setCurrentTab}
+                    searchQueryProject={searchQueryProject}
+                    setSearchQueryProject={setSearchQueryProject}
+                    searchProjectQueryChangeHandler={
+                      searchProjectQueryChangeHandler
+                    }
+                  />
+                )}
 
               {/* Ind. Activity Start */}
-              {type === 'IndActivities' && subTypeState === 'All independent activities' && (
-                <Starter
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  search={true}
-                  tableHead={columnData.indActivitiesCol}
-                  sortCol={columnData.indActivitiesSortCol}
-                  handleSort={handleSort}
-                  data={indActivities}
-                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-                  type={type}
-                  importUser={true}
-                  searchQueryProject={searchQueryProject}
-                  setSearchQueryProject={setSearchQueryProject}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  subType={'All independent activities'}
-                  setSubTypeState={setSubTypeState}
-                  projectFilterObj={projectFilterObj}
-                  setProjectFilterObj={setProjectFilterObj}
-                  filterSearch={filterSearchIndActivities}
-                  libraryReqSelected={libraryReqSelected}
-                  setLibraryReqSelected={setLibraryReqSelected}
-                  setCurrentTab={setCurrentTab}
-                  setAllProjectTab={setAllProjectTab}
-                  resetProjectFilter={resetIndActivitiesFilter}
-                  setModalShow={setModalShow}
-                  setrowData={setrowData}
-                  setActivePageNumber={setActivePageNumber}
-                  setCurrentActivity={setCurrentActivity}
-                  setModalShowh5p={setModalShowh5p}
-                />
-              )}
-              {type === 'IndActivities' && subTypeState === 'Exported activities' && (
-                <Starter
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  search={true}
-                  tableHead={columnData.indActivitiesExportCol}
-                  sortCol={columnData.indActivitiesExportSortCol}
-                  handleSort={handleSort}
-                  data={exportedActivities}
-                  searchProjectQueryChangeHandler={searchProjectQueryChangeHandler}
-                  type={type}
-                  importUser={true}
-                  searchQueryProject={searchQueryProject}
-                  setSearchQueryProject={setSearchQueryProject}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  subType={'Exported activities'}
-                  setSubTypeState={setSubTypeState}
-                  projectFilterObj={projectFilterObj}
-                  setProjectFilterObj={setProjectFilterObj}
-                  filterSearch={filterSearch}
-                  libraryReqSelected={libraryReqSelected}
-                  setCurrentTab={setCurrentTab}
-                  setAllProjectTab={setAllProjectTab}
-                  resetProjectFilter={resetProjectFilter}
-                  setModalShow={setModalShow}
-                  setrowData={setrowData}
-                  setActivePageNumber={setActivePageNumber}
-                />
-              )}
+              {type === "IndActivities" &&
+                subTypeState === "All independent activities" && (
+                  <Starter
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    search={true}
+                    tableHead={columnData.indActivitiesCol}
+                    sortCol={columnData.indActivitiesSortCol}
+                    handleSort={handleSort}
+                    data={indActivities}
+                    searchProjectQueryChangeHandler={
+                      searchProjectQueryChangeHandler
+                    }
+                    type={type}
+                    importUser={true}
+                    searchQueryProject={searchQueryProject}
+                    setSearchQueryProject={setSearchQueryProject}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    subType={"All independent activities"}
+                    setSubTypeState={setSubTypeState}
+                    projectFilterObj={projectFilterObj}
+                    setProjectFilterObj={setProjectFilterObj}
+                    filterSearch={filterSearchIndActivities}
+                    libraryReqSelected={libraryReqSelected}
+                    setLibraryReqSelected={setLibraryReqSelected}
+                    setCurrentTab={setCurrentTab}
+                    setAllProjectTab={setAllProjectTab}
+                    resetProjectFilter={resetIndActivitiesFilter}
+                    setModalShow={setModalShow}
+                    setrowData={setrowData}
+                    setActivePageNumber={setActivePageNumber}
+                    setCurrentActivity={setCurrentActivity}
+                    setModalShowh5p={setModalShowh5p}
+                  />
+                )}
+              {type === "IndActivities" &&
+                subTypeState === "Exported activities" && (
+                  <Starter
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    search={true}
+                    tableHead={columnData.indActivitiesExportCol}
+                    sortCol={columnData.indActivitiesExportSortCol}
+                    handleSort={handleSort}
+                    data={exportedActivities}
+                    searchProjectQueryChangeHandler={
+                      searchProjectQueryChangeHandler
+                    }
+                    type={type}
+                    importUser={true}
+                    searchQueryProject={searchQueryProject}
+                    setSearchQueryProject={setSearchQueryProject}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    subType={"Exported activities"}
+                    setSubTypeState={setSubTypeState}
+                    projectFilterObj={projectFilterObj}
+                    setProjectFilterObj={setProjectFilterObj}
+                    filterSearch={filterSearch}
+                    libraryReqSelected={libraryReqSelected}
+                    setCurrentTab={setCurrentTab}
+                    setAllProjectTab={setAllProjectTab}
+                    resetProjectFilter={resetProjectFilter}
+                    setModalShow={setModalShow}
+                    setrowData={setrowData}
+                    setActivePageNumber={setActivePageNumber}
+                  />
+                )}
               {/* Ind. Activity End*/}
 
-              {type === 'Activities' && subTypeState === 'Activity Types' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.ActivityTypes}
-                  sortCol={columnData.ActivityTypesSortCol}
-                  handleSort={handleSort}
-                  subType={'Activity Types'}
-                  searchQueryActivities={searchQueryActivities}
-                  setSearchQueryActivities={setSearchQueryActivities}
-                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add Activity Type"
-                  btnAction="add_activity_type"
-                  data={activityTypes}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  searchQueryChangeHandler={searchQueryChangeHandlerActivityTypes}
-                  setSearchKey={searchActivityTypesQuery}
-                />
-              )}
-              {type === 'Activities' && subTypeState === 'Activity Items' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.ActivityItems}
-                  sortCol={columnData.ActivityItemsSortCol}
-                  handleSort={handleSort}
-                  subType={'Activity Items'}
-                  searchQueryActivities={searchQueryActivities}
-                  setSearchQueryActivities={setSearchQueryActivities}
-                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add Activity Item"
-                  btnAction="add_activity_item"
-                  data={activityItems}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  filteredItems={filterActivityItems}
-                  searchQueryChangeHandler={searchQueryChangeHandlerActivityItems}
-                  setSearchKey={searchActivityItemsQuery}
-                />
-              )}
+              {type === "Activities" &&
+                subTypeState === "Activity Types" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.ActivityTypes}
+                    sortCol={columnData.ActivityTypesSortCol}
+                    handleSort={handleSort}
+                    subType={"Activity Types"}
+                    searchQueryActivities={searchQueryActivities}
+                    setSearchQueryActivities={
+                      setSearchQueryActivities
+                    }
+                    searchActivitiesQueryHandler={
+                      searchActivitiesQueryHandler
+                    }
+                    btnText="Add Activity Type"
+                    btnAction="add_activity_type"
+                    data={activityTypes}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerActivityTypes
+                    }
+                    setSearchKey={searchActivityTypesQuery}
+                  />
+                )}
+              {type === "Activities" &&
+                subTypeState === "Activity Items" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.ActivityItems}
+                    sortCol={columnData.ActivityItemsSortCol}
+                    handleSort={handleSort}
+                    subType={"Activity Items"}
+                    searchQueryActivities={searchQueryActivities}
+                    setSearchQueryActivities={
+                      setSearchQueryActivities
+                    }
+                    searchActivitiesQueryHandler={
+                      searchActivitiesQueryHandler
+                    }
+                    btnText="Add Activity Item"
+                    btnAction="add_activity_item"
+                    data={activityItems}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    filteredItems={filterActivityItems}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerActivityItems
+                    }
+                    setSearchKey={searchActivityItemsQuery}
+                  />
+                )}
 
-              {type === 'Activities' && subTypeState === 'Subjects' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.subjects}
-                  sortCol={columnData.subjectsSortCol}
-                  handleSort={handleSort}
-                  subType={'Subjects'}
-                  searchQueryActivities={searchQueryActivities}
-                  setSearchQueryActivities={setSearchQueryActivities}
-                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new subject"
-                  btnAction="add_subject"
-                  data={subjects}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  searchQueryChangeHandler={searchQueryChangeHandlerSubjects}
-                  setSearchKey={searchSubjectsQuery}
-                />
-              )}
+              {type === "Activities" &&
+                subTypeState === "Subjects" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.subjects}
+                    sortCol={columnData.subjectsSortCol}
+                    handleSort={handleSort}
+                    subType={"Subjects"}
+                    searchQueryActivities={searchQueryActivities}
+                    setSearchQueryActivities={
+                      setSearchQueryActivities
+                    }
+                    searchActivitiesQueryHandler={
+                      searchActivitiesQueryHandler
+                    }
+                    btnText="Add a new subject"
+                    btnAction="add_subject"
+                    data={subjects}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerSubjects
+                    }
+                    setSearchKey={searchSubjectsQuery}
+                  />
+                )}
 
-              {type === 'Activities' && subTypeState === 'Education Level' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.educationLevel}
-                  sortCol={columnData.educationLevelSortCol}
-                  handleSort={handleSort}
-                  subType={'Education Level'}
-                  searchQueryActivities={searchQueryActivities}
-                  setSearchQueryActivities={setSearchQueryActivities}
-                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new education level"
-                  btnAction="add_education_level"
-                  data={educationLevel}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  searchQueryChangeHandler={searchQueryChangeHandlerEducationLevel}
-                  setSearchKey={searchEducationLevelQuery}
-                />
-              )}
+              {type === "Activities" &&
+                subTypeState === "Education Level" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.educationLevel}
+                    sortCol={columnData.educationLevelSortCol}
+                    handleSort={handleSort}
+                    subType={"Education Level"}
+                    searchQueryActivities={searchQueryActivities}
+                    setSearchQueryActivities={
+                      setSearchQueryActivities
+                    }
+                    searchActivitiesQueryHandler={
+                      searchActivitiesQueryHandler
+                    }
+                    btnText="Add a new education level"
+                    btnAction="add_education_level"
+                    data={educationLevel}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerEducationLevel
+                    }
+                    setSearchKey={searchEducationLevelQuery}
+                  />
+                )}
 
-              {type === 'Activities' && subTypeState === 'Author Tags' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.authorTags}
-                  sortCol={columnData.authorTagsSortCol}
-                  handleSort={handleSort}
-                  subType={'Author Tags'}
-                  searchQueryActivities={searchQueryActivities}
-                  setSearchQueryActivities={setSearchQueryActivities}
-                  searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add a new author tag"
-                  btnAction="add_author_tag"
-                  data={authorTag}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  searchQueryChangeHandler={searchQueryChangeHandlerAuthorTag}
-                  setSearchKey={searchAuthorTagQuery}
-                />
-              )}
+              {type === "Activities" &&
+                subTypeState === "Author Tags" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.authorTags}
+                    sortCol={columnData.authorTagsSortCol}
+                    handleSort={handleSort}
+                    subType={"Author Tags"}
+                    searchQueryActivities={searchQueryActivities}
+                    setSearchQueryActivities={
+                      setSearchQueryActivities
+                    }
+                    searchActivitiesQueryHandler={
+                      searchActivitiesQueryHandler
+                    }
+                    btnText="Add a new author tag"
+                    btnAction="add_author_tag"
+                    data={authorTag}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerAuthorTag
+                    }
+                    setSearchKey={searchAuthorTagQuery}
+                  />
+                )}
 
-              {type === 'Activities' && subTypeState === 'Activity Layouts' && (
-                <Starter
-                  search={true}
-                  tableHead={columnData.activityLayouts}
-                  sortCol={columnData.activityLayoutsSortCol}
-                  handleSort={handleSort}
-                  subType={'Activity Layouts'}
-                  // searchQueryActivities={searchQueryActivities}
-                  // setSearchQueryActivities={setSearchQueryActivities}
-                  // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                  btnText="Add activity layout"
-                  btnAction="add_activity_layout"
-                  data={activityLayout}
-                  type={type}
-                  setActivePage={setActivePage}
-                  activePage={activePage}
-                  paginationCounter={true}
-                  size={size}
-                  setSize={setSize}
-                  searchQueryChangeHandler={searchQueryChangeHandlerActivityLayouts}
-                  setSearchKey={searchLayoutQuery}
-                />
-              )}
-              {type === 'Settings' && subTypeState === 'LMS settings' && <Starter type={type} subType={'LMS settings'} subTypeState={subTypeState} />}
-              {type === 'DefaultSso' && (
+              {type === "Activities" &&
+                subTypeState === "Activity Layouts" && (
+                  <Starter
+                    search={true}
+                    tableHead={columnData.activityLayouts}
+                    sortCol={columnData.activityLayoutsSortCol}
+                    handleSort={handleSort}
+                    subType={"Activity Layouts"}
+                    // searchQueryActivities={searchQueryActivities}
+                    // setSearchQueryActivities={setSearchQueryActivities}
+                    // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
+                    btnText="Add activity layout"
+                    btnAction="add_activity_layout"
+                    data={activityLayout}
+                    type={type}
+                    setActivePage={setActivePage}
+                    activePage={activePage}
+                    paginationCounter={true}
+                    size={size}
+                    setSize={setSize}
+                    searchQueryChangeHandler={
+                      searchQueryChangeHandlerActivityLayouts
+                    }
+                    setSearchKey={searchLayoutQuery}
+                  />
+                )}
+              {type === "Settings" &&
+                subTypeState === "LMS settings" && (
+                  <Starter
+                    type={type}
+                    subType={"LMS settings"}
+                    subTypeState={subTypeState}
+                  />
+                )}
+              {type === "DefaultSso" && (
                 <Starter
                   paginationCounter={true}
                   size={size}
@@ -1455,16 +2253,18 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  searchQueryChangeHandler={searchQueryChangeHandlerDefautSso}
+                  searchQueryChangeHandler={
+                    searchQueryChangeHandlerDefautSso
+                  }
                   filteredItems={filterDefaultSso}
                 />
               )}
-              {type === 'LMS' && subTypeState === 'LTI Tools' && (
+              {type === "LMS" && subTypeState === "LTI Tools" && (
                 <Starter
                   paginationCounter={true}
                   size={size}
                   setSize={setSize}
-                  subType={'LTI Tools'}
+                  subType={"LTI Tools"}
                   search={true}
                   print={false}
                   btnText="Create New LTI Tool"
@@ -1478,18 +2278,20 @@ export default function Pills(props) {
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}
-                  searchQueryChangeHandlerLtiTool={searchQueryChangeHandlerLtiTool}
+                  searchQueryChangeHandlerLtiTool={
+                    searchQueryChangeHandlerLtiTool
+                  }
                   searchLtiquery={searchLtiquery}
                   filteredItems={filterLtiTool}
                   filterLtiSettings={filterLtiSettings}
                   setfilterLtiSettings={setfilterLtiSettings}
                 />
               )}
-              {type === 'Teams' && (
+              {type === "Teams" && (
                 <Starter
                   paginationCounter={true}
                   size={size}
-                  subType={'All teams'}
+                  subType={"All teams"}
                   setSize={setSize}
                   search={true}
                   type={type}

@@ -11,7 +11,7 @@ import './style.scss';
 import * as microsoftTeams from '@microsoft/teams-js';
 
 const ActivitiesList = (props) => {
-  const { match, activity, setPreviewActivity } = props;
+  const { match, activity, setPreviewActivity, selectedActivityId, setSelectedActivityId } = props;
   console.log('matching item activity:', match);
 
   const showActivityPreview = (id) => {
@@ -41,10 +41,13 @@ const ActivitiesList = (props) => {
   };
 
   const addToMsTeams = async (id) => {
-    await microsoftTeams.app.initialize();
+    if (!match.params.lmsUrl.includes('microsoft'))
+      return;
 
     const activityId = parseInt(id, 10);
-    if (!activityId) return;
+    setSelectedActivityId(activityId);
+
+    await microsoftTeams.app.initialize();
 
     microsoftTeams.pages.config.setValidityState(true);
     microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
@@ -66,7 +69,7 @@ const ActivitiesList = (props) => {
     <>
       <div className=" mt-2 mb-2 lti-deeplink-activity-container">
         <div className="col result">
-          <div key={activity.id} className="row activity">
+          <div key={activity.id} className={activity.id === selectedActivityId ? "row activity selected" : "row activity"} onClick={() => addToMsTeams(activity.id) }>
             <div className="col activity-about">
               <div
                 className="activity-img"
