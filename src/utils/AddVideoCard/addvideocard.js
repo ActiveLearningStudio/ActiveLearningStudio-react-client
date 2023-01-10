@@ -53,22 +53,22 @@ const AddVideoCard = ({
   const visibilityData = [
     {
       id: 1,
-      name: 'private',
+      name: 'Private (only Me)',
       display_name: 'Private (only Me)',
     },
     {
-      id: 2,
-      name: 'protected',
+      id: 3,
+      name: 'My Organization',
       display_name: 'My Organization',
     },
     {
-      id: 3,
+      id: 2,
       name: 'global',
       display_name: 'My Org + Parent and Child Org',
     },
     {
       id: 4,
-      name: 'public',
+      name: 'Public',
       display_name: 'All',
     },
   ];
@@ -186,13 +186,7 @@ const AddVideoCard = ({
               )
             ) : (
               <>
-                {(
-                  !isActivityCard
-                  || (
-                    isActivityCard
-                    && permission?.['Independent Activity']?.includes('independent-activity:edit-author')
-                  )
-                ) && (
+                {(!isActivityCard || (isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author'))) && (
                   <DropDownEdit
                     data={data}
                     iconColor="white"
@@ -223,7 +217,7 @@ const AddVideoCard = ({
             <div className="activity-update-lib">
               <div className="activity-update">Updated: {data.updated_at.split('T')[0]}</div>
               <div className="activity-lib">
-                Library Status: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.display_name}</span>
+                Library Status: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.name}</span>
               </div>
             </div>
           </>

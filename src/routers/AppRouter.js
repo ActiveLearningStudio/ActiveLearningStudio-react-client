@@ -19,6 +19,7 @@ import Sidebar from 'components/Sidebar';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
+import './style.scss';
 
 const history = History.createBrowserHistory();
 history.listen((location) => {
@@ -45,7 +46,7 @@ const ProfilePage = loadable(() => import('../containers/Account/ProfilePage'));
 const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePasswordPage'));
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
-
+const MsTeams = loadable(() => import('../containers/MsTeams'));
 const BrandingPage = loadable(() => import('../containers/Branding'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
@@ -61,6 +62,7 @@ const TeamsPage = loadable(() => import('../containers/Teams'));
 const TeamDetailPage = loadable(() => import('../containers/Teams/TeamDetailView'));
 const TeamAddProjects = loadable(() => import('../containers/Teams/TeamAddProjects'));
 const VideoPage = loadable(() => import('../containers/Videos'));
+const RecordVideoPage = loadable(() => import('../containers/RecordVideo'));
 
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
@@ -78,6 +80,8 @@ const SSOLogin = loadable(() => import('../containers/Auth/SSOLogin'));
 const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
 const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
+const MsTeamActivityLaunch = loadable(() => import('../containers/LMS/MsTeams/MsTeamActivityLaunch'));
+const MsTeamSummaryPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamSummaryPage'));
 
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
@@ -130,6 +134,8 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/gclass/launch/:userId/:courseId/:activityId/:classworkId" component={GclassActivityPage} />
         <OpenRoute exact path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId" component={GclassSummaryPage} />
         <OpenRoute exact path="/msteams/launch/activity/:activityId/class/:classId/assignment/:assignmentId" component={MsTeamsActivityPage} />
+        <OpenRoute exact path="/msteam/launch/activity/:activityId" component={MsTeamActivityLaunch} />
+        <OpenRoute exact path="/msteam/summary/:classId/:activityId/:submissionId" component={MsTeamSummaryPage} />
         <OpenRoute
           exact
           path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
@@ -144,6 +150,7 @@ const AppRouter = (props) => {
         <PrivateRoute exact path="/org/:organization/project/:projectId/playlist/:playlistId/activity/:activityId/preview" component={PreviewPage} previewType="playlist" />
 
         <OpenRoute exact path="/lti-tools/activity/:activityId" component={LtiActivity} />
+        <OpenRoute exact path="/msteams" component={MsTeams} />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
@@ -213,6 +220,9 @@ const AppRouter = (props) => {
                   <PrivateRoute exact path="/org/:organization/search" component={SearchResult} />
                   <PrivateRoute exact path="/org/:organization/manage" component={ManageOrganization} />
                   <PrivateRoute exact path="/org/:organization" component={ProjectsPage} />
+
+                  {/* Record a Video */}
+                  <PrivateRoute exact path="/org/:organization/record-video" component={RecordVideoPage} />
 
                   <Redirect to={`/org/${SelectedOrganization || 'currikistudio'}/activities`} />
                 </Switch>

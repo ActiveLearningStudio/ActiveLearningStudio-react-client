@@ -199,9 +199,11 @@ function LtiProjectShared(props) {
 
                                     <div className="model-name-activity-selection">
                                       <div className="model-name-activity">
-                                        <p>
-                                          Type: <span>{clone.clone.model}</span>
-                                        </p>
+                                        {clone.clone.model && (
+                                          <p>
+                                            Type: <span>{clone.clone.model}</span>
+                                          </p>
+                                        )}
                                       </div>
                                       {(clone.clone.model === 'Activity' || clone.ind) && (
                                         <>

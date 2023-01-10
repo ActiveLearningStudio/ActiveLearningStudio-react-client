@@ -198,6 +198,8 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+    auto_approve: data?.auto_approve,
+    activity_title_placeholder: data?.activity_title_placeholder,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -226,10 +228,10 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     libraryPreferences.push(1);
   }
   if (data.lp_my_org) {
-    libraryPreferences.push(2);
+    libraryPreferences.push(3);
   }
   if (data.lp_my_org_parent) {
-    libraryPreferences.push(3);
+    libraryPreferences.push(2);
   }
   if (data.lp_all) {
     libraryPreferences.push(4);
@@ -265,6 +267,8 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+    auto_approve: data?.auto_approve,
+    activity_title_placeholder: data?.activity_title_placeholder,
     // admins: adminUsers,
     // users: usersList,
   };
@@ -284,6 +288,11 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
       dispatch({
         type: actionTypes.ORG_UPDATE_LIBRARY_PREFERENCE,
         payload: newOrg?.suborganization?.allowed_visibility_type_id,
+      });
+
+      dispatch({
+        type: actionTypes.ORG_UPDATE_TOOLS_TIPS,
+        payload: newOrg?.suborganization,
       });
     }
 

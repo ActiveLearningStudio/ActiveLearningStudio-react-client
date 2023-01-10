@@ -6,6 +6,7 @@ import HeadingTwo from 'utils/HeadingTwo/headingtwo';
 import TabsHeading from 'utils/Tabs/tabs';
 import { Tabs, Tab, Alert } from 'react-bootstrap';
 import { Formik } from 'formik';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import AddVideoImage from 'assets/images/svg/addvidobright.svg';
 import AddVideoTube from 'assets/images/svg/youtube.svg';
@@ -20,25 +21,11 @@ import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
 import { getMediaSources } from 'store/actions/admin';
 import BrightcoveModel from '../model/brightmodel';
 import KomodoLogo from '../../../assets/images/svg/komodo.svg';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleDown,
-  faCamera,
-  faCross,
-  faEyeSlash,
-  faHourglass,
-  faHourglassHalf,
-  faLock,
-  faMicrophoneSlash,
-  faPause,
-  faPlay,
-  faVideo,
-  faVideoSlash,
-} from '@fortawesome/free-solid-svg-icons';
-import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
+import KomodoGoToImg from '../../../assets/images/komodo-go-to-img.png';
+import RecordLogo from '../../../assets/images/svg/record.svg';
 import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 
-const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide, isbackHide }) => {
+const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallothers, setisbackHide }) => {
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
   const [modalShow, setModalShow] = useState(false);
@@ -50,7 +37,7 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   const [showSidebar, setShowSidebar] = useState(true);
   const [platformName, setplatformName] = useState('Mydevice');
   const [mediaSources, setMediaSources] = useState([]);
-  const { editVideo, videoId, platform } = useSelector((state) => state.videos);
+  const { editVideo, videoId, platform, videoFile } = useSelector((state) => state.videos);
   const [activeKey, setActiveKey] = useState(platform ? platform : mediaSources[0]?.name);
   useEffect(() => {
     if (editVideo?.source_type) {
@@ -62,7 +49,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
     if (mediaSources.length === 0) {
       const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
       result.then((data) => {
-        setMediaSources(data.mediaSources);
+        console.log('dta', data);
+        setMediaSources(data.mediaSources.filter((source) => source.pivot.media_sources_show_status === true && source.media_type === 'Video'));
       });
     }
   }, [mediaSources]);
@@ -206,6 +194,8 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
                     uploadFile
                     platformName={platformName}
                     setisbackHide={setisbackHide}
+                    selectedVideoId={videoId && platform === 'Mydevice' ? videoId : ''}
+                    selectedVideoFile={videoFile && platform === 'Mydevice' ? videoFile : ''}
                   />
                 </Tab>
               ) : (
@@ -512,6 +502,7 @@ const FormikVideo = ({
   placeholder,
   komodo,
   setisbackHide,
+  selectedVideoFile,
 }) => {
   const dispatch = useDispatch();
   const imgUpload = useRef();
@@ -521,12 +512,15 @@ const FormikVideo = ({
   const [play, setPlay] = useState(false);
   const [startRecord, setStartRecord] = useState(false);
   const [videoUrlId, setvideoUrlId] = useState('');
+  const allState = useSelector((state) => state);
   const formRef = useRef();
   useEffect(() => {
     if (editVideo && platformName === 'Mydevice') {
       setUploadedFile(editVideo);
+    } else {
+      setUploadedFile(selectedVideoFile);
     }
-  }, [editVideo, platformName]);
+  }, [editVideo, platformName, selectedVideoId]);
 
   useEffect(() => {
     if (editVideo) {
@@ -552,7 +546,7 @@ const FormikVideo = ({
         validate={(values) => {
           const errors = {};
           let youtubeLinkformat = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(vimeo\.com\/)([0-9]+)$/;
+          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(player\.vimeo\.com\/video\/)([0-9]+\?h=[A-Za-z0-9]+)$/;
           let komodoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(komododecks\.com\/recordings\/)([A-Za-z0-9]+)$/;
           let kalturaformat = /^[0-9]+$/;
           if (!values.videoUrl) {
@@ -586,6 +580,13 @@ const FormikVideo = ({
             payload: values.videoUrl,
             platformName,
           });
+          if (uploadedFile) {
+            dispatch({
+              type: 'ADD_VIDEO_FILE',
+              payload: uploadedFile,
+              platformName,
+            });
+          }
           setisbackHide(true);
         }}
       >
@@ -607,255 +608,56 @@ const FormikVideo = ({
           >
             {komodo && (
               <>
-                <div className="komodo-section">
-                  <div className="komodo-left">
-                    <div className="komodo-top-logo">
-                      <img src={KomodoLogo} alt="komodo" />
+                <div className="layout-title-formik-textField">
+                  <img src={KomodoLogo} alt="komodo" className="komodo-img" />
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
 
-                      <div className="komodo-new-video">
-                        <span>Create a new video</span>
-                        <div>
-                          <button
-                            className="komodo-record-btn"
-                            onClick={() => {
-                              setRecord(!record);
-                              setPlay(false);
-                              setStartRecord(false);
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faVideo} className="record-icon-color" />
-                            <span
-                              style={{
-                                marginLeft: '8px',
-                              }}
-                            >
-                              Record
-                            </span>
-                          </button>
-                        </div>
-                        <div class="komodo-parent-div">
-                          <p>or</p>
-                          <div class="komodo-line"></div>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="komodo-text-field">
-                          <label
-                            style={{
-                              display: 'block',
-                            }}
-                          >
-                            Add with a link
-                          </label>
-                          <input type="text" name="videoUrl" placeholder={placeholder} onChange={handleChange} onBlur={handleBlur} value={values.videoUrl} />
-                        </div>
-                        <div className="error mt-1" style={{ color: 'red' }}>
-                          {errors.videoUrl && touched.videoUrl && errors.videoUrl}
-                        </div>
-                        <div class="komodo-parent-div">
-                          <p>or</p>
-                          <div class="komodo-line"></div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <span>Search in Library</span>
-                        <Buttons
-                          type="button"
-                          secondary
-                          text="Open browser"
-                          width="146px"
-                          height="35px"
-                          hover
-                          className={`${'ml-32'} ${'search-btn'}`}
-                          onClick={() => {
-                            setModalShow(true);
-                          }}
-                        />
-                      </div>
-                      {record && (
-                        <>
-                          <div className="komodo-record-section">
-                            {startRecord && (
-                              <>
-                                <div className="record-time">
-                                  <span>00:05</span>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(false);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faMicrophoneSlash}
-                                      // className="micro-icon-colo"
-                                    />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faPause} />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faPlay} />
-                                  </button>
-                                </div>
-
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faEyeSlash} />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faWindowClose} />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {!play && !startRecord && (
-                              <>
-                                <div>
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(true);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faPlay} className="play-icon-color" />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {play && (
-                              <>
-                                <div>
-                                  <button
-                                    className="komodo-rounded-btn"
-                                    onClick={() => {
-                                      setPlay(false);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon icon={faMicrophoneSlash} className="micro-icon-color" />
-                                  </button>
-                                </div>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn">
-                                    <FontAwesomeIcon icon={faHourglassHalf} />
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                            {!startRecord && (
-                              <div
-                                style={{
-                                  marginLeft: '8px',
-                                }}
-                              >
-                                <button className="komodo-rounded-btn">
-                                  <FontAwesomeIcon icon={faEyeSlash} />
-                                </button>
-                              </div>
-                            )}
-                            {!play && !startRecord && (
-                              <>
-                                <div
-                                  style={{
-                                    marginLeft: '8px',
-                                  }}
-                                >
-                                  <button className="komodo-rounded-btn-space">
-                                    <span>Space: </span>
-                                    <span>
-                                      None <FontAwesomeIcon icon={faAngleDown} />
-                                    </span>
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </>
-                      )}
+                    <div className="error mt-1" style={{ color: 'red' }}>
+                      {errors.videoUrl && touched.videoUrl && errors.videoUrl}
                     </div>
                   </div>
-                  {play && (
-                    <>
-                      <div className="komodo-right">
-                        <div className="play-screen">
-                          <div className="choose-top-heading">
-                            <span>Choose what to share</span>
-                          </div>
-                          <div className="choose-second-heading">
-                            <strong
-                              style={{
-                                display: 'block',
-                              }}
-                            >
-                              Choose what to share
-                            </strong>
-                            <span className="second-heading-detail">Chrome extension ://kjsdfjksdf want to share the content of your screen</span>
-                          </div>
-                          <div className="play-tabs-section">
-                            <Tabs className="main-tabs" defaultActiveKey={selectTab} activeKey={selectTab} id="uncontrolled-tab-example" onSelect={(k) => setSelectTab(k)}>
-                              <Tab eventKey="enterscreen" title="Enter Screen">
-                                <div className="play-tabs-detail">
-                                  enterscreen
-                                  <span
-                                    className="dumy-add-next"
-                                    onClick={() => {
-                                      setStartRecord(true);
-                                      setPlay(false);
-                                      // setRecord(false);
-                                    }}
-                                  >
-                                    Start Record
-                                  </span>
-                                </div>
-                              </Tab>
-                              <Tab eventKey="window" title="Windows">
-                                <div className="play-tabs-detail">Windows</div>
-                              </Tab>
-                              <Tab eventKey="chrometab" title="Chrome Tab">
-                                <div className="play-tabs-detail">chrometab</div>
-                              </Tab>
-                            </Tabs>
-                          </div>
-                          <div className="play-screen-btn">
-                            <Buttons type="button" secondary text="Cancel" width="86px" height="35px" hover className="screen-btn screen-btn-cancel " />
-                            <Buttons type="button" defaultgrey text="Share" width="86px" height="35px" hover className="screen-btn" />
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
+
+                  <Buttons
+                    type="button"
+                    primary
+                    text="Browse videos"
+                    width="146px"
+                    height="35px"
+                    hover
+                    className="ml-32"
+                    onClick={() => {
+                      setModalShow(true);
+                    }}
+                  />
+                </div>
+
+                <div className="komodo-go-to-about">
+                  <img src={KomodoGoToImg} alt="komode-img" className="komodo-go-to-img" />
+                  <div className="komodo-go-to-details">
+                    <h5 className="detais-heading">Create your videos</h5>
+
+                    <p className="detail-text">You can create your videos with Komodo by using our integration. Go to:</p>
+
+                    <div className="record-box">
+                      <Link
+                        onClick={() => {
+                          changeScreenHandler('');
+                          dispatch({
+                            type: 'ADD_VIDEO_URL',
+                            payload: '',
+                          });
+                        }}
+                        to={`/org/${allState.organization.currentOrganization?.domain}/record-video`}
+                      >
+                        <img src={RecordLogo} alt="record" className="record-img" />
+                        <p className="record-text">
+                          Record a <br />
+                          video
+                        </p>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </>
             )}
@@ -988,8 +790,7 @@ const FormikVideo = ({
                         fontWeight: 'bold',
                       }}
                     >
-                      {uploadedFile}
-                      is successfully uploaded.
+                      {uploadedFile}&nbsp;is successfully uploaded.
                     </div>
                   )}
                 </div>

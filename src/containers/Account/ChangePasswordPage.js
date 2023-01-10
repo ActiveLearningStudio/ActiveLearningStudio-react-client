@@ -16,10 +16,7 @@ import Error from '../Auth/Error';
 import './style.scss';
 
 function ChangePasswordPage(props) {
-  const {
-    isLoading,
-    updatePassword,
-  } = props;
+  const { isLoading, updatePassword } = props;
 
   const [error, setError] = useState(null);
   const [state, setState] = useState({
@@ -39,52 +36,49 @@ function ChangePasswordPage(props) {
     });
   };
 
-  const {
-    currentPassword,
-    password,
-    confirmPassword,
-  } = state;
+  const { currentPassword, password, confirmPassword } = state;
 
-  const onSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      setError(null);
+      try {
+        setError(null);
 
-      const message = await updatePassword({
-        current_password: currentPassword.trim(),
-        password: password.trim(),
-        password_confirmation: confirmPassword.trim(),
-      });
+        const message = await updatePassword({
+          current_password: currentPassword.trim(),
+          password: password.trim(),
+          password_confirmation: confirmPassword.trim(),
+        });
 
-      Swal.fire({
-        icon: 'success',
-        title: message,
-        showCancelButton: false,
-        showConfirmButton: false,
-        timer: 1500,
-        allowOutsideClick: false,
-      });
+        Swal.fire({
+          icon: 'success',
+          title: message,
+          showCancelButton: false,
+          showConfirmButton: false,
+          timer: 1500,
+          allowOutsideClick: false,
+        });
 
-      setState({
-        currentPassword: '',
-        password: '',
-        confirmPassword: '',
-      });
-    } catch (err) {
-      setError(getErrors(err));
-    }
-  }, [currentPassword, password, confirmPassword, updatePassword]);
+        setState({
+          currentPassword: '',
+          password: '',
+          confirmPassword: '',
+        });
+      } catch (err) {
+        setError(getErrors(err));
+      }
+    },
+    [currentPassword, password, confirmPassword, updatePassword],
+  );
 
-  const isDisabled = validator.isEmpty(currentPassword.trim())
-    || validator.isEmpty(password.trim())
-    || validator.isEmpty(confirmPassword.trim());
+  const isDisabled = validator.isEmpty(currentPassword.trim()) || validator.isEmpty(password.trim()) || validator.isEmpty(confirmPassword.trim());
 
   return (
     <>
       <div className="account-page">
         <div className="content-wrapper">
-          <div className="content">
+          <div className="content change-password-box">
             <div className="row">
               <div className="col-md-12">
                 <h1 className="title">Change Password</h1>
@@ -93,11 +87,7 @@ function ChangePasswordPage(props) {
 
             <div className="row justify-content-center">
               <div className="col-md-12">
-                <form
-                  className="auth-form"
-                  onSubmit={onSubmit}
-                  autoComplete="off"
-                >
+                <form className="auth-form" onSubmit={onSubmit} autoComplete="off">
                   <div className="row">
                     <div className="col-md-6">
                       <div className="form-group">
@@ -122,16 +112,7 @@ function ChangePasswordPage(props) {
                       <div className="form-group">
                         <label htmlFor="password">New Password</label>
                         <FontAwesomeIcon icon="lock" />
-                        <input
-                          className="input-box"
-                          type="password"
-                          id="password"
-                          name="password"
-                          placeholder="Password*"
-                          required
-                          value={password}
-                          onChange={onChangeField}
-                        />
+                        <input className="input-box" type="password" id="password" name="password" placeholder="Password*" required value={password} onChange={onChangeField} />
                       </div>
                     </div>
                   </div>
@@ -162,16 +143,8 @@ function ChangePasswordPage(props) {
                   </div>
 
                   <div className="form-group">
-                    <button
-                      type="submit"
-                      className="btn btn-primary submit"
-                      disabled={isLoading || isDisabled}
-                    >
-                      {isLoading ? (
-                        <img src={loader} alt="" />
-                      ) : (
-                        'Update Password'
-                      )}
+                    <button type="submit" className="btn btn-primary submit" disabled={isLoading || isDisabled}>
+                      {isLoading ? <img src={loader} alt="" /> : 'Update Password'}
                     </button>
                   </div>
                 </form>
@@ -180,7 +153,6 @@ function ChangePasswordPage(props) {
           </div>
         </div>
       </div>
-
     </>
   );
 }

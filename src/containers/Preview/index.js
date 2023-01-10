@@ -12,6 +12,8 @@ import ResourcePreview from './ResourcePreview';
 import PlaylistPreview from './PlaylistPreview';
 import ActivityShared from './PlaylistPreview/ActivityShared';
 
+import './style.scss';
+
 class PreviewPage extends React.Component {
   componentDidMount() {
     // scroll to top
@@ -30,18 +32,13 @@ class PreviewPage extends React.Component {
 
     let content;
     if (previewType === 'activity') {
-      content = (
-        <ResourcePreview
-          activityId={parseInt(activityId, 10)}
-          playlistId={playlistId}
-        />
-      );
+      content = <ResourcePreview activityId={parseInt(activityId, 10)} playlistId={playlistId} />;
     } else if (previewType === 'playlist') {
       content = (
         <PlaylistPreview
           projectId={parseInt(projectId, 10)}
           playlistId={parseInt(playlistId, 10)}
-          activityId={(activityId !== null && activityId !== undefined) ? parseInt(activityId, 10) : null}
+          activityId={activityId !== null && activityId !== undefined ? parseInt(activityId, 10) : null}
         />
       );
     } else if (previewType === 'activityShared') {
@@ -49,12 +46,7 @@ class PreviewPage extends React.Component {
     } else {
       content = (
         <div className="site-container-preview">
-          <ProjectPreview
-            {...this.props}
-            key={projectId}
-            project={project}
-            showLti={false}
-          />
+          <ProjectPreview {...this.props} key={projectId} project={project} showLti={false} />
         </div>
       );
     }
@@ -101,6 +93,4 @@ const mapStateToProps = (state) => ({
   selectedPlaylist: state.playlist.selectedPlaylist,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PreviewPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PreviewPage));

@@ -4,7 +4,10 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as actionTypes from "store/actionTypes";
 
-import { getAuthorTag, removeActiveAdminForm } from "store/actions/admin";
+import {
+  getAuthorTag,
+  removeActiveAdminForm,
+} from "store/actions/admin";
 import Swal from "sweetalert2";
 import adminapi from "../../../services/admin.service";
 
@@ -60,7 +63,10 @@ export default function CreateAuthorTag(props) {
                 },
               });
               dispatch(
-                getAuthorTag(organization?.activeOrganization?.id, activePage)
+                getAuthorTag(
+                  organization?.activeOrganization?.id,
+                  activePage
+                )
               );
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -93,11 +99,16 @@ export default function CreateAuthorTag(props) {
                   confirmButton: "confirmation-close-btn",
                 },
               });
-              dispatch(getAuthorTag(organization?.activeOrganization?.id, 1));
+              dispatch(
+                getAuthorTag(organization?.activeOrganization?.id, 1)
+              );
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
                 payload: res?.data,
+              });
+              dispatch({
+                type: actionTypes.REF_TABLE_SUBJECT_ADD_NEW_SET,
               });
             });
           }

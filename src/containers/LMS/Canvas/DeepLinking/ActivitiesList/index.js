@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { setPreviewActivityAction } from 'store/actions/canvas';
 import './style.scss';
+import * as microsoftTeams from '@microsoft/teams-js';
 
 const ActivitiesList = (props) => {
-  const { match, activity, setPreviewActivity } = props;
+  const { match, activity, setPreviewActivity, selectedActivityId, setSelectedActivityId } = props;
+  console.log('matching item activity:', match);
 
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
@@ -38,11 +40,36 @@ const ActivitiesList = (props) => {
     });
   };
 
+  const addToMsTeams = async (id) => {
+    if (!match.params.lmsUrl.includes('microsoft'))
+      return;
+
+    const activityId = parseInt(id, 10);
+    setSelectedActivityId(activityId);
+
+    await microsoftTeams.app.initialize();
+
+    microsoftTeams.pages.config.setValidityState(true);
+    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+      const configPromise = microsoftTeams.pages.config.setConfig({
+          websiteUrl: config.domainUrl,
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          entityId: activity.id,
+          suggestedDisplayName: activity.title,
+      });
+      configPromise.then((result) => { 
+        saveEvent.notifySuccess();
+       })
+      // eslint-disable-next-line no-shadow
+      .catch((error) => { saveEvent.notifyFailure('failure message'); });
+  });
+  };
+
   return (
     <>
       <div className=" mt-2 mb-2 lti-deeplink-activity-container">
         <div className="col result">
-          <div key={activity.id} className="row activity">
+          <div key={activity.id} className={activity.id === selectedActivityId ? "row activity selected" : "row activity"} onClick={() => addToMsTeams(activity.id) }>
             <div className="col activity-about">
               <div
                 className="activity-img"
@@ -63,8 +90,8 @@ const ActivitiesList = (props) => {
                   </p>
                   {activity.user && (
                     <p className="activity-detail-by-author">
-                      <label>By:</label>
-                      {` ${activity.user.last_name} ${activity.user.first_name}`}
+                      <label>Organization: </label>
+                      &nbsp;{activity.organization_name}
                       <br />
                       <label>Type:</label>
                       {activity.type && ` ${activity.type}`}
@@ -85,7 +112,7 @@ const ActivitiesList = (props) => {
                     <FontAwesomeIcon icon="eye" className="action-icon" />
                     Preview
                   </Dropdown.Item>
-                  <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+                  <Dropdown.Item to="#" eventKey={activity.id} onSelect={match.params.lmsUrl.includes('microsoft') ? addToMsTeams : addToLMS}>
                     <FontAwesomeIcon icon="plus" className="action-icon" />
                     Add to Course
                   </Dropdown.Item>
