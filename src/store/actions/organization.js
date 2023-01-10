@@ -198,6 +198,7 @@ export const createOrganizationNew = (id, data) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+    auto_approve: data.auto_approve,
   };
   const result = organization.createOrganization(details);
   result.then((newOrg) => {
@@ -265,6 +266,7 @@ export const updateOrganization = (id, data, parent) => async (dispatch) => {
     primary_font_family: data.primary_font_family,
     secondary_font_family: data.secondary_font_family,
     visibility_type_id: libraryPreferences,
+    auto_approve: data.auto_approve,
     // admins: adminUsers,
     // users: usersList,
   };

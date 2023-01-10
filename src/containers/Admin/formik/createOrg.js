@@ -23,6 +23,7 @@ import { Editor } from '@tinymce/tinymce-react';
 
 import BrandingPage from 'containers/Branding';
 import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import ResetSmSvg from 'iconLibrary/mainContainer/ResetSmSvg';
 
 export default function CreateOrg(prop) {
   const { editMode } = prop;
@@ -200,6 +201,9 @@ export default function CreateOrg(prop) {
           tertiary_color: editMode ? (activeEdit?.branding.tertiary_color ? activeEdit?.branding.tertiary_color : '#515151') : '#515151',
           primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'rubic',
           secondary_font_family: editMode ? activeEdit?.branding.secondary_font_family : 'Open Sans',
+          auto_approve: editMode ? activeEdit?.auto_approve : true,
+          activity_titles: 'Title',
+          activity_titles_placeholder: 'Give your activity a name...',
         }}
         validate={(values) => {
           const errors = {};
@@ -594,6 +598,25 @@ export default function CreateOrg(prop) {
                                   {/* <h3>All </h3> */}
                                   <h3>Public </h3>
                                 </div>
+                                {/* Auto-approval */}
+                                <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                                  <Switch
+                                    checked={values.auto_approve}
+                                    onChange={() => {
+                                      setFieldValue('auto_approve', !values.auto_approve);
+                                    }}
+                                    className="react-switch"
+                                    handleDiameter={30}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    offColor="#888"
+                                    onColor={secondaryColorIcon}
+                                    onHandleColor={secondaryColorIcon}
+                                    offHandleColor="#666"
+                                    // style={{ transform: checkedAll ? 'translateX(22px)' : 'translateX(0px)' }}
+                                  />
+                                  <h3>Auto-approval </h3>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -850,18 +873,7 @@ export default function CreateOrg(prop) {
                         }}
                         type="button"
                       >
-                        {/*<img src={ResetImg} alt="" />*/}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none" css-inspector-installed="true">
-                          <path d="M13.0001 1.63672V4.90931H9.72754" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M1 10.3663V7.09375H4.27259" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path
-                            d="M2.36903 4.36505C2.64566 3.58333 3.1158 2.88442 3.73559 2.33354C4.35539 1.78267 5.10463 1.39777 5.9134 1.21478C6.72218 1.03178 7.56413 1.05665 8.3607 1.28706C9.15727 1.51746 9.88249 1.9459 10.4687 2.5324L12.9995 4.91048M1 7.0922L3.5308 9.47029C4.117 10.0568 4.84222 10.4852 5.63879 10.7156C6.43536 10.946 7.27731 10.9709 8.08609 10.7879C8.89487 10.6049 9.64411 10.22 10.2639 9.66914C10.8837 9.11826 11.3538 8.41936 11.6305 7.63764"
-                            stroke={primaryColor}
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
+                        <ResetSmSvg primaryColor={primaryColor} />
                         <span>Reset</span>
                       </button>
                     </div>
@@ -1053,18 +1065,7 @@ export default function CreateOrg(prop) {
                           updatePreviewScreen('#084892', '#F8AF2C', '#515151', values.primary_font_family, values.secondary_font_family);
                         }}
                       >
-                        {/*<img src={ResetImg} alt="" />*/}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none" css-inspector-installed="true">
-                          <path d="M13.0001 1.63672V4.90931H9.72754" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M1 10.3663V7.09375H4.27259" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path
-                            d="M2.36903 4.36505C2.64566 3.58333 3.1158 2.88442 3.73559 2.33354C4.35539 1.78267 5.10463 1.39777 5.9134 1.21478C6.72218 1.03178 7.56413 1.05665 8.3607 1.28706C9.15727 1.51746 9.88249 1.9459 10.4687 2.5324L12.9995 4.91048M1 7.0922L3.5308 9.47029C4.117 10.0568 4.84222 10.4852 5.63879 10.7156C6.43536 10.946 7.27731 10.9709 8.08609 10.7879C8.89487 10.6049 9.64411 10.22 10.2639 9.66914C10.8837 9.11826 11.3538 8.41936 11.6305 7.63764"
-                            stroke={primaryColor}
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
+                        <ResetSmSvg primaryColor={primaryColor} />
                         <span>Reset</span>
                       </button>
                     </div>
@@ -1215,6 +1216,7 @@ export default function CreateOrg(prop) {
                       </>
                     )}
                   </div>
+
                   <div className="tab-inner-section mb-16 ">
                     <div className="tab_inner_header">
                       <h1>Fonts</h1>
@@ -1226,18 +1228,7 @@ export default function CreateOrg(prop) {
                           updatePreviewScreen(values.primary_color, values.secondary_color, values.tertiary_color, 'rubic', 'Open Sans');
                         }}
                       >
-                        {/*<img src={ResetImg} alt="" />*/}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none" css-inspector-installed="true">
-                          <path d="M13.0001 1.63672V4.90931H9.72754" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path d="M1 10.3663V7.09375H4.27259" stroke={primaryColor} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                          <path
-                            d="M2.36903 4.36505C2.64566 3.58333 3.1158 2.88442 3.73559 2.33354C4.35539 1.78267 5.10463 1.39777 5.9134 1.21478C6.72218 1.03178 7.56413 1.05665 8.3607 1.28706C9.15727 1.51746 9.88249 1.9459 10.4687 2.5324L12.9995 4.91048M1 7.0922L3.5308 9.47029C4.117 10.0568 4.84222 10.4852 5.63879 10.7156C6.43536 10.946 7.27731 10.9709 8.08609 10.7879C8.89487 10.6049 9.64411 10.22 10.2639 9.66914C10.8837 9.11826 11.3538 8.41936 11.6305 7.63764"
-                            stroke={primaryColor}
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
+                        <ResetSmSvg primaryColor={primaryColor} />
                         <span>Reset</span>
                       </button>
                     </div>
@@ -1365,6 +1356,36 @@ export default function CreateOrg(prop) {
                         </section>
                       </>
                     )}
+                  </div>
+
+                  {/* Tool tips */}
+                  <div className="tab-inner-section mb-16 ">
+                    <div className="tab_inner_header">
+                      <h1>Tool tips</h1>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('activity_titles', 'Title');
+                          setFieldValue('activity_titles_placeholder', 'Give your activity a name...');
+                        }}
+                      >
+                        <ResetSmSvg primaryColor={primaryColor} />
+                        <span>Reset</span>
+                      </button>
+                    </div>
+                    {/* Radio-For-font */}
+                    <div className="organization-own-select-radio">
+                      <div className="form-group-create mr-43">
+                        <h3>Activity title</h3>
+                        <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.activity_titles} />
+                        <div className="error">{errors.activity_titles && touched.activity_titles && errors.activity_titles}</div>
+                      </div>
+                      <div className="form-group-create">
+                        <h3>Activity title placeholder</h3>
+                        <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.activity_titles_placeholder} />
+                        <div className="error">{errors.activity_titles_placeholder && touched.activity_titles_placeholder && errors.activity_titles_placeholder}</div>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="tab-inner-section tab-inner-section-preview ">
