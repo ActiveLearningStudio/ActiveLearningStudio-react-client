@@ -9,54 +9,40 @@ import { Alert } from 'react-bootstrap';
 import logo from 'assets/images/logo.svg';
 import { setStudentAuthAction, refreshStudentAuthTokenAction, getStudentCoursesAction } from 'store/actions/gapi';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
+import { useLocation } from "react-router-dom";
+import { app } from '@microsoft/teams-js';
 
 import './styles.scss';
 
 function MsTeamActivityLaunch({match}) {
-  const { activityId, classId } = match.params;
-  // const [authorized, setAuthorized] = useState(null);
-  // const [isTeacher, setIsTeacher] = useState(null);
-  // const [activeCourse, setActiveCourse] = useState(null);
-  // Gets student courses
-  // useEffect(() => {
-  //   if (student === null) return;
+  const { activityId, assignmentId } = match.params;
+  console.log('my params: ', match.params);
+  const search = useLocation().search;
+  const queryParams = new URLSearchParams(search);
+  const [isTeacher, setIsTeacher] = useState('teacher');
+  const [msContext, setMsContext] = useState(null);
+  
+   // Get app context of login user
+   useEffect(() => {
 
-  //   getStudentCourses(student.auth.accessToken);
-  // }, [student]);
+    setIsTeacher(queryParams.get("userRole"));
 
-  // Checks user membership in the course
-  // useEffect(() => {
-  //   if (courses === null) return;
-
-  //   let found = false;
-  //   let teacher = false;
-  //   // eslint-disable-next-line no-restricted-syntax
-  //   for (const i in courses) {
-  //     if (courses[i].id === courseId) {
-  //       found = true;
-  //       setActiveCourse(courses[i]);
-
-  //       if (courses[i].ownerId === student.auth.googleId) {
-  //         teacher = true;
-  //       }
-  //     }
-  //   }
-  //   setAuthorized(found && !teacher && !submissionError);
-  //   setIsTeacher(teacher);
-  // }, [courses, courseId, submissionError]);
-
-  // const handleLogin = (data) => {
-  //   if (!data) return;
-
-  //   setStudentAuth(data);
-  //   // Refresh token in less than half an hour
-  //   setInterval(() => {
-  //     data.reloadAuthResponse().then((newData) => {
-  //       refreshStudentAuthToken(newData);
-  //     });
-  //   }, 1000 * 60 * 15);
-  // };
-
+    app.initialize().then(async () => {
+      await app.getContext().then((response) => {
+        setMsContext(response);
+        console.log('my context', response);
+      });
+    });
+  }, []);
+  
+  const params = {
+    assignmentId: queryParams.get("assignmentId"),
+    classId: queryParams.get("classId"),
+    view: queryParams.get("view"),
+    userRole: queryParams.get("userRole"),
+    submissionId: queryParams.get("submissionId"),
+  };
+ 
   return (
     <>
       <div className="gclass-activity-container">
@@ -68,19 +54,24 @@ function MsTeamActivityLaunch({match}) {
             <div className="activity-bg left-vdo">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  <MsTeamActivityLaunchScreen activityId={activityId} classId={classId} />
+                  
+                {isTeacher === 'student' && (
+                  <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />
+                )}
+
+                {isTeacher === 'teacher' && (
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
+                    </div>
+                  </div>
+                )}
                 </div>
               </div>
             </div>
           </div>
         </section>
       </div>
-      {/* {(orientation >= 90)
-      && (
-      <div className="coverallareas">
-        <Alert variant="warning">Please use Portrait mode!</Alert>
-      </div>
-      )} */}
     </>
   );
 }
@@ -90,7 +81,6 @@ MsTeamActivityLaunch.defaultProps = {
 
 MsTeamActivityLaunch.propTypes = {
   match: PropTypes.object.isRequired,
-  // orientation: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({

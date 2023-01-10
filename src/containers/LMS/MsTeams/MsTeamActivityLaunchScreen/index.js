@@ -1,5 +1,5 @@
-/* eslint-disable react/no-this-in-sfc */
-import React, { useEffect, useReducer } from 'react';
+/* eslint-disable */
+import React, { useEffect, useReducer, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -58,7 +58,8 @@ const reducer = (activityState, action) => {
 const MsTeamActivityLaunchScreen = (props) => {
   const {
     activityId,
-    classId,
+    paramObj,
+    context,
     activeCourse,
     match,
     history,
@@ -72,6 +73,7 @@ const MsTeamActivityLaunchScreen = (props) => {
     sendScreenshot,
   } = props;
 
+  console.log("params: ",  props.paramObj.assignmentId);
   // We do use it with the reducer
   /* eslint-disable-next-line no-unused-vars */
   const [activityState, dispatch] = useReducer(reducer, {
@@ -104,19 +106,22 @@ const MsTeamActivityLaunchScreen = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    getSubmission(classId, match.params.courseId, 'dsfsfs54sfsdf');
+    getSubmission(paramObj.classId, match.params.courseId, 'dsfsfs54sfsdf');
   }, [activityId]);
 
+  // check if already submit
   useEffect(() => {
+    const classId = paramObj.classId;
+    const submissionId = paramObj.submissionId;
     if (submission === null) return;
 
     // If the activity has already been submitted to google classroom, redirect to summary page
     if (submission && submission.state === 'TURNED_IN') {
-      history.push(`/gclass/summary/${match.params.userId}/${match.params.courseId}/${match.params.activityId}/${submission.coursework_id}/${submission.id}`);
+      history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
       return;
     }
 
-    loadH5pSettings(activityId, 'asdasdasd546f5ds', submission.id);
+    loadH5pSettings(activityId, context.user.id, submission.id);
   }, [submission]);
 
   // Load H5P core
@@ -160,6 +165,7 @@ const MsTeamActivityLaunchScreen = (props) => {
     // Hook into H5P dispatcher only if xAPI is needed for this route
     if (xAPIHelper.isxAPINeeded(match.path) === true) {
       activityState.h5pObject.externalDispatcher.on('xAPI', function (event) {
+        console.log('eventObj: ', event);
         console.log('Running xAPI listener callback');
         if (event.ignoreStatement) {
           return;
@@ -168,22 +174,25 @@ const MsTeamActivityLaunchScreen = (props) => {
           path: match.path,
           activityId,
           activeCourse,
-          submissionId: submission.id,
-          attemptId: submission.attemptId,
-          studentId: student.profile.data.id,
-          classworkId: match.params.classworkId,
-          courseId: match.params.courseId,
-          auth: student.auth,
+          submissionId: paramObj.submissionId,
+          attemptId: 'dsifhksdoifgshodfh',
+          studentId: context.user.id,
+          classworkId: paramObj.classId,
+          courseId: paramObj.assignmentId,
+          auth: context.user.id,
+          tool_platform: 'MS Teams',
+          homepage: 'https://teams.microsoft.com'
         };
 
         // Extending the xAPI statement with our custom values and sending it off to LRS
         const xapiData = JSON.stringify(
           xAPIHelper.extendStatement(this, event.data.statement, params),
         );
+        console.log('statement:', xapiData);
         sendStatement(xapiData);
 
         if (h5pSettings?.organization?.api_key) {
-          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, student.profile.data.name.fullName);
+          sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, context.user.displayName);
         }
 
         const h5pCurrentInstance = this;
@@ -225,8 +234,9 @@ MsTeamActivityLaunchScreen.defaultProps = {
 
 MsTeamActivityLaunchScreen.propTypes = {
   activityId: PropTypes.string.isRequired,
-  classId: PropTypes.string.isRequired,
-  activeCourse: PropTypes.object.isRequired,
+  params : PropTypes.object.isRequired,
+  // classId: PropTypes.string.isRequired,
+  // activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   student: PropTypes.object.isRequired,

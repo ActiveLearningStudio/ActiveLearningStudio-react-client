@@ -44,6 +44,7 @@ const Project = (props) => {
     });
   };
 
+  //Ms teams deeplinking item add to assignment
   const addToMsTeams = async (id) => {
     if (!match.params.lmsUrl.includes('microsoft'))
       return;
@@ -56,15 +57,14 @@ const Project = (props) => {
 
     microsoftTeams.pages.config.setValidityState(true);
     microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
-      const finalUrl = `${decodeURIComponent(match.params.redirectUrl)}&title=${encodeURIComponent(activity.title)}&entity=activity&id=${activity.id}`;
-      console.log('redirectUrl: ', finalUrl);
       const configPromise = microsoftTeams.pages.config.setConfig({
           websiteUrl: config.domainUrl,
           contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          // websiteUrl: 'https://2e37-110-36-227-66.ngrok.io/',
+          // contentUrl: `https://2e37-110-36-227-66.ngrok.io/msteam/launch/activity/${activity.id}`,
           entityId: activity.id,
           suggestedDisplayName: activity.title,
       });
-      console.log('link ', `${config.domainUrl}msteam/launch/activity/${activity.id}`);
       configPromise.then((result) => { 
         saveEvent.notifySuccess();
        })

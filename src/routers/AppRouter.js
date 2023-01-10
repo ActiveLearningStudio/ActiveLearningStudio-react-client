@@ -81,6 +81,7 @@ const WordpressSSO = loadable(() => import('../containers/Auth/WordpressSSO'));
 const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
 const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
 const MsTeamActivityLaunch = loadable(() => import('../containers/LMS/MsTeams/MsTeamActivityLaunch'));
+const MsTeamSummaryPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamSummaryPage'));
 
 const AppRouter = (props) => {
   const SelectedOrganization = localStorage.getItem('current_org');
@@ -134,6 +135,7 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId" component={GclassSummaryPage} />
         <OpenRoute exact path="/msteams/launch/activity/:activityId/class/:classId/assignment/:assignmentId" component={MsTeamsActivityPage} />
         <OpenRoute exact path="/msteam/launch/activity/:activityId" component={MsTeamActivityLaunch} />
+        <OpenRoute exact path="/msteam/summary/:classId/:activityId/:submissionId" component={MsTeamSummaryPage} />
         <OpenRoute
           exact
           path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
