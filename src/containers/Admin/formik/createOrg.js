@@ -202,8 +202,8 @@ export default function CreateOrg(prop) {
           primary_font_family: editMode ? activeEdit?.branding.primary_font_family : 'rubic',
           secondary_font_family: editMode ? activeEdit?.branding.secondary_font_family : 'Open Sans',
           auto_approve: editMode ? activeEdit?.auto_approve : true,
-          activity_titles: 'Title',
-          activity_titles_placeholder: 'Give your activity a name...',
+          // activity_titles: 'Title',
+          activity_title_placeholder: editMode ? activeEdit?.activity_title_placeholder : 'Give your activity a name...',
         }}
         validate={(values) => {
           const errors = {};
@@ -1365,8 +1365,8 @@ export default function CreateOrg(prop) {
                       <button
                         type="button"
                         onClick={() => {
-                          setFieldValue('activity_titles', 'Title');
-                          setFieldValue('activity_titles_placeholder', 'Give your activity a name...');
+                          // setFieldValue('activity_titles', 'Title');
+                          setFieldValue('activity_title_placeholder', 'Give your activity a name...');
                         }}
                       >
                         <ResetSmSvg primaryColor={primaryColor} />
@@ -1375,15 +1375,15 @@ export default function CreateOrg(prop) {
                     </div>
                     {/* Radio-For-font */}
                     <div className="organization-own-select-radio">
-                      <div className="form-group-create mr-43">
+                      {/* <div className="form-group-create mr-43">
                         <h3>Activity title</h3>
                         <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.activity_titles} />
                         <div className="error">{errors.activity_titles && touched.activity_titles && errors.activity_titles}</div>
-                      </div>
+                      </div> */}
                       <div className="form-group-create">
                         <h3>Activity title placeholder</h3>
-                        <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.activity_titles_placeholder} />
-                        <div className="error">{errors.activity_titles_placeholder && touched.activity_titles_placeholder && errors.activity_titles_placeholder}</div>
+                        <input type="text" name="activity_title_placeholder" onChange={handleChange} onBlur={handleBlur} value={values.activity_title_placeholder} />
+                        <div className="error">{errors.activity_title_placeholder && touched.activity_title_placeholder && errors.activity_title_placeholder}</div>
                       </div>
                     </div>
                   </div>

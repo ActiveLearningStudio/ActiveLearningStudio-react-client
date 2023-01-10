@@ -285,7 +285,8 @@ const DescribeVideo = ({
                       <input
                         type="text"
                         name="title"
-                        placeholder="Give your layout a name..."
+                        // placeholder="Give your layout a name..."
+                        placeholder={organization?.activeOrganization?.activity_title_placeholder}
                         onChange={(e) => {
                           setFieldValue('title', e.target.value);
                           setVideoTitle(e.target.value);

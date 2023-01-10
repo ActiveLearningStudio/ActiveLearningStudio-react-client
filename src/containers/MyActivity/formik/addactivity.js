@@ -316,7 +316,8 @@ const AddActivity = (props) => {
                     <input
                       type="text"
                       name="title"
-                      placeholder="Give your activity a name..."
+                      // placeholder="Give your activity a name..."
+                      placeholder={organization?.activeOrganization?.activity_title_placeholder}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={parser.parseFromString(values.title, 'text/html').body.textContent}
