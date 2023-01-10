@@ -113,13 +113,13 @@ const MsTeamActivityLaunchScreen = (props) => {
   useEffect(() => {
     const classId = paramObj.classId;
     const submissionId = paramObj.submissionId;
-    // if (submission === null) return;
+    if (submission === null) return;
 
     // If the activity has already been submitted to google classroom, redirect to summary page
-    // if (submission && submission.state === 'TURNED_IN') {
+    if (submission && submission.state === 'TURNED_IN') {
       history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
       return;
-    // }
+    }
 
     loadH5pSettings(activityId, context.user.id, submission.id);
   }, [submission]);
