@@ -20,14 +20,9 @@ const SearchPage = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('SearchPage match');
-    console.log(match);
-
-    const params = new URLSearchParams(match.params.redirectUrl);
-    console.log('params', params);
+    const params = new URL(window.location.href).searchParams;
 
     if (params.has('platform') && params.get('platform') === 'MS Teams') {
-      console.log('here');
       setPlatformStyle('msteams-search-page');
     }
   }, [match]);
