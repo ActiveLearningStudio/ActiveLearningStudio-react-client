@@ -40,7 +40,7 @@ function MsTeamActivityLaunch({match}) {
     classId: queryParams.get("classId"),
     view: queryParams.get("view"),
     userRole: queryParams.get("userRole"),
-    submissionId: queryParams.get("submissionId"),
+    submissionId: queryParams.has('submissionId') ? queryParams.get("submissionId") : 'preview',
   };
  
   return (
@@ -54,18 +54,7 @@ function MsTeamActivityLaunch({match}) {
             <div className="activity-bg left-vdo">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  
-                {isTeacher === 'student' && (
-                  <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />
-                )}
-
-                {isTeacher === 'teacher' && (
-                  <div className="row m-4">
-                    <div className="col text-center">
-                      <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
-                    </div>
-                  </div>
-                )}
+                  {msContext && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
                 </div>
               </div>
             </div>
