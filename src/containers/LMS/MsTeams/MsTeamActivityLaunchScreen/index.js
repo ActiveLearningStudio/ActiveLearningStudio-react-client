@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
-import { loadH5pResourceSettings, getSubmissionAction, turnInAction } from 'store/actions/gapi';
+import { loadH5pResourceSettings, getSubmissionAction, turnInAction, getOutcomeSummaryAction } from 'store/actions/gapi';
 import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './styles.scss';
 
@@ -106,23 +106,15 @@ const MsTeamActivityLaunchScreen = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    getSubmission(paramObj.classId, match.params.courseId, 'dsfsfs54sfsdf');
-  }, [activityId]);
-
-  // check if already submit
-  useEffect(() => {
-    const classId = paramObj.classId;
-    const submissionId = paramObj.submissionId;
-    if (submission === null) return;
-
-    // If the activity has already been submitted to google classroom, redirect to summary page
-    if (submission && submission.state === 'TURNED_IN') {
-      history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
+    const params = new URL(window.location.href).searchParams;
+    // If we're in speedgrader, redirect to summary
+    if (params.has('view') && params.get('view') === 'SpeedGrader') {
+      history.push(`/msteam/summary/${paramObj.classId}/${activityId}/${paramObj.submissionId}`);
       return;
     }
 
-    loadH5pSettings(activityId, context.user.id, submission.id);
-  }, [submission]);
+    loadH5pSettings(activityId, context.user.id, paramObj.submissionId);
+  }, [activityId]);
 
   // Load H5P core
   useEffect(() => {
@@ -194,24 +186,6 @@ const MsTeamActivityLaunchScreen = (props) => {
         if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, context.user.displayName);
         }
-
-        const h5pCurrentInstance = this;
-        // Ask the user if he wants to turn-in the work to google classroom
-        if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
-          Swal.fire({
-            title: 'Do you want to turn in your work to Google Classroom?',
-            showCancelButton: true,
-            confirmButtonText: 'Turn In',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              turnIn(params.classworkId, params.courseId, params.auth);
-              Swal.fire('Saved!', '', 'success');
-              h5pCurrentInstance.trigger('turnInSaved');
-            } else {
-              h5pCurrentInstance.trigger('turnInCancelled');
-            }
-          });
-        }
       });
     }
 
@@ -261,6 +235,7 @@ const mapDispatchToProps = (dispatch) => ({
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
   turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
   sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
+  getOutcomeSummary: (submissionId) => dispatch(getOutcomeSummaryAction()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MsTeamActivityLaunchScreen));
