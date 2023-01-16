@@ -1,4 +1,52 @@
-@import 'assets/css/index';
+@import "assets/css/index";
+
+// C-CSS-Start
+.swal2-title {
+  font-size: 24px !important;
+  font-weight: 300 !important;
+  display: block !important;
+  color: #084892;
+}
+
+.swal2-html-container {
+  color: #084892;
+  font-size: 16px !important;
+  p {
+    font-weight: 400 !important;
+  }
+}
+
+.swal2-actions {
+  button.swal2-confirm {
+    order: 1;
+    background-color: #084870;
+    border: 2px solid #08487d !important;
+  }
+  button {
+    border-radius: 24px !important;
+    min-width: 165px;
+  }
+  button.swal2-cancel {
+    border: 2px solid #08487d !important;
+    background-color: #ffffff !important;
+    color: #08487d !important;
+  }
+  button.swal2-deny {
+    border: 2px solid #08487d !important;
+    background-color: #ffffff !important;
+    color: #08487d !important;
+  }
+  .order-1 {
+    order: 3;
+  }
+  .order-2 {
+    order: 2 !important;
+  }
+  .order-3 {
+    order: 1;
+  }
+}
+// C-CSS-End
 
 .inner-content {
   background: $white;
@@ -75,7 +123,7 @@
   }
 
   .organization-name {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;

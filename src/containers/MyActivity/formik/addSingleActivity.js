@@ -41,6 +41,7 @@ const ActivityLayout = (props) => {
     dispatch(getSingleLayoutActivities(organization?.activeOrganization?.id));
   }, []);
   const allActivity = useSelector((state) => state.myactivities.singleLayout);
+  const screenSelectionType = useSelector((state) => state.myactivities.screenSelectionType);
   const allActivitytypes = useSelector((state) => state.resource.types);
   useEffect(() => {
     setAllSingleActivities(allActivity);
@@ -146,7 +147,13 @@ const ActivityLayout = (props) => {
           </div>
         </div>
 
-        <ConfigButtons count={allActivitiesSingle?.length} changeScreenHandler={changeScreenHandler} layout={layout} dispatch={dispatch} />
+        <ConfigButtons
+          count={allActivitiesSingle?.length}
+          changeScreenHandler={changeScreenHandler}
+          layout={layout}
+          dispatch={dispatch}
+          screenSelectionType={screenSelectionType}
+        />
       </div>
       <div className="layout-cards-process-btn">
         <div className="activity-layout-cards" style={{ width: '100%' }}>
@@ -181,7 +188,7 @@ const ActivityLayout = (props) => {
   );
 };
 
-const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count }) => (
+const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count, screenSelectionType }) => (
   <div className="activity-layout-btns" style={{ display: 'flex' }}>
     {/* <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} /> */}
 
@@ -197,6 +204,7 @@ const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count }) => (
           dispatch({
             type: actionTypes.SET_SELECTED_ACTIVITY,
             payload: layout,
+            // screenSelectionType: screenSelectionType || '',
           });
         }}
         className="mr-3"

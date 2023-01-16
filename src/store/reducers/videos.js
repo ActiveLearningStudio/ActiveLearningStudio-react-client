@@ -4,6 +4,7 @@ import * as actionTypes from '../actionTypes';
 const INITIAL_STATE = {
   allVideos: [],
   videoId: '',
+  videoFile: '',
   editVideo: '',
   activecms: null,
 };
@@ -20,6 +21,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         videoId: action.payload,
+        platform: action.platformName,
+      };
+    case actionTypes.ADD_VIDEO_FILE:
+      return {
+        ...state,
+        videoFile: action.payload,
         platform: action.platformName,
       };
     case actionTypes.ADD_NEW_VIDEO:

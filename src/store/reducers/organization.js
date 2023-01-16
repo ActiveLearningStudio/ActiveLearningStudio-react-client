@@ -208,6 +208,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activeOrganization: { ...state.activeOrganization },
       };
+    case actionTypes.ORG_UPDATE_TOOLS_TIPS:
+      state.activeOrganization.activity_title_placeholder = action.payload.activity_title_placeholder;
+      return {
+        ...state,
+        activeOrganization: { ...state.activeOrganization },
+      };
     case actionTypes.ORG_UPDATE_GCR_SETTINGS:
       const filterGcrSettings = action.payload;
       return {

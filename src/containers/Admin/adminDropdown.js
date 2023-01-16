@@ -942,7 +942,7 @@ const AdminDropdown = (props) => {
                   Edit
                 </Dropdown.Item>
               )}
-              {permission?.Organization.includes('organization:edit-all-setting') && (
+              {/* {permission?.Organization.includes('organization:edit-all-setting') && (
                 <Dropdown.Item
                   to="#"
                   onClick={() => {
@@ -957,7 +957,7 @@ const AdminDropdown = (props) => {
                   <CloneSmSvg primaryColor={primaryColor} className="menue-img" />
                   Clone
                 </Dropdown.Item>
-              )}
+              )} */}
               {permission?.Organization.includes('organization:delete-all-setting') && (
                 <Dropdown.Item
                   onClick={() => {

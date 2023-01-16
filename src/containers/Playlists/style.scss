@@ -1,4 +1,153 @@
-@import 'assets/css/index';
+@import "assets/css/index";
+
+// C-CSS-Start
+.content-wrapper {
+  margin-left: 136px !important;
+  padding: 25px;
+}
+
+#board {
+  margin-top: 5px;
+  padding-bottom: 50px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  user-select: none;
+
+  .list-body {
+    max-height: 260px;
+    min-height: 260px;
+  }
+}
+.board-custom {
+  .list-header-name {
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 22px;
+    letter-spacing: 0;
+    color: #0a0708;
+    opacity: 1;
+    padding: 15px 25px;
+    text-transform: capitalize;
+  }
+
+  span {
+    height: auto;
+    padding: 0;
+    max-width: 170px;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .list {
+    width: 249px;
+  }
+}
+.list {
+  position: relative;
+  width: 391px;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ebecf0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  white-space: normal;
+}
+
+//toasitify styles
+.project-loading {
+  background: $fun-blue-1 !important;
+  color: #fff !important;
+  box-shadow: 0 1px 10px 0 #000000 !important;
+
+  .Toastify__progress-bar {
+    background: #fff !important;
+  }
+}
+
+.model-box-view {
+  background-color: #3c3d3e00 !important;
+
+  .modal-header img {
+    max-width: 110px;
+  }
+
+  .modal-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 15px;
+
+    p {
+      padding-bottom: 15px;
+    }
+
+    button span {
+      width: 80px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold !important;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+  }
+
+  .classroom-form {
+    padding: 0 20px;
+
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      padding-bottom: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 1px solid #b5b4b4;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      height: auto;
+    }
+
+    .form-error {
+      color: red;
+      font-size: 12px;
+      text-align: left;
+      margin-top: -20px;
+    }
+
+    button {
+      background-color: #5952c6;
+      color: #fff;
+      width: 150px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+  }
+}
+// C-CSS-End
 .inner-content {
   background: $white;
   // padding: 32px 30px 30px;
@@ -157,7 +306,7 @@
     border-radius: 5px;
   }
   p {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #515151;
@@ -255,7 +404,7 @@
     border-color: #084892 !important;
   }
   .dropdown-toggle::after {
-    background-image: url('../../assets/images/navigation - down.svg') !important;
+    background-image: url("../../assets/images/navigation - down.svg") !important;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

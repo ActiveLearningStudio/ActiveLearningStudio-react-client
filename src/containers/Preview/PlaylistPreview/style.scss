@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .flex-container {
   display: flex;
@@ -401,7 +401,7 @@ img {
     }
 
     &:not(:last-child):after {
-      content: '';
+      content: "";
       position: absolute;
       right: 15px;
       top: 10px;

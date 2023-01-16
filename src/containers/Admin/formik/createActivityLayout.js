@@ -9,7 +9,10 @@ import imgAvatar from "assets/images/default-upload-img.png";
 import pcIcon from "assets/images/pc-icon.png";
 import Swal from "sweetalert2";
 import { uploadActivityLayoutThumbAction } from "store/actions/resource";
-import { getActivityLayout, removeActiveAdminForm } from "store/actions/admin";
+import {
+  getActivityLayout,
+  removeActiveAdminForm,
+} from "store/actions/admin";
 import adminapi from "../../../services/admin.service";
 
 export default function CreateActivityLayout(props) {
@@ -18,7 +21,9 @@ export default function CreateActivityLayout(props) {
   const imgUpload = useRef();
   const dispatch = useDispatch();
   const organization = useSelector((state) => state.organization);
-  const selectedItem = useSelector((state) => state.resource.selectedItem);
+  const selectedItem = useSelector(
+    (state) => state.resource.selectedItem
+  );
   const { activeEdit, activePage } = organization;
   useEffect(() => {
     if (editMode) {
@@ -35,7 +40,9 @@ export default function CreateActivityLayout(props) {
           description: editMode ? activeEdit?.description : "",
           type: editMode ? activeEdit?.type : "",
           h5pLib: editMode ? activeEdit?.h5pLib : "",
-          demo_activity_id: editMode ? activeEdit?.demo_activity_id : "",
+          demo_activity_id: editMode
+            ? activeEdit?.demo_activity_id
+            : "",
           demo_video_id: editMode ? activeEdit?.demo_video_id : "",
           image: editMode ? activeEdit?.image : "",
           order: editMode ? activeEdit?.order : "",
@@ -56,7 +63,8 @@ export default function CreateActivityLayout(props) {
             errors.type = "Required";
           }
           if (!values.h5pLib) {
-            errors.h5pLib = "The h5pLib field is required when type is h5p.";
+            errors.h5pLib =
+              "The h5pLib field is required when type is h5p.";
           }
           if (!values.demo_activity_id) {
             errors.demo_activity_id = "Required";
@@ -99,7 +107,10 @@ export default function CreateActivityLayout(props) {
                 },
               });
               dispatch(
-                getActivityLayout(organization?.activeOrganization?.id, activePage)
+                getActivityLayout(
+                  organization?.activeOrganization?.id,
+                  activePage
+                )
               );
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -131,9 +142,16 @@ export default function CreateActivityLayout(props) {
                   confirmButton: "confirmation-close-btn",
                 },
               });
+              dispatch({
+                type: actionTypes.REF_TABLE_SUBJECT_ADD_NEW_SET,
+              });
               dispatch(
-                getActivityLayout(organization?.activeOrganization?.id, 1)
+                getActivityLayout(
+                  organization?.activeOrganization?.id,
+                  1
+                )
               );
+
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -275,7 +293,10 @@ export default function CreateActivityLayout(props) {
               <div>
                 <div className="form-group-create">
                   <h3>Upload an image</h3>
-                  <div className="" onClick={() => imgUpload.current.click()}>
+                  <div
+                    className=""
+                    onClick={() => imgUpload.current.click()}
+                  >
                     <input
                       type="file"
                       name="image"
@@ -294,7 +315,9 @@ export default function CreateActivityLayout(props) {
                             title: "Error",
                             text: "Invalid file selected.",
                           });
-                        } else if (e.target.files[0].size > 100000000) {
+                        } else if (
+                          e.target.files[0].size > 100000000
+                        ) {
                           Swal.fire({
                             icon: "error",
                             title: "Error",
@@ -304,9 +327,14 @@ export default function CreateActivityLayout(props) {
                         } else {
                           const formData = new FormData();
                           try {
-                            formData.append("image", e.target.files[0]);
+                            formData.append(
+                              "image",
+                              e.target.files[0]
+                            );
                             const imgurl = dispatch(
-                              uploadActivityLayoutThumbAction(formData)
+                              uploadActivityLayoutThumbAction(
+                                formData
+                              )
                             );
                             imgurl.then((img) => {
                               setImgActive(img);
@@ -316,7 +344,8 @@ export default function CreateActivityLayout(props) {
                             Swal.fire({
                               icon: "error",
                               title: "Error",
-                              text: "Image upload failed, kindly try again.",
+                              text:
+                                "Image upload failed, kindly try again.",
                             });
                           }
                         }

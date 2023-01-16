@@ -60,7 +60,7 @@ const StartingPage = ({
 
             <span>{createBtnTitle}</span>
           </div>
-          <a href="https://support.curriki.org/" className="section-btn ">
+          <a href="https://www.currikistudio.org/help/" rel="noreferrer" target="_blank" className="section-btn ">
             <HelpXlSvg primaryColor={primaryColor} />
             <span>{helpBtnTitle}</span>
           </a>

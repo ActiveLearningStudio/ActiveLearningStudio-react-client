@@ -20,7 +20,7 @@ const initialProjectPage = () => (
         <Headings color="#515151" size="18" wieght="400" text="Start by pressing “Create project” and make your content live!" headingType="body2" />
         <p>
           Feeling lost? Go to
-          <a href="https://www.curriki.org" rel="noreferrer" target="_blank">
+          <a href="https://www.currikistudio.org/help/" rel="noreferrer" target="_blank">
             {' '}
             Help Center.
           </a>

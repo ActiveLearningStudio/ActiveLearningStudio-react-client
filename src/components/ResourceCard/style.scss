@@ -1,5 +1,21 @@
 @import "assets/css/index";
 
+// C-CSS-Start
+.dropdown-submenu.send {
+  position: relative;
+
+  &:hover {
+    .dropdown-menu.check {
+      display: block;
+      left: -130px;
+      top: 0;
+      width: 130px;
+    }
+  }
+}
+
+// C-CSS-End
+
 .playlist-resource-bg {
   border: none !important;
 }

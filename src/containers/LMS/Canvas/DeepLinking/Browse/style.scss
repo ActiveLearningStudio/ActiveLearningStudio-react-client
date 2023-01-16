@@ -418,3 +418,22 @@
     color: #0f4392;
     cursor: pointer;
   }
+
+  .msteams-search-page .top-search-filter {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  .msteams-search-page .top-search-filter .search-bar input {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding-left: 30px;
+    height: 30px;
+    color: #616161;
+  }
+
+  .msteams-search-page .top-search-filter .search-bar svg {
+    left: 5px;
+    height: 20px;
+  }
