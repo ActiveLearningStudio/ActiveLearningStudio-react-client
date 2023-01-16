@@ -1,9 +1,15 @@
 @import 'assets/css/index';
 
+.loader_gif {
+  display: flex;
+  height: 600px;
+  justify-content: center;
+  align-items: center;
+}
 .flex-container {
   -ms-box-orient: horizontal;
   display: flex;
-  margin-bottom: 70px;
+  justify-content: center;
 }
 
 .disabled-link {
@@ -51,8 +57,6 @@ img {
 }
 
 .activity-bg {
-  background-color: #686868;
-  padding: 55px 87px;
   color: #ffffff;
   position: relative
 }
