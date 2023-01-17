@@ -555,6 +555,9 @@ const Index = ({ activities }) => {
                                   zIndex: 1000,
                                 },
                               }}
+                              locale={{
+                                last: "OK",
+                              }}
                             />
                             <label className="cutom_checkbox">
                               <input
