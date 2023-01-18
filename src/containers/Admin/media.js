@@ -276,7 +276,7 @@ const Media = () => {
                                   <div className="lti-tool-switch">
                                     <div className="custom-toggle-button toggle-style">
                                       <Switch
-                                        disabled={isVideoSource?.name === 'My device' || isVideoSource.name === 'YouTube' ? true : false}
+                                        disabled={isVideoSource?.name === 'My device' || isVideoSource?.name === 'YouTube' ? true : false}
                                         checked={isVideoSource?.pivot.lti_tool_settings_status ? true : false}
                                         onChange={(e) => {
                                           if (e) {
