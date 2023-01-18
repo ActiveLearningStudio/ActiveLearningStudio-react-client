@@ -95,8 +95,9 @@ export default function PageHeadline() {
                 Komodo is a screencasting solution that helps you
                 collaborate faster and share your ideas with people
                 without the need to type lots of text, and scheduling
-                online meetings. For more detail visit our help center
-                or komodo official site
+                online meetings. <br />For more detail visit our help center
+                or komodo official site.<br/>
+                <div class="message--box_links"><a href="https://www.currikistudio.org/help/" class="mr-12" target="_blank">Curriki Help</a>&nbsp;&nbsp;<a href="https://komododecks.com/" target="_blank">Komodo Help</a></div>
               </OverlayTriggerPop>
               {/* <Buttons primary text="Add Komodo extension" iconColor="#FF0000" width="auto" height="32px" hover />
                */}

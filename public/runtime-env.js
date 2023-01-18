@@ -1,12 +1,12 @@
 window.__RUNTIME_CONFIG__ = {
   REACT_APP_PEXEL_API: '563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf',
 
-  REACT_APP_API_URL: 'https://dev.currikistudio.org/api/api',
-  REACT_DOMAIN_URL: 'https://dev.currikistudio.org/',
+  REACT_APP_API_URL: 'https://my.currikistudio.org/api/api',
+  REACT_DOMAIN_URL: 'https://my.currikistudio.org/',
 
   // REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
 
-  REACT_APP_RESOURCE_URL: 'https://dev.currikistudio.org/api',
+  REACT_APP_RESOURCE_URL: 'https://my.currikistudio.org/',
 
   // REACT_APP_API_URL: 'http://127.0.0.1:8000/api',
   // REACT_DOMAIN_URL: 'http://activelearningstudio-api.test/',
@@ -24,7 +24,7 @@ window.__RUNTIME_CONFIG__ = {
 
   REACT_APP_H5P_KEY: 'B6TFsmFD5TLZaWCAYZ91ly0D2We0xjLAtRmBJzQ',
 
-  REACT_APP_TSUGI_SERVER_URL: 'http://dev.-tsugi.currikistudio.org/mod/curriki/',
+  REACT_APP_TSUGI_SERVER_URL: 'https://my.currikistudio.org/mod/curriki/',
 
   REACT_APP_SHARED_PROJECT_DEMO_USER: 'demoaccount@gmail.com',
 
