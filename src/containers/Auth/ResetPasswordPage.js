@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -19,12 +20,7 @@ import Logo from './Logo';
 import './style.scss';
 
 function ResetPasswordPage(props) {
-  const {
-    history,
-    location,
-    isLoading,
-    resetPassword,
-  } = props;
+  const { history, location, isLoading, resetPassword } = props;
 
   const query = QueryString.parse(location.search);
   if (!query.token) {
@@ -39,69 +35,69 @@ function ResetPasswordPage(props) {
 
   const [error, setError] = useState(null);
 
-  const onChangeField = useCallback((e) => {
-    e.persist();
+  const onChangeField = useCallback(
+    (e) => {
+      e.persist();
 
-    setState((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  }, [setState]);
+      setState((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
+    },
+    [setState],
+  );
 
-  const onSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    const email = state.email.trim();
-    const password = state.password.trim();
-    const confirmPassword = state.confirmPassword.trim();
+      const email = state.email.trim();
+      const password = state.password.trim();
+      const confirmPassword = state.confirmPassword.trim();
 
-    try {
-      if (!validator.isEmail(email)) {
-        setError('Please input valid email.');
-        return;
+      try {
+        if (!validator.isEmail(email)) {
+          setError('Please input valid email.');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          setError('Password does not match.');
+          return;
+        }
+
+        setError(null);
+
+        await resetPassword({
+          token: query.token,
+          email,
+          password,
+          password_confirmation: confirmPassword,
+        });
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Password has been reset successfully.',
+        });
+      } catch (err) {
+        setError(getErrors(err));
       }
+    },
+    [query.token, state, resetPassword],
+  );
 
-      if (password !== confirmPassword) {
-        setError('Password does not match.');
-        return;
-      }
-
-      setError(null);
-
-      await resetPassword({
-        token: query.token,
-        email,
-        password,
-        password_confirmation: confirmPassword,
-      });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Success',
-        text: 'Password has been reset successfully.',
-      });
-    } catch (err) {
-      setError(getErrors(err));
-    }
-  }, [query.token, state, resetPassword]);
-
-  const isDisabled = validator.isEmpty(state.email.trim())
-    || validator.isEmpty(state.password.trim())
-    || validator.isEmpty(state.confirmPassword.trim());
+  const isDisabled = validator.isEmpty(state.email.trim()) || validator.isEmpty(state.password.trim()) || validator.isEmpty(state.confirmPassword.trim());
 
   return (
     <div className="auth-page">
       <Logo />
 
-      <div className="auth-container">
+      <div className="auth-container reset-password-wrapper">
         <h1 className="auth-title">Reset Password</h1>
         <h3 className="auth-description">Input your new password</h3>
 
-        <form
-          onSubmit={onSubmit}
-          autoComplete="off"
-          className="auth-form"
-        >
+        <form onSubmit={onSubmit} autoComplete="off" className="auth-form">
           <div className="form-group">
             <FontAwesomeIcon icon="envelope" />
             <input
@@ -117,44 +113,19 @@ function ResetPasswordPage(props) {
 
           <div className="form-group">
             <FontAwesomeIcon icon="lock" />
-            <input
-              autoFocus
-              className="input-box"
-              type="password"
-              name="password"
-              placeholder="Password*"
-              required
-              value={state.password}
-              onChange={onChangeField}
-            />
+            <input autoFocus className="input-box" type="password" name="password" placeholder="Password*" required value={state.password} onChange={onChangeField} />
           </div>
 
           <div className="form-group">
             <FontAwesomeIcon icon="lock" />
-            <input
-              className="input-box"
-              type="password"
-              name="confirmPassword"
-              placeholder="Confirm Password*"
-              required
-              value={state.confirmPassword}
-              onChange={onChangeField}
-            />
+            <input className="input-box" type="password" name="confirmPassword" placeholder="Confirm Password*" required value={state.confirmPassword} onChange={onChangeField} />
           </div>
 
           <Error error={error} />
 
           <div className="form-group">
-            <button
-              type="submit"
-              className="signUp-btn submit"
-              disabled={isLoading || isDisabled}
-            >
-              {isLoading ? (
-                <img src={loader} alt="" />
-              ) : (
-                'Reset Password'
-              )}
+            <button type="submit" className="signUp-btn submit" disabled={isLoading || isDisabled}>
+              {isLoading ? <img src={loader} alt="" /> : 'Reset Password'}
             </button>
           </div>
 
@@ -185,6 +156,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ResetPasswordPage),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResetPasswordPage));

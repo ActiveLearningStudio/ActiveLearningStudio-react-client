@@ -11,18 +11,24 @@ import './style.scss';
 
 const Activities = (props) => {
   const { match, browse, activities } = props;
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const [primaryColor, setPrimaryColor] = useState(getGlobalColor('--main-primary-color'));
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    const url = new URL(window.location.href);
-    const email = url.searchParams.get('user_email');
+    const params = new URL(window.location.href).searchParams;
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
+      setPrimaryColor('#616161');
+    }
+
+    const email = params.get('user_email');
     browse({
       user_email: email,
       query: searchQuery || null,
       size: null,
+      lti_client_id: match.params.ltiClientId,
     });
   }, [match, searchQuery]);
 
@@ -40,15 +46,7 @@ const Activities = (props) => {
             }}
           />
 
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ cursor: 'pointer' }}
-            onClick={() => setSearchQuery(searchQuery)}
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={() => setSearchQuery(searchQuery)}>
             <path
               d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58175 3 3.00003 6.58172 3.00003 11C3.00003 15.4183 6.58175 19 11 19Z"
               stroke={primaryColor}
@@ -69,8 +67,10 @@ const Activities = (props) => {
               </div>
             </div>
           )}
-          {activities !== null && activities.data.length === 0 && <Alert variant="warning">No activity found.</Alert>}
-          {activities !== null && activities.data.length > 0 && activities.data.map((data) => <ActivitiesList activity={data} key={data.id} />)}
+          {activities !== null && activities.data.length === 0 && <Alert className="mt-2" variant="warning">No activity found.</Alert>}
+          {activities !== null && activities.data.length > 0 && activities.data.map((data) => (
+            <ActivitiesList activity={data} key={data.id} selectedActivityId={selectedActivityId} setSelectedActivityId={setSelectedActivityId} />
+          ))}
         </div>
       </div>
     </>

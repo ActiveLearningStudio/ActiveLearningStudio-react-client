@@ -67,7 +67,6 @@ const GoogleLoginModal = ({
   const [selectedAssignmentId, setselectedAssignmentId] = useState();
   const [userId, setuserId] = useState('');
   const dispatch = useDispatch();
-
   const tenantId = activeOrganization?.msteam_tenant_id;
   const config = {
     appId: activeOrganization?.msteam_client_id,
@@ -269,15 +268,20 @@ const GoogleLoginModal = ({
       } else if (params.values.course !== 'Create a new Course' && params.projectId) {
         dispatch(publishActivitytoMicrosoftTeam(params.projectId, params.values.course, 'projects'));
       }
-    } else {
-      if (params.activityId !== 0) {
+    } else if (params.activityId !== 0) {
         if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
           dispatch(publishActivitytoMicrosoftTeam(params.activityId, undefined, 'activities'));
         } else if (params.values.course !== 'Create a new Course' && params.activityId) {
           dispatch(publishActivitytoMicrosoftTeam(params.activityId, params.values.course, 'activities'));
         }
+      }else{
+        if (params.values.course === 'Create a new Course' || params.values.course === 'Create a new class' || typeof params.values.course === 'undefined') {
+          dispatch(publishActivitytoMicrosoftTeam(params.playlistId, undefined, 'playlists'));
+        } else if (params.values.course !== 'Create a new Course' && params.playlistId) {
+          dispatch(publishActivitytoMicrosoftTeam(params.playlistId, params.values.course, 'playlistsf'));
+        }
       }
-    }
+    
   };
 
   const openMicrsoftTeamLogin = async () => {

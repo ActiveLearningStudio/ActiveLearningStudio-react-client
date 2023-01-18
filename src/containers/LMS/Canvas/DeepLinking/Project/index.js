@@ -8,9 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { showSearchProjectAction, showSearchPlaylistAction, setPreviewActivityAction } from 'store/actions/canvas';
 import './style.scss';
+import * as microsoftTeams from '@microsoft/teams-js';
 
 const Project = (props) => {
   const { match, project, selectedProject, selectedPlaylist, showProject, showPlaylist, setPreviewActivity } = props;
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
+  console.log('matching item:', match);
 
   const showActivityPreview = (id) => {
     const activityId = parseInt(id, 10);
@@ -39,6 +42,35 @@ const Project = (props) => {
         window.location.href = finalUrl;
       }
     });
+  };
+
+  //Ms teams deeplinking item add to assignment
+  const addToMsTeams = async (id) => {
+    if (!match.params.lmsUrl.includes('microsoft'))
+      return;
+
+    const activityId = parseInt(id, 10);
+    const activity = selectedPlaylist.activities.find((act) => act.id === activityId);
+    setSelectedActivityId(activityId);
+
+    await microsoftTeams.app.initialize();
+
+    microsoftTeams.pages.config.setValidityState(true);
+    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+      const configPromise = microsoftTeams.pages.config.setConfig({
+          websiteUrl: config.domainUrl,
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          // websiteUrl: 'https://2e37-110-36-227-66.ngrok.io/',
+          // contentUrl: `https://2e37-110-36-227-66.ngrok.io/msteam/launch/activity/${activity.id}`,
+          entityId: activity.id,
+          suggestedDisplayName: activity.title,
+      });
+      configPromise.then((result) => { 
+        saveEvent.notifySuccess();
+       })
+      // eslint-disable-next-line no-shadow
+      .catch((error) => { saveEvent.notifyFailure('failure message'); });
+  });
   };
 
   return (
@@ -79,7 +111,7 @@ const Project = (props) => {
             </div>
 
             {/* {selectedProject?.id !== project.id && ( */}
-            <div className=" text-right actions">
+            <div className={selectedProject?.id === project.id ? "text-right actions selected-proj" : " text-right actions"}>
               <button className="btn btn-primary" type="button" onClick={() => showProject(project)}>
                 View Playlists
               </button>
@@ -113,7 +145,7 @@ const Project = (props) => {
                             {selectedPlaylist?.id === playlist.id && playlist.activities.length > 0 && (
                               <div className="playlist-activities">
                                 {playlist.activities.map((activity) => (
-                                  <div className="  activities" key={activity.id}>
+                                  <div className={ activity.id === selectedActivityId ? "activities selected": "  activities"} key={activity.id} onClick={() => { addToMsTeams(activity.id); }}>
                                     <div
                                       className="project-img"
                                       style={{
@@ -135,7 +167,7 @@ const Project = (props) => {
                                             <FontAwesomeIcon icon="eye" className="action-icon" />
                                             Preview
                                           </Dropdown.Item>
-                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={addToLMS}>
+                                          <Dropdown.Item to="#" eventKey={activity.id} onSelect={match.params.lmsUrl.includes('microsoft') ? addToMsTeams : addToLMS}>
                                             <FontAwesomeIcon icon="plus" className="action-icon" />
                                             Add to Course
                                           </Dropdown.Item>

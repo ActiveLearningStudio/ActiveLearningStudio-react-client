@@ -1,0 +1,100 @@
+@import "assets/css/index";
+
+.mobile-app-alert {
+  display: none;
+}
+@media (max-width: 767px) {
+  .mobile-app-alert {
+    background-color: #eee;
+    color: #333;
+    height: 100%;
+    width: 100%;
+    z-index: 111111111;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 10px;
+    overflow-y: auto;
+
+    img {
+      width: 175px;
+      margin-bottom: 10px;
+    }
+
+    .text-description {
+      background-color: #fff;
+      padding: 35px 20px;
+    }
+
+    h2 {
+      font-weight: Bold;
+      font-size: 18px;
+      line-height: 25px;
+      letter-spacing: 0;
+      color: $curriki-main-blue;
+      text-transform: uppercase;
+    }
+
+    p {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 26px;
+      letter-spacing: 0;
+      color: $mine-shaft;
+    }
+
+    .reg-btn {
+      width: 100%;
+      min-width: 150px;
+      height: 40px;
+      background: $curriki-main-blue 0 0 no-repeat padding-box;
+      border-color: $curriki-main-blue;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 26px;
+      text-transform: uppercase;
+      letter-spacing: 0.76px;
+      color: #ffffff;
+      opacity: 1;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+    }
+  }
+
+  .mobile-responsive .mobile-app-alert {
+    display: none;
+  }
+}
+
+.loader-main-curriki-permission {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 1111111;
+  color: #222;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+
+  img {
+    display: block;
+  }
+
+  .logo {
+    width: 200px;
+  }
+
+  .loader {
+    width: 45px;
+  }
+}

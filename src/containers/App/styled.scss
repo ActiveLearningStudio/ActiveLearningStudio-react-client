@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .main-page-content {
   padding-top: 85px;
@@ -545,7 +545,7 @@
     color: #fff !important;
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -814,7 +814,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
 }
 
 blockquote,
@@ -1083,7 +1083,7 @@ body.menuopen {
 }
 
 body.menuopen:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -1251,7 +1251,7 @@ header {
 
 .menuoverlay:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 100%;
   width: 100%;
   top: 0;
@@ -1335,7 +1335,7 @@ header {
 
 .clearfix:before,
 .clearfix:after {
-  content: ' ';
+  content: " ";
   display: table;
 }
 
@@ -1371,7 +1371,7 @@ header {
 
 .togglebtn span::before,
 .togglebtn span::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
 }
@@ -1468,7 +1468,7 @@ header.head_mobile {
           h2 {
             color: rgb(8, 72, 146) !important;
             font-weight: 500;
-            font-family: 'rubic';
+            font-family: "rubic";
             font-size: 32px;
             line-height: 36px;
             font-style: normal;
@@ -1480,7 +1480,7 @@ header.head_mobile {
           margin-top: 16px;
           p {
             color: #515151 !important;
-            font-family: 'Open Sans', sans-serif;
+            font-family: "Open Sans", sans-serif;
             font-size: 16px;
             font-weight: 400;
             line-height: 22px;
@@ -1559,7 +1559,7 @@ a:hover {
   }
 
   html.menuhidden body:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -2043,7 +2043,7 @@ a:hover {
   }
 
   .accordion.active i::before {
-    content: '\f068';
+    content: "\f068";
   }
 
   .accordion a {
@@ -2061,7 +2061,7 @@ a:hover {
       padding-left: 5px;
 
       &:before {
-        content: '\f054' !important;
+        content: "\f054" !important;
       }
     }
   }
@@ -2094,7 +2094,7 @@ a:hover {
     font-weight: 500;
     font-size: 18px;
     line-height: 24px;
-    font-family: $rubik 'sans-serif';
+    font-family: $rubik "sans-serif";
     box-shadow: 0 0 0 transparent;
     letter-spacing: 0;
     color: $mine-shaft;
@@ -2277,7 +2277,7 @@ a:hover {
   padding: 0px;
 
   .line::after {
-    content: '';
+    content: "";
   }
 
   .watcher {
@@ -2419,7 +2419,7 @@ a:hover {
 
     button.collapsed {
       .fa:before {
-        content: '\f107';
+        content: "\f107";
       }
     }
 

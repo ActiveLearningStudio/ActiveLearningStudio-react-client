@@ -8,9 +8,11 @@ import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import AddImg from 'assets/images/add-btn.svg';
 import './style.scss';
+import * as microsoftTeams from '@microsoft/teams-js';
 
 const PreviewActivity = (props) => {
   const { activity, closePreview, h5pSettings, getH5pSettings, match } = props;
+  console.log('matching item preview:', match);
 
   // Init
   useEffect(() => {
@@ -63,6 +65,26 @@ const PreviewActivity = (props) => {
     });
   };
 
+  const addToMsTeams = async () => {
+    await microsoftTeams.app.initialize();
+
+    microsoftTeams.pages.config.setValidityState(true);
+    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+
+      const configPromise = microsoftTeams.pages.config.setConfig({
+          websiteUrl: config.domainUrl,
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          entityId: activity.id,
+          suggestedDisplayName: activity.title,
+      });
+      configPromise.then((result) => { 
+        saveEvent.notifySuccess();
+       })
+      // eslint-disable-next-line no-shadow
+      .catch((error) => { saveEvent.notifyFailure('failure message'); });
+  });
+  };
+
   return (
     <div className="activity-wrapper ">
       <div className="row mb-2">
@@ -74,7 +96,7 @@ const PreviewActivity = (props) => {
         <div className="col buttons">
           <div className="  close-preview-button ">
             <img src={AddImg} alt="logo" />
-            <button type="button" className="btn add-Course " onClick={addToLMS}>
+            <button type="button" className="btn add-Course " onClick={match.params.lmsUrl.includes('microsoft') ? addToMsTeams : addToLMS}>
               Add to Course
             </button>
           </div>

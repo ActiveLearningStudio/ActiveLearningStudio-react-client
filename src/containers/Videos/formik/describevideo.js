@@ -41,6 +41,8 @@ const DescribeVideo = ({
   eduLevel,
   seteduLevel,
   isbackHide,
+  redirecttoactivity,
+  fullWidth,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
@@ -172,6 +174,8 @@ const DescribeVideo = ({
         settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
         reverseType={reverseType}
         setisSubmitActivty={setisSubmitActivty}
+        redirecttoactivity={redirecttoactivity}
+        fullWidth={fullWidth}
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
@@ -267,7 +271,7 @@ const DescribeVideo = ({
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">Describe layout</h4>
+                  <h4 className="interactive-video-heading-two">Describe activity</h4>
                   <div>
                     <div className="dec-title-formik-textField">
                       <div className="d-flex">
@@ -281,7 +285,8 @@ const DescribeVideo = ({
                       <input
                         type="text"
                         name="title"
-                        placeholder="Give your layout a name..."
+                        // placeholder="Give your layout a name..."
+                        placeholder={organization?.activeOrganization?.activity_title_placeholder}
                         onChange={(e) => {
                           setFieldValue('title', e.target.value);
                           setVideoTitle(e.target.value);

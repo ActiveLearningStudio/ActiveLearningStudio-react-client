@@ -6,6 +6,8 @@ export function allowedH5PActvityPaths() {
     '/lti-tools/independent_activity/:independentActivityId',
     '/activity/:activityId/shared',
     '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
+    '/msteam/activity/:activityId/assignment/:assignmentId',
+    '/msteam/launch/activity/:activityId',
   ];
 }
 
@@ -18,6 +20,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/lti-tools/activity/:activityId': 'LTI client' },
     { '/lti-tools/independent_activity/:independentActivityId': 'LTI client' },
     { '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId': 'GenericLMS' },
+    { '/msteam/launch/activity/:activityId': 'MS Teams' },
   ];
 }
 
@@ -56,7 +59,6 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
       id: `${window.location.origin}/activity/${activityId}/submission/${submissionId}`,
     },
   ];
-
   if (platform[path] === 'Google Classroom') {
     other.push({
       objectType: 'Activity',
@@ -69,7 +71,7 @@ export function extendStatement(h5pObj, statement, params, skipped = false) {
     }
   }
 
-  if (platform[path] === 'LTI client' || 'GenericLMS') {
+  if (platform[path] === 'LTI client' || platform[path] === 'GenericLMS' || platform[path] === 'MS Teams') {
     other.push({
       objectType: 'Activity',
       id: `${window.location.origin}/lti/${courseId}`,

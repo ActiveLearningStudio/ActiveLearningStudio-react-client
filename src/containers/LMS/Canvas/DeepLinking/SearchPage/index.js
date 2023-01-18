@@ -16,13 +16,19 @@ import './style.scss';
 const SearchPage = (props) => {
   const { match, currentPage, searchPreviewActivity } = props;
   const [section, setSection] = useState('browse');
+  const [platformStyle, setPlatformStyle] = useState('canvas-search-page');
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    const params = new URL(window.location.href).searchParams;
+
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
+      setPlatformStyle('msteams-search-page');
+    }
   }, [match]);
 
   return (
-    <div className=" canvas-search-page">
+    <div className={platformStyle}>
       <div className="main-header">
         <div className="main-logo">
           <img src={logo} alt="Curriki Studio Logo" />

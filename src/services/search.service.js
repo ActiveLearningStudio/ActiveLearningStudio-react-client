@@ -198,8 +198,11 @@ const canvasCreateNewCourse = (sid, playlistName) =>
     })
     .then(({ data }) => data)
     .catch((err) => {
-      errorCatcher(err.response.data);
-      return Promise.reject(err.response.data);
+      Swal.fire({
+        title: err.response.data.data,
+        icon: 'error',
+        text: err.response.data.response_message || err.response.data.data || 'Server Error',
+      });
     });
 const googleClassPublishIndependentActivity = (courseId, topicId, activityId, token, OrgId) =>
   httpService

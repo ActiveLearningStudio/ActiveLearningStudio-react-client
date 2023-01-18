@@ -435,10 +435,10 @@ const BrightcoveModel = (props) => {
                                             <input
                                               name="video"
                                               onChange={() => {
-                                                props.setSelectedVideoIdVimeo(data.link);
+                                                props.setSelectedVideoIdVimeo(data.player_embed_url);
                                               }}
                                               type="radio"
-                                              checked={selectedVideoIdVimeo === data.link ? true : false}
+                                              checked={selectedVideoIdVimeo === data.player_embed_url ? true : false}
                                             />
                                             <img src={data?.pictures?.base_link} className="image-size" />
                                             <span>{data.name}</span>

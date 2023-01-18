@@ -1,16 +1,22 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Publish from '../../assets/images/menu-publish.svg';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import Swal from "sweetalert2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Publish from "../../assets/images/menu-publish.svg";
 
-import { getProjectCourseFromLMSPlaylist } from 'store/actions/project';
-import { publishProjectPlaylistToCanvas } from 'store/actions/share';
-import { getProjectId, googleShare, shareToCanvas, publishLmsSettings } from 'store/actions/gapi';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
+import { getProjectCourseFromLMSPlaylist } from "store/actions/project";
+import { publishProjectPlaylistToCanvas } from "store/actions/share";
+import {
+  getProjectId,
+  googleShare,
+  shareToCanvas,
+  msTeamShare,
+  publishLmsSettings,
+} from "store/actions/gapi";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import PublishSmSvg from "iconLibrary/dropDown/PublishSmSvg";
 
 function ShareLink(props) {
   const dispatch = useDispatch();
@@ -32,7 +38,9 @@ function ShareLink(props) {
   const { activeOrganization } = useSelector((state) => state.organization);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
-    const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
+    const filteredShareVendors = AllLms.shareVendors.filter(
+      (vendor) => !vendor.lms_url.includes("oauth")
+    );
     // QUICK FIX: filtering out wordpress integration from this component
     // find better solution
     setAllLms({
@@ -42,7 +50,7 @@ function ShareLink(props) {
 
     // setAllLms(AllLms);
   }, [AllLms]);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <li className="dropdown-submenu send">
       <a
@@ -52,9 +60,10 @@ function ShareLink(props) {
         onClick={() => {
           if (allLms.shareVendors && allLms.shareVendors.length === 0) {
             Swal.fire({
-              icon: 'info',
+              icon: "info",
               // eslint-disable-next-line max-len
-              title: "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
+              title:
+                "You don't have a Learning Management Systems set up for publishing. Please contact us to get this configured.",
             });
           }
         }}
@@ -79,6 +88,20 @@ function ShareLink(props) {
             <a>Google Classroom</a>
           </li>
         )}
+        {activeOrganization?.msteam_playlist_visibility && (
+          <li
+            onClick={() => {
+              handleShow();
+              dispatch(msTeamShare(true));
+              dispatch(googleShare(true));
+              dispatch(shareToCanvas(false));
+              setProjectPlaylistId(playlistId);
+              setProjectPlaylistActivityId(0);
+            }}
+          >
+            <a>Microsoft Teams</a>
+          </li>
+        )}
         {allLms.shareVendors &&
           allLms.shareVendors.map(
             (data) =>
@@ -87,7 +110,7 @@ function ShareLink(props) {
                   <a
                     href="#"
                     onClick={async () => {
-                      if (data.lms_name === 'canvas') {
+                      if (data.lms_name === "canvas") {
                         dispatch(shareToCanvas(true));
                         dispatch(publishLmsSettings(data));
                         setprojectPlaylistPublishtoCanvas(true);
@@ -97,14 +120,22 @@ function ShareLink(props) {
                         handleShow();
                         // dispatch(publishProjectPlaylistToCanvas(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
                       } else {
-                        dispatch(getProjectCourseFromLMSPlaylist(playlistId, data.id, data.lms_name.toLowerCase(), data.lms_url, projectId));
+                        dispatch(
+                          getProjectCourseFromLMSPlaylist(
+                            playlistId,
+                            data.id,
+                            data.lms_name.toLowerCase(),
+                            data.lms_url,
+                            projectId
+                          )
+                        );
                       }
                     }}
                   >
                     {data.site_name}
                   </a>
                 </li>
-              ),
+              )
           )}
       </ul>
     </li>

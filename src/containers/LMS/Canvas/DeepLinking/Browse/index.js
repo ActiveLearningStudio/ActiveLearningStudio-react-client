@@ -11,25 +11,26 @@ import './style.scss';
 
 const Browse = (props) => {
   const { match, browse, browseResults } = props;
-  const primaryColor = getGlobalColor('--main-primary-color');
   const [searchQuery, setSearchQuery] = useState('');
+  const [primaryColor, setPrimaryColor] = useState(getGlobalColor('--main-primary-color'));
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
-    const url = new URL(window.location.href);
-    const email = url.searchParams.get('user_email');
-    const domainName = url.searchParams.get('api_domain_url');
-    const courseId = url.searchParams.get('course_id');
-    const courseName = url.searchParams.get('course_name');
+    const params = new URL(window.location.href).searchParams;
+
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
+      setPrimaryColor('#616161');
+    }
+
     browse({
       lms_url: match.params.lmsUrl,
       lti_client_id: match.params.ltiClientId,
-      user_email: email,
+      user_email: params.get('user_email'),
       mode: 'browse',
-      course_id: courseId,
-      api_domain_url: domainName,
-      course_name: courseName,
+      course_id: params.get('course_id'),
+      api_domain_url: params.get('api_domain_url'),
+      course_name: params.get('course_name'),
       search_keyword: searchQuery || null,
     });
   }, [match, searchQuery]);
@@ -69,7 +70,7 @@ const Browse = (props) => {
               </div>
             </div>
           )}
-          {browseResults !== null && browseResults.length === 0 && <Alert variant="warning">No projects found.</Alert>}
+          {browseResults !== null && browseResults.length === 0 && <Alert className="mt-2" variant="warning">No projects found.</Alert>}
           {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
         </div>
       </div>

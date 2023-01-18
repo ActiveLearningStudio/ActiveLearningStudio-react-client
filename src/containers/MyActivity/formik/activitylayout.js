@@ -51,7 +51,7 @@ const ActivityLayout = (props) => {
     dispatch(getLayoutActivities());
   }, []);
   const activityLayouts = useSelector((state) => state.myactivities.layout);
-
+  const screenSelectionType = useSelector((state) => state.myactivities.screenSelectionType);
   useMemo(() => {
     setLayout(activityLayouts?.[0] || null);
     if (activityLayouts) {
@@ -64,6 +64,7 @@ const ActivityLayout = (props) => {
       <div className="activity-layout-tabs">
         <Tabs text="1. Select Activity" tabActive />
         <Tabs text="2. Describe and Create Activity" className="ml-10 " />
+        <Tabs text="3. Add interactions" className="ml-10 " />
       </div>
       <div className="activity-layout-title">
         <HeadingTwo text="Select layout" color="#084892" className="select_activity_title_style" />
@@ -135,6 +136,7 @@ const ActivityLayout = (props) => {
                 dispatch({
                   type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
                   payload: 'singleActivity',
+                  screenSelectionType: screenSelectionType || '',
                 });
               }}
             >
@@ -255,6 +257,7 @@ const ActivityLayout = (props) => {
                     dispatch({
                       type: actionTypes.SET_SELECTED_ACTIVITY,
                       payload: layout,
+                      // screenSelectionType: screenSelectionType || '',
                     });
                   }}
                   hover

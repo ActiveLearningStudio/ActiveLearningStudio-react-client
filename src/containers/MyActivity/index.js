@@ -28,7 +28,7 @@ import UploadInteractiveVideo from './formik/uploadinteractivevideo';
 import 'containers/Videos/style.scss';
 import './styles.scss';
 
-const MyActivity = ({ playlistPreview, activityPreview }) => {
+const MyActivity = ({ playlistPreview, activityPreview, redirecttoactivity, fullWidth }) => {
   const [edit, setEdit] = useState(false);
 
   const params = useParams();
@@ -50,12 +50,13 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
   const [currentActivity, setCurrentActivity] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [isbackHide, setisbackHide] = useState(true);
-  const { screenState, activity } = useSelector((state) => state.myactivities);
+  const { screenSelectionType, screenState, activity } = useSelector((state) => state.myactivities);
   const dispatch = useDispatch();
   const changeScreenHandler = (payload, method) => {
     dispatch({
       type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
       payload,
+      screenSelectionType: screenSelectionType || '',
     });
     if (method === 'upload') {
       setActivityMethod('upload');
@@ -63,43 +64,45 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
       setActivityMethod('create');
     }
   };
+
   return (
     <>
       {screenState && (
-        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity '}>
-          <div style={{ paddingTop: '100px' }} className="inner-form-content ">
+        <div className={uploadImageStatus ? 'form-new-popup-activity z-index' : 'form-new-popup-activity '} style={fullWidth && { paddingLeft: '0px' }}>
+          <div className="inner-form-content " style={fullWidth ? { width: '100%', paddingTop: '30px' } : { paddingTop: '100px' }}>
             <div className="inner-form-content-box ">
-              <div className="cross-all-pop-box ">
-                <FontAwesomeIcon
-                  icon="times"
-                  className="cross-all-pop"
-                  onClick={() => {
-                    Swal.fire({
-                      text: 'All changes will be lost if you don’t save them',
-                      icon: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#084892',
-                      cancelButtonColor: '#d33',
-                      confirmButtonText: 'Yes, Close it!',
-                      allowOutsideClick: false,
-                    }).then(async (result) => {
-                      if (result.isConfirmed) {
-                        changeScreenHandler('');
-                        setVideoTitle('');
-                        setvideodesc('');
-                        setsubName('');
-                        seteduLevel('');
-                        setauthortagName('');
-                        dispatch({
-                          type: 'ADD_VIDEO_URL',
-                          payload: '',
-                        });
-                      }
-                    });
-                  }}
-                />
-              </div>
-
+              {!fullWidth && (
+                <div className="cross-all-pop-box ">
+                  <FontAwesomeIcon
+                    icon="times"
+                    className="cross-all-pop"
+                    onClick={() => {
+                      Swal.fire({
+                        text: 'All changes will be lost if you don’t save them',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#084892',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Close it!',
+                        allowOutsideClick: false,
+                      }).then(async (result) => {
+                        if (result.isConfirmed) {
+                          changeScreenHandler('');
+                          setVideoTitle('');
+                          setvideodesc('');
+                          setsubName('');
+                          seteduLevel('');
+                          setauthortagName('');
+                          dispatch({
+                            type: 'ADD_VIDEO_URL',
+                            payload: '',
+                          });
+                        }
+                      });
+                    }}
+                  />
+                </div>
+              )}
               {screenState === 'layout' && <ActivityLayout changeScreenHandler={changeScreenHandler} screenState={screenState} />}
               {screenState === 'addactivity' && (
                 <AddActivity
@@ -109,6 +112,8 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                   activtyMethod={activtyMethod}
                   setUploadImageStatus={setUploadImageStatus}
                   activityPreview={activityPreview}
+                  redirecttoactivity={redirecttoactivity}
+                  fullWidth={fullWidth}
                 />
               )}
               {screenState === 'layoutActivityUpload' && (
@@ -119,6 +124,8 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                   activtyMethod="upload"
                   setUploadImageStatus={setUploadImageStatus}
                   activityPreview={activityPreview}
+                  redirecttoactivity={redirecttoactivity}
+                  fullWidth={fullWidth}
                 />
               )}
               {screenState === 'uploadinteractivevideo' && <UploadInteractiveVideo changeScreenHandler={changeScreenHandler} screenState={screenState} />}
@@ -142,7 +149,6 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                   <DescribeVideo
                     playlistPreview={!!activity}
                     reverseType
-                    showback
                     changeScreenHandler={changeScreenHandler}
                     setUploadImageStatus={setUploadImageStatus}
                     activityPreview={activityPreview}
@@ -157,6 +163,9 @@ const MyActivity = ({ playlistPreview, activityPreview }) => {
                     eduLevel={eduLevel}
                     seteduLevel={seteduLevel}
                     isbackHide={isbackHide}
+                    redirecttoactivity={redirecttoactivity}
+                    showback={redirecttoactivity ? false : true}
+                    fullWidth={fullWidth}
                   />
                 </div>
               )}
