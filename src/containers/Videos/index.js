@@ -3,7 +3,7 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import TopHeading from "utils/TopHeading/topheading";
-
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { clearSearch } from "store/actions/search";
 import Pagination from "react-js-pagination";
@@ -28,6 +28,7 @@ import AddVideoCard from "utils/AddVideoCard/addvideocard";
 import MyVerticallyCenteredModals from "components/models/videoH5pmodal";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 import GoogleModel from "components/models/GoogleLoginModal";
+import OverlayTriggerPop from "utils/OverlayTiggerPop/overlaytiggerpop";
 import SearchForm from "components/Header/searchForm";
 import ProjectCardSkeleton from "components/Skeletons/projectCard";
 import {
@@ -521,7 +522,7 @@ const Index = ({ activities }) => {
 
                         <div className="searc_bar_move_activities">
                           <div className="move_activities">
-                            <ReactJoyride
+                            {/* <ReactJoyride
                               callback={(data) => {
                                 const { status, type } = data;
 
@@ -558,7 +559,18 @@ const Index = ({ activities }) => {
                               locale={{
                                 last: "OK",
                               }}
-                            />
+                            /> */}
+                            <OverlayTriggerPop
+                              showMessage={"left"}
+                              icon={faExclamationCircle}
+                              className="mr-3"
+                            >
+                              Click on this checkbox and select
+                              activities which you want to add to My
+                              projects Note: To move activities,
+                              sharing should be disabled and library
+                              preference should be private.
+                            </OverlayTriggerPop>
                             <label className="cutom_checkbox">
                               <input
                                 type="checkbox"
