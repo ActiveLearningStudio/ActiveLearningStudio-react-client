@@ -43,7 +43,7 @@ node("currikidev") {
         }
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             kube.push("${env.BUILD_NUMBER}")            
-            kube.push("${tag}")        
+            kube.push("kube")        
         }
     }
     
