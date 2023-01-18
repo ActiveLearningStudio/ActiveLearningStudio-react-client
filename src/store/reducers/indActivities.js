@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as actionTypes from '../actionTypes';
+import * as actionTypes from "../actionTypes";
 
 const INITIAL_STATE = {
   allActivities: null,
@@ -30,7 +30,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isLoading: false,
-        allActivities: { ...allActivities, data: newIndActivities, meta: updatedMeta },
+        allActivities: {
+          ...allActivities,
+          data: newIndActivities,
+          meta: updatedMeta,
+        },
         islazyLoader: false,
       };
     }
@@ -45,7 +49,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allActivities: {
           ...state.allActivities,
-          data: state.allActivities.data.filter((data) => data.id !== action.payload),
+          data: state.allActivities.data.filter(
+            (data) => data.id !== action.payload
+          ),
         },
       };
     case actionTypes.EDIT_IND_ACTIVITIES:
@@ -61,24 +67,40 @@ export default (state = INITIAL_STATE, action) => {
       };
     // Update the index of the activity
     case actionTypes.EDIT_IND_ACTIVITIES_INDEX:
-      const newEditDataIndex = state.allActivities.data.map((data) => {
-        if (data.id === action.payload) {
-          console.log('Matched');
-          data.indexing = 1;
-          data.indexing_text = 'REQUESTED';
+      const newEditDataIndex = state.allActivities.data.map(
+        (data) => {
+          if (data.id === action.payload) {
+            console.log("Matched");
+            data.indexing = 1;
+            data.indexing_text = "REQUESTED";
+          }
+          return data;
         }
-        return data;
-      });
-      return {
-        ...state,
-        allActivities: { ...state.allActivities, data: newEditDataIndex },
-      };
-    case actionTypes.ADD_IND_ACTIVITIES:
+      );
       return {
         ...state,
         allActivities: {
           ...state.allActivities,
-          data: [action.payload, ...state.allActivities?.data],
+          data: newEditDataIndex,
+        },
+      };
+    case actionTypes.ADD_IND_ACTIVITIES:
+      let updateActivityState = [];
+      if (state?.allActivities?.data) {
+        updateActivityState = [
+          action.payload,
+          ...state?.allActivities.data,
+        ];
+      } else {
+        updateActivityState = [action.payload];
+      }
+
+      return {
+        ...state,
+        allActivities: {
+          ...state.allActivities,
+          // data: [action.payload, ...state.allActivities?.data],
+          data: [...updateActivityState],
         },
       };
 
