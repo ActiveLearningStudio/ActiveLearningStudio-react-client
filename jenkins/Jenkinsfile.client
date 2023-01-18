@@ -41,10 +41,10 @@ node("currikidev") {
               story.push("${tag}")        
           }    
         }
-        docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
-            kube.push("${env.BUILD_NUMBER}")            
-            kube.push("kube")        
-        }
+        //docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
+        //    kube.push("${env.BUILD_NUMBER}")            
+        //    kube.push("kube")        
+        //}
     }
     
     parallel(
