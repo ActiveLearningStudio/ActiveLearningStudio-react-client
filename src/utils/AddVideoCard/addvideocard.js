@@ -170,7 +170,7 @@ const AddVideoCard = ({
                 <OverlayTrigger
                   placement="bottom"
                   className="curriki-tooltip"
-                  delay={{ show: 250, hide: 400 }}
+                  delay={{ show: 250, hide: 40000 }}
                   overlay={(props) => (
                     <Tooltip id="button-tooltip" {...props} className="button-tooltip_style">
                       To move this activity, please change to:

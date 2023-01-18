@@ -14,7 +14,11 @@
   }
   .apply-uncheck-video {
     &:before {
-      background: linear-gradient(180deg, rgba(81, 81, 81, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+      background: linear-gradient(
+        180deg,
+        rgba(81, 81, 81, 0.2) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
     }
   }
   .addvideo-card-top {
@@ -71,11 +75,11 @@
         font-size: 18px;
         line-height: 21px;
         color: #ffffff;
-         @media (max-width: 1024px){
-          overflow:hidden;
-          white-space:nowrap;
-          display:inline-block;
-          text-overflow:ellipsis; 
+        @media (max-width: 1024px) {
+          overflow: hidden;
+          white-space: nowrap;
+          display: inline-block;
+          text-overflow: ellipsis;
           width: 140px;
         }
       }
@@ -91,11 +95,11 @@
       line-height: 20px;
       color: #767676;
       margin-bottom: 0 !important;
-      overflow:hidden;
-      white-space:nowrap;
-      display:inline-block;
-      text-overflow:ellipsis;
-      width:100%;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      text-overflow: ellipsis;
+      width: 100%;
     }
   }
   .addvideo-activity-menu-option {
@@ -194,7 +198,7 @@
       }
     }
   }
-  @media (max-width: 1024px){
+  @media (max-width: 1024px) {
     width: 30%;
   }
 }
@@ -232,7 +236,7 @@
     border-radius: 4px;
     color: $curriki-main-blue;
     max-width: 250px !important;
-    height: 64px;
+    height: auto;
     font-family: "Open Sans", sans-serif;
     font-style: normal;
     font-weight: 400;

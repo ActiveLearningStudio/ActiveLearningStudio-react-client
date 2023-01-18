@@ -46,14 +46,14 @@ const AddVideo = ({ setScreenStatus, showback, changeScreenHandler, hideallother
   }, [editVideo]);
 
   useEffect(() => {
-    if (mediaSources.length === 0) {
+
       const result = dispatch(getMediaSources(organization?.activeOrganization?.id));
       result.then((data) => {
         console.log('dta', data);
         setMediaSources(data.mediaSources.filter((source) => source.pivot.media_sources_show_status === true && source.media_type === 'Video'));
       });
-    }
-  }, [mediaSources]);
+
+  }, []);
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>

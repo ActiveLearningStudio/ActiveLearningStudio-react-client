@@ -606,6 +606,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .komodo-ext-btn {
+      display: flex;
+      align-items: center;
+    }
+    .overlay-for-activty {
+      font-size: 16px;
+      max-width: 100px;
+    }
   }
   .heading-image {
     margin-top: 6px;
