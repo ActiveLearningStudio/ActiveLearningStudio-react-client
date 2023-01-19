@@ -1,6 +1,9 @@
 import { app } from '@microsoft/teams-js';
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
+import logo from 'assets/images/login_logo.svg';
+import './style.scss';
 
 const MsTeams = () => {
   const [msContext, setMsContext] = useState(null);
@@ -8,6 +11,7 @@ const MsTeams = () => {
   const lmsUrl = 'https%3A%2F%2Fteams.microsoft.com';
   const [ltiClientId, setLtiClientId] = useState(null);
   const [redirectUrl, setRedirectUrl] = useState(null);
+  const [showLanding, setShowLanding] = useState(false);
 
   // Get app context and auth token
   useEffect(() => {
@@ -26,6 +30,12 @@ const MsTeams = () => {
       return;
     }
 
+    // When subPageId is empty, we're not creating an assignment so we
+    if (msContext.page.frameContext === 'settings' && msContext.page.subPageId === '') {
+      setShowLanding(true);
+      return;
+    }
+
     setLtiClientId(msContext?.user.tenant.id);
     const params = {
       user_email: msContext.user.userPrincipalName,
@@ -40,15 +50,33 @@ const MsTeams = () => {
   }, [msContext]);
 
   return (
-    // eslint-disable-next-line object-curly-newline
-    msContext && redirectUrl !== null ? (
-      <Redirect
-        to={{
-          pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}`,
-          search: `?${redirectUrl}`,
-        }}
-      />
-    ) : error
+    <>
+      {msContext && redirectUrl !== null && (
+        <Redirect
+          to={{
+            pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}`,
+            search: `?${redirectUrl}`,
+          }}
+        />
+      )}
+
+      {error && (
+        <Alert className="alert" variant="danger">
+          {error}
+        </Alert>
+      )}
+
+      {showLanding && (
+        <div>
+          <div className="main-logo mb-2">
+            <img src={logo} alt="Curriki Studio Logo" />
+          </div>
+          <Alert className="alert" variant="info">
+            Curriki Studio for Microsoft Teams successfully installed. You can close this dialog and proceed to assignment creation.
+          </Alert>
+        </div>
+      )}
+    </>
   );
 };
 
