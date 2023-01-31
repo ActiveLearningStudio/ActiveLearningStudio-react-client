@@ -46,8 +46,20 @@ const MsTeams = () => {
       platform: 'MS Teams',
     };
     setRedirectUrl(new URLSearchParams(params).toString());
-    console.log('context: ', msContext);
   }, [msContext]);
+
+  const handleAddTabButton = () => {
+    setLtiClientId(msContext?.user.tenant.id);
+    const params = {
+      user_email: msContext.user.userPrincipalName,
+      lti_client_id: msContext.user.tenant.id,
+      api_domain_url: 'teams.microsoft.com',
+      course_name: msContext.team.displayName,
+      course_id: msContext.team.groupId,
+      platform: 'MS Teams',
+    };
+    setRedirectUrl(new URLSearchParams(params).toString());
+  };
 
   return (
     <>
@@ -67,13 +79,11 @@ const MsTeams = () => {
       )}
 
       {showLanding && (
-        <div>
-          <div className="main-logo mb-2">
-            <img src={logo} alt="Curriki Studio Logo" />
-          </div>
-          <Alert className="alert" variant="info">
-            Curriki Studio for Microsoft Teams successfully installed. You can close this dialog and proceed to assignment creation.
-          </Alert>
+        <div className="after-install-message">
+          <img src={logo} alt="Curriki Studio Logo" />
+          <h2>You have successfully installed CurrikiStudio.</h2>
+          <p>You can continue to add a team tab or close this dialog and proceed to assignment creation.</p>
+          <button type="button" className="btn btn-primary" onClick={handleAddTabButton}>Add Tab</button>
         </div>
       )}
     </>
