@@ -32,7 +32,6 @@ const turnIn = (classworkId, submissionId, courseId) => httpService
   .catch((err) => Promise.reject(err.response.data));
 
   export default {
-    msTeamsAuthorize,
     msTeamsToken,
     turnIn,
   }
