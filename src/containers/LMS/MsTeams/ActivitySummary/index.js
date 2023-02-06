@@ -33,8 +33,14 @@ const Activity = (props) => {
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    const actor = {
+      account: {
+        homePage: 'https://teams.microsoft.com',
+        name: msContext?.user?.id,
+      },
+    };
     const activity = `${window.location.origin}/activity/${activityId}/submission/${submissionId}`;
-    getOutcomeSummary('msteams-speedgrader', activity); // get outcome based on submission id only
+    getOutcomeSummary(JSON.stringify(actor), activity); // get outcome based on submission id only
     loadH5pSettings(activityId);
   }, [activityId, submissionId, msContext]);
 

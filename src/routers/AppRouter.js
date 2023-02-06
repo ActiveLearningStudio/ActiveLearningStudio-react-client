@@ -47,6 +47,7 @@ const ChangePasswordPage = loadable(() => import('../containers/Account/ChangePa
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() => import('../containers/Notification'));
 const MsTeams = loadable(() => import('../containers/MsTeams'));
+const MsTeamsCallBack = loadable(() => import('../containers/MsTeams/callback'));
 const BrandingPage = loadable(() => import('../containers/Branding'));
 
 const ProjectsPage = loadable(() => import('../containers/Projects'));
@@ -151,6 +152,7 @@ const AppRouter = (props) => {
 
         <OpenRoute exact path="/lti-tools/activity/:activityId" component={LtiActivity} />
         <OpenRoute exact path="/msteams" component={MsTeams} />
+        <OpenRoute exact path="/msteams/callback" component={MsTeamsCallBack} />
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute exact path="/login/:organization" component={LoginPage} />
         <PublicRoute exact path="/register" component={RegisterPage} />
