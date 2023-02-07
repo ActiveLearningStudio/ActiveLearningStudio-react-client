@@ -24,7 +24,7 @@ function MsTeamActivityLaunch({match}) {
   const [mtStatus, setMtStatus] = useState(null);
   const mt_code_obj = JSON.parse(localStorage.getItem('mt_code_obj'));
 
-  const code_timestamp = mt_code_obj.timestamp;
+  const code_timestamp = mt_code_obj?.timestamp;
   const current_timestamp = (new Date()).toJSON();
   const diffMs = (new Date((new Date(current_timestamp)) - (new Date(code_timestamp))));
   const code_issuance_minutes = Math.round(((diffMs % 86400000) % 3600000) / 60000);
@@ -33,6 +33,7 @@ function MsTeamActivityLaunch({match}) {
     try {
       const result = await MTService.msTeamsToken(code, submissionId, assignmentId, classId);
       setMtStatus(result.assignment_submission.status);
+      console.log('statuus:', result.assignment_submission.status);
       localStorage.setItem('mt_code_utilized', true);
       localStorage.setItem('mt_token', result.access_token);
       localStorage.setItem('refresh_token', result.refresh_token);
@@ -43,30 +44,31 @@ function MsTeamActivityLaunch({match}) {
 
   useEffect(()=>{
     if(queryParams.get("submissionId") !== '' && localStorage.getItem('mt_code_utilized') == 'false'){
-      getAssignmentDetailsFromGraphApi(mt_code_obj.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
+      getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
     }
-  })
+  }, [])
   
    // Get app context of login user
    useEffect(() => {
-    localStorage.setItem('mt_activityId', activityId);
-    localStorage.setItem('mt_assignmentId', queryParams.get('assignmentId'));
-    localStorage.setItem('mt_classId', queryParams.get('classId'));
-    localStorage.setItem('mt_userRole', queryParams.get('userRole'));
-    localStorage.setItem('mt_view', queryParams.get('view'));
-    localStorage.setItem('mt_submissionId', queryParams.get('submissionId'));
+    if(queryParams.get("userRole") == 'student'){
+      localStorage.setItem('mt_activityId', activityId);
+      localStorage.setItem('mt_assignmentId', queryParams.get('assignmentId'));
+      localStorage.setItem('mt_classId', queryParams.get('classId'));
+      localStorage.setItem('mt_userRole', queryParams.get('userRole'));
+      localStorage.setItem('mt_view', queryParams.get('view'));
+      localStorage.setItem('mt_submissionId', queryParams.get('submissionId'));
 
-    //validate code issuance time
-    if(code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
-      window.location.replace(`https://login.microsoftonline.com/${config.teamsTenantId}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
-      return;
+      //validate code issuance time
+      if(mt_code_obj == null || code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
+        window.location.replace(`https://login.microsoftonline.com/${config.teamsTenantId}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
+        return;
+      }
     }
     setIsTeacher(queryParams.get("userRole"));
     
     app.initialize().then(async () => {
       await app.getContext().then((response) => {
         setMsContext(response);
-        console.log('my context', response);
       });
     });
   }, []);
@@ -91,7 +93,8 @@ function MsTeamActivityLaunch({match}) {
             <div className="activity-bg left-vdo msteams-width">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  {msContext && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
+                  {msContext && queryParams.get("userRole") == 'teacher' && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
+                  {msContext && queryParams.get("userRole") == 'student' && mtStatus && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
                 </div>
               </div>
             </div>

@@ -157,7 +157,6 @@ const MsTeamActivityLaunchScreen = (props) => {
     // Hook into H5P dispatcher only if xAPI is needed for this route
     if (xAPIHelper.isxAPINeeded(match.path) === true) {
       activityState.h5pObject.externalDispatcher.on('xAPI', function (event) {
-        console.log('eventObj: ', event);
         console.log('Running xAPI listener callback');
         if (event.ignoreStatement) {
           return;
@@ -180,31 +179,30 @@ const MsTeamActivityLaunchScreen = (props) => {
         const xapiData = JSON.stringify(
           xAPIHelper.extendStatement(this, event.data.statement, params),
         );
-        console.log('statement:', xapiData);
         sendStatement(xapiData);
 
         if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, context.user.displayName);
         }
-
-        const h5pCurrentInstance = this;
-        // Ask the user if he wants to turn-in the work to Teams
-        if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
-          Swal.fire({
-            title: 'Do you want to turn in your work to Teams?',
-            showCancelButton: true,
-            confirmButtonText: 'Turn In',
-          }).then((result) => {
-            if (result.isConfirmed) {
-              turnIn(params.classworkId, params.submissionId, params.courseId);
-              Swal.fire('Saved!', '', 'success');
-              h5pCurrentInstance.trigger('turnInSaved');
-            } else {
-              h5pCurrentInstance.trigger('turnInCancelled');
-            }
-          });
-        }
-        
+        if(paramObj.userRole == 'student'){
+          const h5pCurrentInstance = this;
+          // Ask the user if he wants to turn-in the work to Teams
+          if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
+            Swal.fire({
+              title: 'Do you want to turn in your work to Teams?',
+              showCancelButton: true,
+              confirmButtonText: 'Turn In',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                turnIn(params.classworkId, params.submissionId, params.courseId);
+                Swal.fire('Saved!', '', 'success');
+                h5pCurrentInstance.trigger('turnInSaved');
+              } else {
+                h5pCurrentInstance.trigger('turnInCancelled');
+              }
+            });
+          }
+      }
       });
     }
 
@@ -232,7 +230,7 @@ MsTeamActivityLaunchScreen.propTypes = {
   // activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  student: PropTypes.object.isRequired,
+  // student: PropTypes.object.isRequired,
   submission: PropTypes.object,
   h5pSettings: PropTypes.object,
   loadH5pSettings: PropTypes.func.isRequired,
