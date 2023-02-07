@@ -36,21 +36,21 @@ function MsTeamActivityLaunch({match}) {
     }
   };
 
+  // Get app context and auth token
+  useEffect(() => {
+    app.initialize().then(async () => {
+      await app.getContext().then((response) => {
+        setMsContext(response);
+      });
+    });
+  });
+
   useEffect(()=>{
     if(queryParams.get("submissionId") !== '' && localStorage.getItem('mt_code_utilized') == 'false'){
       getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
     }
   }, [])
-
-    // Get app context and auth token
-    useEffect(() => {
-      app.initialize().then(() => {
-        app.getContext().then((response) => {
-          setMsContext(response);
-        });
-      });
-    }, []);
-  
+ 
    useEffect(() => {
     if(queryParams.get("userRole") == 'student'){
       localStorage.setItem('mt_activityId', activityId);
