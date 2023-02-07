@@ -96,9 +96,9 @@ const Activity = (props) => {
 
 Activity.propTypes = {
   match: PropTypes.object.isRequired,
-  outcome: PropTypes.object.isRequired,
-  outcomeError: PropTypes.object.isRequired,
-  settings: PropTypes.object.isRequired,
+  // outcome: PropTypes.object.isRequired,
+  // outcomeError: PropTypes.object.isRequired,
+  // settings: PropTypes.object.isRequired,
   getOutcomeSummary: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
 };
