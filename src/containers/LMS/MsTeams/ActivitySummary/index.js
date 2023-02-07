@@ -2,41 +2,43 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { app } from '@microsoft/teams-js';
 import PropTypes from 'prop-types';
 import { getOutcomeSummaryAction, loadH5pResourceSettings } from 'store/actions/gapi';
 import SummaryOutcome from 'containers/LMS/MsTeams/ActivitySummary/SummaryOutcome';
 import logo from 'assets/images/studio_new_logo_small.png';
 import './style.scss';
-import { app } from '@microsoft/teams-js';
 
 const Activity = (props) => {
   const {
     match,
-    // student,
     outcome,
+    outcomeError,
     settings,
     getOutcomeSummary,
     loadH5pSettings,
   } = props;
   const { activityId, submissionId } = match.params;
   const [msContext, setMsContext] = useState(null);
-  const [isTeacher, setIsTeacher] = useState(false);
 
-     // Get app context of login user
-     useEffect(() => {
-      app.initialize().then(async () => {
-        await app.getContext().then((response) => {
-          setIsTeacher(response.user.licenseType == 'Teacher' ? true : false);
-          setMsContext(response);
-          console.log('my context', response);
-        });
+  // Get app context of login user
+  useEffect(() => {
+    app.initialize().then(async () => {
+      await app.getContext().then((response) => {
+        setMsContext(response);
       });
-    }, []);
-
+    });
+  }, []);
 
   // Init
   useEffect(() => {
     window.scrollTo(0, 0);
+    const actor = {
+      account: {
+        homePage: 'https://teams.microsoft.com',
+        name: msContext?.user?.id,
+      },
+    };
     const activity = `${window.location.origin}/activity/${activityId}/submission/${submissionId}`;
     getOutcomeSummary('msteams-speedgrader', activity); // get outcome based on submission id only
     loadH5pSettings(activityId);
@@ -44,7 +46,7 @@ const Activity = (props) => {
 
   return (
     <div className="outcome-summary-container">
-      {outcome === null && (
+      {outcome === null && outcomeError === null && (
         <div className="loading">
           <div className="loading_image">
             <img src={logo} alt="Curriki Studio logo" />
@@ -53,7 +55,16 @@ const Activity = (props) => {
         </div>
       )}
 
-      {outcome && (
+      {outcomeError && (
+        <div className="loading">
+          <div className="loading_image">
+            <img src={logo} alt="Curriki Studio logo" />
+          </div>
+          <div className="loading-message">{outcomeError}</div>
+        </div>
+      )}
+
+      {outcome && outcomeError === null && (
         <div>
           <div className="row">
             <div className="col">
@@ -85,9 +96,9 @@ const Activity = (props) => {
 
 Activity.propTypes = {
   match: PropTypes.object.isRequired,
-  // student: PropTypes.object.isRequired,
-  outcome: PropTypes.object.isRequired,
-  settings: PropTypes.object.isRequired,
+  // outcome: PropTypes.object.isRequired,
+  // outcomeError: PropTypes.object.isRequired,
+  // settings: PropTypes.object.isRequired,
   getOutcomeSummary: PropTypes.func.isRequired,
   loadH5pSettings: PropTypes.func.isRequired,
 };
@@ -95,6 +106,7 @@ Activity.propTypes = {
 const mapStateToProps = (state) => ({
   student: state.gapi.summaryAuth.student,
   outcome: state.gapi.outcomeSummary,
+  outcomeError: state.gapi.summaryError,
   settings: state.gapi.h5pSettings,
 });
 

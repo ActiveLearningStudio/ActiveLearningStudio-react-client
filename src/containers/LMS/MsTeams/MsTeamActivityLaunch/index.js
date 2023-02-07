@@ -3,12 +3,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { GoogleLogin } from 'react-google-login';
-import { Alert } from 'react-bootstrap';
-
-import logo from 'assets/images/logo.svg';
-import { setStudentAuthAction, refreshStudentAuthTokenAction, getStudentCoursesAction } from 'store/actions/gapi';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
+import MTService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { app } from '@microsoft/teams-js';
 
@@ -16,23 +12,67 @@ import './styles.scss';
 
 function MsTeamActivityLaunch({match}) {
   const { activityId, assignmentId } = match.params;
-  console.log('my params: ', match.params);
   const search = useLocation().search;
   const queryParams = new URLSearchParams(search);
   const [isTeacher, setIsTeacher] = useState('teacher');
   const [msContext, setMsContext] = useState(null);
-  
-   // Get app context of login user
-   useEffect(() => {
+  const [mtStatus, setMtStatus] = useState(null);
+  const mt_code_obj = JSON.parse(localStorage.getItem('mt_code_obj'));
 
-    setIsTeacher(queryParams.get("userRole"));
+  const code_timestamp = mt_code_obj?.timestamp;
+  const current_timestamp = (new Date()).toJSON();
+  const diffMs = (new Date((new Date(current_timestamp)) - (new Date(code_timestamp))));
+  const code_issuance_minutes = Math.round(((diffMs % 86400000) % 3600000) / 60000);
 
+  const getAssignmentDetailsFromGraphApi = async(code, submissionId, assignmentId, classId) => {
+    try {
+      const result = await MTService.msTeamsToken(code, submissionId, assignmentId, classId);
+      setMtStatus(result.assignment_submission.status);
+      localStorage.setItem('mt_code_utilized', true);
+      localStorage.setItem('mt_token', result.access_token);
+      localStorage.setItem('refresh_token', result.refresh_token);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // Get app context and auth token
+  useEffect(() => {
     app.initialize().then(async () => {
       await app.getContext().then((response) => {
         setMsContext(response);
-        console.log('my context', response);
       });
     });
+  });
+
+  useEffect(()=>{
+    if(queryParams.get("submissionId") !== '' && localStorage.getItem('mt_code_utilized') == 'false'){
+      getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
+    }
+  }, [])
+ 
+   useEffect(() => {
+    if(queryParams.get("userRole") == 'student'){
+      localStorage.setItem('mt_activityId', activityId);
+      localStorage.setItem('mt_assignmentId', queryParams.get('assignmentId'));
+      localStorage.setItem('mt_classId', queryParams.get('classId'));
+      localStorage.setItem('mt_userRole', queryParams.get('userRole'));
+      localStorage.setItem('mt_view', queryParams.get('view'));
+      localStorage.setItem('mt_submissionId', queryParams.get('submissionId'));
+
+      //validate code issuance time
+      if(mt_code_obj == null || code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
+        window.location.replace(`https://login.microsoftonline.com/${config.teamsTenantId}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
+        return;
+      }
+    }
+    setIsTeacher(queryParams.get("userRole"));
+    
+    // app.initialize().then(async () => {
+    //   await app.getContext().then((response) => {
+    //     setMsContext(response);
+    //   });
+    // });
   }, []);
   
   const params = {
@@ -41,20 +81,22 @@ function MsTeamActivityLaunch({match}) {
     view: queryParams.get("view"),
     userRole: queryParams.get("userRole"),
     submissionId: queryParams.has('submissionId') ? queryParams.get("submissionId") : 'preview',
+    mtAssignmentStatus: mtStatus,
   };
  
   return (
     <>
       <div className="gclass-activity-container">
-        <section className="main-page-content preview iframe-height-resource-shared defaultcontainer">
+        <section className="main-page-content preview iframe-height-resource-shared defaultcontainer msteams-padding">
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
           </Helmet>
           <div className="flex-container previews">
-            <div className="activity-bg left-vdo">
+            <div className="activity-bg left-vdo msteams-width">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  {msContext && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
+                  {msContext && queryParams.get("userRole") == 'teacher' && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
+                  {msContext && queryParams.get("userRole") == 'student' && mtStatus && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
                 </div>
               </div>
             </div>

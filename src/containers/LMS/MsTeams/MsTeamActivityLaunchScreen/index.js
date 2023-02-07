@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 import gifloader from 'assets/images/dotsloader.gif';
 import * as xAPIHelper from 'helpers/xapi';
 import { loadH5pResourceXapi } from 'store/actions/resource';
-import { loadH5pResourceSettings, getSubmissionAction, turnInAction, getOutcomeSummaryAction } from 'store/actions/gapi';
+import { loadH5pResourceSettings, getSubmissionAction } from 'store/actions/gapi';
+import { turnInAction } from 'store/actions/msTeams';
 import { saveResultScreenshotAction } from 'store/actions/safelearn';
 import './styles.scss';
 
@@ -72,8 +73,6 @@ const MsTeamActivityLaunchScreen = (props) => {
     turnIn,
     sendScreenshot,
   } = props;
-
-  console.log("params: ",  props.paramObj.assignmentId);
   // We do use it with the reducer
   /* eslint-disable-next-line no-unused-vars */
   const [activityState, dispatch] = useReducer(reducer, {
@@ -108,7 +107,8 @@ const MsTeamActivityLaunchScreen = (props) => {
     window.scrollTo(0, 0);
     const params = new URL(window.location.href).searchParams;
     // If we're in speedgrader, redirect to summary
-    if (params.has('view') && params.get('view') === 'SpeedGrader') {
+    // if (params.has('view') && params.get('view') === 'SpeedGrader') {
+    if (paramObj.mtAssignmentStatus == 'submitted' || (params.has('view') && params.get('view') === 'SpeedGrader')) {
       history.push(`/msteam/summary/${paramObj.classId}/${activityId}/${paramObj.submissionId}`);
       return;
     }
@@ -157,7 +157,6 @@ const MsTeamActivityLaunchScreen = (props) => {
     // Hook into H5P dispatcher only if xAPI is needed for this route
     if (xAPIHelper.isxAPINeeded(match.path) === true) {
       activityState.h5pObject.externalDispatcher.on('xAPI', function (event) {
-        console.log('eventObj: ', event);
         console.log('Running xAPI listener callback');
         if (event.ignoreStatement) {
           return;
@@ -180,12 +179,30 @@ const MsTeamActivityLaunchScreen = (props) => {
         const xapiData = JSON.stringify(
           xAPIHelper.extendStatement(this, event.data.statement, params),
         );
-        console.log('statement:', xapiData);
         sendStatement(xapiData);
 
         if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, context.user.displayName);
         }
+        if(paramObj.userRole == 'student'){
+          const h5pCurrentInstance = this;
+          // Ask the user if he wants to turn-in the work to Teams
+          if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {
+            Swal.fire({
+              title: 'Do you want to turn in your work to Teams?',
+              showCancelButton: true,
+              confirmButtonText: 'Turn In',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                turnIn(params.classworkId, params.submissionId, params.courseId);
+                Swal.fire('Saved!', '', 'success');
+                h5pCurrentInstance.trigger('turnInSaved');
+              } else {
+                h5pCurrentInstance.trigger('turnInCancelled');
+              }
+            });
+          }
+      }
       });
     }
 
@@ -208,12 +225,12 @@ MsTeamActivityLaunchScreen.defaultProps = {
 
 MsTeamActivityLaunchScreen.propTypes = {
   activityId: PropTypes.string.isRequired,
-  params : PropTypes.object.isRequired,
+  // params : PropTypes.object.isRequired,
   // classId: PropTypes.string.isRequired,
   // activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  student: PropTypes.object.isRequired,
+  // student: PropTypes.object.isRequired,
   submission: PropTypes.object,
   h5pSettings: PropTypes.object,
   loadH5pSettings: PropTypes.func.isRequired,
@@ -233,9 +250,9 @@ const mapDispatchToProps = (dispatch) => ({
   loadH5pSettings: (activityId, studentId, submissionId) => dispatch(loadH5pResourceSettings(activityId, studentId, submissionId)),
   getSubmission: (classworkId, courseId, auth) => dispatch(getSubmissionAction(classworkId, courseId, auth)),
   sendStatement: (statement) => dispatch(loadH5pResourceXapi(statement)),
-  turnIn: (classworkId, courseId, auth) => dispatch(turnInAction(classworkId, courseId, auth)),
+  turnIn: (classworkId, submissionId, courseId) => dispatch(turnInAction(classworkId, submissionId, courseId)),
   sendScreenshot: (org, statement, title, studentName) => dispatch(saveResultScreenshotAction(org, statement, title, studentName)),
-  getOutcomeSummary: (submissionId) => dispatch(getOutcomeSummaryAction()),
+  // getOutcomeSummary: (submissionId) => dispatch(getOutcomeSummaryAction()),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MsTeamActivityLaunchScreen));
