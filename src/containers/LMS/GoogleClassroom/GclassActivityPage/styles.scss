@@ -10,4 +10,28 @@
   .curriki-logo{
     max-width: 50%;
   }
+
+  .activity-bg {
+    padding: 0;
+    background-color: #212427;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+  }
+
+  .authflow-container {
+    background-color: #212427;
+    padding: 5em;
+    border-radius: 10px;
+  }
+
+  .flex-container {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .loader_gif {
+    margin-top: 10em;
+    text-align: center;
+  }
 }

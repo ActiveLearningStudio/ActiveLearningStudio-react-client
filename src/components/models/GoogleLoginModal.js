@@ -33,6 +33,7 @@ import {
   publishActivitytoMicrosoftTeam,
 } from 'store/actions/share';
 import share from 'store/reducers/share';
+import './googleLoginModalStyle.scss';
 const domainName = window.__RUNTIME_CONFIG__.REACT_DOMAIN_URL;
 
 const GoogleLoginModal = ({
@@ -306,7 +307,7 @@ const GoogleLoginModal = ({
   };
   return (
     <Modal open={show} onClose={onHide} center styles={{ borderRadius: '8px', height: '310px', width: '640px' }}>
-      <div className="model-box-google model-box-view">
+      <div className="model-box-google model-box-view google-publish-modal-container">
         <div style={{ textAlign: 'center', margin: '32px 146.38px 0 146.38px' }}>
           <img src={logo} alt="" />
         </div>
@@ -427,6 +428,7 @@ const GoogleLoginModal = ({
                       /* and other goodies */
                     }) => (
                       <form onSubmit={handleSubmit}>
+                        <label>Select Class:</label>
                         <select
                           className="form-control select-dropdown"
                           name="course"
@@ -454,37 +456,40 @@ const GoogleLoginModal = ({
                             )}
                         </select>
                         {isShowPlaylistSelector && playlistId > 0 && !projectPlaylistPublishtoCanvas && (
-                          <select
-                            className="form-control select-dropdown"
-                            name="playlist"
-                            value={values.playlist}
-                            onChange={(e) => {
-                              handleChange(e);
-                              onTopicChange(e);
-                            }}
-                            onBlur={handleBlur}
-                          >
-                            <option>Create a new topic</option>
-                            {!!topics &&
-                              topics.map((topic) => {
-                                if (isCanvas) {
-                                  return (
-                                    <option key={topic.id} value={topic.id}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                } else {
-                                  return (
-                                    <option key={topic.topicId} value={topic.topicId}>
-                                      {topic.name}
-                                    </option>
-                                  );
-                                }
-                              })}
-                          </select>
+                          <>
+                            <label>Select Topic:</label>
+                            <select
+                              className="form-control select-dropdown"
+                              name="playlist"
+                              value={values.playlist}
+                              onChange={(e) => {
+                                handleChange(e);
+                                onTopicChange(e);
+                              }}
+                              onBlur={handleBlur}
+                            >
+                              <option>Create a new topic</option>
+                              {!!topics &&
+                                topics.map((topic) => {
+                                  if (isCanvas) {
+                                    return (
+                                      <option key={topic.id} value={topic.id}>
+                                        {topic.name}
+                                      </option>
+                                    );
+                                  } else {
+                                    return (
+                                      <option key={topic.topicId} value={topic.topicId}>
+                                        {topic.name}
+                                      </option>
+                                    );
+                                  }
+                                })}
+                            </select>
+                          </>
                         )}
 
-                        {<button type="submit">Confirm</button>}
+                        {<button type="submit" className="curriki-utility curriki-theme-primary-button">Confirm</button>}
                       </form>
                     )}
                   </Formik>
