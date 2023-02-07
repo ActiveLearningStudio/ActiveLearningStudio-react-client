@@ -3,11 +3,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { GoogleLogin } from 'react-google-login';
-import { Alert } from 'react-bootstrap';
-
-import logo from 'assets/images/logo.svg';
-import { setStudentAuthAction, refreshStudentAuthTokenAction, getStudentCoursesAction } from 'store/actions/gapi';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
 import MTService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
@@ -33,7 +28,6 @@ function MsTeamActivityLaunch({match}) {
     try {
       const result = await MTService.msTeamsToken(code, submissionId, assignmentId, classId);
       setMtStatus(result.assignment_submission.status);
-      console.log('statuus:', result.assignment_submission.status);
       localStorage.setItem('mt_code_utilized', true);
       localStorage.setItem('mt_token', result.access_token);
       localStorage.setItem('refresh_token', result.refresh_token);
@@ -47,8 +41,16 @@ function MsTeamActivityLaunch({match}) {
       getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
     }
   }, [])
+
+    // Get app context and auth token
+    useEffect(() => {
+      app.initialize().then(() => {
+        app.getContext().then((response) => {
+          setMsContext(response);
+        });
+      });
+    }, []);
   
-   // Get app context of login user
    useEffect(() => {
     if(queryParams.get("userRole") == 'student'){
       localStorage.setItem('mt_activityId', activityId);
@@ -66,11 +68,11 @@ function MsTeamActivityLaunch({match}) {
     }
     setIsTeacher(queryParams.get("userRole"));
     
-    app.initialize().then(async () => {
-      await app.getContext().then((response) => {
-        setMsContext(response);
-      });
-    });
+    // app.initialize().then(async () => {
+    //   await app.getContext().then((response) => {
+    //     setMsContext(response);
+    //   });
+    // });
   }, []);
   
   const params = {
