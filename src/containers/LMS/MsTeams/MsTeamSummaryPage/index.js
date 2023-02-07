@@ -11,7 +11,7 @@ import ActivitySummary from 'containers/LMS/MsTeams/ActivitySummary';
 import './styles.scss';
 
 function MsTeamSummaryPage(props) {
-  console.log('parameters: ', props.match);
+  // console.log('parameters: ', props.match);
   const { match, student, teacher, errors, summaryError, getSummaryAuth } = props;
   const studentName = student ? student.name : 'your student';
 
@@ -41,10 +41,10 @@ function MsTeamSummaryPage(props) {
 
 MsTeamSummaryPage.propTypes = {
   match: PropTypes.object.isRequired,
-  student: PropTypes.object.isRequired,
-  teacher: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-  summaryError: PropTypes.object.isRequired,
+  // student: PropTypes.object.isRequired,
+  // teacher: PropTypes.object.isRequired,
+  // errors: PropTypes.object.isRequired,
+  // summaryError: PropTypes.object.isRequired,
   getSummaryAuth: PropTypes.func.isRequired,
 };
 

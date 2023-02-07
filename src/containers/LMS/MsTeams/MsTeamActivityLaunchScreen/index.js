@@ -225,7 +225,7 @@ MsTeamActivityLaunchScreen.defaultProps = {
 
 MsTeamActivityLaunchScreen.propTypes = {
   activityId: PropTypes.string.isRequired,
-  params : PropTypes.object.isRequired,
+  // params : PropTypes.object.isRequired,
   // classId: PropTypes.string.isRequired,
   // activeCourse: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
