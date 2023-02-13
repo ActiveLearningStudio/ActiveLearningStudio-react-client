@@ -12,7 +12,7 @@ node("currikidev") {
         if(params.enable_storybook){
           story = docker.build("quay.io/curriki/clientdocs", "-f Dockerfile.story .")
         }
-        kube = docker.build("quay.io/curriki/client:kube", "-f Dockerfile.kube --build-arg DOMAIN=$domain .")
+        kube = docker.build("quay.io/curriki/client:kube-$tag", "-f Dockerfile.kube --build-arg DOMAIN=$domain .")
         
         
     } 
@@ -43,7 +43,7 @@ node("currikidev") {
         }
         docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
             kube.push("${env.BUILD_NUMBER}")            
-            kube.push("kube")        
+            kube.push("kube-${tag}")        
         }
     }
     
