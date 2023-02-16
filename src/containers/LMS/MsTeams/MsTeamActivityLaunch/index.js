@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
+import MsTeamActivityTabLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityTabLaunchScreen';
 import MTService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { app } from '@microsoft/teams-js';
@@ -97,6 +98,7 @@ function MsTeamActivityLaunch({match}) {
                 <div className="item-container">
                   {msContext && queryParams.get("userRole") == 'teacher' && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
                   {msContext && queryParams.get("userRole") == 'student' && mtStatus && <MsTeamActivityLaunchScreen activityId={activityId} context={msContext} paramObj={params} />}
+                  {msContext && queryParams.get("userRole") == null && <MsTeamActivityTabLaunchScreen activityId={activityId} context={msContext} />}
                 </div>
               </div>
             </div>
