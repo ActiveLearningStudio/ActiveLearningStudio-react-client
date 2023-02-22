@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import { app } from '@microsoft/teams-js';
+import config from 'config';
 import Logo from './Logo';
 import './style.scss';
 
@@ -35,7 +36,7 @@ function MSTeamsSSO() {
       email: userContext.user.loginHint,
       first_name: userContext.user.userPrincipalName,
       last_name: userContext.user.userPrincipalName,
-      lti_client_id: userContext.user.tenant.id,
+      lti_client_id: config.teamsClientId,
       tool_platform: 'msteams',
       guid: '',
     };
