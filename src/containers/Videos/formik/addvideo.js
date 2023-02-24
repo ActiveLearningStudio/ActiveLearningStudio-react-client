@@ -645,47 +645,32 @@ const FormikVideo = ({
         innerRef={formRef}
         validate={(values) => {
           const errors = {};
-          let youtubeLinkformat = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-          let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(player\.vimeo\.com\/video\/)([0-9]+\?h=[A-Za-z0-9]+)$/;
-          let komodoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(komododecks\.com\/recordings\/)([A-Za-z0-9]+)$/;
-          let kalturaformat = /^[0-9]+$/;
+          // let youtubeLinkformat = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+          // let vimeoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(player\.vimeo\.com\/video\/)([0-9]+\?h=[A-Za-z0-9]+)$/;
+          // let komodoLinkformat = /^(http\:\/\/|https\:\/\/)?(www\.)?(komododecks\.com\/recordings\/)([A-Za-z0-9]+)$/;
+          // let kalturaformat = /^[0-9]+$/;
           if (!values.videoUrl) {
             errors.videoUrl = "Required";
           }
           if (
-            values.videoUrl &&
-            platformName === "Brightcove" &&
-            !values.videoUrl?.match(kalturaformat)
+            !values.videoUrl
+            // &&
+            // platformName === "Brightcove" &&
+            // !values.videoUrl?.match(kalturaformat)
           ) {
-            errors.videoUrl = "Invalid Video Id";
+            errors.videoUrl = "Required";
           }
-          if (
-            values.videoUrl &&
-            platformName === "Youtube" &&
-            !values.videoUrl?.match(youtubeLinkformat)
-          ) {
-            errors.videoUrl = "Invalid Video Url";
+          if (!values.videoUrl) {
+            errors.videoUrl = "Required";
           }
-          if (
-            values.videoUrl &&
-            platformName === "Vimeo" &&
-            !values.videoUrl?.match(vimeoLinkformat)
-          ) {
-            errors.videoUrl = "Invalid Video Url";
+          if (!values.videoUrl) {
+            errors.videoUrl = "Required";
           }
-          if (
-            values.videoUrl &&
-            platformName === "Komodo" &&
-            !values.videoUrl?.match(komodoLinkformat)
-          ) {
-            errors.videoUrl = "Invalid Video Url";
+          if (!values.videoUrl) {
+            errors.videoUrl = "Required";
           }
-          if (
-            values.videoUrl &&
-            platformName === "Kaltura" &&
-            !values.videoUrl?.includes("kaltura.com")
-          ) {
-            errors.videoUrl = "Invalid Video Url";
+          if (!values.videoUrl) {
+            errors.videoUrl = "Required";
           }
           return errors;
         }}
@@ -845,25 +830,6 @@ const FormikVideo = ({
                 />
               )}
             </div>
-            {platformName === "Vimeo" && (
-              <div className="mt-5">
-                <div className="d-flex align-items-baseline">
-                  <div className="supported-vimeo-video-format">
-                    Supported Vimeo Format:
-                  </div>
-
-                  <p>Embed Src</p>
-                </div>
-                <div className="d-flex align-items-baseline">
-                  <div className="supported-vimeo-video-format">
-                    Example:
-                  </div>
-                  <p>
-                    https://player.vimeo.com/video/696854597?h=8ddb73adca
-                  </p>
-                </div>
-              </div>
-            )}
 
             {uploadFile && (
               <div className="curriki-utility-uploadfile">
@@ -1017,6 +983,25 @@ const FormikVideo = ({
                 {errors.videoUrl &&
                   touched.videoUrl &&
                   errors.videoUrl}
+              </div>
+            )}
+            {platformName === "Vimeo" && (
+              <div className="mt-5">
+                <div className="d-flex align-items-baseline">
+                  <div className="supported-vimeo-video-format">
+                    Supported Vimeo Format:
+                  </div>
+
+                  <p>Embed Src</p>
+                </div>
+                <div className="d-flex align-items-baseline">
+                  <div className="supported-vimeo-video-format">
+                    Example:
+                  </div>
+                  <p>
+                    https://player.vimeo.com/video/696854597?h=8ddb73adca
+                  </p>
+                </div>
               </div>
             )}
 
