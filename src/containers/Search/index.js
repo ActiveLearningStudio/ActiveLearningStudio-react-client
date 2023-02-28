@@ -2,46 +2,63 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
-import React, { useEffect, useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { Tabs, Tab, Modal, Alert, Dropdown } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2';
-import Pagination from 'react-js-pagination';
-import QueryString from 'query-string';
-import { simpleSearchAction, cloneProject, setSearchTypeAction, searchIndependentActivitiesAction } from 'store/actions/search';
-import { loadResourceTypesAction } from 'store/actions/resource';
-import { addProjectFav, loadLmsAction } from 'store/actions/project';
-import Skeleton from 'react-loading-skeleton';
+import React, { useEffect, useState, useMemo } from "react";
+import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { Tabs, Tab, Modal, Alert, Dropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
+import Pagination from "react-js-pagination";
+import QueryString from "query-string";
+import {
+  simpleSearchAction,
+  cloneProject,
+  setSearchTypeAction,
+  searchIndependentActivitiesAction,
+} from "store/actions/search";
+import { loadResourceTypesAction } from "store/actions/resource";
+import { addProjectFav, loadLmsAction } from "store/actions/project";
+import Skeleton from "react-loading-skeleton";
 
-import GoogleModel from 'components/models/GoogleLoginModal';
-import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import { addActivityPlaylistSearch } from 'store/actions/playlist';
-import SubSearchBar from 'utils/SubSearchBar/subsearchbar';
-import teamicon from 'assets/images/sidebar/users-team.svg';
-import Footer from 'components/Footer';
-import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
-import SearchLibrary from 'components/Search/SearchLibrary';
-import RefineSearch from 'components/Search/RefineSearch';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import Buttons from 'utils/Buttons/buttons';
+import GoogleModel from "components/models/GoogleLoginModal";
+import {
+  getSubjects,
+  getEducationLevel,
+  getAuthorTag,
+} from "store/actions/admin";
+import { addActivityPlaylistSearch } from "store/actions/playlist";
+import SubSearchBar from "utils/SubSearchBar/subsearchbar";
+import teamicon from "assets/images/sidebar/users-team.svg";
+import Footer from "components/Footer";
+import {
+  faArrowLeft,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import SearchLibrary from "components/Search/SearchLibrary";
+import RefineSearch from "components/Search/RefineSearch";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import Buttons from "utils/Buttons/buttons";
 
-import { toast } from 'react-toastify';
-import intActivityServices from 'services/indActivities.service';
-import MyVerticallyCenteredModalForActivity from 'components/models/videoH5pmodal';
-import CloneModel from './CloneModel';
-import './style.scss';
-import 'react-loading-skeleton/dist/skeleton.css';
-import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
-import MyProjectSmSvg from 'iconLibrary/dropDown/MyProjectSmSvg';
-import MyActivitySmSvg from 'iconLibrary/mainContainer/MyActivitySmSvg';
-import SearchLibraryLgSvg from 'iconLibrary/mainContainer/SearchLibraryLgSvg';
-import MyActivitySvg from 'iconLibrary/sideBar/MyActivitySvg';
+import { toast } from "react-toastify";
+import intActivityServices from "services/indActivities.service";
+import MyVerticallyCenteredModalForActivity from "components/models/videoH5pmodal";
+import CloneModel from "./CloneModel";
+import "./style.scss";
+import "react-loading-skeleton/dist/skeleton.css";
+import PreviewSmSvg from "iconLibrary/dropDown/PreviewSmSvg";
+import MyProjectSmSvg from "iconLibrary/dropDown/MyProjectSmSvg";
+import MyActivitySmSvg from "iconLibrary/mainContainer/MyActivitySmSvg";
+import SearchLibraryLgSvg from "iconLibrary/mainContainer/SearchLibraryLgSvg";
+import MyActivitySvg from "iconLibrary/sideBar/MyActivitySvg";
 
 export function MyVerticallyCenteredModal(props) {
   return (
-    <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {/* Duplicate <b>{clone ? clone.title : ""}</b> {clone ? clone.model : ""}{" "} */}
@@ -67,8 +84,18 @@ MyVerticallyCenteredModal.defaultProps = {
 };
 
 function SearchInterface(props) {
-  const { history, fromTeam, selectProject, setSelectProject, showBackOption, setSelectSearchModule, playlistIdForSearchingTab, setReloadPlaylist, reloadPlaylist } = props;
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const {
+    history,
+    fromTeam,
+    selectProject,
+    setSelectProject,
+    showBackOption,
+    setSelectSearchModule,
+    playlistIdForSearchingTab,
+    setReloadPlaylist,
+    reloadPlaylist,
+  } = props;
+  const primaryColor = getGlobalColor("--main-primary-color");
   const [currentActivity, setCurrentActivity] = useState(null);
   const [toggleStates, setToggleStates] = useState({
     searchLibrary: true,
@@ -78,32 +105,43 @@ function SearchInterface(props) {
     type: false,
   });
   const allState = useSelector((state) => state.search);
-  const activityTypesState = useSelector((state) => state.resource.types);
-  const { currentOrganization, permission } = useSelector((state) => state.organization);
+  const activityTypesState = useSelector(
+    (state) => state.resource.types
+  );
+  const { currentOrganization, permission } = useSelector(
+    (state) => state.organization
+  );
 
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
-  const [selectedProjectPlaylistId, setSelectedProjectPlaylistId] = useState(0);
+  const [
+    selectedProjectPlaylistId,
+    setSelectedProjectPlaylistId,
+  ] = useState(0);
   const [activityTypes, setActivityTypes] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [modalShowActivity, setModalShowActivity] = useState(false);
   const [search, setSearch] = useState(null);
-  const [searchQueries, SetSearchQuery] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  const [searchQueries, SetSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [meta, setMeta] = useState({});
   const [clone, setClone] = useState();
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [activeModel, setActiveModel] = useState(fromTeam ? 'projects' : '');
+  const [activeModel, setActiveModel] = useState(
+    fromTeam ? "projects" : ""
+  );
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
   const [activeEducation, setActiveEducation] = useState([]);
   const [activeAuthorTag, setActiveAuthorTag] = useState([]);
-  const [searchType, setSearchType] = useState('showcase_projects');
-  const [authorName, SetAuthor] = useState('');
-  const [noWords, setNoWords] = useState('');
-  const [activetab, setActiveTab] = useState(fromTeam ? 'projects' : 'total');
+  const [searchType, setSearchType] = useState("showcase_projects");
+  const [authorName, SetAuthor] = useState("");
+  const [noWords, setNoWords] = useState("");
+  const [activetab, setActiveTab] = useState(
+    fromTeam ? "projects" : "total"
+  );
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
   const [subjects, setSubjects] = useState([]);
@@ -136,26 +174,26 @@ function SearchInterface(props) {
       setSearchType(query.type);
     }
     if (query.h5p) {
-      setActiveType(query.h5p.split(','));
+      setActiveType(query.h5p.split(","));
     }
     if (query.grade) {
-      setActiveSubject(query?.grade?.split(',').map(Number));
+      setActiveSubject(query?.grade?.split(",").map(Number));
     }
     if (query.education) {
-      setActiveEducation(query?.education?.split(',').map(Number));
+      setActiveEducation(query?.education?.split(",").map(Number));
     }
     if (query.authorTag) {
-      setActiveAuthorTag(query?.authorTag?.split(',').map(Number));
+      setActiveAuthorTag(query?.authorTag?.split(",").map(Number));
     }
     if (query.author) {
       SetAuthor(query.author);
     }
-    if (query.fromDate && query.fromDate !== 'undefined') {
+    if (query.fromDate && query.fromDate !== "undefined") {
       Setfromdate(query.fromDate);
     } else {
       Setfromdate(undefined);
     }
-    if (query.toDate && query.fromDate !== 'undefined') {
+    if (query.toDate && query.fromDate !== "undefined") {
       Settodate(query.toDate);
     } else {
       Settodate(undefined);
@@ -166,7 +204,7 @@ function SearchInterface(props) {
     // eslint-disable-next-line no-restricted-globals
   }, [location.search]);
   window.onbeforeunload = () => {
-    localStorage.setItem('refreshPage', 'true');
+    localStorage.setItem("refreshPage", "true");
   };
 
   useEffect(() => {
@@ -176,29 +214,36 @@ function SearchInterface(props) {
         SetSearchQuery(allState.searchQuery);
         setSearchInput(allState.searchQuery);
         setMeta(allState.searchMeta);
-        localStorage.setItem('loading', 'false');
+        localStorage.setItem("loading", "false");
         Swal.close();
       } else if (allState.searchMeta.total === 0) {
         setSearch([]);
         SetSearchQuery(allState.searchQuery);
         setSearchInput(allState.searchQuery);
         setMeta({});
-        localStorage.setItem('loading', 'false');
+        localStorage.setItem("loading", "false");
         Swal.close();
-      } else if (allState.searchResult?.length === 0 && allState.searchMeta.total > 0) {
+      } else if (
+        allState.searchResult?.length === 0 &&
+        allState.searchMeta.total > 0
+      ) {
         setSearch([]);
       }
     }
-  }, [allState.searchMeta, allState.searchQuery, allState.searchResult]);
+  }, [
+    allState.searchMeta,
+    allState.searchQuery,
+    allState.searchResult,
+  ]);
 
   useEffect(() => {
-    console.log('activeModel', activeModel);
+    console.log("activeModel", activeModel);
     if (allState.searchResult) {
       if (allState.searchResult?.length > 0) {
         // setTotalCount(allState.searchMeta.total);
-        if (activeModel == '' || activeModel == null) {
+        if (activeModel == "" || activeModel == null) {
           setTotalCount(allState.searchMeta.total);
-        } else if (activeModel == 'Independent activities') {
+        } else if (activeModel == "Independent activities") {
           setTotalCount(allState.searchMeta.total);
         } else {
           setTotalCount(allState.searchMeta[activeModel]);
@@ -209,9 +254,9 @@ function SearchInterface(props) {
   }, [allState.searchMeta, allState.searchResult, activeModel]);
 
   useEffect(() => {
-    if (localStorage.getItem('loading') === 'true') {
+    if (localStorage.getItem("loading") === "true") {
       Swal.fire({
-        html: 'Searching...', // add html attribute if you want or remove
+        html: "Searching...", // add html attribute if you want or remove
         allowOutsideClick: false,
         onBeforeOpen: () => {
           Swal.showLoading();
@@ -242,40 +287,67 @@ function SearchInterface(props) {
 
   useEffect(() => {
     const allItems = [];
-    activityTypesState?.data?.map((data) => data.activityItems.map((itm) => allItems.push(itm)));
+    activityTypesState?.data?.map((data) =>
+      data.activityItems.map((itm) => allItems.push(itm))
+    );
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
 
   useEffect(() => {
     if (currentOrganization?.id) {
       if (subjects?.length === 0) {
-        const resultSub = dispatch(getSubjects(currentOrganization?.id || 1));
+        const resultSub = dispatch(
+          getSubjects(currentOrganization?.id || 1)
+        );
         resultSub.then((data) => setSubjects(data));
       }
       if (authorTags?.length === 0) {
-        const resultAuth = dispatch(getAuthorTag(currentOrganization?.id || 1));
+        const resultAuth = dispatch(
+          getAuthorTag(currentOrganization?.id || 1)
+        );
         resultAuth.then((data) => setAuthorTags(data));
       }
       if (educationLevels?.length === 0) {
-        const resultEdu = dispatch(getEducationLevel(currentOrganization?.id || 1));
+        const resultEdu = dispatch(
+          getEducationLevel(currentOrganization?.id || 1)
+        );
         resultEdu.then((data) => setEducationLevels(data));
       }
     }
-  }, [authorTags?.length, currentOrganization?.id, dispatch, educationLevels?.length, subjects?.length]);
+  }, [
+    authorTags?.length,
+    currentOrganization?.id,
+    dispatch,
+    educationLevels?.length,
+    subjects?.length,
+  ]);
   return (
     <>
       <div>
-        <div className={!fromTeam && 'search-wrapper'}>
-          <MyVerticallyCenteredModal ind={indClone} searchView={true} show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
+        <div className={!fromTeam && "search-wrapper"}>
+          <MyVerticallyCenteredModal
+            ind={indClone}
+            searchView={true}
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            className="clone-lti"
+            clone={clone}
+          />
 
           <div className="content-search">
             {true ? (
               <div className="search-result-main">
-                {!fromTeam && <div className="current-org-search">{currentOrganization?.name}</div>}
+                {!fromTeam && (
+                  <div className="current-org-search">
+                    {currentOrganization?.name}
+                  </div>
+                )}
                 {!fromTeam && (
                   <div className="search-top-header">
                     <div className="exp-lib-cnt">
-                      <SearchLibraryLgSvg primaryColor={primaryColor} />
+                      <SearchLibraryLgSvg
+                        primaryColor={primaryColor}
+                      />
                       <span> Search library</span>
                     </div>
                     {showBackOption && (
@@ -287,7 +359,11 @@ function SearchInterface(props) {
                             setReloadPlaylist(!reloadPlaylist);
                           }}
                         >
-                          <FontAwesomeIcon icon={faArrowLeft} color={primaryColor} className="mr-12" />
+                          <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            color={primaryColor}
+                            className="mr-12"
+                          />
                           <span> Back to Playlist</span>
                         </div>
                       </>
@@ -298,16 +374,16 @@ function SearchInterface(props) {
                 <Tabs
                   className="main-tabs"
                   onSelect={(eventKey) => {
-                    if (eventKey === 'Independent activities') {
-                      setActiveModel('Independent activities');
+                    if (eventKey === "Independent activities") {
+                      setActiveModel("Independent activities");
                     } else {
-                      setActiveModel('');
+                      setActiveModel("");
                     }
                     dispatch(setSearchTypeAction(eventKey));
-                    setSearchInput('');
+                    setSearchInput("");
 
-                    setNoWords('');
-                    setSearchType('');
+                    setNoWords("");
+                    setSearchType("");
                     setSearch(null);
                     setTotalCount(0);
                     setActivePage(1);
@@ -328,17 +404,26 @@ function SearchInterface(props) {
                     setisLoader(false);
                     setActiveType([]);
                   }}
-                  defaultActiveKey={!fromTeam ? allState.searchType : 'Projects'}
+                  defaultActiveKey={
+                    !fromTeam ? allState.searchType : "Projects"
+                  }
                 >
                   {!fromTeam && (
-                    <Tab eventKey="Independent activities" title="Learning activities">
+                    <Tab
+                      eventKey="Independent activities"
+                      title="Learning activities"
+                    >
                       <div className="main-content-search">
                         <div className="left-search">
                           <div className="search-library">
                             <SearchLibrary
-                              currentOrganization={currentOrganization}
+                              currentOrganization={
+                                currentOrganization
+                              }
                               simpleSearchAction={simpleSearchAction}
-                              searchIndependentActivitiesAction={searchIndependentActivitiesAction}
+                              searchIndependentActivitiesAction={
+                                searchIndependentActivitiesAction
+                              }
                               setToggleStates={setToggleStates}
                               searchInput={searchInput}
                               searchType={searchType}
@@ -364,7 +449,9 @@ function SearchInterface(props) {
                               dispatch={dispatch}
                               permission={permission}
                               activities
-                              activeMainSearchType={allState?.searchType}
+                              activeMainSearchType={
+                                allState?.searchType
+                              }
                               setSearch={setSearch}
                               noWords={noWords}
                               setNoWords={setNoWords}
@@ -388,9 +475,18 @@ function SearchInterface(props) {
                             />
                           </div>
                         </div>
-                        <div className="right-search" id="right-search-branding-style">
-                          <Tabs activeKey="Learning activities" id="controlled-tab-example">
-                            <Tab eventKey="Learning activities" title="Learning activities">
+                        <div
+                          className="right-search"
+                          id="right-search-branding-style"
+                        >
+                          <Tabs
+                            activeKey="Learning activities"
+                            id="controlled-tab-example"
+                          >
+                            <Tab
+                              eventKey="Learning activities"
+                              title="Learning activities"
+                            >
                               {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
                               <div className="content">
                                 <div className="results_search">
@@ -403,7 +499,9 @@ function SearchInterface(props) {
                                               {res?.thumb_url ? (
                                                 <div
                                                   style={{
-                                                    backgroundImage: !res.thumb_url.includes('/storage/')
+                                                    backgroundImage: !res.thumb_url.includes(
+                                                      "/storage/"
+                                                    )
                                                       ? `url(${res.thumb_url})`
                                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                   }}
@@ -413,7 +511,7 @@ function SearchInterface(props) {
                                                   style={{
                                                     backgroundImage:
                                                       // eslint-disable-next-line max-len
-                                                      'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                      "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
                                                   }}
                                                 />
                                               )}
@@ -423,17 +521,37 @@ function SearchInterface(props) {
 
                                             <div className="contentbox">
                                               <div className="search-content">
-                                                <a href={`/activity/${res?.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">
-                                                  <h2>{res.title || res.name}</h2>
+                                                <a
+                                                  href={`/activity/${res?.id}/preview?type=ind-search`}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                >
+                                                  <h2>
+                                                    {res.title ||
+                                                      res.name}
+                                                  </h2>
                                                 </a>
-                                                <p>{res.description}</p>
+                                                <p>
+                                                  {res.description}
+                                                </p>
                                                 {res.user && (
                                                   <div className="search-content-by">
-                                                    By: <span>{res.user.first_name}</span>
+                                                    By:{" "}
+                                                    <span>
+                                                      {
+                                                        res.user
+                                                          .first_name
+                                                      }
+                                                    </span>
                                                   </div>
                                                 )}
                                                 <div className="search-content-type">
-                                                  Type: <span className="type">{res.activity_type}</span>
+                                                  Type:{" "}
+                                                  <span className="type">
+                                                    {
+                                                      res.activity_type
+                                                    }
+                                                  </span>
                                                 </div>
                                                 {/* <p>{res.description}</p> */}
                                               </div>
@@ -445,51 +563,90 @@ function SearchInterface(props) {
                                                   </Dropdown.Toggle>
                                                   <Dropdown.Menu>
                                                     <>
-                                                      <a href={`/activity/${res.id}/preview?type=ind-search`} target="_blank" rel="noreferrer">
+                                                      <a
+                                                        href={`/activity/${res.id}/preview?type=ind-search`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                      >
                                                         {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                                       Preview */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <PreviewSmSvg primaryColor={primaryColor} />
-                                                          <span>Preview</span>
+                                                          <PreviewSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          <span>
+                                                            Preview
+                                                          </span>
                                                         </div>
                                                       </a>
                                                       <Dropdown.Item
                                                         onClick={async () => {
-                                                          toast.info('Duplicating Activity...', {
-                                                            className: 'project-loading',
-                                                            closeOnClick: false,
-                                                            closeButton: false,
-                                                            position: toast.POSITION.BOTTOM_RIGHT,
-                                                            autoClose: 10000,
-                                                            icon: '',
-                                                          });
+                                                          toast.info(
+                                                            "Duplicating Activity...",
+                                                            {
+                                                              className:
+                                                                "project-loading",
+                                                              closeOnClick: false,
+                                                              closeButton: false,
+                                                              position:
+                                                                toast
+                                                                  .POSITION
+                                                                  .BOTTOM_RIGHT,
+                                                              autoClose: 10000,
+                                                              icon:
+                                                                "",
+                                                            }
+                                                          );
 
-                                                          const result = await intActivityServices.indActivityClone(currentOrganization?.id, res.id);
+                                                          const result = await intActivityServices.indActivityClone(
+                                                            currentOrganization?.id,
+                                                            res.id
+                                                          );
 
                                                           toast.dismiss();
                                                           Swal.fire({
-                                                            html: result.message,
-                                                            icon: 'success',
+                                                            html:
+                                                              result.message,
+                                                            icon:
+                                                              "success",
                                                           });
                                                         }}
                                                       >
                                                         <div className="dropDown-item-name-icon">
-                                                          <MyActivitySvg primaryColor={primaryColor} />
-                                                          Copy to My Activities
+                                                          <MyActivitySvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          Copy to My
+                                                          Activities
                                                         </div>
                                                       </Dropdown.Item>
                                                       <Dropdown.Item
                                                         onClick={() => {
-                                                          setIndClone(true);
-                                                          setModalShow(true);
-                                                          setClone(res);
+                                                          setIndClone(
+                                                            true
+                                                          );
+                                                          setModalShow(
+                                                            true
+                                                          );
+                                                          setClone(
+                                                            res
+                                                          );
                                                         }}
                                                       >
                                                         {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
                                                       Add to Projects */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg primaryColor={primaryColor} />
-                                                          Copy to My projects
+                                                          <MyProjectSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          Copy to My
+                                                          projects
                                                         </div>
                                                       </Dropdown.Item>
                                                     </>
@@ -501,12 +658,17 @@ function SearchInterface(props) {
                                         </>
                                       ))
                                     ) : (
-                                      <Alert variant="danger">No result found !</Alert>
+                                      <Alert variant="danger">
+                                        No result found !
+                                      </Alert>
                                     )
                                   ) : isLoader ? (
                                     <Skeleton count="3" />
                                   ) : (
-                                    <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert>
+                                    <Alert variant="warning">
+                                      Start Searching CurrikiStudio
+                                      Search Library.
+                                    </Alert>
                                   )}
                                 </div>
                               </div>
@@ -523,7 +685,9 @@ function SearchInterface(props) {
                           <SearchLibrary
                             currentOrganization={currentOrganization}
                             simpleSearchAction={simpleSearchAction}
-                            searchIndependentActivitiesAction={searchIndependentActivitiesAction}
+                            searchIndependentActivitiesAction={
+                              searchIndependentActivitiesAction
+                            }
                             setToggleStates={setToggleStates}
                             toggleStates={toggleStates}
                             searchInput={searchInput}
@@ -549,7 +713,9 @@ function SearchInterface(props) {
                             history={history}
                             dispatch={dispatch}
                             permission={permission}
-                            activeMainSearchType={allState?.searchType}
+                            activeMainSearchType={
+                              allState?.searchType
+                            }
                             setSearch={setSearch}
                             noWords={noWords}
                             setNoWords={setNoWords}
@@ -575,16 +741,22 @@ function SearchInterface(props) {
                         />
                       </div>
 
-                      <div className="right-search" id="right-search-branding-style">
+                      <div
+                        className="right-search"
+                        id="right-search-branding-style"
+                      >
                         <Tabs
                           activeKey={activetab}
                           id="uncontrolled-tab-example"
                           onSelect={async (e) => {
                             setSearch(null);
                             setActiveTab(e);
-                            if (e === 'total') {
+                            if (e === "total") {
                               const searchData = {
-                                phrase: searchQueries?.trim() || searchInput || undefined,
+                                phrase:
+                                  searchQueries?.trim() ||
+                                  searchInput ||
+                                  undefined,
                                 from: 0,
                                 size: 20,
                                 author: authorName || undefined,
@@ -605,14 +777,19 @@ function SearchInterface(props) {
                               //     Swal.showLoading();
                               //   },
                               // });
-                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              const resultModel = await dispatch(
+                                simpleSearchAction(searchData)
+                              );
                               Swal.close();
                               setTotalCount(resultModel.meta[e]);
                               setActiveModel(e);
                               setActivePage(1);
                             } else {
                               const searchData = {
-                                phrase: searchQueries?.trim() || searchInput || undefined,
+                                phrase:
+                                  searchQueries?.trim() ||
+                                  searchInput ||
+                                  undefined,
                                 from: 0,
                                 size: 20,
                                 model: e,
@@ -634,7 +811,9 @@ function SearchInterface(props) {
                               //     Swal.showLoading();
                               //   },
                               // });
-                              const resultModel = await dispatch(simpleSearchAction(searchData));
+                              const resultModel = await dispatch(
+                                simpleSearchAction(searchData)
+                              );
                               Swal.close();
                               setTotalCount(resultModel.meta[e]);
                               setActiveModel(e);
@@ -643,7 +822,14 @@ function SearchInterface(props) {
                           }}
                         >
                           {!fromTeam && (
-                            <Tab eventKey="total" title={!!search && !!meta.total ? `all (${meta.total})` : 'all (0)'}>
+                            <Tab
+                              eventKey="total"
+                              title={
+                                !!search && !!meta.total
+                                  ? `all (${meta.total})`
+                                  : "all (0)"
+                              }
+                            >
                               <div className="results_search">
                                 {!!search ? (
                                   search?.length > 0 ? (
@@ -653,7 +839,9 @@ function SearchInterface(props) {
                                           {res.thumb_url ? (
                                             <div
                                               style={{
-                                                backgroundImage: !res.thumb_url.includes('/storage/')
+                                                backgroundImage: !res.thumb_url.includes(
+                                                  "/storage/"
+                                                )
                                                   ? `url(${res.thumb_url})`
                                                   : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                               }}
@@ -663,7 +851,7 @@ function SearchInterface(props) {
                                               style={{
                                                 backgroundImage:
                                                   // eslint-disable-next-line max-len
-                                                  'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                  "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
                                               }}
                                             />
                                           )}
@@ -674,64 +862,193 @@ function SearchInterface(props) {
                                           <div className="search-content">
                                             <a
                                               href={
-                                                res.model === 'Activity'
+                                                res.model ===
+                                                "Activity"
                                                   ? `/activity/${res.id}/preview`
-                                                  : res.model === 'Playlist'
+                                                  : res.model ===
+                                                    "Playlist"
                                                   ? `/playlist/${res.id}/preview/lti`
                                                   : `/project/${res.id}/preview`
                                               }
                                               target="_blank"
                                               rel="noreferrer"
                                             >
-                                              <h2>{res.title || res.name}</h2>
+                                              <h2>
+                                                {res.title ||
+                                                  res.name}
+                                              </h2>
                                             </a>
                                             <p>{res.description}</p>
                                             <ul>
                                               {res.user && (
                                                 <li>
-                                                  By: <span>{res.user.first_name}</span>
+                                                  By:{" "}
+                                                  <span>
+                                                    {
+                                                      res.user
+                                                        .first_name
+                                                    }
+                                                  </span>
                                                 </li>
                                               )}
                                               {res?.team_name && (
                                                 <li>
-                                                  Team: <span> {res?.team_name}</span>
+                                                  Team:{" "}
+                                                  <span>
+                                                    {" "}
+                                                    {res?.team_name}
+                                                  </span>
                                                 </li>
                                               )}
                                               <li>
-                                                Type: <span>{res.model}</span>
+                                                Type:{" "}
+                                                <span>
+                                                  {res.model}{" "}
+                                                  {res.activity_type &&
+                                                    `(${res.activity_type})`}
+                                                </span>
                                               </li>
 
                                               {/* <li>
                                             Member Rating{" "}
                                             <span className="type">Project</span>
                                           </li> */}
-                                              {res.model === 'Project' && permission?.Project?.includes('project:favorite') && (
-                                                <div
-                                                  className={`btn-fav ${res.favored}`}
-                                                  onClick={(e) => {
-                                                    if (e.target.classList.contains('true')) {
-                                                      e.target.classList.remove('true');
-                                                      e.target.classList.add('false');
-                                                    } else {
-                                                      e.target.classList.add('true');
-                                                    }
-                                                    dispatch(addProjectFav(res.id));
-                                                  }}
-                                                >
-                                                  <FontAwesomeIcon
-                                                    className="mr-2"
-                                                    icon="star"
-                                                    style={{
-                                                      pointerEvents: 'none',
+                                              {res.model ===
+                                                "Project" &&
+                                                permission?.Project?.includes(
+                                                  "project:favorite"
+                                                ) && (
+                                                  <div
+                                                    className={`btn-fav ${res.favored}`}
+                                                    onClick={(e) => {
+                                                      if (
+                                                        e.target.classList.contains(
+                                                          "true"
+                                                        )
+                                                      ) {
+                                                        e.target.classList.remove(
+                                                          "true"
+                                                        );
+                                                        e.target.classList.add(
+                                                          "false"
+                                                        );
+                                                      } else {
+                                                        e.target.classList.add(
+                                                          "true"
+                                                        );
+                                                      }
+                                                      dispatch(
+                                                        addProjectFav(
+                                                          res.id
+                                                        )
+                                                      );
                                                     }}
-                                                  />{' '}
-                                                  Favorite
-                                                </div>
-                                              )}
+                                                  >
+                                                    <FontAwesomeIcon
+                                                      className="mr-2"
+                                                      icon="star"
+                                                      style={{
+                                                        pointerEvents:
+                                                          "none",
+                                                      }}
+                                                    />{" "}
+                                                    Favorite
+                                                  </div>
+                                                )}
                                             </ul>
                                             {/* <p>{res.description}</p> */}
                                           </div>
-                                          {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && res.model === 'Project' && (
+                                          {(permission?.Project?.includes(
+                                            "project:clone"
+                                          ) ||
+                                            permission?.Project?.includes(
+                                              "project:publish"
+                                            )) &&
+                                            res.model ===
+                                              "Project" && (
+                                              <Dropdown className="playlist-dropdown check">
+                                                <Dropdown.Toggle>
+                                                  <FontAwesomeIcon icon="ellipsis-v" />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      window.open(
+                                                        res.model ===
+                                                          "Activity"
+                                                          ? `/activity/${res.id}/preview`
+                                                          : res.model ===
+                                                            "Playlist"
+                                                          ? `/playlist/${res.id}/preview/lti`
+                                                          : `/project/${res.id}/preview`,
+                                                        "_blank"
+                                                      )
+                                                    }
+                                                  >
+                                                    {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
+                                                Preview */}
+                                                    <div className="dropDown-item-name-icon">
+                                                      <PreviewSmSvg
+                                                        primaryColor={
+                                                          primaryColor
+                                                        }
+                                                      />
+                                                      <span>
+                                                        Preview
+                                                      </span>
+                                                    </div>
+                                                  </Dropdown.Item>
+                                                  {permission?.Project?.includes(
+                                                    "project:clone"
+                                                  ) && (
+                                                    <Dropdown.Item
+                                                      onClick={() => {
+                                                        Swal.fire({
+                                                          html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                          showCancelButton: true,
+                                                          confirmButtonColor:
+                                                            "#3085d6",
+                                                          cancelButtonColor:
+                                                            "#d33",
+                                                          confirmButtonText:
+                                                            "Ok",
+                                                        }).then(
+                                                          (
+                                                            result
+                                                          ) => {
+                                                            if (
+                                                              result.value
+                                                            ) {
+                                                              cloneProject(
+                                                                res.id
+                                                              );
+                                                            }
+                                                          }
+                                                        );
+                                                      }}
+                                                    >
+                                                      {/* <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                  Add to projects */}
+                                                      <div className="dropDown-item-name-icon">
+                                                        <MyProjectSmSvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        Copy to My
+                                                        projects
+                                                      </div>
+                                                    </Dropdown.Item>
+                                                  )}
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                        </div>
+                                        {permission?.Playlist?.includes(
+                                          "playlist:duplicate"
+                                        ) &&
+                                          res.model ===
+                                            "Playlist" && (
                                             <Dropdown className="playlist-dropdown check">
                                               <Dropdown.Toggle>
                                                 <FontAwesomeIcon icon="ellipsis-v" />
@@ -740,189 +1057,207 @@ function SearchInterface(props) {
                                                 <Dropdown.Item
                                                   onClick={() =>
                                                     window.open(
-                                                      res.model === 'Activity'
+                                                      res.model ===
+                                                        "Activity"
                                                         ? `/activity/${res.id}/preview`
-                                                        : res.model === 'Playlist'
+                                                        : res.model ===
+                                                          "Playlist"
                                                         ? `/playlist/${res.id}/preview/lti`
                                                         : `/project/${res.id}/preview`,
-                                                      '_blank',
+                                                      "_blank"
                                                     )
                                                   }
                                                 >
                                                   {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                Preview */}
-                                                  <div className="dropDown-item-name-icon">
-                                                    <PreviewSmSvg primaryColor={primaryColor} />
-                                                    <span>Preview</span>
-                                                  </div>
-                                                </Dropdown.Item>
-                                                {permission?.Project?.includes('project:clone') && (
-                                                  <Dropdown.Item
-                                                    onClick={() => {
-                                                      Swal.fire({
-                                                        html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                        showCancelButton: true,
-                                                        confirmButtonColor: '#3085d6',
-                                                        cancelButtonColor: '#d33',
-                                                        confirmButtonText: 'Ok',
-                                                      }).then((result) => {
-                                                        if (result.value) {
-                                                          cloneProject(res.id);
-                                                        }
-                                                      });
-                                                    }}
-                                                  >
-                                                    {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                  Add to projects */}
-                                                    <div className="dropDown-item-name-icon">
-                                                      <MyProjectSmSvg primaryColor={primaryColor} />
-                                                      Copy to My projects
-                                                    </div>
-                                                  </Dropdown.Item>
-                                                )}
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          )}
-                                        </div>
-                                        {permission?.Playlist?.includes('playlist:duplicate') && res.model === 'Playlist' && (
-                                          <Dropdown className="playlist-dropdown check">
-                                            <Dropdown.Toggle>
-                                              <FontAwesomeIcon icon="ellipsis-v" />
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                              <Dropdown.Item
-                                                onClick={() =>
-                                                  window.open(
-                                                    res.model === 'Activity'
-                                                      ? `/activity/${res.id}/preview`
-                                                      : res.model === 'Playlist'
-                                                      ? `/playlist/${res.id}/preview/lti`
-                                                      : `/project/${res.id}/preview`,
-                                                    '_blank',
-                                                  )
-                                                }
-                                              >
-                                                {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                               Preview */}
-                                                <div className="dropDown-item-name-icon">
-                                                  <PreviewSmSvg primaryColor={primaryColor} />
-                                                  <span>Preview</span>
-                                                </div>
-                                              </Dropdown.Item>
-                                              <Dropdown.Item
-                                                onClick={() => {
-                                                  setIndClone(false);
-                                                  setModalShow(true);
-                                                  setClone(res);
-                                                }}
-                                              >
-                                                {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                              Add to projects */}
-                                                <div className="dropDown-item-name-icon">
-                                                  <MyProjectSmSvg primaryColor={primaryColor} />
-                                                  Copy to My projects
-                                                </div>
-                                              </Dropdown.Item>
-                                            </Dropdown.Menu>
-                                          </Dropdown>
-                                        )}
-                                        {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
-                                          <Dropdown className="playlist-dropdown check">
-                                            <Dropdown.Toggle>
-                                              <FontAwesomeIcon icon="ellipsis-v" />
-                                            </Dropdown.Toggle>
-                                            <Dropdown.Menu>
-                                              <>
-                                                <Dropdown.Item
-                                                  onClick={() =>
-                                                    window.open(
-                                                      res.model === 'Activity'
-                                                        ? `/activity/${res.id}/preview`
-                                                        : res.model === 'Playlist'
-                                                        ? `/playlist/${res.id}/preview/lti`
-                                                        : `/project/${res.id}/preview`,
-                                                      '_blank',
-                                                    )
-                                                  }
-                                                >
-                                                  {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                Preview */}
                                                   <div className="dropDown-item-name-icon">
-                                                    <PreviewSmSvg primaryColor={primaryColor} />
-                                                    <span>Preview</span>
-                                                  </div>
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                  onClick={async () => {
-                                                    toast.info('Duplicating Activity...', {
-                                                      className: 'project-loading',
-                                                      closeOnClick: false,
-                                                      closeButton: false,
-                                                      position: toast.POSITION.BOTTOM_RIGHT,
-                                                      autoClose: 10000,
-                                                      icon: '',
-                                                    });
-                                                    const result = await intActivityServices.copyToIndependentActivity(currentOrganization?.id, res.id);
-                                                    toast.dismiss();
-                                                    Swal.fire({
-                                                      html: result.message,
-                                                      icon: 'success',
-                                                    });
-                                                  }}
-                                                >
-                                                  <div className="dropDown-item-name-icon">
-                                                    <MyActivitySmSvg primaryColor={primaryColor} />
-
-                                                    <span>Copy to My Activities</span>
+                                                    <PreviewSmSvg
+                                                      primaryColor={
+                                                        primaryColor
+                                                      }
+                                                    />
+                                                    <span>
+                                                      Preview
+                                                    </span>
                                                   </div>
                                                 </Dropdown.Item>
                                                 <Dropdown.Item
                                                   onClick={() => {
-                                                    setIndClone(false);
-                                                    setModalShow(true);
+                                                    setIndClone(
+                                                      false
+                                                    );
+                                                    setModalShow(
+                                                      true
+                                                    );
                                                     setClone(res);
                                                   }}
                                                 >
                                                   {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                Add to projects */}
+                                              Add to projects */}
                                                   <div className="dropDown-item-name-icon">
-                                                    <MyProjectSmSvg primaryColor={primaryColor} />
-                                                    Copy to My projects
+                                                    <MyProjectSmSvg
+                                                      primaryColor={
+                                                        primaryColor
+                                                      }
+                                                    />
+                                                    Copy to My
+                                                    projects
                                                   </div>
                                                 </Dropdown.Item>
-                                              </>
-                                            </Dropdown.Menu>
-                                          </Dropdown>
-                                        )}
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
+                                        {permission?.Activity?.includes(
+                                          "activity:duplicate"
+                                        ) &&
+                                          res.model ===
+                                            "Activity" && (
+                                            <Dropdown className="playlist-dropdown check">
+                                              <Dropdown.Toggle>
+                                                <FontAwesomeIcon icon="ellipsis-v" />
+                                              </Dropdown.Toggle>
+                                              <Dropdown.Menu>
+                                                <>
+                                                  <Dropdown.Item
+                                                    onClick={() =>
+                                                      window.open(
+                                                        res.model ===
+                                                          "Activity"
+                                                          ? `/activity/${res.id}/preview`
+                                                          : res.model ===
+                                                            "Playlist"
+                                                          ? `/playlist/${res.id}/preview/lti`
+                                                          : `/project/${res.id}/preview`,
+                                                        "_blank"
+                                                      )
+                                                    }
+                                                  >
+                                                    {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
+                                                Preview */}
+                                                    <div className="dropDown-item-name-icon">
+                                                      <PreviewSmSvg
+                                                        primaryColor={
+                                                          primaryColor
+                                                        }
+                                                      />
+                                                      <span>
+                                                        Preview
+                                                      </span>
+                                                    </div>
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={async () => {
+                                                      toast.info(
+                                                        "Duplicating Activity...",
+                                                        {
+                                                          className:
+                                                            "project-loading",
+                                                          closeOnClick: false,
+                                                          closeButton: false,
+                                                          position:
+                                                            toast
+                                                              .POSITION
+                                                              .BOTTOM_RIGHT,
+                                                          autoClose: 10000,
+                                                          icon: "",
+                                                        }
+                                                      );
+                                                      const result = await intActivityServices.copyToIndependentActivity(
+                                                        currentOrganization?.id,
+                                                        res.id
+                                                      );
+                                                      toast.dismiss();
+                                                      Swal.fire({
+                                                        html:
+                                                          result.message,
+                                                        icon:
+                                                          "success",
+                                                      });
+                                                    }}
+                                                  >
+                                                    <div className="dropDown-item-name-icon">
+                                                      <MyActivitySmSvg
+                                                        primaryColor={
+                                                          primaryColor
+                                                        }
+                                                      />
+
+                                                      <span>
+                                                        Copy to My
+                                                        Activities
+                                                      </span>
+                                                    </div>
+                                                  </Dropdown.Item>
+                                                  <Dropdown.Item
+                                                    onClick={() => {
+                                                      setIndClone(
+                                                        false
+                                                      );
+                                                      setModalShow(
+                                                        true
+                                                      );
+                                                      setClone(res);
+                                                    }}
+                                                  >
+                                                    {/* <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                Add to projects */}
+                                                    <div className="dropDown-item-name-icon">
+                                                      <MyProjectSmSvg
+                                                        primaryColor={
+                                                          primaryColor
+                                                        }
+                                                      />
+                                                      Copy to My
+                                                      projects
+                                                    </div>
+                                                  </Dropdown.Item>
+                                                </>
+                                              </Dropdown.Menu>
+                                            </Dropdown>
+                                          )}
                                       </div>
                                     ))
                                   ) : (
-                                    <Alert variant="danger">No result found !</Alert>
+                                    <Alert variant="danger">
+                                      No result found !
+                                    </Alert>
                                   )
                                 ) : isLoader ? (
                                   <Skeleton count="3" />
                                 ) : (
-                                  <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert>
+                                  <Alert variant="warning">
+                                    Start Searching CurrikiStudio
+                                    Search Library.
+                                  </Alert>
                                 )}
                               </div>
                             </Tab>
                           )}
 
-                          <Tab eventKey="projects" title={!!search && !!meta.projects ? `project (${meta.projects})` : 'project (0)'}>
+                          <Tab
+                            eventKey="projects"
+                            title={
+                              !!search && !!meta.projects
+                                ? `project (${meta.projects})`
+                                : "project (0)"
+                            }
+                          >
                             {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
                             <div className="results_search">
                               {!!search ? (
                                 search?.length > 0 ? (
                                   search.map((res) => (
                                     <>
-                                      {res.model === 'Project' && (
+                                      {res.model === "Project" && (
                                         <div className="box">
                                           <div className="imgbox">
                                             {res.thumb_url ? (
                                               <div
                                                 style={{
                                                   // eslint-disable-next-line max-len
-                                                  backgroundImage: !res.thumb_url.includes('/storage/')
+                                                  backgroundImage: !res.thumb_url.includes(
+                                                    "/storage/"
+                                                  )
                                                     ? `url(${res.thumb_url})`
                                                     : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                 }}
@@ -932,7 +1267,7 @@ function SearchInterface(props) {
                                                 style={{
                                                   backgroundImage:
                                                     // eslint-disable-next-line max-len
-                                                    'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                    "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
                                                 }}
                                               />
                                             )}
@@ -943,74 +1278,120 @@ function SearchInterface(props) {
                                             <div className="search-content">
                                               <a
                                                 href={
-                                                  res.model === 'Activity'
+                                                  res.model ===
+                                                  "Activity"
                                                     ? `/activity/${res.id}/preview`
-                                                    : res.model === 'Playlist'
+                                                    : res.model ===
+                                                      "Playlist"
                                                     ? `/playlist/${res.id}/preview/lti`
                                                     : `/project/${res.id}/preview`
                                                 }
                                                 target="_blank"
                                                 rel="noreferrer"
                                               >
-                                                <h2>{res.title || res.name}</h2>
+                                                <h2>
+                                                  {res.title ||
+                                                    res.name}
+                                                </h2>
                                               </a>
                                               <p>{res.description}</p>
                                               <ul>
                                                 {res.user && (
                                                   <li>
-                                                    By: <span>{res?.team_name ? `(T) ${res?.team_name}` : res.user.first_name}</span>
+                                                    By:{" "}
+                                                    <span>
+                                                      {res?.team_name
+                                                        ? `(T) ${res?.team_name}`
+                                                        : res.user
+                                                            .first_name}
+                                                    </span>
                                                   </li>
                                                 )}
                                                 <li>
-                                                  Type: <span className="type">{res.model}</span>
+                                                  Type:{" "}
+                                                  <span className="type">
+                                                    {res.model}
+                                                  </span>
                                                 </li>
                                                 {/* <li>
                                                 Member Rating{" "}
                                                 <span className="type">Project</span>
                                               </li> */}
-                                                {permission?.Project?.includes('project:favorite') && (
+                                                {permission?.Project?.includes(
+                                                  "project:favorite"
+                                                ) && (
                                                   <div
                                                     className={`btn-fav ${res.favored}`}
                                                     onClick={(e) => {
-                                                      if (e.target.classList.contains(' true')) {
-                                                        e.target.classList.remove('true');
+                                                      if (
+                                                        e.target.classList.contains(
+                                                          " true"
+                                                        )
+                                                      ) {
+                                                        e.target.classList.remove(
+                                                          "true"
+                                                        );
                                                       } else {
-                                                        e.target.classList.add('true');
+                                                        e.target.classList.add(
+                                                          "true"
+                                                        );
                                                       }
-                                                      dispatch(addProjectFav(res.id));
+                                                      dispatch(
+                                                        addProjectFav(
+                                                          res.id
+                                                        )
+                                                      );
                                                     }}
                                                   >
-                                                    <FontAwesomeIcon className="mr-2" icon="star" />
+                                                    <FontAwesomeIcon
+                                                      className="mr-2"
+                                                      icon="star"
+                                                    />
                                                     Favorite
                                                   </div>
                                                 )}
                                               </ul>
                                               {/* <p>{res.description}</p> */}
                                             </div>
-                                            {(permission?.Project?.includes('project:clone') || permission?.Project?.includes('project:publish')) && (
+                                            {(permission?.Project?.includes(
+                                              "project:clone"
+                                            ) ||
+                                              permission?.Project?.includes(
+                                                "project:publish"
+                                              )) && (
                                               <Dropdown className="playlist-dropdown check">
                                                 <Dropdown.Toggle>
                                                   <FontAwesomeIcon icon="ellipsis-v" />
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu>
-                                                  {permission?.Project?.includes('project:clone') && (
+                                                  {permission?.Project?.includes(
+                                                    "project:clone"
+                                                  ) && (
                                                     <>
                                                       <Dropdown.Item
                                                         onClick={() =>
                                                           window.open(
-                                                            res.model === 'Activity'
+                                                            res.model ===
+                                                              "Activity"
                                                               ? `/activity/${res.id}/preview`
-                                                              : res.model === 'Playlist'
+                                                              : res.model ===
+                                                                "Playlist"
                                                               ? `/playlist/${res.id}/preview/lti`
                                                               : `/project/${res.id}/preview`,
-                                                            '_blank',
+                                                            "_blank"
                                                           )
                                                         }
                                                       >
                                                         {/* <FontAwesomeIcon className="mr-2" icon={faEye} /> */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <PreviewSmSvg primaryColor={primaryColor} />
-                                                          <span>Preview</span>
+                                                          <PreviewSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          <span>
+                                                            Preview
+                                                          </span>
                                                         </div>
                                                       </Dropdown.Item>
                                                       <Dropdown.Item
@@ -1018,20 +1399,36 @@ function SearchInterface(props) {
                                                           Swal.fire({
                                                             html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
                                                             showCancelButton: true,
-                                                            confirmButtonColor: '#3085d6',
-                                                            cancelButtonColor: '#d33',
-                                                            confirmButtonText: 'Ok',
-                                                          }).then((result) => {
-                                                            if (result.value) {
-                                                              cloneProject(res.id);
+                                                            confirmButtonColor:
+                                                              "#3085d6",
+                                                            cancelButtonColor:
+                                                              "#d33",
+                                                            confirmButtonText:
+                                                              "Ok",
+                                                          }).then(
+                                                            (
+                                                              result
+                                                            ) => {
+                                                              if (
+                                                                result.value
+                                                              ) {
+                                                                cloneProject(
+                                                                  res.id
+                                                                );
+                                                              }
                                                             }
-                                                          });
+                                                          );
                                                         }}
                                                       >
                                                         {/* <FontAwesomeIcon className="mr-2" icon="clone" /> */}
                                                         <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg primaryColor={primaryColor} />
-                                                          Copy to My projects
+                                                          <MyProjectSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          Copy to My
+                                                          projects
                                                         </div>
                                                       </Dropdown.Item>
                                                     </>
@@ -1040,21 +1437,44 @@ function SearchInterface(props) {
                                                   {fromTeam && (
                                                     <Dropdown.Item
                                                       onClick={() => {
-                                                        if (selectProject?.length === 0 && fromTeam) {
-                                                          setSelectProject([res.id]);
-                                                        } else if (selectProject[0] === res.id && fromTeam) {
-                                                          setSelectProject([]);
+                                                        if (
+                                                          selectProject?.length ===
+                                                            0 &&
+                                                          fromTeam
+                                                        ) {
+                                                          setSelectProject(
+                                                            [res.id]
+                                                          );
+                                                        } else if (
+                                                          selectProject[0] ===
+                                                            res.id &&
+                                                          fromTeam
+                                                        ) {
+                                                          setSelectProject(
+                                                            []
+                                                          );
                                                         } else {
                                                           Swal.fire({
-                                                            icon: 'warning',
-                                                            title: 'Action Prohibited',
-                                                            text: 'You are only allowed to select 1 project.',
+                                                            icon:
+                                                              "warning",
+                                                            title:
+                                                              "Action Prohibited",
+                                                            text:
+                                                              "You are only allowed to select 1 project.",
                                                           });
                                                         }
                                                       }}
                                                     >
-                                                      <img src={teamicon} alt="teams_logo" className="teams-logo" />
-                                                      {selectProject.includes(res.id) ? 'Remove from ' : 'Add to '}
+                                                      <img
+                                                        src={teamicon}
+                                                        alt="teams_logo"
+                                                        className="teams-logo"
+                                                      />
+                                                      {selectProject.includes(
+                                                        res.id
+                                                      )
+                                                        ? "Remove from "
+                                                        : "Add to "}
                                                       team
                                                     </Dropdown.Item>
                                                   )}
@@ -1067,30 +1487,50 @@ function SearchInterface(props) {
                                     </>
                                   ))
                                 ) : (
-                                  <Alert variant="danger">No result found !</Alert>
+                                  <Alert variant="danger">
+                                    No result found !
+                                  </Alert>
                                 )
                               ) : (
-                                <>{!isLoader ? <Alert variant="warning">Start Searching CurrikiStudio Search Library.</Alert> : <Skeleton count="3" />}</>
+                                <>
+                                  {!isLoader ? (
+                                    <Alert variant="warning">
+                                      Start Searching CurrikiStudio
+                                      Search Library.
+                                    </Alert>
+                                  ) : (
+                                    <Skeleton count="3" />
+                                  )}
+                                </>
                               )}
                             </div>
                           </Tab>
 
                           {!fromTeam && (
-                            <Tab eventKey="playlists" title={!!search && !!meta.playlists ? `playlist (${meta.playlists})` : 'playlist (0)'}>
+                            <Tab
+                              eventKey="playlists"
+                              title={
+                                !!search && !!meta.playlists
+                                  ? `playlist (${meta.playlists})`
+                                  : "playlist (0)"
+                              }
+                            >
                               {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
                               <div className="results_search">
                                 {!!search ? (
                                   search?.length > 0 ? (
                                     search.map((res) => (
                                       <>
-                                        {res.model === 'Playlist' && (
+                                        {res.model === "Playlist" && (
                                           <div className="box">
                                             <div className="imgbox">
                                               {res.thumb_url ? (
                                                 <div
                                                   style={{
                                                     // eslint-disable-next-line max-len
-                                                    backgroundImage: !res.thumb_url.includes('/storage/')
+                                                    backgroundImage: !res.thumb_url.includes(
+                                                      "/storage/"
+                                                    )
                                                       ? `url(${res.thumb_url})`
                                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                   }}
@@ -1100,7 +1540,7 @@ function SearchInterface(props) {
                                                   style={{
                                                     backgroundImage:
                                                       // eslint-disable-next-line max-len
-                                                      'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                      "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
                                                   }}
                                                 />
                                               )}
@@ -1112,26 +1552,42 @@ function SearchInterface(props) {
                                               <div className="search-content">
                                                 <a
                                                   href={
-                                                    res.model === 'Activity'
+                                                    res.model ===
+                                                    "Activity"
                                                       ? `/activity/${res.id}/preview`
-                                                      : res.model === 'Playlist'
+                                                      : res.model ===
+                                                        "Playlist"
                                                       ? `/playlist/${res.id}/preview/lti`
                                                       : `/project/${res.id}/preview`
                                                   }
                                                   target="_blank"
                                                   rel="noreferrer"
                                                 >
-                                                  <h2>{res.title || res.name}</h2>
+                                                  <h2>
+                                                    {res.title ||
+                                                      res.name}
+                                                  </h2>
                                                 </a>
-                                                <p>{res.description}</p>
+                                                <p>
+                                                  {res.description}
+                                                </p>
                                                 <ul>
                                                   {res.user && (
                                                     <li>
-                                                      By: <span>{res.user.first_name}</span>
+                                                      By:{" "}
+                                                      <span>
+                                                        {
+                                                          res.user
+                                                            .first_name
+                                                        }
+                                                      </span>
                                                     </li>
                                                   )}
                                                   <li>
-                                                    Type: <span className="type">{res.model}</span>
+                                                    Type:{" "}
+                                                    <span className="type">
+                                                      {res.model}
+                                                    </span>
                                                   </li>
                                                   {/* <li>
                                                 Member Rating{" "}
@@ -1140,7 +1596,9 @@ function SearchInterface(props) {
                                                 </ul>
                                                 {/* <p>{res.description}</p> */}
                                               </div>
-                                              {permission?.Playlist?.includes('playlist:duplicate') && (
+                                              {permission?.Playlist?.includes(
+                                                "playlist:duplicate"
+                                              ) && (
                                                 <Dropdown className="playlist-dropdown check">
                                                   <Dropdown.Toggle>
                                                     <FontAwesomeIcon icon="ellipsis-v" />
@@ -1150,30 +1608,47 @@ function SearchInterface(props) {
                                                     <Dropdown.Item
                                                       onClick={() =>
                                                         window.open(
-                                                          res.model === 'Activity'
+                                                          res.model ===
+                                                            "Activity"
                                                             ? `/activity/${res.id}/preview`
-                                                            : res.model === 'Playlist'
+                                                            : res.model ===
+                                                              "Playlist"
                                                             ? `/playlist/${res.id}/preview/lti`
                                                             : `/project/${res.id}/preview`,
-                                                          '_blank',
+                                                          "_blank"
                                                         )
                                                       }
                                                     >
                                                       <div className="dropDown-item-name-icon">
-                                                        <PreviewSmSvg primaryColor={primaryColor} />
-                                                        <span>Preview</span>
+                                                        <PreviewSmSvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        <span>
+                                                          Preview
+                                                        </span>
                                                       </div>
                                                     </Dropdown.Item>
                                                     <Dropdown.Item
                                                       onClick={() => {
-                                                        setIndClone(false);
-                                                        setModalShow(true);
+                                                        setIndClone(
+                                                          false
+                                                        );
+                                                        setModalShow(
+                                                          true
+                                                        );
                                                         setClone(res);
                                                       }}
                                                     >
                                                       <div className="dropDown-item-name-icon">
-                                                        <MyProjectSmSvg primaryColor={primaryColor} />
-                                                        Copy to My projects
+                                                        <MyProjectSmSvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        Copy to My
+                                                        projects
                                                       </div>
                                                     </Dropdown.Item>
                                                   </Dropdown.Menu>
@@ -1185,7 +1660,9 @@ function SearchInterface(props) {
                                       </>
                                     ))
                                   ) : (
-                                    <Alert variant="danger">No result found !</Alert>
+                                    <Alert variant="danger">
+                                      No result found !
+                                    </Alert>
                                   )
                                 ) : (
                                   <Skeleton count="3" />
@@ -1195,7 +1672,14 @@ function SearchInterface(props) {
                           )}
 
                           {!fromTeam && (
-                            <Tab eventKey="activities" title={!!search && !!meta.activities ? `activity (${meta.activities})` : 'activity (0)'}>
+                            <Tab
+                              eventKey="activities"
+                              title={
+                                !!search && !!meta.activities
+                                  ? `activity (${meta.activities})`
+                                  : "activity (0)"
+                              }
+                            >
                               {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
                               <div className="content">
                                 <div className="results_search">
@@ -1203,13 +1687,16 @@ function SearchInterface(props) {
                                     search?.length > 0 ? (
                                       search.map((res) => (
                                         <>
-                                          {res.model === 'Activity' && (
+                                          {res.model ===
+                                            "Activity" && (
                                             <div className="box">
                                               <div className="imgbox">
                                                 {res.thumb_url ? (
                                                   <div
                                                     style={{
-                                                      backgroundImage: !res.thumb_url.includes('/storage/')
+                                                      backgroundImage: !res.thumb_url.includes(
+                                                        "/storage/"
+                                                      )
                                                         ? `url(${res.thumb_url})`
                                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
                                                     }}
@@ -1219,7 +1706,7 @@ function SearchInterface(props) {
                                                     style={{
                                                       backgroundImage:
                                                         // eslint-disable-next-line max-len
-                                                        'https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280',
+                                                        "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
                                                     }}
                                                   />
                                                 )}
@@ -1231,26 +1718,44 @@ function SearchInterface(props) {
                                                 <div className="search-content">
                                                   <a
                                                     href={
-                                                      res.model === 'Activity'
+                                                      res.model ===
+                                                      "Activity"
                                                         ? `/activity/${res.id}/preview`
-                                                        : res.model === 'Playlist'
+                                                        : res.model ===
+                                                          "Playlist"
                                                         ? `/playlist/${res.id}/preview/lti`
                                                         : `/project/${res.id}/preview`
                                                     }
                                                     target="_blank"
                                                     rel="noreferrer"
                                                   >
-                                                    <h2>{res.title || res.name}</h2>
+                                                    <h2>
+                                                      {res.title ||
+                                                        res.name}
+                                                    </h2>
                                                   </a>
-                                                  <p>{res.description}</p>
+                                                  <p>
+                                                    {res.description}
+                                                  </p>
                                                   <ul>
                                                     {res.user && (
                                                       <li>
-                                                        By: <span>{res.user.first_name}</span>
+                                                        By:{" "}
+                                                        <span>
+                                                          {
+                                                            res.user
+                                                              .first_name
+                                                          }
+                                                        </span>
                                                       </li>
                                                     )}
                                                     <li>
-                                                      Type: <span className="type">{res.model}</span>
+                                                      Type:{" "}
+                                                      <span className="type">
+                                                        {res.model}{" "}
+                                                        {res.activity_type &&
+                                                          `(${res.activity_type})`}
+                                                      </span>
                                                     </li>
                                                     {/* <li>
                                                   Member Rating{" "}
@@ -1261,84 +1766,142 @@ function SearchInterface(props) {
                                                 </div>
                                                 {showBackOption ? (
                                                   <>
-                                                    {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
-                                                      <Buttons
-                                                        text="Add"
-                                                        primary
-                                                        width="56px"
-                                                        height="36px"
-                                                        onClick={() => {
-                                                          dispatch(addActivityPlaylistSearch(21, playlistIdForSearchingTab));
-                                                        }}
-                                                        hover
-                                                      />
-                                                    )}
+                                                    {permission?.Activity?.includes(
+                                                      "activity:duplicate"
+                                                    ) &&
+                                                      res.model ===
+                                                        "Activity" && (
+                                                        <Buttons
+                                                          text="Add"
+                                                          primary
+                                                          width="56px"
+                                                          height="36px"
+                                                          onClick={() => {
+                                                            dispatch(
+                                                              addActivityPlaylistSearch(
+                                                                21,
+                                                                playlistIdForSearchingTab
+                                                              )
+                                                            );
+                                                          }}
+                                                          hover
+                                                        />
+                                                      )}
                                                   </>
                                                 ) : (
                                                   <>
-                                                    {permission?.Activity?.includes('activity:duplicate') && res.model === 'Activity' && (
-                                                      <Dropdown className="playlist-dropdown check">
-                                                        <Dropdown.Toggle>
-                                                          <FontAwesomeIcon icon="ellipsis-v" />
-                                                        </Dropdown.Toggle>
-                                                        <Dropdown.Menu>
-                                                          <>
-                                                            <Dropdown.Item
-                                                              onClick={() =>
-                                                                window.open(
-                                                                  res.model === 'Activity'
-                                                                    ? `/activity/${res.id}/preview`
-                                                                    : res.model === 'Playlist'
-                                                                    ? `/playlist/${res.id}/preview/lti`
-                                                                    : `/project/${res.id}/preview`,
-                                                                  '_blank',
-                                                                )
-                                                              }
-                                                            >
-                                                              <div className="dropDown-item-name-icon">
-                                                                <PreviewSmSvg primaryColor={primaryColor} />
-                                                                <span>Preview</span>
-                                                              </div>
-                                                            </Dropdown.Item>
-                                                            <Dropdown.Item
-                                                              onClick={async () => {
-                                                                toast.info('Duplicating Activity...', {
-                                                                  className: 'project-loading',
-                                                                  closeOnClick: false,
-                                                                  closeButton: false,
-                                                                  position: toast.POSITION.BOTTOM_RIGHT,
-                                                                  autoClose: 10000,
-                                                                  icon: '',
-                                                                });
-                                                                const result = await intActivityServices.copyToIndependentActivity(currentOrganization?.id, res.id);
-                                                                toast.dismiss();
-                                                                Swal.fire({
-                                                                  html: result.message,
-                                                                  icon: 'success',
-                                                                });
-                                                              }}
-                                                            >
-                                                              <div className="dropDown-item-name-icon">
-                                                                <MyActivitySmSvg primaryColor={primaryColor} />
-                                                                <span>Copy to My Activities</span>
-                                                              </div>
-                                                            </Dropdown.Item>
-                                                            <Dropdown.Item
-                                                              onClick={() => {
-                                                                setIndClone(false);
-                                                                setModalShow(true);
-                                                                setClone(res);
-                                                              }}
-                                                            >
-                                                              <div className="dropDown-item-name-icon">
-                                                                <MyProjectSmSvg primaryColor={primaryColor} />
-                                                                Copy to My projects
-                                                              </div>
-                                                            </Dropdown.Item>
-                                                          </>
-                                                        </Dropdown.Menu>
-                                                      </Dropdown>
-                                                    )}
+                                                    {permission?.Activity?.includes(
+                                                      "activity:duplicate"
+                                                    ) &&
+                                                      res.model ===
+                                                        "Activity" && (
+                                                        <Dropdown className="playlist-dropdown check">
+                                                          <Dropdown.Toggle>
+                                                            <FontAwesomeIcon icon="ellipsis-v" />
+                                                          </Dropdown.Toggle>
+                                                          <Dropdown.Menu>
+                                                            <>
+                                                              <Dropdown.Item
+                                                                onClick={() =>
+                                                                  window.open(
+                                                                    res.model ===
+                                                                      "Activity"
+                                                                      ? `/activity/${res.id}/preview`
+                                                                      : res.model ===
+                                                                        "Playlist"
+                                                                      ? `/playlist/${res.id}/preview/lti`
+                                                                      : `/project/${res.id}/preview`,
+                                                                    "_blank"
+                                                                  )
+                                                                }
+                                                              >
+                                                                <div className="dropDown-item-name-icon">
+                                                                  <PreviewSmSvg
+                                                                    primaryColor={
+                                                                      primaryColor
+                                                                    }
+                                                                  />
+                                                                  <span>
+                                                                    Preview
+                                                                  </span>
+                                                                </div>
+                                                              </Dropdown.Item>
+                                                              <Dropdown.Item
+                                                                onClick={async () => {
+                                                                  toast.info(
+                                                                    "Duplicating Activity...",
+                                                                    {
+                                                                      className:
+                                                                        "project-loading",
+                                                                      closeOnClick: false,
+                                                                      closeButton: false,
+                                                                      position:
+                                                                        toast
+                                                                          .POSITION
+                                                                          .BOTTOM_RIGHT,
+                                                                      autoClose: 10000,
+                                                                      icon:
+                                                                        "",
+                                                                    }
+                                                                  );
+                                                                  const result = await intActivityServices.copyToIndependentActivity(
+                                                                    currentOrganization?.id,
+                                                                    res.id
+                                                                  );
+                                                                  toast.dismiss();
+                                                                  Swal.fire(
+                                                                    {
+                                                                      html:
+                                                                        result.message,
+                                                                      icon:
+                                                                        "success",
+                                                                    }
+                                                                  );
+                                                                }}
+                                                              >
+                                                                <div className="dropDown-item-name-icon">
+                                                                  <MyActivitySmSvg
+                                                                    primaryColor={
+                                                                      primaryColor
+                                                                    }
+                                                                  />
+                                                                  <span>
+                                                                    Copy
+                                                                    to
+                                                                    My
+                                                                    Activities
+                                                                  </span>
+                                                                </div>
+                                                              </Dropdown.Item>
+                                                              <Dropdown.Item
+                                                                onClick={() => {
+                                                                  setIndClone(
+                                                                    false
+                                                                  );
+                                                                  setModalShow(
+                                                                    true
+                                                                  );
+                                                                  setClone(
+                                                                    res
+                                                                  );
+                                                                }}
+                                                              >
+                                                                <div className="dropDown-item-name-icon">
+                                                                  <MyProjectSmSvg
+                                                                    primaryColor={
+                                                                      primaryColor
+                                                                    }
+                                                                  />
+                                                                  Copy
+                                                                  to
+                                                                  My
+                                                                  projects
+                                                                </div>
+                                                              </Dropdown.Item>
+                                                            </>
+                                                          </Dropdown.Menu>
+                                                        </Dropdown>
+                                                      )}
                                                   </>
                                                 )}
                                               </div>
@@ -1347,7 +1910,9 @@ function SearchInterface(props) {
                                         </>
                                       ))
                                     ) : (
-                                      <Alert variant="danger">No result found !</Alert>
+                                      <Alert variant="danger">
+                                        No result found !
+                                      </Alert>
                                     )
                                   ) : (
                                     <Skeleton count="3" />
@@ -1365,12 +1930,14 @@ function SearchInterface(props) {
                   <Pagination
                     activePage={activePage}
                     itemsCountPerPage={20}
-                    totalItemsCount={totalCount > 10000 ? 10000 : totalCount}
+                    totalItemsCount={
+                      totalCount > 10000 ? 10000 : totalCount
+                    }
                     pageRangeDisplayed={8}
                     onChange={async (e) => {
                       setActivePage(e);
-                      if (allState.searchType === 'Projects') {
-                        if (activeModel === 'total') {
+                      if (allState.searchType === "Projects") {
+                        if (activeModel === "total") {
                           const searchData = {
                             phrase: searchQueries?.trim(),
                             from: e * 20 - 20,
@@ -1378,13 +1945,16 @@ function SearchInterface(props) {
                             type: searchType,
                             subjectArray: activeSubject || undefined,
                             gradeArray: activeEducation || undefined,
-                            authorTagsArray: activeAuthorTag || undefined,
+                            authorTagsArray:
+                              activeAuthorTag || undefined,
                             standardArray: activeType || undefined,
                             author: authorName || undefined,
                             no_words: noWords || undefined,
                           };
                           setSearch(null);
-                          await dispatch(simpleSearchAction(searchData));
+                          await dispatch(
+                            simpleSearchAction(searchData)
+                          );
                           Swal.close();
                         } else {
                           const searchData = {
@@ -1395,16 +1965,22 @@ function SearchInterface(props) {
                             model: activeModel,
                             subjectArray: activeSubject || undefined,
                             gradeArray: activeEducation || undefined,
-                            authorTagsArray: activeAuthorTag || undefined,
+                            authorTagsArray:
+                              activeAuthorTag || undefined,
                             standardArray: activeType || undefined,
                             author: authorName || undefined,
                             no_words: noWords || undefined,
                           };
                           setSearch(null);
-                          await dispatch(simpleSearchAction(searchData));
+                          await dispatch(
+                            simpleSearchAction(searchData)
+                          );
                           Swal.close();
                         }
-                      } else if (allState.searchType === 'Independent activities') {
+                      } else if (
+                        allState.searchType ===
+                        "Independent activities"
+                      ) {
                         const searchData = {
                           query: searchInput?.trim(),
                           subjectArray: activeSubject,
@@ -1418,7 +1994,12 @@ function SearchInterface(props) {
                         };
 
                         setSearch(null);
-                        await dispatch(searchIndependentActivitiesAction(searchData, 'showcase_activities'));
+                        await dispatch(
+                          searchIndependentActivitiesAction(
+                            searchData,
+                            "showcase_activities"
+                          )
+                        );
                       }
                     }}
                     itemClass="page-item"
@@ -1427,7 +2008,9 @@ function SearchInterface(props) {
                 )}
               </div>
             ) : (
-              <Alert variant="danger">You are not authorized to view this page!</Alert>
+              <Alert variant="danger">
+                You are not authorized to view this page!
+              </Alert>
             )}
           </div>
         </div>
@@ -1470,7 +2053,7 @@ SearchInterface.propTypes = {
 SearchInterface.defaultProps = {
   fromTeam: false,
   showBackOption: false,
-  playlistIdForSearchingTab: '',
+  playlistIdForSearchingTab: "",
   reloadPlaylist: false,
 };
 
