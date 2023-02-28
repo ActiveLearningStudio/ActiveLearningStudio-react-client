@@ -2,8 +2,12 @@
 
 .admin-panel {
   .content-wrapper-admin {
-    margin-left: 136px !important;
+    margin-left: 136px;
     padding: 25px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
   }
   .main-heading {
     margin: 0;

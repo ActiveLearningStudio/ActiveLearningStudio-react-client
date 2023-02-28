@@ -10,15 +10,16 @@ import {
 import * as History from 'history';
 import loadable from '@loadable/component';
 import ReactGA from 'react-ga';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import { app } from '@microsoft/teams-js';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
+import { TOGGLE_SIDEBAR } from '../store/actionTypes';
 import './style.scss';
 
 const history = History.createBrowserHistory();
@@ -83,9 +84,13 @@ const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
 const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
 const MsTeamActivityLaunch = loadable(() => import('../containers/LMS/MsTeams/MsTeamActivityLaunch'));
 const MsTeamSummaryPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamSummaryPage'));
+let intialLoad = 0;
 
 const AppRouter = (props) => {
+  const dispatch = useDispatch();
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
   const SelectedOrganization = localStorage.getItem('current_org');
+  // const [msContext, setMsContext] = useState(null);
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
   });
@@ -100,6 +105,17 @@ const AppRouter = (props) => {
   ) {
     document.body.classList.add('mobile-responsive');
   }
+    // Get app context and auth token
+    useEffect(() => {
+      app.initialize();
+      if (app.isInitialized() === true && intialLoad == 0) {
+        dispatch({
+          type: TOGGLE_SIDEBAR,
+          payload: true,
+        });
+        intialLoad += 1;
+      }
+    });
 
   const { user } = props;
   return (
@@ -172,7 +188,8 @@ const AppRouter = (props) => {
             <>
               <Header />
               <div className="main-content-wrapper">
-                <div className="sidebar-wrapper">
+                {console.log('asdpadjalksd', hideShowSideBar)}
+                <div className={`sidebar-wrapper ${hideShowSideBar == true ? 'hide-sidebar' : ''}`}>
                   <Sidebar />
                 </div>
                 <Switch>

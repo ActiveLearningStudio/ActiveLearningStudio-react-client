@@ -111,6 +111,7 @@ function SearchInterface(props) {
   const [educationLevels, setEducationLevels] = useState([]);
   const [indClone, setIndClone] = useState(false);
   const [isLoader, setisLoader] = useState(false);
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
 
   useEffect(() => {
     if (currentOrganization) {
@@ -265,8 +266,15 @@ function SearchInterface(props) {
   return (
     <>
       <div>
-        <div className={!fromTeam && 'search-wrapper'}>
-          <MyVerticallyCenteredModal ind={indClone} searchView={true} show={modalShow} onHide={() => setModalShow(false)} className="clone-lti" clone={clone} />
+        <div className={`${!fromTeam && "search-wrapper"} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
+          <MyVerticallyCenteredModal
+            ind={indClone}
+            searchView={true}
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            className="clone-lti"
+            clone={clone}
+          />
 
           <div className="content-search">
             {true ? (

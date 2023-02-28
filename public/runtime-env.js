@@ -1,12 +1,12 @@
 window.__RUNTIME_CONFIG__ = {
   REACT_APP_PEXEL_API: '563492ad6f91700001000001155d7b75f5424ea694b81ce9f867dddf',
 
-  REACT_APP_API_URL: 'https://my.currikistudio.org/api/api',
-  REACT_DOMAIN_URL: 'https://my.currikistudio.org/',
+  REACT_APP_API_URL: 'https://dev.currikistudio.org/api/api',
+  REACT_DOMAIN_URL: 'https://dev.currikistudio.org/',
 
   // REACT_DOMAIN_URL: 'https://https://dev.currikistudio.org/.currikistudio.org/',
 
-  REACT_APP_RESOURCE_URL: 'https://my.currikistudio.org/',
+  REACT_APP_RESOURCE_URL: 'https://dev.currikistudio.org/',
 
   // REACT_APP_API_URL: 'http://127.0.0.1:8000/api',
   // REACT_DOMAIN_URL: 'http://activelearningstudio-api.test/',
@@ -47,4 +47,6 @@ window.__RUNTIME_CONFIG__ = {
   REACT_APP_INSTANT_NAME: 'asdasdsad',
   REACT_MS_APP_ID: '5e0ea881-693a-4f0a-94a7-dcef7b5accd6',
   REACT_MS_TENANT_ID: '75f881ff-c83b-44de-a964-f0f9ee64c60c',
+  REACT_MS_CLIENT_ID: '7124965b-e9f0-44b8-9ae3-c7f8042f2f87',
+  REACT_MS_SECRET: 'F-R8Q~JrPSnIzLz32EAU6FZ2GKxVB~nHQTdw9bL2',
 };

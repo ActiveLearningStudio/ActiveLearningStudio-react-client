@@ -19,6 +19,7 @@ const RecordVideoPage = () => {
   const { komodoVideoList, isLazyLoading } = useSelector((state) => state.komodo);
   const { permission, currentOrganization } = useSelector((state) => state.organization);
   const [searchQuery, setSearchQuery] = useState('');
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
 
   // const [currentActivity, setCurrentActivity] = useState(null);
 
@@ -53,7 +54,7 @@ const RecordVideoPage = () => {
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
-      <div className="content-wrapper record-content-wrapper">
+      <div className={`content-wrapper record-content-wrapper ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
         <div className="inner-content">
           {permission?.['Record a Video']?.includes('record-video:view') ? (
             <div className="record-page-section">
