@@ -136,8 +136,12 @@
 
 // C-CSS-End
 .search-wrapper {
-  margin-left: 136px !important;
+  margin-left: 136px;
   padding: 16px 22px;
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
 }
 
 .content-search {

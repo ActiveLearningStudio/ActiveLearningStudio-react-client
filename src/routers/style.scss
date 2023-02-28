@@ -11,8 +11,13 @@
     height: 100%;
     padding-bottom: 100px;
     float: left;
+    left: 0;
     background: #fff;
     border-right: 1px solid #dcdcdc;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
 
     //.collapse-button {
     //  position: absolute;
@@ -52,6 +57,14 @@
     //    margin: 0 13px 0 17px;
     //  }
     //}
+  }
+
+  .hide-sidebar{
+    left: -136px;
+  }
+
+  .expend-content-menu{
+    margin-left: unset !important;
   }
 
   // .content-wrapper {

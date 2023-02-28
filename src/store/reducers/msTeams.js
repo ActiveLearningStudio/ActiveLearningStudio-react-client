@@ -7,6 +7,7 @@ import {
   MT_USER_ROLE,
   MT_TOKEN,
   MT_REFRESH_TOKEN,
+  TOGGLE_SIDEBAR,
 } from '../actionTypes';
 const INITIAL_STATE = {
   mt_code: null,
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   mt_token: null,
   mt_refresh_token: null,
   mt_code: null,
+  toggle_sidebar: false,
 };
 const msTeamsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -53,6 +55,11 @@ const msTeamsReducer = (state = INITIAL_STATE, action) => {
         return {
           ...state,
           mt_refresh_token: action.payload,
+        };
+      case TOGGLE_SIDEBAR:
+        return {
+          ...state,
+          toggle_sidebar: action.payload,
         };
 
     default:
