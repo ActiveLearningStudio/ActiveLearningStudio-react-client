@@ -58,10 +58,10 @@ const Project = (props) => {
     microsoftTeams.pages.config.setValidityState(true);
     microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
       const configPromise = microsoftTeams.pages.config.setConfig({
-          // websiteUrl: config.domainUrl,
-          // contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
-          websiteUrl: 'https://53d0-116-0-54-66.ngrok.io/',
-          contentUrl: `https://53d0-116-0-54-66.ngrok.io/msteam/launch/activity/${activity.id}`,
+          websiteUrl: config.domainUrl,
+          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
+          // websiteUrl: 'https://2e37-110-36-227-66.ngrok.io/',
+          // contentUrl: `https://2e37-110-36-227-66.ngrok.io/msteam/launch/activity/${activity.id}`,
           entityId: activity.id,
           suggestedDisplayName: activity.title,
       });
