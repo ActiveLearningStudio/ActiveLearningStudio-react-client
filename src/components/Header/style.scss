@@ -1132,3 +1132,20 @@ a {
     background: #fff !important;
   }
 }
+
+.expand-hamberg {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px;
+  gap: 8px;
+
+  // position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 12px;
+  top: 12px;
+
+  background: #e5eeff;
+  border-radius: 20px;
+}
