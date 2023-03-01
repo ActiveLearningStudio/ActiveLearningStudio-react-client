@@ -46,9 +46,7 @@ function Header(props) {
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
-          {isMsTeam == true &&
-            <a href='#' style={{marginRight:"12px"}} onClick={()=>toggleMenuSideBar(!hideShowSideBar)} className={`${hideShowSideBar == false ? 'expand-hamberg' : ''}`}><HeaderHambergSvg primaryColor={primaryColor} /></a>
-          }
+        <a href='#' style={{marginRight:"12px"}} onClick={()=>toggleMenuSideBar(!hideShowSideBar)} className={`${hideShowSideBar == false ? 'expand-hamberg' : ''}`}><HeaderHambergSvg primaryColor={primaryColor} /></a>
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
               <div
