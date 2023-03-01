@@ -112,6 +112,7 @@ function SearchInterface(props) {
   const [indClone, setIndClone] = useState(false);
   const [isLoader, setisLoader] = useState(false);
   const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   useEffect(() => {
     if (currentOrganization) {
@@ -266,7 +267,7 @@ function SearchInterface(props) {
   return (
     <>
       <div>
-        <div className={`${!fromTeam && "search-wrapper"} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
+        <div className={`${!fromTeam && "search-wrapper"} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}  style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
           <MyVerticallyCenteredModal
             ind={indClone}
             searchView={true}

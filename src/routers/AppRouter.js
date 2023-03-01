@@ -16,10 +16,11 @@ import { app } from '@microsoft/teams-js';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Sidebar from 'components/Sidebar';
+import SidebarMsteam from 'components/Sidebar/SidebarMsteam';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
-import { TOGGLE_SIDEBAR } from '../store/actionTypes';
+import { TOGGLE_SIDEBAR, IS_MSTEAM } from '../store/actionTypes';
 import './style.scss';
 
 const history = History.createBrowserHistory();
@@ -89,6 +90,7 @@ let intialLoad = 0;
 const AppRouter = (props) => {
   const dispatch = useDispatch();
   const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const SelectedOrganization = localStorage.getItem('current_org');
   // const [msContext, setMsContext] = useState(null);
   useEffect(() => {
@@ -111,6 +113,10 @@ const AppRouter = (props) => {
       if (app.isInitialized() === true && intialLoad == 0) {
         dispatch({
           type: TOGGLE_SIDEBAR,
+          payload: true,
+        });
+        dispatch({
+          type: IS_MSTEAM,
           payload: true,
         });
         intialLoad += 1;
@@ -188,9 +194,8 @@ const AppRouter = (props) => {
             <>
               <Header />
               <div className="main-content-wrapper">
-                {console.log('asdpadjalksd', hideShowSideBar)}
-                <div className={`sidebar-wrapper ${hideShowSideBar == true ? 'hide-sidebar' : ''}`}>
-                  <Sidebar />
+                <div className={`sidebar-wrapper ${hideShowSideBar == true ? 'hide-sidebar' : ''}`} style={{ width: isMsTeam ? '224px' : '136px' }}>
+                  {isMsTeam === true ? <SidebarMsteam /> : <Sidebar />}
                 </div>
                 <Switch>
                   <PrivateRoute exact path="/org/:organization/account" component={ProfilePage} />

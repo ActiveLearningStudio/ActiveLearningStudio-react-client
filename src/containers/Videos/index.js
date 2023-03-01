@@ -92,6 +92,7 @@ const Index = ({ activities }) => {
   const [isbackHide, setisbackHide] = useState(true);
   const history = useHistory();
   const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   useEffect(() => {
     window.scrollTo(0, 0);
     if (currentOrganization && !activities) {
@@ -283,7 +284,7 @@ const Index = ({ activities }) => {
         </div>
       )}
       <div className="myvideomain">
-        <div className={`content-wrapper ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
+        <div className={`content-wrapper ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
           <div
             style={{ paddingBottom: " 66px" }}
             className="inner-content m-auto"
