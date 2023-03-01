@@ -5,10 +5,7 @@ import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as actionTypes from "store/actionTypes";
 
-import {
-  getDefaultSso,
-  removeActiveAdminForm,
-} from "store/actions/admin";
+import { getDefaultSso, removeActiveAdminForm } from "store/actions/admin";
 import Swal from "sweetalert2";
 import loader from "assets/images/dotsloader.gif";
 import Switch from "react-switch";
@@ -52,43 +49,19 @@ export default function CreateDefaultSso(prop) {
       <Formik
         initialValues={{
           lms_url: editMode ? activeEdit?.lms_url : "",
-          lms_access_token: editMode
-            ? activeEdit?.lms_access_token
-            : "",
+          lms_access_token: editMode ? activeEdit?.lms_access_token : "",
           site_name: editMode ? activeEdit?.site_name : "",
-          organization_id: editMode
-            ? activeEdit?.organization_id
-            : "",
+          organization_id: editMode ? activeEdit?.organization_id : "",
           lti_client_id: editMode ? activeEdit?.lti_client_id : "",
-          lms_name: editMode
-            ? activeEdit?.lms_name || "moodle"
-            : "moodle",
+          lms_name: editMode ? activeEdit?.lms_name || "moodle" : "moodle",
           lms_access_key: editMode ? activeEdit?.lms_access_key : "",
-          lms_access_secret: editMode
-            ? activeEdit?.lms_access_secret
-            : "",
+          lms_access_secret: editMode ? activeEdit?.lms_access_secret : "",
           description: editMode ? activeEdit?.description : "",
-          name: editMode
-            ? clone
-              ? ""
-              : activeEdit?.organization?.name
-            : "",
+          name: editMode ? (clone ? "" : activeEdit?.organization?.name) : "",
           role_id: editMode ? activeEdit?.role_id : "",
-          activity_visibility: editMode
-            ? clone
-              ? false
-              : activeEdit?.activity_visibility
-            : false,
-          playlist_visibility: editMode
-            ? clone
-              ? false
-              : activeEdit?.playlist_visibility
-            : false,
-          project_visibility: editMode
-            ? clone
-              ? false
-              : activeEdit?.project_visibility
-            : false,
+          activity_visibility: editMode ? (clone ? false : activeEdit?.activity_visibility) : false,
+          playlist_visibility: editMode ? (clone ? false : activeEdit?.playlist_visibility) : false,
+          project_visibility: editMode ? (clone ? false : activeEdit?.project_visibility) : false,
         }}
         validate={(values) => {
           const errors = {};
@@ -148,12 +121,7 @@ export default function CreateDefaultSso(prop) {
                   confirmButton: "confirmation-close-btn",
                 },
               });
-              dispatch(
-                getDefaultSso(
-                  organization?.activeOrganization?.id,
-                  activePage
-                )
-              );
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, activePage));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_EDIT_RESOURCE,
@@ -172,10 +140,7 @@ export default function CreateDefaultSso(prop) {
               },
               button: false,
             });
-            const result = adminapi.createDefaultSso(
-              organization?.activeOrganization?.id,
-              values
-            );
+            const result = adminapi.createDefaultSso(organization?.activeOrganization?.id, values);
             result.then((res) => {
               Swal.fire({
                 icon: "success",
@@ -185,9 +150,7 @@ export default function CreateDefaultSso(prop) {
                   confirmButton: "confirmation-close-btn",
                 },
               });
-              dispatch(
-                getDefaultSso(organization?.activeOrganization?.id, 1)
-              );
+              dispatch(getDefaultSso(organization?.activeOrganization?.id, 1));
               dispatch(removeActiveAdminForm());
               dispatch({
                 type: actionTypes.NEWLY_CREATED_RESOURCE,
@@ -220,9 +183,7 @@ export default function CreateDefaultSso(prop) {
                   <h3>
                     Organization
                     <div>
-                      <small>
-                        Search org from dropdown list only
-                      </small>
+                      <small>Search org from dropdown list only</small>
                     </div>
                   </h3>
                   <input
@@ -236,9 +197,7 @@ export default function CreateDefaultSso(prop) {
                         return;
                       }
                       setLoaderlmsImgUser(true);
-                      const orgApi = organizationsServices.searchOrganization(
-                        e.target.value
-                      );
+                      const orgApi = organizationsServices.searchOrganization(e.target.value);
                       orgApi.then((data) => {
                         setLoaderlmsImgUser(false);
                         setStateOrgSearch(data?.organization);
@@ -250,12 +209,7 @@ export default function CreateDefaultSso(prop) {
 
                   {loaderlmsImgUser && (
                     <div>
-                      <img
-                        src={loader}
-                        alt=""
-                        style={{ width: "25px" }}
-                        className="loader"
-                      />
+                      <img src={loader} alt="" style={{ width: "25px" }} className="loader" />
                     </div>
                   )}
 
@@ -282,9 +236,7 @@ export default function CreateDefaultSso(prop) {
                     </ul>
                   )}
                   <div className="error">
-                    {errors.organization_id &&
-                      touched.organization_id &&
-                      errors.organization_id}
+                    {errors.organization_id && touched.organization_id && errors.organization_id}
                   </div>
                 </div>
 
@@ -302,26 +254,17 @@ export default function CreateDefaultSso(prop) {
                       organizationRole?.map((role) => (
                         <>
                           {setSelectedRole(
-                            typeof values.role_id !== "undefined" &&
-                              values.role_id == role.id
+                            typeof values.role_id !== "undefined" && values.role_id == role.id
                               ? "selected"
                               : ""
                           )}
-                          <option
-                            value={role.id}
-                            key={role.id}
-                            selected={selectedRole}
-                          >
+                          <option value={role.id} key={role.id} selected={selectedRole}>
                             {role.display_name}
                           </option>
                         </>
                       ))}
                   </select>
-                  <div className="error">
-                    {errors.role_id &&
-                      touched.role_id &&
-                      errors.role_id}
-                  </div>
+                  <div className="error">{errors.role_id && touched.role_id && errors.role_id}</div>
                 </div>
                 {/* )} */}
 
@@ -336,11 +279,7 @@ export default function CreateDefaultSso(prop) {
                     onBlur={handleBlur}
                     value={values.lms_url}
                   />
-                  <div className="error">
-                    {errors.lms_url &&
-                      touched.lms_url &&
-                      errors.lms_url}
-                  </div>
+                  <div className="error">{errors.lms_url && touched.lms_url && errors.lms_url}</div>
                 </div>
 
                 <div className="form-group-create">
@@ -353,9 +292,7 @@ export default function CreateDefaultSso(prop) {
                     value={values.lms_access_token}
                   />
                   <div className="error">
-                    {errors.lms_access_token &&
-                      touched.lms_access_token &&
-                      errors.lms_access_token}
+                    {errors.lms_access_token && touched.lms_access_token && errors.lms_access_token}
                   </div>
                 </div>
 
@@ -369,9 +306,7 @@ export default function CreateDefaultSso(prop) {
                     value={values.site_name}
                   />
                   <div className="error">
-                    {errors.site_name &&
-                      touched.site_name &&
-                      errors.site_name}
+                    {errors.site_name && touched.site_name && errors.site_name}
                   </div>
                 </div>
 
@@ -385,9 +320,7 @@ export default function CreateDefaultSso(prop) {
                     value={values.lti_client_id}
                   />
                   <div className="error">
-                    {errors.lti_client_id &&
-                      touched.lti_client_id &&
-                      errors.lti_client_id}
+                    {errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}
                   </div>
                 </div>
 
@@ -413,9 +346,7 @@ export default function CreateDefaultSso(prop) {
                     ))}
                   </select>
                   <div className="error">
-                    {errors.lms_name &&
-                      touched.lms_name &&
-                      errors.lms_name}
+                    {errors.lms_name && touched.lms_name && errors.lms_name}
                   </div>
                 </div>
 
@@ -429,9 +360,7 @@ export default function CreateDefaultSso(prop) {
                     value={values.lms_access_key}
                   />
                   <div className="error">
-                    {errors.lms_access_key &&
-                      touched.lms_access_key &&
-                      errors.lms_access_key}
+                    {errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}
                   </div>
                 </div>
 
@@ -461,27 +390,19 @@ export default function CreateDefaultSso(prop) {
                     value={values.description}
                   />
                   <div className="error">
-                    {errors.description &&
-                      touched.description &&
-                      errors.description}
+                    {errors.description && touched.description && errors.description}
                   </div>
                 </div>
 
                 <div className="form-group-create">
                   <h3>Visibility</h3>
                   <div className="create-form-inputs-toggles">
-                    <div
-                      className="custom-toggle-button"
-                      id="custom-toggle-button-id-br-style"
-                    >
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedActivity}
                         onChange={() => {
                           setCheckedActivty(!checkedActivity);
-                          setFieldValue(
-                            "activity_visibility",
-                            !checkedActivity
-                          );
+                          setFieldValue("activity_visibility", !checkedActivity);
                         }}
                         className="react-switch"
                         handleDiameter={30}
@@ -494,18 +415,12 @@ export default function CreateDefaultSso(prop) {
                       />
                       <h3>Activity</h3>
                     </div>
-                    <div
-                      className="custom-toggle-button"
-                      id="custom-toggle-button-id-br-style"
-                    >
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedPlaylist}
                         onChange={() => {
                           setCheckedPlaylist(!checkedPlaylist);
-                          setFieldValue(
-                            "playlist_visibility",
-                            !checkedPlaylist
-                          );
+                          setFieldValue("playlist_visibility", !checkedPlaylist);
                         }}
                         className="react-switch"
                         handleDiameter={30}
@@ -518,18 +433,12 @@ export default function CreateDefaultSso(prop) {
                       />
                       <h3>Playlist</h3>
                     </div>
-                    <div
-                      className="custom-toggle-button"
-                      id="custom-toggle-button-id-br-style"
-                    >
+                    <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
                       <Switch
                         checked={checkedProject}
                         onChange={() => {
                           setCheckedProject(!checkedProject);
-                          setFieldValue(
-                            "project_visibility",
-                            !checkedProject
-                          );
+                          setFieldValue("project_visibility", !checkedProject);
                         }}
                         className="react-switch"
                         handleDiameter={30}

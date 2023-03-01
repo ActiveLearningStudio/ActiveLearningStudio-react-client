@@ -21,24 +21,33 @@
   },
   "git.suggestSmartCommit": true,
   "prettier.tabWidth": 2,
+  "prettier.printWidth": 100,
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 5,
+  "tabnine.experimentalAutoImports": true,
   "prettier.useEditorConfig": false,
   "prettier.singleQuote": false,
   "html.format.wrapLineLength": 1,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "workbench.editorAssociations": {
-    "*.woff": "default"
+    "*.woff": "default",
+    "*.scss": "default",
+    "*.json": "default"
   },
   "typescript.updateImportsOnFileMove.enabled": "never",
   "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "files.exclude": {
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true
   },
-  "editor.formatOnSave": true,
+  "liveServer.settings.donotShowInfoMsg": true,
   "diffEditor.ignoreTrimWhitespace": false,
-  "prettier.printWidth": 70
+  "codegpt.apiKey": "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",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true
 }
