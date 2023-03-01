@@ -45,7 +45,6 @@
   },
   "liveServer.settings.donotShowInfoMsg": true,
   "diffEditor.ignoreTrimWhitespace": false,
-  "codegpt.apiKey": "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",
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
