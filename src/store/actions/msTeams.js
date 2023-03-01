@@ -10,6 +10,7 @@ import {
   MT_SUBMISSION,
   MT_TURNED_IN_ACTIVITY,
   TOGGLE_SIDEBAR,
+  IS_MSTEAM,
 } from '../actionTypes';
 
 export const mtCode = (value) => ({
@@ -47,6 +48,11 @@ export const mtSubmissionId = (value) => ({
 
 export const toggleSideBar = (value) => ({
   type: TOGGLE_SIDEBAR,
+  payload: value,
+});
+
+export const isMsTeam = (value) => ({
+  type: IS_MSTEAM,
   payload: value,
 });
 
