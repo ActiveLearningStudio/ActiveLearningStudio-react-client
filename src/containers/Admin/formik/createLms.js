@@ -1,17 +1,20 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import { Formik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import * as actionTypes from 'store/actionTypes';
+import React, { useState, useEffect } from "react";
+import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import * as actionTypes from "store/actionTypes";
 
-import { getLmsProject, removeActiveAdminForm } from 'store/actions/admin';
-import Swal from 'sweetalert2';
-import loader from 'assets/images/dotsloader.gif';
-import Switch from 'react-switch';
-import { integratedLMS } from 'components/ResourceCard/AddResource/dropdownData';
-import authapi from '../../../services/auth.service';
-import adminapi from '../../../services/admin.service';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
+import {
+  getLmsProject,
+  removeActiveAdminForm,
+} from "store/actions/admin";
+import Swal from "sweetalert2";
+import loader from "assets/images/dotsloader.gif";
+import Switch from "react-switch";
+import { integratedLMS } from "components/ResourceCard/AddResource/dropdownData";
+import authapi from "../../../services/auth.service";
+import adminapi from "../../../services/admin.service";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 export default function CreateUser(prop) {
   const { editMode, clone } = prop;
@@ -32,50 +35,79 @@ export default function CreateUser(prop) {
       setCheckedProject(activeEdit?.project_visibility);
     }
   }, [activeEdit, editMode]);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  console.log("activeEdit", activeEdit);
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="create-form lms-admin-form">
       <Formik
         initialValues={{
-          lms_url: editMode ? activeEdit?.lms_url : '',
-          lms_access_token: editMode ? activeEdit?.lms_access_token : '',
-          site_name: editMode ? activeEdit?.site_name : '',
-          user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
-          lti_client_id: editMode ? activeEdit?.lti_client_id : '',
+          lms_url: editMode ? activeEdit?.lms_url : "",
+          lms_access_token: editMode
+            ? activeEdit?.lms_access_token
+            : "",
+          site_name: editMode ? activeEdit?.site_name : "",
+          user_id: editMode
+            ? clone
+              ? ""
+              : activeEdit?.user?.id
+            : "",
+          lti_client_id: editMode ? activeEdit?.lti_client_id : "",
           // moodle: editMode ? activeEdit?.moodle : '',
           // canvas: editMode ? activeEdit?.canvas : '',
-          lms_name: editMode ? activeEdit?.lms_name || 'moodle' : 'moodle',
-          lms_access_key: editMode ? activeEdit?.lms_access_key : '',
-          lms_access_secret: editMode ? activeEdit?.lms_access_secret : '',
-          description: editMode ? activeEdit?.description : '',
-          name: editMode ? (clone ? '' : activeEdit?.user?.name) : '',
-          lms_login_id: editMode ? activeEdit?.lms_login_id : '',
+          lms_name: editMode
+            ? activeEdit?.lms_name || "moodle"
+            : "moodle",
+          lms_access_key: editMode ? activeEdit?.lms_access_key : "",
+          lms_access_secret: editMode
+            ? activeEdit?.lms_access_secret
+            : "",
+          description: editMode ? activeEdit?.description : "",
+          name: editMode
+            ? clone
+              ? ""
+              : activeEdit?.user?.first_name +
+                " " +
+                activeEdit?.user?.last_name
+            : "",
+          lms_login_id: editMode ? activeEdit?.lms_login_id : "",
           // published: editMode ? (clone ? false : activeEdit?.published) : false,
           organization_id: organization?.activeOrganization?.id,
-          activity_visibility: editMode ? (clone ? false : activeEdit?.activity_visibility) : false,
-          playlist_visibility: editMode ? (clone ? false : activeEdit?.playlist_visibility) : false,
-          project_visibility: editMode ? (clone ? false : activeEdit?.project_visibility) : false,
+          activity_visibility: editMode
+            ? clone
+              ? false
+              : activeEdit?.activity_visibility
+            : false,
+          playlist_visibility: editMode
+            ? clone
+              ? false
+              : activeEdit?.playlist_visibility
+            : false,
+          project_visibility: editMode
+            ? clone
+              ? false
+              : activeEdit?.project_visibility
+            : false,
         }}
         validate={(values) => {
           const errors = {};
           if (!values.lms_url) {
-            errors.lms_url = 'required';
+            errors.lms_url = "required";
           }
           if (!values.lms_access_token) {
-            errors.lms_access_token = 'required';
+            errors.lms_access_token = "required";
           }
           if (!values.lms_access_token) {
-            errors.lms_access_token = 'required';
+            errors.lms_access_token = "required";
           }
           if (!values.site_name) {
-            errors.site_name = 'required';
+            errors.site_name = "required";
           }
           if (!values.lti_client_id) {
-            errors.lti_client_id = 'required';
+            errors.lti_client_id = "required";
           }
 
           if (!values.lms_name) {
-            errors.lms_name = 'required';
+            errors.lms_name = "required";
           }
 
           // if (!values.canvas) {
@@ -91,19 +123,19 @@ export default function CreateUser(prop) {
           //   errors.description = 'Required';
           // }
           if (!values.user_id) {
-            errors.user_id = 'Required';
+            errors.user_id = "Required";
           }
           if (!values.lms_login_id) {
-            errors.lms_login_id = 'required';
+            errors.lms_login_id = "required";
           }
           return errors;
         }}
         onSubmit={async (values) => {
           if (editMode && !clone) {
             Swal.fire({
-              title: 'Users',
-              icon: 'info',
-              text: 'Updating User LMS Settings...',
+              title: "Users",
+              icon: "info",
+              text: "Updating User LMS Settings...",
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
@@ -111,14 +143,18 @@ export default function CreateUser(prop) {
               button: false,
             });
 
-            const result = adminapi.updateLmsProject(organization?.activeOrganization?.id, activeEdit?.id, values);
+            const result = adminapi.updateLmsProject(
+              organization?.activeOrganization?.id,
+              activeEdit?.id,
+              values
+            );
             result.then((res) => {
               Swal.fire({
-                icon: 'success',
-                text: 'LMS settings edited successfully',
-                confirmButtonText: 'Close',
+                icon: "success",
+                text: "LMS settings edited successfully",
+                confirmButtonText: "Close",
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',
+                  confirmButton: "confirmation-close-btn",
                 },
               });
               // dispatch(getLmsProject(organization?.activeOrganization?.id));
@@ -130,9 +166,9 @@ export default function CreateUser(prop) {
             });
           } else {
             Swal.fire({
-              title: 'Users',
-              icon: 'info',
-              text: 'Creating new user...',
+              title: "Users",
+              icon: "info",
+              text: "Creating new user...",
 
               allowOutsideClick: false,
               onBeforeOpen: () => {
@@ -140,14 +176,17 @@ export default function CreateUser(prop) {
               },
               button: false,
             });
-            const result = adminapi.createLmsProject(organization?.activeOrganization?.id, values);
+            const result = adminapi.createLmsProject(
+              organization?.activeOrganization?.id,
+              values
+            );
             result.then((res) => {
               Swal.fire({
-                icon: 'success',
-                text: 'LMS settings added successfully',
-                confirmButtonText: 'Close',
+                icon: "success",
+                text: "LMS settings added successfully",
+                confirmButtonText: "Close",
                 customClass: {
-                  confirmButton: 'confirmation-close-btn',
+                  confirmButton: "confirmation-close-btn",
                 },
               });
               // dispatch(getLmsProject(organization?.activeOrganization?.id));
@@ -172,8 +211,8 @@ export default function CreateUser(prop) {
         }) => (
           <form onSubmit={handleSubmit}>
             <div className="lms-form">
-              <h2 style={{ marginBottom: '45px' }}>
-                {editMode ? (clone ? 'Add ' : 'Edit ') : 'Add '}
+              <h2 style={{ marginBottom: "45px" }}>
+                {editMode ? (clone ? "Add " : "Edit ") : "Add "}
                 LMS settings
               </h2>
 
@@ -182,26 +221,66 @@ export default function CreateUser(prop) {
                 <div>
                   <div className="form-group-create">
                     <h3>LMS URL</h3>
-                    <input type="text" name="lms_url" onChange={handleChange} onBlur={handleBlur} value={values.lms_url} />
-                    <div className="error">{errors.lms_url && touched.lms_url && errors.lms_url}</div>
+                    <input
+                      type="text"
+                      name="lms_url"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_url}
+                    />
+                    <div className="error">
+                      {errors.lms_url &&
+                        touched.lms_url &&
+                        errors.lms_url}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>LMS access token</h3>
-                    <input type="text" name="lms_access_token" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_token} />
-                    <div className="error">{errors.lms_access_token && touched.lms_access_token && errors.lms_access_token}</div>
+                    <input
+                      type="text"
+                      name="lms_access_token"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_access_token}
+                    />
+                    <div className="error">
+                      {errors.lms_access_token &&
+                        touched.lms_access_token &&
+                        errors.lms_access_token}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>Site name</h3>
-                    <input type="site_name" name="site_name" onChange={handleChange} onBlur={handleBlur} value={values.site_name} />
-                    <div className="error">{errors.site_name && touched.site_name && errors.site_name}</div>
+                    <input
+                      type="site_name"
+                      name="site_name"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.site_name}
+                    />
+                    <div className="error">
+                      {errors.site_name &&
+                        touched.site_name &&
+                        errors.site_name}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>LTI client ID</h3>
-                    <input type="lti_client_id" name="lti_client_id" onChange={handleChange} onBlur={handleBlur} value={values.lti_client_id} />
-                    <div className="error">{errors.lti_client_id && touched.lti_client_id && errors.lti_client_id}</div>
+                    <input
+                      type="lti_client_id"
+                      name="lti_client_id"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lti_client_id}
+                    />
+                    <div className="error">
+                      {errors.lti_client_id &&
+                        touched.lti_client_id &&
+                        errors.lti_client_id}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
@@ -213,45 +292,100 @@ export default function CreateUser(prop) {
                   onBlur={handleBlur}
                   value={values.role}
                 /> */}
-                    <select className="lms-option" name="lms_name" onChange={handleChange} onBlur={handleBlur} value={values.lms_name}>
+                    <select
+                      className="lms-option"
+                      name="lms_name"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_name}
+                    >
                       {integratedLMS.map((data) => (
                         <option key={data.value} value={data.value}>
                           {data.name}
                         </option>
                       ))}
                     </select>
-                    <div className="error">{errors.lms_name && touched.lms_name && errors.lms_name}</div>
+                    <div className="error">
+                      {errors.lms_name &&
+                        touched.lms_name &&
+                        errors.lms_name}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>Access key</h3>
-                    <input type="text" name="lms_access_key" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_key} />
-                    <div className="error">{errors.lms_access_key && touched.lms_access_key && errors.lms_access_key}</div>
+                    <input
+                      type="text"
+                      name="lms_access_key"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_access_key}
+                    />
+                    <div className="error">
+                      {errors.lms_access_key &&
+                        touched.lms_access_key &&
+                        errors.lms_access_key}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>Secret key</h3>
-                    <input type="text" name="lms_access_secret" onChange={handleChange} onBlur={handleBlur} value={values.lms_access_secret} />
-                    <div className="error">{errors.lms_access_secret && touched.lms_access_secret && errors.lms_access_secret}</div>
+                    <input
+                      type="text"
+                      name="lms_access_secret"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_access_secret}
+                    />
+                    <div className="error">
+                      {errors.lms_access_secret &&
+                        touched.lms_access_secret &&
+                        errors.lms_access_secret}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>Description</h3>
-                    <input type="text" name="description" onChange={handleChange} onBlur={handleBlur} value={values.description} />
-                    <div className="error">{errors.description && touched.description && errors.description}</div>
+                    <input
+                      type="text"
+                      name="description"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.description}
+                    />
+                    <div className="error">
+                      {errors.description &&
+                        touched.description &&
+                        errors.description}
+                    </div>
                   </div>
 
                   <div className="form-group-create">
                     <h3>LMS login ID</h3>
-                    <input type="text" name="lms_login_id" onChange={handleChange} onBlur={handleBlur} value={values.lms_login_id} />
-                    <div className="error">{errors.lms_login_id && touched.lms_login_id && errors.lms_login_id}</div>
+                    <input
+                      type="text"
+                      name="lms_login_id"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lms_login_id}
+                    />
+                    <div className="error">
+                      {errors.lms_login_id &&
+                        touched.lms_login_id &&
+                        errors.lms_login_id}
+                    </div>
                   </div>
 
-                  <div className="form-group-create">
+                  <div
+                    className="form-group-create"
+                    // style={{ marginBottom: "0px" }}
+                  >
                     <h3>
-                      User{' '}
+                      User{" "}
                       <div>
-                        <small>Search users from dropdown list only</small>
+                        <small>
+                          Search users from dropdown list only
+                        </small>
                       </div>
                     </h3>
                     <input
@@ -259,14 +393,16 @@ export default function CreateUser(prop) {
                       name="name"
                       autoComplete="off"
                       onChange={async (e) => {
-                        setFieldValue('name', e.target.value);
+                        setFieldValue("name", e.target.value);
                         // eslint-disable-next-line eqeqeq
-                        if (e.target.value == '') {
+                        if (e.target.value == "") {
                           setStateOrgUsers([]);
                           return;
                         }
                         setLoaderlmsImgUser(true);
-                        const lmsApi = authapi.searchUsers(e.target.value);
+                        const lmsApi = authapi.searchUsers(
+                          e.target.value
+                        );
                         lmsApi.then((data) => {
                           setLoaderlmsImgUser(false);
 
@@ -276,15 +412,15 @@ export default function CreateUser(prop) {
                       onBlur={handleBlur}
                       value={values.name}
                     />
-                    {loaderlmsImgUser && <img src={loader} alt="" style={{ width: '25px' }} className="loader" />}
+
                     {stateOrgUsers?.length > 0 && (
                       <ul className="all-users-list">
                         {stateOrgUsers?.map((user) => (
                           <li
                             value={user}
                             onClick={() => {
-                              setFieldValue('user_id', user.id);
-                              setFieldValue('name', user.first_name);
+                              setFieldValue("user_id", user.id);
+                              setFieldValue("name", user.first_name);
                               setStateOrgUsers([]);
                             }}
                           >
@@ -297,18 +433,36 @@ export default function CreateUser(prop) {
                         ))}
                       </ul>
                     )}
-                    <div className="error">{errors.user_id && touched.user_id && errors.user_id}</div>
+                    <div className="error">
+                      {errors.user_id &&
+                        touched.user_id &&
+                        errors.user_id}
+                    </div>
                   </div>
+                  {loaderlmsImgUser && (
+                    <img
+                      src={loader}
+                      alt=""
+                      style={{ width: "25px" }}
+                      className="loader mb-3"
+                    />
+                  )}
 
                   <div className="form-group-create">
                     <h3>Visibility</h3>
                     <div className="create-form-inputs-toggles">
-                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <div
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
+                      >
                         <Switch
                           checked={checkedActivity}
                           onChange={() => {
                             setCheckedActivty(!checkedActivity);
-                            setFieldValue('activity_visibility', !checkedActivity);
+                            setFieldValue(
+                              "activity_visibility",
+                              !checkedActivity
+                            );
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -321,12 +475,18 @@ export default function CreateUser(prop) {
                         />
                         <h3>Activity</h3>
                       </div>
-                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <div
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
+                      >
                         <Switch
                           checked={checkedPlaylist}
                           onChange={() => {
                             setCheckedPlaylist(!checkedPlaylist);
-                            setFieldValue('playlist_visibility', !checkedPlaylist);
+                            setFieldValue(
+                              "playlist_visibility",
+                              !checkedPlaylist
+                            );
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -339,12 +499,18 @@ export default function CreateUser(prop) {
                         />
                         <h3>Playlist</h3>
                       </div>
-                      <div className="custom-toggle-button" id="custom-toggle-button-id-br-style">
+                      <div
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
+                      >
                         <Switch
                           checked={checkedProject}
                           onChange={() => {
                             setCheckedProject(!checkedProject);
-                            setFieldValue('project_visibility', !checkedProject);
+                            setFieldValue(
+                              "project_visibility",
+                              !checkedProject
+                            );
                           }}
                           className="react-switch"
                           handleDiameter={30}
@@ -362,7 +528,13 @@ export default function CreateUser(prop) {
                 </div>
               </div>
               <div className="button-group">
-                <button type="submit">{editMode ? (clone ? 'Save' : 'Edit LMS setting ') : 'Save '}</button>
+                <button type="submit">
+                  {editMode
+                    ? clone
+                      ? "Save"
+                      : "Edit LMS setting "
+                    : "Save "}
+                </button>
                 <button
                   type="button"
                   className="cancel"
