@@ -9,6 +9,7 @@ import {
   MT_REFRESH_TOKEN,
   MT_SUBMISSION,
   MT_TURNED_IN_ACTIVITY,
+  TOGGLE_SIDEBAR,
 } from '../actionTypes';
 
 export const mtCode = (value) => ({
@@ -41,6 +42,11 @@ export const mtRefreshToken = (value) => ({
 });
 export const mtSubmissionId = (value) => ({
   type: MT_SUBMISSION,
+  payload: value,
+});
+
+export const toggleSideBar = (value) => ({
+  type: TOGGLE_SIDEBAR,
   payload: value,
 });
 

@@ -155,8 +155,12 @@
   //   margin-bottom: 65px;
   // }
   .content-wrapper {
-    margin-left: 136px !important;
+    margin-left: 136px;
     padding: 25px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
   }
   .inner-content {
     background: $white;
@@ -1367,3 +1371,6 @@ span[x-placement="left-end"] {
   z-index: 1 !important;
   top: 5px !important;
 }
+  .expend-content-menu{
+    margin-left: unset !important;
+  }
