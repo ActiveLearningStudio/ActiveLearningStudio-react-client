@@ -53,6 +53,7 @@ export const ProjectsPage = (props) => {
   const allStateProject = useSelector((state) => state.project);
   const [show, setShow] = useState(false);
   const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
   const [activeFilter, setActiveFilter] = useState('small-grid');
   const [allProjects, setAllProjects] = useState(null);
@@ -385,7 +386,7 @@ export const ProjectsPage = (props) => {
   const primaryColor = getGlobalColor('--main-primary-color');
   return (
     <>
-      <div className={`content-wrapper content-wrapper-project ${activeFilter} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
+      <div className={`content-wrapper content-wrapper-project ${activeFilter} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="">
             <Headline setCreateProject={setCreateProject} />

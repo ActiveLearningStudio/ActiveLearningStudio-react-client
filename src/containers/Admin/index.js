@@ -55,6 +55,7 @@ function AdminPanel({ showSSO }) {
   const [activePageNumber, setActivePageNumber] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(null);
   const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const [videoSourceLTI, setVideoSourceLTI] = useState([
     { media_source_id: 1, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
     { media_source_id: 2, h5p_library: null, lti_tool_settings_status: true, created_at: '' },
@@ -103,7 +104,7 @@ function AdminPanel({ showSSO }) {
     <div className="admin-panel">
       {true ? (
         <>
-          <div className={`content-wrapper content-wrapper-admin ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}>
+          <div className={`content-wrapper content-wrapper-admin ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}  style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
             <div className="inner-content">
               <Breadcrump />
               <Heading />
