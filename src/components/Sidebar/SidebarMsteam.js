@@ -94,8 +94,8 @@ function SidebarMsteam(props) {
             }}
           >
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}/activities` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <MyActivitySvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">My Activities</div>
+              <MyActivitySvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/activities` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/activities` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>My Activities</div>
             </div>
           </Link>
         </>
@@ -110,8 +110,8 @@ function SidebarMsteam(props) {
             }}
           >
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <MyProjectSvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">My Projects</div>
+              <MyProjectSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>My Projects</div>
             </div>
           </Link>
         </>
@@ -127,8 +127,8 @@ function SidebarMsteam(props) {
             }}
           >
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}/video` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <MyInteractiveVideoSvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">My Interactive Videos</div>
+              <MyInteractiveVideoSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/video` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/video` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>My Interactive Videos</div>
             </div>
           </Link>
         </>
@@ -142,8 +142,8 @@ function SidebarMsteam(props) {
           }}
         >
           <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-            <RecordSvg primaryColor={primaryColor} />
-            <div className="sidebar-headings">
+            <RecordSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? primaryColor : '#515151'} />
+            <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>
               Record a video
             </div>
           </div>
@@ -153,8 +153,8 @@ function SidebarMsteam(props) {
         <>
           <Link to={`/org/${allState.organization.currentOrganization?.domain}/search`} onClick={() => {}}>
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <ExploreLibrarySvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">Explore Library</div>
+              <ExploreLibrarySvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/search` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>Explore Library</div>
             </div>
           </Link>
         </>
@@ -168,8 +168,8 @@ function SidebarMsteam(props) {
             className={active.includes(`/org/${allState.organization.currentOrganization?.domain}/teams`) ? 'activeLink' : ''}
           >
             <div className={active.includes(`/org/${allState.organization.currentOrganization?.domain}/teams`) ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <TeamSvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">Teams</div>
+              <TeamSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/teams` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/teams` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>Teams</div>
             </div>
           </Link>
         </>
@@ -184,8 +184,8 @@ function SidebarMsteam(props) {
             }}
           >
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}/admin` ? ' row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <AdminSvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">Admin Panel</div>
+              <AdminSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/admin` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/admin` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>Admin Panel</div>
             </div>
           </Link>
         </>
@@ -201,8 +201,8 @@ function SidebarMsteam(props) {
             }}
           >
             <div className={active === `/org/${allState.organization.currentOrganization?.domain}/instance-admin` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
-              <InstanceAdminSvg primaryColor={primaryColor} />
-              <div className="sidebar-headings">Instance Admin</div>
+              <InstanceAdminSvg primaryColor={active === `/org/${allState.organization.currentOrganization?.domain}/instance-admin` ? primaryColor : '#515151'} />
+              <div className={active === `/org/${allState.organization.currentOrganization?.domain}/instance-admin` ? 'sidebar-headings' : ' sidebar-headings msteam-sidebar-text-color'}>Instance Admin</div>
             </div>
           </Link>
         </>
