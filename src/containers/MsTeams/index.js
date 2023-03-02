@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Alert } from 'react-bootstrap';
 import logo from 'assets/images/login_logo.svg';
+import config from 'config';
 import './style.scss';
 
 const MsTeams = () => {
@@ -36,10 +37,10 @@ const MsTeams = () => {
       return;
     }
 
-    setLtiClientId(msContext?.user.tenant.id);
+    setLtiClientId(config.teamsClientId);
     const params = {
       user_email: msContext.user.userPrincipalName,
-      lti_client_id: msContext.user.tenant.id,
+      lti_client_id: config.teamsClientId,
       api_domain_url: 'teams.microsoft.com',
       course_name: msContext.team.displayName,
       course_id: msContext.team.groupId,
@@ -49,10 +50,10 @@ const MsTeams = () => {
   }, [msContext]);
 
   const handleAddTabButton = () => {
-    setLtiClientId(msContext?.user.tenant.id);
+    setLtiClientId(config.teamsClientId);
     const params = {
       user_email: msContext.user.userPrincipalName,
-      lti_client_id: msContext.user.tenant.id,
+      lti_client_id: config.teamsClientId,
       api_domain_url: 'teams.microsoft.com',
       course_name: msContext.team.displayName,
       course_id: msContext.team.groupId,
