@@ -49,7 +49,9 @@ const H5PEditor = (props) => {
   }
   const dispatch = useDispatch();
   const history = useHistory();
-  const { currentOrganization } = useSelector((state) => state.organization);
+  const { currentOrganization } = useSelector(
+    (state) => state.organization
+  );
   const [submitAction, setSubmitAction] = useState(defaultState);
   const [h5pFile, setH5pFile] = useState(null);
 
@@ -77,10 +79,11 @@ const H5PEditor = (props) => {
       loadH5pSettings(
         "H5P.BrightcoveInteractiveVideo 1.0",
         bcAccountId,
-        apiSettingId
+        apiSettingId,
+        currentOrganization?.id
       );
     } else {
-      loadH5pSettings();
+      loadH5pSettings(null, null, null, currentOrganization?.id);
     }
   }, [loadH5pSettings]);
 
@@ -105,7 +108,9 @@ const H5PEditor = (props) => {
     formData.education_level_id = formatSelectBoxData(
       formData.education_level_id
     );
-    formData.author_tag_id = formatSelectBoxData(formData.author_tag_id);
+    formData.author_tag_id = formatSelectBoxData(
+      formData.author_tag_id
+    );
     const { metadata } = parameters;
     if (metadata?.title !== undefined) {
       if (editActivity) {
@@ -124,7 +129,9 @@ const H5PEditor = (props) => {
         if (activityPreview) {
           const h5pdata = {
             library: window.h5peditorCopy.getLibrary(),
-            parameters: JSON.stringify(window.h5peditorCopy.getParams()),
+            parameters: JSON.stringify(
+              window.h5peditorCopy.getParams()
+            ),
             action: "create",
           };
           await dispatch(
@@ -157,7 +164,10 @@ const H5PEditor = (props) => {
         if (activityPreview) {
           dispatch(
             createIndResourceAction(
-              { ...formData, title: metadata?.title || formData.title },
+              {
+                ...formData,
+                title: metadata?.title || formData.title,
+              },
               hide,
               accountId,
               settingId,
@@ -248,7 +258,9 @@ const H5PEditor = (props) => {
           type="hidden"
           name="parameters"
           id="laravel-h5p-parameters"
-          value={h5pParams || JSON.parse('{"params":{},"metadata":{}}')}
+          value={
+            h5pParams || JSON.parse('{"params":{},"metadata":{}}')
+          }
         />
         <input
           type="hidden"
@@ -296,7 +308,10 @@ const H5PEditor = (props) => {
                     // style={{ display: 'none' }}
                   />
                   <div className="upload-holder">
-                    <FontAwesomeIcon icon="file-upload" className="mr-2" />
+                    <FontAwesomeIcon
+                      icon="file-upload"
+                      className="mr-2"
+                    />
                     <p>
                       Drag & Drop File or
                       <span>&nbsp;Browse to upload</span>
@@ -345,7 +360,10 @@ const H5PEditor = (props) => {
             </div>
           </div>
 
-          <div className="interactive-btns" style={{ marginTop: "20px" }}>
+          <div
+            className="interactive-btns"
+            style={{ marginTop: "20px" }}
+          >
             <div className="cancel">
               <div
                 className="backclosemodel"
@@ -353,7 +371,8 @@ const H5PEditor = (props) => {
                 secondary
                 onClick={() => {
                   Swal.fire({
-                    text: "All changes will be lost if you don’t save them",
+                    text:
+                      "All changes will be lost if you don’t save them",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#084892",
@@ -422,8 +441,12 @@ H5PEditor.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadH5pSettings: (library, accountId, settingId) =>
-    dispatch(loadH5pSettingsActivity(library, accountId, settingId)),
+  loadH5pSettings: (library, accountId, settingId, orgId) =>
+    dispatch(
+      loadH5pSettingsActivity(library, accountId, settingId, orgId)
+    ),
 });
 
-export default withRouter(connect(null, mapDispatchToProps)(H5PEditor));
+export default withRouter(
+  connect(null, mapDispatchToProps)(H5PEditor)
+);

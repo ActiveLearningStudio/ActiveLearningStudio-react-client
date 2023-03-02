@@ -1,9 +1,9 @@
 /* eslint-disable */
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
-import config from 'config';
-import httpService from './http.service';
-import { errorCatcher } from './errors';
+import config from "config";
+import httpService from "./http.service";
+import { errorCatcher } from "./errors";
 
 const { apiVersion } = config;
 
@@ -15,18 +15,25 @@ const getAll = () =>
 
 const getAllLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${subOrgId}/activity-layouts`)
+    .get(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-layouts`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
 const getSingleLayout = (subOrgId) =>
   httpService
-    .get(`/${apiVersion}/suborganizations/${subOrgId}/get-activity-items?skipPagination=true`)
+    .get(
+      `/${apiVersion}/suborganizations/${subOrgId}/get-activity-items?skipPagination=true`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 const create = (activity, playlistId) =>
   httpService
-    .post(`/${apiVersion}/playlists/${playlistId}/activities`, activity)
+    .post(
+      `/${apiVersion}/playlists/${playlistId}/activities`,
+      activity
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -72,9 +79,9 @@ const upload = (formData, conf) =>
       `/${apiVersion}/activities/upload-thumb`,
       formData,
       {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
-      conf,
+      conf
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -88,9 +95,9 @@ const uploadThumbActivity = (formData, conf) =>
       `/${apiVersion}/independent-activities/upload-thumb`,
       formData,
       {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
-      conf,
+      conf
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -101,7 +108,7 @@ const uploadThumbActivity = (formData, conf) =>
 const uploadActivityTypeThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-thumb`, formData, {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -112,7 +119,7 @@ const uploadActivityTypeThumb = (formData) =>
 const uploadActivityTypeFile = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-types/upload-css`, formData, {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -123,7 +130,7 @@ const uploadActivityTypeFile = (formData) =>
 const uploadActivityItemThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-items/upload-thumb`, formData, {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -134,7 +141,7 @@ const uploadActivityItemThumb = (formData) =>
 const uploadActivityLayoutThumb = (formData) =>
   httpService
     .post(`/${apiVersion}/activity-layouts/upload-thumb`, formData, {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     })
     .then(({ data }) => data)
     .catch((err) => {
@@ -156,7 +163,10 @@ const getAllTypesIV = () =>
 
 const createActivityType = (subOrgId, body) =>
   httpService
-    .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-types`, body)
+    .post(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-types`,
+      body
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -164,7 +174,10 @@ const createActivityType = (subOrgId, body) =>
     });
 const editActivityType = (subOrgId, body, typeId) =>
   httpService
-    .put(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`, body)
+    .put(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`,
+      body
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -173,7 +186,9 @@ const editActivityType = (subOrgId, body, typeId) =>
 
 const deleteActivityType = (subOrgId, typeId) =>
   httpService
-    .remove(`/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`)
+    .remove(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-types/${typeId}`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -186,14 +201,24 @@ const getItems = (activityTypeId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const getActivityItems = (subOrgId, query, page, size, column = '', orderBy = '', filterBy) =>
+const getActivityItems = (
+  subOrgId,
+  query,
+  page,
+  size,
+  column = "",
+  orderBy = "",
+  filterBy
+) =>
   httpService
     .get(
-      `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${page ? `?page=${page}` : ''}${query ? `&query=${query.replace(/#/, '%23')}` : ''}
-      ${size ? `&size=${size}` : ''}
-      ${column ? `&order_by_column=${column}` : ''}
-      ${orderBy ? `&order_by_type=${orderBy}` : ''}
-      ${filterBy ? `&filter=${filterBy}` : ''}`,
+      `${apiVersion}/suborganizations/${subOrgId}/get-activity-items${
+        page ? `?page=${page}` : ""
+      }${query ? `&query=${query.replace(/#/, "%23")}` : ""}
+      ${size ? `&size=${size}` : ""}
+      ${column ? `&order_by_column=${column}` : ""}
+      ${orderBy ? `&order_by_type=${orderBy}` : ""}
+      ${filterBy ? `&filter=${filterBy}` : ""}`
     )
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -202,7 +227,10 @@ const getActivityItems = (subOrgId, query, page, size, column = '', orderBy = ''
 
 const createActivityItem = (subOrgId, body) =>
   httpService
-    .post(`/${apiVersion}/suborganizations/${subOrgId}/activity-items`, body)
+    .post(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-items`,
+      body
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -210,7 +238,10 @@ const createActivityItem = (subOrgId, body) =>
     });
 const editActivityItem = (subOrgId, body, itemId) =>
   httpService
-    .put(`/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`, body)
+    .put(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`,
+      body
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -219,7 +250,9 @@ const editActivityItem = (subOrgId, body, itemId) =>
 
 const deleteActivityItem = (subOrgId, itemId) =>
   httpService
-    .remove(`/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`)
+    .remove(
+      `/${apiVersion}/suborganizations/${subOrgId}/activity-items/${itemId}`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       errorCatcher(err.response.data);
@@ -232,9 +265,16 @@ const h5pToken = (dataH5p) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pSettings = (library, accountId = null, settingId = null) =>
+const h5pSettings = (
+  library,
+  accountId = null,
+  settingId = null,
+  organizationId
+) =>
   httpService
-    .get(`/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}&brightcove_api_setting_id=${settingId}`)
+    .get(
+      `/${apiVersion}/h5p/settings?libraryName=${library}&accountId=${accountId}&brightcove_api_setting_id=${settingId}&organizationId=${organizationId}`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -246,32 +286,43 @@ const h5pResource = (activityId) =>
 
 const h5pSettingsUpdate = (activityId, dataUpload, playlistId) =>
   httpService
-    .put(`/${apiVersion}/playlists/${playlistId}/activities/${activityId}`, dataUpload)
+    .put(
+      `/${apiVersion}/playlists/${playlistId}/activities/${activityId}`,
+      dataUpload
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
 const independentH5pResourceSettings = (activityId) =>
   httpService
-    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings`)
+    .get(
+      `/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: 'Error',
-        icon: 'error',
-        html: err.message || 'Something went wrong! We are unable to load activity.',
+        title: "Error",
+        icon: "error",
+        html:
+          err.message ||
+          "Something went wrong! We are unable to load activity.",
       });
       Promise.reject(err.response.data);
     });
 
 const h5pResourceSettings = (activityId) =>
   httpService
-    .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings`)
+    .get(
+      `/${apiVersion}/activities/${activityId}/h5p-resource-settings`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: 'Error',
-        icon: 'error',
-        html: err.message || 'Something went wrong! We are unable to load activity.',
+        title: "Error",
+        icon: "error",
+        html:
+          err.message ||
+          "Something went wrong! We are unable to load activity.",
       });
       Promise.reject(err.response.data);
     });
@@ -279,13 +330,17 @@ const h5pResourceSettings = (activityId) =>
 const h5pResourceSettingsOpen = (activityId) =>
   httpService
     // .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-open`)
-    .get(`/${apiVersion}/h5p/activity/${activityId}/visibility/public`)
+    .get(
+      `/${apiVersion}/h5p/activity/${activityId}/visibility/public`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
 const h5pResourceSettingsShared = (activityId) =>
   httpService
-    .get(`/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`)
+    .get(
+      `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`
+    )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
@@ -297,16 +352,20 @@ const h5pResourceSettingsEmbed = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => {
       Swal.fire({
-        title: 'Error',
-        icon: 'error',
-        html: err.message || 'Something went wrong! We are unable to load activity.',
+        title: "Error",
+        icon: "error",
+        html:
+          err.message ||
+          "Something went wrong! We are unable to load activity.",
       });
       Promise.reject(err.response.data);
     });
 
 const getActivityCss = (activityId) =>
   httpService
-    .get(`/${apiVersion}/get-activity-item/${activityId}/external-css`)
+    .get(
+      `/${apiVersion}/get-activity-item/${activityId}/external-css`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
@@ -330,18 +389,27 @@ const removeShareActivity = (activityId) =>
 
 const loadH5pShared = (activityId) =>
   httpService
-    .get(`/${apiVersion}/h5p/activity/${activityId}/visibility/public`)
+    .get(
+      `/${apiVersion}/h5p/activity/${activityId}/visibility/public`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
 const searchPreviewActivity = (subOrgId, activityId) =>
   httpService
-    .get(`/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`)
+    .get(
+      `/${apiVersion}/suborganization/${subOrgId}/activities/${activityId}/search-preview`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
-const searchPreviewIndependentActivity = (subOrgId, independent_activity) =>
+const searchPreviewIndependentActivity = (
+  subOrgId,
+  independent_activity
+) =>
   httpService
-    .get(`/${apiVersion}/suborganization/${subOrgId}/independent-activities/${independent_activity}/search-preview`)
+    .get(
+      `/${apiVersion}/suborganization/${subOrgId}/independent-activities/${independent_activity}/search-preview`
+    )
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
