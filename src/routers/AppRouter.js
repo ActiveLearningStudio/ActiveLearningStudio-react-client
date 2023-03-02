@@ -115,10 +115,6 @@ const AppRouter = (props) => {
           type: IS_MSTEAM,
           payload: true,
         });
-        dispatch({
-          type: IS_MSTEAM,
-          payload: true,
-        });
         intialLoad += 1;
       }
     });
