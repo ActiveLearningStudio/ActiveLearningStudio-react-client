@@ -1,16 +1,16 @@
 /* eslint-disable */
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import axios from "axios";
+import Swal from "sweetalert2";
 //import Echo from 'laravel-echo';
-import { toast } from 'react-toastify';
-import resourceService from 'services/resource.service';
-import indResourceService from 'services/indActivities.service';
-import videoService from 'services/videos.services';
+import { toast } from "react-toastify";
+import resourceService from "services/resource.service";
+import indResourceService from "services/indActivities.service";
+import videoService from "services/videos.services";
 
-import * as actionTypes from '../actionTypes';
-import { loadProjectPlaylistsAction } from 'store/actions/playlist';
-import store from '../index';
-import { unescape } from 'lodash';
+import * as actionTypes from "../actionTypes";
+import { loadProjectPlaylistsAction } from "store/actions/playlist";
+import store from "../index";
+import { unescape } from "lodash";
 
 // global variable for h5p object
 let h5pid;
@@ -24,7 +24,9 @@ export const loadResourceTypesAction = () => async (dispatch) => {
     const {
       organization: { activeOrganization, currentOrganization },
     } = centralizedState;
-    const result = await resourceService.getTypes(currentOrganization?.id);
+    const result = await resourceService.getTypes(
+      currentOrganization?.id
+    );
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_TYPES_SUCCESS,
@@ -55,8 +57,13 @@ export const selectActivityType = (type) => (dispatch) => {
   });
 };
 
-export const createActivityType = (subOrgId, data) => async (dispatch) => {
-  const result = await resourceService.createActivityType(subOrgId, data);
+export const createActivityType = (subOrgId, data) => async (
+  dispatch
+) => {
+  const result = await resourceService.createActivityType(
+    subOrgId,
+    data
+  );
   dispatch({
     type: actionTypes.ADD_ACTIVITY_TYPE,
     payload: result,
@@ -64,8 +71,14 @@ export const createActivityType = (subOrgId, data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityType = (subOrgId, data, typeId) => async (dispatch) => {
-  const result = await resourceService.editActivityType(subOrgId, data, typeId);
+export const editActivityType = (subOrgId, data, typeId) => async (
+  dispatch
+) => {
+  const result = await resourceService.editActivityType(
+    subOrgId,
+    data,
+    typeId
+  );
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_TYPE,
     payload: result,
@@ -73,7 +86,9 @@ export const editActivityType = (subOrgId, data, typeId) => async (dispatch) => 
   return result;
 };
 
-export const deleteActivityType = (subOrgId, typeId) => async (dispatch) => {
+export const deleteActivityType = (subOrgId, typeId) => async (
+  dispatch
+) => {
   const result = resourceService.deleteActivityType(subOrgId, typeId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_TYPE,
@@ -81,13 +96,17 @@ export const deleteActivityType = (subOrgId, typeId) => async (dispatch) => {
   return result;
 };
 
-export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
+export const loadResourceItemsAction = (activityTypeId) => async (
+  dispatch
+) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_ITEMS_REQUEST,
     });
 
-    const { activityItems } = await resourceService.getItems(activityTypeId);
+    const { activityItems } = await resourceService.getItems(
+      activityTypeId
+    );
 
     dispatch({
       type: actionTypes.LOAD_RESOURCE_ITEMS_SUCCESS,
@@ -104,8 +123,24 @@ export const loadResourceItemsAction = (activityTypeId) => async (dispatch) => {
   }
 };
 
-export const getActivityItems = (subOrgId, query, page, size, column, orderBy, filterBy) => async (dispatch) => {
-  const allActivityItems = await resourceService.getActivityItems(subOrgId, query, page, size, column, orderBy, filterBy);
+export const getActivityItems = (
+  subOrgId,
+  query,
+  page,
+  size,
+  column,
+  orderBy,
+  filterBy
+) => async (dispatch) => {
+  const allActivityItems = await resourceService.getActivityItems(
+    subOrgId,
+    query,
+    page,
+    size,
+    column,
+    orderBy,
+    filterBy
+  );
   dispatch({
     type: actionTypes.GET_ACTIVITY_ITEMS_ADMIN,
     payload: allActivityItems.data,
@@ -120,8 +155,13 @@ export const selectActivityItem = (type) => (dispatch) => {
   });
 };
 
-export const createActivityItem = (subOrgId, data) => async (dispatch) => {
-  const result = await resourceService.createActivityItem(subOrgId, data);
+export const createActivityItem = (subOrgId, data) => async (
+  dispatch
+) => {
+  const result = await resourceService.createActivityItem(
+    subOrgId,
+    data
+  );
   dispatch({
     type: actionTypes.ADD_ACTIVITY_ITEM,
     payload: result,
@@ -129,8 +169,14 @@ export const createActivityItem = (subOrgId, data) => async (dispatch) => {
   return result;
 };
 
-export const editActivityItem = (subOrgId, data, itemId) => async (dispatch) => {
-  const result = await resourceService.editActivityItem(subOrgId, data, itemId);
+export const editActivityItem = (subOrgId, data, itemId) => async (
+  dispatch
+) => {
+  const result = await resourceService.editActivityItem(
+    subOrgId,
+    data,
+    itemId
+  );
   dispatch({
     type: actionTypes.EDIT_ACTIVITY_ITEM,
     payload: result,
@@ -138,7 +184,9 @@ export const editActivityItem = (subOrgId, data, itemId) => async (dispatch) => 
   return result;
 };
 
-export const deleteActivityItem = (subOrgId, itemId) => async (dispatch) => {
+export const deleteActivityItem = (subOrgId, itemId) => async (
+  dispatch
+) => {
   const result = resourceService.deleteActivityItem(subOrgId, itemId);
   dispatch({
     type: actionTypes.DELETE_ACTIVITY_ITEM,
@@ -146,7 +194,9 @@ export const deleteActivityItem = (subOrgId, itemId) => async (dispatch) => {
   return result;
 };
 
-export const loadResourceAction = (activityId) => async (dispatch) => {
+export const loadResourceAction = (activityId) => async (
+  dispatch
+) => {
   try {
     dispatch({
       type: actionTypes.LOAD_RESOURCE_REQUEST,
@@ -164,9 +214,11 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
     });
   } catch (e) {
     Swal.fire({
-      title: 'Error',
-      icon: 'error',
-      html: e.message || 'Something went wrong! We are unable to load activity.',
+      title: "Error",
+      icon: "error",
+      html:
+        e.message ||
+        "Something went wrong! We are unable to load activity.",
     });
     dispatch({
       type: actionTypes.LOAD_RESOURCE_FAIL,
@@ -176,13 +228,23 @@ export const loadResourceAction = (activityId) => async (dispatch) => {
   }
 };
 
-export const loadH5pSettingsActivity = (libraryName, accountId = null, settingId = null) => async () => {
-  const response = await resourceService.h5pSettings(libraryName, accountId, settingId);
+export const loadH5pSettingsActivity = (
+  libraryName,
+  accountId = null,
+  settingId = null,
+  orgId
+) => async () => {
+  const response = await resourceService.h5pSettings(
+    libraryName,
+    accountId,
+    settingId,
+    orgId
+  );
 
   window.H5PIntegration = response.h5p.settings;
 
   response.h5p.settings.editor.assets.js.forEach((value) => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = value;
     script.async = false;
     document.body.appendChild(script);
@@ -204,10 +266,14 @@ export const loadH5pResourceXapi = (xapiData) => async () => {
   resourceService.getXapi({ statement: xapiData });
 };
 
-export const loadH5pResourceSettings = (activityId) => resourceService.h5pResourceSettings(activityId);
-export const loadH5pResourceSettingsOpen = (activityId) => resourceService.h5pResourceSettingsOpen(activityId);
-export const loadH5pResourceSettingsShared = (activityId) => resourceService.h5pResourceSettingsShared(activityId);
-export const loadH5pResourceSettingsEmbed = (activityId) => resourceService.h5pResourceSettingsEmbed(activityId);
+export const loadH5pResourceSettings = (activityId) =>
+  resourceService.h5pResourceSettings(activityId);
+export const loadH5pResourceSettingsOpen = (activityId) =>
+  resourceService.h5pResourceSettingsOpen(activityId);
+export const loadH5pResourceSettingsShared = (activityId) =>
+  resourceService.h5pResourceSettingsShared(activityId);
+export const loadH5pResourceSettingsEmbed = (activityId) =>
+  resourceService.h5pResourceSettingsEmbed(activityId);
 
 // export const loadH5pResourceXapi = (data) => resourceService.getXapi(data);
 
@@ -218,22 +284,32 @@ export const resourceSaved = (saved) => async (dispatch) => {
   });
 };
 
-export const createResourceAction = (playlistId, editor, editorType, metadata, hide, type, accountId, settingId, reverseType) => async (dispatch) => {
+export const createResourceAction = (
+  playlistId,
+  editor,
+  editorType,
+  metadata,
+  hide,
+  type,
+  accountId,
+  settingId,
+  reverseType
+) => async (dispatch) => {
   const data = {
     playlistId,
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
+    action: "create",
     brightcove_account_id: accountId || undefined,
     brightcove_api_setting_id: settingId || undefined,
   };
-  toast.info('Creating new Activity ...', {
-    className: 'project-loading',
+  toast.info("Creating new Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
   const insertedH5pResource = await resourceService.h5pToken(data);
   if (!insertedH5pResource.fail) {
@@ -243,10 +319,10 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       h5p_content_id: resource.id,
       playlist_id: playlistId,
       thumb_url: metadata?.thumb_url,
-      action: 'create',
+      action: "create",
       title: unescape(metadata?.title),
-      type: 'h5p',
-      content: 'place_holder',
+      type: "h5p",
+      content: "place_holder",
       subject_id: metadata?.subject_id,
       education_level_id: metadata?.education_level_id,
       author_tag_id: metadata?.author_tag_id,
@@ -254,14 +330,17 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       source_type: metadata?.source_type || undefined,
       source_url: metadata?.source_url || undefined,
     };
-    if (type === 'videoModal' && !reverseType) {
+    if (type === "videoModal" && !reverseType) {
       const centralizedState = store.getState();
       const {
         organization: { activeOrganization },
       } = centralizedState;
-      const insertedResource = await videoService.addVideo(activeOrganization?.id, { ...activity, type: 'h5p_standalone' });
+      const insertedResource = await videoService.addVideo(
+        activeOrganization?.id,
+        { ...activity, type: "h5p_standalone" }
+      );
       toast.dismiss();
-      toast.success('Activity Created', {
+      toast.success("Activity Created", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
@@ -271,9 +350,12 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       });
       hide();
     } else {
-      const insertedResource = await resourceService.create(activity, playlistId);
+      const insertedResource = await resourceService.create(
+        activity,
+        playlistId
+      );
       toast.dismiss();
-      toast.success('Activity Created', {
+      toast.success("Activity Created", {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: 4000,
       });
@@ -292,8 +374,8 @@ export const createResourceAction = (playlistId, editor, editorType, metadata, h
       });
       hide();
       dispatch({
-        type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-        payload: '',
+        type: "SET_ACTIVE_ACTIVITY_SCREEN",
+        payload: "",
       });
     }
   } else {
@@ -316,8 +398,12 @@ export const resourceThumbnailProgress = (progress) => ({
   progress,
 });
 
-export const uploadActivityTypeFileAction = (formData) => async (dispatch) => {
-  const { file } = await resourceService.uploadActivityTypeFile(formData);
+export const uploadActivityTypeFileAction = (formData) => async (
+  dispatch
+) => {
+  const { file } = await resourceService.uploadActivityTypeFile(
+    formData
+  );
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL,
     payload: { file },
@@ -325,19 +411,21 @@ export const uploadActivityTypeFileAction = (formData) => async (dispatch) => {
   return file;
 };
 
-export const uploadResourceThumbnailAction = (formData) => async () => {
+export const uploadResourceThumbnailAction = (
+  formData
+) => async () => {
   const centralizedState = store.getState();
   const {
     myactivities: { screenSelectionType },
   } = centralizedState;
 
-  toast.info('Uploading Image ...', {
-    className: 'project-loading',
+  toast.info("Uploading Image ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
   // const { thumbUrl } = await resourceService.upload(formData);
   // toast.dismiss();
@@ -345,8 +433,10 @@ export const uploadResourceThumbnailAction = (formData) => async () => {
 
   let thumbUrl;
 
-  if (screenSelectionType === 'MY_ACTIVITY_SCREEN') {
-    ({ thumbUrl } = await resourceService.uploadThumbActivity(formData));
+  if (screenSelectionType === "MY_ACTIVITY_SCREEN") {
+    ({ thumbUrl } = await resourceService.uploadThumbActivity(
+      formData
+    ));
   } else {
     ({ thumbUrl } = await resourceService.upload(formData));
   }
@@ -355,8 +445,12 @@ export const uploadResourceThumbnailAction = (formData) => async () => {
   return thumbUrl;
 };
 
-export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
-  const { image } = await resourceService.uploadActivityTypeThumb(formData);
+export const uploadActivityTypeThumbAction = (formData) => async (
+  dispatch
+) => {
+  const { image } = await resourceService.uploadActivityTypeThumb(
+    formData
+  );
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_TYPE_THUMBNAIL,
     payload: { image },
@@ -364,8 +458,12 @@ export const uploadActivityTypeThumbAction = (formData) => async (dispatch) => {
   return image;
 };
 
-export const uploadActivityItemThumbAction = (formData) => async (dispatch) => {
-  const { image } = await resourceService.uploadActivityItemThumb(formData);
+export const uploadActivityItemThumbAction = (formData) => async (
+  dispatch
+) => {
+  const { image } = await resourceService.uploadActivityItemThumb(
+    formData
+  );
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_ITEM_THUMBNAIL,
     payload: { image },
@@ -383,8 +481,12 @@ export const getAllIV = () => async (dispatch) => {
   return result;
 };
 
-export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) => {
-  const { image } = await resourceService.uploadActivityLayoutThumb(formData);
+export const uploadActivityLayoutThumbAction = (formData) => async (
+  dispatch
+) => {
+  const { image } = await resourceService.uploadActivityLayoutThumb(
+    formData
+  );
   dispatch({
     type: actionTypes.UPLOAD_ACTIVITY_LAYOUT_THUMBNAIL,
     payload: { image },
@@ -392,7 +494,10 @@ export const uploadActivityLayoutThumbAction = (formData) => async (dispatch) =>
   return image;
 };
 
-export const deleteResourceAction = (activityId, playlistId) => async (dispatch) => {
+export const deleteResourceAction = (
+  activityId,
+  playlistId
+) => async (dispatch) => {
   try {
     dispatch({
       type: actionTypes.DELETE_RESOURCE_REQUEST,
@@ -453,7 +558,10 @@ export const onChangeActivityAction = (activity) => ({
 });
 
 // Metadata saving inside state when metadata form is submitted
-export const onSubmitDescribeActivityAction = (metadata, activityId = null) => ({
+export const onSubmitDescribeActivityAction = (
+  metadata,
+  activityId = null
+) => ({
   type: actionTypes.DESCRIBE_ACTIVITY,
   payload: {
     activityId,
@@ -472,7 +580,11 @@ export const showBuildActivity = (editor, editorType, params) => ({
   params,
 });
 
-export const showBuildActivityAction = (editor = null, editorType = null, activityId = null) => async (dispatch) => {
+export const showBuildActivityAction = (
+  editor = null,
+  editorType = null,
+  activityId = null
+) => async (dispatch) => {
   try {
     if (activityId) {
       const response = await resourceService.activityH5p(activityId);
@@ -481,7 +593,7 @@ export const showBuildActivityAction = (editor = null, editorType = null, activi
       const lib = `${activity.library_name} ${activity.major_version}.${activity.minor_version}`;
       dispatch(showBuildActivity(lib, activity.type, activity.h5p));
     } else {
-      dispatch(showBuildActivity(editor, editorType, ''));
+      dispatch(showBuildActivity(editor, editorType, ""));
     }
   } catch (e) {
     console.log(e);
@@ -494,7 +606,10 @@ export const showDescribeActivity = (activity, metadata = null) => ({
   metadata,
 });
 
-export const showDescribeActivityAction = (activity, activityId = null) => async (dispatch) => {
+export const showDescribeActivityAction = (
+  activity,
+  activityId = null
+) => async (dispatch) => {
   try {
     if (activityId) {
       Swal.showLoading();
@@ -520,38 +635,49 @@ export const showDescribeActivityAction = (activity, activityId = null) => async
   }
 };
 
-export const createResourceByH5PUploadAction = (playlistId, editor, editorType, payload, metadata, activityPreview) => async (dispatch) => {
+export const createResourceByH5PUploadAction = (
+  playlistId,
+  editor,
+  editorType,
+  payload,
+  metadata,
+  activityPreview
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
   try {
-    toast.info('Uploading Activity ...', {
-      className: 'project-loading',
+    toast.info("Uploading Activity ...", {
+      className: "project-loading",
       closeOnClick: false,
       closeButton: false,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 100000,
-      icon: '',
+      icon: "",
     });
     const formData = new FormData();
-    formData.append('h5p_file', payload.h5pFile);
-    formData.append('action', 'upload');
+    formData.append("h5p_file", payload.h5pFile);
+    formData.append("action", "upload");
 
     const responseUpload = await resourceService.h5pToken(formData);
     metadata.subject_id = formatSelectBoxData(metadata.subject_id);
-    metadata.education_level_id = formatSelectBoxData(metadata.education_level_id);
-    metadata.author_tag_id = formatSelectBoxData(metadata.author_tag_id);
+    metadata.education_level_id = formatSelectBoxData(
+      metadata.education_level_id
+    );
+    metadata.author_tag_id = formatSelectBoxData(
+      metadata.author_tag_id
+    );
 
     if (responseUpload.id) {
       if (activityPreview) {
         const activity = {
           h5p_content_id: responseUpload.id,
           thumb_url: metadata?.thumb_url,
-          action: 'create',
+          action: "create",
           title: metadata?.title,
-          type: 'h5p',
-          content: 'place_holder',
+          type: "h5p",
+          content: "place_holder",
           subject_id: metadata?.subject_id,
           education_level_id: metadata?.education_level_id,
           author_tag_id: metadata?.author_tag_id,
@@ -561,43 +687,51 @@ export const createResourceByH5PUploadAction = (playlistId, editor, editorType, 
           organization_visibility_type_id: 1,
         };
 
-        const result = await indResourceService.create(activeOrganization.id, activity);
+        const result = await indResourceService.create(
+          activeOrganization.id,
+          activity
+        );
         toast.dismiss();
-        toast.success('Activity Created', {
+        toast.success("Activity Created", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 4000,
         });
         dispatch({
           type: actionTypes.ADD_IND_ACTIVITIES,
-          payload: result['independent-activity'],
+          payload: result["independent-activity"],
         });
 
         dispatch({
           type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-          payload: '',
+          payload: "",
         });
       } else {
         const createActivityUpload = {
           h5p_content_id: responseUpload.id,
           playlist_id: playlistId,
           thumb_url: metadata.thumb_url,
-          action: 'create',
+          action: "create",
           title: metadata.title,
-          type: 'h5p',
-          content: 'place_holder',
+          type: "h5p",
+          content: "place_holder",
           subject_id: formatSelectBoxData(metadata.subject_id),
-          education_level_id: formatSelectBoxData(metadata.education_level_id),
+          education_level_id: formatSelectBoxData(
+            metadata.education_level_id
+          ),
           author_tag_id: formatSelectBoxData(metadata.author_tag_id),
           description: metadata?.description || undefined,
         };
 
-        const responseActivity = await resourceService.create(createActivityUpload, playlistId);
+        const responseActivity = await resourceService.create(
+          createActivityUpload,
+          playlistId
+        );
         toast.dismiss();
         dispatch({
-          type: 'SET_ACTIVE_ACTIVITY_SCREEN',
-          payload: '',
+          type: "SET_ACTIVE_ACTIVITY_SCREEN",
+          payload: "",
         });
-        toast.success('Activity Uploaded', {
+        toast.success("Activity Uploaded", {
           position: toast.POSITION.BOTTOM_RIGHT,
           autoClose: 4000,
         });
@@ -614,26 +748,34 @@ export const createResourceByH5PUploadAction = (playlistId, editor, editorType, 
         });
       }
     } else {
-      throw new Error('Error occurred while creating resource');
+      throw new Error("Error occurred while creating resource");
     }
   } catch (e) {
     console.log(e);
   }
 };
 
-export const editResourceAction = (playlistId, editor, editorType, activityId, metadata, hide, projectid) => async (dispatch) => {
+export const editResourceAction = (
+  playlistId,
+  editor,
+  editorType,
+  activityId,
+  metadata,
+  hide,
+  projectid
+) => async (dispatch) => {
   const h5pdata = {
     library: window.h5peditorCopy.getLibrary(),
     parameters: JSON.stringify(window.h5peditorCopy.getParams()),
-    action: 'create',
+    action: "create",
   };
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 100000,
-    icon: '',
+    icon: "",
   });
 
   //try {
@@ -644,10 +786,10 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
 
     playlist_id: playlistId,
     thumb_url: metadata?.thumb_url,
-    action: 'create',
+    action: "create",
     title: unescape(metadata?.title),
-    type: 'h5p',
-    content: 'place_holder',
+    type: "h5p",
+    content: "place_holder",
     subject_id: metadata.subject_id,
     description: metadata?.description || undefined,
     education_level_id: metadata.education_level_id,
@@ -655,10 +797,14 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
     source_type: metadata?.source_type || undefined,
     source_url: metadata?.source_url || undefined,
   };
-  const response = await resourceService.h5pSettingsUpdate(activityId, dataUpload, playlistId);
+  const response = await resourceService.h5pSettingsUpdate(
+    activityId,
+    dataUpload,
+    playlistId
+  );
   await dispatch(loadProjectPlaylistsAction(projectid));
   toast.dismiss();
-  toast.success('Activity Edited', {
+  toast.success("Activity Edited", {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 4000,
   });
@@ -679,7 +825,7 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
   hide();
   dispatch({
     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-    payload: '',
+    payload: "",
   });
   return response;
   // } catch (e) {
@@ -693,20 +839,23 @@ export const editResourceAction = (playlistId, editor, editorType, activityId, m
   // }
 };
 
-export const editResourceMetaDataAction = (activity, metadata) => async (dispatch) => {
+export const editResourceMetaDataAction = (
+  activity,
+  metadata
+) => async (dispatch) => {
   console.log(metadata);
   const h5pdata = {
     library: `${activity.library_name} ${activity.major_version}.${activity.minor_version}`,
     parameters: activity.h5p,
-    action: 'create',
+    action: "create",
   };
-  toast.info('Updating  Activity ...', {
-    className: 'project-loading',
+  toast.info("Updating  Activity ...", {
+    className: "project-loading",
     closeOnClick: false,
     closeButton: false,
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 10000,
-    icon: '',
+    icon: "",
   });
 
   //try {
@@ -717,18 +866,26 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
 
     playlist_id: activity.playlist.id,
     thumb_url: metadata?.thumb_url,
-    action: 'create',
+    action: "create",
     title: unescape(metadata?.title),
-    type: 'h5p',
-    content: 'place_holder',
+    type: "h5p",
+    content: "place_holder",
     subject_id: formatSelectBoxData(metadata.subject_id),
-    education_level_id: formatSelectBoxData(metadata.education_level_id),
+    education_level_id: formatSelectBoxData(
+      metadata.education_level_id
+    ),
     author_tag_id: formatSelectBoxData(metadata.author_tag_id),
   };
-  const response = await resourceService.h5pSettingsUpdate(activity.id, dataUpload, activity.playlist.id);
-  await dispatch(loadProjectPlaylistsAction(activity.playlist?.project_id));
+  const response = await resourceService.h5pSettingsUpdate(
+    activity.id,
+    dataUpload,
+    activity.playlist.id
+  );
+  await dispatch(
+    loadProjectPlaylistsAction(activity.playlist?.project_id)
+  );
   toast.dismiss();
-  toast.success('Activity Edited', {
+  toast.success("Activity Edited", {
     position: toast.POSITION.BOTTOM_RIGHT,
     autoClose: 4000,
   });
@@ -741,7 +898,7 @@ export const editResourceMetaDataAction = (activity, metadata) => async (dispatc
 
   dispatch({
     type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-    payload: '',
+    payload: "",
   });
 };
 
@@ -765,12 +922,19 @@ export const shareActivity = async (activityId) => {
   // }
 };
 
-export const removeShareActivity = async (activityId, resourceName) => {
-  const result = await resourceService.removeShareActivity(activityId);
+export const removeShareActivity = async (
+  activityId,
+  resourceName
+) => {
+  const result = await resourceService.removeShareActivity(
+    activityId
+  );
   if (result.activity.id) {
     Swal.fire({
       title: `You stopped sharing <strong>"${resourceName}"</strong> ! `,
-      html: 'Please remember that anyone you have shared this activity with,' + ' will no longer have access to its contents.',
+      html:
+        "Please remember that anyone you have shared this activity with," +
+        " will no longer have access to its contents.",
     });
   }
 };
@@ -781,11 +945,17 @@ export const loadH5pShareResource = async (activityId) => {
 };
 
 // TODO: refactor bottom
-export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
-  const { token } = JSON.parse(localStorage.getItem('auth'));
-  const response = await axios.post(`${global.config.laravelAPIUrl}/activity`, resourceData, { headers: { Authorization: `Bearer ${token}` } });
+export const saveGenericResourceAction = (resourceData) => async (
+  dispatch
+) => {
+  const { token } = JSON.parse(localStorage.getItem("auth"));
+  const response = await axios.post(
+    `${global.config.laravelAPIUrl}/activity`,
+    resourceData,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
 
-  if (response.data.status === 'success') {
+  if (response.data.status === "success") {
     dispatch({
       type: actionTypes.SAVE_GENERIC_RESOURCE,
     });
@@ -796,14 +966,18 @@ export const saveGenericResourceAction = (resourceData) => async (dispatch) => {
   }
 };
 
-export const saveSearchKeyInCreation = (searchKey) => async (dispatch) => {
+export const saveSearchKeyInCreation = (searchKey) => async (
+  dispatch
+) => {
   dispatch({
     type: actionTypes.SAVE_SEARCH_KEY_IN_CREATION,
     searchKey,
   });
 };
 
-export const saveFormDataInCreation = (formData) => async (dispatch) => {
+export const saveFormDataInCreation = (formData) => async (
+  dispatch
+) => {
   dispatch({
     type: actionTypes.SAVE_FORM_DATA_IN_CREATION,
     metaTitle: formData.metaTitle,
@@ -850,7 +1024,9 @@ export const getLayoutActivities = () => async (dispatch) => {
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const { data } = await resourceService.getAllLayout(activeOrganization?.id);
+  const { data } = await resourceService.getAllLayout(
+    activeOrganization?.id
+  );
   if (data) {
     dispatch({
       type: actionTypes.SET_LAYOUT_ACTIVITY,
@@ -859,7 +1035,9 @@ export const getLayoutActivities = () => async (dispatch) => {
   }
 };
 
-export const getSingleLayoutActivities = (subOrgId) => async (dispatch) => {
+export const getSingleLayoutActivities = (subOrgId) => async (
+  dispatch
+) => {
   const { data } = await resourceService.getSingleLayout(subOrgId);
   if (data) {
     dispatch({
@@ -869,12 +1047,17 @@ export const getSingleLayoutActivities = (subOrgId) => async (dispatch) => {
   }
 };
 
-export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
+export const searchPreviewActivityAction = (activityId) => async (
+  dispatch
+) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await resourceService.searchPreviewActivity(activeOrganization?.id, activityId);
+  const result = await resourceService.searchPreviewActivity(
+    activeOrganization?.id,
+    activityId
+  );
   dispatch({
     type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
     payload: result,
@@ -882,12 +1065,17 @@ export const searchPreviewActivityAction = (activityId) => async (dispatch) => {
   return result;
 };
 
-export const searchPreviewIndependentActivityAction = (activityId) => async (dispatch) => {
+export const searchPreviewIndependentActivityAction = (
+  activityId
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
   } = centralizedState;
-  const result = await resourceService.searchPreviewIndependentActivity(activeOrganization?.id, activityId);
+  const result = await resourceService.searchPreviewIndependentActivity(
+    activeOrganization?.id,
+    activityId
+  );
   dispatch({
     type: actionTypes.SEARCH_PREVIEW_ACTIVITY,
     payload: result,
