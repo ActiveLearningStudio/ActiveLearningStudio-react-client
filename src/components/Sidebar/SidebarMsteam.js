@@ -144,8 +144,7 @@ function SidebarMsteam(props) {
           <div className={active === `/org/${allState.organization.currentOrganization?.domain}/record-video` ? 'row-sidebar msteam-sidebar-menu-item msteam-activeLink' : 'row-sidebar msteam-sidebar-menu-item'}>
             <RecordSvg primaryColor={primaryColor} />
             <div className="sidebar-headings">
-              Record a<br />
-              video
+              Record a video
             </div>
           </div>
         </Link>

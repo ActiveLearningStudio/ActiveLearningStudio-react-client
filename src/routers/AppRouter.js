@@ -20,7 +20,7 @@ import SidebarMsteam from 'components/Sidebar/SidebarMsteam';
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import OpenRoute from './OpenRoute';
-import { TOGGLE_SIDEBAR, IS_MSTEAM } from '../store/actionTypes';
+import { IS_MSTEAM } from '../store/actionTypes';
 import './style.scss';
 
 const history = History.createBrowserHistory();
@@ -111,10 +111,6 @@ const AppRouter = (props) => {
     useEffect(() => {
       app.initialize();
       if (app.isInitialized() === true && intialLoad == 0) {
-        dispatch({
-          type: TOGGLE_SIDEBAR,
-          payload: true,
-        });
         dispatch({
           type: IS_MSTEAM,
           payload: true,
