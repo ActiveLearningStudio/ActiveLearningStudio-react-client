@@ -44,36 +44,6 @@ function MsTeamActivityLaunch({match}) {
         setMsContext(response);
       });
     });
-  });
-
-  useEffect(()=>{
-    if(queryParams.get("submissionId") !== '' && localStorage.getItem('mt_code_utilized') == 'false'){
-      getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
-    }
-  }, [])
- 
-   useEffect(() => {
-    if(queryParams.get("userRole") == 'student'){
-      localStorage.setItem('mt_activityId', activityId);
-      localStorage.setItem('mt_assignmentId', queryParams.get('assignmentId'));
-      localStorage.setItem('mt_classId', queryParams.get('classId'));
-      localStorage.setItem('mt_userRole', queryParams.get('userRole'));
-      localStorage.setItem('mt_view', queryParams.get('view'));
-      localStorage.setItem('mt_submissionId', queryParams.get('submissionId'));
-
-      //validate code issuance time
-      if(mt_code_obj == null || code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
-        window.location.replace(`https://login.microsoftonline.com/${config.teamsTenantId}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
-        return;
-      }
-    }
-    setIsTeacher(queryParams.get("userRole"));
-    
-    // app.initialize().then(async () => {
-    //   await app.getContext().then((response) => {
-    //     setMsContext(response);
-    //   });
-    // });
   }, []);
 
   useEffect(()=>{
