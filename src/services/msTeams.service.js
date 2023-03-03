@@ -3,11 +3,12 @@ import config from 'config';
 import httpService from './http.service';
 const { apiVersion } = config;
 
-const msTeamsToken = (code, submissionId, assignmentId, classId) => httpService
+const msTeamsToken = (code, tenantId, submissionId, assignmentId, classId) => httpService
   .get(`/microsoft-team/get-access-token-via-code`,
   {},
   {
     code: code,
+    tenantId: tenantId,
     submissionId: submissionId,
     assignmentId: assignmentId,
     classId: classId,
