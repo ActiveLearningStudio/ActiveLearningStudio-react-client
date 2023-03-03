@@ -8,8 +8,6 @@ const msTeamsToken = (code, submissionId, assignmentId, classId) => httpService
   {},
   {
     code: code,
-    clientId: config.teamsClientId,
-    secretId: config.teamsSecret,
     submissionId: submissionId,
     assignmentId: assignmentId,
     classId: classId,
