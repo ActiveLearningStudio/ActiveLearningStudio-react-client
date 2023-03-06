@@ -116,11 +116,10 @@ const h5pResourceSettings = (activityId, studentId = null, submissionId = null) 
   })
   .then((response) => response)
   .catch((err) => {
-    Promise.reject(err.response.data);
     Swal.fire({
       title: 'Error',
       icon: 'error',
-      html: err.message || 'Something went wrong while trying to communicate with Google Drive.',
+      html: err?.response?.data?.error?.message || 'Something went wrong while trying to communicate with Google Drive.',
     });
   });
 

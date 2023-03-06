@@ -1,40 +1,71 @@
 /* eslint-disable */
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { connect, useSelector } from 'react-redux';
-import Slider from 'react-slick';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Alert } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
+import Slider from "react-slick";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Alert } from "react-bootstrap";
 
-import { loadMyProjectsPreviewSharedAction, searchPreviewProjectAction } from 'store/actions/project';
-import ActivityCard from 'components/ActivityCard';
-import Unauthorized from 'components/Unauthorized';
-import HeaderLogo from 'assets/images/GCLogo.png';
-import './project-share-preview.scss';
+import {
+  loadMyProjectsPreviewSharedAction,
+  searchPreviewProjectAction,
+} from "store/actions/project";
+import ActivityCard from "components/ActivityCard";
+import Unauthorized from "components/Unauthorized";
+import HeaderLogo from "assets/images/GCLogo.png";
+import "./project-share-preview.scss";
 
 function ProjectPreviewShared(props) {
-  const { match, sampleId, loadMyProjectsPreviewShared, setModalShow, setCurrentActivity, searchPreviewProject, mainPageProjectView } = props;
+  const {
+    match,
+    sampleId,
+    loadMyProjectsPreviewShared,
+    setModalShow,
+    setCurrentActivity,
+    searchPreviewProject,
+    mainPageProjectView,
+  } = props;
 
   const project = useSelector((state) => state.project);
-  const { activeOrganization } = useSelector((state) => state.organization);
+  const { activeOrganization } = useSelector(
+    (state) => state.organization
+  );
   const accordion = useRef([]);
   const [activeAccordion, setActiveAccordion] = useState();
-
+  const [isShared, setisShared] = useState(true);
   const [currentProject, setCurrentProject] = useState(null);
   useEffect(() => {
-    if (window.location.pathname.includes('/shared')) {
+    if (window.location.pathname.includes("/shared")) {
+      setisShared(true);
       loadMyProjectsPreviewShared(sampleId || match.params.projectId);
-    } else if (window.location.pathname.includes('/preview') && activeOrganization?.id) {
+    } else if (
+      window.location.pathname.includes("/preview") &&
+      activeOrganization?.id
+    ) {
       searchPreviewProject(sampleId || match.params.projectId);
+      setisShared(false);
     } else if (mainPageProjectView) {
       searchPreviewProject(sampleId || match.params.projectId);
+      setisShared(false);
     }
-  }, [activeOrganization?.id, loadMyProjectsPreviewShared, match.params.projectId, sampleId, searchPreviewProject]);
+  }, [
+    activeOrganization?.id,
+    loadMyProjectsPreviewShared,
+    match.params.projectId,
+    sampleId,
+    searchPreviewProject,
+  ]);
   useEffect(() => {
-    if (project && (project?.isSharedProject || project?.searchPreviewProject)) {
+    if (
+      project &&
+      (project?.isSharedProject || project?.searchPreviewProject)
+    ) {
       setCurrentProject(project?.projectSelect);
-    } else if (project && (!project?.isSharedProject || !project?.searchPreviewProject)) {
+    } else if (
+      project &&
+      (!project?.isSharedProject || !project?.searchPreviewProject)
+    ) {
       setCurrentProject(null);
     }
   }, [project, project?.projectSelect, sampleId]);
@@ -50,21 +81,23 @@ function ProjectPreviewShared(props) {
   };
 
   useEffect(() => {
-    localStorage.setItem('lti_activity', true);
+    localStorage.setItem("lti_activity", true);
   }, []);
 
-  const [windowDimenion, setWindowDimenion] = useState(window.innerWidth);
+  const [windowDimenion, setWindowDimenion] = useState(
+    window.innerWidth
+  );
 
   const detectSize = () => {
     setWindowDimenion(window.innerWidth);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', detectSize);
-    console.log('Logo:', windowDimenion);
+    window.addEventListener("resize", detectSize);
+    console.log("Logo:", windowDimenion);
 
     return () => {
-      window.removeEventListener('resize', detectSize);
+      window.removeEventListener("resize", detectSize);
     };
   }, [windowDimenion]);
 
@@ -85,8 +118,8 @@ function ProjectPreviewShared(props) {
               sampleID={sampleId}
               setModalShow={setModalShow}
               setCurrentActivity={setCurrentActivity}
-              lti
-              shared
+              lti={isShared}
+              shared={isShared}
             />
           ));
         } else {
@@ -106,12 +139,16 @@ function ProjectPreviewShared(props) {
               ref={(el) => {
                 accordion.current[counter] = el;
               }}
-              className={counter === 0 ? 'active activity-slider-button' : 'activity-slider-button'}
+              className={
+                counter === 0
+                  ? "active activity-slider-button"
+                  : "activity-slider-button"
+              }
               onClick={() => {
-                accordion.current[counter].classList.toggle('active');
+                accordion.current[counter].classList.toggle("active");
                 accordion.current.forEach((el) => {
                   if (el !== accordion.current[counter]) {
-                    el.classList.remove('active');
+                    el.classList.remove("active");
                   }
                 });
                 if (playlist.id === activeAccordion) {
@@ -121,13 +158,33 @@ function ProjectPreviewShared(props) {
                 }
               }}
             >
-              <FontAwesomeIcon icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} style={{ fontSize: '12px' }} />
+              <FontAwesomeIcon
+                icon={
+                  activeAccordion === playlist.id
+                    ? "chevron-up"
+                    : "chevron-down"
+                }
+                style={{ fontSize: "12px" }}
+              />
               {playlist.title}
-              <FontAwesomeIcon className="mobile" icon={activeAccordion === playlist.id ? 'chevron-up' : 'chevron-down'} />
+              <FontAwesomeIcon
+                className="mobile"
+                icon={
+                  activeAccordion === playlist.id
+                    ? "chevron-up"
+                    : "chevron-down"
+                }
+              />
             </button>
 
             <div className="panel preview-activity-style">
-              <ul>{windowDimenion > 768 ? <Slider {...settings}>{activities}</Slider> : activities}</ul>
+              <ul>
+                {windowDimenion > 768 ? (
+                  <Slider {...settings}>{activities}</Slider>
+                ) : (
+                  activities
+                )}
+              </ul>
             </div>
           </div>
         );
@@ -148,7 +205,7 @@ function ProjectPreviewShared(props) {
         <img src={HeaderLogo} />
       </div>
       <div className="project-share-preview">
-        {currentProject && currentProject.status === 'error' ? (
+        {currentProject && currentProject.status === "error" ? (
           <Unauthorized text="Project is not Public" />
         ) : (
           <>
@@ -158,7 +215,9 @@ function ProjectPreviewShared(props) {
                   <div
                     className="project-thumbnail"
                     style={{
-                      backgroundImage: !currentProject.thumb_url?.includes('/storage/')
+                      backgroundImage: !currentProject.thumb_url?.includes(
+                        "/storage/"
+                      )
                         ? `url(${currentProject.thumb_url})`
                         : `url(${global.config.resourceUrl}${currentProject.thumb_url})`,
                     }}
@@ -171,15 +230,20 @@ function ProjectPreviewShared(props) {
                 <div className="all-shared-playlist">
                   <h2>Playlists</h2>
 
-                  <div className="accoridion-playlist">{playlists}</div>
+                  <div className="accoridion-playlist">
+                    {playlists}
+                  </div>
                 </div>
               </div>
             ) : project.isSharedProject === false ? (
-              <Alert variant="danger" style={{ marginTop: '40px', fontSize: '1.5em' }}>
+              <Alert
+                variant="danger"
+                style={{ marginTop: "40px", fontSize: "1.5em" }}
+              >
                 Project is not shareable.
               </Alert>
             ) : (
-              <Alert variant="primary" style={{ marginTop: '20px' }}>
+              <Alert variant="primary" style={{ marginTop: "20px" }}>
                 Loading ...
               </Alert>
             )}
@@ -206,8 +270,12 @@ ProjectPreviewShared.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  loadMyProjectsPreviewShared: (projectId) => dispatch(loadMyProjectsPreviewSharedAction(projectId)),
-  searchPreviewProject: (projectId) => dispatch(searchPreviewProjectAction(projectId)),
+  loadMyProjectsPreviewShared: (projectId) =>
+    dispatch(loadMyProjectsPreviewSharedAction(projectId)),
+  searchPreviewProject: (projectId) =>
+    dispatch(searchPreviewProjectAction(projectId)),
 });
 
-export default withRouter(connect(null, mapDispatchToProps)(ProjectPreviewShared));
+export default withRouter(
+  connect(null, mapDispatchToProps)(ProjectPreviewShared)
+);

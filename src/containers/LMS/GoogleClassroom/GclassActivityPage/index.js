@@ -74,78 +74,74 @@ function GclassActivityPage(props) {
           <Helmet>
             <script src="https://dev.currikistudio.org/api/storage/h5p/h5p-core/js/h5p-resizer.js" charset="UTF-8" />
           </Helmet>
-          <div className="flex-container previews">
-            <div className="activity-bg left-vdo">
-              <div className="main-item-wrapper desktop-view">
-                <div className="item-container">
-                  {authorized && <Activity activityId={activityId} activeCourse={activeCourse} />}
+          {!authorized && (
+            <div className="authflow-container container">
+                <div className="row">
+                  <div className="col text-center">
+                    <img className="curriki-logo" src={logo} alt="" />
+                  </div>
+                </div>
 
-                  {!authorized && (
-                    <div className="container">
-                      <div className="row">
-                        <div className="col text-center">
-                          <img className="curriki-logo" src={logo} alt="" />
-                        </div>
-                      </div>
-
-                      {authorized === false && (
-                        <div className="row m-4">
-                          <div className="col text-center">
-                            <Alert variant="warning">You don&apos;t seem to be authorized to take this activity.</Alert>
-                          </div>
-                        </div>
-                      )}
-
-                      {isTeacher === true && (
-                        <div className="row m-4">
-                          <div className="col text-center">
-                            <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
-                          </div>
-                        </div>
-                      )}
-
-                      {submissionError && (
-                        <div className="row m-4">
-                          <div className="col text-center">
-                            <Alert variant="warning">{submissionError}</Alert>
-                          </div>
-                        </div>
-                      )}
-
-                      <div className="row m-4">
-                        <div className="col text-center">
-                          <h2>Please log in to take this activity.</h2>
-                          <GoogleLogin
-                            clientId={global.config.gapiClientId}
-                            buttonText="Login"
-                            onSuccess={handleLogin}
-                            onFailure={handleLogin}
-                            isSignedIn
-                            scope="
-                              https://www.googleapis.com/auth/classroom.courses.readonly
-                              https://www.googleapis.com/auth/classroom.topics
-                              https://www.googleapis.com/auth/classroom.coursework.me
-                              https://www.googleapis.com/auth/classroom.coursework.students
-                              https://www.googleapis.com/auth/classroom.rosters.readonly
-                            "
-                            cookiePolicy="single_host_origin"
-                          />
-                        </div>
-                      </div>
+                {authorized === false && (
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <Alert variant="warning">You don&apos;t seem to be authorized to take this activity.</Alert>
                     </div>
-                  )}
+                  </div>
+                )}
+
+                {isTeacher === true && (
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <Alert variant="warning">You are the teacher for this activity. Please login as a student to take the activity.</Alert>
+                    </div>
+                  </div>
+                )}
+
+                {submissionError && (
+                  <div className="row m-4">
+                    <div className="col text-center">
+                      <Alert variant="warning">{submissionError}</Alert>
+                    </div>
+                  </div>
+                )}
+
+                <div className="row m-4">
+                  <div className="col text-center">
+                    <h2>Please log in to take this activity.</h2>
+                    <GoogleLogin
+                      clientId={global.config.gapiClientId}
+                      buttonText="Login"
+                      onSuccess={handleLogin}
+                      onFailure={handleLogin}
+                      isSignedIn
+                      scope="
+                        https://www.googleapis.com/auth/classroom.courses.readonly
+                        https://www.googleapis.com/auth/classroom.topics
+                        https://www.googleapis.com/auth/classroom.coursework.me
+                        https://www.googleapis.com/auth/classroom.coursework.students
+                        https://www.googleapis.com/auth/classroom.rosters.readonly
+                      "
+                      cookiePolicy="single_host_origin"
+                    />
+                  </div>
+                </div>
+            </div>
+          )}
+
+          {authorized && (
+            <div className="flex-container previews">
+              <div className="activity-bg left-vdo">
+                <div className="main-item-wrapper desktop-view">
+                  <div className="item-container">
+                    {authorized && <Activity activityId={activityId} activeCourse={activeCourse} />}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
       </div>
-      {/* {(orientation >= 90)
-      && (
-      <div className="coverallareas">
-        <Alert variant="warning">Please use Portrait mode!</Alert>
-      </div>
-      )} */}
     </>
   );
 }
