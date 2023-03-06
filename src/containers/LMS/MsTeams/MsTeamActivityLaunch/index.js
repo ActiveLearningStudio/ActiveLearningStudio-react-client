@@ -27,7 +27,7 @@ function MsTeamActivityLaunch({match}) {
 
   const getAssignmentDetailsFromGraphApi = async(code, submissionId, assignmentId, classId) => {
     try {
-      const result = await MTService.msTeamsToken(code, submissionId, assignmentId, classId);
+      const result = await MTService.msTeamsToken(code, msContext.user.tenant.id, submissionId, assignmentId, classId);
       setMtStatus(result.assignment_submission.status);
       localStorage.setItem('mt_code_utilized', true);
       localStorage.setItem('mt_token', result.access_token);
@@ -75,6 +75,35 @@ function MsTeamActivityLaunch({match}) {
     //   });
     // });
   }, []);
+
+  useEffect(()=>{
+    if (msContext === null) return;
+
+    if(queryParams.get("submissionId") !== '' && localStorage.getItem('mt_code_utilized') == 'false'){
+      getAssignmentDetailsFromGraphApi(mt_code_obj?.code, queryParams.get("submissionId"), queryParams.get("assignmentId"), queryParams.get("classId"));
+    }
+  }, [msContext]);
+ 
+   useEffect(() => {
+    if (msContext === null) return;
+
+    if(queryParams.get("userRole") == 'student'){
+      localStorage.setItem('mt_activityId', activityId);
+      localStorage.setItem('mt_assignmentId', queryParams.get('assignmentId'));
+      localStorage.setItem('mt_classId', queryParams.get('classId'));
+      localStorage.setItem('mt_userRole', queryParams.get('userRole'));
+      localStorage.setItem('mt_view', queryParams.get('view'));
+      localStorage.setItem('mt_submissionId', queryParams.get('submissionId'));
+
+      //validate code issuance time
+      if(mt_code_obj == null || code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
+        window.location.replace(`https://login.microsoftonline.com/${msContext.user.tenant.id}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
+        return;
+      }
+    }
+
+    setIsTeacher(queryParams.get("userRole"));
+  }, [msContext]);
   
   const params = {
     assignmentId: queryParams.get("assignmentId"),
