@@ -166,7 +166,7 @@ const MsTeamActivityLaunchScreen = (props) => {
           activityId,
           activeCourse,
           submissionId: paramObj.submissionId,
-          attemptId: 'dsifhksdoifgshodfh',
+          attemptId: Date.now(),
           studentId: context.user.id,
           classworkId: paramObj.classId,
           courseId: paramObj.assignmentId,
