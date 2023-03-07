@@ -25,6 +25,8 @@ function TeamsPage(props) {
   const [alertCheck, setAlertCheck] = useState(false);
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -64,7 +66,7 @@ function TeamsPage(props) {
   return (
     <>
       <div className="teams-page">
-        <div className="content">
+        <div className={`content ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
           <div className="inner-content">
             {overview && <div className="organization-name">{activeOrganization?.name}</div>}
             <div>

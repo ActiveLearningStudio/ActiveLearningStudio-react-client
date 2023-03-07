@@ -8,6 +8,8 @@ export default global.config = {
   gapiClientId: window.__RUNTIME_CONFIG__?.REACT_APP_GAPI_CLIENT_ID,
   tsugiBaseUrl: window.__RUNTIME_CONFIG__?.REACT_APP_TSUGI_SERVER_URL,
   domainUrl: window.__RUNTIME_CONFIG__?.REACT_DOMAIN_URL,
+  teamsTenantId: window.__RUNTIME_CONFIG__?.REACT_MS_TENANT_ID,
+  teamsClientId: window.__RUNTIME_CONFIG__?.REACT_MS_CLIENT_ID,
 
   // Safelearn
   safeLearnAuthUrl: window.__RUNTIME_CONFIG__?.REACT_APP_SAFELEARN_AUTH,

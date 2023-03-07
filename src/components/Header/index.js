@@ -7,6 +7,7 @@ import { Dropdown } from 'react-bootstrap';
 
 import { SHOW_HELP } from 'store/actionTypes';
 import { logoutAction } from 'store/actions/auth';
+import { toggleSideBar } from 'store/actions/msTeams';
 import { Event } from 'trackers/ga';
 
 import HeaderNotification from './notification';
@@ -18,24 +19,36 @@ import HelpSvg from 'iconLibrary/header/HelpSvg';
 import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
 import ChangePasswordMdSvg from 'iconLibrary/header/ChangePasswordMdSvg';
 import LogoutMdSvg from 'iconLibrary/header/LogoutMdSvg';
+import HeaderHambergSvg from 'iconLibrary/header/HeaderHambergSvg';
 import Forum from 'iconLibrary/header/Forum';
 import Community from 'iconLibrary/header/Community';
 import Group from 'iconLibrary/header/Group';
 function Header(props) {
-  const { logout } = props;
+  const { logout, toggleMenuSideBar } = props;
   const dispatch = useDispatch();
   const stateHeader = useSelector((state) => state.organization);
   const { user } = useSelector((state) => state.auth);
   const { currentOrganization } = stateHeader;
   const [primaryColor, setPrimaryColor] = useState();
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   useEffect(() => {
     const primaryColorFunction = getGlobalColor('--main-primary-color');
     setPrimaryColor(primaryColorFunction);
   }, [currentOrganization]);
+
+  // const toggleSideBar = () =>{
+  //   console.log(user?.lms);
+  //   console.log(hideShowSideBar);
+  //     setHideShowSideBar(!hideShowSideBar)
+  // }
   return (
     <header>
       <div className="top-header flex-div align-items-center">
         <div className="group-search-logo">
+          {isMsTeam == true &&
+            <a href='#' style={{marginRight:"12px"}} onClick={()=>toggleMenuSideBar(!hideShowSideBar)} className={`${hideShowSideBar == false ? 'expand-hamberg' : ''}`}><HeaderHambergSvg primaryColor={primaryColor} /></a>
+          }
           <div className="tophd_left">
             <Link to={`/org/${stateHeader?.currentOrganization?.domain}`} className="top_logo">
               <div
@@ -181,6 +194,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logoutAction()),
+  toggleMenuSideBar: (action) => dispatch(toggleSideBar(action)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

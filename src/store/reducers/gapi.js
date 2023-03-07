@@ -118,7 +118,7 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         return {
           ...state,
           outcomeSummary: false,
-          summaryError: 'The outcome data for this summary is still being processed. Please try again later.',
+          summaryError: 'The outcome data for this summary is still being processed or the activity has not been submitted. Please try again later.',
         };
       }
 

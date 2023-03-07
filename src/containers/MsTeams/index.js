@@ -1,6 +1,10 @@
 import { app } from '@microsoft/teams-js';
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
+import logo from 'assets/images/login_logo.svg';
+import config from 'config';
+import './style.scss';
 
 const MsTeams = () => {
   const [msContext, setMsContext] = useState(null);
@@ -8,6 +12,7 @@ const MsTeams = () => {
   const lmsUrl = 'https%3A%2F%2Fteams.microsoft.com';
   const [ltiClientId, setLtiClientId] = useState(null);
   const [redirectUrl, setRedirectUrl] = useState(null);
+  const [showLanding, setShowLanding] = useState(false);
 
   // Get app context and auth token
   useEffect(() => {
@@ -26,29 +31,63 @@ const MsTeams = () => {
       return;
     }
 
-    setLtiClientId(msContext?.user.tenant.id);
+    // When subPageId is empty, we're not creating an assignment so we
+    if (msContext.page.frameContext === 'settings' && msContext.page.subPageId === '') {
+      setShowLanding(true);
+      return;
+    }
+
+    setLtiClientId(config.teamsClientId);
     const params = {
       user_email: msContext.user.userPrincipalName,
-      lti_client_id: msContext.user.tenant.id,
+      lti_client_id: config.teamsClientId,
       api_domain_url: 'teams.microsoft.com',
       course_name: msContext.team.displayName,
       course_id: msContext.team.groupId,
       platform: 'MS Teams',
     };
     setRedirectUrl(new URLSearchParams(params).toString());
-    console.log('context: ', msContext);
   }, [msContext]);
 
+  const handleAddTabButton = () => {
+    setLtiClientId(config.teamsClientId);
+    const params = {
+      user_email: msContext.user.userPrincipalName,
+      lti_client_id: config.teamsClientId,
+      api_domain_url: 'teams.microsoft.com',
+      course_name: msContext.team.displayName,
+      course_id: msContext.team.groupId,
+      platform: 'MS Teams',
+    };
+    setRedirectUrl(new URLSearchParams(params).toString());
+  };
+
   return (
-    // eslint-disable-next-line object-curly-newline
-    msContext && redirectUrl !== null ? (
-      <Redirect
-        to={{
-          pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}`,
-          search: `?${redirectUrl}`,
-        }}
-      />
-    ) : error
+    <>
+      {msContext && redirectUrl !== null && (
+        <Redirect
+          to={{
+            pathname: `/lti/content/${lmsUrl}/${ltiClientId}/${msContext.team.groupId}`,
+            search: `?${redirectUrl}`,
+          }}
+        />
+      )}
+
+      {error && (
+        <Alert className="alert" variant="danger">
+          {error}
+        </Alert>
+      )}
+
+      {showLanding && (
+        <div className="after-install-message">
+          <img src={logo} alt="Curriki Studio Logo" />
+          <h2>You have successfully installed CurrikiStudio.</h2>
+          <p>You can continue to add a team tab or close this dialog and proceed to assignment creation.</p>
+          <button type="button" className="btn btn-primary" onClick={handleAddTabButton}>Add Tab</button>
+        </div>
+      )}
+    </>
   );
 };
 

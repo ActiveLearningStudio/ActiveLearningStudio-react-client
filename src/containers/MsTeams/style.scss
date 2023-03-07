@@ -1,0 +1,28 @@
+body {
+  background-color: white;
+}
+
+.main-logo {
+  text-align: center;
+}
+
+.after-install-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 45%;
+  }
+
+  h2 {
+    color: black;
+    font-size: x-large;
+    margin-top: 2em;
+  }
+  
+  button {
+    width: 8em;
+    background-color: #5B5FC7;
+  }
+}
