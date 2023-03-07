@@ -48,10 +48,11 @@ function CanvasLtiSSO(props) {
             }
           })
           .catch((err) => {
+            const error = Array.isArray(err.errors) ? err.errors[0] : err;
             Swal.fire({
               icon: 'error',
               title: 'Failed to login!',
-              html: Array.isArray(err.errors) ? err.errors[0] : err,
+              html: `<p>${error}</p><p>Please contact support at <a href="https://www.currikistudio.org/" target="_blank">Currikistudio.org</a></p>`,
             });
           });
       }
