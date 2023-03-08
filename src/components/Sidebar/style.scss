@@ -376,7 +376,23 @@ aside {
   .activeLink {
     background-color: #f1f1f1;
   }
+  .msteam-activeLink {
+    background-color: #E5EEFF;
+  }
   a:first-child .row-sidebar:first-child {
     border-top: none !important;
+  }
+}
+
+.msteam-sidebar-menu-item {
+  flex-direction: row !important;
+  gap: 16px;
+  padding: 10px 10px !important;
+  border-radius: 4px;
+  border-top: unset !important;
+}
+.sidebar-all {
+  div.sidebar-headings.msteam-sidebar-text-color {
+    color: #515151 !important;
   }
 }

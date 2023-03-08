@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 // C-CSS-start
 .container-fluid {
@@ -86,7 +86,7 @@
     color: #fff !important;
 
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -155,8 +155,12 @@
   //   margin-bottom: 65px;
   // }
   .content-wrapper {
-    margin-left: 136px !important;
+    margin-left: 136px;
     padding: 25px;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
   }
   .inner-content {
     background: $white;
@@ -286,7 +290,7 @@
           input {
             display: none;
             &:checked + span {
-              background-image: url('../../assets/images/svg/tick_custome_checkoutbox_white.svg');
+              background-image: url("../../assets/images/svg/tick_custome_checkoutbox_white.svg");
               background-color: $curriki-main-blue;
             }
           }
@@ -512,7 +516,7 @@
             width: 50%;
             margin-right: 8px;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -540,7 +544,7 @@
             flex-direction: column;
             width: 50%;
             span {
-              font-family: 'Open sans';
+              font-family: "Open sans";
               font-style: normal;
               font-weight: normal;
               font-size: 12px;
@@ -601,7 +605,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -625,7 +629,7 @@
               span {
                 display: flex;
                 align-items: center;
-                font-family: 'Open Sans';
+                font-family: "Open Sans";
                 font-style: normal;
                 font-weight: normal;
                 font-size: 14px;
@@ -849,6 +853,10 @@
       border: none !important;
       color: $curriki-main-blueb3 !important;
       border-bottom: 4px solid $curriki-main-blueb3 !important;
+    }
+    .supported-vimeo-video-format {
+      font-weight: 700 !important;
+      margin-right: 6px;
     }
   }
   .add-video-layout-formik {
@@ -1293,7 +1301,7 @@
       padding-left: 16px;
       padding-right: 60px;
 
-      font-family: 'Open Sans', sans-serif;
+      font-family: "Open Sans", sans-serif;
 
       input {
         border: none;
@@ -1359,7 +1367,10 @@
   }
 }
 
-span[x-placement='left-end'] {
+span[x-placement="left-end"] {
   z-index: 1 !important;
   top: 5px !important;
 }
+  .expend-content-menu{
+    margin-left: unset !important;
+  }

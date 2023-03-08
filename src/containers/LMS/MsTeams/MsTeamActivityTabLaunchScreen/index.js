@@ -102,18 +102,25 @@ const MsTeamActivityLaunchScreen = (props) => {
     });
   };
 
+  const generateRandomNumber = () => {
+    const number = 100000 + Math.floor(Math.random() * 900000);
+    console.log(number)
+    return number;
+  }
+
   // Init
   useEffect(() => {
+    console.log('param Obj: ', typeof paramObj === 'undefined');
     window.scrollTo(0, 0);
     const params = new URL(window.location.href).searchParams;
     // If we're in speedgrader, redirect to summary
     // if (params.has('view') && params.get('view') === 'SpeedGrader') {
-    if (paramObj.mtAssignmentStatus == 'submitted' || (params.has('view') && params.get('view') === 'SpeedGrader')) {
+    if (typeof paramObj !== 'undefined' && paramObj.mtAssignmentStatus == 'submitted' || (params.has('view') && params.get('view') === 'SpeedGrader')) {
       history.push(`/msteam/summary/${paramObj.classId}/${activityId}/${paramObj.submissionId}`);
       return;
     }
 
-    loadH5pSettings(activityId, context.user.id, paramObj.submissionId);
+    loadH5pSettings(activityId, context.user.id, typeof paramObj === 'undefined' ? generateRandomNumber() : paramObj.submissionId);
   }, [activityId]);
 
   // Load H5P core
@@ -165,11 +172,11 @@ const MsTeamActivityLaunchScreen = (props) => {
           path: match.path,
           activityId,
           activeCourse,
-          submissionId: paramObj.submissionId,
-          attemptId: Date.now(),
+          submissionId: typeof paramObj === 'undefined' ? generateRandomNumber() : paramObj.submissionId,
+          attemptId: generateRandomNumber(),
           studentId: context.user.id,
-          classworkId: paramObj.classId,
-          courseId: paramObj.assignmentId,
+          classworkId: typeof paramObj === 'undefined' ? generateRandomNumber() : paramObj.classId,
+          courseId: typeof paramObj === 'undefined' ? generateRandomNumber() : paramObj.assignmentId,
           auth: context.user.id,
           tool_platform: 'MS Teams',
           homepage: 'https://teams.microsoft.com'
@@ -184,7 +191,7 @@ const MsTeamActivityLaunchScreen = (props) => {
         if (h5pSettings?.organization?.api_key) {
           sendScreenshot(h5pSettings.organization, xapiData, h5pSettings.activity.title, context.user.displayName);
         }
-        if(paramObj.userRole == 'student'){
+        if(typeof paramObj !== 'undefined' && paramObj.userRole == 'student'){
           const h5pCurrentInstance = this;
           // Ask the user if he wants to turn-in the work to Teams
           if (event.data.statement.verb.display['en-US'] === 'submitted-curriki') {

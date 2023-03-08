@@ -1,25 +1,34 @@
 /*eslint-disable*/
-import React, { useState, useEffect, useRef } from 'react';
-import HeadingText from 'utils/HeadingText/headingtext';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
-import Tabs from 'utils/Tabs/tabs';
-import Buttons from 'utils/Buttons/buttons';
-import { Formik } from 'formik';
-import HeadingThree from 'utils/HeadingThree/headingthree';
-import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import UploadImageV2 from 'utils/uploadimagev2/uploadimagev2';
-import { faAngleDown, faAngleUp, faExclamationCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import BackButton from '../../../assets/images/left-arrow.svg';
-import UploadFile from 'utils/uploadselectfile/uploadfile';
-import { useSelector, useDispatch } from 'react-redux';
-import { editResourceMetaDataAction } from 'store/actions/resource';
-import * as actionTypes from 'store/actionTypes';
-import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
-import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
+import React, { useState, useEffect, useRef } from "react";
+import HeadingText from "utils/HeadingText/headingtext";
+import HeadingTwo from "utils/HeadingTwo/headingtwo";
+import Tabs from "utils/Tabs/tabs";
+import Buttons from "utils/Buttons/buttons";
+import { Formik } from "formik";
+import HeadingThree from "utils/HeadingThree/headingthree";
+import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
+import {
+  faAngleDown,
+  faAngleUp,
+  faExclamationCircle,
+  faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import BackButton from "../../../assets/images/left-arrow.svg";
+import UploadFile from "utils/uploadselectfile/uploadfile";
+import { useSelector, useDispatch } from "react-redux";
+import { editResourceMetaDataAction } from "store/actions/resource";
+import * as actionTypes from "store/actionTypes";
+import {
+  getSubjects,
+  getEducationLevel,
+  getAuthorTag,
+} from "store/actions/admin";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import OverlayTriggerPop from "utils/OverlayTiggerPop/overlaytiggerpop";
+import BackToSmSvg from "iconLibrary/mainContainer/BackToSmSvg";
 
 // const withOutExplore = [
 //   "Interactive Video",
@@ -30,33 +39,58 @@ import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
 // ];
 
 const AddActivity = (props) => {
-  const { setActivityMethod, changeScreenHandler, setUploadImageStatus, activtyMethod, activityPreview, redirecttoactivity, fullWidth } = props;
-  const { screenSelectionType, layout, selectedLayout, activity, singleLayout } = useSelector((state) => state.myactivities);
+  const {
+    setActivityMethod,
+    changeScreenHandler,
+    setUploadImageStatus,
+    activtyMethod,
+    activityPreview,
+    redirecttoactivity,
+    fullWidth,
+  } = props;
+  const {
+    screenSelectionType,
+    layout,
+    selectedLayout,
+    activity,
+    singleLayout,
+  } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
   const [upload, setupload] = useState(false);
-  const [activeRadio, setActiveRadio] = useState('');
+  const [activeRadio, setActiveRadio] = useState("");
   const organization = useSelector((state) => state.organization);
-  const activityLayouts = useSelector((state) => state.myactivities.layout);
+  const activityLayouts = useSelector(
+    (state) => state.myactivities.layout
+  );
 
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();
   const [existingActivity, setExistingActivity] = useState(false);
-  const [formData, setFormData] = useState('');
+  const [formData, setFormData] = useState("");
   const [subjects, setSubjects] = useState(null);
   const [authorTags, setAuthorTags] = useState(null);
   const [educationLevels, setEducationLevels] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [
+    selectedEducationLevel,
+    setSelectedEducationLevel,
+  ] = useState(null);
   const [exploreCheck, setExploreCheck] = useState(true);
-  const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
+  const [showSmythsonianModal, setshowSmythsonianModal] = useState(
+    false
+  );
   useEffect(() => {
     // Check if selectedLayout is selected from explore or not
     setExploreCheck(true);
 
-    if (activityLayouts?.find((item) => item.title === selectedLayout.title)) {
+    if (
+      activityLayouts?.find(
+        (item) => item.title === selectedLayout.title
+      )
+    ) {
       setExploreCheck(false);
     }
   }, [selectedLayout]);
@@ -74,7 +108,9 @@ const AddActivity = (props) => {
 
   useEffect(() => {
     if (!subjects) {
-      const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
+      const result_sub = dispatch(
+        getSubjects(organization?.activeOrganization?.id)
+      );
       result_sub.then((data) => {
         let subj_array = [];
         data?.data.map((subject) => {
@@ -88,7 +124,9 @@ const AddActivity = (props) => {
 
   useEffect(() => {
     if (!educationLevels) {
-      const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
+      const result_edu = dispatch(
+        getEducationLevel(organization?.activeOrganization?.id)
+      );
       result_edu.then((data) => {
         let edu_array = [];
         data?.data.map((edu_lvl) => {
@@ -102,7 +140,9 @@ const AddActivity = (props) => {
 
   useEffect(() => {
     if (!authorTags) {
-      const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
+      const result_tag = dispatch(
+        getAuthorTag(organization?.activeOrganization?.id)
+      );
       result_tag.then((data) => {
         let tag_array = [];
         data?.data.map((tag) => {
@@ -116,16 +156,28 @@ const AddActivity = (props) => {
 
   useEffect(() => {
     if (activity?.subjects && !selectedSubjects) {
-      let output = subjects?.filter((obj) => formatApiData(activity?.subjects).indexOf(obj.value) !== -1);
+      let output = subjects?.filter(
+        (obj) =>
+          formatApiData(activity?.subjects).indexOf(obj.value) !== -1
+      );
       setSelectedSubjects(output);
     }
     if (activity?.author_tags && !selecteAuthorTags) {
-      let output = authorTags?.filter((obj) => formatApiData(activity?.author_tags).indexOf(obj.value) !== -1);
+      let output = authorTags?.filter(
+        (obj) =>
+          formatApiData(activity?.author_tags).indexOf(obj.value) !==
+          -1
+      );
       setSelecteAuthorTags(output);
     }
 
     if (activity?.education_levels && !selectedEducationLevel) {
-      let output = educationLevels?.filter((obj) => formatApiData(activity?.education_levels).indexOf(obj.value) !== -1);
+      let output = educationLevels?.filter(
+        (obj) =>
+          formatApiData(activity?.education_levels).indexOf(
+            obj.value
+          ) !== -1
+      );
       setSelectedEducationLevel(output);
     }
   });
@@ -136,14 +188,14 @@ const AddActivity = (props) => {
   }, [selectedLayout]);
   useEffect(() => {
     if (activity && setActivityMethod) {
-      setActivityMethod('create');
+      setActivityMethod("create");
     }
   }, [activity]);
   successMessage &&
     setInterval(() => {
       setSuccessMessage(false);
     }, 5000);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <>
       <PreviewLayoutModel
@@ -159,9 +211,12 @@ const AddActivity = (props) => {
         fullWidth={fullWidth}
       />
       <div className="add-activity-form">
-        {activtyMethod === 'upload' ? (
+        {activtyMethod === "upload" ? (
           <div className="add-activity-tabs">
-            <Tabs text="1. Describe and upload activity" tabActive={true} />
+            <Tabs
+              text="1. Describe and upload activity"
+              tabActive={true}
+            />
           </div>
         ) : (
           <div className="add-activity-tabs">
@@ -173,8 +228,16 @@ const AddActivity = (props) => {
                   counter++;
                   return (
                     <>
-                      <Tabs text="2. Describe and  create Activity" className="ml-10" tabActive={true} />
-                      <Tabs text="3. Add interactions" className="ml-10" tabActive={false} />
+                      <Tabs
+                        text="2. Describe and  create Activity"
+                        className="ml-10"
+                        tabActive={true}
+                      />
+                      <Tabs
+                        text="3. Add interactions"
+                        className="ml-10"
+                        tabActive={false}
+                      />
                     </>
                   );
                 }
@@ -182,8 +245,16 @@ const AddActivity = (props) => {
             }
             {counter === 0 && (
               <>
-                {/* <Tabs text="2. Select activity" className="ml-10" tabActive={true} /> */}
-                <Tabs text="2. Describe and Create Activity" className="ml-10" tabActive={true} />
+                <Tabs
+                  text="2. Describe and  create Activity"
+                  className="ml-10"
+                  tabActive={true}
+                />
+                <Tabs
+                  text="3. Add interactions"
+                  className="ml-10"
+                  tabActive={false}
+                />
               </>
             )}
           </div>
@@ -193,18 +264,26 @@ const AddActivity = (props) => {
           <div className="add-activity-title-select upload-back-button">
             <div className="add-activity-title ">
               <div>
-                <HeadingTwo text={activtyMethod === 'upload' ? 'Upload activity' : title} color="#084892" className="add_activity_title_h2_style" />
+                <HeadingTwo
+                  text={
+                    activtyMethod === "upload"
+                      ? "Upload activity"
+                      : title
+                  }
+                  color="#084892"
+                  className="add_activity_title_h2_style"
+                />
               </div>
             </div>
             <div
               className="back-button"
               id="back-button-none-bg"
               onClick={() => {
-                changeScreenHandler('layout', 'create');
+                changeScreenHandler("layout", "create");
               }}
             >
               <BackToSmSvg primaryColor={primaryColor} />
-              <p style={{ marginLeft: '8px' }}>Cancel</p>
+              <p style={{ marginLeft: "8px" }}>Cancel</p>
             </div>
             {/* {activtyMethod !== 'upload' && singleLayout === null && (
               <div className="activity-title-change-layout">
@@ -263,21 +342,23 @@ const AddActivity = (props) => {
           <div className="add-activity-layout-formik">
             <Formik
               initialValues={{
-                author_tag_id: selecteAuthorTags || '',
-                education_level_id: selectedEducationLevel || '',
-                subject_id: selectedSubjects || '',
-                thumb_url: activity?.thumb_url || 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
-                title: activity?.title || '',
-                description: activity?.description || '',
+                author_tag_id: selecteAuthorTags || "",
+                education_level_id: selectedEducationLevel || "",
+                subject_id: selectedSubjects || "",
+                thumb_url:
+                  activity?.thumb_url ||
+                  "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
+                title: activity?.title || "",
+                description: activity?.description || "",
               }}
               enableReinitialize
               innerRef={formRef}
               validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = 'Required';
+                  errors.title = "Required";
                 } else if (values.title.length > 255) {
-                  errors.title = 'Length should be less then 255';
+                  errors.title = "Length should be less then 255";
                 }
 
                 return errors;
@@ -304,12 +385,22 @@ const AddActivity = (props) => {
                   }}
                 >
                   {/* <h4 className="interactive-video-heading-two">Describe {exploreCheck ? 'Activity' : 'layout'}</h4> */}
-                  <h4 className="interactive-video-heading-two">Activity Details</h4>
+                  <h4 className="interactive-video-heading-two">
+                    Activity Details
+                  </h4>
                   <div className="layout-title-formik-textField">
                     <div className="d-flex">
-                      <HeadingThree text="Title" color="#515151" className="textField-title" />
-                      <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
-                        Used for searching, reports and copyright information
+                      <HeadingThree
+                        text="Title"
+                        color="#515151"
+                        className="textField-title"
+                      />
+                      <OverlayTriggerPop
+                        showMessage={"right"}
+                        icon={faExclamationCircle}
+                      >
+                        Used for searching, reports and copyright
+                        information
                       </OverlayTriggerPop>
                     </div>
                     {/* <HeadingText text="Used for searching, reports and copyright information" color="#515151" className="textField-detailText" /> */}
@@ -317,12 +408,22 @@ const AddActivity = (props) => {
                       type="text"
                       name="title"
                       // placeholder="Give your activity a name..."
-                      placeholder={organization?.activeOrganization?.activity_title_placeholder}
+                      placeholder={
+                        organization?.activeOrganization
+                          ?.activity_title_placeholder
+                      }
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={parser.parseFromString(values.title, 'text/html').body.textContent}
+                      value={
+                        parser.parseFromString(
+                          values.title,
+                          "text/html"
+                        ).body.textContent
+                      }
                     />
-                    <div style={{ color: 'red' }}>{errors.title && touched.title && errors.title}</div>
+                    <div style={{ color: "red" }}>
+                      {errors.title && touched.title && errors.title}
+                    </div>
                   </div>
                   <div className="dec-title-formik-textField">
                     <span>Description</span>
@@ -336,41 +437,53 @@ const AddActivity = (props) => {
                       value={values.description}
                     />
                   </div>
-                  <div className="layout-formik-select" id="layout-formik-select-id-btn">
+                  <div
+                    className="layout-formik-select"
+                    id="layout-formik-select-id-btn"
+                  >
                     <div className="formik-select mr-16">
-                      <HeadingText text="Subject" className="formik-select-title" />
+                      <HeadingText
+                        text="Subject"
+                        className="formik-select-title"
+                      />
                       <ReactMultiSelectCheckboxes
                         name="subject_id"
                         hideSearch
                         options={subjects}
                         onChange={(e) => {
-                          setFieldValue('subject_id', e);
+                          setFieldValue("subject_id", e);
                         }}
                         value={values.subject_id}
                       />
                     </div>
 
                     <div className="formik-select mr-16">
-                      <HeadingText text="Education Level" className="formik-select-title" />
+                      <HeadingText
+                        text="Education Level"
+                        className="formik-select-title"
+                      />
                       <ReactMultiSelectCheckboxes
                         name="education_level_id"
                         hideSearch
                         options={educationLevels}
                         onChange={(e) => {
-                          setFieldValue('education_level_id', e);
+                          setFieldValue("education_level_id", e);
                         }}
                         value={values.education_level_id}
                       />
                     </div>
 
                     <div className="formik-select">
-                      <HeadingText text="Author Tags" className="formik-select-title" />
+                      <HeadingText
+                        text="Author Tags"
+                        className="formik-select-title"
+                      />
                       <ReactMultiSelectCheckboxes
                         name="author_tag_id"
                         hideSearch
                         options={authorTags}
                         onChange={(e) => {
-                          setFieldValue('author_tag_id', e);
+                          setFieldValue("author_tag_id", e);
                         }}
                         value={values.author_tag_id}
                       />
@@ -382,7 +495,9 @@ const AddActivity = (props) => {
                       setUploadImageStatus={setUploadImageStatus}
                       thumb_url={activity?.thumb_url}
                       containerType="Activity"
-                      setshowSmythsonianModal={setshowSmythsonianModal}
+                      setshowSmythsonianModal={
+                        setshowSmythsonianModal
+                      }
                     />
                   </div>
                 </form>
@@ -409,7 +524,7 @@ const AddActivity = (props) => {
               color="#515151"
             />
             <div className="d-flex">
-              {activtyMethod !== 'upload' && (
+              {activtyMethod !== "upload" && (
                 <div className="add-activity-btns">
                   <Buttons
                     text="Open Editor"
@@ -418,7 +533,10 @@ const AddActivity = (props) => {
                     height="35px"
                     onClick={() => {
                       formRef.current.handleSubmit();
-                      if (formRef.current.values.title && formRef.current.values.title.length < 255) {
+                      if (
+                        formRef.current.values.title &&
+                        formRef.current.values.title.length < 255
+                      ) {
                         if (!showSmythsonianModal) {
                           setModalShow(true);
                         }
@@ -438,8 +556,16 @@ const AddActivity = (props) => {
                     height="35px"
                     onClick={async () => {
                       await formRef.current.handleSubmit();
-                      if (formRef.current.values.title && formRef.current.values.title.length < 255) {
-                        dispatch(editResourceMetaDataAction(activity, formRef.current.values));
+                      if (
+                        formRef.current.values.title &&
+                        formRef.current.values.title.length < 255
+                      ) {
+                        dispatch(
+                          editResourceMetaDataAction(
+                            activity,
+                            formRef.current.values
+                          )
+                        );
                       }
                     }}
                     hover={true}
@@ -449,16 +575,26 @@ const AddActivity = (props) => {
               )}
             </div>
 
-            {activtyMethod === 'upload' && (
+            {activtyMethod === "upload" && (
               <div className="existing-activity-dialog">
-                <UploadFile metadata={formData} formRef={formRef} activityPreview={activityPreview} />
+                <UploadFile
+                  metadata={formData}
+                  formRef={formRef}
+                  activityPreview={activityPreview}
+                />
               </div>
             )}
 
             {successMessage && (
               <div className="successMessage">
-                <HeadingThree text="Changes saved succesfully!" color="#12B347" />
-                <HeadingText text="To continue editing Open the editor again." color="#12B347" />
+                <HeadingThree
+                  text="Changes saved succesfully!"
+                  color="#12B347"
+                />
+                <HeadingText
+                  text="To continue editing Open the editor again."
+                  color="#12B347"
+                />
               </div>
             )}
           </div>
