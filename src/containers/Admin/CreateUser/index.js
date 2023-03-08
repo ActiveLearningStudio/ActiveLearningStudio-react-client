@@ -1,41 +1,50 @@
-import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal, Button } from 'react-bootstrap';
-import EmailCheckForm from 'containers/Admin/CreateUser/EmailCheckForm';
-import CreateUserForm from 'containers/Admin/formik/createuser';
-import { removeActiveAdminForm } from 'store/actions/admin';
-import './style.scss';
+/* eslint-disable */
+import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Modal, Button } from "react-bootstrap";
+import EmailCheckForm from "containers/Admin/CreateUser/EmailCheckForm";
+import CreateUserForm from "containers/Admin/formik/createuser";
+import { removeActiveAdminForm } from "store/actions/admin";
+import "./style.scss";
 
 const CreateUser = (props) => {
   const { mode } = props;
   const dispatch = useDispatch();
-  const [step, setStep] = useState('emailCheck');
+  const [step, setStep] = useState("emailCheck");
   const [checkedEmail, setCheckedEmail] = useState(null);
   const [existingUser, setExistingUser] = useState(false);
   const handleEmailChecked = (result, email) => {
-    if (result === 'new-user') {
+    alert(result);
+    if (result === "new-user") {
       setCheckedEmail(email);
-      setStep('createUser');
+      setStep("createUser");
       return;
     }
-    if (result === 'existing-user') {
+    if (result === "existing-user") {
       setCheckedEmail(email);
       setExistingUser(true);
-      setStep('createUser');
+      setStep("createUser");
       return;
     }
 
-    if (result === 'added-to-org') setStep('done');
+    if (result === "added-to-org") setStep("done");
   };
 
   return (
     <>
-      {mode === 'create_user' && step === 'emailCheck' && (
-        <Modal className="create-user-modal" show onHide={() => dispatch(removeActiveAdminForm())}>
-          <Modal.Header className="create-user-modal-header" closeButton>
+      {mode === "create_user" && step === "emailCheck" && (
+        <Modal
+          className="create-user-modal"
+          show
+          onHide={() => dispatch(removeActiveAdminForm())}
+        >
+          <Modal.Header
+            className="create-user-modal-header"
+            closeButton
+          >
             <Modal.Title>Add User</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -43,20 +52,34 @@ const CreateUser = (props) => {
           </Modal.Body>
         </Modal>
       )}
-      {mode === 'create_user' && step === 'createUser' && checkedEmail && (
-        <div className="form-new-popup-admin">
-          <div className="inner-form-content">
-            <CreateUserForm checkedEmail={checkedEmail} existingUser={existingUser} />
+      {mode === "create_user" &&
+        step === "createUser" &&
+        checkedEmail && (
+          <div className="form-new-popup-admin">
+            <div className="inner-form-content">
+              <CreateUserForm
+                checkedEmail={checkedEmail}
+                existingUser={existingUser}
+              />
+            </div>
           </div>
-        </div>
-      )}
-      {mode === 'create_user' && step === 'done' && (
-        <Modal className="create-user-done" show onHide={() => dispatch(removeActiveAdminForm())}>
+        )}
+      {mode === "create_user" && step === "done" && (
+        <Modal
+          className="create-user-done"
+          show
+          onHide={() => dispatch(removeActiveAdminForm())}
+        >
           <Modal.Header closeButton />
           <Modal.Body className="text-center">
             <FontAwesomeIcon icon="check-circle" className="mr-2" />
             <h1>User added successfully</h1>
-            <Button variant="primary" onClick={() => dispatch(removeActiveAdminForm())}>Close</Button>
+            <Button
+              variant="primary"
+              onClick={() => dispatch(removeActiveAdminForm())}
+            >
+              Close
+            </Button>
           </Modal.Body>
         </Modal>
       )}
