@@ -149,7 +149,9 @@ function SearchInterface(props) {
   const [educationLevels, setEducationLevels] = useState([]);
   const [indClone, setIndClone] = useState(false);
   const [isLoader, setisLoader] = useState(false);
-  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const hideShowSideBar = useSelector(
+    (state) => state.msTeams.toggle_sidebar
+  );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   useEffect(() => {
@@ -210,7 +212,7 @@ function SearchInterface(props) {
   };
 
   useEffect(() => {
-    if (allState.searchResult) {
+    if (allState?.searchResult) {
       if (allState.searchResult?.length > 0) {
         setSearch(allState.searchResult);
         SetSearchQuery(allState.searchQuery);
@@ -235,7 +237,7 @@ function SearchInterface(props) {
   }, [
     allState.searchMeta,
     allState.searchQuery,
-    allState.searchResult,
+    allState?.searchResult,
   ]);
 
   useEffect(() => {
@@ -326,7 +328,12 @@ function SearchInterface(props) {
   return (
     <>
       <div>
-        <div className={`${!fromTeam && "search-wrapper"} ${hideShowSideBar == true ? 'expend-content-menu' : ''}`}  style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
+        <div
+          className={`${!fromTeam && "search-wrapper"} ${
+            hideShowSideBar == true ? "expend-content-menu" : ""
+          }`}
+          style={{ marginLeft: isMsTeam ? "223px" : "136px" }}
+        >
           <MyVerticallyCenteredModal
             ind={indClone}
             searchView={true}
@@ -375,21 +382,86 @@ function SearchInterface(props) {
 
                 <Tabs
                   className="main-tabs"
-                  onSelect={(eventKey) => {
+                  onSelect={async (eventKey) => {
+                    setisLoader(true);
                     if (eventKey === "Independent activities") {
                       setActiveModel("Independent activities");
+                      const searchData = {
+                        query: searchInput?.trim(),
+                        subjectArray: activeSubject,
+                        gradeArray: activeEducation,
+                        authorTagsArray: activeAuthorTag,
+                        authors: authorName || undefined,
+                        standardArray: activeType,
+                        from: 0,
+                        size: 20,
+                        no_words: noWords || undefined,
+                      };
+
+                      setSearch(null);
+                      await dispatch(
+                        searchIndependentActivitiesAction(
+                          searchData,
+                          "showcase_activities"
+                        )
+                      );
                     } else {
                       setActiveModel("");
+                      // if (allState.searchType === "Projects") {
+                      if (
+                        activeModel === "total" ||
+                        activeModel === "Independent activities"
+                      ) {
+                        const searchData = {
+                          phrase: searchQueries?.trim(),
+                          from: 0,
+                          size: 20,
+                          type: searchType,
+                          subjectArray: activeSubject || undefined,
+                          gradeArray: activeEducation || undefined,
+                          authorTagsArray:
+                            activeAuthorTag || undefined,
+                          standardArray: activeType || undefined,
+                          author: authorName || undefined,
+                          no_words: noWords || undefined,
+                        };
+                        setSearch(null);
+                        await dispatch(
+                          simpleSearchAction(searchData)
+                        );
+                        Swal.close();
+                      } else {
+                        const searchData = {
+                          phrase: searchQueries?.trim(),
+                          from: 0,
+                          size: 20,
+                          type: searchType,
+                          model: activeModel,
+                          subjectArray: activeSubject || undefined,
+                          gradeArray: activeEducation || undefined,
+                          authorTagsArray:
+                            activeAuthorTag || undefined,
+                          standardArray: activeType || undefined,
+                          author: authorName || undefined,
+                          no_words: noWords || undefined,
+                        };
+                        setSearch(null);
+                        await dispatch(
+                          simpleSearchAction(searchData)
+                        );
+                        Swal.close();
+                      }
+                      // }
                     }
                     dispatch(setSearchTypeAction(eventKey));
-                    setSearchInput("");
+                    // setSearchInput("");
 
-                    setNoWords("");
+                    // setNoWords("");
                     setSearchType("");
-                    setSearch(null);
+                    // setSearch(null);
                     setTotalCount(0);
                     setActivePage(1);
-                    setMeta({});
+                    // setMeta({});
                     setToggleStates({
                       searchLibrary: true,
                       subject: true,
@@ -397,14 +469,14 @@ function SearchInterface(props) {
                       authorTag: false,
                       type: false,
                     });
-                    setActiveSubject([]);
-                    setActiveEducation([]);
-                    setActiveAuthorTag([]);
-                    SetAuthor([]);
+                    // setActiveSubject([]);
+                    // setActiveEducation([]);
+                    // setActiveAuthorTag([]);
+                    // SetAuthor([]);
                     Settodate([]);
                     Setfromdate([]);
                     setisLoader(false);
-                    setActiveType([]);
+                    // setActiveType([]);
                   }}
                   defaultActiveKey={
                     !fromTeam ? allState.searchType : "Projects"
@@ -751,6 +823,7 @@ function SearchInterface(props) {
                           activeKey={activetab}
                           id="uncontrolled-tab-example"
                           onSelect={async (e) => {
+                            setisLoader(true);
                             setSearch(null);
                             setActiveTab(e);
                             if (e === "total") {
