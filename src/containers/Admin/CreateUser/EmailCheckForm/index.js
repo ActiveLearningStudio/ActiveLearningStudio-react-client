@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import adminService from 'services/admin.service';
-import { setCurrentUser, removeActiveAdminForm } from 'store/actions/admin';
-import PropTypes from 'prop-types';
-import './style.scss';
+/* eslint-disable */
+import React, { useState } from "react";
+import { connect, useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
+import adminService from "services/admin.service";
+import {
+  setCurrentUser,
+  removeActiveAdminForm,
+} from "store/actions/admin";
+import PropTypes from "prop-types";
+import "./style.scss";
 
 const EmailCheckForm = (props) => {
   const { currentOrg, handleEmailChecked } = props;
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const doCheck = async () => {
     setError(null);
-    const response = await adminService.checkUserEmail(currentOrg.id, email);
+    const response = await adminService.checkUserEmail(
+      currentOrg.id,
+      email
+    );
     console.log(response);
     if (response?.message && response?.user) {
       // User exists and belongs to currentOrg
@@ -24,13 +31,13 @@ const EmailCheckForm = (props) => {
     if (response?.user) {
       // User exists but doesn't belong to currentOrg
       dispatch(setCurrentUser(response.user));
-      handleEmailChecked('existing-user', response?.user?.email);
+      handleEmailChecked("existing-user", response?.user?.email);
       return;
     }
 
     if (response?.message) {
       // User does not exist
-      handleEmailChecked('new-user', email);
+      handleEmailChecked("new-user", email);
     }
   };
 
@@ -40,22 +47,23 @@ const EmailCheckForm = (props) => {
       <div className="row">
         <div className="col">
           <div className="form-group-create">
-            <input className="form-control" type="email" name="email" onChange={(e) => setEmail(e.target.value)} />
-            {error && (
-              <div className="error">
-                {error}
-              </div>
-            )}
+            <input
+              className="form-control"
+              type="email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {error && <div className="error">{error}</div>}
           </div>
         </div>
         <div className="col text-right">
-          {error ? (
-            <button type="button" className="btn btn-primary addButton" onClick={() => dispatch(removeActiveAdminForm())}>Ok</button>
-          ) : (
-            <button type="button" className="btn btn-primary addButton" onClick={doCheck}>
-              Add User
-            </button>
-          )}
+          <button
+            type="button"
+            className="btn btn-primary addButton"
+            onClick={() => doCheck()}
+          >
+            Add User
+          </button>
         </div>
       </div>
     </div>
