@@ -600,22 +600,22 @@ export const SET_ALL_IV = "SET_ALL_IV";
  * Komodo
  */
 
-export const KOMODO_VIDEO_GET_SUCCESS = 'KOMODO_VIDEO_GET_SUCCESS';
-export const KOMODO_VIDEO_LOAD = 'KOMODO_VIDEO_LOAD';
-export const ADD_MORE_KOMODO_VIDEO = 'ADD_MORE_KOMODO_VIDEO';
+export const KOMODO_VIDEO_GET_SUCCESS = "KOMODO_VIDEO_GET_SUCCESS";
+export const KOMODO_VIDEO_LOAD = "KOMODO_VIDEO_LOAD";
+export const ADD_MORE_KOMODO_VIDEO = "ADD_MORE_KOMODO_VIDEO";
 
 /**
  * MS Teams
  */
 
- export const MT_CODE = 'MT_CODE';
- export const MT_ASSIGNMENT_ID = 'MT_ASSIGNMENT_ID';
- export const MT_CLASS_ID = 'MT_CLASS_ID';
- export const MT_VIEW = 'MT_VIEW';
- export const MT_USER_ROLE = 'MT_USER_ROLE';
- export const MT_TOKEN = 'MT_TOKEN';
- export const MT_REFRESH_TOKEN = 'MT_REFRESH_TOKEN';
- export const MT_SUBMISSION = 'MT_SUBMISSION';
- export const MT_TURNED_IN_ACTIVITY = 'MT_TURNED_IN_ACTIVITY';
- export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
- export const IS_MSTEAM = 'IS_MSTEAM';
+export const MT_CODE = "MT_CODE";
+export const MT_ASSIGNMENT_ID = "MT_ASSIGNMENT_ID";
+export const MT_CLASS_ID = "MT_CLASS_ID";
+export const MT_VIEW = "MT_VIEW";
+export const MT_USER_ROLE = "MT_USER_ROLE";
+export const MT_TOKEN = "MT_TOKEN";
+export const MT_REFRESH_TOKEN = "MT_REFRESH_TOKEN";
+export const MT_SUBMISSION = "MT_SUBMISSION";
+export const MT_TURNED_IN_ACTIVITY = "MT_TURNED_IN_ACTIVITY";
+export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+export const IS_MSTEAM = "IS_MSTEAM";
