@@ -418,7 +418,7 @@ const AddVideo = ({
                         ? videoId
                         : selectedVideoIdKaltura
                     }
-                    platformName="Youtube"
+                    platformName="Kaltura"
                     placeholder="Enter a video url"
                     setisbackHide={setisbackHide}
                   />
