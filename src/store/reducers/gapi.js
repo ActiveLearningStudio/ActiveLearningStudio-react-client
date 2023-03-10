@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   GOOGLE_CLASSROOM_LOGIN,
   GET_STUDENT_COURSES,
@@ -8,11 +9,11 @@ import {
   TURNED_IN_ACTIVITY,
   GET_SUMMARY_AUTH,
   GET_OUTCOME_SUMMARY,
-} from '../actionTypes';
+} from "../actionTypes";
 
 const defaultAuthState = () => {
-  if (localStorage.getItem('gapi')) {
-    return JSON.parse(localStorage.getItem('gapi'));
+  if (localStorage.getItem("gapi")) {
+    return JSON.parse(localStorage.getItem("gapi"));
   }
 
   return {
@@ -118,7 +119,8 @@ const gapiReducer = (state = defaultAuthState(), action) => {
         return {
           ...state,
           outcomeSummary: false,
-          summaryError: 'The outcome data for this summary is still being processed or the activity has not been submitted. Please try again later.',
+          summaryError:
+            "The outcome data for this summary is still being processed or the activity has not been submitted. Please try again later.",
         };
       }
 

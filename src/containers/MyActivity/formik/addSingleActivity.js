@@ -1,48 +1,66 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import HeadingOne from 'utils/HeadingTwo/headingtwo';
-import LayoutCard from 'utils/LayoutCard/layoutcard';
-import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import Headings from 'curriki-design-system/dist/utils/Headings/headings';
-import arrowdark from 'assets/images/arrowdark.png';
-import searchicon from 'assets/images/nteractiveactionssearch.png';
-import BackButton from '../../../assets/images/left-arrow.svg';
-import Tabs from 'utils/Tabs/tabs';
-import Buttons from 'utils/Buttons/buttons';
-import { useHistory } from 'react-router-dom';
-import { getSingleLayoutActivities, loadResourceTypesAction } from 'store/actions/resource';
-import * as actionTypes from 'store/actionTypes';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
-import SearchInputMdSvg from 'iconLibrary/mainContainer/SearchInputMdSvg';
+import HeadingOne from "utils/HeadingTwo/headingtwo";
+import LayoutCard from "utils/LayoutCard/layoutcard";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import Headings from "curriki-design-system/dist/utils/Headings/headings";
+import arrowdark from "assets/images/arrowdark.png";
+import searchicon from "assets/images/nteractiveactionssearch.png";
+import BackButton from "../../../assets/images/left-arrow.svg";
+import Tabs from "utils/Tabs/tabs";
+import Buttons from "utils/Buttons/buttons";
+import { useHistory } from "react-router-dom";
+import {
+  getSingleLayoutActivities,
+  loadResourceTypesAction,
+} from "store/actions/resource";
+import * as actionTypes from "store/actionTypes";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import BackToSmSvg from "iconLibrary/mainContainer/BackToSmSvg";
+import SearchInputMdSvg from "iconLibrary/mainContainer/SearchInputMdSvg";
 
 const ActivityLayout = (props) => {
-  const [allActivitiesSingle, setAllSingleActivities] = useState(null);
-  const { changeScreenHandler, setActiveType, setModalShow, setCurrentActivity } = props;
+  const [allActivitiesSingle, setAllSingleActivities] = useState(
+    null
+  );
+  const {
+    changeScreenHandler,
+    setActiveType,
+    setModalShow,
+    setCurrentActivity,
+  } = props;
   const history = useHistory();
-  const [layout, setLayout] = useState({ title: 'Interactive Book' });
+  const [layout, setLayout] = useState({ title: "Interactive Book" });
   const [filterData, setFilterData] = useState([]);
   const organization = useSelector((state) => state.organization);
 
   const dispatch = useDispatch();
   useEffect(() => {
     toast.dismiss();
-    toast.info('Loading Activities ...', {
-      className: 'project-loading',
+    toast.info("Loading Activities ...", {
+      className: "project-loading",
       closeOnClick: false,
       closeButton: false,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 10000,
-      icon: '',
+      icon: "",
     });
     dispatch(loadResourceTypesAction());
-    dispatch(getSingleLayoutActivities(organization?.activeOrganization?.id));
+    dispatch(
+      getSingleLayoutActivities(organization?.activeOrganization?.id)
+    );
   }, []);
-  const allActivity = useSelector((state) => state.myactivities.singleLayout);
-  const screenSelectionType = useSelector((state) => state.myactivities.screenSelectionType);
-  const allActivitytypes = useSelector((state) => state.resource.types);
+  const allActivity = useSelector(
+    (state) => state.myactivities.singleLayout
+  );
+  const screenSelectionType = useSelector(
+    (state) => state.myactivities.screenSelectionType
+  );
+  const allActivitytypes = useSelector(
+    (state) => state.resource.types
+  );
   useEffect(() => {
     setAllSingleActivities(allActivity);
     if (allActivity) {
@@ -64,26 +82,37 @@ const ActivityLayout = (props) => {
 
   useEffect(() => {
     if (filterData?.length) {
-      setAllSingleActivities(allActivity?.filter((data) => filterData.includes(data.activityType?.id)));
+      setAllSingleActivities(
+        allActivity?.filter((data) =>
+          filterData.includes(data.activityType?.id)
+        )
+      );
     } else {
       setAllSingleActivities(allActivity);
     }
   }, [filterData]);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="activity-layout-form ">
       <div className="activity-layout-tabs">
         <Tabs text="1. Select Activity" tabActive={true} />
-        <Tabs text="2. Describe and Create Activity" className="ml-10 " />
-        {/* <Tabs text="3. Create activity" className="ml-10 " /> */}
+        <Tabs
+          text="2. Describe and Create Activity"
+          className="ml-10 "
+        />
+        <Tabs text="3. Add interactions" className="ml-10 " />
       </div>
       <div className="upload-back-button">
         <div className="activity-layout-title ">
           <HeadingOne text="Select Activity" color="#084892" />
         </div>
-        <div className="back-button" id="back-button-none-bg" onClick={() => changeScreenHandler('layout')}>
+        <div
+          className="back-button"
+          id="back-button-none-bg"
+          onClick={() => changeScreenHandler("layout")}
+        >
           <BackToSmSvg primaryColor={primaryColor} />
-          <p style={{ marginLeft: '8px' }}>Cancel</p>
+          <p style={{ marginLeft: "8px" }}>Cancel</p>
         </div>
       </div>
       <div className="activity-layout-paragraph">
@@ -100,15 +129,24 @@ const ActivityLayout = (props) => {
               type="text"
               placeholder="Search activity types..."
               onChange={(e) => {
-                if (e.target.value == '') {
+                if (e.target.value == "") {
                   setAllSingleActivities(allActivity);
                 } else {
-                  setAllSingleActivities(allActivity?.filter((data) => data.title.toLowerCase().includes(e.target.value.trim().toLowerCase())));
+                  setAllSingleActivities(
+                    allActivity?.filter((data) =>
+                      data.title
+                        .toLowerCase()
+                        .includes(e.target.value.trim().toLowerCase())
+                    )
+                  );
                 }
               }}
             />
 
-            <SearchInputMdSvg primaryColor={primaryColor} className="search-icon" />
+            <SearchInputMdSvg
+              primaryColor={primaryColor}
+              className="search-icon"
+            />
           </div>
           <div class="dropdown-activity-select filter_ml_50">
             <div className="dropdown-activity-select-inner-div">
@@ -129,9 +167,16 @@ const ActivityLayout = (props) => {
                             //checked={filterData.includes(data.id)}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFilterData([...filterData, data.id]);
+                                setFilterData([
+                                  ...filterData,
+                                  data.id,
+                                ]);
                               } else {
-                                setFilterData(filterData.filter((ids) => ids !== data.id));
+                                setFilterData(
+                                  filterData.filter(
+                                    (ids) => ids !== data.id
+                                  )
+                                );
                               }
                             }}
                             type="checkbox"
@@ -156,17 +201,24 @@ const ActivityLayout = (props) => {
         />
       </div>
       <div className="layout-cards-process-btn">
-        <div className="activity-layout-cards" style={{ width: '100%' }}>
+        <div
+          className="activity-layout-cards"
+          style={{ width: "100%" }}
+        >
           {allActivitiesSingle?.length > 0 &&
             allActivitiesSingle?.map((data) => (
               <LayoutCard
                 image={data.image}
                 text={data.title}
-                className={layout?.title == data.title ? 'activity-layoutCard-active mr-3 add-card' : 'mr-3 add-card'}
+                className={
+                  layout?.title == data.title
+                    ? "activity-layoutCard-active mr-3 add-card"
+                    : "mr-3 add-card"
+                }
                 onClick={() => {
-                  if (data?.title === 'Interactive Video') {
+                  if (data?.title === "Interactive Video") {
                     setLayout(data);
-                    changeScreenHandler('addvideo');
+                    changeScreenHandler("addvideo");
                   } else {
                     setLayout(data);
                   }
@@ -188,8 +240,14 @@ const ActivityLayout = (props) => {
   );
 };
 
-const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count, screenSelectionType }) => (
-  <div className="activity-layout-btns" style={{ display: 'flex' }}>
+const ConfigButtons = ({
+  changeScreenHandler,
+  layout,
+  dispatch,
+  count,
+  screenSelectionType,
+}) => (
+  <div className="activity-layout-btns" style={{ display: "flex" }}>
     {/* <Buttons text="Back" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('layout')} hover={true} /> */}
 
     <div className="btns-margin ml-3">
@@ -200,7 +258,7 @@ const ConfigButtons = ({ changeScreenHandler, layout, dispatch, count, screenSel
         width="91px"
         height="36px"
         onClick={() => {
-          changeScreenHandler('addactivity');
+          changeScreenHandler("addactivity");
           dispatch({
             type: actionTypes.SET_SELECTED_ACTIVITY,
             payload: layout,

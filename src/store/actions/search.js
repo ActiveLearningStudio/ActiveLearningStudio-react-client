@@ -1,9 +1,15 @@
-/* eslint-disable object-curly-newline */
-import Swal from 'sweetalert2';
-import searchService from 'services/search.service';
-import resourceService from 'services/resource.service';
-import { SEARCH_REDUX, CLEAR_SEARCH, SELECT_EXISTING_ACTIVITY, RESET_EXISTING_ACTIVITY, SET_SEARCH_TYPE } from '../actionTypes';
-import store from '../index';
+/* eslint-disable  */
+import Swal from "sweetalert2";
+import searchService from "services/search.service";
+import resourceService from "services/resource.service";
+import {
+  SEARCH_REDUX,
+  CLEAR_SEARCH,
+  SELECT_EXISTING_ACTIVITY,
+  RESET_EXISTING_ACTIVITY,
+  SET_SEARCH_TYPE,
+} from "../actionTypes";
+import store from "../index";
 
 export const searchRedux = (data, searchQuery, meta) => ({
   type: SEARCH_REDUX,
@@ -61,7 +67,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       startDate: values.fromDate || undefined,
       endDate: values.toDate || undefined,
       organization_id: activeOrganization?.id,
-      searchType: 'showcase_projects',
+      searchType: "showcase_projects",
     };
   } else {
     // eslint-disable-next-line no-lonely-if
@@ -80,7 +86,7 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       startDate: values.fromDate || undefined,
       endDate: values.toDate || undefined,
       organization_id: activeOrganization?.id,
-      searchType: 'showcase_projects',
+      searchType: "showcase_projects",
     };
   }
 
@@ -91,13 +97,18 @@ export const simpleSearchAction = (values) => async (dispatch) => {
       Swal.fire(response.errors.query[0]);
     }
   } else {
-    dispatch(searchRedux(response?.data, values.phrase, response?.meta));
+    dispatch(
+      searchRedux(response?.data, values.phrase, response?.meta)
+    );
   }
 
   return response;
 };
 
-export const searchIndependentActivitiesAction = (values, searchType) => async (dispatch) => {
+export const searchIndependentActivitiesAction = (
+  values,
+  searchType
+) => async (dispatch) => {
   const centralizedState = store.getState();
   const {
     organization: { activeOrganization },
@@ -156,7 +167,10 @@ export const searchIndependentActivitiesAction = (values, searchType) => async (
     };
   }
 
-  const result = await searchService.searchIndependentActivities(searchType, sendData);
+  const result = await searchService.searchIndependentActivities(
+    searchType,
+    sendData
+  );
   dispatch(searchRedux(result?.data, values?.query, result?.meta));
   return result;
 };
@@ -190,10 +204,15 @@ export const cloneActivity = (playlistId, activityId) => {
   searchService.cloneActivity(playlistId, activityId);
 };
 
-export const existingActivitySearchGetAction = (activityId, activityType) => async (dispatch) => {
+export const existingActivitySearchGetAction = (
+  activityId,
+  activityType
+) => async (dispatch) => {
   let result = null;
-  if (activityType === 'independent') {
-    result = await resourceService.independentH5pResourceSettings(activityId);
+  if (activityType === "independent") {
+    result = await resourceService.independentH5pResourceSettings(
+      activityId
+    );
   } else {
     result = await resourceService.h5pResourceSettings(activityId);
   }
@@ -207,4 +226,6 @@ export const existingActivitySearchGetAction = (activityId, activityType) => asy
   });
 };
 
-export const existingActivitySearchResetAction = () => async (dispatch) => dispatch({ type: RESET_EXISTING_ACTIVITY });
+export const existingActivitySearchResetAction = () => async (
+  dispatch
+) => dispatch({ type: RESET_EXISTING_ACTIVITY });
