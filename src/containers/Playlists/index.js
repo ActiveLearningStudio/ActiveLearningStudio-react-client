@@ -111,6 +111,10 @@ function PlaylistsPage(props) {
   const [uploadImageStatus, setUploadImageStatus] = useState(false);
   const [projectPlaylistPublishtoCanvas, setprojectPlaylistPublishtoCanvas] = useState(false);
   const { screenState } = useSelector((s) => s.myactivities);
+  const hideShowSideBar = useSelector(
+    (state) => state.msTeams.toggle_sidebar
+  );
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   const {
     match,
@@ -546,7 +550,7 @@ function PlaylistsPage(props) {
           />
         </>
       ) : (
-        <div className={row?.id ? 'content-wrapper editprojectmodal' : 'content-wrapper'}>
+        <div className={`${hideShowSideBar == true ? "expend-content-menu" : ""} ${row?.id ? 'content-wrapper editprojectmodal' : 'content-wrapper'}`} style={{ marginLeft: isMsTeam ? "223px" : "136px" }}>
           <div className="inner-content">
             <div className="content" style={{ minHeight: '500px' }}>
               <PexelsAPI
