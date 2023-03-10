@@ -4,6 +4,10 @@
 .content-wrapper {
   margin-left: 136px;
   padding: 25px;
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
 }
 
 #board {
