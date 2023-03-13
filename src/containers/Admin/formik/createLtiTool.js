@@ -26,42 +26,23 @@ export default function CreateLtiTool(prop) {
     (state) => state.admin
   );
   useEffect(() => {
-    const filterLTIdata = orgMediaSources?.mediaSources?.filter(
-      (t) => t.name !== "My device"
-    );
-    setLtiToolTypesGroup(
-      filterLTIdata?.filter((t) => t.pivot.lti_tool_settings_status === true)
-    );
-
-    if (editMode && activeEdit?.media_source_id) {
-      const filterdata = orgMediaSources?.mediaSources?.filter(
-        (t) =>
-          t.name !== "My device" && t.pivot.lti_tool_settings_status === true
-      );
-
-      // Old-code
-      const editmodeLti = ltiToolsTypes
-        .filter((type) => {
-          if (type.id === activeEdit?.media_source_id) {
-            return type;
-          }
-        })
-        ?.concat(filterdata);
-      const uniqueIds = [];
-      const uniqueLti = editmodeLti.filter((element) => {
-        const isDuplicate = uniqueIds.includes(element.id);
-
-        if (!isDuplicate) {
-          uniqueIds.push(element.id);
-
-          return true;
-        }
-        return false;
-      });
-
-      setLtiToolTypesGroup(uniqueLti);
+    if (ltiToolsTypes?.length) {
+      setLtiToolTypesGroup([
+        ...ltiToolsTypes,
+        // {
+        //   id: 2,
+        //   name: "youtube",
+        //   created: "2023-03-08T11:09:17.000000Z",
+        //   updated_at: null,
+        //   deleted_at: null,
+        // },
+      ]);
+    } else {
+      setLtiToolTypesGroup([]);
     }
+    console.log("activeEdit", activeEdit);
   }, [ltiToolsTypes, editMode]);
+
   return (
     <div className="create-form lms-admin-form">
       <Formik
@@ -77,16 +58,22 @@ export default function CreateLtiTool(prop) {
           lti_version: editMode
             ? activeEdit?.lti_version || "LTI-1p0"
             : "LTI-1p0",
-          tool_consumer_key: editMode ? activeEdit?.tool_consumer_key : "",
-          tool_description: editMode ? activeEdit?.tool_description : "",
+          tool_consumer_key: editMode
+            ? activeEdit?.tool_consumer_key
+            : "",
+          tool_description: editMode
+            ? activeEdit?.tool_description
+            : "",
 
-          media_source_id: editMode
-            ? activeEdit?.media_source_id
+          lti_tool_type_id: editMode
+            ? activeEdit?.lti_tool_type_id
             : ltiToolsTypes.length > 0
             ? ltiToolsTypes?.["0"]?.id
             : "",
 
-          tool_secret_key: editMode ? activeEdit?.tool_secret_key : "",
+          tool_secret_key: editMode
+            ? activeEdit?.tool_secret_key
+            : "",
           organization_id: organization?.activeOrganization?.id,
           user_id: loggedUser.id,
           // user_id: editMode ? (clone ? '' : activeEdit?.user?.id) : '',
@@ -145,14 +132,18 @@ export default function CreateLtiTool(prop) {
                 type: actionTypes.LTI_TOOLS_ADD_EDIT,
                 payload: res?.data,
               });
-              console.log("values.media_source_id", values.media_source_id);
+              console.log(
+                "values.lti_tool_type_id",
+                values.lti_tool_type_id
+              );
               dispatch({
                 type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
                 payload: "DECREMENT_TYPE_CHANGED",
-                ltitoolType: values.media_source_id,
+                ltitoolType: values.lti_tool_type_id,
               });
             });
           } else {
+            console.log("values", values);
             Swal.fire({
               title: "Lti tool",
               icon: "info",
@@ -182,7 +173,7 @@ export default function CreateLtiTool(prop) {
               dispatch({
                 type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
                 payload: "INCREMENT",
-                ltitoolType: values.media_source_id,
+                ltitoolType: values.lti_tool_type_id,
               });
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -243,7 +234,9 @@ export default function CreateLtiTool(prop) {
                       value={values.tool_url}
                     />
                     <div className="error">
-                      {errors.tool_url && touched.tool_url && errors.tool_url}
+                      {errors.tool_url &&
+                        touched.tool_url &&
+                        errors.tool_url}
                     </div>
                   </div>
 
@@ -263,61 +256,20 @@ export default function CreateLtiTool(prop) {
                     </div>
                   </div>
 
-                  {/* <div className="form-group-create">
-                    <h3>Tool type</h3>
-                    <div className="filter-dropdown-tooltype">
-                      <Dropdown>
-                        <Dropdown.Toggle id="dropdown-basic">{ltiToolTypes?.filter((type) => type.id === values.media_source_id)[0]?.name}</Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          {ltiToolTypes.map((type) => {
-                            if (type.name !== 'My device' && type.name !== 'BrightCove') {
-                              return (
-                                <>
-                                  <Dropdown.Item
-                                    key={type.id}
-                                    onClick={() => {
-                                      setFieldValue('media_source_id', type.id);
-                                    }}
-                                  >
-                                    {type.name}
-                                  </Dropdown.Item>
-                                </>
-                              );
-                            }
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                  </div> */}
                   {/* Tool Type Update Start */}
                   <div className="form-group-create">
                     <h3>Tool type</h3>
                     <select
-                      name="media_source_id"
+                      name="lti_tool_type_id"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.media_source_id}
+                      value={values.lti_tool_type_id}
                     >
-                      {/* {values.media_source_id === '' && (
-                        <option selected value={null}>
-                          Select
-                        </option>
-                      )} */}
-                      {ltiToolTypeGroup.map((type) => (
+                      {ltiToolTypeGroup?.map((type) => (
                         <>
                           <option value={type.id}>{type.name}</option>
                         </>
                       ))}
-                      {/* {ltiToolTypeGroup.map((type) => {
-                        if (type.name !== 'My device' && type.name !== 'BrightCove') {
-                          return (
-                            <>
-                              <option value={type.id}>{type.name}</option>
-                            </>
-                          );
-                        }
-                      })} */}
                     </select>
                     <div className="error">
                       {errors.lti_version &&
