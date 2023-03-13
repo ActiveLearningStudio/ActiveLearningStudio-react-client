@@ -1860,29 +1860,16 @@ function Table(props) {
               subType === "LTI Tools" &&
               (localStateData ? (
                 localStateData?.length > 0 ? (
-                  localStateData
-                    ?.filter((item) => {
-                      if (filterLtiSettings) {
-                        if (
-                          item?.media_sources?.name ===
-                          filterLtiSettings?.name
-                        ) {
-                          return item;
-                        }
-                      } else {
-                        return item;
-                      }
-                    })
-                    ?.map((row, counter) => (
-                      <tr key={counter} className="admin-panel-rows">
-                        <td>{row.tool_name}</td>
-                        <td>{row.tool_url}</td>
-                        <td>
-                          {row.lti_tool_type
-                            ? row.lti_tool_type?.name
-                            : "N/A"}
-                        </td>
-                        {/* {!filterLtiSettings ? (
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
+                      <td>{row.tool_name}</td>
+                      <td>{row.tool_url}</td>
+                      <td>
+                        {row.lti_tool_type
+                          ? row.lti_tool_type?.name
+                          : "N/A"}
+                      </td>
+                      {/* {!filterLtiSettings ? (
                           <td>{row?.media_sources?.name}</td>
                         ) : (
                           <td>
@@ -1895,25 +1882,25 @@ function Table(props) {
                           </td>
                         )} */}
 
-                        {/* <td>{`${row.user.first_name} ${row.user.last_name}`}</td> */}
-                        <td>{row.tool_description}</td>
-                        <td>
-                          <div className="admin-panel-dropdown">
-                            {row.lti_version}
-                            <div>
-                              <AdminDropdown
-                                type={type}
-                                subType="LTI Tools"
-                                row={row}
-                                activePage={activePage}
-                                localStateData={localStateData}
-                                setLocalStateData={setLocalStateData}
-                              />
-                            </div>
+                      {/* <td>{`${row.user.first_name} ${row.user.last_name}`}</td> */}
+                      <td>{row.tool_description}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          {row.lti_version}
+                          <div>
+                            <AdminDropdown
+                              type={type}
+                              subType="LTI Tools"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
                           </div>
-                        </td>
-                      </tr>
-                    ))
+                        </div>
+                      </td>
+                    </tr>
+                  ))
                 ) : (
                   <tr>
                     <td colSpan="11">
