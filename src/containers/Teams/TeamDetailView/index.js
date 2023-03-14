@@ -83,6 +83,8 @@ const TeamDetail = ({
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
   useEffect(() => {
@@ -359,7 +361,7 @@ const TeamDetail = ({
   const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
     <div className="team-detail-page">
-      <div className="content">
+      <div className={`content ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
         <div className="inner-content">
           <div className="add-team-page">
             <div className={`${toggleLeft ? 'width90' : ''} left`}>
