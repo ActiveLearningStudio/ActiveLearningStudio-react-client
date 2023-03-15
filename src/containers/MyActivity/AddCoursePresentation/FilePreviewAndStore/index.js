@@ -36,16 +36,15 @@ const FilePreviewAndStore = ({ file, setEnableDescribeBtn, setLoading }) => {
           var render_context = {
             canvasContext: ctx,
             viewport: viewport,
-            background: 'black',
           };
           var renderTask = page.render(render_context);
           renderTask.promise.then(() => {
             // adding black bars
             ctx.drawImage(ctx.canvas, 0, 0, canvas.width-blackBarWidth, canvas.height, blackBarWidth, 0, canvas.width-blackBarWidth, canvas.height);
-            ctx.beginPath();
-            ctx.rect(0, 0, blackBarWidth, canvas.height);
             ctx.fillStyle = "black";
-            ctx.fill();
+            ctx.fillRect(0, 0, blackBarWidth, canvas.height);
+            ctx.fillRect(ctx.canvas.width - blackBarWidth, 0, blackBarWidth, canvas.height);
+            
             setPreviewImageSource(canvas.toDataURL('image/png'));
             setEnableDescribeBtn(true);
             setLoading(false);
