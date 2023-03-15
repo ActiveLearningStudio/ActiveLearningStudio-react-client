@@ -126,10 +126,11 @@ function Header(props) {
                   style={{ cursor: "pointer", textAlign: "center" }}
                   onClick={() => {
                     Swal.fire({
-                      title: "Are you Sure?",
-                      text: "You will be redirected to a new tab.",
+                      customClass: "help-redirect-icon",
+                      text:
+                        "Curriki Help will open in a new tab in your browser. Click Open to proceed or Cancel to stay where you are.",
                       showCancelButton: true,
-                      confirmButtonText: "OK",
+                      confirmButtonText: "Open",
                     }).then((result) => {
                       if (result.isConfirmed) {
                         window.open(
