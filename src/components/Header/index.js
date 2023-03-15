@@ -127,7 +127,7 @@ function Header(props) {
                   onClick={() => {
                     Swal.fire({
                       title: "Are you Sure?",
-                      text: "You will be redirect out of the tab!",
+                      text: "You will be redirected to a new tab.",
                       showCancelButton: true,
                       confirmButtonText: "OK",
                     }).then((result) => {
