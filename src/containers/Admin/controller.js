@@ -962,7 +962,7 @@ function Controller(props) {
                             subTypeState === "All Users" &&
                             activeRole !== head.id
                           ) {
-                            setSearchQuery("");
+                            // setSearchQuery("");
                             setActiveRole(head.id);
                             setActivePage(1);
                           }
