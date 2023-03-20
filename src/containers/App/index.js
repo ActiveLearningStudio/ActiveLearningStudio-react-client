@@ -149,15 +149,15 @@ function App(props) {
           <img src={loader} className="loader" alt="" />
         </div>
       )}
-      {/* <div className="mobile-app-alert">
+      <div className="mobile-app-alert">
         <img src={logo} alt="" />
 
         <div className="text-description">
           <h2>Please use desktop browser</h2>
 
-          <p>CurrikiStudio doesn’t yet support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
+          <p>CurrikiStudio doesn’t support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
           <p>
-            Why no mobile access for authors? All learning courses built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
+            All activities built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
             interactive, immersive learning experience, a full browser is required.
           </p>
 
@@ -166,7 +166,7 @@ function App(props) {
             <a href="https://curriki.org"> Curriki</a>
           </p>
         </div>
-      </div> */}
+      </div>
       {help && <Help />}
     </div>
   );
