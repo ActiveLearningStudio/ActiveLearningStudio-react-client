@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ let runOnce = true;
 function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
+  const [ msTeams, setMsTeams ] = useState(true);
   useEffect(() => {
     getUser();
   }, [getUser]);
@@ -119,6 +120,13 @@ function App(props) {
         },
       ];
     }
+
+    // Remove the screen size warning when entering through msteams into deeplinking or activity view
+    if ((window.location.href.includes('msteam') || window.location.href.includes('lti/content')) && !window.location.href.includes('sso')) {
+      setMsTeams(true);
+    } else {
+      setMsTeams(false);
+    }
   }, [window.location.href]);
 
   return (
@@ -149,24 +157,26 @@ function App(props) {
           <img src={loader} className="loader" alt="" />
         </div>
       )}
-      <div className="mobile-app-alert">
-        <img src={logo} alt="" />
+      {!msTeams && (
+        <div className="mobile-app-alert">
+          <img src={logo} alt="" />
 
-        <div className="text-description">
-          <h2>Please use desktop browser</h2>
+          <div className="text-description">
+            <h2>Please use desktop browser</h2>
 
-          <p>CurrikiStudio doesn’t support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
-          <p>
-            All activities built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
-            interactive, immersive learning experience, a full browser is required.
-          </p>
+            <p>CurrikiStudio doesn’t support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
+            <p>
+              All activities built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
+              interactive, immersive learning experience, a full browser is required.
+            </p>
 
-          <p>
-            To learn more click here
-            <a href="https://curriki.org"> Curriki</a>
-          </p>
+            <p>
+              To learn more click here
+              <a href="https://curriki.org"> Curriki</a>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
       {help && <Help />}
     </div>
   );
