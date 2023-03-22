@@ -263,6 +263,7 @@ const ActivityShared = (props) => {
                   Activity: &nbsp;
                   <span>{selectedPlaylist?.activity.title}</span>
                 </h1>
+                {selectedPlaylist?.activity.id && (
                 <div className="controller">
                   <PreviousLink
                     viewType={query.view}
@@ -283,6 +284,7 @@ const ActivityShared = (props) => {
                     setH5pCurrentActivity={() => setSelectedPlaylist()}
                   />
                 </div>
+                )}
               </div>
               <div className="main-item-wrapper">
                 <div className="item-container">
