@@ -31,12 +31,12 @@ function Header(props) {
   const { currentOrganization } = stateHeader;
   const [primaryColor, setPrimaryColor] = useState();
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   useEffect(() => {
     const primaryColorFunction = getGlobalColor(
-      "--main-primary-color"
+      "--main-primary-color",
     );
     setPrimaryColor(primaryColorFunction);
   }, [currentOrganization]);
@@ -73,7 +73,7 @@ function Header(props) {
                   backgroundImage:
                     !!currentOrganization?.image &&
                     currentOrganization?.image.includes(
-                      "dev.currikistudio"
+                      "dev.currikistudio",
                     )
                       ? `url(${currentOrganization?.image})`
                       : `url(${global.config.resourceUrl}${currentOrganization?.image})`,
@@ -126,15 +126,16 @@ function Header(props) {
                   style={{ cursor: "pointer", textAlign: "center" }}
                   onClick={() => {
                     Swal.fire({
-                      title: "Are you Sure?",
-                      text: "You will be redirect out of the tab!",
+                      customClass: "help-redirect-icon",
+                      text:
+                        "Curriki Help will open in a new tab in your browser. Click Open to proceed or Cancel to stay where you are.",
                       showCancelButton: true,
-                      confirmButtonText: "OK",
+                      confirmButtonText: "Open",
                     }).then((result) => {
                       if (result.isConfirmed) {
                         window.open(
                           "https://www.currikistudio.org/help/",
-                          "_blank"
+                          "_blank",
                         );
                       } else if (result.isDenied) {
                         Swal.close();
@@ -217,7 +218,7 @@ function Header(props) {
                         Event(
                           "button click",
                           "User press Logout button",
-                          "Login Page"
+                          "Login Page",
                         );
                         logout();
                       }}

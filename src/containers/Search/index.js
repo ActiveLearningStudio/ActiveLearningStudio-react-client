@@ -5,7 +5,15 @@
 import React, { useEffect, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { Tabs, Tab, Modal, Alert, Dropdown } from "react-bootstrap";
+import {
+  Tabs,
+  Tab,
+  Modal,
+  Alert,
+  Dropdown,
+  Accordion,
+  Card,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
 import Pagination from "react-js-pagination";
@@ -15,6 +23,7 @@ import {
   cloneProject,
   setSearchTypeAction,
   searchIndependentActivitiesAction,
+  simpleSearchProjectPreview,
 } from "store/actions/search";
 import { loadResourceTypesAction } from "store/actions/resource";
 import { addProjectFav, loadLmsAction } from "store/actions/project";
@@ -50,6 +59,7 @@ import MyProjectSmSvg from "iconLibrary/dropDown/MyProjectSmSvg";
 import MyActivitySmSvg from "iconLibrary/mainContainer/MyActivitySmSvg";
 import SearchLibraryLgSvg from "iconLibrary/mainContainer/SearchLibraryLgSvg";
 import MyActivitySvg from "iconLibrary/sideBar/MyActivitySvg";
+import url from "socket.io-client/lib/url";
 
 export function MyVerticallyCenteredModal(props) {
   return (
@@ -106,10 +116,10 @@ function SearchInterface(props) {
   });
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector(
-    (state) => state.resource.types
+    (state) => state.resource.types,
   );
   const { currentOrganization, permission } = useSelector(
-    (state) => state.organization
+    (state) => state.organization,
   );
 
   const dispatch = useDispatch();
@@ -130,7 +140,7 @@ function SearchInterface(props) {
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [activeModel, setActiveModel] = useState(
-    fromTeam ? "projects" : ""
+    fromTeam ? "projects" : "",
   );
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
@@ -140,7 +150,7 @@ function SearchInterface(props) {
   const [authorName, SetAuthor] = useState("");
   const [noWords, setNoWords] = useState("");
   const [activetab, setActiveTab] = useState(
-    fromTeam ? "projects" : "total"
+    fromTeam ? "projects" : "total",
   );
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
@@ -149,8 +159,13 @@ function SearchInterface(props) {
   const [educationLevels, setEducationLevels] = useState([]);
   const [indClone, setIndClone] = useState(false);
   const [isLoader, setisLoader] = useState(false);
+  const [projectTogglestate, setprojectTogglestate] = useState(null);
+  const [playlistTogglestate, setplaylistTogglestate] = useState(
+    null,
+  );
+  const [playlistdata, setplaylistdata] = useState(null);
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
@@ -250,7 +265,7 @@ function SearchInterface(props) {
         } else if (activeModel == "Independent activities") {
           setTotalCount(allState.searchMeta.total);
         } else {
-          setTotalCount(allState.searchMeta[activeModel]);
+          setTotalCount(allState?.searchMeta?.projects);
           // setActivePage(1);
         }
       }
@@ -292,7 +307,7 @@ function SearchInterface(props) {
   useEffect(() => {
     const allItems = [];
     activityTypesState?.data?.map((data) =>
-      data.activityItems.map((itm) => allItems.push(itm))
+      data.activityItems.map((itm) => allItems.push(itm)),
     );
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
@@ -301,19 +316,19 @@ function SearchInterface(props) {
     if (currentOrganization?.id) {
       if (subjects?.length === 0) {
         const resultSub = dispatch(
-          getSubjects(currentOrganization?.id || 1)
+          getSubjects(currentOrganization?.id || 1),
         );
         resultSub.then((data) => setSubjects(data));
       }
       if (authorTags?.length === 0) {
         const resultAuth = dispatch(
-          getAuthorTag(currentOrganization?.id || 1)
+          getAuthorTag(currentOrganization?.id || 1),
         );
         resultAuth.then((data) => setAuthorTags(data));
       }
       if (educationLevels?.length === 0) {
         const resultEdu = dispatch(
-          getEducationLevel(currentOrganization?.id || 1)
+          getEducationLevel(currentOrganization?.id || 1),
         );
         resultEdu.then((data) => setEducationLevels(data));
       }
@@ -325,6 +340,14 @@ function SearchInterface(props) {
     educationLevels?.length,
     subjects?.length,
   ]);
+  const settings = {
+    dots: false,
+    arrows: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 5.5,
+    slidesToScroll: 1,
+  };
   return (
     <>
       <div>
@@ -380,958 +403,178 @@ function SearchInterface(props) {
                   </div>
                 )}
 
-                <Tabs
-                  className="main-tabs"
-                  onSelect={async (eventKey) => {
-                    setisLoader(true);
-                    if (eventKey === "Independent activities") {
-                      setActiveModel("Independent activities");
-                      const searchData = {
-                        query: searchInput?.trim(),
-                        subjectArray: activeSubject,
-                        gradeArray: activeEducation,
-                        authorTagsArray: activeAuthorTag,
-                        authors: authorName || undefined,
-                        standardArray: activeType,
-                        from: 0,
-                        size: 20,
-                        no_words: noWords || undefined,
-                      };
-
-                      setSearch(null);
-                      await dispatch(
-                        searchIndependentActivitiesAction(
-                          searchData,
-                          "showcase_activities"
-                        )
-                      );
-                    } else {
-                      setActiveModel("");
-                      // if (allState.searchType === "Projects") {
-                      if (
-                        activeModel === "total" ||
-                        activeModel === "Independent activities"
-                      ) {
-                        const searchData = {
-                          phrase: searchQueries?.trim(),
-                          from: 0,
-                          size: 20,
-                          type: searchType,
-                          subjectArray: activeSubject || undefined,
-                          gradeArray: activeEducation || undefined,
-                          authorTagsArray:
-                            activeAuthorTag || undefined,
-                          standardArray: activeType || undefined,
-                          author: authorName || undefined,
-                          no_words: noWords || undefined,
-                        };
-                        setSearch(null);
-                        await dispatch(
-                          simpleSearchAction(searchData)
-                        );
-                        Swal.close();
-                      } else {
-                        const searchData = {
-                          phrase: searchQueries?.trim(),
-                          from: 0,
-                          size: 20,
-                          type: searchType,
-                          model: activeModel,
-                          subjectArray: activeSubject || undefined,
-                          gradeArray: activeEducation || undefined,
-                          authorTagsArray:
-                            activeAuthorTag || undefined,
-                          standardArray: activeType || undefined,
-                          author: authorName || undefined,
-                          no_words: noWords || undefined,
-                        };
-                        setSearch(null);
-                        await dispatch(
-                          simpleSearchAction(searchData)
-                        );
-                        Swal.close();
-                      }
-                      // }
-                    }
-                    dispatch(setSearchTypeAction(eventKey));
-                    // setSearchInput("");
-
-                    // setNoWords("");
-                    setSearchType("");
-                    // setSearch(null);
-                    setTotalCount(0);
-                    setActivePage(1);
-                    // setMeta({});
-                    setToggleStates({
-                      searchLibrary: true,
-                      subject: true,
-                      education: false,
-                      authorTag: false,
-                      type: false,
-                    });
-                    // setActiveSubject([]);
-                    // setActiveEducation([]);
-                    // setActiveAuthorTag([]);
-                    // SetAuthor([]);
-                    Settodate([]);
-                    Setfromdate([]);
-                    setisLoader(false);
-                    // setActiveType([]);
-                  }}
-                  defaultActiveKey={
-                    !fromTeam ? allState.searchType : "Projects"
-                  }
-                >
-                  {!fromTeam && (
-                    <Tab
-                      eventKey="Independent activities"
-                      title="Learning activities"
-                    >
-                      <div className="main-content-search">
-                        <div className="left-search">
-                          <div className="search-library">
-                            <SearchLibrary
-                              currentOrganization={
-                                currentOrganization
-                              }
-                              simpleSearchAction={simpleSearchAction}
-                              searchIndependentActivitiesAction={
-                                searchIndependentActivitiesAction
-                              }
-                              setToggleStates={setToggleStates}
-                              searchInput={searchInput}
-                              searchType={searchType}
-                              activeSubject={activeSubject}
-                              activeEducation={activeEducation}
-                              activeAuthorTag={activeAuthorTag}
-                              activeType={activeType}
-                              authorName={authorName}
-                              fromdate={fromdate}
-                              todate={todate}
-                              fromTeam={fromTeam}
-                              setActiveTab={setActiveTab}
-                              setSearchInput={setSearchInput}
-                              setSearchType={setSearchType}
-                              setActiveEducation={setActiveEducation}
-                              setActiveSubject={setActiveSubject}
-                              setActiveAuthorTag={setActiveAuthorTag}
-                              setAuthor={SetAuthor}
-                              setFromDate={Setfromdate}
-                              setToDate={Settodate}
-                              setTotalCount={setTotalCount}
-                              history={history}
-                              dispatch={dispatch}
-                              permission={permission}
-                              activities
-                              activeMainSearchType={
-                                allState?.searchType
-                              }
-                              setSearch={setSearch}
-                              noWords={noWords}
-                              setNoWords={setNoWords}
-                              setisLoader={setisLoader}
-                            />
-                            <RefineSearch
-                              setActiveAuthorTag={setActiveAuthorTag}
-                              authorTags={authorTags}
-                              educationLevels={educationLevels}
-                              subjects={subjects}
-                              setActiveSubject={setActiveSubject}
-                              activeAuthorTag={activeAuthorTag}
-                              activityTypes={activityTypes}
-                              activeType={activeType}
-                              activeEducation={activeEducation}
-                              setActiveEducation={setActiveEducation}
-                              setActiveType={setActiveType}
-                              activeSubject={activeSubject}
-                              toggleStates={toggleStates}
-                              setToggleStates={setToggleStates}
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="right-search"
-                          id="right-search-branding-style"
-                        >
-                          <Tabs
-                            activeKey="Learning activities"
-                            id="controlled-tab-example"
-                          >
-                            <Tab
-                              eventKey="Learning activities"
-                              title="Learning activities"
-                            >
-                              {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
-                              <div className="content">
-                                <div className="results_search">
-                                  {!!search ? (
-                                    search?.length > 0 ? (
-                                      search.map((res) => (
-                                        <>
-                                          <div className="box">
-                                            <div className="imgbox">
-                                              {res?.thumb_url ? (
-                                                <div
-                                                  style={{
-                                                    backgroundImage: !res.thumb_url.includes(
-                                                      "/storage/"
-                                                    )
-                                                      ? `url(${res.thumb_url})`
-                                                      : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                                  }}
-                                                />
-                                              ) : (
-                                                <div
-                                                  style={{
-                                                    backgroundImage:
-                                                      // eslint-disable-next-line max-len
-                                                      "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
-                                                  }}
-                                                />
-                                              )}
-
-                                              {/* <h5>CALCULUS</h5> */}
-                                            </div>
-
-                                            <div className="contentbox">
-                                              <div className="search-content">
-                                                <a
-                                                  href={`/activity/${res?.id}/preview?type=ind-search`}
-                                                  target="_blank"
-                                                  rel="noreferrer"
-                                                >
-                                                  <h2>
-                                                    {res.title ||
-                                                      res.name}
-                                                  </h2>
-                                                </a>
-                                                <p>
-                                                  {res.description}
-                                                </p>
-                                                {res.user && (
-                                                  <div className="search-content-by">
-                                                    By:{" "}
-                                                    <span>
-                                                      {
-                                                        res.user
-                                                          .first_name
-                                                      }
-                                                    </span>
-                                                  </div>
-                                                )}
-                                                <div className="search-content-type">
-                                                  Type:{" "}
-                                                  <span className="type">
-                                                    {
-                                                      res.activity_type
-                                                    }
-                                                  </span>
-                                                </div>
-                                                {/* <p>{res.description}</p> */}
-                                              </div>
-
-                                              {true && (
-                                                <Dropdown className="playlist-dropdown check learning_activity_tab">
-                                                  <Dropdown.Toggle>
-                                                    <FontAwesomeIcon icon="ellipsis-v" />
-                                                  </Dropdown.Toggle>
-                                                  <Dropdown.Menu>
-                                                    <>
-                                                      <a
-                                                        href={`/activity/${res.id}/preview?type=ind-search`}
-                                                        target="_blank"
-                                                        rel="noreferrer"
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                      Preview */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <PreviewSmSvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          <span>
-                                                            Preview
-                                                          </span>
-                                                        </div>
-                                                      </a>
-                                                      <Dropdown.Item
-                                                        onClick={async () => {
-                                                          toast.info(
-                                                            "Duplicating Activity...",
-                                                            {
-                                                              className:
-                                                                "project-loading",
-                                                              closeOnClick: false,
-                                                              closeButton: false,
-                                                              position:
-                                                                toast
-                                                                  .POSITION
-                                                                  .BOTTOM_RIGHT,
-                                                              autoClose: 10000,
-                                                              icon:
-                                                                "",
-                                                            }
-                                                          );
-
-                                                          const result = await intActivityServices.indActivityClone(
-                                                            currentOrganization?.id,
-                                                            res.id
-                                                          );
-
-                                                          toast.dismiss();
-                                                          Swal.fire({
-                                                            html:
-                                                              result.message,
-                                                            icon:
-                                                              "success",
-                                                          });
-                                                        }}
-                                                      >
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyActivitySvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          Copy to My
-                                                          Activities
-                                                        </div>
-                                                      </Dropdown.Item>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          setIndClone(
-                                                            true
-                                                          );
-                                                          setModalShow(
-                                                            true
-                                                          );
-                                                          setClone(
-                                                            res
-                                                          );
-                                                        }}
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
-                                                      Add to Projects */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          Copy to My
-                                                          projects
-                                                        </div>
-                                                      </Dropdown.Item>
-                                                    </>
-                                                  </Dropdown.Menu>
-                                                </Dropdown>
-                                              )}
-                                            </div>
-                                          </div>
-                                        </>
-                                      ))
-                                    ) : (
-                                      <Alert variant="danger">
-                                        No result found !
-                                      </Alert>
-                                    )
-                                  ) : isLoader ? (
-                                    <Skeleton count="3" />
-                                  ) : (
-                                    <Alert variant="warning">
-                                      Start Searching CurrikiStudio
-                                      Search Library.
-                                    </Alert>
-                                  )}
-                                </div>
-                              </div>
-                            </Tab>
-                          </Tabs>
-                        </div>
-                      </div>
-                    </Tab>
-                  )}
-                  <Tab eventKey="Projects" title="Projects">
-                    <div className="main-content-search">
-                      <div className="left-search">
-                        <div className="search-library">
-                          <SearchLibrary
-                            currentOrganization={currentOrganization}
-                            simpleSearchAction={simpleSearchAction}
-                            searchIndependentActivitiesAction={
-                              searchIndependentActivitiesAction
-                            }
-                            setToggleStates={setToggleStates}
-                            toggleStates={toggleStates}
-                            searchInput={searchInput}
-                            searchType={searchType}
-                            activeSubject={activeSubject}
-                            activeEducation={activeEducation}
-                            activeAuthorTag={activeAuthorTag}
-                            activeType={activeType}
-                            authorName={authorName}
-                            fromdate={fromdate}
-                            todate={todate}
-                            fromTeam={fromTeam}
-                            setActiveTab={setActiveTab}
-                            setSearchInput={setSearchInput}
-                            setSearchType={setSearchType}
-                            setActiveEducation={setActiveEducation}
-                            setActiveSubject={setActiveSubject}
-                            setActiveAuthorTag={setActiveAuthorTag}
-                            setAuthor={SetAuthor}
-                            setFromDate={Setfromdate}
-                            setToDate={Settodate}
-                            setTotalCount={setTotalCount}
-                            history={history}
-                            dispatch={dispatch}
-                            permission={permission}
-                            activeMainSearchType={
-                              allState?.searchType
-                            }
-                            setSearch={setSearch}
-                            noWords={noWords}
-                            setNoWords={setNoWords}
-                            setisLoader={setisLoader}
-                            activeModel={activeModel}
-                          />
-                        </div>
-                        <RefineSearch
-                          setActiveAuthorTag={setActiveAuthorTag}
-                          authorTags={authorTags}
-                          educationLevels={educationLevels}
-                          subjects={subjects}
-                          setActiveSubject={setActiveSubject}
-                          activeAuthorTag={activeAuthorTag}
-                          activityTypes={activityTypes}
-                          activeType={activeType}
-                          activeEducation={activeEducation}
-                          setActiveEducation={setActiveEducation}
-                          setActiveType={setActiveType}
-                          activeSubject={activeSubject}
-                          toggleStates={toggleStates}
+                <div className="main-tabs">
+                  <div className="main-content-search">
+                    <div className="left-search">
+                      <div className="search-library">
+                        <SearchLibrary
+                          currentOrganization={currentOrganization}
+                          simpleSearchAction={simpleSearchAction}
+                          searchIndependentActivitiesAction={
+                            searchIndependentActivitiesAction
+                          }
                           setToggleStates={setToggleStates}
+                          toggleStates={toggleStates}
+                          searchInput={searchInput}
+                          searchType={searchType}
+                          activeSubject={activeSubject}
+                          activeEducation={activeEducation}
+                          activeAuthorTag={activeAuthorTag}
+                          activeType={activeType}
+                          authorName={authorName}
+                          fromdate={fromdate}
+                          todate={todate}
+                          fromTeam={fromTeam}
+                          setActiveTab={setActiveTab}
+                          setSearchInput={setSearchInput}
+                          setSearchType={setSearchType}
+                          setActiveEducation={setActiveEducation}
+                          setActiveSubject={setActiveSubject}
+                          setActiveAuthorTag={setActiveAuthorTag}
+                          setAuthor={SetAuthor}
+                          setFromDate={Setfromdate}
+                          setToDate={Settodate}
+                          setTotalCount={setTotalCount}
+                          history={history}
+                          dispatch={dispatch}
+                          permission={permission}
+                          activeMainSearchType={allState?.searchType}
+                          setSearch={setSearch}
+                          noWords={noWords}
+                          setNoWords={setNoWords}
+                          setisLoader={setisLoader}
+                          activeModel={activeModel}
                         />
                       </div>
+                      <RefineSearch
+                        setActiveAuthorTag={setActiveAuthorTag}
+                        authorTags={authorTags}
+                        educationLevels={educationLevels}
+                        subjects={subjects}
+                        setActiveSubject={setActiveSubject}
+                        activeAuthorTag={activeAuthorTag}
+                        activityTypes={activityTypes}
+                        activeType={activeType}
+                        activeEducation={activeEducation}
+                        setActiveEducation={setActiveEducation}
+                        setActiveType={setActiveType}
+                        activeSubject={activeSubject}
+                        toggleStates={toggleStates}
+                        setToggleStates={setToggleStates}
+                      />
+                    </div>
 
-                      <div
-                        className="right-search"
-                        id="right-search-branding-style"
-                      >
-                        <Tabs
-                          activeKey={activetab}
-                          id="uncontrolled-tab-example"
-                          onSelect={async (e) => {
-                            setisLoader(true);
+                    <div
+                      className="right-search"
+                      id="right-search-branding-style"
+                    >
+                      <Tabs
+                        className="main-tabs"
+                        onSelect={async (eventKey) => {
+                          setisLoader(true);
+                          if (eventKey === "Independent activities") {
+                            setActiveModel("Independent activities");
+                            const searchData = {
+                              query: searchInput?.trim(),
+                              subjectArray: activeSubject,
+                              gradeArray: activeEducation,
+                              authorTagsArray: activeAuthorTag,
+                              authors: authorName || undefined,
+                              standardArray: activeType,
+                              from: 0,
+                              size: 20,
+                              no_words: noWords || undefined,
+                            };
+
                             setSearch(null);
-                            setActiveTab(e);
-                            if (e === "total") {
-                              const searchData = {
-                                phrase:
-                                  searchQueries?.trim() ||
-                                  searchInput ||
-                                  undefined,
-                                from: 0,
-                                size: 20,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                type: searchType,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                authorTagsArray: activeAuthorTag,
-                                standardArray: activeType,
-                                no_words: noWords || undefined,
-                              };
+                            await dispatch(
+                              searchIndependentActivitiesAction(
+                                searchData,
+                                "showcase_activities",
+                              ),
+                            );
+                          } else {
+                            setActiveModel("");
+                            // if (allState.searchType === "Projects") {
+                            // if (activeModel === "projects") {
+                            //   {
+                            const searchData = {
+                              phrase: searchQueries?.trim(),
+                              from: 0,
+                              size: 20,
+                              type: searchType,
+                              model: eventKey,
+                              subjectArray:
+                                activeSubject || undefined,
+                              gradeArray:
+                                activeEducation || undefined,
+                              authorTagsArray:
+                                activeAuthorTag || undefined,
+                              standardArray: activeType || undefined,
+                              author: authorName || undefined,
+                              no_words: noWords || undefined,
+                            };
+                            setSearch(null);
+                            await dispatch(
+                              simpleSearchAction(searchData),
+                            );
+                            Swal.close();
+                            // }
+                            // }
+                          }
+                          dispatch(setSearchTypeAction(eventKey));
+                          // setSearchInput("");
 
-                              // Swal.fire({
-                              //   title: 'Loading...', // add html attribute if you want or remove
-                              //   allowOutsideClick: false,
-                              //   onBeforeOpen: () => {
-                              //     Swal.showLoading();
-                              //   },
-                              // });
-                              const resultModel = await dispatch(
-                                simpleSearchAction(searchData)
-                              );
-                              Swal.close();
-                              setTotalCount(resultModel.meta[e]);
-                              setActiveModel(e);
-                              setActivePage(1);
-                            } else {
-                              const searchData = {
-                                phrase:
-                                  searchQueries?.trim() ||
-                                  searchInput ||
-                                  undefined,
-                                from: 0,
-                                size: 20,
-                                model: e,
-                                author: authorName || undefined,
-                                fromDate: fromdate || undefined,
-                                toDate: todate || undefined,
-                                type: searchType,
-                                subjectArray: activeSubject,
-                                gradeArray: activeEducation,
-                                authorTagsArray: activeAuthorTag,
-                                standardArray: activeType,
-                                no_words: noWords || undefined,
-                              };
-
-                              // Swal.fire({
-                              //   title: 'Loading...', // add html attribute if you want or remove
-                              //   allowOutsideClick: false,
-                              //   onBeforeOpen: () => {
-                              //     Swal.showLoading();
-                              //   },
-                              // });
-                              const resultModel = await dispatch(
-                                simpleSearchAction(searchData)
-                              );
-                              Swal.close();
-                              setTotalCount(resultModel.meta[e]);
-                              setActiveModel(e);
-                              setActivePage(1);
+                          // setNoWords("");
+                          setSearchType("");
+                          // setSearch(null);
+                          // setTotalCount(0);
+                          setActivePage(1);
+                          // setMeta({});
+                          setToggleStates({
+                            searchLibrary: true,
+                            subject: true,
+                            education: false,
+                            authorTag: false,
+                            type: false,
+                          });
+                          // setActiveSubject([]);
+                          // setActiveEducation([]);
+                          // setActiveAuthorTag([]);
+                          // SetAuthor([]);
+                          Settodate([]);
+                          Setfromdate([]);
+                          setisLoader(false);
+                          // setActiveType([]);
+                        }}
+                        defaultActiveKey={
+                          !fromTeam ? allState.searchType : "Projects"
+                        }
+                      >
+                        {!fromTeam && (
+                          <Tab
+                            eventKey="Independent activities"
+                            title={
+                              !!search &&
+                              !!meta.total &&
+                              activeModel === "Independent activities"
+                                ? `Learning activities (${meta.total})`
+                                : "Learning activities (0)"
                             }
-                          }}
-                        >
-                          {!fromTeam && (
-                            <Tab
-                              eventKey="total"
-                              title={
-                                !!search && !!meta.total
-                                  ? `all (${meta.total})`
-                                  : "all (0)"
-                              }
-                            >
+                          >
+                            <div className="content">
                               <div className="results_search">
                                 {!!search ? (
                                   search?.length > 0 ? (
                                     search.map((res) => (
-                                      <div className="box">
-                                        <div className="imgbox">
-                                          {res.thumb_url ? (
-                                            <div
-                                              style={{
-                                                backgroundImage: !res.thumb_url.includes(
-                                                  "/storage/"
-                                                )
-                                                  ? `url(${res.thumb_url})`
-                                                  : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                              }}
-                                            />
-                                          ) : (
-                                            <div
-                                              style={{
-                                                backgroundImage:
-                                                  // eslint-disable-next-line max-len
-                                                  "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
-                                              }}
-                                            />
-                                          )}
-
-                                          {/* <h5>CALCULUS</h5> */}
-                                        </div>
-                                        <div className="contentbox">
-                                          <div className="search-content">
-                                            <a
-                                              href={
-                                                res.model ===
-                                                "Activity"
-                                                  ? `/activity/${res.id}/preview`
-                                                  : res.model ===
-                                                    "Playlist"
-                                                  ? `/playlist/${res.id}/preview/lti`
-                                                  : `/project/${res.id}/preview`
-                                              }
-                                              target="_blank"
-                                              rel="noreferrer"
-                                            >
-                                              <h2>
-                                                {res.title ||
-                                                  res.name}
-                                              </h2>
-                                            </a>
-                                            <p>{res.description}</p>
-                                            <ul>
-                                              {res.user && (
-                                                <li>
-                                                  By:{" "}
-                                                  <span>
-                                                    {
-                                                      res.user
-                                                        .first_name
-                                                    }
-                                                  </span>
-                                                </li>
-                                              )}
-                                              {res?.team_name && (
-                                                <li>
-                                                  Team:{" "}
-                                                  <span>
-                                                    {" "}
-                                                    {res?.team_name}
-                                                  </span>
-                                                </li>
-                                              )}
-                                              <li>
-                                                Type:{" "}
-                                                <span>
-                                                  {res.model}{" "}
-                                                  {res.activity_type &&
-                                                    `(${res.activity_type})`}
-                                                </span>
-                                              </li>
-
-                                              {/* <li>
-                                            Member Rating{" "}
-                                            <span className="type">Project</span>
-                                          </li> */}
-                                              {res.model ===
-                                                "Project" &&
-                                                permission?.Project?.includes(
-                                                  "project:favorite"
-                                                ) && (
-                                                  <div
-                                                    className={`btn-fav ${res.favored}`}
-                                                    onClick={(e) => {
-                                                      if (
-                                                        e.target.classList.contains(
-                                                          "true"
-                                                        )
-                                                      ) {
-                                                        e.target.classList.remove(
-                                                          "true"
-                                                        );
-                                                        e.target.classList.add(
-                                                          "false"
-                                                        );
-                                                      } else {
-                                                        e.target.classList.add(
-                                                          "true"
-                                                        );
-                                                      }
-                                                      dispatch(
-                                                        addProjectFav(
-                                                          res.id
-                                                        )
-                                                      );
-                                                    }}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      className="mr-2"
-                                                      icon="star"
-                                                      style={{
-                                                        pointerEvents:
-                                                          "none",
-                                                      }}
-                                                    />{" "}
-                                                    Favorite
-                                                  </div>
-                                                )}
-                                            </ul>
-                                            {/* <p>{res.description}</p> */}
-                                          </div>
-                                          {(permission?.Project?.includes(
-                                            "project:clone"
-                                          ) ||
-                                            permission?.Project?.includes(
-                                              "project:publish"
-                                            )) &&
-                                            res.model ===
-                                              "Project" && (
-                                              <Dropdown className="playlist-dropdown check">
-                                                <Dropdown.Toggle>
-                                                  <FontAwesomeIcon icon="ellipsis-v" />
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                  <Dropdown.Item
-                                                    onClick={() =>
-                                                      window.open(
-                                                        res.model ===
-                                                          "Activity"
-                                                          ? `/activity/${res.id}/preview`
-                                                          : res.model ===
-                                                            "Playlist"
-                                                          ? `/playlist/${res.id}/preview/lti`
-                                                          : `/project/${res.id}/preview`,
-                                                        "_blank"
-                                                      )
-                                                    }
-                                                  >
-                                                    {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                Preview */}
-                                                    <div className="dropDown-item-name-icon">
-                                                      <PreviewSmSvg
-                                                        primaryColor={
-                                                          primaryColor
-                                                        }
-                                                      />
-                                                      <span>
-                                                        Preview
-                                                      </span>
-                                                    </div>
-                                                  </Dropdown.Item>
-                                                  {permission?.Project?.includes(
-                                                    "project:clone"
-                                                  ) && (
-                                                    <Dropdown.Item
-                                                      onClick={() => {
-                                                        Swal.fire({
-                                                          html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                          showCancelButton: true,
-                                                          confirmButtonColor:
-                                                            "#3085d6",
-                                                          cancelButtonColor:
-                                                            "#d33",
-                                                          confirmButtonText:
-                                                            "Ok",
-                                                        }).then(
-                                                          (
-                                                            result
-                                                          ) => {
-                                                            if (
-                                                              result.value
-                                                            ) {
-                                                              cloneProject(
-                                                                res.id
-                                                              );
-                                                            }
-                                                          }
-                                                        );
-                                                      }}
-                                                    >
-                                                      {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                  Add to projects */}
-                                                      <div className="dropDown-item-name-icon">
-                                                        <MyProjectSmSvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        Copy to My
-                                                        projects
-                                                      </div>
-                                                    </Dropdown.Item>
-                                                  )}
-                                                </Dropdown.Menu>
-                                              </Dropdown>
-                                            )}
-                                        </div>
-                                        {permission?.Playlist?.includes(
-                                          "playlist:duplicate"
-                                        ) &&
-                                          res.model ===
-                                            "Playlist" && (
-                                            <Dropdown className="playlist-dropdown check">
-                                              <Dropdown.Toggle>
-                                                <FontAwesomeIcon icon="ellipsis-v" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <Dropdown.Item
-                                                  onClick={() =>
-                                                    window.open(
-                                                      res.model ===
-                                                        "Activity"
-                                                        ? `/activity/${res.id}/preview`
-                                                        : res.model ===
-                                                          "Playlist"
-                                                        ? `/playlist/${res.id}/preview/lti`
-                                                        : `/project/${res.id}/preview`,
-                                                      "_blank"
-                                                    )
-                                                  }
-                                                >
-                                                  {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                              Preview */}
-                                                  <div className="dropDown-item-name-icon">
-                                                    <PreviewSmSvg
-                                                      primaryColor={
-                                                        primaryColor
-                                                      }
-                                                    />
-                                                    <span>
-                                                      Preview
-                                                    </span>
-                                                  </div>
-                                                </Dropdown.Item>
-                                                <Dropdown.Item
-                                                  onClick={() => {
-                                                    setIndClone(
-                                                      false
-                                                    );
-                                                    setModalShow(
-                                                      true
-                                                    );
-                                                    setClone(res);
-                                                  }}
-                                                >
-                                                  {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                              Add to projects */}
-                                                  <div className="dropDown-item-name-icon">
-                                                    <MyProjectSmSvg
-                                                      primaryColor={
-                                                        primaryColor
-                                                      }
-                                                    />
-                                                    Copy to My
-                                                    projects
-                                                  </div>
-                                                </Dropdown.Item>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          )}
-                                        {permission?.Activity?.includes(
-                                          "activity:duplicate"
-                                        ) &&
-                                          res.model ===
-                                            "Activity" && (
-                                            <Dropdown className="playlist-dropdown check">
-                                              <Dropdown.Toggle>
-                                                <FontAwesomeIcon icon="ellipsis-v" />
-                                              </Dropdown.Toggle>
-                                              <Dropdown.Menu>
-                                                <>
-                                                  <Dropdown.Item
-                                                    onClick={() =>
-                                                      window.open(
-                                                        res.model ===
-                                                          "Activity"
-                                                          ? `/activity/${res.id}/preview`
-                                                          : res.model ===
-                                                            "Playlist"
-                                                          ? `/playlist/${res.id}/preview/lti`
-                                                          : `/project/${res.id}/preview`,
-                                                        "_blank"
-                                                      )
-                                                    }
-                                                  >
-                                                    {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                Preview */}
-                                                    <div className="dropDown-item-name-icon">
-                                                      <PreviewSmSvg
-                                                        primaryColor={
-                                                          primaryColor
-                                                        }
-                                                      />
-                                                      <span>
-                                                        Preview
-                                                      </span>
-                                                    </div>
-                                                  </Dropdown.Item>
-                                                  <Dropdown.Item
-                                                    onClick={async () => {
-                                                      toast.info(
-                                                        "Duplicating Activity...",
-                                                        {
-                                                          className:
-                                                            "project-loading",
-                                                          closeOnClick: false,
-                                                          closeButton: false,
-                                                          position:
-                                                            toast
-                                                              .POSITION
-                                                              .BOTTOM_RIGHT,
-                                                          autoClose: 10000,
-                                                          icon: "",
-                                                        }
-                                                      );
-                                                      const result = await intActivityServices.copyToIndependentActivity(
-                                                        currentOrganization?.id,
-                                                        res.id
-                                                      );
-                                                      toast.dismiss();
-                                                      Swal.fire({
-                                                        html:
-                                                          result.message,
-                                                        icon:
-                                                          "success",
-                                                      });
-                                                    }}
-                                                  >
-                                                    <div className="dropDown-item-name-icon">
-                                                      <MyActivitySmSvg
-                                                        primaryColor={
-                                                          primaryColor
-                                                        }
-                                                      />
-
-                                                      <span>
-                                                        Copy to My
-                                                        Activities
-                                                      </span>
-                                                    </div>
-                                                  </Dropdown.Item>
-                                                  <Dropdown.Item
-                                                    onClick={() => {
-                                                      setIndClone(
-                                                        false
-                                                      );
-                                                      setModalShow(
-                                                        true
-                                                      );
-                                                      setClone(res);
-                                                    }}
-                                                  >
-                                                    {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                Add to projects */}
-                                                    <div className="dropDown-item-name-icon">
-                                                      <MyProjectSmSvg
-                                                        primaryColor={
-                                                          primaryColor
-                                                        }
-                                                      />
-                                                      Copy to My
-                                                      projects
-                                                    </div>
-                                                  </Dropdown.Item>
-                                                </>
-                                              </Dropdown.Menu>
-                                            </Dropdown>
-                                          )}
-                                      </div>
-                                    ))
-                                  ) : (
-                                    <Alert variant="danger">
-                                      No result found !
-                                    </Alert>
-                                  )
-                                ) : isLoader ? (
-                                  <Skeleton count="3" />
-                                ) : (
-                                  <Alert variant="warning">
-                                    Start Searching CurrikiStudio
-                                    Search Library.
-                                  </Alert>
-                                )}
-                              </div>
-                            </Tab>
-                          )}
-
-                          <Tab
-                            eventKey="projects"
-                            title={
-                              !!search && !!meta.projects
-                                ? `project (${meta.projects})`
-                                : "project (0)"
-                            }
-                          >
-                            {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
-                            <div className="results_search">
-                              {!!search ? (
-                                search?.length > 0 ? (
-                                  search.map((res) => (
-                                    <>
-                                      {res.model === "Project" && (
+                                      <>
                                         <div className="box">
                                           <div className="imgbox">
-                                            {res.thumb_url ? (
+                                            {res?.thumb_url ? (
                                               <div
                                                 style={{
-                                                  // eslint-disable-next-line max-len
                                                   backgroundImage: !res.thumb_url.includes(
-                                                    "/storage/"
+                                                    "/storage/",
                                                   )
                                                     ? `url(${res.thumb_url})`
                                                     : `url(${global.config.resourceUrl}${res.thumb_url})`,
@@ -1349,18 +592,11 @@ function SearchInterface(props) {
 
                                             {/* <h5>CALCULUS</h5> */}
                                           </div>
+
                                           <div className="contentbox">
                                             <div className="search-content">
                                               <a
-                                                href={
-                                                  res.model ===
-                                                  "Activity"
-                                                    ? `/activity/${res.id}/preview`
-                                                    : res.model ===
-                                                      "Playlist"
-                                                    ? `/playlist/${res.id}/preview/lti`
-                                                    : `/project/${res.id}/preview`
-                                                }
+                                                href={`/activity/${res?.id}/preview?type=ind-search`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                               >
@@ -1370,94 +606,309 @@ function SearchInterface(props) {
                                                 </h2>
                                               </a>
                                               <p>{res.description}</p>
-                                              <ul>
-                                                {res.user && (
-                                                  <li>
-                                                    By:{" "}
-                                                    <span>
-                                                      {res?.team_name
-                                                        ? `(T) ${res?.team_name}`
-                                                        : res.user
-                                                            .first_name}
-                                                    </span>
-                                                  </li>
-                                                )}
-                                                <li>
-                                                  Type:{" "}
-                                                  <span className="type">
-                                                    {res.model}
+                                              {res.user && (
+                                                <div className="search-content-by">
+                                                  By:{" "}
+                                                  <span>
+                                                    {
+                                                      res.user
+                                                        .first_name
+                                                    }
                                                   </span>
-                                                </li>
-                                                {/* <li>
-                                                Member Rating{" "}
-                                                <span className="type">Project</span>
-                                              </li> */}
-                                                {permission?.Project?.includes(
-                                                  "project:favorite"
-                                                ) && (
-                                                  <div
-                                                    className={`btn-fav ${res.favored}`}
-                                                    onClick={(e) => {
-                                                      if (
-                                                        e.target.classList.contains(
-                                                          " true"
-                                                        )
-                                                      ) {
-                                                        e.target.classList.remove(
-                                                          "true"
-                                                        );
-                                                      } else {
-                                                        e.target.classList.add(
-                                                          "true"
-                                                        );
-                                                      }
-                                                      dispatch(
-                                                        addProjectFav(
-                                                          res.id
-                                                        )
-                                                      );
-                                                    }}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      className="mr-2"
-                                                      icon="star"
-                                                    />
-                                                    Favorite
-                                                  </div>
-                                                )}
-                                              </ul>
+                                                </div>
+                                              )}
+                                              <div className="search-content-type">
+                                                Type:{" "}
+                                                <span className="type">
+                                                  {res.activity_type}
+                                                </span>
+                                              </div>
                                               {/* <p>{res.description}</p> */}
                                             </div>
-                                            {(permission?.Project?.includes(
-                                              "project:clone"
-                                            ) ||
-                                              permission?.Project?.includes(
-                                                "project:publish"
-                                              )) && (
-                                              <Dropdown className="playlist-dropdown check">
+
+                                            {true && (
+                                              <Dropdown className="playlist-dropdown check learning_activity_tab">
                                                 <Dropdown.Toggle>
                                                   <FontAwesomeIcon icon="ellipsis-v" />
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu>
-                                                  {permission?.Project?.includes(
-                                                    "project:clone"
+                                                  <>
+                                                    <a
+                                                      href={`/activity/${res.id}/preview?type=ind-search`}
+                                                      target="_blank"
+                                                      rel="noreferrer"
+                                                    >
+                                                      {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
+                                                      Preview */}
+                                                      <div className="dropDown-item-name-icon">
+                                                        <PreviewSmSvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        <span>
+                                                          Preview
+                                                        </span>
+                                                      </div>
+                                                    </a>
+                                                    <Dropdown.Item
+                                                      onClick={async () => {
+                                                        toast.info(
+                                                          "Duplicating Activity...",
+                                                          {
+                                                            className:
+                                                              "project-loading",
+                                                            closeOnClick: false,
+                                                            closeButton: false,
+                                                            position:
+                                                              toast
+                                                                .POSITION
+                                                                .BOTTOM_RIGHT,
+                                                            autoClose: 10000,
+                                                            icon: "",
+                                                          },
+                                                        );
+
+                                                        const result = await intActivityServices.indActivityClone(
+                                                          currentOrganization?.id,
+                                                          res.id,
+                                                        );
+
+                                                        toast.dismiss();
+                                                        Swal.fire({
+                                                          html:
+                                                            result.message,
+                                                          icon:
+                                                            "success",
+                                                        });
+                                                      }}
+                                                    >
+                                                      <div className="dropDown-item-name-icon">
+                                                        <MyActivitySvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        Copy to My
+                                                        Activities
+                                                      </div>
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                      onClick={() => {
+                                                        setIndClone(
+                                                          true,
+                                                        );
+                                                        setModalShow(
+                                                          true,
+                                                        );
+                                                        setClone(res);
+                                                      }}
+                                                    >
+                                                      {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
+                                                      Add to Projects */}
+                                                      <div className="dropDown-item-name-icon">
+                                                        <MyProjectSmSvg
+                                                          primaryColor={
+                                                            primaryColor
+                                                          }
+                                                        />
+                                                        Copy to My
+                                                        projects
+                                                      </div>
+                                                    </Dropdown.Item>
+                                                  </>
+                                                </Dropdown.Menu>
+                                              </Dropdown>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </>
+                                    ))
+                                  ) : (
+                                    <Alert variant="danger">
+                                      No result found !
+                                    </Alert>
+                                  )
+                                ) : isLoader ? (
+                                  <Skeleton count="3" />
+                                ) : (
+                                  <Alert variant="warning">
+                                    Start Searching CurrikiStudio
+                                    Search Library.
+                                  </Alert>
+                                )}
+                              </div>
+                            </div>
+                          </Tab>
+                        )}
+
+                        <Tab
+                          eventKey="projects"
+                          title={
+                            !!search && !!meta.projects
+                              ? `projects (${meta.projects})`
+                              : "projects (0)"
+                          }
+                        >
+                          {!!search ? (
+                            search?.length > 0 ? (
+                              search?.map((res, key) => (
+                                <>
+                                  {res.model === "Project" && (
+                                    <Accordion>
+                                      <Card>
+                                        <Accordion.Toggle
+                                          as={Card.Header}
+                                          eventKey="0"
+                                          className="d-flex align-items-center search-project-card-head"
+                                          onClick={async () => {
+                                            if (
+                                              res.id ===
+                                              projectTogglestate
+                                            ) {
+                                              setprojectTogglestate(
+                                                null,
+                                              );
+                                            } else {
+                                              setprojectTogglestate(
+                                                res.id,
+                                              );
+                                              setplaylistdata(null);
+                                              const results = await dispatch(
+                                                simpleSearchProjectPreview(
+                                                  currentOrganization?.id,
+                                                  res.id,
+                                                ),
+                                              );
+                                              if (results) {
+                                                setplaylistdata(
+                                                  results,
+                                                );
+                                              }
+                                            }
+                                          }}
+                                        >
+                                          <FontAwesomeIcon
+                                            className="ml-2"
+                                            icon={
+                                              projectTogglestate ===
+                                              res.id
+                                                ? "chevron-up"
+                                                : "chevron-down"
+                                            }
+                                          />
+                                          <div className="results_search">
+                                            <div class="box">
+                                              <div class="imgbox">
+                                                {res.thumb_url ? (
+                                                  <div
+                                                    style={{
+                                                      // eslint-disable-next-line max-len
+                                                      backgroundImage: !res.thumb_url.includes(
+                                                        "/storage/",
+                                                      )
+                                                        ? `url(${res.thumb_url})`
+                                                        : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                                    }}
+                                                  />
+                                                ) : (
+                                                  <div
+                                                    style={{
+                                                      backgroundImage:
+                                                        // eslint-disable-next-line max-len
+                                                        `url("https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280")`,
+                                                    }}
+                                                  />
+                                                )}
+                                              </div>
+                                              <div class="contentbox align-items-center">
+                                                <div class="search-content">
+                                                  <a
+                                                    href="/activity/65505/preview?type=ind-search"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                  >
+                                                    <h2>
+                                                      {res?.title}
+                                                    </h2>
+                                                  </a>
+                                                  <p>
+                                                    {res?.description}
+                                                  </p>
+                                                  <div className="d-flex mt-1">
+                                                    <div class="search-content-by mr-3">
+                                                      By:{" "}
+                                                      <span>
+                                                        {
+                                                          res?.user
+                                                            ?.first_name
+                                                        }
+                                                      </span>
+                                                    </div>
+                                                    <div class="search-content-type">
+                                                      Type:{" "}
+                                                      <span class="type">
+                                                        {res?.model}
+                                                      </span>
+                                                    </div>
+                                                  </div>
+                                                  {/* {permission?.Project?.includes(
+                                                    "project:favorite",
                                                   ) && (
-                                                    <>
+                                                    <div
+                                                      className={`btn-fav ${res.favored}`}
+                                                      onClick={(
+                                                        e,
+                                                      ) => {
+                                                        if (
+                                                          e.target.classList.contains(
+                                                            " true",
+                                                          )
+                                                        ) {
+                                                          e.target.classList.remove(
+                                                            "true",
+                                                          );
+                                                        } else {
+                                                          e.target.classList.add(
+                                                            "true",
+                                                          );
+                                                        }
+                                                        dispatch(
+                                                          addProjectFav(
+                                                            res.id,
+                                                          ),
+                                                        );
+                                                      }}
+                                                    >
+                                                      <FontAwesomeIcon
+                                                        className="mr-2"
+                                                        icon="star"
+                                                      />
+                                                      Favorite
+                                                    </div>
+                                                  )} */}
+                                                </div>
+                                                {(permission?.Project?.includes(
+                                                  "project:clone",
+                                                ) ||
+                                                  permission?.Project?.includes(
+                                                    "project:publish",
+                                                  )) && (
+                                                  <Dropdown className="playlist-dropdown check">
+                                                    <Dropdown.Toggle>
+                                                      <FontAwesomeIcon icon="ellipsis-v" />
+                                                    </Dropdown.Toggle>
+                                                    <Dropdown.Menu>
                                                       <Dropdown.Item
                                                         onClick={() =>
                                                           window.open(
-                                                            res.model ===
-                                                              "Activity"
-                                                              ? `/activity/${res.id}/preview`
-                                                              : res.model ===
-                                                                "Playlist"
-                                                              ? `/playlist/${res.id}/preview/lti`
-                                                              : `/project/${res.id}/preview`,
-                                                            "_blank"
+                                                            `/project/${res.id}/preview`,
+                                                            "_blank",
                                                           )
                                                         }
                                                       >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faEye} /> */}
+                                                        {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
+                                                Preview */}
                                                         <div className="dropDown-item-name-icon">
                                                           <PreviewSmSvg
                                                             primaryColor={
@@ -1469,538 +920,412 @@ function SearchInterface(props) {
                                                           </span>
                                                         </div>
                                                       </Dropdown.Item>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          Swal.fire({
-                                                            html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                            showCancelButton: true,
-                                                            confirmButtonColor:
-                                                              "#3085d6",
-                                                            cancelButtonColor:
-                                                              "#d33",
-                                                            confirmButtonText:
-                                                              "Ok",
-                                                          }).then(
-                                                            (
-                                                              result
-                                                            ) => {
-                                                              if (
-                                                                result.value
-                                                              ) {
-                                                                cloneProject(
-                                                                  res.id
-                                                                );
-                                                              }
-                                                            }
-                                                          );
-                                                        }}
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon="clone" /> */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          Copy to My
-                                                          projects
-                                                        </div>
-                                                      </Dropdown.Item>
-                                                    </>
-                                                  )}
-
-                                                  {fromTeam && (
-                                                    <Dropdown.Item
-                                                      onClick={() => {
-                                                        if (
-                                                          selectProject?.length ===
-                                                            0 &&
-                                                          fromTeam
-                                                        ) {
-                                                          setSelectProject(
-                                                            [res.id]
-                                                          );
-                                                        } else if (
-                                                          selectProject[0] ===
-                                                            res.id &&
-                                                          fromTeam
-                                                        ) {
-                                                          setSelectProject(
-                                                            []
-                                                          );
-                                                        } else {
-                                                          Swal.fire({
-                                                            icon:
-                                                              "warning",
-                                                            title:
-                                                              "Action Prohibited",
-                                                            text:
-                                                              "You are only allowed to select 1 project.",
-                                                          });
-                                                        }
-                                                      }}
-                                                    >
-                                                      <img
-                                                        src={teamicon}
-                                                        alt="teams_logo"
-                                                        className="teams-logo"
-                                                      />
-                                                      {selectProject.includes(
-                                                        res.id
-                                                      )
-                                                        ? "Remove from "
-                                                        : "Add to "}
-                                                      team
-                                                    </Dropdown.Item>
-                                                  )}
-                                                </Dropdown.Menu>
-                                              </Dropdown>
-                                            )}
-                                          </div>
-                                        </div>
-                                      )}
-                                    </>
-                                  ))
-                                ) : (
-                                  <Alert variant="danger">
-                                    No result found !
-                                  </Alert>
-                                )
-                              ) : (
-                                <>
-                                  {!isLoader ? (
-                                    <Alert variant="warning">
-                                      Start Searching CurrikiStudio
-                                      Search Library.
-                                    </Alert>
-                                  ) : (
-                                    <Skeleton count="3" />
-                                  )}
-                                </>
-                              )}
-                            </div>
-                          </Tab>
-
-                          {!fromTeam && (
-                            <Tab
-                              eventKey="playlists"
-                              title={
-                                !!search && !!meta.playlists
-                                  ? `playlist (${meta.playlists})`
-                                  : "playlist (0)"
-                              }
-                            >
-                              {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
-                              <div className="results_search">
-                                {!!search ? (
-                                  search?.length > 0 ? (
-                                    search.map((res) => (
-                                      <>
-                                        {res.model === "Playlist" && (
-                                          <div className="box">
-                                            <div className="imgbox">
-                                              {res.thumb_url ? (
-                                                <div
-                                                  style={{
-                                                    // eslint-disable-next-line max-len
-                                                    backgroundImage: !res.thumb_url.includes(
-                                                      "/storage/"
-                                                    )
-                                                      ? `url(${res.thumb_url})`
-                                                      : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                                  }}
-                                                />
-                                              ) : (
-                                                <div
-                                                  style={{
-                                                    backgroundImage:
-                                                      // eslint-disable-next-line max-len
-                                                      "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
-                                                  }}
-                                                />
-                                              )}
-
-                                              {/* <h5>CALCULUS</h5> */}
-                                            </div>
-
-                                            <div className="contentbox">
-                                              <div className="search-content">
-                                                <a
-                                                  href={
-                                                    res.model ===
-                                                    "Activity"
-                                                      ? `/activity/${res.id}/preview`
-                                                      : res.model ===
-                                                        "Playlist"
-                                                      ? `/playlist/${res.id}/preview/lti`
-                                                      : `/project/${res.id}/preview`
-                                                  }
-                                                  target="_blank"
-                                                  rel="noreferrer"
-                                                >
-                                                  <h2>
-                                                    {res.title ||
-                                                      res.name}
-                                                  </h2>
-                                                </a>
-                                                <p>
-                                                  {res.description}
-                                                </p>
-                                                <ul>
-                                                  {res.user && (
-                                                    <li>
-                                                      By:{" "}
-                                                      <span>
-                                                        {
-                                                          res.user
-                                                            .first_name
-                                                        }
-                                                      </span>
-                                                    </li>
-                                                  )}
-                                                  <li>
-                                                    Type:{" "}
-                                                    <span className="type">
-                                                      {res.model}
-                                                    </span>
-                                                  </li>
-                                                  {/* <li>
-                                                Member Rating{" "}
-                                                <span className="type">Project</span>
-                                              </li> */}
-                                                </ul>
-                                                {/* <p>{res.description}</p> */}
-                                              </div>
-                                              {permission?.Playlist?.includes(
-                                                "playlist:duplicate"
-                                              ) && (
-                                                <Dropdown className="playlist-dropdown check">
-                                                  <Dropdown.Toggle>
-                                                    <FontAwesomeIcon icon="ellipsis-v" />
-                                                  </Dropdown.Toggle>
-
-                                                  <Dropdown.Menu>
-                                                    <Dropdown.Item
-                                                      onClick={() =>
-                                                        window.open(
-                                                          res.model ===
-                                                            "Activity"
-                                                            ? `/activity/${res.id}/preview`
-                                                            : res.model ===
-                                                              "Playlist"
-                                                            ? `/playlist/${res.id}/preview/lti`
-                                                            : `/project/${res.id}/preview`,
-                                                          "_blank"
-                                                        )
-                                                      }
-                                                    >
-                                                      <div className="dropDown-item-name-icon">
-                                                        <PreviewSmSvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        <span>
-                                                          Preview
-                                                        </span>
-                                                      </div>
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                      onClick={() => {
-                                                        setIndClone(
-                                                          false
-                                                        );
-                                                        setModalShow(
-                                                          true
-                                                        );
-                                                        setClone(res);
-                                                      }}
-                                                    >
-                                                      <div className="dropDown-item-name-icon">
-                                                        <MyProjectSmSvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        Copy to My
-                                                        projects
-                                                      </div>
-                                                    </Dropdown.Item>
-                                                  </Dropdown.Menu>
-                                                </Dropdown>
-                                              )}
-                                            </div>
-                                          </div>
-                                        )}
-                                      </>
-                                    ))
-                                  ) : (
-                                    <Alert variant="danger">
-                                      No result found !
-                                    </Alert>
-                                  )
-                                ) : (
-                                  <Skeleton count="3" />
-                                )}
-                              </div>
-                            </Tab>
-                          )}
-
-                          {!fromTeam && (
-                            <Tab
-                              eventKey="activities"
-                              title={
-                                !!search && !!meta.activities
-                                  ? `activity (${meta.activities})`
-                                  : "activity (0)"
-                              }
-                            >
-                              {/* <SubSearchBar pageCounterTitle={'Results per page'} /> */}
-                              <div className="content">
-                                <div className="results_search">
-                                  {!!search ? (
-                                    search?.length > 0 ? (
-                                      search.map((res) => (
-                                        <>
-                                          {res.model ===
-                                            "Activity" && (
-                                            <div className="box">
-                                              <div className="imgbox">
-                                                {res.thumb_url ? (
-                                                  <div
-                                                    style={{
-                                                      backgroundImage: !res.thumb_url.includes(
-                                                        "/storage/"
-                                                      )
-                                                        ? `url(${res.thumb_url})`
-                                                        : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                                    }}
-                                                  />
-                                                ) : (
-                                                  <div
-                                                    style={{
-                                                      backgroundImage:
-                                                        // eslint-disable-next-line max-len
-                                                        "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
-                                                    }}
-                                                  />
-                                                )}
-
-                                                {/* <h5>CALCULUS</h5> */}
-                                              </div>
-
-                                              <div className="contentbox">
-                                                <div className="search-content">
-                                                  <a
-                                                    href={
-                                                      res.model ===
-                                                      "Activity"
-                                                        ? `/activity/${res.id}/preview`
-                                                        : res.model ===
-                                                          "Playlist"
-                                                        ? `/playlist/${res.id}/preview/lti`
-                                                        : `/project/${res.id}/preview`
-                                                    }
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                  >
-                                                    <h2>
-                                                      {res.title ||
-                                                        res.name}
-                                                    </h2>
-                                                  </a>
-                                                  <p>
-                                                    {res.description}
-                                                  </p>
-                                                  <ul>
-                                                    {res.user && (
-                                                      <li>
-                                                        By:{" "}
-                                                        <span>
-                                                          {
-                                                            res.user
-                                                              .first_name
-                                                          }
-                                                        </span>
-                                                      </li>
-                                                    )}
-                                                    <li>
-                                                      Type:{" "}
-                                                      <span className="type">
-                                                        {res.model}{" "}
-                                                        {res.activity_type &&
-                                                          `(${res.activity_type})`}
-                                                      </span>
-                                                    </li>
-                                                    {/* <li>
-                                                  Member Rating{" "}
-                                                  <span className="type">Project</span>
-                                                </li> */}
-                                                  </ul>
-                                                  {/* <p>{res.description}</p> */}
-                                                </div>
-                                                {showBackOption ? (
-                                                  <>
-                                                    {permission?.Activity?.includes(
-                                                      "activity:duplicate"
-                                                    ) &&
-                                                      res.model ===
-                                                        "Activity" && (
-                                                        <Buttons
-                                                          text="Add"
-                                                          primary
-                                                          width="56px"
-                                                          height="36px"
+                                                      {permission?.Project?.includes(
+                                                        "project:clone",
+                                                      ) && (
+                                                        <Dropdown.Item
                                                           onClick={() => {
-                                                            dispatch(
-                                                              addActivityPlaylistSearch(
-                                                                21,
-                                                                playlistIdForSearchingTab
-                                                              )
+                                                            Swal.fire(
+                                                              {
+                                                                html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                                showCancelButton: true,
+                                                                confirmButtonColor:
+                                                                  "#3085d6",
+                                                                cancelButtonColor:
+                                                                  "#d33",
+                                                                confirmButtonText:
+                                                                  "Ok",
+                                                              },
+                                                            ).then(
+                                                              (
+                                                                result,
+                                                              ) => {
+                                                                if (
+                                                                  result.value
+                                                                ) {
+                                                                  cloneProject(
+                                                                    res.id,
+                                                                  );
+                                                                }
+                                                              },
                                                             );
                                                           }}
-                                                          hover
-                                                        />
+                                                        >
+                                                          {/* <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                  Add to projects */}
+                                                          <div className="dropDown-item-name-icon">
+                                                            <MyProjectSmSvg
+                                                              primaryColor={
+                                                                primaryColor
+                                                              }
+                                                            />
+                                                            Copy to My
+                                                            projects
+                                                          </div>
+                                                        </Dropdown.Item>
                                                       )}
-                                                  </>
-                                                ) : (
-                                                  <>
-                                                    {permission?.Activity?.includes(
-                                                      "activity:duplicate"
-                                                    ) &&
-                                                      res.model ===
-                                                        "Activity" && (
-                                                        <Dropdown className="playlist-dropdown check">
-                                                          <Dropdown.Toggle>
-                                                            <FontAwesomeIcon icon="ellipsis-v" />
-                                                          </Dropdown.Toggle>
-                                                          <Dropdown.Menu>
-                                                            <>
-                                                              <Dropdown.Item
-                                                                onClick={() =>
-                                                                  window.open(
-                                                                    res.model ===
-                                                                      "Activity"
-                                                                      ? `/activity/${res.id}/preview`
-                                                                      : res.model ===
-                                                                        "Playlist"
-                                                                      ? `/playlist/${res.id}/preview/lti`
-                                                                      : `/project/${res.id}/preview`,
-                                                                    "_blank"
-                                                                  )
-                                                                }
-                                                              >
-                                                                <div className="dropDown-item-name-icon">
-                                                                  <PreviewSmSvg
-                                                                    primaryColor={
-                                                                      primaryColor
-                                                                    }
-                                                                  />
-                                                                  <span>
-                                                                    Preview
-                                                                  </span>
-                                                                </div>
-                                                              </Dropdown.Item>
-                                                              <Dropdown.Item
-                                                                onClick={async () => {
-                                                                  toast.info(
-                                                                    "Duplicating Activity...",
-                                                                    {
-                                                                      className:
-                                                                        "project-loading",
-                                                                      closeOnClick: false,
-                                                                      closeButton: false,
-                                                                      position:
-                                                                        toast
-                                                                          .POSITION
-                                                                          .BOTTOM_RIGHT,
-                                                                      autoClose: 10000,
-                                                                      icon:
-                                                                        "",
-                                                                    }
-                                                                  );
-                                                                  const result = await intActivityServices.copyToIndependentActivity(
-                                                                    currentOrganization?.id,
-                                                                    res.id
-                                                                  );
-                                                                  toast.dismiss();
-                                                                  Swal.fire(
-                                                                    {
-                                                                      html:
-                                                                        result.message,
-                                                                      icon:
-                                                                        "success",
-                                                                    }
-                                                                  );
-                                                                }}
-                                                              >
-                                                                <div className="dropDown-item-name-icon">
-                                                                  <MyActivitySmSvg
-                                                                    primaryColor={
-                                                                      primaryColor
-                                                                    }
-                                                                  />
-                                                                  <span>
-                                                                    Copy
-                                                                    to
-                                                                    My
-                                                                    Activities
-                                                                  </span>
-                                                                </div>
-                                                              </Dropdown.Item>
-                                                              <Dropdown.Item
-                                                                onClick={() => {
-                                                                  setIndClone(
-                                                                    false
-                                                                  );
-                                                                  setModalShow(
-                                                                    true
-                                                                  );
-                                                                  setClone(
-                                                                    res
-                                                                  );
-                                                                }}
-                                                              >
-                                                                <div className="dropDown-item-name-icon">
-                                                                  <MyProjectSmSvg
-                                                                    primaryColor={
-                                                                      primaryColor
-                                                                    }
-                                                                  />
-                                                                  Copy
-                                                                  to
-                                                                  My
-                                                                  projects
-                                                                </div>
-                                                              </Dropdown.Item>
-                                                            </>
-                                                          </Dropdown.Menu>
-                                                        </Dropdown>
-                                                      )}
-                                                  </>
+                                                    </Dropdown.Menu>
+                                                  </Dropdown>
                                                 )}
                                               </div>
                                             </div>
-                                          )}
-                                        </>
-                                      ))
-                                    ) : (
-                                      <Alert variant="danger">
-                                        No result found !
-                                      </Alert>
-                                    )
-                                  ) : (
-                                    <Skeleton count="3" />
+                                          </div>
+                                        </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="0">
+                                          <Card.Body className="playlist-card">
+                                            {!!playlistdata ? (
+                                              search?.length > 0 ? (
+                                                playlistdata?.playlists?.map(
+                                                  (playlist) => (
+                                                    <>
+                                                      {res.id ===
+                                                        playlist.project_id && (
+                                                        <Accordion>
+                                                          <Card>
+                                                            <Accordion.Toggle
+                                                              as={
+                                                                Card.Header
+                                                              }
+                                                              eventKey="0"
+                                                              onClick={() => {
+                                                                if (
+                                                                  playlist.id ===
+                                                                  playlistTogglestate
+                                                                ) {
+                                                                  setplaylistTogglestate(
+                                                                    null,
+                                                                  );
+                                                                } else {
+                                                                  setplaylistTogglestate(
+                                                                    playlist.id,
+                                                                  );
+                                                                }
+                                                              }}
+                                                            >
+                                                              <ul className="search-playllist-content">
+                                                                <li
+                                                                  className={
+                                                                    playlistTogglestate ===
+                                                                    playlist.id
+                                                                      ? "active-li"
+                                                                      : "non-active-li"
+                                                                  }
+                                                                >
+                                                                  <div className="search-playlist-title">
+                                                                    <FontAwesomeIcon
+                                                                      className="ml-2"
+                                                                      icon={
+                                                                        playlistTogglestate ===
+                                                                        playlist.id
+                                                                          ? "chevron-up"
+                                                                          : "chevron-down"
+                                                                      }
+                                                                    />
+
+                                                                    <h3 className="playlist-title">
+                                                                      {
+                                                                        playlist.title
+                                                                      }
+                                                                    </h3>
+                                                                  </div>
+                                                                  {permission?.Playlist?.includes(
+                                                                    "playlist:duplicate",
+                                                                  ) && (
+                                                                    <Dropdown className="playlist-dropdown check">
+                                                                      <Dropdown.Toggle>
+                                                                        <FontAwesomeIcon icon="ellipsis-v" />
+                                                                      </Dropdown.Toggle>
+                                                                      <Dropdown.Menu>
+                                                                        <Dropdown.Item
+                                                                          onClick={() =>
+                                                                            window.open(
+                                                                              `/playlist/${playlist.id}/preview/lti`,
+                                                                              "_blank",
+                                                                            )
+                                                                          }
+                                                                        >
+                                                                          <div className="dropDown-item-name-icon">
+                                                                            <PreviewSmSvg
+                                                                              primaryColor={
+                                                                                primaryColor
+                                                                              }
+                                                                            />
+                                                                            <span>
+                                                                              Preview
+                                                                            </span>
+                                                                          </div>
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item
+                                                                          onClick={() => {
+                                                                            setIndClone(
+                                                                              false,
+                                                                            );
+                                                                            setModalShow(
+                                                                              true,
+                                                                            );
+                                                                            setClone(
+                                                                              playlist,
+                                                                            );
+                                                                          }}
+                                                                        >
+                                                                          <div className="dropDown-item-name-icon">
+                                                                            <MyProjectSmSvg
+                                                                              primaryColor={
+                                                                                primaryColor
+                                                                              }
+                                                                            />
+                                                                            Copy
+                                                                            to
+                                                                            My
+                                                                            projects
+                                                                          </div>
+                                                                        </Dropdown.Item>
+                                                                      </Dropdown.Menu>
+                                                                    </Dropdown>
+                                                                  )}
+                                                                </li>
+                                                              </ul>
+                                                            </Accordion.Toggle>
+                                                            {playlist
+                                                              ?.activities
+                                                              ?.length >
+                                                            0 ? (
+                                                              playlist?.activities?.map(
+                                                                (
+                                                                  activity,
+                                                                ) => (
+                                                                  <Accordion.Collapse eventKey="0">
+                                                                    <Card.Body className="search-activity-content">
+                                                                      <div className="activity-box">
+                                                                        <div className="activity-thumb">
+                                                                          {activity?.thumb_url ? (
+                                                                            <div
+                                                                              style={{
+                                                                                backgroundImage: !activity?.thumb_url.includes(
+                                                                                  "/storage/",
+                                                                                )
+                                                                                  ? `url(${activity?.thumb_url})`
+                                                                                  : `url(${global.config.resourceUrl}${activity.thumb_url})`,
+                                                                              }}
+                                                                            />
+                                                                          ) : (
+                                                                            <div
+                                                                              style={{
+                                                                                backgroundImage:
+                                                                                  // eslint-disable-next-line max-len
+                                                                                  `url("https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280")`,
+                                                                              }}
+                                                                            />
+                                                                          )}
+                                                                        </div>
+                                                                        <p className="m-0">
+                                                                          {
+                                                                            activity.title
+                                                                          }
+                                                                        </p>
+                                                                      </div>
+                                                                      {/* {showBackOption ? (
+                                                                        <>
+                                                                          {permission?.Activity?.includes(
+                                                                            "activity:duplicate",
+                                                                          ) &&
+                                                                            res.model ===
+                                                                              "Activity" && (
+                                                                              <Buttons
+                                                                                text="Add"
+                                                                                primary
+                                                                                width="56px"
+                                                                                height="36px"
+                                                                                onClick={() => {
+                                                                                  dispatch(
+                                                                                    addActivityPlaylistSearch(
+                                                                                      21,
+                                                                                      playlistIdForSearchingTab,
+                                                                                    ),
+                                                                                  );
+                                                                                }}
+                                                                                hover
+                                                                              />
+                                                                            )}
+                                                                        </>
+                                                                      ) : ( */}
+                                                                      <>
+                                                                        {permission?.Activity?.includes(
+                                                                          "activity:duplicate",
+                                                                        ) && (
+                                                                          <Dropdown className="playlist-dropdown check">
+                                                                            <Dropdown.Toggle>
+                                                                              <FontAwesomeIcon icon="ellipsis-v" />
+                                                                            </Dropdown.Toggle>
+                                                                            <Dropdown.Menu>
+                                                                              <>
+                                                                                <Dropdown.Item
+                                                                                  onClick={() =>
+                                                                                    window.open(
+                                                                                      `/activity/${activity.id}/preview`,
+
+                                                                                      "_blank",
+                                                                                    )
+                                                                                  }
+                                                                                >
+                                                                                  <div className="dropDown-item-name-icon">
+                                                                                    <PreviewSmSvg
+                                                                                      primaryColor={
+                                                                                        primaryColor
+                                                                                      }
+                                                                                    />
+                                                                                    <span>
+                                                                                      Preview
+                                                                                    </span>
+                                                                                  </div>
+                                                                                </Dropdown.Item>
+                                                                                <Dropdown.Item
+                                                                                  onClick={async () => {
+                                                                                    toast.info(
+                                                                                      "Duplicating Activity...",
+                                                                                      {
+                                                                                        className:
+                                                                                          "project-loading",
+                                                                                        closeOnClick: false,
+                                                                                        closeButton: false,
+                                                                                        position:
+                                                                                          toast
+                                                                                            .POSITION
+                                                                                            .BOTTOM_RIGHT,
+                                                                                        autoClose: 10000,
+                                                                                        icon:
+                                                                                          "",
+                                                                                      },
+                                                                                    );
+                                                                                    const result = await intActivityServices.copyToIndependentActivity(
+                                                                                      currentOrganization?.id,
+                                                                                      activity.id,
+                                                                                    );
+                                                                                    toast.dismiss();
+                                                                                    Swal.fire(
+                                                                                      {
+                                                                                        html:
+                                                                                          result.message,
+                                                                                        icon:
+                                                                                          "success",
+                                                                                      },
+                                                                                    );
+                                                                                  }}
+                                                                                >
+                                                                                  <div className="dropDown-item-name-icon">
+                                                                                    <MyActivitySmSvg
+                                                                                      primaryColor={
+                                                                                        primaryColor
+                                                                                      }
+                                                                                    />
+                                                                                    <span>
+                                                                                      Copy
+                                                                                      to
+                                                                                      My
+                                                                                      Activities
+                                                                                    </span>
+                                                                                  </div>
+                                                                                </Dropdown.Item>
+                                                                                <Dropdown.Item
+                                                                                  onClick={() => {
+                                                                                    setIndClone(
+                                                                                      false,
+                                                                                    );
+                                                                                    setModalShow(
+                                                                                      true,
+                                                                                    );
+                                                                                    setClone(
+                                                                                      activity,
+                                                                                    );
+                                                                                  }}
+                                                                                >
+                                                                                  <div className="dropDown-item-name-icon">
+                                                                                    <MyProjectSmSvg
+                                                                                      primaryColor={
+                                                                                        primaryColor
+                                                                                      }
+                                                                                    />
+                                                                                    Copy
+                                                                                    to
+                                                                                    My
+                                                                                    projects
+                                                                                  </div>
+                                                                                </Dropdown.Item>
+                                                                              </>
+                                                                            </Dropdown.Menu>
+                                                                          </Dropdown>
+                                                                        )}
+                                                                      </>
+                                                                      {/* )} */}
+                                                                    </Card.Body>
+                                                                  </Accordion.Collapse>
+                                                                ),
+                                                              )
+                                                            ) : (
+                                                              <Accordion.Collapse eventKey="0">
+                                                                <Card.Body
+                                                                  className="search-activity-content"
+                                                                  style={{
+                                                                    marginTop:
+                                                                      "-10px",
+                                                                  }}
+                                                                >
+                                                                  <div className="activity-box w-100">
+                                                                    <Alert variant="warning my-0 w-100">
+                                                                      No
+                                                                      result
+                                                                      found
+                                                                      !
+                                                                    </Alert>
+                                                                  </div>
+                                                                </Card.Body>
+                                                              </Accordion.Collapse>
+                                                            )}
+                                                          </Card>
+                                                        </Accordion>
+                                                      )}
+                                                    </>
+                                                  ),
+                                                )
+                                              ) : (
+                                                <Alert variant="danger">
+                                                  No result found !
+                                                </Alert>
+                                              )
+                                            ) : (
+                                              <>
+                                                <Skeleton count="3" />
+                                              </>
+                                            )}
+                                          </Card.Body>
+                                        </Accordion.Collapse>
+                                      </Card>
+                                    </Accordion>
                                   )}
-                                </div>
-                              </div>
-                            </Tab>
+                                </>
+                              ))
+                            ) : (
+                              <Alert variant="danger">
+                                No result found !
+                              </Alert>
+                            )
+                          ) : (
+                            <>
+                              {!isLoader ? (
+                                <Alert variant="warning">
+                                  Start Searching CurrikiStudio Search
+                                  Library.
+                                </Alert>
+                              ) : (
+                                <Skeleton count="3" />
+                              )}
+                            </>
                           )}
-                        </Tabs>
-                      </div>
+                        </Tab>
+                      </Tabs>
                     </div>
-                  </Tab>
-                </Tabs>
+                  </div>
+                </div>
                 {totalCount > 20 && (
                   <Pagination
                     activePage={activePage}
@@ -2010,48 +1335,31 @@ function SearchInterface(props) {
                     }
                     pageRangeDisplayed={8}
                     onChange={async (e) => {
+                      setisLoader(true);
                       setActivePage(e);
-                      if (allState.searchType === "Projects") {
-                        if (activeModel === "total") {
-                          const searchData = {
-                            phrase: searchQueries?.trim(),
-                            from: e * 20 - 20,
-                            size: 20,
-                            type: searchType,
-                            subjectArray: activeSubject || undefined,
-                            gradeArray: activeEducation || undefined,
-                            authorTagsArray:
-                              activeAuthorTag || undefined,
-                            standardArray: activeType || undefined,
-                            author: authorName || undefined,
-                            no_words: noWords || undefined,
-                          };
-                          setSearch(null);
-                          await dispatch(
-                            simpleSearchAction(searchData)
-                          );
-                          Swal.close();
-                        } else {
-                          const searchData = {
-                            phrase: searchQueries?.trim(),
-                            from: e * 20 - 20,
-                            size: 20,
-                            type: searchType,
-                            model: activeModel,
-                            subjectArray: activeSubject || undefined,
-                            gradeArray: activeEducation || undefined,
-                            authorTagsArray:
-                              activeAuthorTag || undefined,
-                            standardArray: activeType || undefined,
-                            author: authorName || undefined,
-                            no_words: noWords || undefined,
-                          };
-                          setSearch(null);
-                          await dispatch(
-                            simpleSearchAction(searchData)
-                          );
-                          Swal.close();
-                        }
+                      if (
+                        allState.searchType === "Projects" ||
+                        allState.searchType === "projects"
+                      ) {
+                        const searchData = {
+                          phrase: searchQueries?.trim(),
+                          from: e * 20 - 20,
+                          size: 20,
+                          type: searchType,
+                          model: "projects",
+                          subjectArray: activeSubject || undefined,
+                          gradeArray: activeEducation || undefined,
+                          authorTagsArray:
+                            activeAuthorTag || undefined,
+                          standardArray: activeType || undefined,
+                          author: authorName || undefined,
+                          no_words: noWords || undefined,
+                        };
+                        setSearch(null);
+                        await dispatch(
+                          simpleSearchAction(searchData),
+                        );
+                        Swal.close();
                       } else if (
                         allState.searchType ===
                         "Independent activities"
@@ -2072,8 +1380,8 @@ function SearchInterface(props) {
                         await dispatch(
                           searchIndependentActivitiesAction(
                             searchData,
-                            "showcase_activities"
-                          )
+                            "showcase_activities",
+                          ),
                         );
                       }
                     }}
