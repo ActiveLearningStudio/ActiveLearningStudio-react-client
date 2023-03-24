@@ -1,4 +1,5 @@
 /* eslint-disable operator-linebreak */
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import {
   // Route,
@@ -85,6 +86,7 @@ const MSTeamsSSO = loadable(() => import('../containers/Auth/MSTeamsSSO'));
 const MsTeamsActivityPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityPage'));
 const MsTeamActivityLaunch = loadable(() => import('../containers/LMS/MsTeams/MsTeamActivityLaunch'));
 const MsTeamSummaryPage = loadable(() => import('../containers/LMS/MsTeams/MsTeamSummaryPage'));
+const MsTeamsActivityContainer = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityContainer'));
 let intialLoad = 0;
 
 const AppRouter = (props) => {
@@ -107,15 +109,18 @@ const AppRouter = (props) => {
   ) {
     document.body.classList.add('mobile-responsive');
   }
-    // Get app context and auth token
+    // Get msteams app context and auth token
     useEffect(() => {
-      app.initialize();
-      if (app.isInitialized() === true && intialLoad == 0) {
-        dispatch({
-          type: IS_MSTEAM,
-          payload: true,
+      if (intialLoad === 0) {
+        app.initialize().then(() => {
+          dispatch({
+            type: IS_MSTEAM,
+            payload: true,
+          });
+          intialLoad += 1;
+        }).catch(() => {
+          return;
         });
-        intialLoad += 1;
       }
     });
 
@@ -153,7 +158,7 @@ const AppRouter = (props) => {
         <OpenRoute exact path="/gclass/launch/:userId/:courseId/:activityId/:classworkId" component={GclassActivityPage} />
         <OpenRoute exact path="/gclass/summary/:userId/:courseId/:activityId/:gClassworkId/:submissionId" component={GclassSummaryPage} />
         <OpenRoute exact path="/msteams/launch/activity/:activityId/class/:classId/assignment/:assignmentId" component={MsTeamsActivityPage} />
-        <OpenRoute exact path="/msteam/launch/activity/:activityId" component={MsTeamActivityLaunch} />
+        <OpenRoute exact path="/msteam/:tenantId/launch/activity/:activityId" component={MsTeamsActivityContainer} />
         <OpenRoute exact path="/msteam/summary/:classId/:activityId/:submissionId" component={MsTeamSummaryPage} />
         <OpenRoute
           exact
