@@ -56,8 +56,8 @@ export const isMsTeam = (value) => ({
   payload: value,
 });
 
-export const turnInAction = (classworkId, submissionId, courseId) => async (dispatch) => {
-  const turnedIn = await msTeamsService.turnIn(classworkId, submissionId, courseId);
+export const turnInAction = (token, classworkId, submissionId, courseId) => async (dispatch) => {
+  const turnedIn = await msTeamsService.turnIn(token, classworkId, submissionId, courseId);
   dispatch({
     type: MT_TURNED_IN_ACTIVITY,
     payload: turnedIn,

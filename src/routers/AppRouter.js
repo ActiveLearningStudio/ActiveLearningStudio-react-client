@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   // Route,
   BrowserRouter as Router,
@@ -167,6 +167,7 @@ const MsTeamActivityLaunch = loadable(() =>
 const MsTeamSummaryPage = loadable(() =>
   import("../containers/LMS/MsTeams/MsTeamSummaryPage")
 );
+const MsTeamsActivityContainer = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityContainer'));
 let intialLoad = 0;
 
 const AppRouter = (props) => {
@@ -191,17 +192,20 @@ const AppRouter = (props) => {
   ) {
     document.body.classList.add("mobile-responsive");
   }
-  // Get app context and auth token
-  useEffect(() => {
-    app.initialize();
-    if (app.isInitialized() === true && intialLoad == 0) {
-      dispatch({
-        type: IS_MSTEAM,
-        payload: true,
-      });
-      intialLoad += 1;
-    }
-  });
+    // Get msteams app context and auth token
+    useEffect(() => {
+      if (intialLoad === 0) {
+        app.initialize().then(() => {
+          dispatch({
+            type: IS_MSTEAM,
+            payload: true,
+          });
+          intialLoad += 1;
+        }).catch(() => {
+          return;
+        });
+      }
+    });
 
   const { user } = props;
   return (
@@ -304,8 +308,8 @@ const AppRouter = (props) => {
         />
         <OpenRoute
           exact
-          path="/msteam/launch/activity/:activityId"
-          component={MsTeamActivityLaunch}
+          path="/msteam/:tenantId/launch/activity/:activityId"
+          component={MsTeamsActivityContainer}
         />
         <OpenRoute
           exact
