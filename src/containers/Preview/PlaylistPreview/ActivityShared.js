@@ -265,6 +265,7 @@ const ActivityShared = (props) => {
                 </h1>
                 {selectedPlaylist?.activity.id && (
                 <div className="controller">
+                  {typeof(selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) - 1]) !== "undefined" &&
                   <PreviousLink
                     viewType={query.view}
                     playlistId={selectedPlaylist?.playlist.id}
@@ -274,6 +275,8 @@ const ActivityShared = (props) => {
                     activtyPlaylist
                     setH5pCurrentActivity={() => setSelectedPlaylist()}
                   />
+                }
+                {typeof (selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) + 1]) !== "undefined" && 
                   <NextLink
                     viewType={query.view}
                     playlistId={selectedPlaylist?.playlist.id}
@@ -283,6 +286,7 @@ const ActivityShared = (props) => {
                     activtyPlaylist
                     setH5pCurrentActivity={() => setSelectedPlaylist()}
                   />
+              }
                 </div>
                 )}
               </div>
