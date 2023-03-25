@@ -750,29 +750,30 @@ function SearchInterface(props) {
                               : "projects (0)"
                           }
                         >
-                          {!!search ? (
-                            search?.length > 0 ? (
-                              search?.map((res, key) => (
-                                <>
-                                  {res.model === "Project" && (
-                                    <Accordion>
+                          <Accordion>
+                            {!!search ? (
+                              search?.length > 0 ? (
+                                search?.map((res, counterTop) => (
+                                  <>
+                                    {res.model === "Project" && (
                                       <Card>
                                         <Accordion.Toggle
                                           as={Card.Header}
-                                          eventKey="0"
+                                          eventKey={counterTop + 1}
                                           className="d-flex align-items-center search-project-card-head"
                                           onClick={async () => {
                                             if (
-                                              res.id ===
-                                              projectTogglestate
+                                              projectTogglestate ===
+                                              counterTop + 1
                                             ) {
                                               setprojectTogglestate(
                                                 null,
                                               );
                                             } else {
                                               setprojectTogglestate(
-                                                res.id,
+                                                counterTop + 1,
                                               );
+
                                               setplaylistdata(null);
                                               const results = await dispatch(
                                                 simpleSearchProjectPreview(
@@ -792,7 +793,7 @@ function SearchInterface(props) {
                                             className="ml-2"
                                             icon={
                                               projectTogglestate ===
-                                              res.id
+                                              counterTop + 1
                                                 ? "chevron-up"
                                                 : "chevron-down"
                                             }
@@ -971,33 +972,43 @@ function SearchInterface(props) {
                                             </div>
                                           </div>
                                         </Accordion.Toggle>
-                                        <Accordion.Collapse eventKey="0">
+                                        <Accordion.Collapse
+                                          eventKey={counterTop + 1}
+                                        >
                                           <Card.Body className="playlist-card">
-                                            {!!playlistdata ? (
-                                              search?.length > 0 ? (
-                                                playlistdata?.playlists?.map(
-                                                  (playlist) => (
-                                                    <>
-                                                      {res.id ===
-                                                        playlist.project_id && (
-                                                        <Accordion>
+                                            <Accordion>
+                                              {!!playlistdata ? (
+                                                search?.length > 0 ? (
+                                                  playlistdata?.playlists?.map(
+                                                    (
+                                                      playlist,
+                                                      innerCounter,
+                                                    ) => (
+                                                      <>
+                                                        {res.id ===
+                                                          playlist.project_id && (
                                                           <Card>
                                                             <Accordion.Toggle
                                                               as={
                                                                 Card.Header
                                                               }
-                                                              eventKey="0"
+                                                              eventKey={
+                                                                innerCounter +
+                                                                1
+                                                              }
                                                               onClick={() => {
                                                                 if (
-                                                                  playlist.id ===
-                                                                  playlistTogglestate
+                                                                  playlistTogglestate ===
+                                                                  innerCounter +
+                                                                    1
                                                                 ) {
                                                                   setplaylistTogglestate(
                                                                     null,
                                                                   );
                                                                 } else {
                                                                   setplaylistTogglestate(
-                                                                    playlist.id,
+                                                                    innerCounter +
+                                                                      1,
                                                                   );
                                                                 }
                                                               }}
@@ -1016,7 +1027,8 @@ function SearchInterface(props) {
                                                                       className="ml-2"
                                                                       icon={
                                                                         playlistTogglestate ===
-                                                                        playlist.id
+                                                                        innerCounter +
+                                                                          1
                                                                           ? "chevron-up"
                                                                           : "chevron-down"
                                                                       }
@@ -1094,7 +1106,12 @@ function SearchInterface(props) {
                                                                 (
                                                                   activity,
                                                                 ) => (
-                                                                  <Accordion.Collapse eventKey="0">
+                                                                  <Accordion.Collapse
+                                                                    eventKey={
+                                                                      innerCounter +
+                                                                      1
+                                                                    }
+                                                                  >
                                                                     <Card.Body className="search-activity-content">
                                                                       <div className="activity-box">
                                                                         <div className="activity-thumb">
@@ -1282,45 +1299,45 @@ function SearchInterface(props) {
                                                               </Accordion.Collapse>
                                                             )}
                                                           </Card>
-                                                        </Accordion>
-                                                      )}
-                                                    </>
-                                                  ),
+                                                        )}
+                                                      </>
+                                                    ),
+                                                  )
+                                                ) : (
+                                                  <Alert variant="danger">
+                                                    No result found !
+                                                  </Alert>
                                                 )
                                               ) : (
-                                                <Alert variant="danger">
-                                                  No result found !
-                                                </Alert>
-                                              )
-                                            ) : (
-                                              <>
-                                                <Skeleton count="3" />
-                                              </>
-                                            )}
+                                                <>
+                                                  <Skeleton count="3" />
+                                                </>
+                                              )}
+                                            </Accordion>
                                           </Card.Body>
                                         </Accordion.Collapse>
                                       </Card>
-                                    </Accordion>
-                                  )}
-                                </>
-                              ))
-                            ) : (
-                              <Alert variant="danger">
-                                No result found !
-                              </Alert>
-                            )
-                          ) : (
-                            <>
-                              {!isLoader ? (
-                                <Alert variant="warning">
-                                  Start Searching CurrikiStudio Search
-                                  Library.
-                                </Alert>
+                                    )}
+                                  </>
+                                ))
                               ) : (
-                                <Skeleton count="3" />
-                              )}
-                            </>
-                          )}
+                                <Alert variant="danger">
+                                  No result found !
+                                </Alert>
+                              )
+                            ) : (
+                              <>
+                                {!isLoader ? (
+                                  <Alert variant="warning">
+                                    Start Searching CurrikiStudio
+                                    Search Library.
+                                  </Alert>
+                                ) : (
+                                  <Skeleton count="3" />
+                                )}
+                              </>
+                            )}
+                          </Accordion>
                         </Tab>
                       </Tabs>
                     </div>
