@@ -17,7 +17,6 @@ const CreateUser = (props) => {
   const [checkedEmail, setCheckedEmail] = useState(null);
   const [existingUser, setExistingUser] = useState(false);
   const handleEmailChecked = (result, email) => {
-    alert(result);
     if (result === "new-user") {
       setCheckedEmail(email);
       setStep("createUser");
