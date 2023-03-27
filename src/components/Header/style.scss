@@ -821,7 +821,8 @@ nav > ul > li.active a i {
 
 nav > ul > li > a:hover img,
 nav > ul > li.active > a img {
-  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg) brightness(108%) contrast(100%);
+  filter: invert(70%) sepia(23%) saturate(1975%) hue-rotate(192deg)
+    brightness(108%) contrast(100%);
 }
 
 .show {
@@ -1148,4 +1149,20 @@ a {
 
   background: #e5eeff;
   border-radius: 20px;
+}
+
+.help-redirect-icon .swal2-confirm {
+  position: relative;
+  padding-left: 30px !important;
+  &::before {
+    content: "";
+
+    background: url("../../assets/images/external-link.svg") no-repeat;
+    width: 20px;
+    height: 20px;
+
+    position: absolute;
+    left: 45px;
+    top: 4px;
+  }
 }
