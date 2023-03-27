@@ -8,7 +8,7 @@ import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 
-function MsTeamsActivityContainer({match}) {
+function MsTeamsActivityContainer({ match, history }) {
   const { activityId, tenantId } = match.params;
   const queryParams = new URLSearchParams(useLocation().search);
   const classId = queryParams.get('classId');
@@ -41,7 +41,13 @@ function MsTeamsActivityContainer({match}) {
   useEffect(() => {
     if (!freshToken) return;
 
-    if (userRole === 'teacher' && !submissionId) { // Activity viewed in preview mode by a teacher
+    if (view === 'SpeedGrader') {
+      // Redirecting teacher to summary view
+      history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
+      return;
+    }
+
+    if (userRole === 'teacher') { // Activity viewed in preview mode by a teacher
       setActivityParams({
         assignmentId,
         classId,
@@ -56,12 +62,6 @@ function MsTeamsActivityContainer({match}) {
 
     MsTeamsService.getSubmissionStatus(token, submissionId, assignmentId, classId)
       .then((response) => {
-        if (userRole === 'teacher' && view === 'SpeedGrader' && response.submission.status === 'submitted') {
-          // Redirecting teacher to summary view
-          history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
-          return;
-        }
-
         setActivityParams({
           assignmentId,
           classId,
