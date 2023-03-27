@@ -900,69 +900,121 @@ function SearchInterface(props) {
                                                       <FontAwesomeIcon icon="ellipsis-v" />
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu>
-                                                      <Dropdown.Item
-                                                        onClick={() =>
-                                                          window.open(
-                                                            `/project/${res.id}/preview`,
-                                                            "_blank",
-                                                          )
-                                                        }
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
-                                                Preview */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <PreviewSmSvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          <span>
-                                                            Preview
-                                                          </span>
-                                                        </div>
-                                                      </Dropdown.Item>
                                                       {permission?.Project?.includes(
                                                         "project:clone",
                                                       ) && (
+                                                        <>
+                                                          <Dropdown.Item
+                                                            onClick={() =>
+                                                              window.open(
+                                                                `/project/${res.id}/preview`,
+                                                                "_blank",
+                                                              )
+                                                            }
+                                                          >
+                                                            <div className="dropDown-item-name-icon">
+                                                              <PreviewSmSvg
+                                                                primaryColor={
+                                                                  primaryColor
+                                                                }
+                                                              />
+                                                              <span>
+                                                                Preview
+                                                              </span>
+                                                            </div>
+                                                          </Dropdown.Item>
+
+                                                          <Dropdown.Item
+                                                            onClick={() => {
+                                                              Swal.fire(
+                                                                {
+                                                                  html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                                  showCancelButton: true,
+                                                                  confirmButtonColor:
+                                                                    "#3085d6",
+                                                                  cancelButtonColor:
+                                                                    "#d33",
+                                                                  confirmButtonText:
+                                                                    "Ok",
+                                                                },
+                                                              ).then(
+                                                                (
+                                                                  result,
+                                                                ) => {
+                                                                  if (
+                                                                    result.value
+                                                                  ) {
+                                                                    cloneProject(
+                                                                      res.id,
+                                                                    );
+                                                                  }
+                                                                },
+                                                              );
+                                                            }}
+                                                          >
+                                                            {/* <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                  Add to projects */}
+                                                            <div className="dropDown-item-name-icon">
+                                                              <MyProjectSmSvg
+                                                                primaryColor={
+                                                                  primaryColor
+                                                                }
+                                                              />
+                                                              Copy to
+                                                              My
+                                                              projects
+                                                            </div>
+                                                          </Dropdown.Item>
+                                                        </>
+                                                      )}
+                                                      {fromTeam && (
                                                         <Dropdown.Item
                                                           onClick={() => {
-                                                            Swal.fire(
-                                                              {
-                                                                html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                                showCancelButton: true,
-                                                                confirmButtonColor:
-                                                                  "#3085d6",
-                                                                cancelButtonColor:
-                                                                  "#d33",
-                                                                confirmButtonText:
-                                                                  "Ok",
-                                                              },
-                                                            ).then(
-                                                              (
-                                                                result,
-                                                              ) => {
-                                                                if (
-                                                                  result.value
-                                                                ) {
-                                                                  cloneProject(
-                                                                    res.id,
-                                                                  );
-                                                                }
-                                                              },
-                                                            );
+                                                            if (
+                                                              selectProject?.length ===
+                                                                0 &&
+                                                              fromTeam
+                                                            ) {
+                                                              setSelectProject(
+                                                                [
+                                                                  res.id,
+                                                                ],
+                                                              );
+                                                            } else if (
+                                                              selectProject[0] ===
+                                                                res.id &&
+                                                              fromTeam
+                                                            ) {
+                                                              setSelectProject(
+                                                                [],
+                                                              );
+                                                            } else {
+                                                              Swal.fire(
+                                                                {
+                                                                  icon:
+                                                                    "warning",
+                                                                  title:
+                                                                    "Action Prohibited",
+                                                                  text:
+                                                                    "You are only allowed to select 1 project.",
+                                                                },
+                                                              );
+                                                            }
                                                           }}
                                                         >
-                                                          {/* <FontAwesomeIcon className="mr-2" icon="clone" />
-                                                  Add to projects */}
-                                                          <div className="dropDown-item-name-icon">
-                                                            <MyProjectSmSvg
-                                                              primaryColor={
-                                                                primaryColor
-                                                              }
-                                                            />
-                                                            Copy to My
-                                                            projects
-                                                          </div>
+                                                          <img
+                                                            src={
+                                                              teamicon
+                                                            }
+                                                            alt="teams_logo"
+                                                            className="teams-logo"
+                                                          />
+                                                          {selectProject.includes(
+                                                            res.id,
+                                                          )
+                                                            ? "Remove from "
+                                                            : "Add to "}
+                                                          team
                                                         </Dropdown.Item>
                                                       )}
                                                     </Dropdown.Menu>
