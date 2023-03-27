@@ -140,7 +140,7 @@ function SearchInterface(props) {
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [activeModel, setActiveModel] = useState(
-    fromTeam ? "projects" : "",
+    fromTeam ? "projects" : "Independent activities",
   );
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
@@ -150,7 +150,7 @@ function SearchInterface(props) {
   const [authorName, SetAuthor] = useState("");
   const [noWords, setNoWords] = useState("");
   const [activetab, setActiveTab] = useState(
-    fromTeam ? "projects" : "total",
+    fromTeam ? "projects" : "Independent activities",
   );
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
@@ -259,10 +259,7 @@ function SearchInterface(props) {
     console.log("activeModel", activeModel);
     if (allState.searchResult) {
       if (allState.searchResult?.length > 0) {
-        // setTotalCount(allState.searchMeta.total);
-        if (activeModel == "" || activeModel == null) {
-          setTotalCount(allState.searchMeta.total);
-        } else if (activeModel == "Independent activities") {
+        if (activeModel == "Independent activities") {
           setTotalCount(allState.searchMeta.total);
         } else {
           setTotalCount(allState?.searchMeta?.projects);
@@ -558,8 +555,8 @@ function SearchInterface(props) {
                               !!search &&
                               !!meta.total &&
                               activeModel === "Independent activities"
-                                ? `Learning activities (${meta.total})`
-                                : "Learning activities (0)"
+                                ? `Activities (${meta.total})`
+                                : "Activities (0)"
                             }
                           >
                             <div className="content">
@@ -1157,6 +1154,7 @@ function SearchInterface(props) {
                                                               playlist?.activities?.map(
                                                                 (
                                                                   activity,
+                                                                  act_counter,
                                                                 ) => (
                                                                   <Accordion.Collapse
                                                                     eventKey={
@@ -1331,7 +1329,12 @@ function SearchInterface(props) {
                                                                 ),
                                                               )
                                                             ) : (
-                                                              <Accordion.Collapse eventKey="0">
+                                                              <Accordion.Collapse
+                                                                eventKey={
+                                                                  innerCounter +
+                                                                  1
+                                                                }
+                                                              >
                                                                 <Card.Body
                                                                   className="search-activity-content"
                                                                   style={{
