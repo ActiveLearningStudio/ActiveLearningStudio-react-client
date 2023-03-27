@@ -36,17 +36,6 @@ const Media = () => {
 
   const [updateLibrary, setUpdateLibrary] = useState([]);
 
-  // useEffect(() => {
-  //   setVideoSourceLTI(
-  //     videoSourceLTI?.map((_lti) => {
-  //       const Index = orgMediaSources?.mediaSources?.findIndex((_data) => _data.name === _lti.name && _data.media_type === 'Video');
-  //       if (Index >= 0) {
-  //         _lti.value = orgMediaSources?.mediaSources[Index]?.pivot?.lti_tool_settings_status;
-  //       }
-  //       return _lti;
-  //     }),
-  //   );
-  // }, []);
   useEffect(() => {
     if (orgLtiSettings?.length > 0) {
       setVideoSourceLTI(orgLtiSettings);
@@ -59,8 +48,8 @@ const Media = () => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgVideoSource(
         orgMediaSources?.mediaSources?.filter(
-          (videoSource) => videoSource.media_type === "Video"
-        )
+          (videoSource) => videoSource.media_type === "Video",
+        ),
       );
     } else {
       setorgVideoSource([]);
@@ -68,8 +57,8 @@ const Media = () => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setorgImageSource(
         orgMediaSources?.mediaSources?.filter(
-          (videoSource) => videoSource.media_type === "Image"
-        )
+          (videoSource) => videoSource.media_type === "Image",
+        ),
       );
     } else {
       setorgImageSource([]);
@@ -83,8 +72,8 @@ const Media = () => {
     if (orgMediaSources?.mediaSources?.length > 0) {
       setUpdateLibrary(
         orgMediaSources?.mediaSources?.filter(
-          (videoSource) => videoSource.media_type === "Video"
-        )
+          (videoSource) => videoSource.media_type === "Video",
+        ),
       );
     }
   }, [allMediaSources]);
@@ -112,14 +101,14 @@ const Media = () => {
     orgImageSource?.map((imgSource) =>
       media_ids.push({
         media_source_id: imgSource.id,
-      })
+      }),
     );
 
     updatedMediasSource = orgVideoSource?.concat(orgImageSource);
     // updatedMediasSource = _updateOrgVideoSource?.concat(orgImageSource);
     if (
       orgVideoSource?.filter(
-        (source) => source.pivot.media_sources_show_status === false
+        (source) => source.pivot.media_sources_show_status === false,
       )?.length === 6
     ) {
       // updatedMediasSource = orgImageSource;
@@ -131,19 +120,7 @@ const Media = () => {
       });
       return false;
     }
-    if (
-      orgVideoSource?.filter(
-        (source) => source.pivot.lti_tool_settings_status === false
-      )?.length === 6
-    ) {
-      // updatedMediasSource = orgImageSource;
-      Swal.fire({
-        icon: "warning",
-        text: "Please Select Atleast One Lti Tool to Continue...!!",
-        allowOutsideClick: false,
-      });
-      return false;
-    }
+
     if (orgImageSource.length === 0) {
       // updatedMediasSource = orgVideoSource;
       Swal.fire({
@@ -165,8 +142,8 @@ const Media = () => {
         media_ids,
         {
           mediaSources: updatedMediasSource,
-        }
-      )
+        },
+      ),
     );
   };
   const secondaryColorIcon = getGlobalColor("--main-secondary-color");
@@ -200,7 +177,7 @@ const Media = () => {
                                   (source) =>
                                     source.pivot
                                       .media_sources_show_status ===
-                                    true
+                                    true,
                                 )?.length === 6
                               }
                               onChange={(e) => {
@@ -209,7 +186,7 @@ const Media = () => {
                                     (orgMedia) => {
                                       orgMedia.pivot.media_sources_show_status = true;
                                       return orgMedia;
-                                    }
+                                    },
                                   );
                                   setorgVideoSource(updateMedia);
                                 } else {
@@ -217,7 +194,7 @@ const Media = () => {
                                     (orgMedia) => {
                                       orgMedia.pivot.media_sources_show_status = false;
                                       return orgMedia;
-                                    }
+                                    },
                                   );
                                   setorgVideoSource(updateMedia);
                                 }
@@ -234,16 +211,9 @@ const Media = () => {
                               className="textField-title"
                             />
                           </div>
-                          {/* <div className="lti-tool-heading-text ">
-                            <HeadingThree
-                              text="LTI tool"
-                              color="#515151"
-                              className="textField-title"
-                            />
-                          </div> */}
                         </div>
                         {permission?.Organization?.includes(
-                          "organization:edit-media"
+                          "organization:edit-media",
                         ) && (
                           <div className="btn-text">
                             <button
@@ -263,15 +233,10 @@ const Media = () => {
                           {allVideoSource?.map((source, counter) => {
                             const isVideoSource = orgVideoSource?.filter(
                               (orgVideo) =>
-                                orgVideo.name === source.name
+                                orgVideo.name === source.name,
                             )?.[0];
 
                             if (source.name !== "Safari Montage") {
-                              // const findVideoLTIIndex = videoSourceLTI?.filter(
-                              //   (_lti) =>
-                              //     _lti.media_source_id === source.id &&
-                              //     source?.media_type === "Video"
-                              // );
                               return (
                                 <div className="media-version-options">
                                   <div
@@ -299,10 +264,10 @@ const Media = () => {
                                               } else {
                                                 return orgMedia;
                                               }
-                                            }
+                                            },
                                           );
                                           setorgVideoSource(
-                                            updateMedia
+                                            updateMedia,
                                           );
                                         } else {
                                           isVideoSource.pivot.media_sources_show_status = false;
@@ -316,11 +281,11 @@ const Media = () => {
                                               } else {
                                                 return orgMedia;
                                               }
-                                            }
+                                            },
                                           );
 
                                           setorgVideoSource(
-                                            updateMedia
+                                            updateMedia,
                                           );
                                         }
                                       }}
@@ -360,13 +325,13 @@ const Media = () => {
                                                 };
                                               }
                                               return data;
-                                            }
-                                          )
+                                            },
+                                          ),
                                         );
                                       }}
                                       onBlur={handleBlur}
                                       value={mediaLibrary(
-                                        source.name
+                                        source.name,
                                       )}
                                     >
                                       {allIv?.map((src) => (
@@ -446,8 +411,9 @@ const Media = () => {
                                 setorgImageSource(
                                   allImageSource.filter(
                                     (source) =>
-                                      source.name !== "Safari Montage"
-                                  )
+                                      source.name !==
+                                      "Safari Montage",
+                                  ),
                                 );
                               } else {
                                 setorgImageSource([]);
@@ -459,7 +425,7 @@ const Media = () => {
                           </span>
                         </div>
                         {permission?.Organization?.includes(
-                          "organization:edit-media"
+                          "organization:edit-media",
                         ) && (
                           <div className="btn-text">
                             <button
@@ -481,7 +447,7 @@ const Media = () => {
                             (source, counter) => {
                               const isImageSource = orgImageSource?.filter(
                                 (orgVideo) =>
-                                  orgVideo.name === source.name
+                                  orgVideo.name === source.name,
                               );
                               if (source.name !== "Safari Montage") {
                                 return (
@@ -506,8 +472,8 @@ const Media = () => {
                                             orgImageSource?.filter(
                                               (imageSource) =>
                                                 imageSource.name !==
-                                                source.name
-                                            )
+                                                source.name,
+                                            ),
                                           );
                                         }
                                       }}
@@ -528,7 +494,7 @@ const Media = () => {
                                   </div>
                                 );
                               }
-                            }
+                            },
                           )}
                         </div>
                       </div>

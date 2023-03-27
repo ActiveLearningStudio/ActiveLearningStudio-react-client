@@ -50,7 +50,7 @@ const SearchLibrary = (props) => {
     setFromDate(undefined);
     setToDate(undefined);
     setSearch(null);
-    setActiveTab(fromTeam ? "projects" : "total");
+    setActiveTab(fromTeam ? "projects" : "Independent activities");
     if (searchInput?.length > 255) {
       Swal.fire("Character limit should be less than 255.");
     } else if (
@@ -82,7 +82,7 @@ const SearchLibrary = (props) => {
       };
       console.log("dataSend", dataSend);
       const result = await dispatch(simpleSearchAction(dataSend));
-      setTotalCount(result.meta?.total);
+      setTotalCount(result.meta?.projects);
       const tempEducation = [];
       const tempSubject = [];
       const tempTag = [];
