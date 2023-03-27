@@ -4,13 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
-import MsTeamActivityTabLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityTabLaunchScreen';
 import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
-import { app } from '@microsoft/teams-js';
 import { Alert } from 'react-bootstrap';
-
-// import './styles.scss';
 
 function MsTeamsActivityContainer({match}) {
   const { activityId, tenantId } = match.params;
@@ -45,7 +41,7 @@ function MsTeamsActivityContainer({match}) {
   useEffect(() => {
     if (!freshToken) return;
 
-    if (userRole === 'teacher') {
+    if (userRole === 'teacher' && !submissionId) { // Activity viewed in preview mode by a teacher
       setActivityParams({
         assignmentId,
         classId,
@@ -60,6 +56,12 @@ function MsTeamsActivityContainer({match}) {
 
     MsTeamsService.getSubmissionStatus(token, submissionId, assignmentId, classId)
       .then((response) => {
+        if (userRole === 'teacher' && view === 'SpeedGrader' && response.submission.status === 'submitted') {
+          // Redirecting teacher to summary view
+          history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
+          return;
+        }
+
         setActivityParams({
           assignmentId,
           classId,
@@ -88,8 +90,6 @@ function MsTeamsActivityContainer({match}) {
                 <div className="item-container">
                   {error && <Alert variant="danger">Error fetching submission information</Alert>}
                   {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
-                  {/* !error && activityParams?.userRole == 'student' && activityParams.mtAssignmentStatus && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />*/}
-                  {/* activityParams?.userRole == null && <MsTeamActivityTabLaunchScreen activityId={activityId} /> */}
                 </div>
               </div>
             </div>
