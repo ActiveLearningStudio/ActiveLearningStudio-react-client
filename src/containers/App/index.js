@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { app } from '@microsoft/teams-js';
 import logo from 'assets/images/studio_new_logo.png';
 import logoFavicon from 'assets/images/svg/Globe.svg';
 import loader from 'assets/images/dotsloader.gif';
@@ -30,7 +31,6 @@ function App(props) {
   const userDetails = useSelector((state) => state.auth.user);
   const { activeOrganization, currentOrganization, permission } = useSelector((state) => state.organization);
   const { help } = useSelector((state) => state.ui);
-  const msTeamsContextAvailable = useSelector((state) => state.msTeams.is_msteam);
 
   useEffect(() => {
     if (userDetails) {
@@ -131,13 +131,13 @@ function App(props) {
       setShowSizeWarning(false);
     } else {
       // If we have context AND we're not seeing an activity or lti search, we must be in studio sso embeded in msteams
-      if (msTeamsContextAvailable) {
+      app.initialize().then(() => {
         setShowMsTeamsSizeWarning(true);
         setShowSizeWarning(false);
-      } else {
+      }).catch(() => {
         setShowSizeWarning(true);
         setShowMsTeamsSizeWarning(false);
-      }
+      });
     }
   }, [window.location.href]);
 
@@ -172,7 +172,6 @@ function App(props) {
       {showMsTeamsSizeWarning && (
         <div className="mobile-app-alert">
           <img src={logo} alt="" />
-
           <div className="text-description">
             <h2>Using Mobile Devices with CurrikiStudio</h2>
             <p>
@@ -187,19 +186,13 @@ function App(props) {
       {showSizeWarning && (
         <div className="mobile-app-alert">
           <img src={logo} alt="" />
-
           <div className="text-description">
-            <h2>Please use desktop browser</h2>
-
-            <p>CurrikiStudio doesn’t support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
+            <h2>Using Mobile Devices with CurrikiStudio</h2>
             <p>
-              All activities built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
-              interactive, immersive learning experience, a full browser is required.
+              You cannot create or edit CurrikiStudio activities on a mobile device, but you can view existing activities. If you want to create or edit activities, please use a larger screen or tablet.
             </p>
-
             <p>
-              To learn more click here
-              <a href="https://curriki.org"> Curriki</a>
+              If you would like to learn more, please click <a href="http://www.currikistudio.org/help">here</a>.
             </p>
           </div>
         </div>
