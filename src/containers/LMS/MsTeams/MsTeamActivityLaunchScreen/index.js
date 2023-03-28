@@ -98,12 +98,6 @@ const MsTeamActivityLaunchScreen = (props) => {
 
   // Init
   useEffect(() => {
-    // If we're in speedgrader, redirect to summary
-    if (paramObj.mtAssignmentStatus === 'submitted' || paramObj.view === 'SpeedGrader') {
-      history.push(`/msteam/summary/${paramObj.classId}/${activityId}/${paramObj.submissionId}`);
-      return;
-    }
-
     window.scrollTo(0, 0);
     loadH5pSettings(activityId, paramObj.userId, paramObj.submissionId);
   }, [activityId]);

@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
-import MsTeamActivityTabLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityTabLaunchScreen';
 import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
-import { app } from '@microsoft/teams-js';
 import { Alert } from 'react-bootstrap';
 
-// import './styles.scss';
-
-function MsTeamsActivityContainer({match}) {
+function MsTeamsActivityContainer({ match, history }) {
   const { activityId, tenantId } = match.params;
   const queryParams = new URLSearchParams(useLocation().search);
   const classId = queryParams.get('classId');
@@ -45,7 +41,13 @@ function MsTeamsActivityContainer({match}) {
   useEffect(() => {
     if (!freshToken) return;
 
-    if (userRole === 'teacher') {
+    if (view === 'SpeedGrader') {
+      // Redirecting teacher to summary view
+      history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
+      return;
+    }
+
+    if (userRole === 'teacher') { // Activity viewed in preview mode by a teacher
       setActivityParams({
         assignmentId,
         classId,
@@ -88,8 +90,6 @@ function MsTeamsActivityContainer({match}) {
                 <div className="item-container">
                   {error && <Alert variant="danger">Error fetching submission information</Alert>}
                   {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
-                  {/* !error && activityParams?.userRole == 'student' && activityParams.mtAssignmentStatus && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />*/}
-                  {/* activityParams?.userRole == null && <MsTeamActivityTabLaunchScreen activityId={activityId} /> */}
                 </div>
               </div>
             </div>
