@@ -192,13 +192,13 @@ const ActivityLayout = (props) => {
           </div>
         </div>
 
-        <ConfigButtons
+        {/*<ConfigButtons
           count={allActivitiesSingle?.length}
           changeScreenHandler={changeScreenHandler}
           layout={layout}
           dispatch={dispatch}
           screenSelectionType={screenSelectionType}
-        />
+                  />*/}
       </div>
       <div className="layout-cards-process-btn">
         <div
@@ -217,10 +217,17 @@ const ActivityLayout = (props) => {
                 }
                 onClick={() => {
                   if (data?.title === "Interactive Video") {
-                    setLayout(data);
+                    dispatch({
+                      type: actionTypes.SET_SELECTED_ACTIVITY,
+                      payload: data,
+                    });
                     changeScreenHandler("addvideo");
                   } else {
-                    setLayout(data);
+                    changeScreenHandler("addactivity");
+                    dispatch({
+                      type: actionTypes.SET_SELECTED_ACTIVITY,
+                      payload: data,
+                    });
                   }
                 }}
                 btnTextOne="Demo"

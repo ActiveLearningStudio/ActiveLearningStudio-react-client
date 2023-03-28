@@ -674,6 +674,7 @@
       .accordion {
         .card {
           border: none;
+          overflow: inherit !important;
           .card-header {
             background-color: #fff;
             border-bottom: none;
