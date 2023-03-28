@@ -66,9 +66,6 @@ const AddActivity = (props) => {
     (state) => state.myactivities.layout
   );
 
-  console.log("selectedLayout", selectedLayout);
-  console.log("activityLayouts", activityLayouts);
-
   const [title, setTitle] = useState("");
   const [successMessage, setSuccessMessage] = useState(false);
   const dispatch = useDispatch();

@@ -1,25 +1,30 @@
 /*eslint-disable*/
-import React, { useRef, useState, useEffect } from 'react';
-import HeadingTwo from 'utils/HeadingTwo/headingtwo';
-import TabsHeading from 'utils/Tabs/tabs';
+import React, { useRef, useState, useEffect } from "react";
+import HeadingTwo from "utils/HeadingTwo/headingtwo";
+import TabsHeading from "utils/Tabs/tabs";
+import * as Taber from "react-bootstrap";
+import { Formik } from "formik";
+import Buttons from "utils/Buttons/buttons";
 
-import { Formik } from 'formik';
-import Buttons from 'utils/Buttons/buttons';
-
-import { useSelector, useDispatch } from 'react-redux';
-import UploadImage from 'utils/uploadimagev2/uploadimagev2';
-import HeadingText from 'utils/HeadingText/headingtext';
-import HeadingThree from 'utils/HeadingThree/headingthree';
-import DefaultUpload from 'assets/images/defaultUpload.png';
-import PreviewLayoutModel from 'containers/MyProject/model/previewlayout';
-import { getSubjects, getEducationLevel, getAuthorTag } from 'store/actions/admin';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import OverlayTriggerPop from 'utils/OverlayTiggerPop/overlaytiggerpop';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import BackToSmSvg from 'iconLibrary/mainContainer/BackToSmSvg';
-import { editIndActivityItem } from 'store/actions/indActivities';
-import { edith5pVideoActivityMetaData } from 'store/actions/videos';
+import { useSelector, useDispatch } from "react-redux";
+import UploadImage from "utils/uploadimagev2/uploadimagev2";
+import HeadingText from "utils/HeadingText/headingtext";
+import HeadingThree from "utils/HeadingThree/headingthree";
+import DefaultUpload from "assets/images/defaultUpload.png";
+import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
+import {
+  getSubjects,
+  getEducationLevel,
+  getAuthorTag,
+} from "store/actions/admin";
+import ReactMultiSelectCheckboxes from "react-multiselect-checkboxes";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import OverlayTriggerPop from "utils/OverlayTiggerPop/overlaytiggerpop";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import BackToSmSvg from "iconLibrary/mainContainer/BackToSmSvg";
+import { editIndActivityItem } from "store/actions/indActivities";
+import { edith5pVideoActivityMetaData } from "store/actions/videos";
+import H5PPreview from "../../H5PPreview";
 
 const DescribeVideo = ({
   setUploadImageStatus,
@@ -45,8 +50,19 @@ const DescribeVideo = ({
   fullWidth,
 }) => {
   const [modalShow, setModalShow] = useState(false);
-  const [showSmythsonianModal, setshowSmythsonianModal] = useState(false);
-  const { videoId, platform, editVideo, activecms } = useSelector((state) => state.videos);
+  const [showSmythsonianModal, setshowSmythsonianModal] = useState(
+    false
+  );
+  const {
+    screenSelectionType,
+    layout,
+    selectedLayout,
+    activity,
+    singleLayout,
+  } = useSelector((state) => state.myactivities);
+  const { videoId, platform, editVideo, activecms } = useSelector(
+    (state) => state.videos
+  );
   const organization = useSelector((state) => state.organization);
   const dispatch = useDispatch();
   const [subjects, setSubjects] = useState(null);
@@ -54,8 +70,12 @@ const DescribeVideo = ({
   const [educationLevels, setEducationLevels] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState(null);
+  const [
+    selectedEducationLevel,
+    setSelectedEducationLevel,
+  ] = useState(null);
   const [isSubmitActivty, setisSubmitActivty] = useState(false);
+  const [key, setKey] = useState("layout");
   const parser = new DOMParser();
 
   const formatApiData = (data) => {
@@ -75,7 +95,9 @@ const DescribeVideo = ({
   };
   useEffect(() => {
     if (!subjects) {
-      const result_sub = dispatch(getSubjects(organization?.activeOrganization?.id));
+      const result_sub = dispatch(
+        getSubjects(organization?.activeOrganization?.id)
+      );
       result_sub.then((data) => {
         let subj_array = [];
         data?.data.map((subject) => {
@@ -89,7 +111,9 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (!educationLevels) {
-      const result_edu = dispatch(getEducationLevel(organization?.activeOrganization?.id));
+      const result_edu = dispatch(
+        getEducationLevel(organization?.activeOrganization?.id)
+      );
       result_edu.then((data) => {
         let edu_array = [];
         data?.data.map((edu_lvl) => {
@@ -103,7 +127,9 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (!authorTags) {
-      const result_tag = dispatch(getAuthorTag(organization?.activeOrganization?.id));
+      const result_tag = dispatch(
+        getAuthorTag(organization?.activeOrganization?.id)
+      );
       result_tag.then((data) => {
         let tag_array = [];
         data?.data.map((tag) => {
@@ -117,34 +143,46 @@ const DescribeVideo = ({
 
   useEffect(() => {
     if (editVideo?.subjects && !selectedSubjects) {
-      let output = subjects?.filter((obj) => formatApiData(editVideo?.subjects).indexOf(obj.value) !== -1);
+      let output = subjects?.filter(
+        (obj) =>
+          formatApiData(editVideo?.subjects).indexOf(obj.value) !== -1
+      );
       setSelectedSubjects(output);
     }
     if (editVideo?.author_tags && !selecteAuthorTags) {
-      let output = authorTags?.filter((obj) => formatApiData(editVideo?.author_tags).indexOf(obj.value) !== -1);
+      let output = authorTags?.filter(
+        (obj) =>
+          formatApiData(editVideo?.author_tags).indexOf(obj.value) !==
+          -1
+      );
       setSelecteAuthorTags(output);
     }
 
     if (editVideo?.education_levels && !selectedEducationLevel) {
-      let output = educationLevels?.filter((obj) => formatApiData(editVideo?.education_levels).indexOf(obj.value) !== -1);
+      let output = educationLevels?.filter(
+        (obj) =>
+          formatApiData(editVideo?.education_levels).indexOf(
+            obj.value
+          ) !== -1
+      );
       setSelectedEducationLevel(output);
     }
   });
   useEffect(() => {
     if (isSubmitActivty) {
-      setVideoTitle('');
-      setvideodesc('');
-      seteduLevel('');
-      setauthortagName('');
-      setsubName('');
+      setVideoTitle("");
+      setvideodesc("");
+      seteduLevel("");
+      setauthortagName("");
+      setsubName("");
       dispatch({
-        type: 'ADD_VIDEO_URL',
-        payload: '',
+        type: "ADD_VIDEO_URL",
+        payload: "",
       });
     }
   }, [isSubmitActivty]);
-  const primaryColor = getGlobalColor('--main-primary-color');
-  console.log('siback', isbackHide);
+  const primaryColor = getGlobalColor("--main-primary-color");
+  console.log("siback", isbackHide);
   const formRef = useRef();
   const formatSelectBoxData = (data) => {
     let ids = [];
@@ -163,7 +201,7 @@ const DescribeVideo = ({
         onHide={() => {
           setModalShow(false);
         }}
-        type={playlistPreview ? '' : 'videoModal'}
+        type={playlistPreview ? "" : "videoModal"}
         activityPreview={activityPreview}
         title={videoTitle}
         video={videoId}
@@ -171,7 +209,9 @@ const DescribeVideo = ({
         editVideo={editVideo}
         setOpenVideo={setOpenVideo}
         accountId={activecms?.account_id}
-        settingId={activecms?.id || editVideo?.brightcoveData?.apiSettingId}
+        settingId={
+          activecms?.id || editVideo?.brightcoveData?.apiSettingId
+        }
         reverseType={reverseType}
         setisSubmitActivty={setisSubmitActivty}
         redirecttoactivity={redirecttoactivity}
@@ -179,8 +219,23 @@ const DescribeVideo = ({
       />
       <div className="add-describevideo-form">
         <div className="add-describevideo-tabs">
-          <TabsHeading text={activityPreview ? `1. ${editVideo ? 'Edit' : 'Add'} an activity` : `1. ${editVideo ? 'Edit' : 'Add'} a video`} tabActive={true} />
-          <TabsHeading text={activityPreview ? '2. Describe activity' : '2. Describe video'} className="ml-10" tabActive={true} />
+          <TabsHeading
+            text={
+              activityPreview
+                ? `1. ${editVideo ? "Edit" : "Add"} an activity`
+                : `1. ${editVideo ? "Edit" : "Add"} a video`
+            }
+            tabActive={true}
+          />
+          <TabsHeading
+            text={
+              activityPreview
+                ? "2. Describe activity"
+                : "2. Describe video"
+            }
+            className="ml-10"
+            tabActive={true}
+          />
           <TabsHeading text="3. Add interactions" className="ml-10" />
         </div>
         <div className="add-describevideo-title-select">
@@ -191,7 +246,10 @@ const DescribeVideo = ({
               //     ? editVideo?.h5p_content?.library?.title
               //     : "Interactive Video"
               // }
-              text={editVideo?.h5p_content?.library?.title || 'Interactive Video'}
+              text={
+                editVideo?.h5p_content?.library?.title ||
+                "Interactive Video"
+              }
               color="#084892"
             />
           </div>
@@ -202,14 +260,14 @@ const DescribeVideo = ({
                 id="back-button-none-bg"
                 onClick={() => {
                   if (showback) {
-                    changeScreenHandler('addvideo');
+                    changeScreenHandler("addvideo");
                   } else {
-                    setScreenStatus('AddVideo');
+                    setScreenStatus("AddVideo");
                   }
                 }}
               >
                 <BackToSmSvg primaryColor={primaryColor} />
-                <p style={{ marginLeft: '8px' }}>Back to options</p>
+                <p style={{ marginLeft: "8px" }}>Back to options</p>
               </div>
             ) : (
               <div
@@ -217,14 +275,14 @@ const DescribeVideo = ({
                 id="back-button-none-bg"
                 onClick={() => {
                   if (showback) {
-                    changeScreenHandler('addvideo');
+                    changeScreenHandler("addvideo");
                   } else {
-                    setScreenStatus('AddVideo');
+                    setScreenStatus("AddVideo");
                   }
                 }}
               >
                 <BackToSmSvg primaryColor={primaryColor} />
-                <p style={{ marginLeft: '8px' }}>Back to options</p>
+                <p style={{ marginLeft: "8px" }}>Back to options</p>
               </div>
             ))}
           {/* <div className="add-describevideo-tour">
@@ -241,20 +299,23 @@ const DescribeVideo = ({
               enableReinitialize
               initialValues={{
                 title: editVideo ? editVideo.title : videoTitle,
-                description: editVideo ? editVideo.description || undefined : videodesc,
+                description: editVideo
+                  ? editVideo.description || undefined
+                  : videodesc,
                 author_tag_id: selecteAuthorTags || authortagName,
-                education_level_id: selectedEducationLevel || eduLevel,
+                education_level_id:
+                  selectedEducationLevel || eduLevel,
                 subject_id: selectedSubjects || subName,
                 source_type: platform,
                 source_url: videoId,
                 thumb_url: editVideo?.thumb_url
                   ? editVideo.thumb_url
-                  : 'https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280',
+                  : "https://images.pexels.com/photos/5022849/pexels-photo-5022849.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=200&w=280",
               }}
               validate={(values) => {
                 const errors = {};
                 if (!values.title) {
-                  errors.title = 'Required';
+                  errors.title = "Required";
                 }
                 return errors;
               }}
@@ -264,20 +325,39 @@ const DescribeVideo = ({
                 }
               }}
             >
-              {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setFieldValue }) => (
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+              }) => (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit();
                   }}
                 >
-                  <h4 className="interactive-video-heading-two">Describe activity</h4>
+                  <h4 className="interactive-video-heading-two">
+                    Describe activity
+                  </h4>
                   <div>
                     <div className="dec-title-formik-textField">
                       <div className="d-flex">
-                        <HeadingThree text="Title" color="#515151" className="textField-title text-title-mr" />
-                        <OverlayTriggerPop showMessage={'right'} icon={faExclamationCircle}>
-                          Used for searching, reports and copyright information
+                        <HeadingThree
+                          text="Title"
+                          color="#515151"
+                          className="textField-title text-title-mr"
+                        />
+                        <OverlayTriggerPop
+                          showMessage={"right"}
+                          icon={faExclamationCircle}
+                        >
+                          Used for searching, reports and copyright
+                          information
                         </OverlayTriggerPop>
                       </div>
                       {/* <HeadingThree text="Title" color="#515151" className="textField-title" /> */}
@@ -286,16 +366,24 @@ const DescribeVideo = ({
                         type="text"
                         name="title"
                         // placeholder="Give your layout a name..."
-                        placeholder={organization?.activeOrganization?.activity_title_placeholder}
+                        placeholder={
+                          organization?.activeOrganization
+                            ?.activity_title_placeholder
+                        }
                         onChange={(e) => {
-                          setFieldValue('title', e.target.value);
+                          setFieldValue("title", e.target.value);
                           setVideoTitle(e.target.value);
                         }}
                         onBlur={handleBlur}
-                        value={parser.parseFromString(values.title, 'text/html').body.textContent}
+                        value={
+                          parser.parseFromString(
+                            values.title,
+                            "text/html"
+                          ).body.textContent
+                        }
                       />
                     </div>
-                    <div className="error" style={{ color: 'red' }}>
+                    <div className="error" style={{ color: "red" }}>
                       {errors.title && touched.title && errors.title}
                     </div>
                     <div className="dec-title-formik-textField">
@@ -307,22 +395,31 @@ const DescribeVideo = ({
                         placeholder="What is this video about"
                         onChange={(e) => {
                           handleChange;
-                          setFieldValue('description', e.target.value);
+                          setFieldValue(
+                            "description",
+                            e.target.value
+                          );
                           setvideodesc(e.target.value);
                         }}
                         onBlur={handleBlur}
                         value={values.description}
                       />
                     </div>
-                    <div className="layout-formik-select" id="layout-formik-select-id-style">
+                    <div
+                      className="layout-formik-select"
+                      id="layout-formik-select-id-style"
+                    >
                       <div className="formik-select mr-16">
-                        <HeadingText text="Subject" className="formik-select-title" />
+                        <HeadingText
+                          text="Subject"
+                          className="formik-select-title"
+                        />
                         <ReactMultiSelectCheckboxes
                           name="subject_id"
                           hideSearch
                           options={subjects}
                           onChange={(e) => {
-                            setFieldValue('subject_id', e);
+                            setFieldValue("subject_id", e);
                             setsubName(e);
                           }}
                           value={values.subject_id}
@@ -330,13 +427,16 @@ const DescribeVideo = ({
                       </div>
 
                       <div className="formik-select mr-16">
-                        <HeadingText text="Education level" className="formik-select-title" />
+                        <HeadingText
+                          text="Education level"
+                          className="formik-select-title"
+                        />
                         <ReactMultiSelectCheckboxes
                           name="education_level_id"
                           hideSearch
                           options={educationLevels}
                           onChange={(e) => {
-                            setFieldValue('education_level_id', e);
+                            setFieldValue("education_level_id", e);
                             seteduLevel(e);
                           }}
                           value={values.education_level_id}
@@ -344,13 +444,16 @@ const DescribeVideo = ({
                       </div>
 
                       <div className="formik-select">
-                        <HeadingText text="Author Tags" className="formik-select-title" />
+                        <HeadingText
+                          text="Author Tags"
+                          className="formik-select-title"
+                        />
                         <ReactMultiSelectCheckboxes
                           name="author_tag_id"
                           hideSearch
                           options={authorTags}
                           onChange={(e) => {
-                            setFieldValue('author_tag_id', e);
+                            setFieldValue("author_tag_id", e);
                             setauthortagName(e);
                           }}
                           value={values.author_tag_id}
@@ -365,19 +468,35 @@ const DescribeVideo = ({
                         // className="uploadImage-describe-video"
                         setUploadImageStatus={setUploadImageStatus}
                         formRef={formRef}
-                        setshowSmythsonianModal={setshowSmythsonianModal}
+                        setshowSmythsonianModal={
+                          setshowSmythsonianModal
+                        }
                         thumb_url={editVideo?.thumb_url}
                         containerType="Activity"
                       />
                     </div>
                   </div>
                   <div className="describe-video">
-                    <h4 className="interactive-video-heading-two">Add Interactions</h4>
-                    <p>Start adding activity by opening the editor. Once you finish, hit the Save & Close button to see your results."</p>
+                    <h4 className="interactive-video-heading-two">
+                      Add Interactions
+                    </h4>
+                    <p>
+                      Start adding activity by opening the editor.
+                      Once you finish, hit the Save & Close button to
+                      see your results."
+                    </p>
                     <div className="activity-add-edit-btn">
                       <div>
-                        <Buttons primary={true} text="Add Interactions" width="162px" height="32px" hover={true} type="submit" />
+                        <Buttons
+                          primary={true}
+                          text="Add Interactions"
+                          width="162px"
+                          height="32px"
+                          hover={true}
+                          type="submit"
+                        />
                       </div>
+
                       {editVideo && (
                         <>
                           <div>
@@ -386,20 +505,31 @@ const DescribeVideo = ({
                                 const h5pdata = {
                                   library: `${editVideo.library_name} ${editVideo.major_version}.${editVideo.minor_version}`,
                                   parameters: editVideo.h5p,
-                                  action: 'create',
+                                  action: "create",
                                 };
                                 if (activityPreview) {
                                   await dispatch(
-                                    editIndActivityItem(editVideo.id, {
-                                      ...values,
-                                      organization_visibility_type_id: editVideo.organization_visibility_type_id || 1,
-                                      data: h5pdata,
-                                      type: 'h5p',
-                                      content: 'place_holder',
-                                      subject_id: formatApiDataValue(values?.subject_id),
-                                      education_level_id: formatApiDataValue(values?.education_level_id),
-                                      author_tag_id: formatApiDataValue(values?.author_tag_id),
-                                    }),
+                                    editIndActivityItem(
+                                      editVideo.id,
+                                      {
+                                        ...values,
+                                        organization_visibility_type_id:
+                                          editVideo.organization_visibility_type_id ||
+                                          1,
+                                        data: h5pdata,
+                                        type: "h5p",
+                                        content: "place_holder",
+                                        subject_id: formatApiDataValue(
+                                          values?.subject_id
+                                        ),
+                                        education_level_id: formatApiDataValue(
+                                          values?.education_level_id
+                                        ),
+                                        author_tag_id: formatApiDataValue(
+                                          values?.author_tag_id
+                                        ),
+                                      }
+                                    )
                                   );
                                   setOpenVideo(false);
                                 } else {
@@ -408,12 +538,18 @@ const DescribeVideo = ({
                                       editVideo.id,
                                       {
                                         ...values,
-                                        subject_id: formatApiDataValue(values?.subject_id),
-                                        education_level_id: formatApiDataValue(values?.education_level_id),
-                                        author_tag_id: formatApiDataValue(values?.author_tag_id),
+                                        subject_id: formatApiDataValue(
+                                          values?.subject_id
+                                        ),
+                                        education_level_id: formatApiDataValue(
+                                          values?.education_level_id
+                                        ),
+                                        author_tag_id: formatApiDataValue(
+                                          values?.author_tag_id
+                                        ),
                                       },
-                                      h5pdata,
-                                    ),
+                                      h5pdata
+                                    )
                                   );
                                   setOpenVideo(false);
                                 }
@@ -428,6 +564,70 @@ const DescribeVideo = ({
                           </div>
                         </>
                       )}
+                    </div>
+                    <div className="layout-process-btn">
+                      <Taber.Tabs
+                        defaultActiveKey="layout"
+                        activeKey={key}
+                        onSelect={(k) => {
+                          setKey(k);
+
+                          // if (k === "demo") {
+                          //   let tempStorage = layout;
+                          //   setLayout();
+                          //   setTimeout(() => {
+                          //     setLayout(tempStorage);
+                          //   }, 300);
+                          // }
+                        }}
+                        id="controlled-tab-example"
+                      >
+                        <Taber.Tab
+                          eventKey="layout"
+                          title={"How-to video"}
+                        >
+                          <div className="activity-layout-process-box">
+                            <iframe
+                              width="100%"
+                              height="100%"
+                              style={{ borderRadius: "8px" }}
+                              src={
+                                selectedLayout.demo_video_id ||
+                                "https://www.youtube-nocookie.com/embed/lgzsJDcMvPI"
+                              }
+                              title={selectedLayout.title}
+                              frameborder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            ></iframe>
+                          </div>
+                          <HeadingText
+                            text={selectedLayout.description}
+                            color="#515151"
+                          />
+                        </Taber.Tab>
+                        <Taber.Tab
+                          eventKey="demo"
+                          title="Sample activity"
+                        >
+                          {selectedLayout.demo_activity_id ? (
+                            <>
+                              <H5PPreview
+                                activityId={selectedLayout.demo_activity_id.trim()}
+                                tokenrequire={false}
+                                showltipreview
+                              />
+                              <HeadingText
+                                text={selectedLayout.description}
+                                color="#515151"
+                              />
+                            </>
+                          ) : (
+                            <Taber.Alert variant="warning">
+                              Demo is not Available.
+                            </Taber.Alert>
+                          )}
+                        </Taber.Tab>
+                      </Taber.Tabs>
                     </div>
                   </div>
                 </form>
