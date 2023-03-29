@@ -3,28 +3,35 @@ import config from 'config';
 import httpService from './http.service';
 const { apiVersion } = config;
 
-const msTeamsToken = (code, tenantId, submissionId, assignmentId, classId) => httpService
+const msTeamsToken = (code) => httpService
   .get(`/microsoft-team/get-access-token-via-code`,
   {},
   {
     code: code,
-    tenantId: tenantId,
-    submissionId: submissionId,
-    assignmentId: assignmentId,
-    classId: classId,
   })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
-const turnIn = (classworkId, submissionId, courseId) => httpService
+const getSubmissionStatus = (token, submissionId, assignmentId, classId) => httpService
+  .get(`/microsoft-team/get-submission-status`,
+  {},
+  {
+    token,
+    submissionId,
+    assignmentId,
+    classId,
+  })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
+const turnIn = (token, classworkId, submissionId, courseId) => httpService
   .post(
     `/microsoft-team/submit-assignment`,
     { 
       classId: classworkId,
       submissionId: submissionId,
       assignmentId: courseId,
-      token: localStorage.getItem('mt_token'),
-      // localStorage.setItem('refresh_token', result.refresh_token);
+      token: token,
      },
   )
   .then(({ data }) => data)
@@ -32,5 +39,6 @@ const turnIn = (classworkId, submissionId, courseId) => httpService
 
   export default {
     msTeamsToken,
+    getSubmissionStatus,
     turnIn,
   }

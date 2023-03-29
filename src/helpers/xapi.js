@@ -8,6 +8,7 @@ export function allowedH5PActvityPaths() {
     '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId',
     '/msteam/activity/:activityId/assignment/:assignmentId',
     '/msteam/launch/activity/:activityId',
+    '/msteam/:tenantId/launch/activity/:activityId',
   ];
 }
 
@@ -20,7 +21,7 @@ export function H5PActvityPathMapToPlatform() {
     { '/lti-tools/activity/:activityId': 'LTI client' },
     { '/lti-tools/independent_activity/:independentActivityId': 'LTI client' },
     { '/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId': 'GenericLMS' },
-    { '/msteam/launch/activity/:activityId': 'MS Teams' },
+    { '/msteam/:tenantId/launch/activity/:activityId': 'MS Teams' },
   ];
 }
 

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { app } from '@microsoft/teams-js';
 import logo from 'assets/images/studio_new_logo.png';
 import logoFavicon from 'assets/images/svg/Globe.svg';
 import loader from 'assets/images/dotsloader.gif';
@@ -21,13 +22,16 @@ let runOnce = true;
 function App(props) {
   const dispatch = useDispatch();
   const { getUser } = props;
-  const [ msTeams, setMsTeams ] = useState(true);
+  const [ showSizeWarning, setShowSizeWarning ] = useState(false);
+  const [ showMsTeamsSizeWarning, setShowMsTeamsSizeWarning ] = useState(false);
+  
   useEffect(() => {
     getUser();
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
   const { activeOrganization, currentOrganization, permission } = useSelector((state) => state.organization);
   const { help } = useSelector((state) => state.ui);
+
   useEffect(() => {
     if (userDetails) {
       if (runOnce) {
@@ -123,9 +127,17 @@ function App(props) {
 
     // Remove the screen size warning when entering through msteams into deeplinking or activity view
     if ((window.location.href.includes('msteam') || window.location.href.includes('lti/content')) && !window.location.href.includes('sso')) {
-      setMsTeams(true);
+      setShowMsTeamsSizeWarning(false);
+      setShowSizeWarning(false);
     } else {
-      setMsTeams(false);
+      // If we have context AND we're not seeing an activity or lti search, we must be in studio sso embeded in msteams
+      app.initialize().then(() => {
+        setShowMsTeamsSizeWarning(true);
+        setShowSizeWarning(false);
+      }).catch(() => {
+        setShowSizeWarning(true);
+        setShowMsTeamsSizeWarning(false);
+      });
     }
   }, [window.location.href]);
 
@@ -157,22 +169,30 @@ function App(props) {
           <img src={loader} className="loader" alt="" />
         </div>
       )}
-      {!msTeams && (
+      {showMsTeamsSizeWarning && (
         <div className="mobile-app-alert">
           <img src={logo} alt="" />
-
           <div className="text-description">
-            <h2>Please use desktop browser</h2>
-
-            <p>CurrikiStudio doesn’t support mobile for authors. To continue, we recommend that you use either a browser on a tablet, desktop or laptop computer.</p>
+            <h2>Using Mobile Devices with CurrikiStudio</h2>
             <p>
-              All activities built with CurrikiStudio are accessible on mobile for learners. However, in order for an author to build a truly
-              interactive, immersive learning experience, a full browser is required.
+              You cannot create or edit CurrikiStudio activities on a mobile device, but you can create and view Microsoft Teams assignments using existing activities. Please go to the CurrikiStudio app in Microsoft Teams assignments to create an assignment using one of your existing CurrikiStudio activities. Students can always view activities on a mobile device. If you want to create or edit activities, please use a larger screen or tablet.
             </p>
-
             <p>
-              To learn more click here
-              <a href="https://curriki.org"> Curriki</a>
+              If you would like to learn more, please click <a href="http://www.currikistudio.org/help">here</a>.
+            </p>
+          </div>
+        </div>
+      )}
+      {showSizeWarning && (
+        <div className="mobile-app-alert">
+          <img src={logo} alt="" />
+          <div className="text-description">
+            <h2>Using Mobile Devices with CurrikiStudio</h2>
+            <p>
+              You cannot create or edit CurrikiStudio activities on a mobile device, but you can view existing activities. If you want to create or edit activities, please use a larger screen or tablet.
+            </p>
+            <p>
+              If you would like to learn more, please click <a href="http://www.currikistudio.org/help">here</a>.
             </p>
           </div>
         </div>

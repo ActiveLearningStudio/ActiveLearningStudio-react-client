@@ -47,22 +47,25 @@ const ActivitiesList = (props) => {
     const activityId = parseInt(id, 10);
     setSelectedActivityId(activityId);
 
-    await microsoftTeams.app.initialize();
-
-    microsoftTeams.pages.config.setValidityState(true);
-    microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
-      const configPromise = microsoftTeams.pages.config.setConfig({
-          websiteUrl: config.domainUrl,
-          contentUrl: `${config.domainUrl}msteam/launch/activity/${activity.id}`,
-          entityId: activity.id,
-          suggestedDisplayName: activity.title,
+    microsoftTeams.app.initialize()
+      .then(() => {
+        microsoftTeams.app.getContext().then((context) => {
+          microsoftTeams.pages.config.setValidityState(true);
+          microsoftTeams.pages.config.registerOnSaveHandler((saveEvent) => {
+            const configPromise = microsoftTeams.pages.config.setConfig({
+                websiteUrl: `${config.domainUrl}msteam/${context.user.tenant.id}/launch/activity/${activity.id}`,
+                contentUrl: `${config.domainUrl}msteam/${context.user.tenant.id}/launch/activity/${activity.id}`,
+                entityId: activity.id,
+                suggestedDisplayName: activity.title,
+            });
+            configPromise.then((result) => { 
+              saveEvent.notifySuccess();
+             })
+            // eslint-disable-next-line no-shadow
+            .catch((error) => { saveEvent.notifyFailure('failure message'); });
+          });
+        });
       });
-      configPromise.then((result) => { 
-        saveEvent.notifySuccess();
-       })
-      // eslint-disable-next-line no-shadow
-      .catch((error) => { saveEvent.notifyFailure('failure message'); });
-  });
   };
 
   return (
