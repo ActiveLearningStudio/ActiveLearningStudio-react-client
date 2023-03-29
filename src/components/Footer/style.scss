@@ -15,6 +15,9 @@
 
   .footer-all {
     display: flex;
+    .footer-link {
+      cursor: pointer;
+    }
   }
 
   a {
