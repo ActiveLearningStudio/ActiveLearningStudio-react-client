@@ -592,16 +592,16 @@ const DescribeVideo = ({
                               height="100%"
                               style={{ borderRadius: "8px" }}
                               src={
-                                selectedLayout.demo_video_id ||
+                                selectedLayout?.demo_video_id ||
                                 "https://www.youtube-nocookie.com/embed/lgzsJDcMvPI"
                               }
-                              title={selectedLayout.title}
+                              title={selectedLayout?.title}
                               frameborder="0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             ></iframe>
                           </div>
                           <HeadingText
-                            text={selectedLayout.description}
+                            text={selectedLayout?.description}
                             color="#515151"
                           />
                         </Taber.Tab>
@@ -609,15 +609,15 @@ const DescribeVideo = ({
                           eventKey="demo"
                           title="Sample activity"
                         >
-                          {selectedLayout.demo_activity_id ? (
+                          {selectedLayout?.demo_activity_id ? (
                             <>
                               <H5PPreview
-                                activityId={selectedLayout.demo_activity_id.trim()}
+                                activityId={selectedLayout?.demo_activity_id.trim()}
                                 tokenrequire={false}
                                 showltipreview
                               />
                               <HeadingText
-                                text={selectedLayout.description}
+                                text={selectedLayout?.description}
                                 color="#515151"
                               />
                             </>
