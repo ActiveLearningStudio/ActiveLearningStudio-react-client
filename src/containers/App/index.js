@@ -177,9 +177,6 @@ function App(props) {
             <p>
               You cannot create or edit CurrikiStudio activities on a mobile device, but you can create and view Microsoft Teams assignments using existing activities. Please go to the CurrikiStudio app in Microsoft Teams assignments to create an assignment using one of your existing CurrikiStudio activities. Students can always view activities on a mobile device. If you want to create or edit activities, please use a larger screen or tablet.
             </p>
-            <p>
-              If you would like to learn more, please click <a href="http://www.currikistudio.org/help">here</a>.
-            </p>
           </div>
         </div>
       )}
