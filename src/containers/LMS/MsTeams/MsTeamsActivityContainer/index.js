@@ -41,6 +41,19 @@ function MsTeamsActivityContainer({ match, history }) {
   useEffect(() => {
     if (!freshToken) return;
 
+    if (!view) { // If we don't have any view info, must be in tab view
+      setActivityParams({
+        assignmentId: 'noassignment',
+        classId: 'noclass',
+        view: 'tab',
+        userRole: 'tabuser',
+        submissionId: 'preview',
+        mtAssignmentStatus: 'preview',
+        userId: 'tabuser',
+      });
+      return;
+    }
+
     if (view === 'SpeedGrader') {
       // Redirecting teacher to summary view
       history.push(`/msteam/summary/${classId}/${activityId}/${submissionId}`);
