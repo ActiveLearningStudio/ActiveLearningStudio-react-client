@@ -752,7 +752,7 @@ function Controller(props) {
                           });
                         }}
                       />
-                      Rejected
+                      Not Approved
                     </span>
                   </div>
                   <div className="shared-status">

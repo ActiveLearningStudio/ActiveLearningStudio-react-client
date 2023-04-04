@@ -57,7 +57,7 @@ const allAdminIntActivities = (subOrgId, page = 1, size = 10, search, column = '
       `${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}
   ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
 ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
-        index ? `&indexing=${index}` : ''
+        index || index === 0 ? `&indexing=${index}` : ''
       }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}
   `,
     )

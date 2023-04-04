@@ -57,7 +57,7 @@ const getAllProject = (
   ${updatedFrom ? `&updated_from=${updatedFrom}` : ""}${
         updatedTo ? `&updated_to=${updatedTo}` : ""
       }${shared || shared === 0 ? `&shared=${shared}` : ""}${
-        index ? `&indexing=${index}` : ""
+        index || index === 0 ? `&indexing=${index}` : ""
       }${query ? `&query=${query}` : ""}${
         column ? `&order_by_column=${column}` : ""
       }${orderBy ? `&order_by_type=${orderBy}` : ""}`
