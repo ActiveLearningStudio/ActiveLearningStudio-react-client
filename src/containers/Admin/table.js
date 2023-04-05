@@ -99,10 +99,10 @@ function Table(props) {
   const [localstatePagination, setLocalStatePagination] = useState();
 
   const indexingArray = [
-    { indexing: 0, indexing_text: "NOT REQUESTED" },
+    { indexing: 0, indexing_text: "Not Requested" },
     { indexing: 1, indexing_text: "Requested" },
     { indexing: 3, indexing_text: "Approved" },
-    { indexing: 2, indexing_text: "Rejected" },
+    { indexing: 2, indexing_text: "Not Approved" },
   ];
   // useEffect(() => {
   //   (async () => {

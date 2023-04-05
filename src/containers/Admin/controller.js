@@ -710,13 +710,13 @@ function Controller(props) {
                       <input
                         type="radio"
                         checked={
-                          projectFilterObj.indexing === 0 && true
+                          projectFilterObj.indexing === null && true
                         }
                         onChange={() => {
                           setLibraryReqSelected(false);
                           setProjectFilterObj({
                             ...projectFilterObj,
-                            indexing: 0,
+                            indexing: null,
                           });
                         }}
                       />
@@ -752,7 +752,7 @@ function Controller(props) {
                           });
                         }}
                       />
-                      Rejected
+                      Not Approved
                     </span>
                   </div>
                   <div className="shared-status">
@@ -789,6 +789,54 @@ function Controller(props) {
                     </span>
                   </div>
                 </div>
+
+                <div className="status-project">
+              <div className="library-status" style={{borderRight:"unset"}}>
+                <label>Library Preference</label>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 1 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 1,
+                      });
+                    }}
+                  />
+                  Private(only me)
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 4 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 4,
+                      });
+                    }}
+                  />
+                  Public
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 3 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 3,
+                      });
+                    }}
+                  />
+                  My Organization
+                </span>
+              </div>
+            </div>
                 <div
                   className="filter-btn-project"
                   onClick={() => filterSearch()}

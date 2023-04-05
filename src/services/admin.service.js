@@ -42,6 +42,7 @@ const getAllProject = (
   updatedTo,
   shared,
   index,
+  visibility,
   query = "",
   column = "",
   orderBy = ""
@@ -57,7 +58,9 @@ const getAllProject = (
   ${updatedFrom ? `&updated_from=${updatedFrom}` : ""}${
         updatedTo ? `&updated_to=${updatedTo}` : ""
       }${shared || shared === 0 ? `&shared=${shared}` : ""}${
-        index ? `&indexing=${index}` : ""
+        index || index === null ? `&indexing=${index}` : ""
+      }${
+        visibility ? `&visibility=${visibility}` : ""
       }${query ? `&query=${query}` : ""}${
         column ? `&order_by_column=${column}` : ""
       }${orderBy ? `&order_by_type=${orderBy}` : ""}`

@@ -265,7 +265,8 @@ export const adminIntActivities = (
   updatedFrom,
   updatedTo,
   shared,
-  index
+  index,
+  visibility
 ) => async (dispatch) => {
   const allActivities = await indResourceService.allAdminIntActivities(
     orgId,
@@ -280,7 +281,8 @@ export const adminIntActivities = (
     updatedFrom,
     updatedTo,
     shared,
-    index
+    index,
+    visibility
   );
   if (allActivities) {
     dispatch({
