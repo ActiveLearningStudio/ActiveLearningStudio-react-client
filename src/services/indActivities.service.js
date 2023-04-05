@@ -51,14 +51,14 @@ const renderh5pIndependent = (orgId, activityId) =>
     .catch((err) => {
       return Promise.reject(err.response.data);
     });
-const allAdminIntActivities = (subOrgId, page = 1, size = 10, search, column = '', orderBy = '', authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index) =>
+const allAdminIntActivities = (subOrgId, page = 1, size = 10, search, column = '', orderBy = '', authorId, createdFrom, createdTo, updatedFrom, updatedTo, shared, index, visibility) =>
   httpService
     .get(
       `${apiVersion}/suborganizations/${subOrgId}/independent-activities?page=${page}&size=${size}${search ? `&query=${search?.replace(/#/, '%23')}` : ''}
   ${authorId ? `&author_id=${authorId}` : ''}${createdFrom ? `&created_from=${createdFrom}` : ''}${createdTo ? `&created_to=${createdTo}` : ''}
 ${updatedFrom ? `&updated_from=${updatedFrom}` : ''}${updatedTo ? `&updated_to=${updatedTo}` : ''}${shared || shared === 0 ? `&shared=${shared}` : ''}${
-        index || index === 0 ? `&indexing=${index}` : ''
-      }${column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}
+        index || index === null ? `&indexing=${index}` : ''}${visibility ? `&visibility=${visibility}` : ''}${
+          column ? `&order_by_column=${column}` : ''}${orderBy ? `&order_by_type=${orderBy?.toLowerCase()}` : ''}
   `,
     )
     .then(({ data }) => data)
