@@ -822,7 +822,7 @@ function SearchInterface(props) {
                                               <div class="contentbox align-items-center">
                                                 <div class="search-content">
                                                   <a
-                                                    href="/activity/65505/preview?type=ind-search"
+                                                    href={`/project/${res.id}/preview`}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                   >
