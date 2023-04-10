@@ -604,11 +604,11 @@ function Controller(props) {
                       <span>From</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_from}
+                        value={projectFilterObj.created_from == null ? '' : projectFilterObj.created_from}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -621,11 +621,11 @@ function Controller(props) {
                       <span>To</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_to}
+                        value={projectFilterObj.created_to == null ? '' : projectFilterObj.created_to}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -649,11 +649,11 @@ function Controller(props) {
                       <span>From</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_from}
+                        value={projectFilterObj.updated_from == null ? '' : projectFilterObj.updated_from}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -666,11 +666,11 @@ function Controller(props) {
                       <span>To</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_to}
+                        value={projectFilterObj.updated_to == null ? '' :projectFilterObj.updated_to}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
