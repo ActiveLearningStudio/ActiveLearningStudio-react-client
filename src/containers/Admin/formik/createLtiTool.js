@@ -23,7 +23,7 @@ export default function CreateLtiTool(prop) {
   const [stateOrgUsers, setStateOrgUsers] = useState([]);
   const [ltiToolTypeGroup, setLtiToolTypesGroup] = useState([]);
   const { ltiToolsTypes, orgMediaSources } = useSelector(
-    (state) => state.admin
+    (state) => state.admin,
   );
   useEffect(() => {
     if (ltiToolsTypes?.length) {
@@ -65,8 +65,8 @@ export default function CreateLtiTool(prop) {
             ? activeEdit?.tool_description
             : "",
 
-          lti_tool_type_id: editMode
-            ? activeEdit?.lti_tool_type_id
+          media_source_id: editMode
+            ? activeEdit?.media_source_id
             : ltiToolsTypes.length > 0
             ? ltiToolsTypes?.["0"]?.id
             : "",
@@ -111,7 +111,7 @@ export default function CreateLtiTool(prop) {
             const result = adminapi.updateLtiTool(
               organization?.activeOrganization?.id,
               activeEdit?.id,
-              values
+              values,
             );
             result.then((res) => {
               Swal.fire({
@@ -133,13 +133,13 @@ export default function CreateLtiTool(prop) {
                 payload: res?.data,
               });
               console.log(
-                "values.lti_tool_type_id",
-                values.lti_tool_type_id
+                "values.media_source_id",
+                values.media_source_id,
               );
               dispatch({
                 type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
                 payload: "DECREMENT_TYPE_CHANGED",
-                ltitoolType: values.lti_tool_type_id,
+                ltitoolType: values.media_source_id,
               });
             });
           } else {
@@ -157,7 +157,7 @@ export default function CreateLtiTool(prop) {
             });
             const result = adminapi.createLtiTool(
               organization?.activeOrganization?.id,
-              values
+              values,
             );
             result.then((res) => {
               Swal.fire({
@@ -173,7 +173,7 @@ export default function CreateLtiTool(prop) {
               dispatch({
                 type: actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
                 payload: "INCREMENT",
-                ltitoolType: values.lti_tool_type_id,
+                ltitoolType: values.media_source_id,
               });
               dispatch(removeActiveAdminForm());
               dispatch({
@@ -260,10 +260,10 @@ export default function CreateLtiTool(prop) {
                   <div className="form-group-create">
                     <h3>Tool type</h3>
                     <select
-                      name="lti_tool_type_id"
+                      name="media_source_id"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.lti_tool_type_id}
+                      value={values.media_source_id}
                     >
                       {ltiToolTypeGroup?.map((type) => (
                         <>

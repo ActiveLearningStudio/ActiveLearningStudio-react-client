@@ -81,7 +81,7 @@ function Table(props) {
   const auth = useSelector((state) => state.auth);
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   const { newlyCreated, newlyEdit } = useSelector(
-    (state) => state.admin
+    (state) => state.admin,
   );
   const project = useSelector((state) => state.project);
   const { paginations } = useSelector((state) => state.ui);
@@ -94,7 +94,7 @@ function Table(props) {
   const dispatch = useDispatch();
   const [localStateData, setLocalStateData] = useState([]);
   const [localOrganizationList, setLocalOrganizationList] = useState(
-    null
+    null,
   );
   const [localstatePagination, setLocalStatePagination] = useState();
 
@@ -116,7 +116,7 @@ function Table(props) {
   // }, [project?.visibilityTypes]);
   useEffect(() => {
     setVisibilityTypeArray(
-      activeOrganization?.allowed_visibility_type_id
+      activeOrganization?.allowed_visibility_type_id,
     );
   }, [activeOrganization]);
   useEffect(() => {
@@ -194,8 +194,8 @@ function Table(props) {
           const response = dispatch(
             deleteUserFromOrganization(
               user?.id,
-              result.isConfirmed ? true : false
-            )
+              result.isConfirmed ? true : false,
+            ),
           );
           response
             .then(() => {
@@ -234,8 +234,8 @@ function Table(props) {
           const response = dispatch(
             removeUserFromOrganization(
               user?.id,
-              result.isConfirmed ? true : false
-            )
+              result.isConfirmed ? true : false,
+            ),
           );
           response
             .then(() => {
@@ -292,7 +292,7 @@ function Table(props) {
                     : false;
                 return head === "Users" &&
                   permission?.Organization?.includes(
-                    "organization:view-user"
+                    "organization:view-user",
                   ) ? (
                   <th key={keyid}> {head} </th>
                 ) : head !== "Users" ? (
@@ -304,7 +304,7 @@ function Table(props) {
                               head,
                               typeof subType != "undefined"
                                 ? subType
-                                : type
+                                : type,
                             )
                         : ""
                     }
@@ -488,7 +488,7 @@ function Table(props) {
                           <div
                             style={{
                               backgroundImage: row.image?.includes(
-                                "dev.currikistudio"
+                                "dev.currikistudio",
                               )
                                 ? `url(${row.image})`
                                 : `url(${global.config.resourceUrl}${row.image})`,
@@ -515,11 +515,11 @@ function Table(props) {
                               });
                               if (
                                 permission?.Organization?.includes(
-                                  "organization:view"
+                                  "organization:view",
                                 )
                               )
                                 await dispatch(
-                                  getOrganization(row.id)
+                                  getOrganization(row.id),
                                 );
                               Swal.close();
                               dispatch({
@@ -529,11 +529,11 @@ function Table(props) {
                               if (row.projects_count > 0) {
                                 if (
                                   permission?.Organization?.includes(
-                                    "organization:view"
+                                    "organization:view",
                                   )
                                 )
                                   await dispatch(
-                                    getOrganization(row.id)
+                                    getOrganization(row.id),
                                   );
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
@@ -560,11 +560,11 @@ function Table(props) {
                               });
                               if (
                                 permission?.Organization?.includes(
-                                  "organization:view"
+                                  "organization:view",
                                 )
                               )
                                 await dispatch(
-                                  getOrganization(row.id)
+                                  getOrganization(row.id),
                                 );
                               Swal.close();
                               dispatch({
@@ -574,11 +574,11 @@ function Table(props) {
                               if (row.projects_count > 0) {
                                 if (
                                   permission?.Organization?.includes(
-                                    "organization:view"
+                                    "organization:view",
                                   )
                                 )
                                   await dispatch(
-                                    getOrganization(row.id)
+                                    getOrganization(row.id),
                                   );
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
@@ -609,11 +609,11 @@ function Table(props) {
 
                                 if (
                                   permission?.Organization?.includes(
-                                    "organization:view"
+                                    "organization:view",
                                   )
                                 )
                                   await dispatch(
-                                    getOrganization(row.id)
+                                    getOrganization(row.id),
                                   );
                                 Swal.close();
                                 dispatch({
@@ -632,7 +632,7 @@ function Table(props) {
                         )}
                       </td>
                       {permission?.Organization?.includes(
-                        "organization:view-user"
+                        "organization:view-user",
                       ) && (
                         <td>
                           {row.users_count > 0 ? (
@@ -650,11 +650,11 @@ function Table(props) {
                                   });
                                   if (
                                     permission?.Organization?.includes(
-                                      "organization:view"
+                                      "organization:view",
                                     )
                                   )
                                     await dispatch(
-                                      getOrganization(row.id)
+                                      getOrganization(row.id),
                                     );
                                   Swal.close();
                                   dispatch({
@@ -685,11 +685,11 @@ function Table(props) {
                               onClick={async () => {
                                 if (
                                   permission?.Organization?.includes(
-                                    "organization:view"
+                                    "organization:view",
                                   )
                                 )
                                   await dispatch(
-                                    getOrganization(row.id)
+                                    getOrganization(row.id),
                                   );
                                 dispatch(clearOrganizationState());
                                 dispatch(getRoles());
@@ -738,7 +738,7 @@ function Table(props) {
                             <div
                               style={{
                                 backgroundImage: !row.thumb_url?.includes(
-                                  "/storage/"
+                                  "/storage/",
                                 )
                                   ? `url(${row.thumb_url})`
                                   : `url(${global.config.resourceUrl}${row.thumb_url})`,
@@ -759,7 +759,7 @@ function Table(props) {
                         </td>
                         <td>
                           {new Date(
-                            createNew.toDateString()
+                            createNew.toDateString(),
                           ).toLocaleDateString("en-US")}
                         </td>
 
@@ -777,7 +777,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.Organization?.includes(
-                            "organization:edit-project"
+                            "organization:edit-project",
                           ) ? (
                             <div
                               className="filter-dropdown-table"
@@ -797,7 +797,7 @@ function Table(props) {
                                           onClick={async () => {
                                             const result = await adminService.updateIndex(
                                               row.id,
-                                              element.indexing
+                                              element.indexing,
                                             );
                                             if (result?.message) {
                                               const editRow = {
@@ -813,8 +813,8 @@ function Table(props) {
                                                     indexing.id ===
                                                     row.id
                                                       ? editRow
-                                                      : indexing
-                                                )
+                                                      : indexing,
+                                                ),
                                               );
                                               Swal.fire({
                                                 icon: "success",
@@ -830,7 +830,7 @@ function Table(props) {
                                         >
                                           {element.indexing_text}
                                         </Dropdown.Item>
-                                      )
+                                      ),
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -841,7 +841,7 @@ function Table(props) {
                         </td>
                         <td>
                           {permission?.Organization?.includes(
-                            "organization:edit-project"
+                            "organization:edit-project",
                           ) ? (
                             <div
                               className="filter-dropdown-table"
@@ -853,13 +853,13 @@ function Table(props) {
                                   {visibilityTypeArray?.filter(
                                     (element) =>
                                       element.id ===
-                                      row.organization_visibility_type_id
+                                      row.organization_visibility_type_id,
                                   )[0]?.display_name === "All"
                                     ? "Public"
                                     : visibilityTypeArray?.filter(
                                         (element) =>
                                           element.id ===
-                                          row.organization_visibility_type_id
+                                          row.organization_visibility_type_id,
                                       )[0]?.display_name}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
@@ -881,8 +881,8 @@ function Table(props) {
                                                     ...row,
                                                     organization_visibility_type_id:
                                                       element.id,
-                                                  }
-                                                )
+                                                  },
+                                                ),
                                               );
                                               if (result) {
                                                 setLocalStateData(
@@ -891,8 +891,8 @@ function Table(props) {
                                                       element1.id ===
                                                       row.id
                                                         ? result
-                                                        : element1
-                                                  )
+                                                        : element1,
+                                                  ),
                                                 );
                                               }
                                               Swal.close();
@@ -925,7 +925,7 @@ function Table(props) {
                                       //     {element.display_name}
                                       //   </Dropdown.Item>
                                       // )
-                                    }
+                                    },
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -934,13 +934,13 @@ function Table(props) {
                             visibilityTypeArray?.filter(
                               (element) =>
                                 element.id ===
-                                row.organization_visibility_type_id
+                                row.organization_visibility_type_id,
                             )[0]?.display_name
                           )}
                         </td>
                         <td>
                           {permission?.Organization?.includes(
-                            "organization:edit-project"
+                            "organization:edit-project",
                           ) ? (
                             <div
                               className="filter-dropdown-table"
@@ -961,8 +961,8 @@ function Table(props) {
                                           toggleProjectShareAction(
                                             row.id,
                                             row.name,
-                                            true
-                                          )
+                                            true,
+                                          ),
                                         );
                                         if (result) {
                                           setLocalStateData(
@@ -970,8 +970,8 @@ function Table(props) {
                                               (element) =>
                                                 element.id === row.id
                                                   ? result
-                                                  : element
-                                            )
+                                                  : element,
+                                            ),
                                           );
                                         }
                                       }
@@ -986,8 +986,8 @@ function Table(props) {
                                           toggleProjectShareRemovedAction(
                                             row.id,
                                             row.name,
-                                            true
-                                          )
+                                            true,
+                                          ),
                                         );
                                         if (result) {
                                           setLocalStateData(
@@ -995,8 +995,8 @@ function Table(props) {
                                               (element) =>
                                                 element.id === row.id
                                                   ? result
-                                                  : element
-                                            )
+                                                  : element,
+                                            ),
                                           );
                                         }
                                       }
@@ -1018,7 +1018,7 @@ function Table(props) {
                         <td>
                           <div className="admin-panel-dropdown">
                             {new Date(
-                              updateNew.toDateString()
+                              updateNew.toDateString(),
                             ).toLocaleDateString("en-US")}
                             <div>
                               <AdminDropdown
@@ -1069,7 +1069,7 @@ function Table(props) {
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
                         {permission?.Organization?.includes(
-                          "organization:download-project"
+                          "organization:download-project",
                         ) ? (
                           <td>
                             <a href={row.link} target="_blank">
@@ -1119,7 +1119,7 @@ function Table(props) {
                             <div
                               style={{
                                 backgroundImage: !row.thumb_url?.includes(
-                                  "/storage/"
+                                  "/storage/",
                                 )
                                   ? `url(${row.thumb_url})`
                                   : `url(${global.config.resourceUrl}${row.thumb_url})`,
@@ -1137,7 +1137,7 @@ function Table(props) {
                         </td>
                         <td>
                           {new Date(
-                            createNew.toDateString()
+                            createNew.toDateString(),
                           ).toLocaleDateString("en-US")}
                         </td>
 
@@ -1168,14 +1168,14 @@ function Table(props) {
                                               getIndex(
                                                 row.id,
                                                 element,
-                                                "admin"
-                                              )
+                                                "admin",
+                                              ),
                                             );
                                           }}
                                         >
                                           {element.indexing_text}
                                         </Dropdown.Item>
-                                      )
+                                      ),
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -1198,13 +1198,13 @@ function Table(props) {
                                   {visibilityTypeArray?.filter(
                                     (element) =>
                                       element.id ===
-                                      row.organization_visibility_type_id
+                                      row.organization_visibility_type_id,
                                   )[0]?.display_name === "All"
                                     ? "Public"
                                     : visibilityTypeArray?.filter(
                                         (element) =>
                                           element.id ===
-                                          row.organization_visibility_type_id
+                                          row.organization_visibility_type_id,
                                       )[0]?.display_name}
                                   <FontAwesomeIcon icon="chevron-down" />
                                 </Dropdown.Toggle>
@@ -1227,8 +1227,8 @@ function Table(props) {
                                                     organization_visibility_type_id:
                                                       element.id,
                                                   },
-                                                  "admin"
-                                                )
+                                                  "admin",
+                                                ),
                                               );
                                             }}
                                           >
@@ -1259,7 +1259,7 @@ function Table(props) {
                                       //     {element.display_name}
                                       //   </Dropdown.Item>
                                       // )
-                                    }
+                                    },
                                   )}
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -1268,7 +1268,7 @@ function Table(props) {
                             visibilityTypeArray?.filter(
                               (element) =>
                                 element.id ===
-                                row.organization_visibility_type_id
+                                row.organization_visibility_type_id,
                             )[0]?.display_name
                           )}
                         </td>
@@ -1293,8 +1293,8 @@ function Table(props) {
                                       dispatch(
                                         shareEnableLink(
                                           row.id,
-                                          "admin"
-                                        )
+                                          "admin",
+                                        ),
                                       );
                                     }}
                                   >
@@ -1322,8 +1322,8 @@ function Table(props) {
                                           dispatch(
                                             shareDisableLink(
                                               row.id,
-                                              "admin"
-                                            )
+                                              "admin",
+                                            ),
                                           );
                                         }
                                       });
@@ -1345,7 +1345,7 @@ function Table(props) {
                         <td>
                           <div className="admin-panel-dropdown">
                             {new Date(
-                              updateNew.toDateString()
+                              updateNew.toDateString(),
                             ).toLocaleDateString("en-US")}
                             <div>
                               <AdminDropdown
@@ -1402,12 +1402,12 @@ function Table(props) {
                         </td>
                         <td>
                           {new Date(
-                            createNew.toDateString()
+                            createNew.toDateString(),
                           ).toLocaleDateString("en-US")}
                         </td>
                         <td>
                           {new Date(
-                            expireNew.toDateString()
+                            expireNew.toDateString(),
                           ).toLocaleDateString("en-US")}
                         </td>
                         <td>
@@ -1865,23 +1865,10 @@ function Table(props) {
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>
-                        {row.lti_tool_type
-                          ? row.lti_tool_type?.name
+                        {row.media_sources
+                          ? row.media_sources?.name
                           : "N/A"}
                       </td>
-                      {/* {!filterLtiSettings ? (
-                          <td>{row?.media_sources?.name}</td>
-                        ) : (
-                          <td>
-                            {
-                              LtiToolTypes?.filter(
-                                (type) =>
-                                  type.id == row.media_source_id
-                              )[0]?.name
-                            }
-                          </td>
-                        )} */}
-
                       {/* <td>{`${row.user.first_name} ${row.user.last_name}`}</td> */}
                       <td>{row.tool_description}</td>
                       <td>
