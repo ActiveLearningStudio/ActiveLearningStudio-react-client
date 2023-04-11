@@ -300,13 +300,12 @@ const TeamDetail = ({
                 <div className="team-details-container">
                   <div className="row">
                     <div className="col">
-                      <h1 className="title">{team?.name || newTeam?.name}</h1>
-                    </div>
-                    <div className="col">
-                      {teamPermission?.Team?.includes('team:edit') && (
+                      <h1 className="title">
+                        {team?.name || newTeam?.name}
+                        {teamPermission?.Team?.includes('team:edit') && (
                           <EditSmSvg
                             primaryColor={primaryColor}
-                            className="editimage-tag"
+                            className="editimage-tag ml-4"
                             onClick={() => {
                               setEditTeam({
                                 title: team.name,
@@ -315,7 +314,8 @@ const TeamDetail = ({
                               });
                             }}
                           />
-                      )}
+                        )}
+                      </h1>
                     </div>
                   </div>
                   <div className="row">
