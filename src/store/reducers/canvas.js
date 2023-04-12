@@ -190,7 +190,14 @@ const canvasReducer = (state = INITIAL_STATE, action) => {
 
     case GET_TEAMS:
       // Massaging the data a little to line up with components
-      const teams = action.results.teams.map((team) => {
+      let teamsArray = null;
+      if (typeof action.results.teams[0] === 'string') {
+        teamsArray = [];
+      } else {
+        teamsArray = action.results.teams;
+      }
+
+      const teams = teamsArray.map((team) => {
         const newTeam = { ...team };
         newTeam.projects = team.projects.map((project) => {
           const newProject = { ...project };

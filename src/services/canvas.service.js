@@ -67,7 +67,10 @@ const teams = (params) =>
       },
     )
     .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
+    .catch((err) => {
+      console.log('Error fetching teams: ', err);
+      return {data: []};
+    });
 
 const activities = (params) =>
   httpService
@@ -82,7 +85,10 @@ const activities = (params) =>
       },
     )
     .then(({ data }) => data)
-    .catch((err) => Promise.reject(err.response.data));
+    .catch((err) => {
+      console.log('Error fetching activities: ', err);
+      return {data: []};
+    });
 
 export default {
   browse,
