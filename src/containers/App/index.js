@@ -126,7 +126,7 @@ function App(props) {
     }
 
     // Remove the screen size warning when entering through msteams into deeplinking or activity view
-    if ((window.location.href.includes('msteam') || window.location.href.includes('lti/content')) && !window.location.href.includes('sso')) {
+    if ((window.location.pathname.includes('msteam') || window.location.pathname.includes('lti/content')) && !window.location.pathname.includes('sso')) {
       setShowMsTeamsSizeWarning(false);
       setShowSizeWarning(false);
     } else {
