@@ -14,9 +14,14 @@ const Teams = (props) => {
   const email = params.get('user_email');
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [filterTeamId, setFilterTeamId] = useState('all');
+  const [isMsTeams, setIsMsTeams] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (params.has('platform') && params.get('platform') === 'MS Teams') {
+      setIsMsTeams(true);
+    }
+
     getTeams({
       lti_client_id: match.params.ltiClientId,
       user_email: email,
@@ -35,7 +40,12 @@ const Teams = (props) => {
       {teams?.length === 0 && (
         <div className="row">
           <div className="col">
-            <Alert variant="warning">No teams found. Use Curriki Studio to create some.</Alert>
+            <Alert className="mt-2" variant="warning">
+              <p>No teams found.</p>
+              {isMsTeams && (
+                <p>Please launch the CurrikiStudio app from the sidebar to create activities and projects that can be shared with your class.</p>
+              )}
+            </Alert>
           </div>
         </div>
       )}
