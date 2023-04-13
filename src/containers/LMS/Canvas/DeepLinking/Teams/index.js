@@ -35,7 +35,7 @@ const Teams = (props) => {
       {teams?.length === 0 && (
         <div className="row">
           <div className="col">
-            <Alert variant="warning">No teams found.</Alert>
+            <Alert variant="warning">No teams found. Use Curriki Studio to create some.</Alert>
           </div>
         </div>
       )}
