@@ -13,6 +13,7 @@ const Browse = (props) => {
   const { match, browse, browseResults } = props;
   const [searchQuery, setSearchQuery] = useState('');
   const [primaryColor, setPrimaryColor] = useState(getGlobalColor('--main-primary-color'));
+  const [isMsTeams, setIsMsTeams] = useState(false);
 
   // Init
   useEffect(() => {
@@ -21,6 +22,7 @@ const Browse = (props) => {
 
     if (params.has('platform') && params.get('platform') === 'MS Teams') {
       setPrimaryColor('#616161');
+      setIsMsTeams(true);
     }
 
     browse({
@@ -70,7 +72,14 @@ const Browse = (props) => {
               </div>
             </div>
           )}
-          {browseResults !== null && browseResults.length === 0 && <Alert className="mt-2" variant="warning">No projects found. Use Curriki Studio to create some.</Alert>}
+          {browseResults !== null && browseResults.length === 0 && (
+            <Alert className="mt-2" variant="warning">
+              <p>No projects found.</p>
+              {isMsTeams && (
+                <p>Please launch the CurrikiStudio app from the sidebar to create activities and projects that can be shared with your class.</p>
+              )}
+            </Alert>
+          )}
           {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
         </div>
       </div>
