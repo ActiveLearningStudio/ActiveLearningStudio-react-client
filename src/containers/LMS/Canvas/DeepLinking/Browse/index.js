@@ -70,7 +70,7 @@ const Browse = (props) => {
               </div>
             </div>
           )}
-          {browseResults !== null && browseResults.length === 0 && <Alert className="mt-2" variant="warning">No projects found.</Alert>}
+          {browseResults !== null && browseResults.length === 0 && <Alert className="mt-2" variant="warning">No projects found. Use Curriki Studio to create some.</Alert>}
           {browseResults !== null && browseResults.length > 0 && browseResults.map((project) => <Project project={project} key={project.id} />)}
         </div>
       </div>
