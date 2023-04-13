@@ -67,7 +67,7 @@ const Activities = (props) => {
               </div>
             </div>
           )}
-          {activities !== null && activities.data.length === 0 && <Alert className="mt-2" variant="warning">No activity found.</Alert>}
+          {activities !== null && activities.data.length === 0 && <Alert className="mt-2" variant="warning">No activities found. Use Curriki Studio to create some.</Alert>}
           {activities !== null && activities.data.length > 0 && activities.data.map((data) => (
             <ActivitiesList activity={data} key={data.id} selectedActivityId={selectedActivityId} setSelectedActivityId={setSelectedActivityId} />
           ))}
