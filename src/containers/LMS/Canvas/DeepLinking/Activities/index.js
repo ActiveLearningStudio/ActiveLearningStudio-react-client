@@ -14,6 +14,7 @@ const Activities = (props) => {
   const [primaryColor, setPrimaryColor] = useState(getGlobalColor('--main-primary-color'));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedActivityId, setSelectedActivityId] = useState(null);
+  const [isMsTeams, setIsMsTeams] = useState(false);
 
   // Init
   useEffect(() => {
@@ -21,6 +22,7 @@ const Activities = (props) => {
     const params = new URL(window.location.href).searchParams;
     if (params.has('platform') && params.get('platform') === 'MS Teams') {
       setPrimaryColor('#616161');
+      setIsMsTeams(true);
     }
 
     const email = params.get('user_email');
@@ -67,7 +69,14 @@ const Activities = (props) => {
               </div>
             </div>
           )}
-          {activities !== null && activities.data.length === 0 && <Alert className="mt-2" variant="warning">No activities found. Use Curriki Studio to create some.</Alert>}
+          {activities !== null && activities.data.length === 0 && (
+            <Alert className="mt-2" variant="warning">
+              <p>No activities found.</p>
+              {isMsTeams && (
+                <p>Please launch the CurrikiStudio app from the sidebar to create activities and projects that can be shared with your class.</p>
+              )}
+            </Alert>
+          )}
           {activities !== null && activities.data.length > 0 && activities.data.map((data) => (
             <ActivitiesList activity={data} key={data.id} selectedActivityId={selectedActivityId} setSelectedActivityId={setSelectedActivityId} />
           ))}
