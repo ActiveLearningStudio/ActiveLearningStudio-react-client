@@ -56,6 +56,7 @@ const AddActivity = (props) => {
     selectedLayout,
     activity,
     singleLayout,
+    videos,
   } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
@@ -607,28 +608,49 @@ const AddActivity = (props) => {
                       style={{ borderRadius: "8px" }}
                       src={
                         selectedLayout?.demo_video_id ||
-                        "https://www.youtube-nocookie.com/embed/lgzsJDcMvPI"
+                        videos?.editVideo?.activity_item
+                          ?.demo_video_id
                       }
-                      title={selectedLayout?.title}
+                      title={
+                        selectedLayout?.title ||
+                        videos?.editVideo?.activity_item?.title
+                      }
                       frameborder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     ></iframe>
                   </div>
+                  <br />
+                  <br />
                   <HeadingText
-                    text={selectedLayout?.description}
+                    text={
+                      selectedLayout?.description ||
+                      videos?.editVideo?.activity_item?.description
+                    }
                     color="#515151"
                   />
                 </Taber.Tab>
                 <Taber.Tab eventKey="demo" title="Sample activity">
-                  {selectedLayout?.demo_activity_id ? (
+                  {selectedLayout?.demo_activity_id ||
+                  videos?.editVideo?.activity_item
+                    ?.demo_activity_id ? (
                     <>
                       <H5PPreview
-                        activityId={selectedLayout?.demo_activity_id?.trim()}
+                        activityId={
+                          selectedLayout?.demo_activity_id?.trim() ||
+                          videos?.editVideo?.activity_item
+                            ?.demo_activity_id
+                        }
                         tokenrequire={false}
                         showltipreview
                       />
+                      <br />
+                      <br />
                       <HeadingText
-                        text={selectedLayout?.description}
+                        text={
+                          selectedLayout?.description ||
+                          videos?.editVideo?.activity_item
+                            ?.description
+                        }
                         color="#515151"
                       />
                     </>
@@ -657,6 +679,7 @@ const AddActivity = (props) => {
                   text="Changes saved succesfully!"
                   color="#12B347"
                 />
+
                 <HeadingText
                   text="To continue editing Open the editor again."
                   color="#12B347"

@@ -586,38 +586,64 @@ const DescribeVideo = ({
                           eventKey="layout"
                           title={"How-to video"}
                         >
-                          <div className="activity-layout-process-box">
-                            <iframe
-                              width="100%"
-                              height="100%"
-                              style={{ borderRadius: "8px" }}
-                              src={
-                                selectedLayout?.demo_video_id ||
-                                "https://www.youtube-nocookie.com/embed/lgzsJDcMvPI"
-                              }
-                              title={selectedLayout?.title}
-                              frameborder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            ></iframe>
-                          </div>
-                          <HeadingText
-                            text={selectedLayout?.description}
-                            color="#515151"
-                          />
+                          {selectedLayout?.demo_video_id ||
+                          !!editVideo?.activity_item ? (
+                            <>
+                              <div className="activity-layout-process-box">
+                                <iframe
+                                  width="100%"
+                                  height="100%"
+                                  style={{ borderRadius: "8px" }}
+                                  src={
+                                    selectedLayout?.demo_video_id ||
+                                    editVideo?.activity_item
+                                      ?.demo_video_id
+                                  }
+                                  title={
+                                    selectedLayout?.title ||
+                                    editVideo?.activity_item?.title
+                                  }
+                                  frameborder="0"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                ></iframe>
+                              </div>
+                              <HeadingText
+                                text={
+                                  selectedLayout?.description ||
+                                  editVideo?.activity_item
+                                    ?.description
+                                }
+                                color="#515151"
+                              />
+                            </>
+                          ) : (
+                            <Taber.Alert variant="warning">
+                              Video is not Available.
+                            </Taber.Alert>
+                          )}
                         </Taber.Tab>
+
                         <Taber.Tab
                           eventKey="demo"
                           title="Sample activity"
                         >
-                          {selectedLayout?.demo_activity_id ? (
+                          {selectedLayout?.demo_activity_id ||
+                          !!editVideo?.activity_item ? (
                             <>
                               <H5PPreview
-                                activityId={selectedLayout?.demo_activity_id.trim()}
+                                activityId={
+                                  selectedLayout?.demo_activity_id?.trim() ||
+                                  editVideo?.activity_item?.demo_activity_id?.trim()
+                                }
                                 tokenrequire={false}
                                 showltipreview
                               />
                               <HeadingText
-                                text={selectedLayout?.description}
+                                text={
+                                  selectedLayout?.description ||
+                                  editVideo?.activity_item
+                                    ?.description
+                                }
                                 color="#515151"
                               />
                             </>
