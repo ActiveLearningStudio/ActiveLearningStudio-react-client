@@ -1,5 +1,6 @@
 /* eslint-disable  */
 import Swal from "sweetalert2";
+
 import searchService from "services/search.service";
 import resourceService from "services/resource.service";
 import {
@@ -103,6 +104,16 @@ export const simpleSearchAction = (values) => async (dispatch) => {
   }
 
   return response;
+};
+export const simpleSearchProjectPreview = (
+  subOrgId,
+  projectId
+) => async (dispatch) => {
+  const response = await resourceService.searchProjectPreview(
+    subOrgId,
+    projectId
+  );
+  return response?.project;
 };
 
 export const searchIndependentActivitiesAction = (

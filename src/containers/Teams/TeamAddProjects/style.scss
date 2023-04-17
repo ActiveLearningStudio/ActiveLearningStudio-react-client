@@ -74,7 +74,12 @@
     position: relative;
     overflow: visible;
     padding: 16px 24px;
-    margin-left: 136px !important;
+    margin-left: 136px;
+    margin-top: 0px !important;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
     margin-top: 0px !important;
     .team-row {
       display: flex;

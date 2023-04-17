@@ -203,6 +203,9 @@
     line-height: 20px;
     font-weight: 500 !important;
     margin-right: 8px;
+    background: #fff !important;
+    color: #084892 !important;
+    margin-bottom: 0px;
   }
 
   .main-tabs .nav-item.active {
@@ -558,9 +561,11 @@
           justify-content: center;
           text-align: center;
           padding-left: 25px;
-
+          &::after {
+            content: none;
+          }
           svg {
-            color: #959595;
+            color: #084892;
             border: 0;
           }
         }
@@ -613,6 +618,117 @@
         .btn-fav.true {
           svg {
             color: goldenrod;
+          }
+        }
+      }
+    }
+    .search-playllist-content {
+      padding: 0px;
+      margin: 0px;
+      .active-li {
+        background: #f7faff;
+        .playlist-dropdown {
+          button {
+            background-color: #f7faff !important;
+          }
+        }
+      }
+      .non-active-li {
+        background: #fff;
+      }
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        border: 1px solid #e5eeff;
+        border-radius: 8px;
+        padding: 12px;
+
+        .search-playlist-title {
+          display: flex;
+          align-items: center;
+          svg {
+            color: #084892;
+          }
+          .playlist-title {
+            font-family: $rubik;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: #084892;
+            margin-left: 20px;
+            margin-top: 7px;
+          }
+        }
+      }
+    }
+    .tab-content {
+      .search-project-card-head {
+        border-bottom: 1px solid #e5eeff !important;
+        svg {
+          color: #084892;
+        }
+      }
+      .accordion {
+        .card {
+          border: none;
+          overflow: inherit !important;
+          .card-header {
+            background-color: #fff;
+            border-bottom: none;
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+            padding-top: 0px;
+            margin-bottom: 10px;
+          }
+          .playlist-card {
+            padding: 0px 30px;
+          }
+          .box {
+            border-bottom: none;
+            .search-content {
+              p {
+                max-width: 650px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+        }
+        .search-activity-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 0px 79px;
+          border-bottom: 1px solid #e5eeff;
+          padding: 10px 10px;
+          .activity-box {
+            display: flex;
+            align-items: center;
+            .activity-thumb {
+              width: 36px;
+              height: 36px;
+              margin-right: 20px;
+              div {
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center top;
+                border: 1px solid rgba(204, 204, 204, 0.8);
+              }
+            }
+          }
+        }
+        .playlist-dropdown {
+          .dropdown-toggle::after {
+            content: none !important;
+          }
+          button {
+            background-color: #fff;
           }
         }
       }

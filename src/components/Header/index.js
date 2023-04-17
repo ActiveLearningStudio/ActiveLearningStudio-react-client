@@ -31,12 +31,12 @@ function Header(props) {
   const { currentOrganization } = stateHeader;
   const [primaryColor, setPrimaryColor] = useState();
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar,
+    (state) => state.msTeams.toggle_sidebar
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   useEffect(() => {
     const primaryColorFunction = getGlobalColor(
-      "--main-primary-color",
+      "--main-primary-color"
     );
     setPrimaryColor(primaryColorFunction);
   }, [currentOrganization]);
@@ -73,7 +73,7 @@ function Header(props) {
                   backgroundImage:
                     !!currentOrganization?.image &&
                     currentOrganization?.image.includes(
-                      "dev.currikistudio",
+                      "dev.currikistudio"
                     )
                       ? `url(${currentOrganization?.image})`
                       : `url(${global.config.resourceUrl}${currentOrganization?.image})`,
@@ -135,7 +135,7 @@ function Header(props) {
                       if (result.isConfirmed) {
                         window.open(
                           "https://www.currikistudio.org/help/",
-                          "_blank",
+                          "_blank"
                         );
                       } else if (result.isDenied) {
                         Swal.close();
@@ -153,84 +153,86 @@ function Header(props) {
 
               <HeaderNotification />
 
-              <li className="menu-user-settings d-flex align-items-center">
-                <Dropdown>
-                  <Dropdown.Toggle className="align-items-center">
-                    <div
-                      className="profile-avatar"
-                      style={{ backgroundColor: primaryColor }}
-                    >
-                      {user?.first_name[0]}
-                    </div>
-                    <p className="header-icon-text">Profile</p>
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu className="user-dropdown">
-                    <div className="user-dropdown-item-name">
+              {!isMsTeam && (
+                <li className="menu-user-settings d-flex align-items-center">
+                  <Dropdown>
+                    <Dropdown.Toggle className="align-items-center">
                       <div
                         className="profile-avatar"
                         style={{ backgroundColor: primaryColor }}
                       >
                         {user?.first_name[0]}
                       </div>
-                      <div className="basic-info">
-                        <b>
-                          <p className="name">
-                            {user?.first_name}
-                            &nbsp;
-                            {user?.last_name}
-                          </p>
-                        </b>
-                        <p className="email">{user?.email}</p>
-                      </div>
-                    </div>
-                    <hr />
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/org/${stateHeader.currentOrganization?.domain}/account`}
-                    >
-                      <div className="user-dropdown-item">
-                        <EditMdSvg primaryColor={primaryColor} />
-                        My Account
-                      </div>
-                    </Dropdown.Item>
+                      <p className="header-icon-text">Profile</p>
+                    </Dropdown.Toggle>
 
-                    <Dropdown.Item
-                      as={Link}
-                      to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}
-                    >
-                      <div className="user-dropdown-item">
-                        {/* <img
-                          className="img-change-password"
-                          src={changePassword}
-                          alt="changePassword"
-                        /> */}
-                        <ChangePasswordMdSvg
-                          primaryColor={primaryColor}
-                        />
-                        Change Password
+                    <Dropdown.Menu className="user-dropdown">
+                      <div className="user-dropdown-item-name">
+                        <div
+                          className="profile-avatar"
+                          style={{ backgroundColor: primaryColor }}
+                        >
+                          {user?.first_name[0]}
+                        </div>
+                        <div className="basic-info">
+                          <b>
+                            <p className="name">
+                              {user?.first_name}
+                              &nbsp;
+                              {user?.last_name}
+                            </p>
+                          </b>
+                          <p className="email">{user?.email}</p>
+                        </div>
                       </div>
-                    </Dropdown.Item>
+                      <hr />
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/org/${stateHeader.currentOrganization?.domain}/account`}
+                      >
+                        <div className="user-dropdown-item">
+                          <EditMdSvg primaryColor={primaryColor} />
+                          My Account
+                        </div>
+                      </Dropdown.Item>
 
-                    <Dropdown.Item
-                      href="#"
-                      onClick={() => {
-                        Event(
-                          "button click",
-                          "User press Logout button",
-                          "Login Page",
-                        );
-                        logout();
-                      }}
-                    >
-                      <div className="user-dropdown-item">
-                        <LogoutMdSvg primaryColor={primaryColor} />
-                        Logout
-                      </div>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </li>
+                      <Dropdown.Item
+                        as={Link}
+                        to={`/org/${stateHeader.currentOrganization?.domain}/change-password`}
+                      >
+                        <div className="user-dropdown-item">
+                          {/* <img
+                            className="img-change-password"
+                            src={changePassword}
+                            alt="changePassword"
+                          /> */}
+                          <ChangePasswordMdSvg
+                            primaryColor={primaryColor}
+                          />
+                          Change Password
+                        </div>
+                      </Dropdown.Item>
+
+                      <Dropdown.Item
+                        href="#"
+                        onClick={() => {
+                          Event(
+                            "button click",
+                            "User press Logout button",
+                            "Login Page"
+                          );
+                          logout();
+                        }}
+                      >
+                        <div className="user-dropdown-item">
+                          <LogoutMdSvg primaryColor={primaryColor} />
+                          Logout
+                        </div>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </li>
+              )}
             </ul>
           </div>
         </div>

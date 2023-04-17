@@ -39,11 +39,15 @@ function MsTeamActivityLaunch({match}) {
 
   // Get app context and auth token
   useEffect(() => {
-    app.initialize().then(async () => {
-      await app.getContext().then((response) => {
-        setMsContext(response);
+    app.initialize()
+      .then(async () => {
+        await app.getContext().then((response) => {
+          setMsContext(response);
+        });
+      }).catch(() => {
+        console.log('ae failed to init msteams sdk');
+        window.location.replace(`https://login.microsoftonline.com/75f881ff-c83b-44de-a964-f0f9ee64c60c/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read&redirect_uri=https%3A%2F%2Fdev2.spiralcorp.net%2Fmsteams%2Fcallback`);
       });
-    });
   }, []);
 
   useEffect(()=>{
@@ -54,7 +58,7 @@ function MsTeamActivityLaunch({match}) {
     }
   }, [msContext]);
  
-   useEffect(() => {
+  useEffect(() => {
     if (msContext === null) return;
 
     if(queryParams.get("userRole") == 'student'){
@@ -67,7 +71,7 @@ function MsTeamActivityLaunch({match}) {
 
       //validate code issuance time
       if(mt_code_obj == null || code_issuance_minutes > 10 == true || localStorage.getItem('mt_code_utilized') == 'true'){
-        window.location.replace(`https://login.microsoftonline.com/${msContext.user.tenant.id}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read`);
+        window.location.replace(`https://login.microsoftonline.com/${msContext.user.tenant.id}/oauth2/authorize?client_id=${config.teamsClientId}&response_type=code&Scope=offline_access%20user.read%20mail.read&redirect_uri=https%3A%2F%2Fdev2.spiralcorp.net%2Fmsteams%2Fcallback`);
         return;
       }
     }

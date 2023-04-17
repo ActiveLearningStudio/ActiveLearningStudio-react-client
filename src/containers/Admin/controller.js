@@ -88,7 +88,9 @@ function Controller(props) {
   const dispatch = useDispatch();
   // const [allUsersAdded, setAllUsersAdded] = useState([]);
   const adminState = useSelector((state) => state.admin);
-  const [activeRoleInComponent, setActiveRoleInComponent] = useState("");
+  const [activeRoleInComponent, setActiveRoleInComponent] = useState(
+    ""
+  );
   const organization = useSelector((state) => state.organization);
   const { permission, activeOrganization } = organization;
   const { activityTypes } = useSelector((state) => state.admin);
@@ -98,8 +100,10 @@ function Controller(props) {
   const [authorsArray, setAuthorsArray] = useState([]);
   const [loaderImgUser, setLoaderImgUser] = useState(false);
   const [selectedFilterItem, setSelectedFilterItem] = useState("");
-  const [ltiToolTypes, setLtiToolTypes] = useState();
-  const { orgMediaSources } = useSelector((state) => state.admin);
+  const [LtiToolTypes, setLtiToolTypes] = useState();
+  const { ltiToolsTypes, orgMediaSources } = useSelector(
+    (state) => state.admin
+  );
   useMemo(() => {
     if (type === "Users") {
       dispatch(getRoles());
@@ -118,13 +122,20 @@ function Controller(props) {
         setActiveRoleInComponent(roles[0]?.display_name);
       } else if (roles?.length > 0 && activeRole) {
         setActiveRoleInComponent(
-          roles?.filter((role) => role.id === activeRole)[0]?.display_name
+          roles?.filter((role) => role.id === activeRole)[0]
+            ?.display_name
         );
       }
     } else if (roles?.length > 0 && subTypeState === "Manage Roles") {
       setActiveRoleInComponent(roles[0]?.display_name);
     }
-  }, [roles, adminState?.activeTab, subTypeState, activeRole, setActiveRole]);
+  }, [
+    roles,
+    adminState?.activeTab,
+    subTypeState,
+    activeRole,
+    setActiveRole,
+  ]);
 
   const searchUserProjectFilter = useCallback(async () => {
     if (authorName.length >= 2) {
@@ -154,14 +165,12 @@ function Controller(props) {
   // const secondaryColor = getGlobalColor('--main-secondary-color');
 
   useEffect(() => {
-    // setLtiToolTypes(ltiToolsTypes);
-    const filterdata = orgMediaSources?.mediaSources?.filter(
-      (t) => t.name !== "My device" && t.media_type === "Video"
-    );
-    setLtiToolTypes(
-      filterdata?.filter((t) => t.pivot.lti_tool_settings_status === true)
-    );
-  }, []);
+    if (ltiToolsTypes?.length) {
+      setLtiToolTypes(ltiToolsTypes);
+    } else {
+      setLtiToolTypes([]);
+    }
+  }, [ltiToolsTypes]);
   return (
     <div className="controller">
       {/* LEFT SIDE OF CONTROLLER GOES HERE */}
@@ -182,11 +191,12 @@ function Controller(props) {
               />
               {/* <img src={searchimg} alt="search" /> */}
               <SearchInputMdSvg primaryColor={primaryColor} />
-              {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
-                <label className="flex" style={{ color: "red" }}>
-                  Enter at least 2 characters
-                </label>
-              )}
+              {searchQuery.trim().length > 0 &&
+                searchQuery.trim().length < 2 && (
+                  <label className="flex" style={{ color: "red" }}>
+                    Enter at least 2 characters
+                  </label>
+                )}
             </div>
           </>
         )}
@@ -246,7 +256,9 @@ function Controller(props) {
               className=""
               type="text"
               placeholder="Search"
-              onChange={({ target }) => setSearchQueryTeam(target.value)}
+              onChange={({ target }) =>
+                setSearchQueryTeam(target.value)
+              }
             />
             <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
@@ -362,28 +374,32 @@ function Controller(props) {
             <SearchInputMdSvg primaryColor={primaryColor} />
           </div>
         )}
-        {!!search && type === "Activities" && subType === "Activity Types" && (
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity name"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            <SearchInputMdSvg primaryColor={primaryColor} />
-          </div>
-        )}
-        {!!search && type === "Activities" && subType === "Activity Items" && (
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            <SearchInputMdSvg primaryColor={primaryColor} />
-          </div>
-        )}
+        {!!search &&
+          type === "Activities" &&
+          subType === "Activity Types" && (
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search by activity name"
+                onChange={searchQueryChangeHandler}
+                value={setSearchKey}
+              />
+              <SearchInputMdSvg primaryColor={primaryColor} />
+            </div>
+          )}
+        {!!search &&
+          type === "Activities" &&
+          subType === "Activity Items" && (
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search"
+                onChange={searchQueryChangeHandler}
+                value={setSearchKey}
+              />
+              <SearchInputMdSvg primaryColor={primaryColor} />
+            </div>
+          )}
 
         {!!search && type === "Activities" && subType === "Subjects" && (
           <div className="search-bar">
@@ -399,52 +415,60 @@ function Controller(props) {
           </div>
         )}
 
-        {!!search && type === "Activities" && subType === "Education Level" && (
-          <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            {/* <img src={searchimg} alt="search" /> */}
-            <SearchInputMdSvg primaryColor={primaryColor} />
-          </div>
-        )}
+        {!!search &&
+          type === "Activities" &&
+          subType === "Education Level" && (
+            <div className="search-bar">
+              <input
+                className=""
+                type="text"
+                placeholder="Search"
+                onChange={searchQueryChangeHandler}
+                value={setSearchKey}
+              />
+              {/* <img src={searchimg} alt="search" /> */}
+              <SearchInputMdSvg primaryColor={primaryColor} />
+            </div>
+          )}
 
-        {!!search && type === "Activities" && subType === "Author Tags" && (
-          <div className="search-bar">
-            <input
-              className=""
-              type="text"
-              placeholder="Search"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            {/* <img src={searchimg} alt="search" /> */}
-            <SearchInputMdSvg primaryColor={primaryColor} />
-          </div>
-        )}
+        {!!search &&
+          type === "Activities" &&
+          subType === "Author Tags" && (
+            <div className="search-bar">
+              <input
+                className=""
+                type="text"
+                placeholder="Search"
+                onChange={searchQueryChangeHandler}
+                value={setSearchKey}
+              />
+              {/* <img src={searchimg} alt="search" /> */}
+              <SearchInputMdSvg primaryColor={primaryColor} />
+            </div>
+          )}
 
-        {!!search && type === "Activities" && subType === "Activity Layouts" && (
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by activity layout name"
-              onChange={searchQueryChangeHandler}
-              value={setSearchKey}
-            />
-            {/* <img src={searchimg} alt="search" /> */}
-            <SearchInputMdSvg primaryColor={primaryColor} />
-          </div>
-        )}
+        {!!search &&
+          type === "Activities" &&
+          subType === "Activity Layouts" && (
+            <div className="search-bar">
+              <input
+                type="text"
+                placeholder="Search by activity layout name"
+                onChange={searchQueryChangeHandler}
+                value={setSearchKey}
+              />
+              {/* <img src={searchimg} alt="search" /> */}
+              <SearchInputMdSvg primaryColor={primaryColor} />
+            </div>
+          )}
         {paginationCounter && (
           <div className="pagination-counter drop-counter ">
             Rows per page
             <span>
               <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">{size}</Dropdown.Toggle>
+                <Dropdown.Toggle id="dropdown-basic">
+                  {size}
+                </Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -518,7 +542,9 @@ function Controller(props) {
                     src={filterSearchIcon}
                     alt="filterSearchIcon"
                     className={
-                      authorName && authorsArray.length === 0 && "close-circle"
+                      authorName &&
+                      authorsArray.length === 0 &&
+                      "close-circle"
                     }
                     onClick={searchUserProjectFilter}
                   />
@@ -542,7 +568,8 @@ function Controller(props) {
                                 }}
                               >
                                 <div className="initial">
-                                  {author.first_name[0] + author.last_name[0]}
+                                  {author.first_name[0] +
+                                    author.last_name[0]}
                                 </div>
                                 <div>
                                   <div className="username-filter-project">
@@ -559,10 +586,16 @@ function Controller(props) {
                     )}
                 </div>
                 {loaderImgUser && (
-                  <img src={loader} alt="loader" className="loader-img" />
+                  <img
+                    src={loader}
+                    alt="loader"
+                    className="loader-img"
+                  />
                 )}
                 {authorName && authorName.length < 2 && (
-                  <div className="error">Enter at least 2 characters.</div>
+                  <div className="error">
+                    Enter at least 2 characters.
+                  </div>
                 )}
                 <div className="createdFrom-project">
                   <label>Created</label>
@@ -571,11 +604,11 @@ function Controller(props) {
                       <span>From</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_from}
+                        value={projectFilterObj.created_from == null ? '' : projectFilterObj.created_from}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -588,11 +621,11 @@ function Controller(props) {
                       <span>To</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_to}
+                        value={projectFilterObj.created_to == null ? '' : projectFilterObj.created_to}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -616,11 +649,11 @@ function Controller(props) {
                       <span>From</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_from}
+                        value={projectFilterObj.updated_from == null ? '' : projectFilterObj.updated_from}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -633,11 +666,11 @@ function Controller(props) {
                       <span>To</span>
                       <input
                         type="text"
-                        placeholder="MM/DD/YYYY"
+                        placeholder="mm/dd/yyyy"
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_to}
+                        value={projectFilterObj.updated_to == null ? '' :projectFilterObj.updated_to}
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -660,7 +693,9 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.indexing === 1 && true}
+                        checked={
+                          projectFilterObj.indexing === 1 && true
+                        }
                         onChange={() => {
                           setLibraryReqSelected(true);
                           setProjectFilterObj({
@@ -674,12 +709,14 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.indexing === 0 && true}
+                        checked={
+                          projectFilterObj.indexing === null && true
+                        }
                         onChange={() => {
                           setLibraryReqSelected(false);
                           setProjectFilterObj({
                             ...projectFilterObj,
-                            indexing: 0,
+                            indexing: null,
                           });
                         }}
                       />
@@ -688,7 +725,9 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.indexing === 3 && true}
+                        checked={
+                          projectFilterObj.indexing === 3 && true
+                        }
                         onChange={() => {
                           setLibraryReqSelected(false);
                           setProjectFilterObj({
@@ -702,7 +741,9 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.indexing === 2 && true}
+                        checked={
+                          projectFilterObj.indexing === 2 && true
+                        }
                         onChange={() => {
                           setLibraryReqSelected(false);
                           setProjectFilterObj({
@@ -711,7 +752,7 @@ function Controller(props) {
                           });
                         }}
                       />
-                      Rejected
+                      Not Approved
                     </span>
                   </div>
                   <div className="shared-status">
@@ -719,7 +760,9 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.shared === 1 && true}
+                        checked={
+                          projectFilterObj.shared === 1 && true
+                        }
                         onChange={() =>
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -732,7 +775,9 @@ function Controller(props) {
                     <span>
                       <input
                         type="radio"
-                        checked={projectFilterObj.shared === 0 && true}
+                        checked={
+                          projectFilterObj.shared === 0 && true
+                        }
                         onChange={() =>
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -744,6 +789,54 @@ function Controller(props) {
                     </span>
                   </div>
                 </div>
+
+                <div className="status-project">
+              <div className="library-status" style={{borderRight:"unset"}}>
+                <label>Library Preference</label>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 1 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 1,
+                      });
+                    }}
+                  />
+                  Private(only me)
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 4 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 4,
+                      });
+                    }}
+                  />
+                  Public
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 3 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 3,
+                      });
+                    }}
+                  />
+                  My Organization
+                </span>
+              </div>
+            </div>
                 <div
                   className="filter-btn-project"
                   onClick={() => filterSearch()}
@@ -770,14 +863,19 @@ function Controller(props) {
           <button
             className="switch-libreq"
             type="button"
-            style={{ border: libraryReqSelected ? "1px solid #F8AF2C" : "0" }}
+            style={{
+              border: libraryReqSelected ? "1px solid #F8AF2C" : "0",
+            }}
             onClick={() => {
               // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
+            <PreviewSmSvg
+              primaryColor={primaryColor}
+              className="svg_mr_8"
+            />
             Library request to review
           </button>
         )}
@@ -785,14 +883,19 @@ function Controller(props) {
           <button
             className="switch-libreq"
             type="button"
-            style={{ border: libraryReqSelected ? "1px solid #F8AF2C" : "0" }}
+            style={{
+              border: libraryReqSelected ? "1px solid #F8AF2C" : "0",
+            }}
             onClick={() => {
               // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
             {/* <img src={eye} alt="eye" /> */}
-            <PreviewSmSvg primaryColor={primaryColor} className="svg_mr_8" />
+            <PreviewSmSvg
+              primaryColor={primaryColor}
+              className="svg_mr_8"
+            />
             Library request to review
           </button>
         )}
@@ -898,13 +1001,16 @@ function Controller(props) {
                           setActiveRoleInComponent(head.display_name);
                           if (subTypeState === "Manage Roles")
                             dispatch(
-                              roleDetail(activeOrganization.id, head.id)
+                              roleDetail(
+                                activeOrganization.id,
+                                head.id
+                              )
                             );
                           if (
                             subTypeState === "All Users" &&
                             activeRole !== head.id
                           ) {
-                            setSearchQuery("");
+                            // setSearchQuery("");
                             setActiveRole(head.id);
                             setActivePage(1);
                           }
@@ -926,7 +1032,9 @@ function Controller(props) {
             <span>
               <Dropdown>
                 <Dropdown.Toggle id="dropdown-basic">
-                  {filterLtiSettings?.name ? filterLtiSettings?.name : "All"}
+                  {filterLtiSettings?.name
+                    ? filterLtiSettings?.name
+                    : "All"}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
@@ -949,7 +1057,7 @@ function Controller(props) {
                       {t.value}
                     </Dropdown.Item>
                   ))} */}
-                  {ltiToolTypes?.map((t) => {
+                  {LtiToolTypes?.map((t) => {
                     return (
                       <Dropdown.Item
                         onClick={() => {
@@ -1011,7 +1119,9 @@ function Controller(props) {
         {!!importUser &&
           type === "Projects" &&
           subType === "All Projects" &&
-          permission?.Organization?.includes("organization:edit-project") && (
+          permission?.Organization?.includes(
+            "organization:edit-project"
+          ) && (
             <div
               className="import-user"
               style={{ cursor: "pointer" }}
@@ -1105,7 +1215,10 @@ function Controller(props) {
                       button: false,
                     });
                     const formData = new FormData();
-                    formData.append("independent_activity", e.target.files[0]);
+                    formData.append(
+                      "independent_activity",
+                      e.target.files[0]
+                    );
                     const response = indActivityService.importIndAvtivity(
                       activeOrganization.id,
                       formData
@@ -1172,7 +1285,9 @@ function Controller(props) {
 
         {!!btnText &&
           subType === "Subjects" &&
-          permission?.Organization.includes("organization:edit-subject") && (
+          permission?.Organization.includes(
+            "organization:edit-subject"
+          ) && (
             <div className="btn-text">
               <button
                 type="button"
@@ -1198,7 +1313,9 @@ function Controller(props) {
                 type="button"
                 onClick={() => {
                   if (btnAction === "add_education_level") {
-                    dispatch(setActiveAdminForm("add_education_level"));
+                    dispatch(
+                      setActiveAdminForm("add_education_level")
+                    );
                   }
                 }}
               >
@@ -1210,7 +1327,9 @@ function Controller(props) {
 
         {!!btnText &&
           subType === "Author Tags" &&
-          permission?.Organization.includes("organization:edit-author-tag") && (
+          permission?.Organization.includes(
+            "organization:edit-author-tag"
+          ) && (
             <div className="btn-text">
               <button
                 type="button"
@@ -1235,7 +1354,9 @@ function Controller(props) {
                 type="button"
                 onClick={() => {
                   if (btnAction === "add_activity_layout") {
-                    dispatch(setActiveAdminForm("add_activity_layout"));
+                    dispatch(
+                      setActiveAdminForm("add_activity_layout")
+                    );
                   }
                 }}
               >
@@ -1247,7 +1368,9 @@ function Controller(props) {
 
         {!!btnText &&
           subType === "Manage Roles" &&
-          permission?.Organization.includes("organization:add-role") && (
+          permission?.Organization.includes(
+            "organization:add-role"
+          ) && (
             <div className="btn-text">
               <button
                 type="button"
@@ -1264,7 +1387,9 @@ function Controller(props) {
           )}
         {!!btnText &&
           subType === "All Users" &&
-          permission?.Organization.includes("organization:add-user") && (
+          permission?.Organization.includes(
+            "organization:add-user"
+          ) && (
             <div className="btn-text">
               <button
                 type="button"
@@ -1281,7 +1406,9 @@ function Controller(props) {
           )}
         {!!btnText &&
           type === "Organization" &&
-          permission?.Organization.includes("organization:create") && (
+          permission?.Organization.includes(
+            "organization:create"
+          ) && (
             <div className="btn-text">
               <button
                 type="button"
