@@ -29,6 +29,7 @@ const SearchLibrary = (props) => {
     setActiveEducation,
     setActiveSubject,
     setActiveAuthorTag,
+    setActiveType,
     setAuthor,
     setFromDate,
     setToDate,
@@ -208,6 +209,25 @@ const SearchLibrary = (props) => {
     }
     // setModalShow(true);
   };
+
+  const clearFilters = async () => {
+    setSearchInput("");
+    setNoWords("");
+    setAuthor("");
+    setActiveEducation([]);
+    setActiveSubject([]);
+    setActiveAuthorTag([]);
+    setActiveType([]);
+    // onSubmit();
+    const result = await dispatch(simpleSearchAction({}));
+    const result1 = await dispatch(
+      searchIndependentActivitiesAction(
+        {},
+        "showcase_activities",
+      ),
+    );
+
+  };
   return (
     <Accordion defaultActiveKey="0">
       <Card>
@@ -291,9 +311,14 @@ const SearchLibrary = (props) => {
                   }}
                 />
               </div>
-              <div className="src-btn" onClick={() => onSubmit()}>
-                <FontAwesomeIcon icon="search" />
-                Search
+              <div style={{ display: "flex", justifyContent: "space-between", color: "#1E68BF", alignItem: "center", alignItems: "center"}}>
+                <div style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => clearFilters()}>
+                  Clear All
+                </div>
+                <div className="src-btn" style={{marginBottom: "unset"}} onClick={() => onSubmit()}>
+                  <FontAwesomeIcon icon="search" />
+                  Search
+                </div>
               </div>
             </div>
           </Card.Body>

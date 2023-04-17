@@ -428,6 +428,7 @@ function SearchInterface(props) {
                           setActiveEducation={setActiveEducation}
                           setActiveSubject={setActiveSubject}
                           setActiveAuthorTag={setActiveAuthorTag}
+                          setActiveType={setActiveType}
                           setAuthor={SetAuthor}
                           setFromDate={Setfromdate}
                           setToDate={Settodate}
