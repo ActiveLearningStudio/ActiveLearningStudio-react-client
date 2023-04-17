@@ -277,7 +277,7 @@ const ActivityLayout = (props) => {
                 {layout.demo_activity_id ? (
                   <>
                     <H5PPreview
-                      activityId={layout.demo_activity_id.trim()}
+                      activityId={layout.demo_activity_id?.trim()}
                       tokenrequire={false}
                       showltipreview
                     />
