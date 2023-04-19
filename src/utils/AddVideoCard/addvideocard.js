@@ -251,7 +251,7 @@ const AddVideoCard = ({
             onClick={() => openEditor()}
             className="addvideo-card-title"
           >
-            <h2>{data.title}</h2>
+            <h2 dangerouslySetInnerHTML={{ __html: data.title }} />
             {/* {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'} */}
           </div>
         </div>
