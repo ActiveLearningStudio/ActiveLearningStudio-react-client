@@ -3,14 +3,7 @@ node("currikidev") {
     def tests
 
     env.TAG = 'stage'
-    env.H5P_BRANCH = ''
-    if(env.BRANCH_NAME == "develop") {
-        env.H5P_BRANCH = 'develop'
-    } else if(env.BRANCH_NAME == "staging") {
-        env.H5P_BRANCH = 'staging'
-    } else if(env.BRANCH_NAME == "master") {
-        env.H5P_BRANCH = 'master'
-    } 
+    
     
     stage('Clone repository') {      
         sh "echo ${env.BRANCH_NAME}"
@@ -18,12 +11,12 @@ node("currikidev") {
         checkout scm    
     }  
     stage('Build image') {  
-            app = docker.build("quay.io/curriki/api:${env.BUILD_NUMBER}", "-f Dockerfile.kube .")
+            app = docker.build("quay.io/curriki/client:${env.BUILD_NUMBER}", "-f Dockerfile.kube .")
         } 
 
         stage('Test image') {    
             app.inside { 
-                    sh 'echo "Api Tests passed"'        
+                    sh 'echo "Client Tests passed"'        
             }    
         } 
         stage('Push image') {	
