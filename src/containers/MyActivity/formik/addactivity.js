@@ -601,55 +601,57 @@ const AddActivity = (props) => {
                 id="controlled-tab-example"
               >
                 <Taber.Tab eventKey="layout" title={"How-to video"}>
-                  <div className="activity-layout-process-box">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      style={{ borderRadius: "8px" }}
-                      src={
-                        selectedLayout?.demo_video_id ||
-                        videos?.editVideo?.activity_item
-                          ?.demo_video_id
-                      }
-                      title={
-                        selectedLayout?.title ||
-                        videos?.editVideo?.activity_item?.title
-                      }
-                      frameborder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    ></iframe>
-                  </div>
-                  <br />
-                  <br />
-                  <HeadingText
-                    text={
-                      selectedLayout?.description ||
-                      videos?.editVideo?.activity_item?.description
-                    }
-                    color="#515151"
-                  />
+                  {selectedLayout?.demo_video_id ||
+                  !!activity?.activity_item ? (
+                    <>
+                      <div className="activity-layout-process-box">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ borderRadius: "8px" }}
+                          src={
+                            selectedLayout?.demo_video_id ||
+                            activity?.activity_item?.demo_video_id
+                          }
+                          title={
+                            selectedLayout?.title ||
+                            activity?.activity_item?.title
+                          }
+                          frameborder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        ></iframe>
+                      </div>
+                      <HeadingText
+                        text={
+                          selectedLayout?.description ||
+                          activity?.activity_item?.description
+                        }
+                        color="#515151"
+                      />
+                    </>
+                  ) : (
+                    <Taber.Alert variant="warning">
+                      Video is not Available.
+                    </Taber.Alert>
+                  )}
                 </Taber.Tab>
+
                 <Taber.Tab eventKey="demo" title="Sample activity">
                   {selectedLayout?.demo_activity_id ||
-                  videos?.editVideo?.activity_item
-                    ?.demo_activity_id ? (
+                  !!activity?.activity_item ? (
                     <>
                       <H5PPreview
                         activityId={
                           selectedLayout?.demo_activity_id?.trim() ||
-                          videos?.editVideo?.activity_item
-                            ?.demo_activity_id
+                          activity?.activity_item?.demo_activity_id?.trim()
                         }
                         tokenrequire={false}
                         showltipreview
                       />
-                      <br />
-                      <br />
                       <HeadingText
                         text={
                           selectedLayout?.description ||
-                          videos?.editVideo?.activity_item
-                            ?.description
+                          activity?.activity_item?.description
                         }
                         color="#515151"
                       />
