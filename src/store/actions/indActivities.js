@@ -43,7 +43,7 @@ export const createIndResourceAction = (
       h5p_content_id: resource.id,
       thumb_url: metadata?.thumb_url,
       action: "create",
-      title: metadata?.title,
+      title: decodeEntity(metadata?.title),
       type: "h5p",
       content: "place_holder",
       subject_id: metadata?.subject_id,
@@ -394,3 +394,10 @@ export const getIndex = (id, index, admin) => async (dispatch) => {
     }
   }
 };
+
+const decodeEntity = (inputStr) => {
+  var textarea = document.createElement("textarea");
+  textarea.innerHTML = inputStr;
+  return textarea.value;
+}
+
