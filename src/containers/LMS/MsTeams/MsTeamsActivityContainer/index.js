@@ -7,6 +7,7 @@ import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLau
 import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
+import { app, authentication } from '@microsoft/teams-js';
 
 function MsTeamsActivityContainer({ match, history }) {
   const { activityId, tenantId } = match.params;
@@ -16,9 +17,9 @@ function MsTeamsActivityContainer({ match, history }) {
   const submissionId = queryParams.get('submissionId');
   const view = queryParams.get('view');
   const userRole = queryParams.get('userRole');
-  const token = localStorage.getItem('msteams_token');
   const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
-  const freshToken = (token && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15);
+  const [token, setToken] = useState(localStorage.getItem('msteams_token'));
+  const [freshToken, setFreshToken] = useState((token && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
   const [error, setError] = useState(null);
   const [activityParams, setActivityParams] = useState(null);
 
@@ -35,7 +36,23 @@ function MsTeamsActivityContainer({ match, history }) {
     params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
     params.append('state', window.location.href);
     url.search = params.toString();
-    window.location.replace(url);
+    app.initialize().then(() => {
+      authentication.authenticate({ url: url.href }).then((result) => {
+        console.log('authentication worked maybe', result);
+        const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
+        const tempToken = localStorage.getItem('msteams_token');
+        setToken(tempToken);
+        setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
+      }).catch((e) => {
+        console.log('failed to authenticate', e);
+        if (e.message === 'CancelledByUser')
+          setError('Authentication Failed: Please reload the tab and follow the instructions in the authentication popup to use this application.');
+        else if (e.message === 'FailedToOpenWindow')
+          setError('Authentication Failed: If you have a popup blocker, please authorize this website in order to use the CurrikiStudio application.');
+      });
+    }).catch((e) => {
+      console.log('failed to initialize', e);
+    });
   }, []);
 
   useEffect(() => {
@@ -88,7 +105,7 @@ function MsTeamsActivityContainer({ match, history }) {
         console.log('Error fetching submission status', e);
         setError('Error fetching submission status');
       });
-  }, []);
+  }, [freshToken]);
  
   return (
     <>
@@ -101,7 +118,7 @@ function MsTeamsActivityContainer({ match, history }) {
             <div className="activity-bg left-vdo msteams-width">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  {error && <Alert variant="danger">Error fetching submission information</Alert>}
+                  {error && <Alert variant="danger">{error}</Alert>}
                   {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
                 </div>
               </div>
