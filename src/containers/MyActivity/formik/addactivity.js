@@ -3,12 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import HeadingText from "utils/HeadingText/headingtext";
 import HeadingTwo from "utils/HeadingTwo/headingtwo";
 import Tabs from "utils/Tabs/tabs";
+import * as Taber from "react-bootstrap";
 import Buttons from "utils/Buttons/buttons";
 import { Formik } from "formik";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import PreviewLayoutModel from "containers/MyProject/model/previewlayout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImageV2 from "utils/uploadimagev2/uploadimagev2";
+import H5PPreview from "../../H5PPreview";
 import {
   faAngleDown,
   faAngleUp,
@@ -54,6 +56,7 @@ const AddActivity = (props) => {
     selectedLayout,
     activity,
     singleLayout,
+    videos,
   } = useSelector((state) => state.myactivities);
 
   const [modalShow, setModalShow] = useState(false);
@@ -74,6 +77,7 @@ const AddActivity = (props) => {
   const [educationLevels, setEducationLevels] = useState(null);
   const [selectedSubjects, setSelectedSubjects] = useState(null);
   const [selecteAuthorTags, setSelecteAuthorTags] = useState(null);
+  const [key, setKey] = useState("layout");
   const [
     selectedEducationLevel,
     setSelectedEducationLevel,
@@ -85,10 +89,14 @@ const AddActivity = (props) => {
   useEffect(() => {
     // Check if selectedLayout is selected from explore or not
     setExploreCheck(true);
-
+    // if (
+    //   activityLayouts?.find(
+    //     (item) => item.demo_video_id === selectedLayout.demo_video_id
+    //   )
+    // )
     if (
       activityLayouts?.find(
-        (item) => item.title === selectedLayout.title
+        (item) => item?.title === selectedLayout?.title
       )
     ) {
       setExploreCheck(false);
@@ -575,6 +583,86 @@ const AddActivity = (props) => {
               )}
             </div>
 
+            <div className="layout-process-btn">
+              <Taber.Tabs
+                defaultActiveKey="layout"
+                activeKey={key}
+                onSelect={(k) => {
+                  setKey(k);
+
+                  // if (k === "demo") {
+                  //   let tempStorage = layout;
+                  //   setLayout();
+                  //   setTimeout(() => {
+                  //     setLayout(tempStorage);
+                  //   }, 300);
+                  // }
+                }}
+                id="controlled-tab-example"
+              >
+                <Taber.Tab eventKey="layout" title={"How-to video"}>
+                  <div className="activity-layout-process-box">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ borderRadius: "8px" }}
+                      src={
+                        selectedLayout?.demo_video_id ||
+                        videos?.editVideo?.activity_item
+                          ?.demo_video_id
+                      }
+                      title={
+                        selectedLayout?.title ||
+                        videos?.editVideo?.activity_item?.title
+                      }
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    ></iframe>
+                  </div>
+                  <br />
+                  <br />
+                  <HeadingText
+                    text={
+                      selectedLayout?.description ||
+                      videos?.editVideo?.activity_item?.description
+                    }
+                    color="#515151"
+                  />
+                </Taber.Tab>
+                <Taber.Tab eventKey="demo" title="Sample activity">
+                  {selectedLayout?.demo_activity_id ||
+                  videos?.editVideo?.activity_item
+                    ?.demo_activity_id ? (
+                    <>
+                      <H5PPreview
+                        activityId={
+                          selectedLayout?.demo_activity_id?.trim() ||
+                          videos?.editVideo?.activity_item
+                            ?.demo_activity_id
+                        }
+                        tokenrequire={false}
+                        showltipreview
+                      />
+                      <br />
+                      <br />
+                      <HeadingText
+                        text={
+                          selectedLayout?.description ||
+                          videos?.editVideo?.activity_item
+                            ?.description
+                        }
+                        color="#515151"
+                      />
+                    </>
+                  ) : (
+                    <Taber.Alert variant="warning">
+                      Demo is not Available.
+                    </Taber.Alert>
+                  )}
+                </Taber.Tab>
+              </Taber.Tabs>
+            </div>
+
             {activtyMethod === "upload" && (
               <div className="existing-activity-dialog">
                 <UploadFile
@@ -591,6 +679,7 @@ const AddActivity = (props) => {
                   text="Changes saved succesfully!"
                   color="#12B347"
                 />
+
                 <HeadingText
                   text="To continue editing Open the editor again."
                   color="#12B347"

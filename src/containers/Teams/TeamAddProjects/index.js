@@ -31,6 +31,8 @@ const AddTeamProjects = (props) => {
   const projectReduxState = useSelector((state) => state.project);
   const { teamPermission } = useSelector((state) => state.team);
   const [searchQuery, setsearchQuery] = useState('');
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   // use effect to redirect user to team page if newTeam is not found
   useEffect(() => {
     if (location.pathname.includes('/teams/add-projects') && !newTeam?.name && organization?.domain) {
@@ -97,7 +99,7 @@ const AddTeamProjects = (props) => {
   };
   return (
     <div className="team-project-page">
-      <div className="content">
+      <div className={`content ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
         <div className="inner-content">
           <div className="add-team-projects">
             <div className="team-projects-top-section">

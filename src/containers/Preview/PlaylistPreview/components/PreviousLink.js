@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
 
 function PreviousLink(props) {
-  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType, activtyPlaylist, setH5pCurrentActivity } = props;
+  const { history, showLti, shared, projectId, playlistId, previousResource, allPlaylists, viewType, activtyPlaylist, setH5pCurrentActivity, enable } = props;
   const organization = useSelector((state) => state.organization);
   const currentPlaylistIndex = allPlaylists.findIndex((p) => p.id === playlistId);
   const prevPlaylist = currentPlaylistIndex > 0 ? allPlaylists[currentPlaylistIndex - 1] : null;
@@ -45,11 +45,15 @@ function PreviousLink(props) {
 
   return (
     <div className="slider-hover-section">
-      <Link
-        onClick={() => {
-          if (setH5pCurrentActivity) {
-            setH5pCurrentActivity(previousResource);
-          }
+      <Link className={enable ? '' : 'disable-link'}
+        onClick={(e) => {
+          if(!enable){
+            e.preventDefault();
+          } else {
+            if (setH5pCurrentActivity) {
+              setH5pCurrentActivity(previousResource);
+            }
+        }
         }}
         to={setH5pCurrentActivity ? (activtyPlaylist ? prevLink : void 0) : prevLink}
       >
@@ -132,6 +136,7 @@ PreviousLink.defaultProps = {
   projectId: null,
   previousResource: null,
   allPlaylists: [],
+  enable: false,
 };
 
 export default withRouter(PreviousLink);

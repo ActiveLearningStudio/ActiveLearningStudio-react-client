@@ -259,6 +259,14 @@ const deleteActivityItem = (subOrgId, itemId) =>
       Promise.reject(err.response.data);
     });
 
+const searchProjectPreview = (subOrgId, projId) =>
+  httpService
+    .get(
+      `/${apiVersion}/suborganization/${subOrgId}/projects/${projId}/search-preview`
+    )
+    .then(({ data }) => data)
+    .catch((err) => Promise.reject(err.response.data));
+
 const h5pToken = (dataH5p) =>
   httpService
     .post(`/${apiVersion}/h5p`, dataH5p)
@@ -462,4 +470,5 @@ export default {
   getAllTypesIV,
   smithsonian,
   smithsonianList,
+  searchProjectPreview,
 };
