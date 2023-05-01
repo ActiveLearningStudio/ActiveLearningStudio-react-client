@@ -28,30 +28,28 @@ function MsTeamsActivityContainer({ match, history }) {
   useEffect(() => {
     if (freshToken) return;
 
-    const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
-    const params = new URLSearchParams();
-    params.append('client_id', config.teamsClientId);
-    params.append('response_type', 'code');
-    params.append('scope', 'offline_access user.read mail.read');
-    params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
-    params.append('state', window.location.href);
-    url.search = params.toString();
+    const authRequest = {
+      successCallback: (response) => {
+        MsTeamsService.msTeamsTokenObo(response).then((response) => {
+          localStorage.setItem('msteams_token', response.access_token);
+          localStorage.setItem('msteams_refresh_token', response.refresh_token);  
+          localStorage.setItem('msteams_token_timestamp', new Date().toString());
+          setToken(response.access_token);
+          setFreshToken(true);
+        }).catch(() => {
+          setError('Could not fetch platform token');
+        });
+      },
+      failureCallback: (response) => { 
+        console.log('failure:', response);
+        setError('Error requesting authentication token');
+      },
+    };
+
     app.initialize().then(() => {
-      authentication.authenticate({ url: url.href }).then((result) => {
-        console.log('authentication worked maybe', result);
-        const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
-        const tempToken = localStorage.getItem('msteams_token');
-        setToken(tempToken);
-        setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
-      }).catch((e) => {
-        console.log('failed to authenticate', e);
-        if (e.message === 'CancelledByUser')
-          setError('Authentication Failed: Please reload the tab and follow the instructions in the authentication popup to use this application.');
-        else if (e.message === 'FailedToOpenWindow')
-          setError('Authentication Failed: If you have a popup blocker, please authorize this website in order to use the CurrikiStudio application.');
-      });
-    }).catch((e) => {
-      console.log('failed to initialize', e);
+      authentication.getAuthToken(authRequest);
+    }).catch(() => {
+      setError('Failed to initialize teams sdk');
     });
   }, []);
 
