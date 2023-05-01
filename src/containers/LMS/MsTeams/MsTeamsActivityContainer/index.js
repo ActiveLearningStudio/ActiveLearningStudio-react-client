@@ -7,6 +7,7 @@ import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLau
 import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
+import { app, authentication } from '@microsoft/teams-js';
 
 function MsTeamsActivityContainer({ match, history }) {
   const { activityId, tenantId } = match.params;
@@ -16,9 +17,9 @@ function MsTeamsActivityContainer({ match, history }) {
   const submissionId = queryParams.get('submissionId');
   const view = queryParams.get('view');
   const userRole = queryParams.get('userRole');
-  const token = localStorage.getItem('msteams_token');
   const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
-  const freshToken = (token && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15);
+  const [token, setToken] = useState(localStorage.getItem('msteams_token'));
+  const [freshToken, setFreshToken] = useState((token && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
   const [error, setError] = useState(null);
   const [activityParams, setActivityParams] = useState(null);
 
@@ -27,15 +28,29 @@ function MsTeamsActivityContainer({ match, history }) {
   useEffect(() => {
     if (freshToken) return;
 
-    const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
-    const params = new URLSearchParams();
-    params.append('client_id', config.teamsClientId);
-    params.append('response_type', 'code');
-    params.append('scope', 'offline_access user.read mail.read');
-    params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
-    params.append('state', window.location.href);
-    url.search = params.toString();
-    window.location.replace(url);
+    const authRequest = {
+      successCallback: (response) => {
+        MsTeamsService.msTeamsTokenObo(response).then((response) => {
+          localStorage.setItem('msteams_token', response.access_token);
+          localStorage.setItem('msteams_refresh_token', response.refresh_token);  
+          localStorage.setItem('msteams_token_timestamp', new Date().toString());
+          setToken(response.access_token);
+          setFreshToken(true);
+        }).catch(() => {
+          setError('Could not fetch platform token');
+        });
+      },
+      failureCallback: (response) => { 
+        console.log('failure:', response);
+        setError('Error requesting authentication token');
+      },
+    };
+
+    app.initialize().then(() => {
+      authentication.getAuthToken(authRequest);
+    }).catch(() => {
+      setError('Failed to initialize teams sdk');
+    });
   }, []);
 
   useEffect(() => {
@@ -88,7 +103,7 @@ function MsTeamsActivityContainer({ match, history }) {
         console.log('Error fetching submission status', e);
         setError('Error fetching submission status');
       });
-  }, []);
+  }, [freshToken]);
  
   return (
     <>
@@ -101,7 +116,7 @@ function MsTeamsActivityContainer({ match, history }) {
             <div className="activity-bg left-vdo msteams-width">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  {error && <Alert variant="danger">Error fetching submission information</Alert>}
+                  {error && <Alert variant="danger">{error}</Alert>}
                   {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
                 </div>
               </div>
