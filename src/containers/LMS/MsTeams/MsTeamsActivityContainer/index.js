@@ -8,6 +8,8 @@ import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
 import { app, authentication } from '@microsoft/teams-js';
+import logo from 'assets/images/studio_new_logo_small.png';
+import './style.scss';
 
 function MsTeamsActivityContainer({ match, history }) {
   const { activityId, tenantId } = match.params;
@@ -28,6 +30,9 @@ function MsTeamsActivityContainer({ match, history }) {
   useEffect(() => {
     if (freshToken) return;
 
+    setError('Authentication Failed: Please reload the tab and follow the instructions in the authentication popup to use this application.');
+    return;
+
     const authRequest = {
       successCallback: (response) => {
         MsTeamsService.msTeamsTokenObo(response).then((response) => {
@@ -36,20 +41,47 @@ function MsTeamsActivityContainer({ match, history }) {
           localStorage.setItem('msteams_token_timestamp', new Date().toString());
           setToken(response.access_token);
           setFreshToken(true);
-        }).catch(() => {
-          setError('Could not fetch platform token');
+        }).catch((e) => {
+          console.log('token error:', e);
+
+          // No permission grant from user or admin. Going into oauth flow
+          if (e.errors === 'invalid_grant') {
+            const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
+            const params = new URLSearchParams();
+            params.append('client_id', config.teamsClientId);
+            params.append('response_type', 'code');
+            params.append('scope', 'offline_access user.read mail.read');
+            params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
+            params.append('state', window.location.href);
+            url.search = params.toString();
+            authentication.authenticate({ url: url.href }).then((result) => {
+              console.log('authentication worked maybe', result);
+              const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
+              const tempToken = localStorage.getItem('msteams_token');
+              setToken(tempToken);
+              setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
+            }).catch((e) => {
+              console.log('failed to authenticate', e);
+              if (e.message === 'CancelledByUser')
+                setError('Please reload the tab and follow the instructions in the authentication popup to use this application or ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
+              else if (e.message === 'FailedToOpenWindow')
+                setError('If you have a pop-up blocker, please enable pop-ups for https://teams.microsoft.com then reload the tab and follow the instructions in the authentication pop-up. Alternatively, you can ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
+            });
+          } else {
+            setError('There was a problem initializing the application. Please contact your Teams administrator. E003');
+          }
         });
       },
       failureCallback: (response) => { 
         console.log('failure:', response);
-        setError('Error requesting authentication token');
+        setError('There was a problem initializing the application. Please contact your Teams administrator. E002');
       },
     };
 
     app.initialize().then(() => {
       authentication.getAuthToken(authRequest);
     }).catch(() => {
-      setError('Failed to initialize teams sdk');
+      setError('There was a problem initializing the application. Please contact your Teams administrator. E001');
     });
   }, []);
 
@@ -116,7 +148,16 @@ function MsTeamsActivityContainer({ match, history }) {
             <div className="activity-bg left-vdo msteams-width">
               <div className="main-item-wrapper desktop-view">
                 <div className="item-container">
-                  {error && <Alert variant="danger">{error}</Alert>}
+                  {error && (
+                    <div className="outcome-summary-container">
+                      <div className="loading">
+                        <div className="loading_image">
+                          <img src={logo} alt="Curriki Studio logo" />
+                        </div>
+                        <div className="loading-message">{error}</div>
+                      </div>
+                    </div>
+                  )}
                   {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
                 </div>
               </div>
