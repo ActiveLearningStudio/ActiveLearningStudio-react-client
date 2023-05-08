@@ -30,9 +30,6 @@ function MsTeamsActivityContainer({ match, history }) {
   useEffect(() => {
     if (freshToken) return;
 
-    setError('Authentication Failed: Please reload the tab and follow the instructions in the authentication popup to use this application.');
-    return;
-
     const authRequest = {
       successCallback: (response) => {
         MsTeamsService.msTeamsTokenObo(response).then((response) => {
