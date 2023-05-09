@@ -52,7 +52,6 @@ function MsTeamsActivityContainer({ match, history }) {
             params.append('state', window.location.href);
             url.search = params.toString();
             authentication.authenticate({ url: url.href }).then((result) => {
-              console.log('authentication worked maybe', result);
               const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
               const tempToken = localStorage.getItem('msteams_token');
               setToken(tempToken);
