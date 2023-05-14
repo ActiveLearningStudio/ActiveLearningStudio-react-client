@@ -33,6 +33,7 @@ const MsTeamsCallBack = () => {
         setError('Failed to authenticate with Microsoft Teams');
         localStorage.removeItem('msteams_token');
         localStorage.removeItem('msteams_refresh_token');
+        window.close();
       });
   }, []);
 
