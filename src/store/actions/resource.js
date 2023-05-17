@@ -320,7 +320,7 @@ export const createResourceAction = (
       playlist_id: playlistId,
       thumb_url: metadata?.thumb_url,
       action: "create",
-      title: unescape(metadata?.title),
+      title: decodeEntity(metadata?.title),
       type: "h5p",
       content: "place_holder",
       subject_id: metadata?.subject_id,
@@ -675,7 +675,7 @@ export const createResourceByH5PUploadAction = (
           h5p_content_id: responseUpload.id,
           thumb_url: metadata?.thumb_url,
           action: "create",
-          title: metadata?.title,
+          title: decodeEntity(metadata?.title),
           type: "h5p",
           content: "place_holder",
           subject_id: metadata?.subject_id,
@@ -787,7 +787,7 @@ export const editResourceAction = (
     playlist_id: playlistId,
     thumb_url: metadata?.thumb_url,
     action: "create",
-    title: unescape(metadata?.title),
+    title: decodeEntity(metadata?.title),
     type: "h5p",
     content: "place_holder",
     subject_id: metadata.subject_id,
@@ -1092,3 +1092,9 @@ export const formatSelectBoxData = (data) => {
   }
   return ids;
 };
+
+const decodeEntity = (inputStr) => {
+  var textarea = document.createElement("textarea");
+  textarea.innerHTML = inputStr;
+  return textarea.value;
+}

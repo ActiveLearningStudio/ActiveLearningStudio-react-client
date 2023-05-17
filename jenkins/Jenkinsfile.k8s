@@ -3,42 +3,42 @@ node("currikidev") {
     def tests
 
     env.TAG = 'stage'
-    
-    
-    stage('Clone repository') {      
-        sh "echo ${env.BRANCH_NAME}"
-        
-        checkout scm    
-    }  
-    stage('Build image') {  
-            app = docker.build("quay.io/curriki/client:${env.BUILD_NUMBER}", "-f Dockerfile.kube .")
-        } 
 
-        stage('Test image') {    
-            app.inside { 
-                    sh 'echo "Client Tests passed"'        
-            }    
-        } 
-        stage('Push image') {	
-            docker.withRegistry('https://quay.io', 'docker-private-credentials') {            
-                    app.push("${env.BUILD_NUMBER}")            
+
+    stage('Clone repository') {
+        sh "echo ${env.BRANCH_NAME}"
+
+        checkout scm
+    }
+    stage('Build image') {
+            app = docker.build("quay.io/curriki/client:${env.BUILD_NUMBER}", "-f Dockerfile.kube .")
+        }
+
+        stage('Test image') {
+            app.inside {
+                    sh 'echo "Client Tests passed"'
+            }
+        }
+        stage('Push image') {
+            docker.withRegistry('https://quay.io', 'docker-private-credentials') {
+                    app.push("${env.BUILD_NUMBER}")
                     app.push("${env.TAG}")
             }
         }
-    stage('Deploy Helm') {	
+    stage('Deploy Helm') {
             echo 'Copy'
-            
+
             withCredentials([file(credentialsId: 'kubeconfig', variable: 'mySecretFile')]) {
                 sh "cp \$mySecretFile kconfig"
-                
+
             }
             sh 'curl https://raw.githubusercontent.com/helm/helm/v3.7.0/scripts/get-helm-3 | DESIRED_VERSION="v3.7.0" bash'
-            
+
             sh 'helm upgrade --install curriki-client charts/curriki -f charts/staging.yaml --namespace staging --kubeconfig $(pwd)/kconfig'
-            
+
 
         }
-    
-    
-    
+
+
+
 }

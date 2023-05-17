@@ -12,6 +12,15 @@ const msTeamsToken = (code) => httpService
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));
 
+const msTeamsTokenObo = (token) => httpService
+  .get(`/microsoft-team/get-access-token-obo`,
+  {},
+  {
+    token: token,
+  })
+  .then(({ data }) => data)
+  .catch((err) => Promise.reject(err.response.data));
+
 const getSubmissionStatus = (token, submissionId, assignmentId, classId) => httpService
   .get(`/microsoft-team/get-submission-status`,
   {},
@@ -39,6 +48,7 @@ const turnIn = (token, classworkId, submissionId, courseId) => httpService
 
   export default {
     msTeamsToken,
+    msTeamsTokenObo,
     getSubmissionStatus,
     turnIn,
   }
