@@ -134,23 +134,24 @@ const ActivityLayout = (props) => {
                         ? "activity-layoutCard-active mr-3"
                         : "mr-3"
                     }
-                    onClick={() => {
-                      if (data.title === "Interactive Video") {
-                        changeScreenHandler("addvideo");
-                      } else if (
-                        data.title === "Course Presentation"
-                      ) {
-                        changeScreenHandler("coursepresentation");
-                      } else {
-                        changeScreenHandler("addactivity");
-                      }
+                    onClick={() => setLayout(data)}
+                    // onClick={() => {
+                    //   if (data.title === "Interactive Video") {
+                    //     changeScreenHandler("addvideo");
+                    //   } else if (
+                    //     data.title === "Course Presentation"
+                    //   ) {
+                    //     changeScreenHandler("coursepresentation");
+                    //   } else {
+                    //     changeScreenHandler("addactivity");
+                    //   }
 
-                      dispatch({
-                        type: actionTypes.SET_SELECTED_ACTIVITY,
-                        payload: data,
-                        // screenSelectionType: screenSelectionType || '',
-                      });
-                    }}
+                    //   dispatch({
+                    //     type: actionTypes.SET_SELECTED_ACTIVITY,
+                    //     payload: data,
+                    //     // screenSelectionType: screenSelectionType || '',
+                    //   });
+                    // }}
                   />
                 );
               })}
@@ -296,7 +297,7 @@ const ActivityLayout = (props) => {
             <div className="activity-layout-btns">
               {/* <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} /> */}
 
-              {/*<div className="btns-margin">
+              <div className="btns-margin">
                 <Buttons
                   text="Select"
                   defaultgrey={!layout}
@@ -322,7 +323,7 @@ const ActivityLayout = (props) => {
                   }}
                   hover
                 />
-                </div> */}
+              </div>
             </div>
           </div>
         )}
