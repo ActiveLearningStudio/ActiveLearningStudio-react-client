@@ -399,6 +399,13 @@
       line-height: 36px;
     }
   }
+
+  .active_select_btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+  }
   .activity-layout-paragraph {
     margin: 17px 0 50px;
   }

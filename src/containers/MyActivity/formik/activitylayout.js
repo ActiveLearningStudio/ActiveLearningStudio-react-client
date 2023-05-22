@@ -78,12 +78,39 @@ const ActivityLayout = (props) => {
         />
         <Tabs text="3. Add interactions" className="ml-10 " />
       </div>
-      <div className="activity-layout-title">
-        <HeadingTwo
-          text="Select layout"
-          color="#084892"
-          className="select_activity_title_style"
-        />
+      <div className="active_select_btn">
+        <div className="activity-layout-title">
+          <HeadingTwo
+            text="Select layout"
+            color="#084892"
+            className="select_activity_title_style"
+          />
+        </div>
+        <div className="btns-margin">
+          <Buttons
+            text="Select"
+            defaultgrey={!layout}
+            width="91px"
+            height="32px"
+            disabled={!layout}
+            onClick={() => {
+              if (layout.title === "Interactive Video") {
+                changeScreenHandler("addvideo");
+              } else if (layout.title === "Course Presentation") {
+                changeScreenHandler("coursepresentation");
+              } else {
+                changeScreenHandler("addactivity");
+              }
+
+              dispatch({
+                type: actionTypes.SET_SELECTED_ACTIVITY,
+                payload: layout,
+                // screenSelectionType: screenSelectionType || '',
+              });
+            }}
+            hover
+          />
+        </div>
       </div>
 
       {/* <form className="radio-group ">
@@ -296,7 +323,6 @@ const ActivityLayout = (props) => {
             </Taber.Tabs>
             <div className="activity-layout-btns">
               {/* <Buttons text="Cancel" secondary={true} width="153px" height="36px" onClick={() => changeScreenHandler('')} hover={true} /> */}
-
               <div className="btns-margin">
                 <Buttons
                   text="Select"
