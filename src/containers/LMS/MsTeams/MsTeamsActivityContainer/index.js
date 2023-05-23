@@ -24,6 +24,7 @@ function MsTeamsActivityContainer({ match, history }) {
   const [freshToken, setFreshToken] = useState((token && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
   const [error, setError] = useState(null);
   const [activityParams, setActivityParams] = useState(null);
+  const [showOAuth, setShowOAuth] = useState(false);
 
 
   // Getting the microsoft auth code that will allow us to request a token on the callback and redirect back here
@@ -43,27 +44,7 @@ function MsTeamsActivityContainer({ match, history }) {
 
           // No permission grant from user or admin. Going into oauth flow
           if (e.errors === 'invalid_grant') {
-            const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
-            const params = new URLSearchParams();
-            params.append('client_id', config.teamsClientId);
-            params.append('response_type', 'code');
-            params.append('scope', 'offline_access user.read mail.read');
-            params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
-            params.append('state', window.location.href);
-            url.search = params.toString();
-            authentication.authenticate({ url: url.href }).then((result) => {
-              console.log('authentication worked maybe', result);
-              const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
-              const tempToken = localStorage.getItem('msteams_token');
-              setToken(tempToken);
-              setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
-            }).catch((e) => {
-              console.log('failed to authenticate', e);
-              if (e.message === 'CancelledByUser')
-                setError('Please reload the tab and follow the instructions in the authentication popup to use this application or ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
-              else if (e.message === 'FailedToOpenWindow')
-                setError('If you have a pop-up blocker, please enable pop-ups for https://teams.microsoft.com then reload the tab and follow the instructions in the authentication pop-up. Alternatively, you can ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
-            });
+            setShowOAuth(true);
           } else {
             setError('There was a problem initializing the application. Please contact your Teams administrator. E003');
           }
@@ -133,6 +114,30 @@ function MsTeamsActivityContainer({ match, history }) {
         setError('Error fetching submission status');
       });
   }, [freshToken]);
+
+  const doLogin = () => {
+    setShowOAuth(false);
+    const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
+    const params = new URLSearchParams();
+    params.append('client_id', config.teamsClientId);
+    params.append('response_type', 'code');
+    params.append('scope', 'offline_access user.read mail.read');
+    params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
+    params.append('state', window.location.href);
+    url.search = params.toString();
+    authentication.authenticate({ url: url.href }).then((result) => {
+      const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
+      const tempToken = localStorage.getItem('msteams_token');
+      setToken(tempToken);
+      setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
+    }).catch((e) => {
+      console.log('failed to authenticate', e);
+      if (e.message === 'CancelledByUser')
+        setError('Please reload the tab and follow the instructions in the authentication popup to use this application or ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
+      else if (e.message === 'FailedToOpenWindow')
+        setError('If you have a pop-up blocker, please enable pop-ups for https://teams.microsoft.com then reload the tab and follow the instructions in the authentication pop-up. Alternatively, you can ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
+    });
+  };
  
   return (
     <>
@@ -152,6 +157,19 @@ function MsTeamsActivityContainer({ match, history }) {
                           <img src={logo} alt="Curriki Studio logo" />
                         </div>
                         <div className="loading-message">{error}</div>
+                      </div>
+                    </div>
+                  )}
+                  {showOAuth && (
+                    <div className="outcome-summary-container">
+                      <div className="loading">
+                        <div className="loading_image">
+                          <img src={logo} alt="Curriki Studio logo" />
+                        </div>
+                        <div className="login-message">
+                          <p>The Curriki Studio application for Microsoft Teams requires you to grant certain permissions. Please click the login button to proceed.</p>
+                          <button className="btn btn-primary" onClick={doLogin}>Login</button>
+                        </div>
                       </div>
                     </div>
                   )}
