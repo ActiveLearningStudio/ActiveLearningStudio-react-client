@@ -1,9 +1,9 @@
 /* eslint-disable */
-import * as actionTypes from '../actionTypes';
+import * as actionTypes from "../actionTypes";
 const INITIAL_STATE = {
   activeForm: null,
   loading: true,
-  activeTab: 'Organization',
+  activeTab: "Organization",
   activityTypes: [],
   activityItems: [],
   usersReport: [],
@@ -34,7 +34,7 @@ const INITIAL_STATE = {
   orgLtiSettings: [],
   ltiToolsTypes: [],
   allIv: [],
-  selectedFIlterLti: '',
+  selectedFIlterLti: "",
   dynamicPermission: null,
   roleAddDynamicPermission: null,
   ltiToolsReloadStatus: false,
@@ -51,7 +51,9 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SET_ALL_IV:
       return {
         ...state,
-        allIv: action.payload.filter((data) => data.name?.includes('InteractiveVideo')),
+        allIv: action.payload.filter((data) =>
+          data.name?.includes("InteractiveVideo")
+        ),
       };
     case actionTypes.SET_ALL_PERMISSION:
       return {
@@ -63,7 +65,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         [action.reducer]: {
           ...state[action.reducer],
-          meta: { ...state[action.reducer]?.meta, total: state[action.reducer]?.meta?.total + action.payload, to: state[action.reducer]?.meta?.to + action.payload },
+          meta: {
+            ...state[action.reducer]?.meta,
+            total:
+              state[action.reducer]?.meta?.total + action.payload,
+            to: state[action.reducer]?.meta?.to + action.payload,
+          },
         },
       };
 
@@ -108,10 +115,15 @@ export default (state = INITIAL_STATE, action) => {
         editUser: action.payload,
       };
     case actionTypes.LOAD_RESOURCE_ITEMS_REQUEST:
-      const refreshActivityItems = state.activityItems.data.filter((data) => data.id !== action.payload);
+      const refreshActivityItems = state.activityItems.data.filter(
+        (data) => data.id !== action.payload
+      );
       return {
         ...state,
-        activityItems: { ...state.activityItems, data: refreshActivityItems },
+        activityItems: {
+          ...state.activityItems,
+          data: refreshActivityItems,
+        },
       };
     case actionTypes.GET_ACTIVITY_TYPES:
       return {
@@ -223,21 +235,31 @@ export default (state = INITIAL_STATE, action) => {
         },
       };
     case actionTypes.DEL_BRIGHTCOVE:
-      const newBrigthList = state.allbrightCove?.data.filter((data) => data.id !== action.payload);
+      const newBrigthList = state.allbrightCove?.data.filter(
+        (data) => data.id !== action.payload
+      );
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: newBrigthList },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: newBrigthList,
+        },
       };
     case actionTypes.EDIT_BRIGHTCOVE:
-      const newBrigthListEdit = state.allbrightCove.data.map((data) => {
-        if (data.id === action.payload.id) {
-          return action.payload;
+      const newBrigthListEdit = state.allbrightCove.data.map(
+        (data) => {
+          if (data.id === action.payload.id) {
+            return action.payload;
+          }
+          return data;
         }
-        return data;
-      });
+      );
       return {
         ...state,
-        allbrightCove: { ...state.allbrightCove, data: newBrigthListEdit },
+        allbrightCove: {
+          ...state.allbrightCove,
+          data: newBrigthListEdit,
+        },
       };
     case actionTypes.GET_TEAMS_ADMIN:
       return {
@@ -260,32 +282,51 @@ export default (state = INITIAL_STATE, action) => {
         exportedActivities: action.payload,
       };
     case actionTypes.EDIT_ADMIN_IND_ACTIVITIES:
-      const newIndActivityData = state.indActivities.data.map((data) => {
-        if (data.id === action.payload.id) {
-          return action.payload;
+      const newIndActivityData = state.indActivities.data.map(
+        (data) => {
+          if (data.id === action.payload.id) {
+            return action.payload;
+          }
+          return data;
         }
-        return data;
-      });
+      );
       return {
         ...state,
-        indActivities: { ...state.indActivities, data: newIndActivityData },
+        indActivities: {
+          ...state.indActivities,
+          data: newIndActivityData,
+        },
       };
     case actionTypes.EDIT_INDEX_ADMIN_IND_ACTIVITIES:
-      const newIndIndexActivityData = state.indActivities.data.map((data) => {
-        if (data.id === action.activityId) {
-          return { ...data, indexing: action.payload.indexing, indexing_text: action.payload.indexing_text };
+      const newIndIndexActivityData = state.indActivities.data.map(
+        (data) => {
+          if (data.id === action.activityId) {
+            return {
+              ...data,
+              indexing: action.payload.indexing,
+              indexing_text: action.payload.indexing_text,
+            };
+          }
+          return data;
         }
-        return data;
-      });
+      );
       return {
         ...state,
-        indActivities: { ...state.indActivities, data: newIndIndexActivityData },
+        indActivities: {
+          ...state.indActivities,
+          data: newIndIndexActivityData,
+        },
       };
     case actionTypes.DEL_ADMIN_IND_ACTIVITIES:
-      const delIndActivityData = state.indActivities.data.filter((data) => data.id !== action.payload);
+      const delIndActivityData = state.indActivities.data.filter(
+        (data) => data.id !== action.payload
+      );
       return {
         ...state,
-        indActivities: { ...state.indActivities, data: delIndActivityData },
+        indActivities: {
+          ...state.indActivities,
+          data: delIndActivityData,
+        },
       };
 
     case actionTypes.GET_ALL_MEDIA_SOURCE:
@@ -300,9 +341,13 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case actionTypes.GET_ORG_MEDIA_SOURCE:
-      const filterdata = action.payload.mediaSources?.filter((videoSource) => videoSource.media_type === 'Video');
+      const filterdata = action.payload.mediaSources?.filter(
+        (videoSource) => videoSource.media_type === "Video"
+      );
       const filteLti = state.orgLtiSettings.map((item) => {
-        const item2 = filterdata.find((t) => t.id === item.media_source_id)?.pivot;
+        const item2 = filterdata.find(
+          (t) => t.id === item.media_source_id
+        )?.pivot;
         return item2 ? { ...item, ...item2 } : item;
       });
       return {
@@ -311,12 +356,9 @@ export default (state = INITIAL_STATE, action) => {
         orgLtiSettings: filteLti,
       };
     case actionTypes.UPDATE_ORG_MEDIA_SOURCE:
-      const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video');
-      // const updateLtiTools = action.payload.mediaSources?.filter((source) => source.media_type === 'Video' && source.pivot.lti_tool_settings_status === true);
       return {
         ...state,
         orgMediaSources: action.payload,
-        ltiToolsTypes: updateLtiTools,
       };
 
     case actionTypes.GET_MEDIA_SOURCES:
@@ -345,16 +387,26 @@ export default (state = INITIAL_STATE, action) => {
       let setUpdateTotal = state.ltiTools.meta.total;
       let updatedTo = state.ltiTools.meta.to;
       // let updatedTo = state.ltiTools.meta.to != null ? state.ltiTools.meta.to : 0;
-      if (state.ltiTools.meta.to == null || state.ltiTools.meta.to == 0) {
+      if (
+        state.ltiTools.meta.to == null ||
+        state.ltiTools.meta.to == 0
+      ) {
         reloadStatus = true;
-      } else if ((action.payload === 'INCREMENT' && !state.selectedFIlterLti) || (action.payload === 'INCREMENT' && state.selectedFIlterLti === parseInt(action.ltitoolType))) {
+      } else if (
+        (action.payload === "INCREMENT" &&
+          !state.selectedFIlterLti) ||
+        (action.payload === "INCREMENT" &&
+          state.selectedFIlterLti === parseInt(action.ltitoolType))
+      ) {
         state.ltiTools.meta.total = setUpdateTotal + 1;
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo + 1;
         }
-      } else if (action.payload == 'DECREMENT') {
+      } else if (action.payload == "DECREMENT") {
         state.ltiTools.meta.total = setUpdateTotal - 1;
-        state.ltiTools.data = state.ltiTools.data.filter((item) => item.id !== action.id);
+        state.ltiTools.data = state.ltiTools.data.filter(
+          (item) => item.id !== action.id
+        );
         if (updatedTo === setUpdateTotal) {
           state.ltiTools.meta.to = updatedTo - 1;
           if (state.ltiTools.meta.to == 0) {
@@ -362,15 +414,18 @@ export default (state = INITIAL_STATE, action) => {
           } else {
             reloadStatus = false;
           }
-        } else if (state.selectedFIlterLti == '' || state.selectedFIlterLti == null) {
+        } else if (
+          state.selectedFIlterLti == "" ||
+          state.selectedFIlterLti == null
+        ) {
           reloadStatus = true;
         } else {
           reloadStatus = true;
         }
       } else if (
-        action.payload == 'DECREMENT_TYPE_CHANGED' &&
+        action.payload == "DECREMENT_TYPE_CHANGED" &&
         state.selectedFIlterLti != null &&
-        state.selectedFIlterLti != '' &&
+        state.selectedFIlterLti != "" &&
         state.selectedFIlterLti != parseInt(action.ltitoolType)
       ) {
         state.ltiTools.meta.total = setUpdateTotal - 1;
@@ -395,7 +450,10 @@ export default (state = INITIAL_STATE, action) => {
 
     // Add New Lti Tool in redux
     case actionTypes.LTI_TOOLS_ADD_NEW:
-      state.ltiTools.data = [action.payload, ...state?.ltiTools?.data];
+      state.ltiTools.data = [
+        action.payload,
+        ...state?.ltiTools?.data,
+      ];
       return {
         ...state,
         ltiTools: { ...state.ltiTools },

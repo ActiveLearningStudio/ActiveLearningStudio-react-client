@@ -7,6 +7,7 @@ import {mtCode} from "store/actions/msTeams";
 import gifloader from 'assets/images/dotsloader.gif';
 import { Alert } from 'react-bootstrap';
 import MsTeamsService from 'services/msTeams.service';
+import { app, authentication } from '@microsoft/teams-js';
 
 const MsTeamsCallBack = () => {
   const params = new URLSearchParams(useLocation().search);
@@ -22,11 +23,17 @@ const MsTeamsCallBack = () => {
         localStorage.setItem('msteams_refresh_token', response.refresh_token);
         localStorage.setItem('msteams_token_timestamp', new Date().toString());
         window.location.replace(state);
+        app.initialize().then(() => {
+          authentication.notifySuccess('success');
+        }).catch((e) => {
+          console.log('failed to initialize msteams sdk', e);
+        });
       }).catch((e) => {
         console.log('Error getting msteams token: ', e);
         setError('Failed to authenticate with Microsoft Teams');
         localStorage.removeItem('msteams_token');
         localStorage.removeItem('msteams_refresh_token');
+        window.close();
       });
   }, []);
 

@@ -219,7 +219,7 @@ function Header(props) {
                           Event(
                             "button click",
                             "User press Logout button",
-                            "Login Page",
+                            "Login Page"
                           );
                           logout();
                         }}

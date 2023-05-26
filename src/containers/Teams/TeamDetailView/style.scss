@@ -211,7 +211,12 @@
     position: relative;
     overflow: visible;
     padding: 16px 24px;
-    margin-left: 136px !important;
+    margin-left: 136px;
+    margin-top: 0px !important;
+    -webkit-transition: all 1s ease-out;
+    -moz-transition: all 1s ease-out;
+    -o-transition: all 1s ease-out;
+    transition: all 1s ease-out;
     margin-top: 0px !important;
     .team-row {
       display: flex;
@@ -769,4 +774,21 @@
 .react-responsive-modal-container.react-responsive-modal-containerCenter {
   margin: 0 40px;
   margin-bottom: 40px;
+}
+
+.team-details-container h1 {
+  font-family: "rubic";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  color: #084892
+}
+
+.team-details-container .editimage-tag {
+  cursor:pointer;
+}
+
+.team-details-container .btn-primary button {
+  background-color: #084892;
 }

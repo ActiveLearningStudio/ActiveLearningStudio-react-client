@@ -85,11 +85,11 @@ const Filter = (props) => {
                   <span>From</span>
                   <input
                     type="text"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="mm/dd/yyyy"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
-                    value={projectFilterObj.created_from}
+                    value={projectFilterObj.created_from == null ? '' : projectFilterObj.created_from}
                     onChange={(e) => {
                       setProjectFilterObj({
                         ...projectFilterObj,
@@ -102,11 +102,11 @@ const Filter = (props) => {
                   <span>To</span>
                   <input
                     type="text"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="mm/dd/yyyy"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
-                    value={projectFilterObj.created_to}
+                    value={projectFilterObj.created_to == null ? '' :projectFilterObj.created_to}
                     onChange={(e) => {
                       setProjectFilterObj({
                         ...projectFilterObj,
@@ -125,11 +125,11 @@ const Filter = (props) => {
                   <span>From</span>
                   <input
                     type="text"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="mm/dd/yyyy"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
-                    value={projectFilterObj.updated_from}
+                    value={projectFilterObj.updated_from == null ? '' : projectFilterObj.updated_from}
                     onChange={(e) => {
                       setProjectFilterObj({
                         ...projectFilterObj,
@@ -142,11 +142,11 @@ const Filter = (props) => {
                   <span>To</span>
                   <input
                     type="text"
-                    placeholder="MM/DD/YYYY"
+                    placeholder="mm/dd/yyyy"
                     onFocus={(e) => {
                       e.target.type = 'date';
                     }}
-                    value={projectFilterObj.updated_to}
+                    value={projectFilterObj.updated_to == null ? '' : projectFilterObj.updated_to}
                     onChange={(e) => {
                       setProjectFilterObj({
                         ...projectFilterObj,
@@ -178,12 +178,12 @@ const Filter = (props) => {
                 <span>
                   <input
                     type="radio"
-                    checked={projectFilterObj.indexing === 0 && true}
+                    checked={projectFilterObj.indexing === null && true}
                     onChange={() => {
                       setLibraryReqSelected(false);
                       setProjectFilterObj({
                         ...projectFilterObj,
-                        indexing: 0,
+                        indexing: null,
                       });
                     }}
                   />
@@ -215,7 +215,7 @@ const Filter = (props) => {
                       });
                     }}
                   />
-                  Rejected
+                  Not Approved
                 </span>
               </div>
               <div className="shared-status">
@@ -245,6 +245,54 @@ const Filter = (props) => {
                     }
                   />
                   Disabled
+                </span>
+              </div>
+            </div>
+
+            <div className="status-project">
+              <div className="library-status" style={{borderRight:"unset"}}>
+                <label>Library Preference</label>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 1 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 1,
+                      });
+                    }}
+                  />
+                  Private(only me)
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 4 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 4,
+                      });
+                    }}
+                  />
+                  Public
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    checked={projectFilterObj.visibility === 3 && true}
+                    onChange={() => {
+                      setLibraryReqSelected(false);
+                      setProjectFilterObj({
+                        ...projectFilterObj,
+                        visibility: 3,
+                      });
+                    }}
+                  />
+                  My Organization
                 </span>
               </div>
             </div>
