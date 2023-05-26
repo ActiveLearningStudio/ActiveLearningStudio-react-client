@@ -63,5 +63,19 @@
     display: flex;
     align-items: center;
     font-size: large;
+    padding: 2em;
+  }
+
+  .login-message {
+    padding: 2em;
+    p, button {
+      color: whitesmoke !important;
+      display: block;
+    }
+
+    button {
+      background-color: #084892;
+      float:right;
+    }
   }
 }

@@ -100,7 +100,8 @@ export default function Pills(props) {
     created_to: null,
     updated_from: null,
     updated_to: null,
-    indexing: null,
+    indexing: '',
+    visibility: null,
     shared: null,
   });
   const {
@@ -430,6 +431,7 @@ export default function Pills(props) {
             projectFilterObj.updated_to || null,
             projectFilterObj.shared,
             projectFilterObj.indexing,
+            projectFilterObj.visibility,
             searchQuery,
             orderByColumn,
             currentOrderBy
@@ -471,7 +473,7 @@ export default function Pills(props) {
     currentTab,
     size,
     searchQueryProject,
-    libraryReqSelected,
+    // libraryReqSelected,
   ]);
 
   useMemo(() => {
@@ -507,7 +509,15 @@ export default function Pills(props) {
           size,
           searchQueryProject,
           orderByColumn,
-          currentOrderBy
+          currentOrderBy,
+          projectFilterObj.author_id || null,
+          projectFilterObj.created_from || null,
+          projectFilterObj.created_to || null,
+          projectFilterObj.updated_from || null,
+          projectFilterObj.updated_to || null,
+          projectFilterObj.shared,
+          projectFilterObj.indexing,
+          projectFilterObj.visibility
         )
       );
     } else if (
@@ -532,7 +542,7 @@ export default function Pills(props) {
     subTypeState,
     size,
     searchQueryProject,
-    libraryReqSelected,
+    // libraryReqSelected,
   ]);
 
   // Activity Tab Business Logic
@@ -1204,7 +1214,8 @@ export default function Pills(props) {
         projectFilterObj.updated_from || null,
         projectFilterObj.updated_to || null,
         projectFilterObj.shared,
-        projectFilterObj.indexing
+        projectFilterObj.indexing,
+        projectFilterObj.visibility
       );
       allproject
         .then((data) => {
@@ -1232,7 +1243,8 @@ export default function Pills(props) {
         projectFilterObj.updated_from || null,
         projectFilterObj.updated_to || null,
         projectFilterObj.shared,
-        projectFilterObj.indexing
+        projectFilterObj.indexing,
+        projectFilterObj.visibility
       )
     );
   }, [projectFilterObj]);
@@ -1666,7 +1678,8 @@ export default function Pills(props) {
       updated_from: null,
       updated_to: null,
       shared: null,
-      indexing: null,
+      indexing: '',
+      visibility: null,
     });
     if (libraryReqSelected) {
       const libraryrequest = adminService.getAllProjectIndex(
@@ -1705,7 +1718,8 @@ export default function Pills(props) {
       updated_from: null,
       updated_to: null,
       shared: null,
-      indexing: null,
+      indexing: '',
+      visibility: null,
     });
 
     dispatch(

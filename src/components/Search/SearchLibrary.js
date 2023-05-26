@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable */
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Accordion, Card } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { Accordion, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
 
 const SearchLibrary = (props) => {
   const {
@@ -29,6 +29,7 @@ const SearchLibrary = (props) => {
     setActiveEducation,
     setActiveSubject,
     setActiveAuthorTag,
+    setActiveType,
     setAuthor,
     setFromDate,
     setToDate,
@@ -50,10 +51,13 @@ const SearchLibrary = (props) => {
     setFromDate(undefined);
     setToDate(undefined);
     setSearch(null);
-    setActiveTab(fromTeam ? 'projects' : 'total');
+    setActiveTab(fromTeam ? "projects" : "Independent activities");
     if (searchInput?.length > 255) {
-      Swal.fire('Character limit should be less than 255.');
-    } else if (activeMainSearchType === 'Projects') {
+      Swal.fire("Character limit should be less than 255.");
+    } else if (
+      activeMainSearchType === "Projects" ||
+      activeMainSearchType === "projects"
+    ) {
       // Swal.fire({
       //   title: 'Searching...', // add html attribute if you want or remove
       //   html: 'We are fetching results for you!',
@@ -74,20 +78,20 @@ const SearchLibrary = (props) => {
         type: searchType,
         from: 0,
         size: 20,
-        model: activeModel === 'total' ? undefined : activeModel || undefined,
+        model: "projects",
         no_words: noWords || undefined,
       };
-      console.log('dataSend', dataSend);
+      console.log("dataSend", dataSend);
       const result = await dispatch(simpleSearchAction(dataSend));
-      setTotalCount(result.meta?.total);
+      setTotalCount(result.meta?.projects);
       const tempEducation = [];
       const tempSubject = [];
       const tempTag = [];
       const tempAuthor = [];
       if (activeEducation) {
         activeEducation.forEach((edu) => {
-          if (String(edu).includes('&')) {
-            const temp = String(edu).replace('&', 'and');
+          if (String(edu).includes("&")) {
+            const temp = String(edu).replace("&", "and");
             tempEducation.push(temp);
           } else {
             tempEducation.push(edu);
@@ -97,8 +101,8 @@ const SearchLibrary = (props) => {
       }
       if (activeSubject) {
         activeSubject.forEach((sub) => {
-          if (String(sub).includes('&')) {
-            const temp = String(sub).replace('&', 'and');
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
             tempSubject.push(temp);
           } else {
             tempSubject.push(sub);
@@ -108,8 +112,8 @@ const SearchLibrary = (props) => {
       }
       if (activeAuthorTag) {
         activeAuthorTag.forEach((sub) => {
-          if (String(sub).includes('&')) {
-            const temp = String(sub).replace('&', 'and');
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
             tempAuthor.push(temp);
           } else {
             tempAuthor.push(sub);
@@ -125,7 +129,7 @@ const SearchLibrary = (props) => {
         //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
         // );
       }
-    } else if (activeMainSearchType === 'Independent activities') {
+    } else if (activeMainSearchType === "Independent activities") {
       // Swal.fire({
       //   title: 'Searching...', // add html attribute if you want or remove
       //   html: 'We are fetching results for you!',
@@ -144,19 +148,27 @@ const SearchLibrary = (props) => {
         authors: authorName || undefined,
         standardArray: activeType,
         from: 0,
-        model: activeModel === 'total' ? undefined : activeModel || undefined,
+        model:
+          activeModel === "total"
+            ? undefined
+            : activeModel || undefined,
         size: 20,
         no_words: noWords || undefined,
       };
-      const result = await dispatch(searchIndependentActivitiesAction(dataSend, 'showcase_activities'));
+      const result = await dispatch(
+        searchIndependentActivitiesAction(
+          dataSend,
+          "showcase_activities",
+        ),
+      );
       setTotalCount(result?.meta?.total);
       const tempEducation = [];
       const tempSubject = [];
       const tempTag = [];
       if (activeEducation) {
         activeEducation.forEach((edu) => {
-          if (String(edu).includes('&')) {
-            const temp = String(edu).replace('&', 'and');
+          if (String(edu).includes("&")) {
+            const temp = String(edu).replace("&", "and");
             tempEducation.push(temp);
           } else {
             tempEducation.push(edu);
@@ -166,8 +178,8 @@ const SearchLibrary = (props) => {
       }
       if (activeSubject) {
         activeSubject.forEach((sub) => {
-          if (String(sub).includes('&')) {
-            const temp = String(sub).replace('&', 'and');
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
             tempSubject.push(temp);
           } else {
             tempSubject.push(sub);
@@ -177,8 +189,8 @@ const SearchLibrary = (props) => {
       }
       if (activeAuthorTag) {
         activeAuthorTag.forEach((sub) => {
-          if (String(sub).includes('&')) {
-            const temp = String(sub).replace('&', 'and');
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
             tempTag.push(temp);
           } else {
             tempTag.push(sub);
@@ -197,12 +209,47 @@ const SearchLibrary = (props) => {
     }
     // setModalShow(true);
   };
+
+  const clearFilters = async () => {
+    setSearchInput("");
+    setNoWords("");
+    setAuthor("");
+    setActiveEducation([]);
+    setActiveSubject([]);
+    setActiveAuthorTag([]);
+    setActiveType([]);
+    // onSubmit();
+    const result = await dispatch(simpleSearchAction({}));
+    const result1 = await dispatch(
+      searchIndependentActivitiesAction(
+        {},
+        "showcase_activities",
+      ),
+    );
+
+  };
   return (
     <Accordion defaultActiveKey="0">
       <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="0" onClick={() => setToggleStates({ ...toggleStates, searchLibrary: !toggleStates?.searchLibrary })}>
+        <Accordion.Toggle
+          as={Card.Header}
+          eventKey="0"
+          onClick={() =>
+            setToggleStates({
+              ...toggleStates,
+              searchLibrary: !toggleStates?.searchLibrary,
+            })
+          }
+        >
           Search Library
-          <FontAwesomeIcon className="ml-2" icon={toggleStates?.searchLibrary ? 'chevron-up' : 'chevron-down'} />
+          <FontAwesomeIcon
+            className="ml-2"
+            icon={
+              toggleStates?.searchLibrary
+                ? "chevron-up"
+                : "chevron-down"
+            }
+          />
         </Accordion.Toggle>
 
         <Accordion.Collapse eventKey="0">
@@ -218,7 +265,7 @@ const SearchLibrary = (props) => {
                 type="search"
                 placeholder="Search"
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     onSubmit();
                   }
                 }}
@@ -234,11 +281,11 @@ const SearchLibrary = (props) => {
                     if (target.value) {
                       setNoWords(target.value);
                     } else {
-                      setNoWords('');
+                      setNoWords("");
                     }
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       onSubmit();
                     }
                   }}
@@ -254,19 +301,24 @@ const SearchLibrary = (props) => {
                     if (target.value) {
                       setAuthor(target.value);
                     } else {
-                      setAuthor('');
+                      setAuthor("");
                     }
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === "Enter") {
                       onSubmit();
                     }
                   }}
                 />
               </div>
-              <div className="src-btn" onClick={() => onSubmit()}>
-                <FontAwesomeIcon icon="search" />
-                Search
+              <div style={{ display: "flex", justifyContent: "space-between", color: "#1E68BF", alignItem: "center", alignItems: "center"}}>
+                <div style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => clearFilters()}>
+                  Clear All
+                </div>
+                <div className="src-btn" style={{marginBottom: "unset"}} onClick={() => onSubmit()}>
+                  <FontAwesomeIcon icon="search" />
+                  Search
+                </div>
               </div>
             </div>
           </Card.Body>

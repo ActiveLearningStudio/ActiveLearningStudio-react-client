@@ -27,6 +27,7 @@ import QueryString from 'query-string';
 import projectIcon from 'assets/images/project_icon.svg';
 import './activity-share.scss';
 import './playlistPreview.scss';
+import H5PAssetLoader from 'components/H5PAssetLoader';
 
 let counter = 1;
 let lrs = null;
@@ -42,35 +43,14 @@ const ActivityShared = (props) => {
   const [authorized, setAuthorized] = useState(false);
   const [openPlaylistMenu, setPlaylistMenu] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState();
+  const [h5pAssets, setH5pAssets] = useState(false);
 
   const dispatch = useDispatch();
   const { activeOrganization } = useSelector((state) => state.organization);
   const h5pInsertion = async (data) => {
     if (!data) return;
-    window.H5PIntegration = data?.h5p.settings;
-    const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-    h5pWrapper.innerHTML = data?.h5p.embed_code.trim();
-    const newCss = data?.h5p.settings.core.styles.concat(data?.h5p.settings.loadedCss);
 
-    await Promise.all(
-      newCss?.map((value) => {
-        const link = document.createElement('link');
-        link.href = value;
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-        return true;
-      }),
-    );
-
-    const newScripts = data?.h5p.settings.core.scripts.concat(data.h5p.settings.loadedJs);
-
-    newScripts?.forEach((value) => {
-      const script = document.createElement('script');
-      script.src = value;
-      script.async = false;
-      document.body.appendChild(script);
-    });
+    setH5pAssets(data);
   };
 
   // Checking if in a tincan env
@@ -239,6 +219,7 @@ const ActivityShared = (props) => {
 
   return (
     <section className="curriki-playlist-preview">
+      {h5pAssets && <H5PAssetLoader h5pAssets={h5pAssets} />}
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
@@ -265,6 +246,7 @@ const ActivityShared = (props) => {
                 </h1>
                 <div className="controller">
                   <PreviousLink
+                    enable={typeof(selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) - 1]) !== "undefined" ? true : false}
                     viewType={query.view}
                     playlistId={selectedPlaylist?.playlist.id}
                     previousResource={selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) - 1]}
@@ -274,6 +256,7 @@ const ActivityShared = (props) => {
                     setH5pCurrentActivity={() => setSelectedPlaylist()}
                   />
                   <NextLink
+                    enable={typeof(selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) + 1]) !== "undefined" ? true : false}
                     viewType={query.view}
                     playlistId={selectedPlaylist?.playlist.id}
                     nextResource={selectedPlaylist?.playlist.activities[selectedPlaylist?.playlist?.activities?.findIndex((f) => f.id === selectedPlaylist?.activity.id) + 1]}

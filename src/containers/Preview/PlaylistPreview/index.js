@@ -145,8 +145,8 @@ function PlaylistPreview(props) {
                 </h1>
               )}
               <div className="controller">
-                <PreviousLink viewType={query.view} projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
-                <NextLink viewType={query.view} projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
+                <PreviousLink enable={previousResource} viewType={query.view} projectId={projectId} playlistId={playlistId} previousResource={previousResource} allPlaylists={allPlaylists} />
+                <NextLink enable={nextResource} viewType={query.view} projectId={projectId} playlistId={playlistId} nextResource={nextResource} allPlaylists={allPlaylists} />
               </div>
             </div>
 
