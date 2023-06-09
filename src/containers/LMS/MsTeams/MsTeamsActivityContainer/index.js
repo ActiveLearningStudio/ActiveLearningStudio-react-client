@@ -121,7 +121,7 @@ function MsTeamsActivityContainer({ match, history }) {
     const params = new URLSearchParams();
     params.append('client_id', config.teamsClientId);
     params.append('response_type', 'code');
-    params.append('scope', 'offline_access user.read mail.read');
+    params.append('scope', 'offline_access user.read');
     params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
     params.append('state', window.location.href);
     url.search = params.toString();

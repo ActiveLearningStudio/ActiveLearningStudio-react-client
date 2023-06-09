@@ -13,11 +13,12 @@ const MsTeamsCallBack = () => {
   const params = new URLSearchParams(useLocation().search);
   const code = params.get('code');
   const state = params.get('state');
+  const tenantId = state.split('msteam/')[1].split('/launch')[0];
   const [error, setError] = useState(null);
 
   // Get app context and auth token
   useEffect(() => {
-    MsTeamsService.msTeamsToken(code)
+    MsTeamsService.msTeamsToken(code, tenantId)
       .then((response) => {
         localStorage.setItem('msteams_token', response.access_token);
         localStorage.setItem('msteams_refresh_token', response.refresh_token);
