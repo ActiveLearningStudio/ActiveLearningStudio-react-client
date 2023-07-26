@@ -1,0 +1,75 @@
+// c2e modal style
+
+.c2e-store-modal {
+  .modal-dialog-centered {
+    max-width: 900px !important;
+    .modal-content {
+      .modal-header {
+        padding: 24px !important;
+        background: #fff;
+        box-shadow: 0px 2px 8px 1px rgba(81, 81, 81, 0.16);
+        .modal-title {
+          color: #084892;
+          font-size: 24px;
+          font-weight: 500;
+          line-height: 28px;
+        }
+      }
+      .modal-body {
+        .c2e-store-card {
+          display: flex;
+          align-items: flex-start;
+          flex-wrap: wrap;
+          row-gap: 8px;
+          column-gap: 11px;
+
+          .si-card {
+            width: 208px;
+            padding: 13px;
+            border-radius: 6.578px;
+            background: #fff;
+            box-shadow: 0px 3.289156675338745px 9.867469787597656px
+              1.6445783376693726px rgba(81, 81, 81, 0.16);
+
+            .banner-img {
+              display: flex;
+              height: 95px;
+              padding: 24px 16px;
+              justify-content: center;
+              align-items: center;
+              gap: 8;
+              align-self: stretch;
+              background: #e5eeff;
+              margin-bottom: 11px;
+            }
+
+            h3 {
+              color: #285aa5;
+              font-size: 18px;
+              font-weight: 500;
+              line-height: 24px;
+              margin: 0;
+            }
+            p {
+              color: #767676;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 16px;
+              margin: 5px 0 0 0;
+            }
+          }
+        }
+      }
+
+      .modal-footer {
+        border: none !important;
+        padding-top: 20px !important;
+        padding-bottom: 26px !important;
+      }
+    }
+  }
+}
+
+.c2e-card-heading {
+  top: 14px !important;
+}

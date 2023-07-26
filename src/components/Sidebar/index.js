@@ -25,6 +25,7 @@ import TeamSvg from "iconLibrary/sideBar/TeamSvg";
 import AdminSvg from "iconLibrary/sideBar/AdminSvg";
 import InstanceAdminSvg from "iconLibrary/sideBar/InstanceAdminSvg";
 import RecordSvg from "iconLibrary/sideBar/RecordSvg";
+import C2ELogo from "../../assets/images/c2e-logo.svg";
 
 const PROJECTS = "projects";
 const CHANNEL = "channel";
@@ -46,7 +47,7 @@ function Sidebar(props) {
     if (location.pathname.includes("teams/")) {
       const teamId = parseInt(
         location.pathname.split("teams/")[1],
-        10,
+        10
       );
       if (teamId) {
         // setSelectedTeam(teamId);
@@ -88,7 +89,7 @@ function Sidebar(props) {
   return (
     <aside className="sidebar-all">
       {permission?.["Independent Activity"]?.includes(
-        "independent-activity:view-author",
+        "independent-activity:view-author"
       ) && (
         <>
           <Link
@@ -162,7 +163,7 @@ function Sidebar(props) {
         </>
       )}
       {permission?.["Record a Video"]?.includes(
-        "record-video:view",
+        "record-video:view"
       ) && (
         <Link
           to={`/org/${allState.organization.currentOrganization?.domain}/record-video`}
@@ -188,7 +189,7 @@ function Sidebar(props) {
         </Link>
       )}
       {permission?.["Independent Activity"]?.includes(
-        "independent-activity:view-author",
+        "independent-activity:view-author"
       ) && (
         <>
           <Link
@@ -217,7 +218,7 @@ function Sidebar(props) {
             onClick={() => clearStatesOnSidebarClick()}
             className={
               active.includes(
-                `/org/${allState.organization.currentOrganization?.domain}/teams`,
+                `/org/${allState.organization.currentOrganization?.domain}/teams`
               )
                 ? "activeLink"
                 : ""
@@ -226,7 +227,7 @@ function Sidebar(props) {
             <div
               className={
                 active.includes(
-                  `/org/${allState.organization.currentOrganization?.domain}/teams`,
+                  `/org/${allState.organization.currentOrganization?.domain}/teams`
                 )
                   ? "row-sidebar activeLink"
                   : "row-sidebar"
@@ -286,6 +287,26 @@ function Sidebar(props) {
             </Link>
           </>
         )}
+
+      <Link
+        to={`/org/${allState.organization.currentOrganization?.domain}/c2e`}
+        onClick={() => {
+          clearStatesOnSidebarClick();
+          dispatch(clearTeamPermissions());
+        }}
+      >
+        <div
+          className={
+            active ===
+            `/org/${allState.organization.currentOrganization?.domain}/c2e`
+              ? "row-sidebar activeLink"
+              : "row-sidebar"
+          }
+        >
+          <img src={C2ELogo} alt="C2ELogo" width={45} height={19} />
+          <div className="sidebar-headings">My C2E</div>
+        </div>
+      </Link>
     </aside>
   );
 }
