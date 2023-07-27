@@ -35,7 +35,7 @@ const C2eCard = (props) => {
                 <div className="c2e-card-heading myproject-card-title">
                   <h2>C2E 1</h2>
                 </div>
-                <div className="myproject-card-dropdown">
+                <div className="myproject-card-dropdown c2e-card-dropdown-icon">
                   <C2eCardDropdown
                     setModalShow={setModalShow}
                     iconColor="#ffffff"
