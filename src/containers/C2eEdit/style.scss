@@ -137,9 +137,14 @@
 //
 .modal.c2e-metadata-details-modal {
   padding-top: 0 !important;
-
+  // position: relative;
   .modal-content {
     .modal-header {
+      position: absolute;
+      right: 32px;
+      top: 32px;
+      z-index: 1;
+      padding: 0 !important;
       border: none !important;
     }
   }
@@ -169,11 +174,21 @@
       .validation-error {
         margin-top: 4px;
       }
-      input {
-        width: 100%;
-      }
+      input,
       textarea {
         width: 100%;
+        display: flex;
+        height: auto;
+        padding: 6px 8px;
+        align-items: center;
+        align-self: stretch;
+        border-radius: 4px;
+        border: 1px solid #515151;
+        background: #fff;
+
+        &::placeholder {
+          color: #959595 !important;
+        }
       }
     }
   }
@@ -196,7 +211,12 @@
 }
 
 .modal.c2e-metadata-details-modal .modal-body {
-  padding: 15px 15px 80px;
+  padding: 32px 55px 80px;
+
+  .modal-body-contant {
+    width: 100%;
+    height: 90%;
+  }
 }
 
 /*Right*/
@@ -210,4 +230,85 @@
 
 .modal.c2e-metadata-details-modal.fade.in .modal-dialog {
   right: 0;
+}
+
+.c2e-license-detail {
+  padding: 0 !important;
+  min-height: auto;
+
+  .c2e-search-filter {
+    padding: 8px 16px !important;
+    height: auto !important;
+  }
+}
+
+.c2e-content-heading {
+  color: #000;
+  font-family: Rubik;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin: 16px 0;
+}
+
+.license-details-form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 45px;
+  height: 85%;
+
+  .lic-cards {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 326px;
+
+    .c2e-linc-card {
+      flex: 1 0 158px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 8px 16px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background: #fff;
+      p {
+        color: #515151;
+        font-family: Open Sans;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin: 0;
+      }
+      .lic-bg-image {
+        height: 112px;
+        width: 100%;
+        align-self: stretch;
+        border-radius: 8px;
+        background: lightgray;
+        overflow: hidden;
+      }
+      h4 {
+        color: #000;
+        font-family: Open Sans;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+        margin: 0;
+      }
+    }
+  }
+
+  .license-detail-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+  }
 }

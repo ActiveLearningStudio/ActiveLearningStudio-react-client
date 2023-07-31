@@ -8,6 +8,8 @@ import Modal from "react-bootstrap/Modal";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
 import MatadataForm from "./matadataForm";
+import ManifestDetail from "./manifestDetail";
+import LicenseDetails from "./licenseDetails";
 
 import "../style.scss";
 
@@ -23,7 +25,7 @@ function Index(props) {
     window.scrollTo(0, 0);
   }, []);
   const paragraphColor = getGlobalColor(
-    "--main-paragraph-text-color"
+    "--main-paragraph-text-color",
   );
   return (
     <Modal
@@ -36,8 +38,13 @@ function Index(props) {
         onClick={() => handleCloseProjectModal(false)}
       ></Modal.Header>
       <Modal.Body>
-        <div className="w-100 h-100">
-          <MatadataForm
+        <div className="modal-body-contant">
+          {/* <MatadataForm
+            handleCloseProjectModal={handleCloseProjectModal}
+          />
+           */}
+          {/* <ManifestDetail /> */}
+          <LicenseDetails
             handleCloseProjectModal={handleCloseProjectModal}
           />
         </div>

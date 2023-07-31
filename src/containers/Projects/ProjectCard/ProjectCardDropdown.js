@@ -2,25 +2,35 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
-import { cloneProject } from 'store/actions/search';
-import { exportProjectsToNoovo, getProjectCourseFromLMS } from 'store/actions/project';
-import { lmsPlaylist } from 'store/actions/playlist';
-import './style.scss';
-import loader from 'assets/images/loader.svg';
-import { addProjectsAction } from 'store/actions/team';
-import Swal from 'sweetalert2';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
-import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
-import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
-import PublishSatelliteSmSvg from 'iconLibrary/dropDown/PublishSatelliteSmSvg';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dropdown } from "react-bootstrap";
+import { toast } from "react-toastify";
+import {
+  getProjectId,
+  googleShare,
+  shareToCanvas,
+  msTeamShare,
+  publishLmsSettings,
+} from "store/actions/gapi";
+import { cloneProject } from "store/actions/search";
+import {
+  exportProjectsToNoovo,
+  getProjectCourseFromLMS,
+} from "store/actions/project";
+import { lmsPlaylist } from "store/actions/playlist";
+import "./style.scss";
+import loader from "assets/images/loader.svg";
+import { addProjectsAction } from "store/actions/team";
+import Swal from "sweetalert2";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import DuplicateSmSvg from "iconLibrary/dropDown/DuplicateSmSvg";
+import PublishSmSvg from "iconLibrary/dropDown/PublishSmSvg";
+import DeleteSmSvg from "iconLibrary/dropDown/DeleteSmSvg";
+import PublishSatelliteSmSvg from "iconLibrary/dropDown/PublishSatelliteSmSvg";
+import AddToC2E from "iconLibrary/dropDown/AddToC2E";
 
 const ProjectCardDropdown = (props) => {
   const {
@@ -42,7 +52,9 @@ const ProjectCardDropdown = (props) => {
   const AllLms = useSelector((state) => state.share);
   const [allLms, setAllLms] = useState([]);
   useEffect(() => {
-    const filteredShareVendors = AllLms.shareVendors.filter((vendor) => !vendor.lms_url.includes('oauth'));
+    const filteredShareVendors = AllLms.shareVendors.filter(
+      (vendor) => !vendor.lms_url.includes("oauth"),
+    );
     // QUICK FIX: filtering out wordpress integration from this component
     // find better solution
     setAllLms({
@@ -52,16 +64,16 @@ const ProjectCardDropdown = (props) => {
 
     // setAllLms(AllLms);
   }, [AllLms]);
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <Dropdown className="project-dropdown check d-flex  align-items-center text-added-project-dropdown">
       <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
         <FontAwesomeIcon
           icon="ellipsis-v"
           style={{
-            fontSize: '13px',
-            color: iconColor || '#084892',
-            marginLeft: '5px',
+            fontSize: "13px",
+            color: iconColor || "#084892",
+            marginLeft: "5px",
           }}
         />
         {/* <span>{text}</span> */}
@@ -94,29 +106,36 @@ const ProjectCardDropdown = (props) => {
           </Dropdown.Item>
         )} */}
 
-        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:add-project') : permission?.Project?.includes('project:clone')) && (
+        {(teamPermission && Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:add-project")
+          : permission?.Project?.includes("project:clone")) && (
           <Dropdown.Item
             to="#"
             onClick={() => {
-              toast.info('Duplicating project...', {
-                className: 'project-loading',
+              toast.info("Duplicating project...", {
+                className: "project-loading",
                 closeOnClick: false,
                 closeButton: false,
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 10000,
                 icon: ImgLoader,
               });
-              if (Object.keys(teamPermission).length && teamPermission?.Team?.includes('team:add-project')) {
-                dispatch(addProjectsAction(selectedTeam?.id, [project.id]))
+              if (
+                Object.keys(teamPermission).length &&
+                teamPermission?.Team?.includes("team:add-project")
+              ) {
+                dispatch(
+                  addProjectsAction(selectedTeam?.id, [project.id]),
+                )
                   .then((result) => {
                     Swal.fire({
-                      icon: 'success',
+                      icon: "success",
                       title: result?.message,
                     });
                   })
                   .catch((err) => {
                     Swal.fire({
-                      icon: 'error',
+                      icon: "error",
                       title: err?.message,
                     });
                   });
@@ -126,10 +145,27 @@ const ProjectCardDropdown = (props) => {
               toast.dismiss();
             }}
           >
-            <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
+            <DuplicateSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Duplicate
           </Dropdown.Item>
         )}
+
+        <Dropdown.Item
+          to="#"
+          onClick={() =>
+            showDeletePopup(project.id, project.name, "Project")
+          }
+        >
+          <AddToC2E
+            primaryColor={primaryColor}
+            className="menue-img"
+          />
+          Add to C2E
+        </Dropdown.Item>
+
         {/* {(teamPermission && Object.keys(teamPermission).length
           ? teamPermission?.Team?.includes("team:share-project")
           : permission?.Project?.includes("project:share")) && (
@@ -163,10 +199,15 @@ const ProjectCardDropdown = (props) => {
             Share
           </Dropdown.Item>
         )} */}
-        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-project') : permission?.Project?.includes('project:publish')) && (
+        {(teamPermission && Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:publish-project")
+          : permission?.Project?.includes("project:publish")) && (
           <li className="dropdown-submenu send">
             <a tabIndex="-1">
-              <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
+              <PublishSmSvg
+                primaryColor={primaryColor}
+                className="menue-img"
+              />
               Publish
             </a>
             <ul className="dropdown-menu check">
@@ -207,9 +248,11 @@ const ProjectCardDropdown = (props) => {
                       <li key={data.id}>
                         <a
                           onClick={async () => {
-                            const allPlaylist = await dispatch(lmsPlaylist(project.id));
+                            const allPlaylist = await dispatch(
+                              lmsPlaylist(project.id),
+                            );
                             if (allPlaylist) {
-                              if (data.lms_name === 'canvas') {
+                              if (data.lms_name === "canvas") {
                                 setprojectPublishtoCanvas(true);
                                 handleShow();
                                 dispatch(googleShare(true));
@@ -218,7 +261,15 @@ const ProjectCardDropdown = (props) => {
                                 setProjectId(props.project.id);
                                 setcanvasProjectName(project.name);
                               } else {
-                                dispatch(getProjectCourseFromLMS(data.lms_name.toLowerCase(), data.id, project.id, allPlaylist.playlists, data.lms_url));
+                                dispatch(
+                                  getProjectCourseFromLMS(
+                                    data.lms_name.toLowerCase(),
+                                    data.id,
+                                    project.id,
+                                    allPlaylist.playlists,
+                                    data.lms_url,
+                                  ),
+                                );
                               }
                             }
                           }}
@@ -231,28 +282,44 @@ const ProjectCardDropdown = (props) => {
             </ul>
           </li>
         )}
-        {(teamPermission && Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:remove-project') : permission?.Project?.includes('project:delete')) && (
-          <Dropdown.Item to="#" onClick={() => showDeletePopup(project.id, project.name, 'Project')}>
-            <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
+        {(teamPermission && Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:remove-project")
+          : permission?.Project?.includes("project:delete")) && (
+          <Dropdown.Item
+            to="#"
+            onClick={() =>
+              showDeletePopup(project.id, project.name, "Project")
+            }
+          >
+            <DeleteSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Delete
           </Dropdown.Item>
         )}
+
         {teamPermission && Object.keys(teamPermission).length > 0 && (
           <Dropdown.Item
             to="#"
             onClick={async () => {
               Swal.showLoading();
-              const result = await dispatch(exportProjectsToNoovo(project.id, selectedTeam.id));
+              const result = await dispatch(
+                exportProjectsToNoovo(project.id, selectedTeam.id),
+              );
               if (result) {
                 Swal.fire({
-                  title: 'Publishing project to Noovo',
+                  title: "Publishing project to Noovo",
                   text: `${result}`,
                   showConfirmButton: false,
                 });
               }
             }}
           >
-            <PublishSatelliteSmSvg primaryColor={primaryColor} className="menue-img" />
+            <PublishSatelliteSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Publish to satellite
           </Dropdown.Item>
         )}

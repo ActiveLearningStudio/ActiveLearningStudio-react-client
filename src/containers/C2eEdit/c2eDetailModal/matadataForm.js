@@ -9,7 +9,7 @@ import "../style.scss";
 
 const MatadataForm = ({ handleCloseProjectModal }) => {
   return (
-    <div className="w-100 h-100">
+    <div className="w-100 h-100 c2e-mata-form">
       <div className="add-c2e-form-tabs">
         <TabsHeading text="1. Metadata" tabActive />
         <TabsHeading text="2. Manifest" className="ml-10" />
@@ -40,7 +40,7 @@ const MatadataForm = ({ handleCloseProjectModal }) => {
             errors.authorEmail = "Required";
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-              values.authorEmail
+              values.authorEmail,
             )
           ) {
             errors.authorEmail = "Invalid email address";
@@ -50,7 +50,7 @@ const MatadataForm = ({ handleCloseProjectModal }) => {
             errors.publisherEmail = "Required";
           } else if (
             !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-              values.publisherEmail
+              values.publisherEmail,
             )
           ) {
             errors.publisherEmail = "Invalid email address";

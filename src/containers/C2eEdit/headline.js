@@ -46,17 +46,7 @@ export default function Headline({ setCreateProject }) {
                     setCreateProject(true);
                   }}
                   hover={true}
-                  className=""
-                  icon="fa-gear"
-                />
-                <Buttons
-                  text="Add Resources"
-                  primary={true}
-                  width="auto"
-                  height="32px"
-                  onClick={() => {}}
-                  hover={true}
-                  className="mx-2"
+                  className="mr-2"
                   icon="fa-gear"
                 />
                 <Buttons
