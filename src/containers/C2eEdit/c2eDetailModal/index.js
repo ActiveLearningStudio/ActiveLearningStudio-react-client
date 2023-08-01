@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -21,6 +21,8 @@ const BouncyDiv = styled.div`
 function Index(props) {
   const { handleCloseProjectModal, show } = props;
 
+  const [stape, setStape] = useState(1);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39,14 +41,24 @@ function Index(props) {
       ></Modal.Header>
       <Modal.Body>
         <div className="modal-body-contant">
-          {/* <MatadataForm
-            handleCloseProjectModal={handleCloseProjectModal}
-          />
-           */}
-          {/* <ManifestDetail /> */}
-          <LicenseDetails
-            handleCloseProjectModal={handleCloseProjectModal}
-          />
+          {stape === 1 && (
+            <MatadataForm
+              setStape={setStape}
+              handleCloseProjectModal={handleCloseProjectModal}
+            />
+          )}
+          {stape === 2 && (
+            <ManifestDetail
+              handleCloseProjectModal={handleCloseProjectModal}
+              setStape={setStape}
+            />
+          )}
+          {stape === 3 && (
+            <LicenseDetails
+              handleCloseProjectModal={handleCloseProjectModal}
+              setStape={setStape}
+            />
+          )}
         </div>
       </Modal.Body>
     </Modal>

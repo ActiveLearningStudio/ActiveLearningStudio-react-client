@@ -331,7 +331,7 @@
 }
 
 .c2e-royalty-modal .modal-body {
-  padding: 32px;
+  padding: 0;
 
   p {
     color: #000;
@@ -363,9 +363,11 @@
 }
 
 .c2e-royalty-modal {
+  padding: 0 !important;
   .modal-content {
+    padding: 0 32px 32px;
     .modal-header {
-      padding: 24px 32px 8px !important;
+      padding: 42px 0 8px !important;
       background: #fff;
       border-bottom: 1px solid #f8af2c;
       margin-bottom: 16px;
@@ -413,8 +415,8 @@
         font-weight: 400;
         line-height: 20px;
 
-        p {
-          color: #2e68bf;
+        span {
+          color: #2e68bf !important;
         }
       }
     }

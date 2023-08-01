@@ -13,16 +13,15 @@ export const C2eEditPage = (props) => {
   const { ui } = props;
 
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const [activeFilter, setActiveFilter] = useState("small-grid");
   const [sortNumber, setSortNumber] = useState(5);
   const [startSearching, setStartSearching] = useState("");
   const [customCardWidth, setCustomCardWidth] = useState(
-    "customcard20"
+    "customcard20",
   );
-  const [createProject, setCreateProject] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -53,7 +52,7 @@ export const C2eEditPage = (props) => {
       >
         <div className={`inner-content  ${customCardWidth}`}>
           <div className="">
-            <Headline setCreateProject={setCreateProject} />
+            <Headline />
             <Tabs
               className="main-tabs"
               defaultActiveKey={"All"}
@@ -103,11 +102,6 @@ export const C2eEditPage = (props) => {
           </div>
         </div>
       </div>
-
-      <C2eDetailModal
-        show={createProject}
-        handleCloseProjectModal={setCreateProject}
-      />
     </>
   );
 };

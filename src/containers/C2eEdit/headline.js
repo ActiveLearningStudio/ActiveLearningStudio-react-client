@@ -7,7 +7,7 @@ import EditDpDnMdSvg from "iconLibrary/dropDown/EditDpDnMdSvg";
 import Buttons from "utils/Buttons/buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function Headline({ setCreateProject }) {
+export default function Headline() {
   const organization = useSelector((state) => state.organization);
   const { currentOrganization, permission } = organization;
   const primaryColor = getGlobalColor("--main-primary-color");
@@ -42,9 +42,6 @@ export default function Headline({ setCreateProject }) {
                   primary={true}
                   width="auto"
                   height="32px"
-                  onClick={() => {
-                    setCreateProject(true);
-                  }}
                   hover={true}
                   className="mr-2"
                   icon="fa-gear"

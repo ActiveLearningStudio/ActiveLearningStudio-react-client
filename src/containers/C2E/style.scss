@@ -75,6 +75,28 @@
 }
 
 .c2e-card-dropdown-icon {
+  width: fit-content !important;
+
   top: 9px !important;
   right: 19px !important;
+}
+.c2e-wrapper {
+  .my-project-cards-top-search-filter {
+    .clr-btn {
+      cursor: pointer;
+      background: #e5eeff;
+      border-radius: 4px;
+      width: 66px;
+      height: 32px;
+      padding: 8px 16px;
+      border: none;
+
+      // Font
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: #084892;
+    }
+  }
 }

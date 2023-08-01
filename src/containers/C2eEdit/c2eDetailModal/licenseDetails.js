@@ -10,16 +10,16 @@ import "../style.scss";
 import "../../Videos/style.scss";
 import { Formik } from "formik";
 
-const LicenseDetails = ({ handleCloseProjectModal }) => {
+const LicenseDetails = ({ handleCloseProjectModal, setStape }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [ActivePage, setActivePage] = useState(1);
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="h-100">
       <div className="add-c2e-form-tabs">
-        <TabsHeading text="1. Metadata" tabActive />
-        <TabsHeading text="2. Manifest" className="ml-10" />
-        <TabsHeading text="3. License" className="ml-10" />
+        <TabsHeading text="1. Metadata" />
+        <TabsHeading text="2. Manifest" />
+        <TabsHeading text="3. License" tabActive />
       </div>
       <Headings
         text="C2E License Details"
@@ -237,6 +237,7 @@ const LicenseDetails = ({ handleCloseProjectModal }) => {
                   height="32px"
                   hover={true}
                   type="button"
+                  onClick={() => setStape(2)}
                 />
                 <Buttons
                   text="Cancel"
@@ -256,6 +257,7 @@ const LicenseDetails = ({ handleCloseProjectModal }) => {
                   hover={true}
                   type="submit"
                   disabled={isSubmitting}
+                  onClick={() => handleCloseProjectModal(false)}
                 />
               </div>
             </form>

@@ -7,13 +7,13 @@ import TabsHeading from "utils/Tabs/tabs";
 
 import "../style.scss";
 
-const MatadataForm = ({ handleCloseProjectModal }) => {
+const MatadataForm = ({ handleCloseProjectModal, setStape }) => {
   return (
     <div className="w-100 h-100 c2e-mata-form">
       <div className="add-c2e-form-tabs">
         <TabsHeading text="1. Metadata" tabActive />
-        <TabsHeading text="2. Manifest" className="ml-10" />
-        <TabsHeading text="3. License" className="ml-10" />
+        <TabsHeading text="2. Manifest" />
+        <TabsHeading text="3. License" />
       </div>
 
       <Headings
@@ -297,6 +297,7 @@ const MatadataForm = ({ handleCloseProjectModal }) => {
                 className="ml-3"
                 type="submit"
                 disabled={isSubmitting}
+                onClick={() => setStape(2)}
               />
             </div>
           </form>

@@ -3,23 +3,25 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Tabs, Tab } from "react-bootstrap";
 import Headline from "./headline";
+import Buttons from "utils/Buttons/buttons";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 import "../Projects/style.scss";
 import SearchInputMdSvg from "iconLibrary/mainContainer/SearchInputMdSvg";
 import C2eCard from "./c2eCard";
+import "./style.scss";
 
 export const C2ePage = (props) => {
   const { ui } = props;
 
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const [activeFilter, setActiveFilter] = useState("small-grid");
   const [sortNumber, setSortNumber] = useState(5);
   const [startSearching, setStartSearching] = useState("");
   const [customCardWidth, setCustomCardWidth] = useState(
-    "customcard20"
+    "customcard20",
   );
 
   const dispatch = useDispatch();
@@ -44,12 +46,14 @@ export const C2ePage = (props) => {
   return (
     <>
       <div
-        className={`content-wrapper content-wrapper-project ${activeFilter} ${
+        className={`content-wrapper content-wrapper-project c2e-wrapper ${activeFilter} ${
           hideShowSideBar == true ? "expend-content-menu" : ""
         }`}
         style={{ marginLeft: isMsTeam ? "223px" : "136px" }}
       >
-        <div className={`inner-content  ${customCardWidth}`}>
+        <div
+          className={`inner-content  ${customCardWidth} my-c2e-main-container`}
+        >
           <div className="">
             <Headline />
 
@@ -73,6 +77,15 @@ export const C2ePage = (props) => {
                     <SearchInputMdSvg
                       primaryColor={primaryColor}
                       style={{ cursor: "pointer" }}
+                    />
+                  </div>
+                  <div>
+                    <Buttons
+                      text="Clear"
+                      className="clr-btn"
+                      onClick={() => {
+                        // setSearchQuery("");
+                      }}
                     />
                   </div>
                 </div>

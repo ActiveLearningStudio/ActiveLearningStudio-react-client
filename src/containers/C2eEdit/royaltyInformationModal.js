@@ -6,7 +6,7 @@ import "../Projects/style.scss";
 
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
 
-const RoyaltyInformationModal = () => {
+const RoyaltyInformationModal = ({ show, setModalShow }) => {
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <Modal
@@ -30,7 +30,7 @@ const RoyaltyInformationModal = () => {
             </tr>
             <tr>
               <td className="left-td-border">
-                <p>Royalty Agreement Number</p>
+                <span className="m-0">Royalty Agreement Number</span>
               </td>
               <td>LSC-Pub-123456789</td>
             </tr>

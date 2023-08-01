@@ -43,6 +43,7 @@ const ProjectCardDropdown = (props) => {
     iconColor,
     setprojectPublishtoCanvas,
     setcanvasProjectName,
+    setDetailModal,
   } = props;
   const ImgLoader = () => <img src={loader} alt="loader" />;
   const organization = useSelector((state) => state.organization);
@@ -153,12 +154,7 @@ const ProjectCardDropdown = (props) => {
           </Dropdown.Item>
         )}
 
-        <Dropdown.Item
-          to="#"
-          onClick={() =>
-            showDeletePopup(project.id, project.name, "Project")
-          }
-        >
+        <Dropdown.Item to="#" onClick={() => setDetailModal(true)}>
           <AddToC2E
             primaryColor={primaryColor}
             className="menue-img"

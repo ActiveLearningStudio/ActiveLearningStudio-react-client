@@ -4,6 +4,7 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dropdown } from "react-bootstrap";
@@ -46,19 +47,23 @@ const C2eCardDropdown = (props) => {
           Preview
         </Dropdown.Item>
         <Dropdown.Item
-          // as={Link}
-          href={`/org/${
-            organization.currentOrganization?.domain
-          }/c2e/${111}`}
-          // onClick={async () => {
 
-          // }}
+        // onClick={async () => {
+
+        // }}
         >
-          <EditDpDnMdSvg
-            primaryColor={primaryColor}
-            className="menue-img"
-          />
-          Edit
+          <Link
+            to={`/org/${
+              organization.currentOrganization?.domain
+            }/c2e/${111}`}
+            className="w-100 p-0 m-0"
+          >
+            <EditDpDnMdSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
+            Edit
+          </Link>
         </Dropdown.Item>
 
         <Dropdown.Item
