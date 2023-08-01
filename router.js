@@ -1,6 +1,6 @@
 /* eslint-disable */
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
 
 const AppRouter = (props) => {
   return (
@@ -71,6 +71,9 @@ const AppRouter = (props) => {
       <Route path="/org/:organization/search" />
       <Route path="/org/:organization/manage" />
       <Route path="/org/:organization" />
+
+      <Route path="/org/:organization/c2e" />
+      <Route path="/org/:organization/c2e/:projectId" />
     </Switch>
   );
 };

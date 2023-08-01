@@ -312,3 +312,111 @@
     gap: 32px;
   }
 }
+
+.c2e-royalty-modal .modal-dialog {
+  position: fixed;
+  margin: auto;
+  max-width: 621px !important;
+  width: 621px;
+  height: 100%;
+  -webkit-transform: translate3d(0%, 0, 0);
+  -ms-transform: translate3d(0%, 0, 0);
+  -o-transform: translate3d(0%, 0, 0);
+  transform: translate3d(0%, 0, 0);
+}
+
+.c2e-royalty-modal .modal-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.c2e-royalty-modal .modal-body {
+  padding: 32px;
+
+  p {
+    color: #000;
+    font-family: Rubik;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0 0 61px;
+  }
+
+  .c2e-royalty-modal-detail {
+    width: 100%;
+    height: 90%;
+  }
+}
+
+/*Right*/
+.c2e-royalty-modal.fade .modal-dialog {
+  right: 0;
+  -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+  -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+  -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.c2e-royalty-modal.fade.in .modal-dialog {
+  right: 0;
+}
+
+.c2e-royalty-modal {
+  .modal-content {
+    .modal-header {
+      padding: 24px 32px 8px !important;
+      background: #fff;
+      border-bottom: 1px solid #f8af2c;
+      margin-bottom: 16px;
+      .modal-title {
+        color: #084892;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 28px;
+      }
+    }
+  }
+}
+.c2e-royalty-modal-detail {
+  table {
+    width: 100%;
+
+    tr {
+      .left-td-border {
+        border-right: 1px solid #ddd;
+      }
+
+      th {
+        width: 50%;
+        height: 56px;
+        padding: 18px 16px;
+        background: #f1f1f1;
+        color: #767676;
+        font-family: Rubik;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+      }
+      td {
+        height: 56px;
+        padding: 18px 16px;
+        flex-shrink: 0;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        color: #515151;
+        font-family: Open Sans;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+
+        p {
+          color: #2e68bf;
+        }
+      }
+    }
+  }
+}

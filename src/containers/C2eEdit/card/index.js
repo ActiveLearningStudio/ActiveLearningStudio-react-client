@@ -11,7 +11,7 @@ import "../../Projects/ProjectCard/style.scss";
 import "../../Projects/ProjectCard/projectcardstyle.scss";
 import "../style.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import MoveC2EModal from "../MoveC2EModal";
+import RoyaltyInformationModal from "../royaltyInformationModal";
 
 const C2eEditCard = (props) => {
   const ImgLoader = () => <img src={loader} alt="" />;
@@ -56,7 +56,10 @@ const C2eEditCard = (props) => {
           </div>
         </div>
       </div>
-      <MoveC2EModal show={modalShow} setModalShow={setModalShow} />
+      <RoyaltyInformationModal
+        show={modalShow}
+        setModalShow={setModalShow}
+      />
     </>
   );
 };
