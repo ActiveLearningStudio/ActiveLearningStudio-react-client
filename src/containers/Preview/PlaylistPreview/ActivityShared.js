@@ -301,6 +301,7 @@ const ActivityShared = (props) => {
                           <div className={selectedPlaylist?.activity.title === data.title ? 'each-activity active' : 'each-activity'}>
                             <Link
                               onClick={() => {
+                                if (selectedPlaylist?.activity.title === data.title) return;
                                 setSelectedPlaylist();
                               }}
                               to={`/activity/${data.id}/shared?view=playlist`}
@@ -327,6 +328,7 @@ const ActivityShared = (props) => {
                       <Link
                         title={data.title}
                         onClick={() => {
+                          if (selectedPlaylist?.activity.title === data.title) return;
                           setSelectedPlaylist();
                         }}
                         to={`/activity/${data.id}/shared?view=playlist`}
