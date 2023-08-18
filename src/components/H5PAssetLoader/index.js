@@ -10,15 +10,15 @@ function H5PAssetLoader({ h5pAssets, currikiH5PWrapper, activityId }) {
   const loadCheckInterval = useRef(null);
   const h5pWrapper = currikiH5PWrapper.current;
 
-  if (h5pWrapper) {
-    h5pWrapper.innerHTML = h5pAssets.h5p.embed_code.trim();
-    window.H5P = window.H5P || {};
-    window.H5P.preventInit = true;
-    window.H5PIntegration = settings;
-  }
-
   useEffect(() => {
     console.log('H5PAssetLoader init');
+    if (h5pWrapper) {
+      h5pWrapper.innerHTML = h5pAssets.h5p.embed_code.trim();
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+      window.H5PIntegration = settings;
+    }
+
     setH5pInit(false);
     loadedScripts.current = [];
     styles.forEach((style) => {
