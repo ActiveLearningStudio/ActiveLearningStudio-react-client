@@ -1,16 +1,11 @@
 /* eslint-disable */
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-
-import EditTeamImage from 'assets/images/svg/editTeam.svg';
-import EditDetailImage from 'assets/images/svg/detailEdit.svg';
-import searchimg from 'assets/images/svg/search-icon-admin-panel.svg';
 import './style.scss';
 
 import { useHistory, Link } from 'react-router-dom';
 import Buttons from 'utils/Buttons/buttons';
-import { faArrowLeft, faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
-import UserIcon from 'assets/images/svg/user.svg';
+import { faArrowLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import InviteDialog from 'components/InviteDialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ProjectCard from 'containers/Projects/ProjectCard';
@@ -22,7 +17,6 @@ import {
   getWhiteBoardUrl,
   inviteMembersAction,
   loadTeamAction,
-  loadTeamsAction,
   removeMemberAction,
   removeProjectAction,
   setNewTeamData,
@@ -62,14 +56,7 @@ const TeamDetail = ({
   const [allPersonalProjects, setAllPersonalProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedProjectId, setSelectedProjectId] = useState(0);
-  const [editTeam, setEditTeam] = useState({
-    editName: false,
-    editDescription: false,
-    editNoovoTitle: false,
-  });
-  const teamNameRef = useRef();
-  const teamDescriptionRef = useRef();
-  const teamNoovoTitleRef = useRef();
+  const [editTeam, setEditTeam] = useState(null);
   const history = useHistory();
   const { roles } = useSelector((state) => state.team);
   const auth = useSelector((state) => state.auth);
@@ -83,6 +70,8 @@ const TeamDetail = ({
   const [createProject, setCreateProject] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
   const [toggleLeft, setToggleLeft] = useState(false);
+  const hideShowSideBar = useSelector((state) => state.msTeams.toggle_sidebar);
+  const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
   const authUser = team?.users?.filter((u) => u.id === (user || {}).id);
   useEffect(() => {
@@ -227,110 +216,45 @@ const TeamDetail = ({
     },
     [inviteMembers, team?.id],
   );
-  const onBlur = (e) => {
-    if (e.target.name === 'team-name') {
-      teamNameRef.current.blur();
-      setEditTeam({ ...editTeam, editName: false });
-      if (e.target.value.length <= 100) {
-        if (team?.id && team?.name !== e.target.value) {
-          updateTeam(team?.id, {
-            organization_id: organization.activeOrganization?.id,
-            name: e.target.value,
-            description: team?.description,
-            noovo_group_title: team?.noovo_group_title,
-          })
-            .then(() => {
-              Swal.fire({
-                icon: 'success',
-                title: 'Successfully updated.',
-              });
-            })
-            .catch(() => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Update Team failed, kindly try again.',
-              });
-            });
-        } else if (Object.keys(newTeam).length && newTeam?.name !== e.target.value) {
-          newTeamData({ ...newTeam, name: e.target.value });
-        }
-      } else if (e.target.value.length > 100) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Exceeding length',
-          text: 'Cannot enter more than 100 character in team title.',
-        });
-      }
-    } else if (e.target.name === 'team-description') {
-      teamDescriptionRef.current.blur();
-      setEditTeam({ ...editTeam, editDescription: false });
-      if (e.target.value.length <= 1000) {
-        if (team?.id && team?.description !== e.target.value) {
-          updateTeam(team?.id, {
-            organization_id: organization.activeOrganization?.id,
-            name: team?.name,
-            description: e.target.value,
-            noovo_group_title: team?.noovo_group_title,
-          })
-            .then(() => {
-              Swal.fire({
-                icon: 'success',
-                title: 'Successfully updated.',
-              });
-            })
-            .catch(() => {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Update Team failed, kindly try again.',
-              });
-            });
-        } else if (Object.keys(newTeam).length && newTeam?.description !== e.target.value) {
-          newTeamData({ ...newTeam, description: e.target.value });
-        }
-      } else if (e.target.value.length > 1000) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Exceeding length',
-          text: 'Cannot enter more than 1000 character in team description.',
-        });
-      }
-    } else if (e.target.name === 'noovo-group-title') {
-      teamNoovoTitleRef.current.blur();
-      setEditTeam({ ...editTeam, editNoovoTitle: false });
-      if (team?.id && team?.description !== e.target.value) {
-        updateTeam(team?.id, {
-          organization_id: organization.activeOrganization?.id,
-          name: team?.name,
-          description: team?.description,
-          noovo_group_title: e.target.value,
-        })
-          .then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Successfully updated.',
-            });
-          })
-          .catch(() => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Update Team failed, kindly try again.',
-            });
-          });
-      } else if (Object.keys(newTeam).length && newTeam?.noovo_group_title !== e.target.value) {
-        newTeamData({ ...newTeam, noovo_group_title: e.target.value });
-      }
+
+  const saveTeam = () => {
+    var error = null;
+    if (editTeam.title.length > 100) error = "Cannot enter more than 100 character in team title.";
+    if (editTeam.description.length > 1000) error = "Cannot enter more than 1000 character in team description.";
+    if (editTeam.noovo_title?.length > 100) error = "Cannot enter more than 100 character in noovo team title.";
+
+    if (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error,
+      });
+      return;
     }
+
+    updateTeam(
+      team?.id,
+      {
+        organization_id: organization.activeOrganization?.id,
+        name: editTeam.title,
+        description: editTeam.description,
+        noovo_group_title: editTeam.noovo_title,
+      }
+    ).then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated.',
+      });
+      setEditTeam(null);
+    }).catch(() => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Update Team failed, kindly try again.',
+      });
+    });
   };
-  const onEnterPress = (e) => {
-    if (e.charCode === 13) {
-      teamNameRef?.current?.blur();
-      teamDescriptionRef?.current?.blur();
-      teamNoovoTitleRef?.current?.blur();
-    }
-  };
+
   const searchProjects = ({ target }) => {
     const { value } = target;
     if (value.length > 0) {
@@ -359,7 +283,7 @@ const TeamDetail = ({
   const secondaryColor = getGlobalColor('--main-secondary-color');
   return (
     <div className="team-detail-page">
-      <div className="content">
+      <div className={`content ${hideShowSideBar == true ? 'expend-content-menu' : ''}`} style={{ marginLeft: isMsTeam ? '223px' : '136px' }}>
         <div className="inner-content">
           <div className="add-team-page">
             <div className={`${toggleLeft ? 'width90' : ''} left`}>
@@ -372,107 +296,83 @@ const TeamDetail = ({
                   </Link>
                 </div>
               </div>
-              <div className="title-image">
-                <div>
-                  {!editTeam.editName && <h1 className="title">{team?.name || newTeam?.name}</h1>}
-                  {editTeam.editName && (
-                    <textarea className="title" name="team-name" ref={teamNameRef} defaultValue={team?.name || newTeam?.name} onBlur={onBlur} onKeyPress={onEnterPress} />
+              {!editTeam && (
+                <div className="team-details-container">
+                  <div className="row">
+                    <div className="col">
+                      <h1 className="title">
+                        {team?.name || newTeam?.name}
+                        {teamPermission?.Team?.includes('team:edit') && (
+                          <EditSmSvg
+                            primaryColor={primaryColor}
+                            className="editimage-tag ml-4"
+                            onClick={() => {
+                              setEditTeam({
+                                title: team.name,
+                                description: team.description,
+                                noovo_title: team.noovo_group_title,
+                              });
+                            }}
+                          />
+                        )}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <p>{team?.description || newTeam?.description}</p>
+                    </div>
+                  </div>
+                  {(team?.noovo_group_title || newTeam?.noovo_group_title) && (
+                    <div className="row">
+                      <div className="col">
+                        <label>Noovo Group Title:</label>
+                        <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p>
+                      </div>
+                    </div>
                   )}
                 </div>
-                <div>
-                  {!editTeam.editName && teamPermission?.Team?.includes('team:edit') && (
-                    // <img
-                    //   className="editimage-tag"
-                    //   src={EditTeamImage}
-                    //   alt="EditTeamImage"
-                    //   onClick={() => {
-                    //     setEditTeam({ ...editTeam, editName: true });
-                    //     teamNameRef?.current?.focus();
-                    //   }}
-                    // />
-                    <>
-                      <EditSmSvg
-                        primaryColor={primaryColor}
-                        className="editimage-tag"
-                        onClick={() => {
-                          setEditTeam({ ...editTeam, editName: true });
-                          teamNameRef?.current?.focus();
-                        }}
-                      />
-                    </>
-                  )}
+              )}
+
+              {editTeam && (
+                <div className="team-details-container">
+                  <div className="row mt-2">
+                    <div className="col-6">
+                      <h1>Edit Team Details</h1>
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col-2">
+                      <label>Title:</label>
+                    </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control" value={editTeam.title} onChange={(e) => setEditTeam({ ...editTeam, title: e.target.value })} />
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col-2">
+                      <label>Description:</label>
+                    </div>
+                    <div className="col-4">
+                      <textarea className="form-control" value={editTeam.description} onChange={(e) => setEditTeam({ ...editTeam, description: e.target.value })} />
+                    </div>
+                  </div>
+                  <div className="row mt-2">
+                    <div className="col-2">
+                      <label>Noovo Group Title (Optional):</label>
+                    </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control" value={editTeam.noovo_title} onChange={(e) => setEditTeam({ ...editTeam, noovo_title: e.target.value })} />
+                    </div>
+                  </div>
+                  <div className="row mt-2 mb-4">
+                    <div className="col-6 text-right">
+                      <button className="curriki-utility curriki-theme-secondary-button curriki-theme-hover d-inline mr-2" onClick={() => setEditTeam(null)}>Cancel</button>
+                      <button className="curriki-utility curriki-theme-primary-button curriki-theme-hover d-inline" onClick={saveTeam}>Save</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="add-team-detail">
-                <div className="team-detail">
-                  <p>{!editTeam.editDescription && (team?.description || newTeam?.description)}</p>
-                  {editTeam.editDescription && (
-                    <textarea
-                      className="description"
-                      name="team-description"
-                      ref={teamDescriptionRef}
-                      defaultValue={team?.description || newTeam?.description}
-                      onBlur={onBlur}
-                      onKeyPress={onEnterPress}
-                    />
-                  )}
-                </div>
-                <div className="team-edit-detail">
-                  {!editTeam.editDescription && teamPermission?.Team?.includes('team:edit') && (
-                    // <img
-                    //   className="editimage-tag"
-                    //   src={EditDetailImage}
-                    //   alt="EditDetailImage"
-                    //   onClick={() => {
-                    //     setEditTeam({ ...editTeam, editDescription: true });
-                    //     teamDescriptionRef?.current?.focus();
-                    //   }}
-                    // />
-                    <EditSmSvg
-                      primaryColor={primaryColor}
-                      className="editimage-tag"
-                      onClick={() => {
-                        setEditTeam({ ...editTeam, editDescription: true });
-                        teamDescriptionRef?.current?.focus();
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="noovo-group-title">
-                <label>Noovo Group Title:</label>
-                {'  '}
-                {!editTeam?.editNoovoTitle ? <p>{team?.noovo_group_title || newTeam?.noovo_group_title}</p> : null}
-                {editTeam?.editNoovoTitle && (
-                  <textarea
-                    className="noovo-title"
-                    name="noovo-group-title"
-                    ref={teamNoovoTitleRef}
-                    defaultValue={team?.noovo_group_title || newTeam?.noovo_group_title}
-                    onBlur={onBlur}
-                    onKeyPress={onEnterPress}
-                  />
-                )}
-                {!editTeam.editNoovoTitle && teamPermission?.Team?.includes('team:edit') && (
-                  // <img
-                  //   className="editimage-tag"
-                  //   src={EditDetailImage}
-                  //   alt="EditDetailImage"
-                  //   onClick={() => {
-                  //     setEditTeam({ ...editTeam, editNoovoTitle: true });
-                  //     teamNoovoTitleRef?.current?.focus();
-                  //   }}
-                  // />
-                  <EditSmSvg
-                    primaryColor={primaryColor}
-                    className="editimage-tag"
-                    onClick={() => {
-                      setEditTeam({ ...editTeam, editNoovoTitle: true });
-                      teamNoovoTitleRef?.current?.focus();
-                    }}
-                  />
-                )}
-              </div>
+              )}
 
               <div className="flex-button-top">
                 <div className="team-controller">

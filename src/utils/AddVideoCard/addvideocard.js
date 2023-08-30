@@ -1,25 +1,25 @@
 /* eslint-disable react/require-default-props */
-/* eslint-disable max-len */
+/* eslint-disable */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import DropDownEdit from 'utils/DropDownEdit/dropdownedit';
-import videoServices from 'services/videos.services';
-import intActivityServices from 'services/indActivities.service';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import './addvideocard.scss';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import { getIndex } from 'store/actions/indActivities';
-import SharePreviewPopup from 'components/SharePreviewPopup';
-import { Info } from 'assets/curriki-icons';
-import ViewMdSvg from 'iconLibrary/mainContainer/ViewMdSvg';
-import EditMdSvg from 'iconLibrary/mainContainer/EditMdSvg';
-import ShareLinkMdSvg from 'iconLibrary/mainContainer/ShareLinkMdSvg';
-import RequestedTagSmSvg from 'iconLibrary/mainContainer/RequestedTagSmSvg';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import DropDownEdit from "utils/DropDownEdit/dropdownedit";
+import videoServices from "services/videos.services";
+import intActivityServices from "services/indActivities.service";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import "./addvideocard.scss";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { getIndex } from "store/actions/indActivities";
+import SharePreviewPopup from "components/SharePreviewPopup";
+import { Info } from "assets/curriki-icons";
+import ViewMdSvg from "iconLibrary/mainContainer/ViewMdSvg";
+import EditMdSvg from "iconLibrary/mainContainer/EditMdSvg";
+import ShareLinkMdSvg from "iconLibrary/mainContainer/ShareLinkMdSvg";
+import RequestedTagSmSvg from "iconLibrary/mainContainer/RequestedTagSmSvg";
 
 const AddVideoCard = ({
   setModalShow,
@@ -45,84 +45,102 @@ const AddVideoCard = ({
       setSelectedProjectstoAdd([]);
     }
   }, [addToProjectCheckbox]);
-  const currikiUtility = classNames('curriki-utility-addvideo-card', className);
+  const currikiUtility = classNames(
+    "curriki-utility-addvideo-card",
+    className
+  );
   const dispatch = useDispatch();
-  const { activeOrganization } = useSelector((state) => state.organization);
-  const primaryColor = getGlobalColor('--main-primary-color');
-  const prapagraphColor = getGlobalColor('--main-paragraph-text-color');
+  const { activeOrganization } = useSelector(
+    (state) => state.organization
+  );
+  const primaryColor = getGlobalColor("--main-primary-color");
+  const prapagraphColor = getGlobalColor(
+    "--main-paragraph-text-color"
+  );
   const visibilityData = [
     {
       id: 1,
-      name: 'Private (only Me)',
-      display_name: 'Private (only Me)',
+      name: "Private (only Me)",
+      display_name: "Private (only Me)",
     },
     {
       id: 3,
-      name: 'My Organization',
-      display_name: 'My Organization',
+      name: "My Organization",
+      display_name: "My Organization",
     },
     {
       id: 2,
-      name: 'global',
-      display_name: 'My Org + Parent and Child Org',
+      name: "global",
+      display_name: "My Org + Parent and Child Org",
     },
     {
       id: 4,
-      name: 'Public',
-      display_name: 'All',
+      name: "Public",
+      display_name: "All",
     },
   ];
 
   const openEditor = async () => {
     toast.dismiss();
-    toast.info('Loading Activity ...', {
-      className: 'project-loading',
+    toast.info("Loading Activity ...", {
+      className: "project-loading",
       closeOnClick: false,
       closeButton: false,
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 10000,
-      icon: '',
+      icon: "",
     });
     if (activities) {
-      const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
-      if (result?.['independent-activity']) {
+      const result = await intActivityServices.intActivityDetail(
+        activeOrganization.id,
+        data.id
+      );
+      if (result?.["independent-activity"]) {
         toast.dismiss();
         dispatch({
-          type: 'SET_ACTIVE_VIDEO_SCREEN',
-          payload: result['independent-activity'],
+          type: "SET_ACTIVE_VIDEO_SCREEN",
+          payload: result["independent-activity"],
+        });
+        dispatch({
+          type: "SET_SELECTED_ACTIVITY",
+          payload: "",
         });
         setOpenVideo(true);
-        if (result?.['independent-activity']?.source_type) {
-          setScreenStatus('AddVideo');
+        if (result?.["independent-activity"]?.source_type) {
+          setScreenStatus("AddVideo");
           sethideallothers(false);
           setisbackHide(true);
         } else {
-          setScreenStatus('DescribeVideo');
+          setScreenStatus("DescribeVideo");
           setisbackHide(false);
         }
       }
     } else {
-      const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+      const result = await videoServices.videoh5pDetail(
+        activeOrganization.id,
+        data.id
+      );
       if (result.activity?.brightcoveData) {
         dispatch({
-          type: 'EDIT_CMS_SCREEN',
+          type: "EDIT_CMS_SCREEN",
           payload: result.activity?.brightcoveData.accountId,
         });
-        window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+        window.brightcoveAccountId =
+          result.activity?.brightcoveData.accountId;
       }
 
       toast.dismiss();
       dispatch({
-        type: 'ADD_VIDEO_URL',
-        platform: '',
+        type: "ADD_VIDEO_URL",
+        platform: "",
       });
       dispatch({
-        type: 'SET_ACTIVE_VIDEO_SCREEN',
+        type: "SET_ACTIVE_VIDEO_SCREEN",
         payload: result.activity,
       });
       setisbackHide(true);
       setOpenVideo(true);
-      setScreenStatus('AddVideo');
+      setScreenStatus("AddVideo");
       sethideallothers(false);
     }
   };
@@ -131,14 +149,24 @@ const AddVideoCard = ({
     <>
       <div className={currikiUtility}>
         <div
-          className={selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox ? 'addvideo-card-top apply-check-video' : 'addvideo-card-top apply-uncheck-video'}
+          className={
+            selectedProjectstoAdd?.includes(data.id) &&
+            addToProjectCheckbox
+              ? "addvideo-card-top apply-check-video"
+              : "addvideo-card-top apply-uncheck-video"
+          }
           style={{
-            backgroundImage: `url(${!data.thumb_url?.includes('/storage/') ? data.thumb_url : global.config.resourceUrl + data.thumb_url})`,
+            backgroundImage: `url(${
+              !data.thumb_url?.includes("/storage/")
+                ? data.thumb_url
+                : global.config.resourceUrl + data.thumb_url
+            })`,
           }}
         >
           <div className="addvideo-card-dropdown">
             {addToProjectCheckbox ? (
-              data.shared === false && data.organization_visibility_type_id === 1 ? (
+              data.shared === false &&
+              data.organization_visibility_type_id === 1 ? (
                 <>
                   <label className="cutom_checkbox">
                     {/* <input type="checked" /> */}
@@ -146,9 +174,16 @@ const AddVideoCard = ({
                       type="checkbox"
                       onChange={() => {
                         if (selectedProjectstoAdd.includes(data.id)) {
-                          setSelectedProjectstoAdd(selectedProjectstoAdd.filter((id) => id !== data.id));
+                          setSelectedProjectstoAdd(
+                            selectedProjectstoAdd.filter(
+                              (id) => id !== data.id
+                            )
+                          );
                         } else {
-                          setSelectedProjectstoAdd([...selectedProjectstoAdd, data.id]);
+                          setSelectedProjectstoAdd([
+                            ...selectedProjectstoAdd,
+                            data.id,
+                          ]);
                         }
                       }}
                     />
@@ -172,7 +207,11 @@ const AddVideoCard = ({
                   className="curriki-tooltip"
                   delay={{ show: 250, hide: 40000 }}
                   overlay={(props) => (
-                    <Tooltip id="button-tooltip" {...props} className="button-tooltip_style">
+                    <Tooltip
+                      id="button-tooltip"
+                      {...props}
+                      className="button-tooltip_style"
+                    >
                       To move this activity, please change to:
                       <ul>
                         <li>1. Sharing - Disabled</li>
@@ -186,7 +225,11 @@ const AddVideoCard = ({
               )
             ) : (
               <>
-                {(!isActivityCard || (isActivityCard && permission?.['Independent Activity']?.includes('independent-activity:edit-author'))) && (
+                {(!isActivityCard ||
+                  (isActivityCard &&
+                    permission?.["Independent Activity"]?.includes(
+                      "independent-activity:edit-author"
+                    ))) && (
                   <DropDownEdit
                     data={data}
                     iconColor="white"
@@ -204,8 +247,11 @@ const AddVideoCard = ({
               </>
             )}
           </div>
-          <div onClick={() => openEditor()} className="addvideo-card-title">
-            <h2>{data.title}</h2>
+          <div
+            onClick={() => openEditor()}
+            className="addvideo-card-title"
+          >
+            <h2 dangerouslySetInnerHTML={{ __html: data.title }} />
             {/* {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'} */}
           </div>
         </div>
@@ -215,9 +261,20 @@ const AddVideoCard = ({
         {isActivityCard && (
           <>
             <div className="activity-update-lib">
-              <div className="activity-update">Updated: {data.updated_at.split('T')[0]}</div>
+              <div className="activity-update">
+                Updated: {data.updated_at.split("T")[0]}
+              </div>
               <div className="activity-lib">
-                Library Status: <span>{visibilityData.filter((type) => type.id === data.organization_visibility_type_id)?.[0]?.name}</span>
+                Library Status:{" "}
+                <span>
+                  {
+                    visibilityData.filter(
+                      (type) =>
+                        type.id ===
+                        data.organization_visibility_type_id
+                    )?.[0]?.name
+                  }
+                </span>
               </div>
             </div>
           </>
@@ -231,12 +288,21 @@ const AddVideoCard = ({
                   <div
                     className="activity-request-tag"
                     onClick={() => {
-                      if (data.indexing_text === 'NOT REQUESTED' && permission?.['Independent Activity']?.includes('independent-activity:edit-author')) {
+                      if (
+                        data.indexing_text === "NOT REQUESTED" &&
+                        permission?.[
+                          "Independent Activity"
+                        ]?.includes(
+                          "independent-activity:edit-author"
+                        )
+                      ) {
                         dispatch(getIndex(data.id, 1));
                       }
                     }}
                   >
-                    <RequestedTagSmSvg primaryColor={prapagraphColor} />
+                    <RequestedTagSmSvg
+                      primaryColor={prapagraphColor}
+                    />
                     <span>{data.indexing_text}</span>
                   </div>
                   <div className="addvideo-card-add-share-options-parent ">
@@ -250,9 +316,14 @@ const AddVideoCard = ({
                       <ViewMdSvg primaryColor={primaryColor} />
                       <span className="textinButton">Preview</span>
                     </div>
-                    {permission?.['Independent Activity']?.includes('independent-activity:edit-author') && (
+                    {permission?.["Independent Activity"]?.includes(
+                      "independent-activity:edit-author"
+                    ) && (
                       <>
-                        <div className="addvideo-card-add-share-options hover-apply" onClick={() => openEditor()}>
+                        <div
+                          className="addvideo-card-add-share-options hover-apply"
+                          onClick={() => openEditor()}
+                        >
                           <EditMdSvg primaryColor={primaryColor} />
                           <span className="textinButton">Edit</span>
                         </div>
@@ -264,16 +335,27 @@ const AddVideoCard = ({
                         <div
                           className="addvideo-card-add-share-options hover-apply"
                           onClick={() => {
-                            if (window.gapi && window.gapi.sharetoclassroom) {
-                              window.gapi.sharetoclassroom.go('croom');
+                            if (
+                              window.gapi &&
+                              window.gapi.sharetoclassroom
+                            ) {
+                              window.gapi.sharetoclassroom.go(
+                                "croom"
+                              );
                             }
-                            const protocol = `${window.location.href.split('/')[0]}//`;
+                            const protocol = `${
+                              window.location.href.split("/")[0]
+                            }//`;
                             const url = `${protocol}${window.location.host}/activity/${data.id}/shared?type=ind`;
                             return SharePreviewPopup(url, data.title);
                           }}
                         >
-                          <ShareLinkMdSvg primaryColor={primaryColor} />
-                          <span className="textinButton">Sharing</span>
+                          <ShareLinkMdSvg
+                            primaryColor={primaryColor}
+                          />
+                          <span className="textinButton">
+                            Sharing
+                          </span>
                         </div>
                       </>
                     )}
@@ -354,7 +436,10 @@ const AddVideoCard = ({
                     setModalShow(true);
                   }}
                 >
-                  <ViewMdSvg primaryColor={primaryColor} className="mr-6" />
+                  <ViewMdSvg
+                    primaryColor={primaryColor}
+                    className="mr-6"
+                  />
                   View &nbsp;&nbsp;&nbsp;
                 </div>
                 <div
@@ -367,52 +452,63 @@ const AddVideoCard = ({
                   className="addvideo-card-add-share-options-ind"
                   onClick={async () => {
                     toast.dismiss();
-                    toast.info('Loading Activity ...', {
-                      className: 'project-loading',
+                    toast.info("Loading Activity ...", {
+                      className: "project-loading",
                       closeOnClick: false,
                       closeButton: false,
                       position: toast.POSITION.BOTTOM_RIGHT,
                       autoClose: 10000,
-                      icon: '',
+                      icon: "",
                     });
                     sethideallothers(false);
                     if (activities) {
-                      const result = await intActivityServices.intActivityDetail(activeOrganization.id, data.id);
-                      if (result?.['independent-activity']) {
+                      const result = await intActivityServices.intActivityDetail(
+                        activeOrganization.id,
+                        data.id
+                      );
+                      if (result?.["independent-activity"]) {
                         toast.dismiss();
                         dispatch({
-                          type: 'SET_ACTIVE_VIDEO_SCREEN',
-                          payload: result['independent-activity'],
+                          type: "SET_ACTIVE_VIDEO_SCREEN",
+                          payload: result["independent-activity"],
                         });
                         setOpenVideo(true);
-                        setScreenStatus('DescribeVideo');
+                        setScreenStatus("DescribeVideo");
                       }
                     } else {
-                      const result = await videoServices.videoh5pDetail(activeOrganization.id, data.id);
+                      const result = await videoServices.videoh5pDetail(
+                        activeOrganization.id,
+                        data.id
+                      );
                       if (result.activity?.brightcoveData) {
                         dispatch({
-                          type: 'EDIT_CMS_SCREEN',
-                          payload: result.activity?.brightcoveData.accountId,
+                          type: "EDIT_CMS_SCREEN",
+                          payload:
+                            result.activity?.brightcoveData.accountId,
                         });
-                        window.brightcoveAccountId = result.activity?.brightcoveData.accountId;
+                        window.brightcoveAccountId =
+                          result.activity?.brightcoveData.accountId;
                       }
 
                       toast.dismiss();
                       dispatch({
-                        type: 'ADD_VIDEO_URL',
-                        platform: '',
+                        type: "ADD_VIDEO_URL",
+                        platform: "",
                       });
                       dispatch({
-                        type: 'SET_ACTIVE_VIDEO_SCREEN',
+                        type: "SET_ACTIVE_VIDEO_SCREEN",
                         payload: result.activity,
                       });
 
                       setOpenVideo(true);
-                      setScreenStatus('AddVideo');
+                      setScreenStatus("AddVideo");
                     }
                   }}
                 >
-                  <EditMdSvg primaryColor={primaryColor} className="mr-6" />
+                  <EditMdSvg
+                    primaryColor={primaryColor}
+                    className="mr-6"
+                  />
                   Edit &nbsp;&nbsp;&nbsp;
                 </div>
               </>

@@ -142,7 +142,7 @@ const H5PEditor = (props) => {
               data: h5pdata,
               type: "h5p",
               content: "place_holder",
-              title: metadata?.title || formData.title,
+              title: decodeEntity(metadata?.title) || decodeEntity(formData.title),
             })
           );
           setOpenVideo(false);
@@ -226,6 +226,12 @@ const H5PEditor = (props) => {
   };
   if (h5pParams === '""') {
     return <></>;
+  }
+
+  const decodeEntity = (inputStr) => {
+    var textarea = document.createElement("textarea");
+    textarea.innerHTML = inputStr;
+    return textarea.value;
   }
 
   return (
