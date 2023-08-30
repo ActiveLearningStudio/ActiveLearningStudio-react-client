@@ -1,45 +1,33 @@
 /* eslint-disable */
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
-import {mtCode} from "store/actions/msTeams";
-import gifloader from 'assets/images/dotsloader.gif';
 import { Alert } from 'react-bootstrap';
-import MsTeamsService from 'services/msTeams.service';
-import { app, authentication } from '@microsoft/teams-js';
+import logo from 'assets/images/studio_new_logo_small.png';
+import './callbackStyle.scss';
 
 const MsTeamsCallBack = () => {
   const params = new URLSearchParams(useLocation().search);
-  const code = params.get('code');
+  const error = params.get('error');
+  const errorSubCode = params.get('error_subcode');
+  const errorDescription = params.get('error_description');
   const state = params.get('state');
-  const [error, setError] = useState(null);
+  const admin_consent = params.get('admin_consent');
 
-  // Get app context and auth token
   useEffect(() => {
-    MsTeamsService.msTeamsToken(code)
-      .then((response) => {
-        localStorage.setItem('msteams_token', response.access_token);
-        localStorage.setItem('msteams_refresh_token', response.refresh_token);
-        localStorage.setItem('msteams_token_timestamp', new Date().toString());
-        window.location.replace(state);
-        app.initialize().then(() => {
-          authentication.notifySuccess('success');
-        }).catch((e) => {
-          console.log('failed to initialize msteams sdk', e);
-        });
-      }).catch((e) => {
-        console.log('Error getting msteams token: ', e);
-        setError('Failed to authenticate with Microsoft Teams');
-        localStorage.removeItem('msteams_token');
-        localStorage.removeItem('msteams_refresh_token');
-        window.close();
-      });
+    if (state !== 'link' && !error) {
+      window.close();
+      return;
+    }
   }, []);
 
   return (
-    <div className="loader_gif">
-      {error && <Alert variant="danger">{error}</Alert>}
+    <div className="msteams-callback">
+      <img src={logo} />
+      {admin_consent && !error && <Alert variant="info">Admin consent granted successfully. You may close this window.</Alert>}
+      {error && <Alert variant="danger">
+        {error === 'access_denied' && <p>You have declined to consent access to the app. Curriki Studio needs these permissions in order to function properly. Please review the authorization once again to move forward.</p>}
+        <p>{error}: {errorSubCode} {errorDescription}</p>
+      </Alert>}
     </div>
   );
 };
