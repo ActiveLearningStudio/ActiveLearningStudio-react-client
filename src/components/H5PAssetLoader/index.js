@@ -1,21 +1,26 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 
-function H5PAssetLoader({ h5pAssets }) {
-  console.log('H5PAssetLoader starting');
+function H5PAssetLoader({ h5pAssets, currikiH5PWrapper, activityId }) {
   const settings = h5pAssets.h5p.settings;
   const styles = settings.core.styles.concat(settings.loadedCss);
   const scripts = settings.core.scripts.concat(settings.loadedJs);
   const [h5pInit, setH5pInit] = useState(false);
   const loadedScripts = useRef([]);
   const loadCheckInterval = useRef(null);
-  const h5pWrapper = document.getElementById('curriki-h5p-wrapper');
-  h5pWrapper.innerHTML = h5pAssets.h5p.embed_code.trim();
-  window.H5P = window.H5P || {};
-  window.H5P.preventInit = true;
-  window.H5PIntegration = settings;
+  const h5pWrapper = currikiH5PWrapper.current;
 
   useEffect(() => {
+    console.log('H5PAssetLoader init');
+    if (h5pWrapper) {
+      h5pWrapper.innerHTML = h5pAssets.h5p.embed_code.trim();
+      window.H5P = window.H5P || {};
+      window.H5P.preventInit = true;
+      window.H5PIntegration = settings;
+    }
+
+    setH5pInit(false);
+    loadedScripts.current = [];
     styles.forEach((style) => {
       const link = document.createElement('link');
       link.href = style;
@@ -51,7 +56,7 @@ function H5PAssetLoader({ h5pAssets }) {
       setH5pInit(true);
       window.H5P.init();
     }, 500);
-  }, []);
+  }, [activityId]);
 
   useEffect(() => {
     if (h5pInit !== true) return;

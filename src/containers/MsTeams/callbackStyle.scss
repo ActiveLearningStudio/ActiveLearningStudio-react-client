@@ -1,0 +1,12 @@
+
+.msteams-callback {
+  display: flex;
+  flex-direction: column;
+  padding: 5%;
+  margin: 5%;
+
+  img {
+    max-width: 50%;
+    align-self: center;
+  }
+}

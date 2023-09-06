@@ -1,9 +1,10 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import MsTeamActivityLaunchScreen from 'containers/LMS/MsTeams/MsTeamActivityLaunchScreen';
+import AdminGrantMessage from './AdminGrantMessage';
 import MsTeamsService from 'services/msTeams.service';
 import { useLocation } from "react-router-dom";
 import { Alert } from 'react-bootstrap';
@@ -25,6 +26,14 @@ function MsTeamsActivityContainer({ match, history }) {
   const [error, setError] = useState(null);
   const [activityParams, setActivityParams] = useState(null);
   const [showOAuth, setShowOAuth] = useState(false);
+  const popupWindowCheckInterval = useRef(null);
+  const adminUrl = new URL(`https://login.microsoftonline.com/${tenantId}/adminconsent`);
+  const adminUrlParams = new URLSearchParams();
+  adminUrlParams.append('client_id', config.teamsClientId);
+  adminUrlParams.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
+  adminUrlParams.append('state', 'link');
+  adminUrl.search = adminUrlParams.toString();
+
 
 
   // Getting the microsoft auth code that will allow us to request a token on the callback and redirect back here
@@ -116,70 +125,52 @@ function MsTeamsActivityContainer({ match, history }) {
   }, [freshToken]);
 
   const doLogin = () => {
-    setShowOAuth(false);
-    const url = new URL(`https://login.microsoftonline.com/${tenantId}/oauth2/authorize`);
+    const url = new URL(`https://login.microsoftonline.com/${tenantId}/adminconsent`);
     const params = new URLSearchParams();
     params.append('client_id', config.teamsClientId);
-    params.append('response_type', 'code');
-    params.append('scope', 'offline_access user.read');
     params.append('redirect_uri', `https://${window.location.hostname}/msteams/callback`);
-    params.append('state', window.location.href);
+    params.append('state', 'authorize');
     url.search = params.toString();
-    authentication.authenticate({ url: url.href }).then((result) => {
-      const tokenTimestamp = localStorage.getItem('msteams_token_timestamp');
-      const tempToken = localStorage.getItem('msteams_token');
-      setToken(tempToken);
-      setFreshToken((tempToken && ((new Date() - new Date(tokenTimestamp)) / 1000) / 60 < 15));
-    }).catch((e) => {
-      console.log('failed to authenticate', e);
-      if (e.message === 'CancelledByUser')
-        setError('Please reload the tab and follow the instructions in the authentication popup to use this application or ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
-      else if (e.message === 'FailedToOpenWindow')
-        setError('If you have a pop-up blocker, please enable pop-ups for https://teams.microsoft.com then reload the tab and follow the instructions in the authentication pop-up. Alternatively, you can ask your Teams administrator Grant consent for the Curriki Application on behalf of your organization.');
-    });
+    const win = window.open(url, "", "width=400,height=600");
+    
+    popupWindowCheckInterval.current = setInterval(() => {
+      if (win.closed) {
+        clearInterval(popupWindowCheckInterval.current);
+        window.location.reload();
+      }
+    }, 500);
   };
  
   return (
     <>
-      <div className="gclass-activity-container">
-        <section className="main-page-content preview iframe-height-resource-shared defaultcontainer msteams-padding">
-          <Helmet>
-            <script src={`https://${window.location.hostname}/api/storage/h5p/h5p-core/js/h5p-resizer.js`} charset="UTF-8" />
-          </Helmet>
-          <div className="flex-container previews">
-            <div className="activity-bg left-vdo msteams-width">
-              <div className="main-item-wrapper desktop-view">
-                <div className="item-container">
-                  {error && (
-                    <div className="outcome-summary-container">
-                      <div className="loading">
-                        <div className="loading_image">
-                          <img src={logo} alt="Curriki Studio logo" />
-                        </div>
-                        <div className="loading-message">{error}</div>
-                      </div>
-                    </div>
-                  )}
-                  {showOAuth && (
-                    <div className="outcome-summary-container">
-                      <div className="loading">
-                        <div className="loading_image">
-                          <img src={logo} alt="Curriki Studio logo" />
-                        </div>
-                        <div className="login-message">
-                          <p>The Curriki Studio application for Microsoft Teams requires you to grant certain permissions. Please click the login button to proceed.</p>
-                          <button className="btn btn-primary" onClick={doLogin}>Login</button>
+      {showOAuth ? <AdminGrantMessage adminUrl={adminUrl} doLogin={doLogin} /> : (
+        <div className="gclass-activity-container">
+          <section className="main-page-content preview iframe-height-resource-shared defaultcontainer msteams-padding">
+            <Helmet>
+              <script src={`https://${window.location.hostname}/api/storage/h5p/h5p-core/js/h5p-resizer.js`} charset="UTF-8" />
+            </Helmet>
+            <div className="flex-container previews">
+              <div className="activity-bg left-vdo msteams-width">
+                <div className="main-item-wrapper desktop-view">
+                  <div className="item-container">
+                    {error && (
+                      <div className="outcome-summary-container">
+                        <div className="loading">
+                          <div className="loading_image">
+                            <img src={logo} alt="Curriki Studio logo" />
+                          </div>
+                          <div className="loading-message">{error}</div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                  {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
+                    )}
+                    {!error && activityParams && <MsTeamActivityLaunchScreen activityId={activityId} paramObj={activityParams} />}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
+          </section>
+        </div>
+      )}
     </>
   );
 }
