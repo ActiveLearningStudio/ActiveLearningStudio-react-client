@@ -608,7 +608,11 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_from == null ? '' : projectFilterObj.created_from}
+                        value={
+                          projectFilterObj.created_from == null
+                            ? ""
+                            : projectFilterObj.created_from
+                        }
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -625,7 +629,11 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.created_to == null ? '' : projectFilterObj.created_to}
+                        value={
+                          projectFilterObj.created_to == null
+                            ? ""
+                            : projectFilterObj.created_to
+                        }
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -653,7 +661,11 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_from == null ? '' : projectFilterObj.updated_from}
+                        value={
+                          projectFilterObj.updated_from == null
+                            ? ""
+                            : projectFilterObj.updated_from
+                        }
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -670,7 +682,11 @@ function Controller(props) {
                         onFocus={(e) => {
                           e.target.type = "date";
                         }}
-                        value={projectFilterObj.updated_to == null ? '' :projectFilterObj.updated_to}
+                        value={
+                          projectFilterObj.updated_to == null
+                            ? ""
+                            : projectFilterObj.updated_to
+                        }
                         onChange={(e) => {
                           setProjectFilterObj({
                             ...projectFilterObj,
@@ -791,52 +807,61 @@ function Controller(props) {
                 </div>
 
                 <div className="status-project">
-              <div className="library-status" style={{borderRight:"unset"}}>
-                <label>Library Preference</label>
-                <span>
-                  <input
-                    type="radio"
-                    checked={projectFilterObj.visibility === 1 && true}
-                    onChange={() => {
-                      setLibraryReqSelected(false);
-                      setProjectFilterObj({
-                        ...projectFilterObj,
-                        visibility: 1,
-                      });
-                    }}
-                  />
-                  Private(only me)
-                </span>
-                <span>
-                  <input
-                    type="radio"
-                    checked={projectFilterObj.visibility === 4 && true}
-                    onChange={() => {
-                      setLibraryReqSelected(false);
-                      setProjectFilterObj({
-                        ...projectFilterObj,
-                        visibility: 4,
-                      });
-                    }}
-                  />
-                  Public
-                </span>
-                <span>
-                  <input
-                    type="radio"
-                    checked={projectFilterObj.visibility === 3 && true}
-                    onChange={() => {
-                      setLibraryReqSelected(false);
-                      setProjectFilterObj({
-                        ...projectFilterObj,
-                        visibility: 3,
-                      });
-                    }}
-                  />
-                  My Organization
-                </span>
-              </div>
-            </div>
+                  <div
+                    className="library-status"
+                    style={{ borderRight: "unset" }}
+                  >
+                    <label>Library Preference</label>
+                    <span>
+                      <input
+                        type="radio"
+                        checked={
+                          projectFilterObj.visibility === 1 && true
+                        }
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            visibility: 1,
+                          });
+                        }}
+                      />
+                      Private(only me)
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        checked={
+                          projectFilterObj.visibility === 4 && true
+                        }
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            visibility: 4,
+                          });
+                        }}
+                      />
+                      Public
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        checked={
+                          projectFilterObj.visibility === 3 && true
+                        }
+                        onChange={() => {
+                          setLibraryReqSelected(false);
+                          setProjectFilterObj({
+                            ...projectFilterObj,
+                            visibility: 3,
+                          });
+                        }}
+                      />
+                      My Organization
+                    </span>
+                  </div>
+                </div>
                 <div
                   className="filter-btn-project"
                   onClick={() => filterSearch()}
@@ -867,7 +892,11 @@ function Controller(props) {
               border: libraryReqSelected ? "1px solid #F8AF2C" : "0",
             }}
             onClick={() => {
-              // setSubTypeState(libraryReqSelected ? 'All Projects' : 'Library requests');
+              // setSubTypeState(
+              //   libraryReqSelected
+              //     ? "All Projects"
+              //     : "Library requests"
+              // );
               setLibraryReqSelected(!libraryReqSelected);
             }}
           >
