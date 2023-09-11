@@ -1,14 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Route, withRouter } from 'react-router-dom';
+/* eslint-disable */
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Route, withRouter } from "react-router-dom";
 
-const PublicRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+const PublicRoute = ({
+  component: Component,
+  isAuthenticated,
+  ...rest
+}) => (
   <Route
     {...rest}
     render={(props) => {
+      if (!window.location.pathname?.includes("admin-login")) {
+        window.location.replace("https://currikistudio.org");
+      }
+
       if (isAuthenticated) {
-        window.location.replace('/org/');
+        window.location.replace("/org/");
       } else {
         return (
           <div>
@@ -21,7 +30,8 @@ const PublicRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 );
 
 PublicRoute.propTypes = {
-  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+    .isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
@@ -29,4 +39,6 @@ const mapStateToProps = (state) => ({
   isAuthenticated: !!state.auth.user,
 });
 
-export default withRouter(connect(mapStateToProps, null)(PublicRoute));
+export default withRouter(
+  connect(mapStateToProps, null)(PublicRoute)
+);
