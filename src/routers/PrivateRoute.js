@@ -17,9 +17,15 @@ const PrivateRoute = ({
   <Route
     {...rest}
     render={(props) => {
-      if (user?.email && user?.email !== "masterdemo@curriki.org") {
+      if (
+        user?.email &&
+        user?.email !== "masterdemo@curriki.org" &&
+        window.location?.host?.includes("my.currikistudio.org")
+      ) {
         storageService.removeItem("auth_token");
-        window.location.replace("https://currikistudio.org");
+        window.location.replace(
+          "https://studio.frameworkconsulting.com"
+        );
       }
 
       let newId = id;

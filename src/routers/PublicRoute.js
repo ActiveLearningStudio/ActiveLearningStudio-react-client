@@ -12,8 +12,13 @@ const PublicRoute = ({
   <Route
     {...rest}
     render={(props) => {
-      if (!window.location.pathname?.includes("admin-login")) {
-        window.location.replace("https://currikistudio.org");
+      if (
+        !window.location.pathname?.includes("admin-login") &&
+        window.location?.host?.includes("my.currikistudio.org")
+      ) {
+        window.location.replace(
+          "https://studio.frameworkconsulting.com"
+        );
       }
 
       if (isAuthenticated) {
