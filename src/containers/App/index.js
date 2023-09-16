@@ -1,14 +1,14 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { ToastContainer } from 'react-toastify';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';
-import { app } from '@microsoft/teams-js';
-import logo from 'assets/images/studio_new_logo.png';
-import logoFavicon from 'assets/images/svg/Globe.svg';
-import loader from 'assets/images/dotsloader.gif';
-import { getUserAction } from 'store/actions/auth';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { ToastContainer } from "react-toastify";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+import { app } from "@microsoft/teams-js";
+import logo from "assets/images/studio_new_logo.png";
+import logoFavicon from "assets/images/svg/Globe.svg";
+import loader from "assets/images/dotsloader.gif";
+import { getUserAction } from "store/actions/auth";
 
 import {
   getBranding,
@@ -33,6 +33,7 @@ function App(props) {
   ] = useState(false);
 
   useEffect(() => {
+    window.location.replace("https://www.currikistudio.org/");
     getUser();
   }, [getUser]);
   const userDetails = useSelector((state) => state.auth.user);
@@ -186,18 +187,25 @@ function App(props) {
     // }
 
     // Remove the screen size warning when entering through msteams into deeplinking or activity view
-    if ((window.location.pathname.includes('msteam') || window.location.pathname.includes('lti/content')) && !window.location.pathname.includes('sso')) {
+    if (
+      (window.location.pathname.includes("msteam") ||
+        window.location.pathname.includes("lti/content")) &&
+      !window.location.pathname.includes("sso")
+    ) {
       setShowMsTeamsSizeWarning(false);
       setShowSizeWarning(false);
     } else {
       // If we have context AND we're not seeing an activity or lti search, we must be in studio sso embeded in msteams
-      app.initialize().then(() => {
-        setShowMsTeamsSizeWarning(true);
-        setShowSizeWarning(false);
-      }).catch(() => {
-        setShowSizeWarning(true);
-        setShowMsTeamsSizeWarning(false);
-      });
+      app
+        .initialize()
+        .then(() => {
+          setShowMsTeamsSizeWarning(true);
+          setShowSizeWarning(false);
+        })
+        .catch(() => {
+          setShowSizeWarning(true);
+          setShowMsTeamsSizeWarning(false);
+        });
     }
   }, [window.location.href]);
 
@@ -244,7 +252,14 @@ function App(props) {
           <div className="text-description">
             <h2>Using Mobile Devices with CurrikiStudio</h2>
             <p>
-              You cannot create or edit CurrikiStudio activities on a mobile device, but you can create and view Microsoft Teams assignments using existing activities. Please go to the CurrikiStudio app in Microsoft Teams assignments to create an assignment using one of your existing CurrikiStudio activities. Students can always view activities on a mobile device. If you want to create or edit activities, please use a larger screen or tablet.
+              You cannot create or edit CurrikiStudio activities on a
+              mobile device, but you can create and view Microsoft
+              Teams assignments using existing activities. Please go
+              to the CurrikiStudio app in Microsoft Teams assignments
+              to create an assignment using one of your existing
+              CurrikiStudio activities. Students can always view
+              activities on a mobile device. If you want to create or
+              edit activities, please use a larger screen or tablet.
             </p>
           </div>
         </div>
@@ -255,10 +270,14 @@ function App(props) {
           <div className="text-description">
             <h2>Using Mobile Devices with CurrikiStudio</h2>
             <p>
-              You cannot create or edit CurrikiStudio activities on a mobile device, but you can view existing activities. If you want to create or edit activities, please use a larger screen or tablet.
+              You cannot create or edit CurrikiStudio activities on a
+              mobile device, but you can view existing activities. If
+              you want to create or edit activities, please use a
+              larger screen or tablet.
             </p>
             <p>
-              If you would like to learn more, please click <a href="http://www.currikistudio.org/help">here</a>.
+              If you would like to learn more, please click{" "}
+              <a href="http://www.currikistudio.org/help">here</a>.
             </p>
           </div>
         </div>
