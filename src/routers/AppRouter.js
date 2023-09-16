@@ -1,6 +1,6 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   // Route,
   BrowserRouter as Router,
@@ -168,7 +168,9 @@ const MsTeamActivityLaunch = loadable(() =>
 const MsTeamSummaryPage = loadable(() =>
   import("../containers/LMS/MsTeams/MsTeamSummaryPage")
 );
-const MsTeamsActivityContainer = loadable(() => import('../containers/LMS/MsTeams/MsTeamsActivityContainer'));
+const MsTeamsActivityContainer = loadable(() =>
+  import("../containers/LMS/MsTeams/MsTeamsActivityContainer")
+);
 let intialLoad = 0;
 
 const AppRouter = (props) => {
@@ -193,20 +195,23 @@ const AppRouter = (props) => {
   ) {
     document.body.classList.add("mobile-responsive");
   }
-    // Get msteams app context and auth token
-    useEffect(() => {
-      if (intialLoad === 0) {
-        app.initialize().then(() => {
+  // Get msteams app context and auth token
+  useEffect(() => {
+    if (intialLoad === 0) {
+      app
+        .initialize()
+        .then(() => {
           dispatch({
             type: IS_MSTEAM,
             payload: true,
           });
           intialLoad += 1;
-        }).catch(() => {
+        })
+        .catch(() => {
           return;
         });
-      }
-    });
+    }
+  });
 
   const { user } = props;
   return (
@@ -218,9 +223,9 @@ const AppRouter = (props) => {
           path="/lti-sso" // see OpenRoute for some special permissions logic for this route if you change it
           component={LtiLogin}
         />
-        {history?.location?.pathname?.includes("/login") &&
+        {/* {history?.location?.pathname?.includes("/login") &&
           window.location?.host?.includes("my.currikistudio.org") &&
-          window.location.replace("https://currikistudio.org")}
+          window.location.replace("https://currikistudio.org")} */}
         <OpenRoute exact path="/wp-sso" component={WordpressSSO} />
         <OpenRoute exact path="/msteams-sso" component={MSTeamsSSO} />
         <OpenRoute

@@ -24,7 +24,7 @@ const PrivateRoute = ({
       ) {
         storageService.removeItem("auth_token");
         window.location.replace(
-          "https://studio.frameworkconsulting.com"
+          "https://studio.frameworkconsulting.com/login/studiok20"
         );
       }
 

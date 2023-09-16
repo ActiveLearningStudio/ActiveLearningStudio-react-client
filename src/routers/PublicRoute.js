@@ -17,7 +17,7 @@ const PublicRoute = ({
         window.location?.host?.includes("my.currikistudio.org")
       ) {
         window.location.replace(
-          "https://studio.frameworkconsulting.com"
+          "https://studio.frameworkconsulting.com/login/studiok20"
         );
       }
 
