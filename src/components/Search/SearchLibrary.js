@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { Accordion, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
+import { setSearchTypeAction } from "store/actions/search";
 
 const SearchLibrary = (props) => {
   const {
@@ -44,6 +45,8 @@ const SearchLibrary = (props) => {
     noWords,
     setisLoader,
     activeModel,
+    searchTypeNew,
+    setSearchActivityNew,
   } = props;
 
   const onSubmit = async () => {
@@ -54,82 +57,10 @@ const SearchLibrary = (props) => {
     setActiveTab(fromTeam ? "projects" : "Independent activities");
     if (searchInput?.length > 255) {
       Swal.fire("Character limit should be less than 255.");
-    } else if (
-      activeMainSearchType === "Projects" ||
-      activeMainSearchType === "projects"
-    ) {
-      // Swal.fire({
-      //   title: 'Searching...', // add html attribute if you want or remove
-      //   html: 'We are fetching results for you!',
-      //   allowOutsideClick: false,
-      //   onBeforeOpen: () => {
-      //     Swal.showLoading();
-      //   },
-      // });
-      const dataSend = {
-        phrase: searchInput?.trim(),
-        subjectArray: activeSubject,
-        gradeArray: activeEducation,
-        authorTagsArray: activeAuthorTag,
-        standardArray: activeType,
-        author: authorName || undefined,
-        fromDate: fromdate || undefined,
-        toDate: todate || undefined,
-        type: searchType,
-        from: 0,
-        size: 20,
-        model: "projects",
-        no_words: noWords || undefined,
-      };
-      console.log("dataSend", dataSend);
-      const result = await dispatch(simpleSearchAction(dataSend));
-      setTotalCount(result.meta?.projects);
-      const tempEducation = [];
-      const tempSubject = [];
-      const tempTag = [];
-      const tempAuthor = [];
-      if (activeEducation) {
-        activeEducation.forEach((edu) => {
-          if (String(edu).includes("&")) {
-            const temp = String(edu).replace("&", "and");
-            tempEducation.push(temp);
-          } else {
-            tempEducation.push(edu);
-          }
-        });
-        setActiveEducation(tempEducation);
-      }
-      if (activeSubject) {
-        activeSubject.forEach((sub) => {
-          if (String(sub).includes("&")) {
-            const temp = String(sub).replace("&", "and");
-            tempSubject.push(temp);
-          } else {
-            tempSubject.push(sub);
-          }
-        });
-        setActiveSubject(tempSubject);
-      }
-      if (activeAuthorTag) {
-        activeAuthorTag.forEach((sub) => {
-          if (String(sub).includes("&")) {
-            const temp = String(sub).replace("&", "and");
-            tempAuthor.push(temp);
-          } else {
-            tempAuthor.push(sub);
-          }
-        });
-        setActiveAuthorTag(tempAuthor);
-      }
-      if (!fromTeam) {
-        // eslint-disable-next-line max-len
-        // history.push(
-        //   `/org/${
-        //     currentOrganization?.domain
-        //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
-        // );
-      }
-    } else if (activeMainSearchType === "Independent activities") {
+      return;
+    }
+
+    if (true) {
       // Swal.fire({
       //   title: 'Searching...', // add html attribute if you want or remove
       //   html: 'We are fetching results for you!',
@@ -158,8 +89,8 @@ const SearchLibrary = (props) => {
       const result = await dispatch(
         searchIndependentActivitiesAction(
           dataSend,
-          "showcase_activities",
-        ),
+          "showcase_activities"
+        )
       );
       setTotalCount(result?.meta?.total);
       const tempEducation = [];
@@ -207,6 +138,86 @@ const SearchLibrary = (props) => {
         // );
       }
     }
+
+    if (true) {
+      // Swal.fire({
+      //   title: 'Searching...', // add html attribute if you want or remove
+      //   html: 'We are fetching results for you!',
+      //   allowOutsideClick: false,
+      //   onBeforeOpen: () => {
+      //     Swal.showLoading();
+      //   },
+      // });
+      const dataSend = {
+        phrase: searchInput?.trim(),
+        subjectArray: activeSubject,
+        gradeArray: activeEducation,
+        authorTagsArray: activeAuthorTag,
+        standardArray: activeType,
+        author: authorName || undefined,
+        fromDate: fromdate || undefined,
+        toDate: todate || undefined,
+        type: "projects",
+        from: 0,
+        size: 20,
+        model: "projects",
+        no_words: noWords || undefined,
+      };
+      //if (searchTypeNew === "Independent activities") {
+      dispatch(setSearchTypeAction("projects"));
+      // } else {
+      //   dispatch(setSearchTypeAction("Independent activities"));
+      // }
+
+      const result = await dispatch(simpleSearchAction(dataSend));
+      setTotalCount(result.meta?.projects);
+      const tempEducation = [];
+      const tempSubject = [];
+      const tempTag = [];
+      const tempAuthor = [];
+      if (activeEducation) {
+        activeEducation.forEach((edu) => {
+          if (String(edu).includes("&")) {
+            const temp = String(edu).replace("&", "and");
+            tempEducation.push(temp);
+          } else {
+            tempEducation.push(edu);
+          }
+        });
+        setActiveEducation(tempEducation);
+      }
+      if (activeSubject) {
+        activeSubject.forEach((sub) => {
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
+            tempSubject.push(temp);
+          } else {
+            tempSubject.push(sub);
+          }
+        });
+        setActiveSubject(tempSubject);
+      }
+      if (activeAuthorTag) {
+        activeAuthorTag.forEach((sub) => {
+          if (String(sub).includes("&")) {
+            const temp = String(sub).replace("&", "and");
+            tempAuthor.push(temp);
+          } else {
+            tempAuthor.push(sub);
+          }
+        });
+        setActiveAuthorTag(tempAuthor);
+      }
+      if (!fromTeam) {
+        // eslint-disable-next-line max-len
+        // history.push(
+        //   `/org/${
+        //     currentOrganization?.domain
+        //   }/search?q=${searchInput.trim()}&type=${searchType}&grade=${tempSubject}&education=${tempEducation}&authorTag=${tempTag}&h5p=${activeType}&author=${authorName}`,
+        // );
+      }
+    }
+    dispatch(setSearchTypeAction("Independent activities"));
     // setModalShow(true);
   };
 
@@ -214,19 +225,17 @@ const SearchLibrary = (props) => {
     setSearchInput("");
     setNoWords("");
     setAuthor("");
+    setSearch([]);
+    setSearchActivityNew([]);
     setActiveEducation([]);
     setActiveSubject([]);
     setActiveAuthorTag([]);
     setActiveType([]);
     // onSubmit();
-    const result = await dispatch(simpleSearchAction({}));
-    const result1 = await dispatch(
-      searchIndependentActivitiesAction(
-        {},
-        "showcase_activities",
-      ),
-    );
-
+    // const result = await dispatch(simpleSearchAction({}));
+    // const result1 = await dispatch(
+    //   searchIndependentActivitiesAction({}, "showcase_activities")
+    // );
   };
   return (
     <Accordion defaultActiveKey="0">
@@ -311,11 +320,29 @@ const SearchLibrary = (props) => {
                   }}
                 />
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", color: "#1E68BF", alignItem: "center", alignItems: "center"}}>
-                <div style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => clearFilters()}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: "#1E68BF",
+                  alignItem: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                  onClick={() => clearFilters()}
+                >
                   Clear All
                 </div>
-                <div className="src-btn" style={{marginBottom: "unset"}} onClick={() => onSubmit()}>
+                <div
+                  className="src-btn"
+                  style={{ marginBottom: "unset" }}
+                  onClick={() => onSubmit()}
+                >
                   <FontAwesomeIcon icon="search" />
                   Search
                 </div>

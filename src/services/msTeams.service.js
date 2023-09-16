@@ -3,11 +3,12 @@ import config from 'config';
 import httpService from './http.service';
 const { apiVersion } = config;
 
-const msTeamsToken = (code) => httpService
+const msTeamsToken = (code, tenantId) => httpService
   .get(`/microsoft-team/get-access-token-via-code`,
   {},
   {
     code: code,
+    tenantId: tenantId,
   })
   .then(({ data }) => data)
   .catch((err) => Promise.reject(err.response.data));

@@ -100,7 +100,7 @@ export default function Pills(props) {
     created_to: null,
     updated_from: null,
     updated_to: null,
-    indexing: '',
+    indexing: "",
     visibility: null,
     shared: null,
   });
@@ -473,7 +473,7 @@ export default function Pills(props) {
     currentTab,
     size,
     searchQueryProject,
-    // libraryReqSelected,
+    libraryReqSelected,
   ]);
 
   useMemo(() => {
@@ -542,7 +542,7 @@ export default function Pills(props) {
     subTypeState,
     size,
     searchQueryProject,
-    // libraryReqSelected,
+    libraryReqSelected,
   ]);
 
   // Activity Tab Business Logic
@@ -1678,7 +1678,7 @@ export default function Pills(props) {
       updated_from: null,
       updated_to: null,
       shared: null,
-      indexing: '',
+      indexing: "",
       visibility: null,
     });
     if (libraryReqSelected) {
@@ -1718,7 +1718,7 @@ export default function Pills(props) {
       updated_from: null,
       updated_to: null,
       shared: null,
-      indexing: '',
+      indexing: "",
       visibility: null,
     });
 

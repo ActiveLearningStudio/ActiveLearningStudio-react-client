@@ -133,6 +133,8 @@ function SearchInterface(props) {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowActivity, setModalShowActivity] = useState(false);
   const [search, setSearch] = useState(null);
+  const [searchActivity, setSearchActivity] = useState([]);
+  const [activityModal, setActivityModal] = useState([]);
   const [searchQueries, SetSearchQuery] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const [meta, setMeta] = useState({});
@@ -229,7 +231,12 @@ function SearchInterface(props) {
   useEffect(() => {
     if (allState?.searchResult) {
       if (allState.searchResult?.length > 0) {
-        setSearch(allState.searchResult);
+        if (allState.searchType === "Independent activities") {
+          setSearchActivity(allState);
+        } else {
+          setSearch(allState.searchResult);
+        }
+
         SetSearchQuery(allState.searchQuery);
         setSearchInput(allState.searchQuery);
         setMeta(allState.searchMeta);
@@ -323,6 +330,9 @@ function SearchInterface(props) {
         );
         resultAuth.then((data) => setAuthorTags(data));
       }
+      !!search &&
+        !!meta.total &&
+        activeModel === "Independent activities";
       if (educationLevels?.length === 0) {
         const resultEdu = dispatch(
           getEducationLevel(currentOrganization?.id || 1)
@@ -442,6 +452,8 @@ function SearchInterface(props) {
                           setNoWords={setNoWords}
                           setisLoader={setisLoader}
                           activeModel={activeModel}
+                          searchTypeNew={allState.searchType}
+                          setSearchActivityNew={setSearchActivity}
                         />
                       </div>
                       <RefineSearch
@@ -468,83 +480,83 @@ function SearchInterface(props) {
                     >
                       <Tabs
                         className="main-tabs"
-                        onSelect={async (eventKey) => {
-                          setisLoader(true);
-                          if (eventKey === "Independent activities") {
-                            setActiveModel("Independent activities");
-                            const searchData = {
-                              query: searchInput?.trim(),
-                              subjectArray: activeSubject,
-                              gradeArray: activeEducation,
-                              authorTagsArray: activeAuthorTag,
-                              authors: authorName || undefined,
-                              standardArray: activeType,
-                              from: 0,
-                              size: 20,
-                              no_words: noWords || undefined,
-                            };
+                        // onSelect={async (eventKey) => {
+                        //   setisLoader(true);
+                        //   if (eventKey === "Independent activities") {
+                        //     setActiveModel("Independent activities");
+                        //     const searchData = {
+                        //       query: searchInput?.trim(),
+                        //       subjectArray: activeSubject,
+                        //       gradeArray: activeEducation,
+                        //       authorTagsArray: activeAuthorTag,
+                        //       authors: authorName || undefined,
+                        //       standardArray: activeType,
+                        //       from: 0,
+                        //       size: 20,
+                        //       no_words: noWords || undefined,
+                        //     };
 
-                            setSearch(null);
-                            await dispatch(
-                              searchIndependentActivitiesAction(
-                                searchData,
-                                "showcase_activities"
-                              )
-                            );
-                          } else {
-                            setActiveModel("");
-                            // if (allState.searchType === "Projects") {
-                            // if (activeModel === "projects") {
-                            //   {
-                            const searchData = {
-                              phrase: searchQueries?.trim(),
-                              from: 0,
-                              size: 20,
-                              type: searchType,
-                              model: eventKey,
-                              subjectArray:
-                                activeSubject || undefined,
-                              gradeArray:
-                                activeEducation || undefined,
-                              authorTagsArray:
-                                activeAuthorTag || undefined,
-                              standardArray: activeType || undefined,
-                              author: authorName || undefined,
-                              no_words: noWords || undefined,
-                            };
-                            setSearch(null);
-                            await dispatch(
-                              simpleSearchAction(searchData)
-                            );
-                            Swal.close();
-                            // }
-                            // }
-                          }
-                          dispatch(setSearchTypeAction(eventKey));
-                          // setSearchInput("");
+                        //     setSearch(null);
+                        //     await dispatch(
+                        //       searchIndependentActivitiesAction(
+                        //         searchData,
+                        //         "showcase_activities"
+                        //       )
+                        //     );
+                        //   } else {
+                        //     setActiveModel("");
+                        //     // if (allState.searchType === "Projects") {
+                        //     // if (activeModel === "projects") {
+                        //     //   {
+                        //     const searchData = {
+                        //       phrase: searchQueries?.trim(),
+                        //       from: 0,
+                        //       size: 20,
+                        //       type: searchType,
+                        //       model: eventKey,
+                        //       subjectArray:
+                        //         activeSubject || undefined,
+                        //       gradeArray:
+                        //         activeEducation || undefined,
+                        //       authorTagsArray:
+                        //         activeAuthorTag || undefined,
+                        //       standardArray: activeType || undefined,
+                        //       author: authorName || undefined,
+                        //       no_words: noWords || undefined,
+                        //     };
+                        //     setSearch(null);
+                        //     await dispatch(
+                        //       simpleSearchAction(searchData)
+                        //     );
+                        //     Swal.close();
+                        //     // }
+                        //     // }
+                        //   }
+                        //   dispatch(setSearchTypeAction(eventKey));
+                        //   // setSearchInput("");
 
-                          // setNoWords("");
-                          setSearchType("");
-                          // setSearch(null);
-                          // setTotalCount(0);
-                          setActivePage(1);
-                          // setMeta({});
-                          setToggleStates({
-                            searchLibrary: true,
-                            subject: true,
-                            education: false,
-                            authorTag: false,
-                            type: false,
-                          });
-                          // setActiveSubject([]);
-                          // setActiveEducation([]);
-                          // setActiveAuthorTag([]);
-                          // SetAuthor([]);
-                          Settodate([]);
-                          Setfromdate([]);
-                          setisLoader(false);
-                          // setActiveType([]);
-                        }}
+                        //   // setNoWords("");
+                        //   setSearchType("");
+                        //   // setSearch(null);
+                        //   // setTotalCount(0);
+                        //   setActivePage(1);
+                        //   // setMeta({});
+                        //   setToggleStates({
+                        //     searchLibrary: true,
+                        //     subject: true,
+                        //     education: false,
+                        //     authorTag: false,
+                        //     type: false,
+                        //   });
+                        //   // setActiveSubject([]);
+                        //   // setActiveEducation([]);
+                        //   // setActiveAuthorTag([]);
+                        //   // SetAuthor([]);
+                        //   Settodate([]);
+                        //   Setfromdate([]);
+                        //   setisLoader(false);
+                        //   // setActiveType([]);
+                        // }}
                         defaultActiveKey={
                           !fromTeam ? allState.searchType : "Projects"
                         }
@@ -552,176 +564,182 @@ function SearchInterface(props) {
                         {!fromTeam && (
                           <Tab
                             eventKey="Independent activities"
-                            title={
-                              !!search &&
-                              !!meta.total &&
-                              activeModel === "Independent activities"
-                                ? `Activities (${meta.total})`
-                                : "Activities (0)"
-                            }
+                            title={`Activities (${
+                              searchActivity?.searchMeta?.total || 0
+                            })`}
                           >
                             <div className="content">
                               <div className="results_search">
-                                {!!search ? (
-                                  search?.length > 0 ? (
-                                    search.map((res) => (
-                                      <>
-                                        <div className="box">
-                                          <div className="imgbox">
-                                            {res?.thumb_url ? (
-                                              <div
-                                                style={{
-                                                  backgroundImage: !res.thumb_url.includes(
-                                                    "/storage/"
-                                                  )
-                                                    ? `url(${res.thumb_url})`
-                                                    : `url(${global.config.resourceUrl}${res.thumb_url})`,
-                                                }}
-                                              />
-                                            ) : (
-                                              <div
-                                                style={{
-                                                  backgroundImage:
-                                                    // eslint-disable-next-line max-len
-                                                    "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
-                                                }}
-                                              />
-                                            )}
+                                {!!searchActivity ? (
+                                  searchActivity?.searchResult
+                                    ?.length > 0 ? (
+                                    searchActivity?.searchResult.map(
+                                      (res) => (
+                                        <>
+                                          <div className="box">
+                                            <div className="imgbox">
+                                              {res?.thumb_url ? (
+                                                <div
+                                                  style={{
+                                                    backgroundImage: !res.thumb_url.includes(
+                                                      "/storage/"
+                                                    )
+                                                      ? `url(${res.thumb_url})`
+                                                      : `url(${global.config.resourceUrl}${res.thumb_url})`,
+                                                  }}
+                                                />
+                                              ) : (
+                                                <div
+                                                  style={{
+                                                    backgroundImage:
+                                                      // eslint-disable-next-line max-len
+                                                      "https://images.pexels.com/photos/593158/pexels-photo-593158.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=1&amp;fit=crop&amp;h=200&amp;w=280",
+                                                  }}
+                                                />
+                                              )}
 
-                                            {/* <h5>CALCULUS</h5> */}
-                                          </div>
+                                              {/* <h5>CALCULUS</h5> */}
+                                            </div>
 
-                                          <div className="contentbox">
-                                            <div className="search-content">
-                                              <a
-                                                href={`/activity/${res?.id}/preview?type=ind-search`}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                              >
-                                                <h2>
-                                                  {res.title ||
-                                                    res.name}
-                                                </h2>
-                                              </a>
-                                              <p>{res.description}</p>
-                                              {res.user && (
-                                                <div className="search-content-by">
-                                                  By:{" "}
-                                                  <span>
+                                            <div className="contentbox">
+                                              <div className="search-content">
+                                                <a
+                                                  href={`/activity/${res?.id}/preview?type=ind-search`}
+                                                  target="_blank"
+                                                  rel="noreferrer"
+                                                >
+                                                  <h2>
+                                                    {res.title ||
+                                                      res.name}
+                                                  </h2>
+                                                </a>
+                                                <p>
+                                                  {res.description}
+                                                </p>
+                                                {res.user && (
+                                                  <div className="search-content-by">
+                                                    By:{" "}
+                                                    <span>
+                                                      {
+                                                        res.user
+                                                          .first_name
+                                                      }
+                                                    </span>
+                                                  </div>
+                                                )}
+                                                <div className="search-content-type">
+                                                  Type:{" "}
+                                                  <span className="type">
                                                     {
-                                                      res.user
-                                                        .first_name
+                                                      res.activity_type
                                                     }
                                                   </span>
                                                 </div>
-                                              )}
-                                              <div className="search-content-type">
-                                                Type:{" "}
-                                                <span className="type">
-                                                  {res.activity_type}
-                                                </span>
+                                                {/* <p>{res.description}</p> */}
                                               </div>
-                                              {/* <p>{res.description}</p> */}
-                                            </div>
 
-                                            {true && (
-                                              <Dropdown className="playlist-dropdown check learning_activity_tab">
-                                                <Dropdown.Toggle>
-                                                  <FontAwesomeIcon icon="ellipsis-v" />
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu>
-                                                  <>
-                                                    <a
-                                                      href={`/activity/${res.id}/preview?type=ind-search`}
-                                                      target="_blank"
-                                                      rel="noreferrer"
-                                                    >
-                                                      {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
+                                              {true && (
+                                                <Dropdown className="playlist-dropdown check learning_activity_tab">
+                                                  <Dropdown.Toggle>
+                                                    <FontAwesomeIcon icon="ellipsis-v" />
+                                                  </Dropdown.Toggle>
+                                                  <Dropdown.Menu>
+                                                    <>
+                                                      <a
+                                                        href={`/activity/${res.id}/preview?type=ind-search`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                      >
+                                                        {/* <FontAwesomeIcon className="mr-2" icon={faEye} />
                                                       Preview */}
-                                                      <div className="dropDown-item-name-icon">
-                                                        <PreviewSmSvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        <span>
-                                                          Preview
-                                                        </span>
-                                                      </div>
-                                                    </a>
-                                                    <Dropdown.Item
-                                                      onClick={async () => {
-                                                        toast.info(
-                                                          "Duplicating Activity...",
-                                                          {
-                                                            className:
-                                                              "project-loading",
-                                                            closeOnClick: false,
-                                                            closeButton: false,
-                                                            position:
-                                                              toast
-                                                                .POSITION
-                                                                .BOTTOM_RIGHT,
-                                                            autoClose: 10000,
-                                                            icon: "",
-                                                          }
-                                                        );
+                                                        <div className="dropDown-item-name-icon">
+                                                          <PreviewSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          <span>
+                                                            Preview
+                                                          </span>
+                                                        </div>
+                                                      </a>
+                                                      <Dropdown.Item
+                                                        onClick={async () => {
+                                                          toast.info(
+                                                            "Duplicating Activity...",
+                                                            {
+                                                              className:
+                                                                "project-loading",
+                                                              closeOnClick: false,
+                                                              closeButton: false,
+                                                              position:
+                                                                toast
+                                                                  .POSITION
+                                                                  .BOTTOM_RIGHT,
+                                                              autoClose: 10000,
+                                                              icon:
+                                                                "",
+                                                            }
+                                                          );
 
-                                                        const result = await intActivityServices.indActivityClone(
-                                                          currentOrganization?.id,
-                                                          res.id
-                                                        );
+                                                          const result = await intActivityServices.indActivityClone(
+                                                            currentOrganization?.id,
+                                                            res.id
+                                                          );
 
-                                                        toast.dismiss();
-                                                        Swal.fire({
-                                                          html:
-                                                            result.message,
-                                                          icon:
-                                                            "success",
-                                                        });
-                                                      }}
-                                                    >
-                                                      <div className="dropDown-item-name-icon">
-                                                        <MyActivitySvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        Copy to My
-                                                        Activities
-                                                      </div>
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item
-                                                      onClick={() => {
-                                                        setIndClone(
-                                                          true
-                                                        );
-                                                        setModalShow(
-                                                          true
-                                                        );
-                                                        setClone(res);
-                                                      }}
-                                                    >
-                                                      {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
+                                                          toast.dismiss();
+                                                          Swal.fire({
+                                                            html:
+                                                              result.message,
+                                                            icon:
+                                                              "success",
+                                                          });
+                                                        }}
+                                                      >
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyActivitySvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          Copy to My
+                                                          Activities
+                                                        </div>
+                                                      </Dropdown.Item>
+                                                      <Dropdown.Item
+                                                        onClick={() => {
+                                                          setIndClone(
+                                                            true
+                                                          );
+                                                          setModalShow(
+                                                            true
+                                                          );
+                                                          setClone(
+                                                            res
+                                                          );
+                                                        }}
+                                                      >
+                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
                                                       Add to Projects */}
-                                                      <div className="dropDown-item-name-icon">
-                                                        <MyProjectSmSvg
-                                                          primaryColor={
-                                                            primaryColor
-                                                          }
-                                                        />
-                                                        Copy to My
-                                                        projects
-                                                      </div>
-                                                    </Dropdown.Item>
-                                                  </>
-                                                </Dropdown.Menu>
-                                              </Dropdown>
-                                            )}
+                                                        <div className="dropDown-item-name-icon">
+                                                          <MyProjectSmSvg
+                                                            primaryColor={
+                                                              primaryColor
+                                                            }
+                                                          />
+                                                          Copy to My
+                                                          projects
+                                                        </div>
+                                                      </Dropdown.Item>
+                                                    </>
+                                                  </Dropdown.Menu>
+                                                </Dropdown>
+                                              )}
+                                            </div>
                                           </div>
-                                        </div>
-                                      </>
-                                    ))
+                                        </>
+                                      )
+                                    )
                                   ) : (
                                     <Alert variant="danger">
                                       No result found !
@@ -744,7 +762,7 @@ function SearchInterface(props) {
                           eventKey="projects"
                           title={
                             !!search && !!meta.projects
-                              ? `projects (${meta.projects})`
+                              ? `projects (${meta.projects || 0})`
                               : "projects (0)"
                           }
                         >
