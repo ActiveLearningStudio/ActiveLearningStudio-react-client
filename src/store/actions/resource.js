@@ -262,8 +262,8 @@ export const loadH5pResource = (activityId) => async (dispatch) => {
   return result;
 };
 
-export const loadH5pResourceXapi = (xapiData) => async () => {
-  resourceService.getXapi({ statement: xapiData });
+export const loadH5pResourceXapi = (xapiData, type) => async () => {
+  resourceService.getXapi({ statement: xapiData, type });
 };
 
 export const loadH5pResourceSettings = (activityId) =>
@@ -1097,4 +1097,4 @@ const decodeEntity = (inputStr) => {
   var textarea = document.createElement("textarea");
   textarea.innerHTML = inputStr;
   return textarea.value;
-}
+};

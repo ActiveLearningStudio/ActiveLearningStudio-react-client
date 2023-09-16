@@ -1,12 +1,20 @@
-import Swal from 'sweetalert2';
+/* eslint-disable */
+import Swal from "sweetalert2";
 
-import authService from 'services/auth.service';
-import { getAllPermission, getAllOrganizationforSSO } from 'store/actions/organization';
-import storageService from 'services/storage.service';
-import { USER_TOKEN_KEY, CURRENT_ORG, USER_ID } from 'constants/index';
-import { errorCatcher } from 'services/errors';
-import * as actionTypes from '../actionTypes';
-import store from '../index';
+import authService from "services/auth.service";
+import {
+  getAllPermission,
+  getAllOrganizationforSSO,
+} from "store/actions/organization";
+import storageService from "services/storage.service";
+import {
+  USER_TOKEN_KEY,
+  CURRENT_ORG,
+  USER_ID,
+} from "constants/index";
+import { errorCatcher } from "services/errors";
+import * as actionTypes from "../actionTypes";
+import store from "../index";
 
 export const getUserAction = () => async (dispatch) => {
   const token = storageService.getItem(USER_TOKEN_KEY);
@@ -27,7 +35,7 @@ export const getUserAction = () => async (dispatch) => {
         type: actionTypes.GET_USER_FAIL,
       });
       dispatch({
-        type: 'SET_ALL_PERSMISSION',
+        type: "SET_ALL_PERSMISSION",
         payload: { loading: false },
       });
     }
@@ -50,7 +58,7 @@ export const loginAction = (data) => async (dispatch) => {
     // eslint-disable-next-line no-multi-assign
     const _hsq = (window._hsq = window._hsq || []);
     _hsq.push([
-      'identify',
+      "identify",
       {
         email: response.user.email,
         user_name: `${response.user.first_name} ${response.user.last_name}`,
@@ -95,7 +103,7 @@ export const googleLoginAction = (data) => async (dispatch) => {
     // eslint-disable-next-line no-multi-assign
     const _hsq = (window._hsq = window._hsq || []);
     _hsq.push([
-      'identify',
+      "identify",
       {
         email: response.user.email,
         user_name: `${response.user.first_name} ${response.user.last_name}`,
@@ -131,7 +139,7 @@ export const forgotPasswordAction = (data) => async (dispatch) => {
       payload: data,
     });
 
-    storageService.setItem('forgotPasswordEmail', data.email);
+    storageService.setItem("forgotPasswordEmail", data.email);
   } catch (e) {
     dispatch({
       type: actionTypes.FORGOT_PASSWORD_FAIL,
@@ -201,9 +209,9 @@ export const confirmEmailAction = (data) => async (dispatch) => {
     });
 
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'The confirmation link is invalid or expired.',
+      icon: "error",
+      title: "Error",
+      text: "The confirmation link is invalid or expired.",
     });
 
     throw e;
@@ -216,8 +224,8 @@ export const logoutAction = () => async () => {
     organization: { currentOrganization },
   } = centralizedState;
   storageService.removeItem(USER_TOKEN_KEY);
-  localStorage.removeItem('activeTab');
-  window.location.href = `/login/${currentOrganization?.domain}`;
+  localStorage.removeItem("activeTab");
+  window.location.href = `/admin-login/${currentOrganization?.domain}`;
 };
 
 export const updateProfileAction = (data) => async (dispatch) => {
@@ -280,7 +288,7 @@ export const acceptTermsAction = () => async (dispatch) => {
     // eslint-disable-next-line no-multi-assign
     const _hsq = (window._hsq = window._hsq || []);
     _hsq.push([
-      'identify',
+      "identify",
       {
         email: user.email,
         user_name: user.name,
@@ -337,27 +345,38 @@ export const handleSsoLoginAction = (params) => async (dispatch) => {
 export const SSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.loginSSO(data);
-    const userOrganization = typeof response.user.user_organization !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
+    const userOrganization =
+      typeof response.user.user_organization !== "undefined"
+        ? response.user.user_organization.domain
+        : "currikistudio";
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, userOrganization);
 
-    const allOrganizations = await dispatch(getAllOrganizationforSSO());
+    const allOrganizations = await dispatch(
+      getAllOrganizationforSSO()
+    );
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+      payload:
+        typeof response.user.user_organization !== "undefined"
+          ? response.user.user_organization
+          : allOrganizations?.data[0],
     });
     dispatch({
       type: actionTypes.ADD_CURRENT_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+      payload:
+        typeof response.user.user_organization !== "undefined"
+          ? response.user.user_organization
+          : allOrganizations?.data[0],
     });
 
-    console.log('SSOLoginAction success');
+    console.log("SSOLoginAction success");
   } catch (e) {
-    console.log('SSOLoginAction failed');
+    console.log("SSOLoginAction failed");
     dispatch({
       type: actionTypes.LOGIN_FAIL,
     });
@@ -370,7 +389,10 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
   try {
     const response = await authService.canvasSsoLogin(data);
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
-    storageService.setItem(CURRENT_ORG, response.user.user_organization.domain);
+    storageService.setItem(
+      CURRENT_ORG,
+      response.user.user_organization.domain
+    );
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
       payload: response.user.user_organization,
@@ -385,10 +407,10 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
     });
 
     await dispatch(getAllOrganizationforSSO());
-    console.log('SSOLoginAction success');
+    console.log("SSOLoginAction success");
     return response;
   } catch (e) {
-    console.log('SSOLoginAction failed');
+    console.log("SSOLoginAction failed");
     dispatch({
       type: actionTypes.LOGIN_FAIL,
     });
@@ -397,39 +419,56 @@ export const CanvasSSOLoginAction = (data) => async (dispatch) => {
   }
 };
 
-export const WordpressSSOLoginAction = (code, clientId) => async (dispatch) => {
+export const WordpressSSOLoginAction = (code, clientId) => async (
+  dispatch
+) => {
   try {
     const response = await authService.wordpressSSO(code, clientId);
-    const userOrganization = typeof response.user.user_organization !== 'undefined' ? response.user.user_organization.domain : 'currikistudio';
+    const userOrganization =
+      typeof response.user.user_organization !== "undefined"
+        ? response.user.user_organization.domain
+        : "currikistudio";
     storageService.setItem(USER_TOKEN_KEY, response.access_token);
     storageService.setItem(CURRENT_ORG, userOrganization);
 
-    const allOrganizations = await dispatch(getAllOrganizationforSSO());
+    const allOrganizations = await dispatch(
+      getAllOrganizationforSSO()
+    );
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: { user: response.user },
     });
     dispatch({
       type: actionTypes.ADD_ACTIVE_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+      payload:
+        typeof response.user.user_organization !== "undefined"
+          ? response.user.user_organization
+          : allOrganizations?.data[0],
     });
     dispatch({
       type: actionTypes.ADD_CURRENT_ORG,
-      payload: typeof response.user.user_organization !== 'undefined' ? response.user.user_organization : allOrganizations?.data[0],
+      payload:
+        typeof response.user.user_organization !== "undefined"
+          ? response.user.user_organization
+          : allOrganizations?.data[0],
     });
     // dispatch({ type: actionTypes.WP_SSO_LOGIN_SUCCESS });
   } catch (e) {
     dispatch({
       type: actionTypes.WP_SSO_LOGIN_FAIL,
-      error: e.errors ? e.errors[0] : 'Login action failed.',
+      error: e.errors ? e.errors[0] : "Login action failed.",
     });
     throw e;
   }
 };
 
-export const getWordpressSSODefaultSettingsAction = (clientId) => async (dispatch) => {
+export const getWordpressSSODefaultSettingsAction = (
+  clientId
+) => async (dispatch) => {
   try {
-    const response = await authService.getWordpressSSODefaultSettings(clientId);
+    const response = await authService.getWordpressSSODefaultSettings(
+      clientId
+    );
     dispatch({
       type: actionTypes.WP_SSO_GET_SETTINGS,
       response,
@@ -437,7 +476,7 @@ export const getWordpressSSODefaultSettingsAction = (clientId) => async (dispatc
   } catch (e) {
     dispatch({
       type: actionTypes.WP_SSO_LOGIN_FAIL,
-      error: e.errors ? e.errors[0] : 'Login action failed.',
+      error: e.errors ? e.errors[0] : "Login action failed.",
     });
     throw e;
   }
