@@ -528,10 +528,9 @@ export default function CreateOrg(prop) {
                               disabled={editMode ? true : false}
                               value={values.domain}
                               onChange={async (e) => {
-                                if (
-                                  alphabetsOnly(e.target.value) &&
-                                  !e.target.value.includes("@")
-                                ) {
+                                const regex = /^[a-zA-Z0-9]*$/; // Regular expression to match only numbers and alphabets
+
+                                if (regex.test(e.target.value)) {
                                   setFieldValue(
                                     "domain",
                                     e.target?.value

@@ -383,6 +383,11 @@ const AppRouter = (props) => {
         <PublicRoute exact path="/login" component={LoginPage} />
         <PublicRoute
           exact
+          path="/admin-login"
+          component={LoginPage}
+        />
+        <PublicRoute
+          exact
           path="/login/:organization"
           component={LoginPage}
         />
