@@ -1,38 +1,47 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import { confirmAlert } from 'react-confirm-alert';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown } from 'react-bootstrap';
-import * as actionTypes from 'store/actionTypes';
-import resourceService from 'services/resource.service';
-import config from 'config';
-import { shareActivity, deleteResourceAction } from 'store/actions/resource';
-import { cloneActivity } from 'store/actions/search';
-import { getUserLmsSettingsAction } from 'store/actions/account';
-import { getProjectId, googleShare, shareToCanvas, msTeamShare, publishLmsSettings } from 'store/actions/gapi';
-import { loadSafariMontagePublishToolAction } from 'store/actions/LMS/genericLMS';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { connect, useSelector, useDispatch } from "react-redux";
+import { withRouter, Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { confirmAlert } from "react-confirm-alert";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dropdown } from "react-bootstrap";
+import * as actionTypes from "store/actionTypes";
+import resourceService from "services/resource.service";
+import config from "config";
+import {
+  shareActivity,
+  deleteResourceAction,
+} from "store/actions/resource";
+import { cloneActivity } from "store/actions/search";
+import { getUserLmsSettingsAction } from "store/actions/account";
+import {
+  getProjectId,
+  googleShare,
+  shareToCanvas,
+  msTeamShare,
+  publishLmsSettings,
+} from "store/actions/gapi";
+import { loadSafariMontagePublishToolAction } from "store/actions/LMS/genericLMS";
 
-import Preview from '../../assets/images/menu-pre.svg';
-import Edit from '../../assets/images/menu-edit.svg';
-import Duplicate from '../../assets/images/menu-dupli.svg';
-import Delete from '../../assets/images/menu-dele.svg';
-import Publish from '../../assets/images/menu-publish.svg';
-import Xapi from '../../assets/images/menu-xapi.svg';
-import MenuLogo from '../../assets/images/menu-logo-2.svg';
-import { toast } from 'react-toastify';
-import './style.scss';
-import { getGlobalColor } from 'containers/App/DynamicBrandingApply';
-import MenuMdSvg from 'iconLibrary/dropDown/MenuMdSvg';
-import PreviewSmSvg from 'iconLibrary/dropDown/PreviewSmSvg';
-import EditDpDnMdSvg from 'iconLibrary/dropDown/EditDpDnMdSvg';
-import DuplicateSmSvg from 'iconLibrary/dropDown/DuplicateSmSvg';
-import PublishSmSvg from 'iconLibrary/dropDown/PublishSmSvg';
-import DownloadSmSvg from 'iconLibrary/dropDown/DownloadSmSvg';
-import DeleteSmSvg from 'iconLibrary/dropDown/DeleteSmSvg';
+import Preview from "../../assets/images/menu-pre.svg";
+import Edit from "../../assets/images/menu-edit.svg";
+import Duplicate from "../../assets/images/menu-dupli.svg";
+import Delete from "../../assets/images/menu-dele.svg";
+import Publish from "../../assets/images/menu-publish.svg";
+import Xapi from "../../assets/images/menu-xapi.svg";
+import MenuLogo from "../../assets/images/menu-logo-2.svg";
+import { toast } from "react-toastify";
+import "./style.scss";
+import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import MenuMdSvg from "iconLibrary/dropDown/MenuMdSvg";
+import PreviewSmSvg from "iconLibrary/dropDown/PreviewSmSvg";
+import EditDpDnMdSvg from "iconLibrary/dropDown/EditDpDnMdSvg";
+import DuplicateSmSvg from "iconLibrary/dropDown/DuplicateSmSvg";
+import PublishSmSvg from "iconLibrary/dropDown/PublishSmSvg";
+import DownloadSmSvg from "iconLibrary/dropDown/DownloadSmSvg";
+import DeleteSmSvg from "iconLibrary/dropDown/DeleteSmSvg";
 
 const ResourceCardDropdown = (props) => {
   const {
@@ -68,18 +77,18 @@ const ResourceCardDropdown = (props) => {
     e.preventDefault();
 
     Swal.fire({
-      title: 'Are you sure you want to delete this activity?',
+      title: "Are you sure you want to delete this activity?",
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: 'Yes',
-      denyButtonText: 'No',
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
         deleteResource(resource.id, playlist.id);
       }
     });
   };
-  const primaryColor = getGlobalColor('--main-primary-color');
+  const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <Dropdown className="pull-right resource-dropdown check">
       <Dropdown.Toggle className="resource-dropdown-btn">
@@ -87,58 +96,72 @@ const ResourceCardDropdown = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:view-activity') : permission?.Activity?.includes('activity:view')) && (
+        {(Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:view-activity")
+          : permission?.Activity?.includes("activity:view")) && (
           <Dropdown.Item
             as={Link}
             to={`/org/${organization.currentOrganization?.domain}/project/${match.params.projectId}/playlist/${playlist.id}/activity/${resource.id}/preview?view=activity`}
             onClick={() => {
-              if (previewPage === 'projectPreview') {
-                localStorage.setItem('projectPreview', true);
+              if (previewPage === "projectPreview") {
+                localStorage.setItem("projectPreview", true);
               } else {
-                localStorage.setItem('projectPreview', false);
+                localStorage.setItem("projectPreview", false);
               }
             }}
           >
-            <PreviewSmSvg primaryColor={primaryColor} className="menue-img" />
+            <PreviewSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Preview
           </Dropdown.Item>
         )}
 
-        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:edit-activity') : permission?.Activity?.includes('activity:edit')) && (
+        {(Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:edit-activity")
+          : permission?.Activity?.includes("activity:edit")) && (
           <Dropdown.Item
             onClick={async () => {
               toast.dismiss();
-              toast.info('Loading Activity ...', {
-                className: 'project-loading',
+              toast.info("Loading Activity ...", {
+                className: "project-loading",
                 closeOnClick: false,
                 closeButton: false,
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 10000,
-                icon: '',
+                icon: "",
               });
-              const result = await resourceService.activityH5p(resource.id);
+              const result = await resourceService.activityH5p(
+                resource.id,
+              );
               toast.dismiss();
 
               dispatch({
                 type: actionTypes.SET_ACTIVE_ACTIVITY_SCREEN,
-                payload: result.activity?.source_type ? 'addvideo' : 'addactivity',
+                payload: result.activity?.source_type
+                  ? "addvideo"
+                  : "addactivity",
                 playlist: playlist,
                 project: match.params.projectId,
                 activity: result.activity,
               });
               if (result.activity?.source_type) {
                 dispatch({
-                  type: 'SET_ACTIVE_VIDEO_SCREEN',
+                  type: "SET_ACTIVE_VIDEO_SCREEN",
                   payload: result.activity,
                 });
               }
             }}
           >
-            <EditDpDnMdSvg primaryColor={primaryColor} className="menue-img" />
+            <EditDpDnMdSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Edit
           </Dropdown.Item>
         )}
-        {permission?.Activity?.includes('activity:duplicate') && (
+        {permission?.Activity?.includes("activity:duplicate") && (
           <Dropdown.Item
             to="#"
             onClick={() => {
@@ -146,15 +169,23 @@ const ResourceCardDropdown = (props) => {
               cloneActivity(playlist.id, resource.id);
             }}
           >
-            <DuplicateSmSvg primaryColor={primaryColor} className="menue-img" />
+            <DuplicateSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Duplicate
           </Dropdown.Item>
         )}
-        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:publish-activity') : permission?.Activity?.includes('activity:share')) &&
+        {(Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:publish-activity")
+          : permission?.Activity?.includes("activity:share")) &&
           lmsSettings.length !== 0 && (
             <li className="dropdown-submenu send">
               <a tabIndex="-1" className="dropdown-item">
-                <PublishSmSvg primaryColor={primaryColor} className="menue-img" />
+                <PublishSmSvg
+                  primaryColor={primaryColor}
+                  className="menue-img"
+                />
                 Publish
               </a>
               <ul className="dropdown-menu check overflow-enhancment">
@@ -207,25 +238,41 @@ const ResourceCardDropdown = (props) => {
                   <a>Curriki Canvas</a>
                 </li> */}
                 {lmsSettings.map((data) => {
-                  if ((data.lms_name === 'canvas' && data.activity_visibility) || (data.lms_name === 'canvas' && data.activity_visibility)) {
+                  if (
+                    (data.lms_name === "canvas" &&
+                      data.activity_visibility) ||
+                    (data.lms_name === "canvas" &&
+                      data.activity_visibility)
+                  ) {
                     return (
                       <li>
                         <a
                           onClick={() => {
-                            if (data.lms_name === 'canvas') {
+                            if (data.lms_name === "canvas") {
                               handleShow();
-                              console.log('res', resource);
-                              setselectedPlaylistActivityName(resource.title);
+                              console.log("res", resource);
+                              setselectedPlaylistActivityName(
+                                resource.title,
+                              );
                               getProjectId(match.params.projectId);
                               setProjectId(match.params.projectId);
                               setProjectPlaylistId(playlist.id);
                               dispatch(publishLmsSettings(data));
-                              setselectedProjectPlaylistName(playlist.title);
-                              setProjectPlaylistActivityId(resource.id);
+                              setselectedProjectPlaylistName(
+                                playlist.title,
+                              );
+                              setProjectPlaylistActivityId(
+                                resource.id,
+                              );
                               dispatch(googleShare(true));
                               dispatch(shareToCanvas(true));
                             } else {
-                              loadSafariMontagePublishTool(playlist.project.id, playlist.id, resource.id, data.id);
+                              loadSafariMontagePublishTool(
+                                playlist.project.id,
+                                playlist.id,
+                                resource.id,
+                                data.id,
+                              );
                             }
                           }}
                         >
@@ -240,24 +287,39 @@ const ResourceCardDropdown = (props) => {
           )}
         {selectedProject.shared && (
           <>
-            {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:share-activity') : permission?.Activity?.includes('activity:share')) && (
+            {(Object.keys(teamPermission).length
+              ? teamPermission?.Team?.includes("team:share-activity")
+              : permission?.Activity?.includes("activity:share")) && (
               <Dropdown.Item
                 onClick={() => {
                   shareActivity(resource.id);
-                  const protocol = `${window.location.href.split('/')[0]}//`;
+                  const protocol = `${
+                    window.location.href.split("/")[0]
+                  }//`;
                   confirmAlert({
                     /* eslint-disable react/prop-types */
                     customUI: ({ onClose }) => (
                       <div className="share-project-preview-url project-share-check">
                         <br />
                         <h3>
-                          You can now share Activity <strong>{resource.title}</strong>
+                          You can now share Activity{" "}
+                          <strong>{resource.title}</strong>
                           <br />
-                          Anyone with the link below can access your activity:
+                          Anyone with the link below can access your
+                          activity:
                         </h3>
 
-                        <a target="_blank" href={`/activity/${resource.id}/shared`} rel="noopener noreferrer">
-                          <input id="urllink_clip" value={`${protocol + window.location.host}/activity/${resource.id}/shared`} />
+                        <a
+                          target="_blank"
+                          href={`/activity/${resource.id}/shared`}
+                          rel="noopener noreferrer"
+                        >
+                          <input
+                            id="urllink_clip"
+                            value={`${
+                              protocol + window.location.host
+                            }/activity/${resource.id}/shared`}
+                          />
                         </a>
 
                         <span
@@ -265,7 +327,9 @@ const ResourceCardDropdown = (props) => {
                           aria-hidden="true"
                           onClick={() => {
                             /* Get the text field */
-                            const copyText = document.getElementById('urllink_clip');
+                            const copyText = document.getElementById(
+                              "urllink_clip",
+                            );
 
                             /* Select the text field */
                             copyText.focus();
@@ -273,11 +337,11 @@ const ResourceCardDropdown = (props) => {
                             // copyText.setSelectionRange(0, 99999); /*For mobile devices*/
 
                             /* Copy the text inside the text field */
-                            document.execCommand('copy');
+                            document.execCommand("copy");
 
                             /* Alert the copied text */
                             Swal.fire({
-                              title: 'Link Copied',
+                              title: "Link Copied",
                               showCancelButton: false,
                               showConfirmButton: false,
                               timer: 1500,
@@ -290,7 +354,11 @@ const ResourceCardDropdown = (props) => {
                         <br />
 
                         <div className="close-btn flex-center">
-                          <button className="curriki-btn-extra" type="button" onClick={onClose}>
+                          <button
+                            className="curriki-btn-extra"
+                            type="button"
+                            onClick={onClose}
+                          >
                             Ok
                           </button>
                         </div>
@@ -306,15 +374,29 @@ const ResourceCardDropdown = (props) => {
             )}
           </>
         )}
-        {permission?.Activity?.includes('activity:share') && (
-          <Dropdown.Item href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`} onClick={() => shareActivity(resource.id)}>
-            <DownloadSmSvg primaryColor={primaryColor} className="menue-img" />
-            xAPI Download
-          </Dropdown.Item>
-        )}
-        {(Object.keys(teamPermission).length ? teamPermission?.Team?.includes('team:delete-activity') : permission?.Activity?.includes('activity:delete')) && (
+        {permission?.Activity?.includes("activity:share") &&
+          permission?.Activity?.includes(
+            "activity:view-export-xapi-option",
+          ) && (
+            <Dropdown.Item
+              href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/getxapifile/${resource.id}`}
+              onClick={() => shareActivity(resource.id)}
+            >
+              <DownloadSmSvg
+                primaryColor={primaryColor}
+                className="menue-img"
+              />
+              xAPI Download
+            </Dropdown.Item>
+          )}
+        {(Object.keys(teamPermission).length
+          ? teamPermission?.Team?.includes("team:delete-activity")
+          : permission?.Activity?.includes("activity:delete")) && (
           <Dropdown.Item onClick={handleDelete}>
-            <DeleteSmSvg primaryColor={primaryColor} className="menue-img" />
+            <DeleteSmSvg
+              primaryColor={primaryColor}
+              className="menue-img"
+            />
             Delete
           </Dropdown.Item>
         )}
@@ -364,9 +446,25 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  deleteResource: (activityId, playlistId) => dispatch(deleteResourceAction(activityId, playlistId)),
+  deleteResource: (activityId, playlistId) =>
+    dispatch(deleteResourceAction(activityId, playlistId)),
   getLmsSettings: () => dispatch(getUserLmsSettingsAction()),
-  loadSafariMontagePublishTool: (projectId, playlistId, activityId, lmsSettingId) => dispatch(loadSafariMontagePublishToolAction(projectId, playlistId, activityId, lmsSettingId)),
+  loadSafariMontagePublishTool: (
+    projectId,
+    playlistId,
+    activityId,
+    lmsSettingId,
+  ) =>
+    dispatch(
+      loadSafariMontagePublishToolAction(
+        projectId,
+        playlistId,
+        activityId,
+        lmsSettingId,
+      ),
+    ),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ResourceCardDropdown));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ResourceCardDropdown),
+);
