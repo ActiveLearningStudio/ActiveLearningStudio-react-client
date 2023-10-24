@@ -23,7 +23,7 @@ import SearchInputMdSvg from "iconLibrary/mainContainer/SearchInputMdSvg";
 
 const ActivityLayout = (props) => {
   const [allActivitiesSingle, setAllSingleActivities] = useState(
-    null
+    null,
   );
   const {
     changeScreenHandler,
@@ -34,6 +34,7 @@ const ActivityLayout = (props) => {
   const history = useHistory();
   const [layout, setLayout] = useState({ title: "Interactive Book" });
   const [filterData, setFilterData] = useState([]);
+  const [inputSearch, setInputSearch] = useState("");
   const organization = useSelector((state) => state.organization);
 
   const dispatch = useDispatch();
@@ -49,17 +50,17 @@ const ActivityLayout = (props) => {
     });
     dispatch(loadResourceTypesAction());
     dispatch(
-      getSingleLayoutActivities(organization?.activeOrganization?.id)
+      getSingleLayoutActivities(organization?.activeOrganization?.id),
     );
   }, []);
   const allActivity = useSelector(
-    (state) => state.myactivities.singleLayout
+    (state) => state.myactivities.singleLayout,
   );
   const screenSelectionType = useSelector(
-    (state) => state.myactivities.screenSelectionType
+    (state) => state.myactivities.screenSelectionType,
   );
   const allActivitytypes = useSelector(
-    (state) => state.resource.types
+    (state) => state.resource.types,
   );
   useEffect(() => {
     setAllSingleActivities(allActivity);
@@ -81,16 +82,35 @@ const ActivityLayout = (props) => {
   }, [allActivitytypes]);
 
   useEffect(() => {
-    if (filterData?.length) {
+    if (inputSearch || filterData.length) {
       setAllSingleActivities(
-        allActivity?.filter((data) =>
-          filterData.includes(data.activityType?.id)
-        )
+        allActivity?.filter((data) => {
+          if (inputSearch && filterData.length) {
+            return (
+              filterData
+                .map((d) => d?.id)
+                .includes(data?.activityType.id) &&
+              data.title
+                .toLowerCase()
+                .includes(inputSearch.trim().toLowerCase())
+            );
+          }
+          if (inputSearch) {
+            return data.title
+              .toLowerCase()
+              .includes(inputSearch.trim().toLowerCase());
+          } else {
+            return filterData
+              .map((d) => d?.id)
+              .includes(data?.activityType.id);
+          }
+        }),
       );
     } else {
       setAllSingleActivities(allActivity);
     }
-  }, [filterData]);
+  }, [inputSearch, filterData]);
+
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
     <div className="activity-layout-form ">
@@ -128,19 +148,7 @@ const ActivityLayout = (props) => {
             <input
               type="text"
               placeholder="Search activity types..."
-              onChange={(e) => {
-                if (e.target.value == "") {
-                  setAllSingleActivities(allActivity);
-                } else {
-                  setAllSingleActivities(
-                    allActivity?.filter((data) =>
-                      data.title
-                        .toLowerCase()
-                        .includes(e.target.value.trim().toLowerCase())
-                    )
-                  );
-                }
-              }}
+              onChange={(e) => setInputSearch(e.target.value)}
             />
 
             <SearchInputMdSvg
@@ -155,7 +163,20 @@ const ActivityLayout = (props) => {
               </div>
               <div>
                 <div className="dropdown-title">
-                  -----
+                  <div
+                    style={{
+                      width: "160px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {filterData?.length
+                      ? filterData?.map((item, i) => (
+                          <span key={i}>{item.title}</span>
+                        ))
+                      : "-----"}
+                  </div>
                   <img src={arrowdark} alt="arrow" />
                 </div>
                 <div class="dropdown-content-select">
@@ -164,18 +185,19 @@ const ActivityLayout = (props) => {
                       return (
                         <label>
                           <input
-                            //checked={filterData.includes(data.id)}
+                            value={data.id}
+                            checked={filterData
+                              .filter((data) => data.id)
+                              .map((data) => data.id)
+                              .includes(data.id)}
                             onChange={(e) => {
                               if (e.target.checked) {
-                                setFilterData([
-                                  ...filterData,
-                                  data.id,
-                                ]);
+                                setFilterData([...filterData, data]);
                               } else {
                                 setFilterData(
                                   filterData.filter(
-                                    (ids) => ids !== data.id
-                                  )
+                                    (ids) => ids.id !== data.id,
+                                  ),
                                 );
                               }
                             }}
