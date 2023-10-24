@@ -219,7 +219,7 @@ const ActivityShared = (props) => {
 
   return (
     <section className="curriki-playlist-preview">
-      {h5pAssets && <H5PAssetLoader h5pAssets={h5pAssets} />}
+      {h5pAssets && <H5PAssetLoader h5pAssets={h5pAssets} currikiH5PWrapper={currikiH5PWrapper} activityId={h5pAssets?.activity?.id} />}
       <div className="project-share-preview-nav">
         <img src={HeaderLogo} />
       </div>
@@ -301,6 +301,7 @@ const ActivityShared = (props) => {
                           <div className={selectedPlaylist?.activity.title === data.title ? 'each-activity active' : 'each-activity'}>
                             <Link
                               onClick={() => {
+                                if (selectedPlaylist?.activity.title === data.title) return;
                                 setSelectedPlaylist();
                               }}
                               to={`/activity/${data.id}/shared?view=playlist`}
@@ -327,6 +328,7 @@ const ActivityShared = (props) => {
                       <Link
                         title={data.title}
                         onClick={() => {
+                          if (selectedPlaylist?.activity.title === data.title) return;
                           setSelectedPlaylist();
                         }}
                         to={`/activity/${data.id}/shared?view=playlist`}
