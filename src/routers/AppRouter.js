@@ -442,9 +442,9 @@ const AppRouter = (props) => {
           path="/nevada-login"
           component={VevensityLogin}
         />
-        <PrivateRoute
+        <PublicRoute
           exact
-          path="/org/:organization/search-project"
+          path="/search-project"
           component={SearchProject}
         />
         <Route>

@@ -339,6 +339,17 @@ const Index = () => {
                                         Book 1: All About Java
                                       </h3>
                                     </div>
+                                    <div className="view-btn-box">
+                                      <div className="view-unit-box">
+                                        <button className="unit-btn">
+                                          View Units
+                                        </button>
+                                        <img
+                                          src={RightArow}
+                                          alt="arrow"
+                                        />
+                                      </div>
+                                    </div>
                                     <div className="contentbox">
                                       <Dropdown className="playlist-dropdown check show dropdown">
                                         <Dropdown.Toggle>
@@ -404,6 +415,17 @@ const Index = () => {
                                                   Unit 1: What You can
                                                   do With java
                                                 </h3>
+                                              </div>
+                                              <div className="view-btn-box ch-box">
+                                                <div className="view-unit-box">
+                                                  <button className="unit-btn">
+                                                    View Chapters
+                                                  </button>
+                                                  <img
+                                                    src={RightArow}
+                                                    alt="arrow"
+                                                  />
+                                                </div>
                                               </div>
                                               <div className="contentbox">
                                                 <Dropdown className="playlist-dropdown check show dropdown">
@@ -553,6 +575,17 @@ const Index = () => {
                                                   Unit 2: What You can
                                                   do With java
                                                 </h3>
+                                                <div className="view-btn-box ch-box">
+                                                  <div className="view-unit-box">
+                                                    <button className="unit-btn">
+                                                      View Chapters
+                                                    </button>
+                                                    <img
+                                                      src={RightArow}
+                                                      alt="arrow"
+                                                    />
+                                                  </div>
+                                                </div>
                                               </div>
                                               <div className="contentbox">
                                                 <Dropdown className="playlist-dropdown check show dropdown">
@@ -779,6 +812,17 @@ const Index = () => {
                                       <h3 className="playlist-title">
                                         Book 2: All About Java
                                       </h3>
+                                      <div className="view-btn-box">
+                                        <div className="view-unit-box">
+                                          <button className="unit-btn">
+                                            View Units
+                                          </button>
+                                          <img
+                                            src={RightArow}
+                                            alt="arrow"
+                                          />
+                                        </div>
+                                      </div>
                                     </div>
                                     <div className="contentbox">
                                       <Dropdown className="playlist-dropdown check show dropdown">
@@ -845,6 +889,17 @@ const Index = () => {
                                                   Unit 1: What You can
                                                   do With java
                                                 </h3>
+                                                <div className="view-btn-box ch-box">
+                                                  <div className="view-unit-box">
+                                                    <button className="unit-btn">
+                                                      View Chapters
+                                                    </button>
+                                                    <img
+                                                      src={RightArow}
+                                                      alt="arrow"
+                                                    />
+                                                  </div>
+                                                </div>
                                               </div>
                                               <div className="contentbox">
                                                 <Dropdown className="playlist-dropdown check show dropdown">
@@ -994,6 +1049,17 @@ const Index = () => {
                                                   Unit 2: What You can
                                                   do With java
                                                 </h3>
+                                                <div className="view-btn-box ch-box">
+                                                  <div className="view-unit-box">
+                                                    <button className="unit-btn">
+                                                      View Chapters
+                                                    </button>
+                                                    <img
+                                                      src={RightArow}
+                                                      alt="arrow"
+                                                    />
+                                                  </div>
+                                                </div>
                                               </div>
                                               <div className="contentbox">
                                                 <Dropdown className="playlist-dropdown check show dropdown">
