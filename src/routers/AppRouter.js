@@ -30,153 +30,158 @@ history.listen((location) => {
   ReactGA.pageview(location.pathname);
 });
 const LoginPage = loadable(() =>
-  import("../containers/Auth/LoginPage")
+  import("../containers/Auth/LoginPage"),
 );
 const ProjectShareTemplate = loadable(() =>
-  import("../containers/ProjectShareTemplate")
+  import("../containers/ProjectShareTemplate"),
 );
 const SubscribePage = loadable(() =>
-  import("../containers/Auth/SubscribePage")
+  import("../containers/Auth/SubscribePage"),
 );
 const RegisterPage = loadable(() =>
-  import("../containers/Auth/RegisterPage")
+  import("../containers/Auth/RegisterPage"),
 );
 const ForgotPasswordPage = loadable(() =>
-  import("../containers/Auth/ForgotPasswordPage")
+  import("../containers/Auth/ForgotPasswordPage"),
 );
 const ResetPasswordPage = loadable(() =>
-  import("../containers/Auth/ResetPasswordPage")
+  import("../containers/Auth/ResetPasswordPage"),
 );
 const ConfirmEmailPage = loadable(() =>
-  import("../containers/Auth/ConfirmEmailPage")
+  import("../containers/Auth/ConfirmEmailPage"),
 );
 const NeafRegister = loadable(() =>
-  import("../containers/Auth/NeafRegistration")
+  import("../containers/Auth/NeafRegistration"),
 );
 const NeafLogin = loadable(() =>
-  import("../containers/Auth/NeafLogin")
+  import("../containers/Auth/NeafLogin"),
 );
 const VevensityRegister = loadable(() =>
-  import("../containers/Auth/VevinsityRegistration")
+  import("../containers/Auth/VevinsityRegistration"),
 );
 const VevensityLogin = loadable(() =>
-  import("../containers/Auth/VevinsityLogin")
+  import("../containers/Auth/VevinsityLogin"),
 );
 const AdminPanel = loadable(() => import("../containers/Admin"));
 const Library = loadable(() => import("../containers/Search"));
 const LtiLogin = loadable(() =>
-  import("../containers/Auth/LtiLogin")
+  import("../containers/Auth/LtiLogin"),
 );
 const termsPolicyContent = loadable(() =>
-  import("../components/Footer/termsPolicyContent")
+  import("../components/Footer/termsPolicyContent"),
 );
 const CanvasLtiLogin = loadable(() =>
-  import("../containers/Auth/CanvasLtiLogin")
+  import("../containers/Auth/CanvasLtiLogin"),
 );
 const ProfilePage = loadable(() =>
-  import("../containers/Account/ProfilePage")
+  import("../containers/Account/ProfilePage"),
 );
 const ChangePasswordPage = loadable(() =>
-  import("../containers/Account/ChangePasswordPage")
+  import("../containers/Account/ChangePasswordPage"),
 );
 // const DashboardPage = loadable(() => import('../containers/Dashboard'));
 const NotificationPage = loadable(() =>
-  import("../containers/Notification")
+  import("../containers/Notification"),
 );
 const MsTeams = loadable(() => import("../containers/MsTeams"));
 const MsTeamsCallBack = loadable(() =>
-  import("../containers/MsTeams/callback")
+  import("../containers/MsTeams/callback"),
 );
 const BrandingPage = loadable(() => import("../containers/Branding"));
 
 const ProjectsPage = loadable(() => import("../containers/Projects"));
 const PlaylistsPage = loadable(() =>
-  import("../containers/Playlists")
+  import("../containers/Playlists"),
 );
 const PreviewPage = loadable(() => import("../containers/Preview"));
 const LtiPreviewPage = loadable(() =>
-  import("../containers/LtiPreviewPage")
+  import("../containers/LtiPreviewPage"),
 );
 const PreviewPageShared = loadable(() =>
-  import("../containers/PreviewPageShared")
+  import("../containers/PreviewPageShared"),
 );
 const SecureProjectPreview = loadable(() =>
-  import("../containers/SecureProjectPreview")
+  import("../containers/SecureProjectPreview"),
 );
 const SearchResult = loadable(() => import("../containers/Search"));
 const Searchnetlify = loadable(() =>
-  import("../containers/Search/SearchNetlify")
+  import("../containers/Search/SearchNetlify"),
 );
 // const LtiModel = loadable(() => import('../containers/LtiModel'));
 const TeamsPage = loadable(() => import("../containers/Teams"));
 const TeamDetailPage = loadable(() =>
-  import("../containers/Teams/TeamDetailView")
+  import("../containers/Teams/TeamDetailView"),
 );
 const TeamAddProjects = loadable(() =>
-  import("../containers/Teams/TeamAddProjects")
+  import("../containers/Teams/TeamAddProjects"),
 );
 const VideoPage = loadable(() => import("../containers/Videos"));
 const RecordVideoPage = loadable(() =>
-  import("../containers/RecordVideo")
+  import("../containers/RecordVideo"),
 );
 
 // const GroupsPage = loadable(() => import('../containers/Groups'));
 // const AddGroupProjectsPage = loadable(() => import('../containers/Groups/AddProjects'));
 // const AddGroupProjectMemberPage = loadable(() => import('../containers/Groups/AddMembers'));
 const GclassActivityPage = loadable(() =>
-  import("../containers/LMS/GoogleClassroom/GclassActivityPage")
+  import("../containers/LMS/GoogleClassroom/GclassActivityPage"),
 );
 const GenericLMSActivityPage = loadable(() =>
-  import("../containers/LMS/Generic/GenericLMSActivityPage")
+  import("../containers/LMS/Generic/GenericLMSActivityPage"),
 );
 const ActivityCreate = loadable(() =>
-  import("../containers/CreateActivity")
+  import("../containers/CreateActivity"),
 );
 const EditActivity = loadable(() =>
-  import("../containers/EditActivity")
+  import("../containers/EditActivity"),
 );
 const GclassSummaryPage = loadable(() =>
-  import("../containers/LMS/GoogleClassroom/GclassSummaryPage")
+  import("../containers/LMS/GoogleClassroom/GclassSummaryPage"),
 );
 const CanvasSummaryPage = loadable(() =>
-  import("../containers/LMS/Canvas/CanvasSummaryPage")
+  import("../containers/LMS/Canvas/CanvasSummaryPage"),
 );
 const SearchPage = loadable(() =>
-  import("../containers/LMS/Canvas/DeepLinking/SearchPage")
+  import("../containers/LMS/Canvas/DeepLinking/SearchPage"),
 );
 const LtiActivity = loadable(() =>
-  import("../containers/LMS/LTI/Activity")
+  import("../containers/LMS/LTI/Activity"),
 );
 const ManageOrganization = loadable(() =>
-  import("../containers/ManageOrganization")
+  import("../containers/ManageOrganization"),
 );
 const SSOLogin = loadable(() =>
-  import("../containers/Auth/SSOLogin")
+  import("../containers/Auth/SSOLogin"),
 );
 const WordpressSSO = loadable(() =>
-  import("../containers/Auth/WordpressSSO")
+  import("../containers/Auth/WordpressSSO"),
 );
 const MSTeamsSSO = loadable(() =>
-  import("../containers/Auth/MSTeamsSSO")
+  import("../containers/Auth/MSTeamsSSO"),
 );
 const MsTeamsActivityPage = loadable(() =>
-  import("../containers/LMS/MsTeams/MsTeamsActivityPage")
+  import("../containers/LMS/MsTeams/MsTeamsActivityPage"),
 );
 const MsTeamActivityLaunch = loadable(() =>
-  import("../containers/LMS/MsTeams/MsTeamActivityLaunch")
+  import("../containers/LMS/MsTeams/MsTeamActivityLaunch"),
 );
 const MsTeamSummaryPage = loadable(() =>
-  import("../containers/LMS/MsTeams/MsTeamSummaryPage")
+  import("../containers/LMS/MsTeams/MsTeamSummaryPage"),
 );
 const MsTeamsActivityContainer = loadable(() =>
-  import("../containers/LMS/MsTeams/MsTeamsActivityContainer")
+  import("../containers/LMS/MsTeams/MsTeamsActivityContainer"),
 );
+
+const SearchProject = loadable(() =>
+  import("../containers/SearchProject"),
+);
+
 let intialLoad = 0;
 
 const AppRouter = (props) => {
   const dispatch = useDispatch();
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
   const SelectedOrganization = localStorage.getItem("current_org");
@@ -436,6 +441,11 @@ const AppRouter = (props) => {
           exact
           path="/nevada-login"
           component={VevensityLogin}
+        />
+        <PublicRoute
+          exact
+          path="/search-project"
+          component={SearchProject}
         />
         <Route>
           {user && !user.subscribed ? (
