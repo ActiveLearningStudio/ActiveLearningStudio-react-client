@@ -294,7 +294,7 @@
       }
     }
     .dropdown-title {
-      font-size: 14px;
+      font-size: 12px;
       line-height: 20px;
       width: 200px;
       height: 36px;
@@ -306,6 +306,7 @@
       border-radius: 4px;
       display: flex;
       justify-content: space-between;
+      flex-wrap: nowrap;
     }
   }
 

@@ -59,7 +59,7 @@ const DropDownEdit = ({
 }) => {
   const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector(
-    (state) => state.organization
+    (state) => state.organization,
   );
   const project = useSelector((state) => state.project);
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
@@ -79,7 +79,7 @@ const DropDownEdit = ({
 
   useEffect(() => {
     setVisibilityTypeArray(
-      activeOrganization?.allowed_visibility_type_id
+      activeOrganization?.allowed_visibility_type_id,
     );
   }, [activeOrganization]);
   return (
@@ -176,7 +176,7 @@ const DropDownEdit = ({
           {/* For activity Card */}
           {isActivityCard &&
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author"
+              "independent-activity:edit-author",
             ) && (
               <>
                 {/* <Dropdown.Item className onClick={() => {}}>
@@ -238,7 +238,7 @@ const DropDownEdit = ({
                               window.gapi.sharetoclassroom
                             ) {
                               window.gapi.sharetoclassroom.go(
-                                "croom"
+                                "croom",
                               );
                             }
                             const protocol = `${
@@ -273,7 +273,7 @@ const DropDownEdit = ({
 
                 {/* Duplicate For Activity */}
                 {permission?.["Independent Activity"]?.includes(
-                  "independent-activity:edit-author"
+                  "independent-activity:edit-author",
                 ) && (
                   <>
                     <Dropdown.Item
@@ -288,7 +288,7 @@ const DropDownEdit = ({
                         });
                         const result = await intActivityServices.indActivityClone(
                           activeOrganization.id,
-                          data.id
+                          data.id,
                         );
                         toast.dismiss();
                         Swal.fire({
@@ -305,47 +305,49 @@ const DropDownEdit = ({
                     </Dropdown.Item>
                   </>
                 )}
+                {permission?.["Independent Activity"]?.includes(
+                  "independent-activity:view-library-preference-options",
+                ) && (
+                  <li className="dropdown-submenu send">
+                    <a
+                      tabIndex="-1"
+                      style={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <LibraryStatusSmSvg
+                        primaryColor={primaryColor}
+                        className="mr-2"
+                      />
+                      Library preference
+                    </a>
+                    <div className="faAngleRight-dropdown">
+                      <RightAngleSmSvg primaryColor={primaryColor} />
+                    </div>
 
-                <li className="dropdown-submenu send">
-                  <a
-                    tabIndex="-1"
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <LibraryStatusSmSvg
-                      primaryColor={primaryColor}
-                      className="mr-2"
-                    />
-                    Library preference
-                  </a>
-                  <div className="faAngleRight-dropdown">
-                    <RightAngleSmSvg primaryColor={primaryColor} />
-                  </div>
-
-                  <ul className="dropdown-menu check">
-                    {visibilityTypeArray?.map((element) => (
-                      <li
-                        onClick={() => {
-                          dispatch(
-                            editIndActivityItem(data.id, {
-                              ...data,
-                              data: "",
-                              type: "h5p",
-                              organization_visibility_type_id:
-                                element.id,
-                            })
-                          );
-                        }}
-                      >
-                        <a>
-                          {element.id === 4
-                            ? "Public"
-                            : element.display_name}
-                        </a>
-                      </li>
-                    ))}
-                    {/* <li>
+                    <ul className="dropdown-menu check">
+                      {visibilityTypeArray?.map((element) => (
+                        <li
+                          onClick={() => {
+                            dispatch(
+                              editIndActivityItem(data.id, {
+                                ...data,
+                                data: "",
+                                type: "h5p",
+                                organization_visibility_type_id:
+                                  element.id,
+                              }),
+                            );
+                          }}
+                        >
+                          <a>
+                            {element.id === 4
+                              ? "Public"
+                              : element.display_name}
+                          </a>
+                        </li>
+                      ))}
+                      {/* <li>
                     <a>Private (Only me)</a>
                   </li>
                   <li>
@@ -354,9 +356,9 @@ const DropDownEdit = ({
                   <li>
                     <a>Public</a>
                   </li> */}
-                  </ul>
-                </li>
-
+                    </ul>
+                  </li>
+                )}
                 <li className="dropdown-submenu send">
                   <a tabIndex="-1">
                     <ExportSmSvg
@@ -370,42 +372,50 @@ const DropDownEdit = ({
                   </div>
 
                   <ul className="dropdown-menu check">
-                    <li>
-                      <a
-                        target="_blank"
+                    {permission?.Activity?.includes(
+                      "activity:view-export-xapi-option",
+                    ) && (
+                      <li>
+                        <a
+                          target="_blank"
+                          onClick={() => {
+                            dispatch(shareEnableLink(data.id));
+                          }}
+                          href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
+                        >
+                          xAPI Format
+                        </a>
+                      </li>
+                    )}
+                    {permission?.["Independent Activity"]?.includes(
+                      "independent-activity:view-export-h5p-option",
+                    ) && (
+                      <li
                         onClick={() => {
-                          dispatch(shareEnableLink(data.id));
-                        }}
-                        href={`${window.__RUNTIME_CONFIG__.REACT_APP_API_URL}/${config.apiVersion}/go/independent_activity/getxapifile/${data.id}`}
-                      >
-                        xAPI Format
-                      </a>
-                    </li>
-                    <li
-                      onClick={() => {
-                        Swal.fire({
-                          title: "Please Wait !",
-                          html: "Exporting Activity   ...",
-                          allowOutsideClick: false,
-                          onBeforeOpen: () => {
-                            Swal.showLoading();
-                          },
-                        });
-                        const result = indActivityService.exportIndAvtivity(
-                          activeOrganization.id,
-                          data.id
-                        );
-                        result.then((data) => {
-                          // console.log(data)
                           Swal.fire({
-                            icon: "success",
-                            html: data?.message,
+                            title: "Please Wait !",
+                            html: "Exporting Activity   ...",
+                            allowOutsideClick: false,
+                            onBeforeOpen: () => {
+                              Swal.showLoading();
+                            },
                           });
-                        });
-                      }}
-                    >
-                      <a>H5P Format</a>
-                    </li>
+                          const result = indActivityService.exportIndAvtivity(
+                            activeOrganization.id,
+                            data.id,
+                          );
+                          result.then((data) => {
+                            // console.log(data)
+                            Swal.fire({
+                              icon: "success",
+                              html: data?.message,
+                            });
+                          });
+                        }}
+                      >
+                        <a>H5P Format</a>
+                      </li>
+                    )}
                   </ul>
                 </li>
 
@@ -520,7 +530,7 @@ const DropDownEdit = ({
 
           {isActivityCard ? (
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author"
+              "independent-activity:edit-author",
             ) && (
               <Dropdown.Item
                 className
@@ -574,7 +584,7 @@ const DropDownEdit = ({
 
           {isActivityCard &&
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author"
+              "independent-activity:edit-author",
             ) && (
               <li className="dropdown-submenu send">
                 <a tabIndex="-1" className="dropdown-item">

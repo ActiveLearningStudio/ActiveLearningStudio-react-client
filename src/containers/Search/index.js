@@ -116,10 +116,10 @@ function SearchInterface(props) {
   });
   const allState = useSelector((state) => state.search);
   const activityTypesState = useSelector(
-    (state) => state.resource.types
+    (state) => state.resource.types,
   );
   const { currentOrganization, permission } = useSelector(
-    (state) => state.organization
+    (state) => state.organization,
   );
 
   const dispatch = useDispatch();
@@ -142,7 +142,7 @@ function SearchInterface(props) {
   const [activePage, setActivePage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [activeModel, setActiveModel] = useState(
-    fromTeam ? "projects" : "Independent activities"
+    fromTeam ? "projects" : "Independent activities",
   );
   const [activeType, setActiveType] = useState([]);
   const [activeSubject, setActiveSubject] = useState([]);
@@ -152,7 +152,7 @@ function SearchInterface(props) {
   const [authorName, SetAuthor] = useState("");
   const [noWords, setNoWords] = useState("");
   const [activetab, setActiveTab] = useState(
-    fromTeam ? "projects" : "Independent activities"
+    fromTeam ? "projects" : "Independent activities",
   );
   const [todate, Settodate] = useState(undefined);
   const [fromdate, Setfromdate] = useState(undefined);
@@ -163,11 +163,11 @@ function SearchInterface(props) {
   const [isLoader, setisLoader] = useState(false);
   const [projectTogglestate, setprojectTogglestate] = useState(null);
   const [playlistTogglestate, setplaylistTogglestate] = useState(
-    null
+    null,
   );
   const [playlistdata, setplaylistdata] = useState(null);
   const hideShowSideBar = useSelector(
-    (state) => state.msTeams.toggle_sidebar
+    (state) => state.msTeams.toggle_sidebar,
   );
   const isMsTeam = useSelector((state) => state.msTeams.is_msteam);
 
@@ -311,7 +311,7 @@ function SearchInterface(props) {
   useEffect(() => {
     const allItems = [];
     activityTypesState?.data?.map((data) =>
-      data.activityItems.map((itm) => allItems.push(itm))
+      data.activityItems.map((itm) => allItems.push(itm)),
     );
     setActivityTypes(allItems.sort(compare));
   }, [activityTypesState]);
@@ -320,13 +320,13 @@ function SearchInterface(props) {
     if (currentOrganization?.id) {
       if (subjects?.length === 0) {
         const resultSub = dispatch(
-          getSubjects(currentOrganization?.id || 1)
+          getSubjects(currentOrganization?.id || 1),
         );
         resultSub.then((data) => setSubjects(data));
       }
       if (authorTags?.length === 0) {
         const resultAuth = dispatch(
-          getAuthorTag(currentOrganization?.id || 1)
+          getAuthorTag(currentOrganization?.id || 1),
         );
         resultAuth.then((data) => setAuthorTags(data));
       }
@@ -335,7 +335,7 @@ function SearchInterface(props) {
         activeModel === "Independent activities";
       if (educationLevels?.length === 0) {
         const resultEdu = dispatch(
-          getEducationLevel(currentOrganization?.id || 1)
+          getEducationLevel(currentOrganization?.id || 1),
         );
         resultEdu.then((data) => setEducationLevels(data));
       }
@@ -582,7 +582,7 @@ function SearchInterface(props) {
                                                 <div
                                                   style={{
                                                     backgroundImage: !res.thumb_url.includes(
-                                                      "/storage/"
+                                                      "/storage/",
                                                     )
                                                       ? `url(${res.thumb_url})`
                                                       : `url(${global.config.resourceUrl}${res.thumb_url})`,
@@ -663,74 +663,88 @@ function SearchInterface(props) {
                                                           </span>
                                                         </div>
                                                       </a>
-                                                      <Dropdown.Item
-                                                        onClick={async () => {
-                                                          toast.info(
-                                                            "Duplicating Activity...",
-                                                            {
-                                                              className:
-                                                                "project-loading",
-                                                              closeOnClick: false,
-                                                              closeButton: false,
-                                                              position:
-                                                                toast
-                                                                  .POSITION
-                                                                  .BOTTOM_RIGHT,
-                                                              autoClose: 10000,
-                                                              icon:
-                                                                "",
-                                                            }
-                                                          );
+                                                      {permission?.[
+                                                        "Independent Activity"
+                                                      ]?.includes(
+                                                        "independent-activity:view-copy-to-my-activities-option",
+                                                      ) && (
+                                                        <Dropdown.Item
+                                                          onClick={async () => {
+                                                            toast.info(
+                                                              "Duplicating Activity...",
+                                                              {
+                                                                className:
+                                                                  "project-loading",
+                                                                closeOnClick: false,
+                                                                closeButton: false,
+                                                                position:
+                                                                  toast
+                                                                    .POSITION
+                                                                    .BOTTOM_RIGHT,
+                                                                autoClose: 10000,
+                                                                icon:
+                                                                  "",
+                                                              },
+                                                            );
 
-                                                          const result = await intActivityServices.indActivityClone(
-                                                            currentOrganization?.id,
-                                                            res.id
-                                                          );
+                                                            const result = await intActivityServices.indActivityClone(
+                                                              currentOrganization?.id,
+                                                              res.id,
+                                                            );
 
-                                                          toast.dismiss();
-                                                          Swal.fire({
-                                                            html:
-                                                              result.message,
-                                                            icon:
-                                                              "success",
-                                                          });
-                                                        }}
-                                                      >
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyActivitySvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          Copy to My
-                                                          Activities
-                                                        </div>
-                                                      </Dropdown.Item>
-                                                      <Dropdown.Item
-                                                        onClick={() => {
-                                                          setIndClone(
-                                                            true
-                                                          );
-                                                          setModalShow(
-                                                            true
-                                                          );
-                                                          setClone(
-                                                            res
-                                                          );
-                                                        }}
-                                                      >
-                                                        {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
+                                                            toast.dismiss();
+                                                            Swal.fire(
+                                                              {
+                                                                html:
+                                                                  result.message,
+                                                                icon:
+                                                                  "success",
+                                                              },
+                                                            );
+                                                          }}
+                                                        >
+                                                          <div className="dropDown-item-name-icon">
+                                                            <MyActivitySvg
+                                                              primaryColor={
+                                                                primaryColor
+                                                              }
+                                                            />
+                                                            Copy to My
+                                                            Activities
+                                                          </div>
+                                                        </Dropdown.Item>
+                                                      )}
+                                                      {permission?.[
+                                                        "Independent Activity"
+                                                      ]?.includes(
+                                                        "independent-activity:view-copy-to-my-projects-option",
+                                                      ) && (
+                                                        <Dropdown.Item
+                                                          onClick={() => {
+                                                            setIndClone(
+                                                              true,
+                                                            );
+                                                            setModalShow(
+                                                              true,
+                                                            );
+                                                            setClone(
+                                                              res,
+                                                            );
+                                                          }}
+                                                        >
+                                                          {/* <FontAwesomeIcon className="mr-2" icon={faPlus} />
                                                       Add to Projects */}
-                                                        <div className="dropDown-item-name-icon">
-                                                          <MyProjectSmSvg
-                                                            primaryColor={
-                                                              primaryColor
-                                                            }
-                                                          />
-                                                          Copy to My
-                                                          projects
-                                                        </div>
-                                                      </Dropdown.Item>
+                                                          <div className="dropDown-item-name-icon">
+                                                            <MyProjectSmSvg
+                                                              primaryColor={
+                                                                primaryColor
+                                                              }
+                                                            />
+                                                            Copy to My
+                                                            projects
+                                                          </div>
+                                                        </Dropdown.Item>
+                                                      )}
                                                     </>
                                                   </Dropdown.Menu>
                                                 </Dropdown>
@@ -738,7 +752,7 @@ function SearchInterface(props) {
                                             </div>
                                           </div>
                                         </>
-                                      )
+                                      ),
                                     )
                                   ) : (
                                     <Alert variant="danger">
@@ -783,23 +797,23 @@ function SearchInterface(props) {
                                               counterTop + 1
                                             ) {
                                               setprojectTogglestate(
-                                                null
+                                                null,
                                               );
                                             } else {
                                               setprojectTogglestate(
-                                                counterTop + 1
+                                                counterTop + 1,
                                               );
 
                                               setplaylistdata(null);
                                               const results = await dispatch(
                                                 simpleSearchProjectPreview(
                                                   currentOrganization?.id,
-                                                  res.id
-                                                )
+                                                  res.id,
+                                                ),
                                               );
                                               if (results) {
                                                 setplaylistdata(
-                                                  results
+                                                  results,
                                                 );
                                               }
                                             }
@@ -822,7 +836,7 @@ function SearchInterface(props) {
                                                     style={{
                                                       // eslint-disable-next-line max-len
                                                       backgroundImage: !res.thumb_url.includes(
-                                                        "/storage/"
+                                                        "/storage/",
                                                       )
                                                         ? `url(${res.thumb_url})`
                                                         : `url(${global.config.resourceUrl}${res.thumb_url})`,
@@ -906,10 +920,10 @@ function SearchInterface(props) {
                                                   )} */}
                                                 </div>
                                                 {(permission?.Project?.includes(
-                                                  "project:clone"
+                                                  "project:clone",
                                                 ) ||
                                                   permission?.Project?.includes(
-                                                    "project:publish"
+                                                    "project:publish",
                                                   )) && (
                                                   <Dropdown className="playlist-dropdown check">
                                                     <Dropdown.Toggle>
@@ -917,14 +931,14 @@ function SearchInterface(props) {
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu>
                                                       {permission?.Project?.includes(
-                                                        "project:clone"
+                                                        "project:clone",
                                                       ) && (
                                                         <>
                                                           <Dropdown.Item
                                                             onClick={() =>
                                                               window.open(
                                                                 `/project/${res.id}/preview`,
-                                                                "_blank"
+                                                                "_blank",
                                                               )
                                                             }
                                                           >
@@ -939,48 +953,53 @@ function SearchInterface(props) {
                                                               </span>
                                                             </div>
                                                           </Dropdown.Item>
-
-                                                          <Dropdown.Item
-                                                            onClick={() => {
-                                                              Swal.fire(
-                                                                {
-                                                                  html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
-                                                                  showCancelButton: true,
-                                                                  confirmButtonColor:
-                                                                    "#3085d6",
-                                                                  cancelButtonColor:
-                                                                    "#d33",
-                                                                  confirmButtonText:
-                                                                    "Ok",
-                                                                }
-                                                              ).then(
-                                                                (
-                                                                  result
-                                                                ) => {
-                                                                  if (
-                                                                    result.value
-                                                                  ) {
-                                                                    cloneProject(
-                                                                      res.id
-                                                                    );
-                                                                  }
-                                                                }
-                                                              );
-                                                            }}
-                                                          >
-                                                            {/* <FontAwesomeIcon className="mr-2" icon="clone" />
+                                                          {permission?.[
+                                                            "Independent Activity"
+                                                          ]?.includes(
+                                                            "independent-activity:view-copy-to-my-projects-option",
+                                                          ) && (
+                                                            <Dropdown.Item
+                                                              onClick={() => {
+                                                                Swal.fire(
+                                                                  {
+                                                                    html: `You have selected <strong>${res.title}</strong> ${res.model}<br>Do you want to continue ?`,
+                                                                    showCancelButton: true,
+                                                                    confirmButtonColor:
+                                                                      "#3085d6",
+                                                                    cancelButtonColor:
+                                                                      "#d33",
+                                                                    confirmButtonText:
+                                                                      "Ok",
+                                                                  },
+                                                                ).then(
+                                                                  (
+                                                                    result,
+                                                                  ) => {
+                                                                    if (
+                                                                      result.value
+                                                                    ) {
+                                                                      cloneProject(
+                                                                        res.id,
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                );
+                                                              }}
+                                                            >
+                                                              {/* <FontAwesomeIcon className="mr-2" icon="clone" />
                                                   Add to projects */}
-                                                            <div className="dropDown-item-name-icon">
-                                                              <MyProjectSmSvg
-                                                                primaryColor={
-                                                                  primaryColor
-                                                                }
-                                                              />
-                                                              Copy to
-                                                              My
-                                                              projects
-                                                            </div>
-                                                          </Dropdown.Item>
+                                                              <div className="dropDown-item-name-icon">
+                                                                <MyProjectSmSvg
+                                                                  primaryColor={
+                                                                    primaryColor
+                                                                  }
+                                                                />
+                                                                Copy
+                                                                to My
+                                                                projects
+                                                              </div>
+                                                            </Dropdown.Item>
+                                                          )}
                                                         </>
                                                       )}
                                                       {fromTeam && (
@@ -994,7 +1013,7 @@ function SearchInterface(props) {
                                                               setSelectProject(
                                                                 [
                                                                   res.id,
-                                                                ]
+                                                                ],
                                                               );
                                                             } else if (
                                                               selectProject[0] ===
@@ -1002,7 +1021,7 @@ function SearchInterface(props) {
                                                               fromTeam
                                                             ) {
                                                               setSelectProject(
-                                                                []
+                                                                [],
                                                               );
                                                             } else {
                                                               Swal.fire(
@@ -1013,7 +1032,7 @@ function SearchInterface(props) {
                                                                     "Action Prohibited",
                                                                   text:
                                                                     "You are only allowed to select 1 project.",
-                                                                }
+                                                                },
                                                               );
                                                             }
                                                           }}
@@ -1026,7 +1045,7 @@ function SearchInterface(props) {
                                                             className="teams-logo"
                                                           />
                                                           {selectProject.includes(
-                                                            res.id
+                                                            res.id,
                                                           )
                                                             ? "Remove from "
                                                             : "Add to "}
@@ -1050,7 +1069,7 @@ function SearchInterface(props) {
                                                   playlistdata?.playlists?.map(
                                                     (
                                                       playlist,
-                                                      innerCounter
+                                                      innerCounter,
                                                     ) => (
                                                       <>
                                                         {res.id ===
@@ -1071,12 +1090,12 @@ function SearchInterface(props) {
                                                                     1
                                                                 ) {
                                                                   setplaylistTogglestate(
-                                                                    null
+                                                                    null,
                                                                   );
                                                                 } else {
                                                                   setplaylistTogglestate(
                                                                     innerCounter +
-                                                                      1
+                                                                      1,
                                                                   );
                                                                 }
                                                               }}
@@ -1109,7 +1128,7 @@ function SearchInterface(props) {
                                                                     </h3>
                                                                   </div>
                                                                   {permission?.Playlist?.includes(
-                                                                    "playlist:duplicate"
+                                                                    "playlist:duplicate",
                                                                   ) && (
                                                                     <Dropdown className="playlist-dropdown check">
                                                                       <Dropdown.Toggle>
@@ -1120,7 +1139,7 @@ function SearchInterface(props) {
                                                                           onClick={() =>
                                                                             window.open(
                                                                               `/playlist/${playlist.id}/preview/lti`,
-                                                                              "_blank"
+                                                                              "_blank",
                                                                             )
                                                                           }
                                                                         >
@@ -1135,31 +1154,37 @@ function SearchInterface(props) {
                                                                             </span>
                                                                           </div>
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item
-                                                                          onClick={() => {
-                                                                            setIndClone(
-                                                                              false
-                                                                            );
-                                                                            setModalShow(
-                                                                              true
-                                                                            );
-                                                                            setClone(
-                                                                              playlist
-                                                                            );
-                                                                          }}
-                                                                        >
-                                                                          <div className="dropDown-item-name-icon">
-                                                                            <MyProjectSmSvg
-                                                                              primaryColor={
-                                                                                primaryColor
-                                                                              }
-                                                                            />
-                                                                            Copy
-                                                                            to
-                                                                            My
-                                                                            projects
-                                                                          </div>
-                                                                        </Dropdown.Item>
+                                                                        {permission?.[
+                                                                          "Independent Activity"
+                                                                        ]?.includes(
+                                                                          "independent-activity:view-copy-to-my-projects-option",
+                                                                        ) && (
+                                                                          <Dropdown.Item
+                                                                            onClick={() => {
+                                                                              setIndClone(
+                                                                                false,
+                                                                              );
+                                                                              setModalShow(
+                                                                                true,
+                                                                              );
+                                                                              setClone(
+                                                                                playlist,
+                                                                              );
+                                                                            }}
+                                                                          >
+                                                                            <div className="dropDown-item-name-icon">
+                                                                              <MyProjectSmSvg
+                                                                                primaryColor={
+                                                                                  primaryColor
+                                                                                }
+                                                                              />
+                                                                              Copy
+                                                                              to
+                                                                              My
+                                                                              projects
+                                                                            </div>
+                                                                          </Dropdown.Item>
+                                                                        )}
                                                                       </Dropdown.Menu>
                                                                     </Dropdown>
                                                                   )}
@@ -1173,7 +1198,7 @@ function SearchInterface(props) {
                                                               playlist?.activities?.map(
                                                                 (
                                                                   activity,
-                                                                  act_counter
+                                                                  act_counter,
                                                                 ) => (
                                                                   <Accordion.Collapse
                                                                     eventKey={
@@ -1188,7 +1213,7 @@ function SearchInterface(props) {
                                                                             <div
                                                                               style={{
                                                                                 backgroundImage: !activity?.thumb_url.includes(
-                                                                                  "/storage/"
+                                                                                  "/storage/",
                                                                                 )
                                                                                   ? `url(${activity?.thumb_url})`
                                                                                   : `url(${global.config.resourceUrl}${activity.thumb_url})`,
@@ -1237,7 +1262,7 @@ function SearchInterface(props) {
                                                                       ) : ( */}
                                                                       <>
                                                                         {permission?.Activity?.includes(
-                                                                          "activity:duplicate"
+                                                                          "activity:duplicate",
                                                                         ) && (
                                                                           <Dropdown className="playlist-dropdown check">
                                                                             <Dropdown.Toggle>
@@ -1250,7 +1275,7 @@ function SearchInterface(props) {
                                                                                     window.open(
                                                                                       `/activity/${activity.id}/preview`,
 
-                                                                                      "_blank"
+                                                                                      "_blank",
                                                                                     )
                                                                                   }
                                                                                 >
@@ -1265,78 +1290,90 @@ function SearchInterface(props) {
                                                                                     </span>
                                                                                   </div>
                                                                                 </Dropdown.Item>
-                                                                                <Dropdown.Item
-                                                                                  onClick={async () => {
-                                                                                    toast.info(
-                                                                                      "Duplicating Activity...",
-                                                                                      {
-                                                                                        className:
-                                                                                          "project-loading",
-                                                                                        closeOnClick: false,
-                                                                                        closeButton: false,
-                                                                                        position:
-                                                                                          toast
-                                                                                            .POSITION
-                                                                                            .BOTTOM_RIGHT,
-                                                                                        autoClose: 10000,
-                                                                                        icon:
-                                                                                          "",
-                                                                                      }
-                                                                                    );
-                                                                                    const result = await intActivityServices.copyToIndependentActivity(
-                                                                                      currentOrganization?.id,
-                                                                                      activity.id
-                                                                                    );
-                                                                                    toast.dismiss();
-                                                                                    Swal.fire(
-                                                                                      {
-                                                                                        html:
-                                                                                          result.message,
-                                                                                        icon:
-                                                                                          "success",
-                                                                                      }
-                                                                                    );
-                                                                                  }}
-                                                                                >
-                                                                                  <div className="dropDown-item-name-icon">
-                                                                                    <MyActivitySmSvg
-                                                                                      primaryColor={
-                                                                                        primaryColor
-                                                                                      }
-                                                                                    />
-                                                                                    <span>
+                                                                                {permission?.[
+                                                                                  "Independent Activity"
+                                                                                ]?.includes(
+                                                                                  "independent-activity:view-copy-to-my-activities-option",
+                                                                                ) && (
+                                                                                  <Dropdown.Item
+                                                                                    onClick={async () => {
+                                                                                      toast.info(
+                                                                                        "Duplicating Activity...",
+                                                                                        {
+                                                                                          className:
+                                                                                            "project-loading",
+                                                                                          closeOnClick: false,
+                                                                                          closeButton: false,
+                                                                                          position:
+                                                                                            toast
+                                                                                              .POSITION
+                                                                                              .BOTTOM_RIGHT,
+                                                                                          autoClose: 10000,
+                                                                                          icon:
+                                                                                            "",
+                                                                                        },
+                                                                                      );
+                                                                                      const result = await intActivityServices.copyToIndependentActivity(
+                                                                                        currentOrganization?.id,
+                                                                                        activity.id,
+                                                                                      );
+                                                                                      toast.dismiss();
+                                                                                      Swal.fire(
+                                                                                        {
+                                                                                          html:
+                                                                                            result.message,
+                                                                                          icon:
+                                                                                            "success",
+                                                                                        },
+                                                                                      );
+                                                                                    }}
+                                                                                  >
+                                                                                    <div className="dropDown-item-name-icon">
+                                                                                      <MyActivitySmSvg
+                                                                                        primaryColor={
+                                                                                          primaryColor
+                                                                                        }
+                                                                                      />
+                                                                                      <span>
+                                                                                        Copy
+                                                                                        to
+                                                                                        My
+                                                                                        Activities
+                                                                                      </span>
+                                                                                    </div>
+                                                                                  </Dropdown.Item>
+                                                                                )}
+                                                                                {permission?.[
+                                                                                  "Independent Activity"
+                                                                                ]?.includes(
+                                                                                  "independent-activity:view-copy-to-my-projects-option",
+                                                                                ) && (
+                                                                                  <Dropdown.Item
+                                                                                    onClick={() => {
+                                                                                      setIndClone(
+                                                                                        false,
+                                                                                      );
+                                                                                      setModalShow(
+                                                                                        true,
+                                                                                      );
+                                                                                      setClone(
+                                                                                        activity,
+                                                                                      );
+                                                                                    }}
+                                                                                  >
+                                                                                    <div className="dropDown-item-name-icon">
+                                                                                      <MyProjectSmSvg
+                                                                                        primaryColor={
+                                                                                          primaryColor
+                                                                                        }
+                                                                                      />
                                                                                       Copy
                                                                                       to
                                                                                       My
-                                                                                      Activities
-                                                                                    </span>
-                                                                                  </div>
-                                                                                </Dropdown.Item>
-                                                                                <Dropdown.Item
-                                                                                  onClick={() => {
-                                                                                    setIndClone(
-                                                                                      false
-                                                                                    );
-                                                                                    setModalShow(
-                                                                                      true
-                                                                                    );
-                                                                                    setClone(
-                                                                                      activity
-                                                                                    );
-                                                                                  }}
-                                                                                >
-                                                                                  <div className="dropDown-item-name-icon">
-                                                                                    <MyProjectSmSvg
-                                                                                      primaryColor={
-                                                                                        primaryColor
-                                                                                      }
-                                                                                    />
-                                                                                    Copy
-                                                                                    to
-                                                                                    My
-                                                                                    projects
-                                                                                  </div>
-                                                                                </Dropdown.Item>
+                                                                                      projects
+                                                                                    </div>
+                                                                                  </Dropdown.Item>
+                                                                                )}
                                                                               </>
                                                                             </Dropdown.Menu>
                                                                           </Dropdown>
@@ -1345,7 +1382,7 @@ function SearchInterface(props) {
                                                                       {/* )} */}
                                                                     </Card.Body>
                                                                   </Accordion.Collapse>
-                                                                )
+                                                                ),
                                                               )
                                                             ) : (
                                                               <Accordion.Collapse
@@ -1375,7 +1412,7 @@ function SearchInterface(props) {
                                                           </Card>
                                                         )}
                                                       </>
-                                                    )
+                                                    ),
                                                   )
                                                 ) : (
                                                   <Alert variant="danger">
@@ -1448,7 +1485,7 @@ function SearchInterface(props) {
                         };
                         setSearch(null);
                         await dispatch(
-                          simpleSearchAction(searchData)
+                          simpleSearchAction(searchData),
                         );
                         Swal.close();
                       } else if (
@@ -1471,8 +1508,8 @@ function SearchInterface(props) {
                         await dispatch(
                           searchIndependentActivitiesAction(
                             searchData,
-                            "showcase_activities"
-                          )
+                            "showcase_activities",
+                          ),
                         );
                       }
                     }}
