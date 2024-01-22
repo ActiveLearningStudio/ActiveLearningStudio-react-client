@@ -108,7 +108,7 @@ const PreviewLayoutModel = (props) => {
         }
       } else {
         replaceH5p = JSON.parse(editVideo?.h5p_content?.parameters);
-        replaceH5p.metadata.title = formData.title;
+        replaceH5p.metadata.title = formData?.title;
         if (platform === "Brightcove") {
           replaceH5p.interactiveVideo.video.brightcoveVideoID = videoId;
         } else if (platform === "Youtube") {
