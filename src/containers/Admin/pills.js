@@ -2301,6 +2301,30 @@ export default function Pills(props) {
                   setfilterLtiSettings={setfilterLtiSettings}
                 />
               )}
+              {type === "LMS" && subTypeState === "C2Es" && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  subType={"C2Es"}
+                  search={true}
+                  print={false}
+                  btnText="Add Publisher's Config Key"
+                  btnAction="add_publisher"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.c2ePublisher}
+                  handleSort={handleSort}
+                  data={ltiTool}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandlerLtiTool={
+                    searchQueryChangeHandlerLtiTool
+                  }
+                  searchLtiquery={searchLtiquery}
+                />
+              )}
               {type === "Teams" && (
                 <Starter
                   paginationCounter={true}
