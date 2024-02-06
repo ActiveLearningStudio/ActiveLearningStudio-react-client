@@ -44,6 +44,7 @@ import {
 import { getAllIV } from "store/actions/resource";
 
 import EditSmSvg from "iconLibrary/mainContainer/EditSmSvg";
+import CreatePublisher from "./formik/createPublisher";
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -394,6 +395,9 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes(
                               "organization:view-microsoft-team"
                             ) && "Microsoft Teams",
+                            permission?.Organization?.includes(
+                              "organization:view-all-setting"
+                            ) && "C2Es",
                           ]}
                           type="LMS"
                         />
@@ -597,6 +601,20 @@ function AdminPanel({ showSSO }) {
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
                 <BrightCove mode={activeForm} editMode />
+              </div>
+            </div>
+          )}
+          {activeForm === "add_publisher" && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <CreatePublisher mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === "edit_publisher" && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <CreatePublisher mode={activeForm} editMode />
               </div>
             </div>
           )}

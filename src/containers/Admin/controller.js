@@ -1493,6 +1493,26 @@ function Controller(props) {
               </button>
             </div>
           )}
+        {!!btnText &&
+          type === "LMS" &&
+          subType === "C2Es" &&
+          permission?.Organization.includes(
+            "organization:create-all-setting"
+          ) && (
+            <div className="btn-text">
+              <button
+                type="button"
+                onClick={() => {
+                  if (btnAction === "add_publisher") {
+                    dispatch(setActiveAdminForm("add_publisher"));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {btnText}
+              </button>
+            </div>
+          )}
 
         {!!btnText &&
           type === "LMS" &&

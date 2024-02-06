@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 
 .curriki-utility-activity-dropdown {
   .activity-dropdown {
@@ -42,7 +42,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 19px;
-        font-family: 'Open Sans', sans-serif;
+        font-family: "Open Sans", sans-serif;
         letter-spacing: 0;
         color: $curriki-main-blue;
         padding: 5px 12px;
@@ -72,4 +72,95 @@
   position: absolute;
   top: 4px;
   right: 10px;
+}
+.c2e-modal-content {
+  border: none;
+  color: var(--Neutrals-W0, #1e1e1e);
+  margin-bottom: 24px;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 134px;
+  .two-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+}
+.box-container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+.first-box,
+.second-box {
+  border-radius: 8px;
+  border: 1px solid var(--Neutrals-W4, #ddd);
+  padding: 24px 8px 0 8px;
+  width: 222px;
+  .box-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  &.selected {
+    border: 1px solid var(--Blue-B4, #2e8df5);
+    background: rgba(74, 211, 255, 0.1);
+  }
+}
+
+.title {
+  color: #084892 !important;
+  margin: 0;
+  font-family: $rubik;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+.book_title {
+  color: #515151;
+  margin: 0;
+  font-family: $rubik;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+.chap_title {
+  margin: 0;
+  color: #1e1e1e;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+.chapter {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+.chap-price {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  border-bottom: 1px solid #f1f1f1;
+  margin-top: 24px;
+}
+.total-price {
+  display: flex;
+  gap: 8px;
+  justify-content: end;
+  margin-top: 15px;
+}
+.radio-buttons {
+  display: flex;
+  flex-direction: column;
 }
