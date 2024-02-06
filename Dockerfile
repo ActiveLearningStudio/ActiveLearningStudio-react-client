@@ -1,4 +1,4 @@
-FROM node:10 as build
+FROM node:12 as build
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
