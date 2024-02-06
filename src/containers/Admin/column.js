@@ -118,7 +118,7 @@ export const columnData = {
   ],
   defaultssoSortCol: ["Site Name"],
 
-  c2ePublisher: ["Name", "API key", "API secret", "Description"],
+  c2ePublisher: ["Name", "Publisher Url", "API key", "API secret"],
   // ltitool: ['Name', 'URL', 'Tool type', 'User', 'Description', 'Version'],
   ltitool: ["Name", "URL", "Tool type", "Description", "Version"],
   ltitoolSortCol: ["Name"],

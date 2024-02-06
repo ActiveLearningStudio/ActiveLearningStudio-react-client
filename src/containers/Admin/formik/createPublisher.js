@@ -16,10 +16,14 @@ export default function CreatePublisher(prop) {
   const { activeEdit } = organization;
 
   const [checkedActivity, setCheckedActivty] = useState(false);
+  const [checkedPlaylist, setCheckedPlaylist] = useState(false);
+  const [checkedProject, setCheckedProject] = useState(false);
 
   useEffect(() => {
     if (editMode && !clone) {
-      setCheckedActivty(activeEdit?.publish_visibility);
+      setCheckedActivty(activeEdit?.activity_visibility);
+      setCheckedPlaylist(activeEdit?.playlist_visibility);
+      setCheckedProject(activeEdit?.project_visibility);
     }
   }, [activeEdit, editMode]);
 
@@ -29,16 +33,22 @@ export default function CreatePublisher(prop) {
       <Formik
         initialValues={{
           c2e_name: "",
+          c2e_publisher_url: "",
           c2e_api_key: "",
           c2e_api_secret: "",
           c2e_description: "",
 
-          publish_visibility: false,
+          activity_visibility: false,
+          playlist_visibility: false,
+          projectr_visibility: false,
         }}
         validate={(values) => {
           const errors = {};
           if (!values.c2e_name) {
             errors.c2e_name = "required";
+          }
+          if (!values.c2e_publisher_url) {
+            errors.c2e_publisher_url = "required";
           }
           if (!values.c2e_api_key) {
             errors.c2e_api_key = "required";
@@ -143,6 +153,21 @@ export default function CreatePublisher(prop) {
                         errors.c2e_name}
                     </div>
                   </div>
+                  <div className="form-group-create">
+                    <h3>Publisher URL</h3>
+                    <input
+                      type="c2e_publisher_url"
+                      name="c2e_publisher_url"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.c2e_publisher_url}
+                    />
+                    <div className="error">
+                      {errors.c2e_publisher_url &&
+                        touched.c2e_publisher_url &&
+                        errors.c2e_publisher_url}
+                    </div>
+                  </div>
 
                   <div className="form-group-create">
                     <h3>Api key</h3>
@@ -178,12 +203,13 @@ export default function CreatePublisher(prop) {
 
                   <div className="form-group-create">
                     <h3>Description</h3>
-                    <input
+                    <textarea
                       type="c2e_description"
                       name="c2e_description"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.c2e_description}
+                      style={{ minHeight: "100px" }}
                     />
                     <div className="error">
                       {errors.c2e_description &&
@@ -204,7 +230,7 @@ export default function CreatePublisher(prop) {
                           onChange={() => {
                             setCheckedActivty(!checkedActivity);
                             setFieldValue(
-                              "publish_visibility",
+                              "activity_visibility",
                               !checkedActivity
                             );
                           }}
@@ -218,6 +244,54 @@ export default function CreatePublisher(prop) {
                           offHandleColor="#666"
                         />
                         <h3>Publish C2E</h3>
+                      </div>
+                      <div
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
+                      >
+                        <Switch
+                          checked={checkedPlaylist}
+                          onChange={() => {
+                            setCheckedPlaylist(!checkedPlaylist);
+                            setFieldValue(
+                              "playlist_visibility",
+                              !checkedPlaylist
+                            );
+                          }}
+                          className="react-switch"
+                          handleDiameter={30}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          offColor="#888"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
+                          offHandleColor="#666"
+                        />
+                        <h3>Playlist</h3>
+                      </div>
+                      <div
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
+                      >
+                        <Switch
+                          checked={checkedProject}
+                          onChange={() => {
+                            setCheckedProject(!checkedProject);
+                            setFieldValue(
+                              "project_visibility",
+                              !checkedProject
+                            );
+                          }}
+                          className="react-switch"
+                          handleDiameter={30}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          offColor="#888"
+                          onColor={primaryColor}
+                          onHandleColor={primaryColor}
+                          offHandleColor="#666"
+                        />
+                        <h3>Project</h3>
                       </div>
                     </div>
                   </div>

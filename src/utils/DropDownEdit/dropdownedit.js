@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Modal } from "react-responsive-modal";
 import {
   faEllipsisV,
   faCopy,
@@ -43,6 +44,12 @@ import DuplicateSmSvg from "iconLibrary/dropDown/DuplicateSmSvg";
 import LibraryStatusSmSvg from "iconLibrary/dropDown/LibraryStatusSmSvg";
 import ExportSmSvg from "iconLibrary/dropDown/ExportSmSvg";
 import DeleteSmSvg from "iconLibrary/dropDown/DeleteSmSvg";
+import PublishC2ESvg from "iconLibrary/dropDown/PublishC2ESvg";
+import Buttons from "utils/Buttons/buttons";
+import StoreSvg from "iconLibrary/dropDown/StoreSvg";
+import CapSvg from "iconLibrary/dropDown/CapSvg";
+import ReorderSvg from "iconLibrary/dropDown/ReorderSvg";
+import DollarSvg from "iconLibrary/dropDown/DollarSvg";
 
 const DropDownEdit = ({
   iconColor,
@@ -59,10 +66,15 @@ const DropDownEdit = ({
 }) => {
   const IconColor = iconColor ? iconColor : "#084892";
   const { activeOrganization } = useSelector(
-    (state) => state.organization,
+    (state) => state.organization
   );
   const project = useSelector((state) => state.project);
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedStore, setSelectedStore] = useState("");
+  const [selectedBox, setSelectedBox] = useState("");
+  const [showBoxContainer, setShowBoxContainer] = useState(true);
+
   const dispatch = useDispatch();
   // console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
@@ -77,9 +89,22 @@ const DropDownEdit = ({
   //   })();
   // }, [project?.visibilityTypes]);
 
+  const handleNextClick = () => {
+    setShowBoxContainer(false);
+  };
+
+  const handlePublishC2EClick = () => {
+    setShowModal(true);
+  };
+  const handleRadioChange = (event) => {
+    setSelectedStore(event.target.value);
+  };
+  const handleBoxRadioChange = (boxName) => {
+    setSelectedBox(boxName);
+  };
   useEffect(() => {
     setVisibilityTypeArray(
-      activeOrganization?.allowed_visibility_type_id,
+      activeOrganization?.allowed_visibility_type_id
     );
   }, [activeOrganization]);
   return (
@@ -176,7 +201,7 @@ const DropDownEdit = ({
           {/* For activity Card */}
           {isActivityCard &&
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author",
+              "independent-activity:edit-author"
             ) && (
               <>
                 {/* <Dropdown.Item className onClick={() => {}}>
@@ -238,7 +263,7 @@ const DropDownEdit = ({
                               window.gapi.sharetoclassroom
                             ) {
                               window.gapi.sharetoclassroom.go(
-                                "croom",
+                                "croom"
                               );
                             }
                             const protocol = `${
@@ -273,7 +298,7 @@ const DropDownEdit = ({
 
                 {/* Duplicate For Activity */}
                 {permission?.["Independent Activity"]?.includes(
-                  "independent-activity:edit-author",
+                  "independent-activity:edit-author"
                 ) && (
                   <>
                     <Dropdown.Item
@@ -288,7 +313,7 @@ const DropDownEdit = ({
                         });
                         const result = await intActivityServices.indActivityClone(
                           activeOrganization.id,
-                          data.id,
+                          data.id
                         );
                         toast.dismiss();
                         Swal.fire({
@@ -306,7 +331,7 @@ const DropDownEdit = ({
                   </>
                 )}
                 {permission?.["Independent Activity"]?.includes(
-                  "independent-activity:view-library-preference-options",
+                  "independent-activity:view-library-preference-options"
                 ) && (
                   <li className="dropdown-submenu send">
                     <a
@@ -336,7 +361,7 @@ const DropDownEdit = ({
                                 type: "h5p",
                                 organization_visibility_type_id:
                                   element.id,
-                              }),
+                              })
                             );
                           }}
                         >
@@ -373,7 +398,7 @@ const DropDownEdit = ({
 
                   <ul className="dropdown-menu check">
                     {permission?.Activity?.includes(
-                      "activity:view-export-xapi-option",
+                      "activity:view-export-xapi-option"
                     ) && (
                       <li>
                         <a
@@ -388,7 +413,7 @@ const DropDownEdit = ({
                       </li>
                     )}
                     {permission?.["Independent Activity"]?.includes(
-                      "independent-activity:view-export-h5p-option",
+                      "independent-activity:view-export-h5p-option"
                     ) && (
                       <li
                         onClick={() => {
@@ -402,7 +427,7 @@ const DropDownEdit = ({
                           });
                           const result = indActivityService.exportIndAvtivity(
                             activeOrganization.id,
-                            data.id,
+                            data.id
                           );
                           result.then((data) => {
                             // console.log(data)
@@ -530,7 +555,7 @@ const DropDownEdit = ({
 
           {isActivityCard ? (
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author",
+              "independent-activity:edit-author"
             ) && (
               <Dropdown.Item
                 className
@@ -584,7 +609,7 @@ const DropDownEdit = ({
 
           {isActivityCard &&
             permission?.["Independent Activity"]?.includes(
-              "independent-activity:edit-author",
+              "independent-activity:edit-author"
             ) && (
               <li className="dropdown-submenu send">
                 <a tabIndex="-1" className="dropdown-item">
@@ -659,11 +684,213 @@ const DropDownEdit = ({
                       <a>Microsoft Teams</a>
                     </li>
                   )}
+                  {isActivityCard &&
+                    permission?.["Independent Activity"]?.includes(
+                      "independent-activity:edit-author"
+                    ) && (
+                      <a className onClick={handlePublishC2EClick}>
+                        Publish C2E
+                      </a>
+                    )}
                 </ul>
               </li>
             )}
         </Dropdown.Menu>
       </Dropdown>
+      {/* Modal */}
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        center
+        className="modal-style"
+      >
+        <div className="c2e-modal-content">
+          <h3>Review & Publish</h3>
+          <h6>
+            {showBoxContainer
+              ? "Step 3: Choose Destination"
+              : "Step 4: Review Pricing"}
+          </h6>
+        </div>
+        {showBoxContainer ? (
+          <div className="box-container">
+            <div
+              className={`first-box ${
+                selectedBox === "first-box" ? "selected" : ""
+              }`}
+              onClick={() => handleBoxRadioChange("first-box")}
+            >
+              <div className="box-inner">
+                <StoreSvg
+                  primaryColor={
+                    selectedBox === "first-box" ? primaryColor : ""
+                  }
+                />
+                <p>Publish to Marketplace</p>
+              </div>
+
+              <div className="radio-buttons">
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="Store 1"
+                    checked={selectedStore === "Store 1"}
+                    onChange={handleRadioChange}
+                  />
+                  Store 1
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="Store 2"
+                    checked={selectedStore === "Store 2"}
+                    onChange={handleRadioChange}
+                  />
+                  Store 2
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="Store 3"
+                    checked={selectedStore === "Store 3"}
+                    onChange={handleRadioChange}
+                  />
+                  Store 3
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="Store 4"
+                    checked={selectedStore === "Store 4"}
+                    onChange={handleRadioChange}
+                  />
+                  Store 4
+                </label>
+              </div>
+            </div>
+            <div
+              className={`second-box ${
+                selectedBox === "second-box" ? "selected" : ""
+              }`}
+              onClick={() => handleBoxRadioChange("second-box")}
+            >
+              <div className="box-inner">
+                <CapSvg
+                  primaryColor={
+                    selectedBox === "second-box" ? primaryColor : ""
+                  }
+                />
+                <p>Publish to Player</p>
+              </div>
+
+              <div className="radio-buttons">
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="LMS 1"
+                    checked={selectedStore === "LMS 1"}
+                    onChange={handleRadioChange}
+                    disabled={selectedBox !== "second-box"}
+                  />
+                  LMS 1
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="store"
+                    value="LMS 2"
+                    checked={selectedStore === "LMS 2"}
+                    onChange={handleRadioChange}
+                    disabled={selectedBox !== "second-box"}
+                  />
+                  LMS 2
+                </label>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="">
+            <div>
+              <h6 className="title">Title</h6>
+              <h6 className="book_title">Computer Science 01</h6>
+            </div>
+            <div className="chap-price">
+              <div className="chapter">
+                <ReorderSvg />
+                <DollarSvg />
+                <h6 className="chap_title">
+                  Chapter 1: The Language of Anatomy & Physiology
+                </h6>
+              </div>
+              <h6 className="chap_title">$1.20</h6>
+            </div>
+            <div className="chap-price">
+              <div className="chapter">
+                <ReorderSvg />
+                <DollarSvg />
+                <h6 className="chap_title">
+                  Chapter 1: The Language of Anatomy & Physiology
+                </h6>
+              </div>
+              <h6 className="chap_title">$1.20</h6>
+            </div>
+            <div className="total-price">
+              <p>Total Licensing Costs:</p>
+              <h6 className="chap_title">$3.00</h6>
+            </div>
+          </div>
+        )}
+
+        {/*Buttons */}
+        <div className="buttons">
+          <Buttons
+            text="Cancel"
+            secondary={true}
+            hover={true}
+            onClick={() => setShowModal(false)}
+          />
+          <div className="two-buttons">
+            <Buttons
+              text="Back"
+              secondary={true}
+              hover={true}
+              onClick={() => {}}
+            />
+            {showBoxContainer ? (
+              <Buttons
+                text="Next"
+                primary={true}
+                hover={true}
+                onClick={handleNextClick}
+              />
+            ) : (
+              <Buttons
+                text="Publish"
+                primary={true}
+                hover={true}
+                onClick={() => {
+                  Swal.fire({
+                    title: "Successfully Listed!",
+                    text:
+                      "C2E listed for “Computer Science 01” in “Store 01” marketplace",
+                    icon: "success",
+                    showCancelButton: true,
+                    cancelButtonText: "Close",
+                    confirmButtonColor: "#084892",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Go To Listing",
+                  });
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
