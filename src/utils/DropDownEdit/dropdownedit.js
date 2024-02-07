@@ -92,6 +92,10 @@ const DropDownEdit = ({
   const handleNextClick = () => {
     setShowBoxContainer(false);
   };
+  const handleCancelClick = () => {
+    setShowModal(false);
+    setShowBoxContainer(true);
+  };
 
   const handlePublishC2EClick = () => {
     setShowModal(true);
@@ -852,14 +856,14 @@ const DropDownEdit = ({
             text="Cancel"
             secondary={true}
             hover={true}
-            onClick={() => setShowModal(false)}
+            onClick={handleCancelClick}
           />
           <div className="two-buttons">
             <Buttons
               text="Back"
               secondary={true}
               hover={true}
-              onClick={() => {}}
+              onClick={() => setShowBoxContainer(true)}
             />
             {showBoxContainer ? (
               <Buttons
@@ -885,6 +889,7 @@ const DropDownEdit = ({
                     cancelButtonColor: "#d33",
                     confirmButtonText: "Go To Listing",
                   });
+                  setShowBoxContainer(false);
                 }}
               />
             )}
