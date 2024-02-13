@@ -1,4 +1,4 @@
-@import 'assets/css/index';
+@import "assets/css/index";
 .curriki-image-update-util {
   .box-section {
     max-width: 550px;
@@ -58,7 +58,7 @@
       position: relative;
 
       &::before {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         left: 25px;
@@ -67,7 +67,7 @@
         background-color: #ffffff;
       }
       &::after {
-        content: ' ';
+        content: " ";
         position: absolute;
         top: 50%;
         right: 25px;
@@ -92,7 +92,61 @@
     }
   }
 }
+.add-video-form-tabs {
+  .main-tabs {
+    border-bottom: 1px solid $curriki-main-blue;
+    width: max-content;
 
+    .nav-item {
+      margin-top: 24px;
+      background: transparent;
+      color: $curriki-main-blueb3;
+      height: 36px;
+      padding: 8px 32px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+  .wiley-modal {
+    overflow-y: auto;
+    height: 390px;
+  }
+
+  .main-tabs .nav-item.active {
+    color: $curriki-main-blueb3;
+    border: none;
+    border-bottom: 4px solid $curriki-main-blueb3;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .main-tabs .nav-item.active:after {
+    display: none;
+  }
+  .nav-tabs .nav-link {
+    border: none;
+    color: $curriki-main-blueb3;
+  }
+  .nav-tabs .nav-link:hover {
+    border: none;
+    color: $curriki-main-blueb3;
+    border-bottom: 4px solid $curriki-main-blueb3;
+  }
+}
+.modal-content {
+  padding: 25px;
+  min-height: 350px;
+}
+.thumb-close-button {
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+}
 .thumbnails-modal {
   z-index: 1061;
   .modal-dialog.modal-xl.modal-dialog-centered {
