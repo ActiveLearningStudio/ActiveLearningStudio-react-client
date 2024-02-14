@@ -419,23 +419,103 @@
       width: 100%;
       border: none;
       outline: none;
+      &::placeholder {
+        color: #767676 !important;
+      }
     }
   }
+}
+.advanced-filter {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #063a75;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #063a75;
+  background-color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 21px;
+  white-space: nowrap;
+  cursor: pointer;
+}
 
-  .advanced-filter {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #063a75;
-    height: 32px;
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  color: #1e1e1e;
+  margin-top: 16px;
+  .result-container {
     display: flex;
+    gap: 16px;
     align-items: center;
-    gap: 10px;
-    color: #063a75;
-    font-size: 14px;
+    color: #1e1e1e;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    line-height: 21px;
-    white-space: nowrap;
-    cursor: pointer;
+    line-height: 24px;
   }
+  .list-button-container {
+    display: flex;
+    border-radius: 3px;
+    border: 1px solid #063a75;
+    width: 80px;
+    .list-buttons {
+      background-color: #fff;
+      border: none;
+      width: 100%;
+    }
+    .list-buttons.active {
+      background-color: #063a75;
+    }
+  }
+}
+.MuiInputBase-root::before {
+  border-bottom: none;
+}
+.search-video-tabs {
+  .video-main-tabs {
+    button {
+      color: #063a75;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 21px;
+    }
+  }
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.video-title {
+  color: #1e1e1e !important;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.5px;
+}
+.video-description {
+  margin: 0;
+  color: #767676;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19.5px;
+}
+.video-list-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #f1f1f1;
+  padding: 8px 0;
+}
+.tabpanel {
+  height: 300px;
+  overflow: auto;
 }
