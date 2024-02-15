@@ -36,6 +36,7 @@ const SearchVideoModal = ({
   const [mediaType, setMediaType] = useState("");
   const [TabValue, setTabValue] = useState(0);
   const [activeListButton, setActiveListButton] = useState("list");
+  const [videoListData, setVideoListData] = useState([]);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -43,6 +44,87 @@ const SearchVideoModal = ({
 
   const handleChange = (event) => {
     setMediaType(event.target.value);
+  };
+
+  const handlePost = async () => {
+    // First GEt API call
+    const url = new URL(
+      process.env.REACT_APP_VIDEO_IDS +
+        "/suborganization/1/get-bc-account-list"
+    );
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      const orgId = data?.data?.[0]?.organization_id;
+      const accId = data?.data?.[0]?.id;
+      console.log("Response:", orgId, accId);
+
+      // PlayList API call
+
+      const playlistIdUrl = new URL(
+        process.env.REACT_APP_VIDEO_IDS + "/get-bc-playlists"
+      );
+      const playlistPayload = {
+        organization_id: orgId,
+        id: accId,
+      };
+      const playlistIdResponse = await fetch(playlistIdUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(playlistPayload),
+      });
+
+      if (!playlistIdResponse.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const playlistId = await playlistIdResponse.json();
+      console.log("PlaylistIds:", playlistId);
+      const allPlaylistId = playlistId?.data?.map((item) => item?.id);
+
+      //Videos API call
+      const allVideoListData = [];
+
+      for (const playlistId of allPlaylistId) {
+        const videoAPIUrl = new URL(
+          process.env.REACT_APP_VIDEO_IDS + "/get-bc-playlist-videos"
+        );
+        const videoApiPayload = {
+          organization_id: orgId,
+          id: accId,
+          palylist_id: playlistId,
+        };
+
+        const videoApiResponse = await fetch(videoAPIUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(videoApiPayload),
+        });
+
+        if (!videoApiResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const videolistData = await videoApiResponse.json();
+        console.log("VideoData:", videolistData);
+        allVideoListData.push(videolistData?.data);
+      }
+      setVideoListData(allVideoListData);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -155,196 +237,72 @@ const SearchVideoModal = ({
                 onChange={handleTabChange}
                 className="video-main-tabs"
               >
-                <Tab label="All" {...a11yProps(0)} />
-                <Tab label="Wiley" {...a11yProps(1)} />
+                <Tab label="Wiley" {...a11yProps(0)} />
+                <Tab
+                  label="BrightCove"
+                  {...a11yProps(1)}
+                  onClick={handlePost}
+                />
                 <Tab label="YouTube" {...a11yProps(2)} />
               </Tabs>
             </Box>
-            <CustomTabPanel value={TabValue} index={0}>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={TabValue} index={1}>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
-            </CustomTabPanel>
-            <CustomTabPanel value={TabValue} index={2}>
-              <div className="video-list-container">
-                <img src={oracle} />
-                <div>
-                  <HeadingThree
-                    text="The Galileo Project - Rice University"
-                    className="video-title"
-                  />
-                  <p className="video-description">
-                    {description
-                      ? description
-                      : `Contains information on Galileo's improvements to
-                    the telescope, including facts, images of early
-                    telescopes, and quotes from Galileo's writings
-                    describing his work.`}
-                  </p>
-                  <p className="video-description">
-                    License:{" "}
-                    <span style={{ color: "#063A75" }}>
-                      {license ? license : "Creative Commons"}
-                    </span>
-                  </p>
-                </div>
-                <button
-                  className="advanced-filter"
-                  onClick={() => {}}
-                >
-                  <img src={EyeIcon} alt="eyeIcon" />
-                  Preview
-                </button>
-              </div>
+
+            <CustomTabPanel
+              value={TabValue}
+              index={1}
+              videolistData={videoListData}
+            >
+              {videoListData.map((playlistData, index) => {
+                console.log(playlistData);
+                return (
+                  <div key={index} className="video-list-container">
+                    {playlistData?.map((videoItem, videoIndex) => {
+                      console.log(videoItem);
+                      return (
+                        <div
+                          key={videoIndex}
+                          className="data-container"
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              alignItems: "center",
+                              gap: "8px",
+                            }}
+                          >
+                            <img src={oracle} />
+                            <div className="inner-data-container">
+                              <HeadingThree
+                                text={videoItem.name}
+                                className="video-title"
+                              />
+                              <p className="video-description">
+                                {videoItem.description}
+                              </p>
+                              <p className="video-description">
+                                License:{" "}
+                                <span style={{ color: "#063A75" }}>
+                                  {videoItem.license
+                                    ? videoItem.license
+                                    : "Creative Commons"}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            className="advanced-filter"
+                            onClick={() => {}}
+                          >
+                            <img src={EyeIcon} alt="eyeIcon" />
+                            Preview
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </CustomTabPanel>
           </Box>
         </div>
