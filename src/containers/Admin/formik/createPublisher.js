@@ -34,9 +34,7 @@ export default function CreatePublisher(prop) {
         initialValues={{
           c2e_name: "",
           c2e_publisher_url: "",
-          c2e_api_key: "",
           c2e_api_secret: "",
-          c2e_description: "",
 
           activity_visibility: false,
           playlist_visibility: false,
@@ -50,14 +48,8 @@ export default function CreatePublisher(prop) {
           if (!values.c2e_publisher_url) {
             errors.c2e_publisher_url = "required";
           }
-          if (!values.c2e_api_key) {
-            errors.c2e_api_key = "required";
-          }
           if (!values.c2e_api_secret) {
             errors.c2e_api_secret = "required";
-          }
-          if (!values.c2e_description) {
-            errors.c2e_description = "required";
           }
           return errors;
         }}
@@ -170,22 +162,6 @@ export default function CreatePublisher(prop) {
                   </div>
 
                   <div className="form-group-create">
-                    <h3>Api key</h3>
-                    <input
-                      type="c2e_api_key"
-                      name="c2e_api_key"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.c2e_api_key}
-                    />
-                    <div className="error">
-                      {errors.c2e_api_key &&
-                        touched.c2e_api_key &&
-                        errors.c2e_api_key}
-                    </div>
-                  </div>
-
-                  <div className="form-group-create">
                     <h3>API Secret </h3>
                     <input
                       type="c2e_api_secret"
@@ -198,23 +174,6 @@ export default function CreatePublisher(prop) {
                       {errors.c2e_api_secret &&
                         touched.c2e_api_secret &&
                         errors.c2e_api_secret}
-                    </div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>Description</h3>
-                    <textarea
-                      type="c2e_description"
-                      name="c2e_description"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.c2e_description}
-                      style={{ minHeight: "100px" }}
-                    />
-                    <div className="error">
-                      {errors.c2e_description &&
-                        touched.c2e_description &&
-                        errors.c2e_description}
                     </div>
                   </div>
 
@@ -243,7 +202,7 @@ export default function CreatePublisher(prop) {
                           onHandleColor={primaryColor}
                           offHandleColor="#666"
                         />
-                        <h3>Publish C2E</h3>
+                        <h3>Activity</h3>
                       </div>
                       <div
                         className="custom-toggle-button"

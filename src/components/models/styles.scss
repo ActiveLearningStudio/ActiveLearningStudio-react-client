@@ -326,3 +326,207 @@
 .react-responsive-modal-root {
   z-index: 1040;
 }
+
+.modal-header-custom {
+  color: #515151;
+  font-family: $rubik;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.search-bar {
+  display: flex;
+
+  .input-search {
+    border: none;
+  }
+}
+.my-project-cards-top-search-filter {
+  display: flex;
+  align-items: center;
+  padding: 20px 10px;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 16px 0px 22px;
+  background-color: #f7faff;
+  .search-bar {
+    display: flex;
+    position: relative;
+    margin-right: 33px;
+    input {
+      border: none;
+      color: rgba(8, 72, 146, 1);
+      border-bottom: 1px solid rgba(8, 72, 146, 1);
+      font-weight: 400;
+      background: none;
+      font-size: 14px;
+      width: 238px;
+      padding-right: 20px;
+      &::placeholder {
+        color: rgba(8, 72, 146, 1);
+      }
+    }
+
+    img {
+      margin-top: -3px;
+      margin-right: 5px;
+    }
+    svg {
+      position: absolute;
+      right: 0;
+      bottom: 4px;
+    }
+  }
+}
+
+// Search Video Library Modal
+
+.searchVideo-header {
+  color: #1e1e1e;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#media-dropdown {
+  min-width: 108px;
+  height: 32px;
+}
+.header-container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+
+  .search-container {
+    width: 100%;
+    height: 32px;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .inpur-search {
+      color: #063a75;
+      width: 100%;
+      border: none;
+      outline: none;
+      &::placeholder {
+        color: #767676 !important;
+      }
+    }
+  }
+}
+.advanced-filter {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #063a75;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #063a75;
+  background-color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 21px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  color: #1e1e1e;
+  margin-top: 16px;
+  .result-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    color: #1e1e1e;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+  }
+  .list-button-container {
+    display: flex;
+    border-radius: 3px;
+    border: 1px solid #063a75;
+    width: 80px;
+    .list-buttons {
+      background-color: #fff;
+      border: none;
+      width: 100%;
+    }
+    .list-buttons.active {
+      background-color: #063a75;
+    }
+  }
+}
+.MuiInputBase-root::before {
+  border-bottom: none;
+}
+.search-video-tabs {
+  .video-main-tabs {
+    button {
+      color: #063a75;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 21px;
+    }
+  }
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.video-title {
+  color: #1e1e1e !important;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19.5px;
+}
+.video-description {
+  margin: 0;
+  color: #767676;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19.5px;
+}
+.video-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
+}
+.tabpanel {
+  height: 300px;
+  overflow: auto;
+}
+.data-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f1f1;
+  width: 100%;
+  gap: 5px;
+  .inner-data-container {
+    display: flex;
+    flex-direction: column;
+  }
+}

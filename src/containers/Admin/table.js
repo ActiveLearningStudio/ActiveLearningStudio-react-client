@@ -1912,7 +1912,6 @@ function Table(props) {
                     <tr key={counter} className="admin-panel-rows">
                       <td>{row.c2e_name}</td>
                       <td>{row.c2e_publisher_url}</td>
-                      <td>{row.c2e_api_key}</td>
                       <td>{row.c2e_api_secret}</td>
                       <td>
                         <div className="admin-panel-dropdown">
