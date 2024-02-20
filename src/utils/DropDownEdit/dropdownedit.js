@@ -748,7 +748,7 @@ const DropDownEdit = ({
       <Modal
         show={showModal}
         centered
-        size="xl"
+        size="md"
         className="review-modal"
       >
         <div className="c2e-modal-content">

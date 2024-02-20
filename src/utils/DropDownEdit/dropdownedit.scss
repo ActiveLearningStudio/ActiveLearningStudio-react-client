@@ -172,6 +172,7 @@
   align-items: center;
 }
 .all-chap {
-  height: 350px;
+  max-height: 330px;
   overflow: auto;
+  padding-right: 20px;
 }
