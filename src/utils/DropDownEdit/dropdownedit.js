@@ -131,6 +131,7 @@ const DropDownEdit = ({
         confirmButtonColor: "#084892",
         cancelButtonColor: "#d33",
       });
+      setShowModal(false);
     }
     setShowBoxContainer(false);
     setLoading(false);
