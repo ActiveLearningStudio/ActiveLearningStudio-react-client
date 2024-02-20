@@ -59,11 +59,11 @@ const getAllProject = (
         updatedTo ? `&updated_to=${updatedTo}` : ""
       }${shared || shared === 0 ? `&shared=${shared}` : ""}${
         index || index === null ? `&indexing=${index}` : ""
-      }${
-        visibility ? `&visibility=${visibility}` : ""
-      }${query ? `&query=${query}` : ""}${
-        column ? `&order_by_column=${column}` : ""
-      }${orderBy ? `&order_by_type=${orderBy}` : ""}`
+      }${visibility ? `&visibility=${visibility}` : ""}${
+        query ? `&query=${query}` : ""
+      }${column ? `&order_by_column=${column}` : ""}${
+        orderBy ? `&order_by_type=${orderBy}` : ""
+      }`
     )
     .then(({ data }) => data)
     .catch((err) => {
@@ -913,7 +913,78 @@ const updateAllDynamicPermisison = (subOrgId, data) =>
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
+
+const getPublisherList = (subOrgId, data) =>
+  httpService
+    .get(
+      `/${apiVersion}/c2e/publishers/suborganizations/${subOrgId}/settings`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      //errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const createPublisherList = (subOrgId, data) =>
+  httpService
+    .post(
+      `/${apiVersion}/c2e/publishers/suborganizations/${subOrgId}/settings`,
+      data
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const getAllStores = (id) =>
+  httpService
+    .get(`/${apiVersion}/c2e/publishers/${id}/stores`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      // errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const publishC2EToStore = (publishId, activityId, storeId) =>
+  httpService
+    .post(
+      `/${apiVersion}/c2e/publishers/${publishId}/independent-activities/${activityId}/publish?store_id=${storeId}`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const removePublisherList = (subOrgId, id) =>
+  httpService
+    .remove(
+      `/${apiVersion}/c2e/publishers/suborganizations/${subOrgId}/settings/${id}`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
+const updatePublisherList = (subOrgId, id, data) =>
+  httpService
+    .put(
+      `/${apiVersion}/c2e/publishers/suborganizations/${subOrgId}/settings/${id}`,
+      data
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+
 export default {
+  publishC2EToStore,
+  getAllStores,
+  getPublisherList,
+  removePublisherList,
+  createPublisherList,
+  updatePublisherList,
   gettAllDynamicPermisison,
   updateAllDynamicPermisison,
   addUserInOrganization,

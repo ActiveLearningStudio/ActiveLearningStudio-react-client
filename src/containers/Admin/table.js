@@ -264,7 +264,7 @@ function Table(props) {
     }
   }, [ltiToolsTypes]);
   return (
-    <div className="table-data">
+    <div className='table-data'>
       {((data?.data?.length > 0 && data?.meta) ||
         (localOrganizationList?.data?.length > 0 &&
           localOrganizationList?.meta &&
@@ -281,7 +281,7 @@ function Table(props) {
           localstatePagination={localstatePagination}
         />
       )}
-      <div className="responsive-table">
+      <div className='responsive-table'>
         <table>
           <thead>
             <tr>
@@ -322,7 +322,7 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>
@@ -333,12 +333,12 @@ function Table(props) {
                       <td>{row?.user?.email}</td>
                       <td>{row?.site_name}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           {row?.description || "N/A"}
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="LMS settings"
+                              subType='LMS settings'
                               row={row}
                               activePage={activePage}
                               localStateData={localStateData}
@@ -351,8 +351,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No integration found.
                       </Alert>
                     </td>
@@ -360,8 +360,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -372,7 +372,7 @@ function Table(props) {
                   localStateData?.map((row, counter) => (
                     <tr
                       key={(row, counter)}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>{row.organization?.id}</td>
                       <td>{row.account_id}</td>
@@ -382,7 +382,7 @@ function Table(props) {
                       <td>{row.client_id}</td>
                       <td>{row.client_secret}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           {row.css_path ? (
                             <a
                               download
@@ -390,7 +390,7 @@ function Table(props) {
                                 global.config.resourceUrl +
                                 row.css_path
                               }
-                              target="_blank"
+                              target='_blank'
                             >
                               download
                             </a>
@@ -400,7 +400,7 @@ function Table(props) {
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="BrightCove"
+                              subType='BrightCove'
                               row={row}
                               activePage={activePage}
                             />
@@ -411,8 +411,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No integration found.
                       </Alert>
                     </td>
@@ -420,8 +420,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -430,7 +430,7 @@ function Table(props) {
                 data?.data.map((user, counter) => (
                   <tr
                     key={(user, counter)}
-                    className="admin-panel-rows"
+                    className='admin-panel-rows'
                   >
                     <td>
                       {user.organization_joined_at
@@ -453,7 +453,7 @@ function Table(props) {
                         : "NA"}
                     </td>
                     <td>
-                      <div className="admin-panel-dropdown">
+                      <div className='admin-panel-dropdown'>
                         {user.organization_role
                           ? user.organization_role
                           : "NA"}
@@ -467,14 +467,14 @@ function Table(props) {
               ) : searchAlertToggler === 0 ||
                 data?.data?.length === 0 ? (
                 <tr>
-                  <td colSpan="8">
-                    <Alert variant="warning">No User Found</Alert>
+                  <td colSpan='8'>
+                    <Alert variant='warning'>No User Found</Alert>
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colSpan="8">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='8'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -482,9 +482,9 @@ function Table(props) {
               (localOrganizationList ? (
                 localOrganizationList?.data?.length > 0 ? (
                   localOrganizationList?.data?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>
-                        <div className="admin-name-img">
+                        <div className='admin-name-img'>
                           <div
                             style={{
                               backgroundImage: row.image?.includes(
@@ -496,14 +496,14 @@ function Table(props) {
                               backgroundRepeat: "no-repeat",
                               backgroundSize: "cover",
                             }}
-                            className="admin-img"
+                            className='admin-img'
                           >
                             {/* <img src={global.config.resourceUrl + row.image} alt="" /> */}
                           </div>
 
                           <Link
-                            className="admin-name"
-                            to="#"
+                            className='admin-name'
+                            to='#'
                             onClick={async () => {
                               Swal.fire({
                                 title: "Please Wait !",
@@ -548,7 +548,7 @@ function Table(props) {
                       <td>
                         {row.projects_count > 0 ? (
                           <div
-                            className="view-all"
+                            className='view-all'
                             onClick={async () => {
                               Swal.fire({
                                 title: "Please Wait !",
@@ -595,7 +595,7 @@ function Table(props) {
                       <td>
                         {row.suborganization_count > 0 ? (
                           <Link
-                            className="view-all"
+                            className='view-all'
                             onClick={async () => {
                               if (row.suborganization_count > 0) {
                                 Swal.fire({
@@ -637,7 +637,7 @@ function Table(props) {
                         <td>
                           {row.users_count > 0 ? (
                             <Link
-                              className="view-all"
+                              className='view-all'
                               onClick={async () => {
                                 if (row.users_count > 0) {
                                   Swal.fire({
@@ -677,11 +677,11 @@ function Table(props) {
                       )}
 
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           {row.teams_count > 0 ? (
                             <Link
                               to={`/org/${allState?.organization?.currentOrganization?.domain}/teams`}
-                              className="view-all"
+                              className='view-all'
                               onClick={async () => {
                                 if (
                                   permission?.Organization?.includes(
@@ -709,8 +709,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9" style={{ textAlign: "center" }}>
-                      <Alert variant="warning">
+                    <td colSpan='9' style={{ textAlign: "center" }}>
+                      <Alert variant='warning'>
                         {" "}
                         No sub-organization available
                       </Alert>
@@ -719,8 +719,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="9">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='9'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -732,9 +732,9 @@ function Table(props) {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr key={counter} className="admin-panel-rows">
+                      <tr key={counter} className='admin-panel-rows'>
                         <td>
-                          <div className="admin-name-img">
+                          <div className='admin-name-img'>
                             <div
                               style={{
                                 backgroundImage: !row.thumb_url?.includes(
@@ -746,11 +746,11 @@ function Table(props) {
                                 backgroundRepeat: "no-repeat",
                                 backgroundPosition: "center",
                               }}
-                              className="admin-img"
+                              className='admin-img'
                             ></div>
 
                             <Link
-                              className="admin-name"
+                              className='admin-name'
                               to={`/org/${organization?.currentOrganization?.domain}/project/${row.id}/preview`}
                             >
                               {row.name}
@@ -764,7 +764,7 @@ function Table(props) {
                         </td>
 
                         <td>
-                          <div className="admin-description">
+                          <div className='admin-description'>
                             {row.description}
                           </div>
                         </td>
@@ -780,13 +780,13 @@ function Table(props) {
                             "organization:edit-project"
                           ) ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {row.indexing_text}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   {indexingArray.map(
@@ -844,11 +844,11 @@ function Table(props) {
                             "organization:edit-project"
                           ) ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {/* {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name} */}
                                   {visibilityTypeArray?.filter(
                                     (element) =>
@@ -861,7 +861,7 @@ function Table(props) {
                                           element.id ===
                                           row.organization_visibility_type_id
                                       )[0]?.display_name}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   {visibilityTypeArray?.map(
@@ -943,15 +943,15 @@ function Table(props) {
                             "organization:edit-project"
                           ) ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {row.shared
                                     ? "Enabled"
                                     : "Disabled"}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <Dropdown.Item
@@ -1016,7 +1016,7 @@ function Table(props) {
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
                         <td>
-                          <div className="admin-panel-dropdown">
+                          <div className='admin-panel-dropdown'>
                             {new Date(
                               updateNew.toDateString()
                             ).toLocaleDateString("en-US")}
@@ -1042,8 +1042,8 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No result found.
                       </Alert>
                     </td>
@@ -1051,8 +1051,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
+                  <td colSpan='13'>
+                    <Alert variant='primary'>Loading data...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1064,7 +1064,7 @@ function Table(props) {
                   localStateData?.map((row, counter) => {
                     // console.log(row);
                     return (
-                      <tr key={counter} className="org-rows">
+                      <tr key={counter} className='org-rows'>
                         <td>{row.project}</td>
                         <td>{row.created_at}</td>
                         <td>{row.will_expire_on}</td>
@@ -1072,7 +1072,7 @@ function Table(props) {
                           "organization:download-project"
                         ) ? (
                           <td>
-                            <a href={row.link} target="_blank">
+                            <a href={row.link} target='_blank'>
                               Download
                             </a>
                           </td>
@@ -1084,8 +1084,8 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No result found.
                       </Alert>
                     </td>
@@ -1093,8 +1093,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
+                  <td colSpan='13'>
+                    <Alert variant='primary'>Loading data...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1108,14 +1108,14 @@ function Table(props) {
                     const createNew = new Date(row.created_at);
                     const updateNew = new Date(row.updated_at);
                     return (
-                      <tr key={counter} className="admin-panel-rows">
+                      <tr key={counter} className='admin-panel-rows'>
                         <td
                           onClick={() => {
                             setCurrentActivity(row.id),
                               setModalShowh5p(true);
                           }}
                         >
-                          <div className="admin-name-img">
+                          <div className='admin-name-img'>
                             <div
                               style={{
                                 backgroundImage: !row.thumb_url?.includes(
@@ -1127,10 +1127,10 @@ function Table(props) {
                                 backgroundRepeat: "no-repeat",
                                 backgroundPosition: "center",
                               }}
-                              className="admin-img"
+                              className='admin-img'
                             ></div>
 
-                            <Link className="admin-name">
+                            <Link className='admin-name'>
                               {row.title}
                             </Link>
                           </div>
@@ -1149,13 +1149,13 @@ function Table(props) {
                             "Independent Activity"
                           ]?.includes("independent-activity:edit") ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {row.indexing_text}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   {indexingArray.map(
@@ -1189,11 +1189,11 @@ function Table(props) {
                             "Independent Activity"
                           ]?.includes("independent-activity:edit") ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {/* {visibilityTypeArray?.filter((element) => element.id === row.organization_visibility_type_id)[0]?.display_name} */}
                                   {visibilityTypeArray?.filter(
                                     (element) =>
@@ -1206,7 +1206,7 @@ function Table(props) {
                                           element.id ===
                                           row.organization_visibility_type_id
                                       )[0]?.display_name}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   {visibilityTypeArray?.map(
@@ -1277,15 +1277,15 @@ function Table(props) {
                             "Independent Activity"
                           ]?.includes("independent-activity:edit") ? (
                             <div
-                              className="filter-dropdown-table"
-                              id="filter-dropdown-table-id"
+                              className='filter-dropdown-table'
+                              id='filter-dropdown-table-id'
                             >
                               <Dropdown>
-                                <Dropdown.Toggle id="dropdown-basic">
+                                <Dropdown.Toggle id='dropdown-basic'>
                                   {row.shared
                                     ? "Enabled"
                                     : "Disabled"}
-                                  <FontAwesomeIcon icon="chevron-down" />
+                                  <FontAwesomeIcon icon='chevron-down' />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <Dropdown.Item
@@ -1343,7 +1343,7 @@ function Table(props) {
                         {/* <td>{String(row.starter_project)}</td> */}
                         {/* <td>{row.status_text}</td> */}
                         <td>
-                          <div className="admin-panel-dropdown">
+                          <div className='admin-panel-dropdown'>
                             {new Date(
                               updateNew.toDateString()
                             ).toLocaleDateString("en-US")}
@@ -1370,8 +1370,8 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No result found.
                       </Alert>
                     </td>
@@ -1379,8 +1379,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
+                  <td colSpan='13'>
+                    <Alert variant='primary'>Loading data...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1392,10 +1392,10 @@ function Table(props) {
                     const createNew = new Date(row?.created_at);
                     const expireNew = new Date(row.will_expire_on);
                     return (
-                      <tr key={counter} className="admin-panel-rows">
+                      <tr key={counter} className='admin-panel-rows'>
                         <td>
-                          <div className="admin-name-img">
-                            <Link className="admin-name">
+                          <div className='admin-name-img'>
+                            <Link className='admin-name'>
                               {row.project}
                             </Link>
                           </div>
@@ -1411,7 +1411,7 @@ function Table(props) {
                           ).toLocaleDateString("en-US")}
                         </td>
                         <td>
-                          <a href={row.link} target="_blank">
+                          <a href={row.link} target='_blank'>
                             Download
                           </a>
                         </td>
@@ -1420,8 +1420,8 @@ function Table(props) {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No result found.
                       </Alert>
                     </td>
@@ -1429,8 +1429,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="13">
-                    <Alert variant="primary">Loading data...</Alert>
+                  <td colSpan='13'>
+                    <Alert variant='primary'>Loading data...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1443,10 +1443,10 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr
                       key={"act-type-" + row.id}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>
-                        <div className="admin-name-img">
+                        <div className='admin-name-img'>
                           <div
                             style={{
                               backgroundImage: `url(${
@@ -1456,18 +1456,18 @@ function Table(props) {
                               backgroundRepeat: "no-repeat",
                               backgroundSize: "contain",
                             }}
-                            className="image-size"
+                            className='image-size'
                           ></div>
-                          <Link className="admin-name">
+                          <Link className='admin-name'>
                             {row.title}
                           </Link>
                         </div>
                       </td>
                       <td>{row.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
-                          <div className="admin-description-main">
-                            <div className="admin-description2">
+                        <div className='admin-panel-dropdown'>
+                          <div className='admin-description-main'>
+                            <div className='admin-description2'>
                               {row.activityItems.map((item, i) => (
                                 <div>
                                   {row.activityItems.length === i + 1
@@ -1476,7 +1476,7 @@ function Table(props) {
                                 </div>
                               ))}
                             </div>
-                            <div className="admin-description2-hover">
+                            <div className='admin-description2-hover'>
                               {row.activityItems.map((item, i) => (
                                 <>
                                   {row.activityItems.length === i + 1
@@ -1500,8 +1500,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No activity type found.
                       </Alert>
                     </td>
@@ -1509,8 +1509,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1519,9 +1519,9 @@ function Table(props) {
               (data?.data ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((item, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>
-                        <div className="admin-name-img">
+                        <div className='admin-name-img'>
                           <div
                             style={{
                               backgroundImage: `url(${
@@ -1531,10 +1531,10 @@ function Table(props) {
                               backgroundRepeat: "no-repeat",
                               backgroundSize: "contain",
                             }}
-                            className="image-size"
+                            className='image-size'
                           ></div>
 
-                          <Link className="admin-name">
+                          <Link className='admin-name'>
                             {" "}
                             {item.title}
                           </Link>
@@ -1542,31 +1542,31 @@ function Table(props) {
                       </td>
                       <td>{item.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
-                          <div className="">
+                        <div className='admin-panel-dropdown'>
+                          <div className=''>
                             <div
-                              className="d-flex"
-                              id="meta-style-td-id"
+                              className='d-flex'
+                              id='meta-style-td-id'
                             >
-                              <h6 className="m-0 admin-mata-heading">
+                              <h6 className='m-0 admin-mata-heading'>
                                 Activity Type:
                               </h6>
                               <span>{item?.activityType?.title}</span>
                             </div>
                             <div
-                              className="d-flex"
-                              id="meta-style-td-id"
+                              className='d-flex'
+                              id='meta-style-td-id'
                             >
-                              <h6 className="m-0 admin-mata-heading">
+                              <h6 className='m-0 admin-mata-heading'>
                                 Item Type:
                               </h6>
                               <span>{item.type}</span>
                             </div>
                             <div
-                              className="d-flex"
-                              id="meta-style-td-id"
+                              className='d-flex'
+                              id='meta-style-td-id'
                             >
-                              <h6 className="m-0 admin-mata-heading">
+                              <h6 className='m-0 admin-mata-heading'>
                                 Activity Item Value:
                               </h6>
                               <span>{item.h5pLib}</span>
@@ -1632,8 +1632,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5">
-                      <Alert variant="warning">
+                    <td colSpan='5'>
+                      <Alert variant='warning'>
                         {" "}
                         No activity item found
                       </Alert>
@@ -1642,8 +1642,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="5">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='5'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1655,16 +1655,16 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr
                       key={"subject-" + row.id}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>{row.name}</td>
                       <td>{row.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="Subjects"
+                              subType='Subjects'
                               row={row}
                               activePage={activePage}
                             />
@@ -1675,8 +1675,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No subject found.
                       </Alert>
                     </td>
@@ -1684,8 +1684,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1697,16 +1697,16 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr
                       key={"edu-lvl-" + row.id}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>{row.name}</td>
                       <td>{row.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="Education Level"
+                              subType='Education Level'
                               row={row}
                               activePage={activePage}
                             />
@@ -1717,8 +1717,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No Education level found.
                       </Alert>
                     </td>
@@ -1726,8 +1726,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1739,16 +1739,16 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr
                       key={"auth-tag-" + row.id}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>{row.name}</td>
                       <td>{row.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="Author Tags"
+                              subType='Author Tags'
                               row={row}
                               activePage={activePage}
                             />
@@ -1759,8 +1759,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No Author tag found.
                       </Alert>
                     </td>
@@ -1768,8 +1768,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1781,17 +1781,17 @@ function Table(props) {
                   localStateData?.map((row) => (
                     <tr
                       key={"act-lay-" + row.id}
-                      className="admin-panel-rows"
+                      className='admin-panel-rows'
                     >
                       <td>{row.title}</td>
                       <td>{row.order}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           --
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="Activity Layouts"
+                              subType='Activity Layouts'
                               row={row}
                               activePage={activePage}
                             />
@@ -1802,8 +1802,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No Activity layout found.
                       </Alert>
                     </td>
@@ -1811,8 +1811,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1821,13 +1821,13 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>{row?.site_name}</td>
                       <td>{row.lms_url}</td>
                       <td>{row.lms_name}</td>
                       <td>{row.lti_client_id}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           <div>{row?.description}</div>
                           <div>
                             <AdminDropdown
@@ -1842,8 +1842,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No Default SSO integration found.
                       </Alert>
                     </td>
@@ -1851,8 +1851,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1861,7 +1861,7 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>{row.tool_name}</td>
                       <td>{row.tool_url}</td>
                       <td>
@@ -1872,12 +1872,12 @@ function Table(props) {
                       {/* <td>{`${row.user.first_name} ${row.user.last_name}`}</td> */}
                       <td>{row.tool_description}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           {row.lti_version}
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="LTI Tools"
+                              subType='LTI Tools'
                               row={row}
                               activePage={activePage}
                               localStateData={localStateData}
@@ -1890,8 +1890,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No LTI Tool found.
                       </Alert>
                     </td>
@@ -1899,8 +1899,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1909,16 +1909,16 @@ function Table(props) {
               (localStateData ? (
                 localStateData?.length > 0 ? (
                   localStateData?.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
-                      <td>{row.c2e_name}</td>
-                      <td>{row.c2e_publisher_url}</td>
-                      <td>{row.c2e_api_secret}</td>
+                    <tr key={counter} className='admin-panel-rows'>
+                      <td>{row.name}</td>
+                      <td>{row.url}</td>
+                      <td>{row.key}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           <div>
                             <AdminDropdown
                               type={type}
-                              subType="C2Es"
+                              subType='C2Es'
                               row={row}
                               activePage={activePage}
                               localStateData={localStateData}
@@ -1931,8 +1931,8 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">
+                    <td colSpan='11'>
+                      <Alert variant='warning'>
                         No C2E Publisher Found.
                       </Alert>
                     </td>
@@ -1940,8 +1940,8 @@ function Table(props) {
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}
@@ -1949,7 +1949,7 @@ function Table(props) {
               (Object.keys(data).length > 0 ? (
                 data?.data?.length > 0 ? (
                   data?.data.map((row, counter) => (
-                    <tr key={counter} className="admin-panel-rows">
+                    <tr key={counter} className='admin-panel-rows'>
                       <td>
                         {row.name.length > 30
                           ? row.name.substring(0, 30).concat("...")
@@ -1966,7 +1966,7 @@ function Table(props) {
                       <td>{row?.users?.length}</td>
                       <td>{row?.projects?.length}</td>
                       <td>
-                        <div className="admin-panel-dropdown">
+                        <div className='admin-panel-dropdown'>
                           {row?.updated_at?.split("T")[0]}
                           <div>
                             <AdminDropdown
@@ -1981,15 +1981,15 @@ function Table(props) {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="11">
-                      <Alert variant="warning">No team found.</Alert>
+                    <td colSpan='11'>
+                      <Alert variant='warning'>No team found.</Alert>
                     </td>
                   </tr>
                 )
               ) : (
                 <tr>
-                  <td colSpan="11">
-                    <Alert variant="primary">Loading...</Alert>
+                  <td colSpan='11'>
+                    <Alert variant='primary'>Loading...</Alert>
                   </td>
                 </tr>
               ))}

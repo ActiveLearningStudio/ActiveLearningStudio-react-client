@@ -13,7 +13,7 @@ import intActivityServices from "services/indActivities.service";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import "./addvideocard.scss";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
-import { getIndex } from "store/actions/indActivities";
+
 import SharePreviewPopup from "components/SharePreviewPopup";
 import { Info } from "assets/curriki-icons";
 import ViewMdSvg from "iconLibrary/mainContainer/ViewMdSvg";
@@ -163,15 +163,15 @@ const AddVideoCard = ({
             })`,
           }}
         >
-          <div className="addvideo-card-dropdown">
+          <div className='addvideo-card-dropdown'>
             {addToProjectCheckbox ? (
               data.shared === false &&
               data.organization_visibility_type_id === 1 ? (
                 <>
-                  <label className="cutom_checkbox">
+                  <label className='cutom_checkbox'>
                     {/* <input type="checked" /> */}
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       onChange={() => {
                         if (selectedProjectstoAdd.includes(data.id)) {
                           setSelectedProjectstoAdd(
@@ -203,14 +203,14 @@ const AddVideoCard = ({
                 </>
               ) : (
                 <OverlayTrigger
-                  placement="bottom"
-                  className="curriki-tooltip"
+                  placement='bottom'
+                  className='curriki-tooltip'
                   delay={{ show: 250, hide: 40000 }}
                   overlay={(props) => (
                     <Tooltip
-                      id="button-tooltip"
+                      id='button-tooltip'
                       {...props}
-                      className="button-tooltip_style"
+                      className='button-tooltip_style'
                     >
                       To move this activity, please change to:
                       <ul>
@@ -232,7 +232,7 @@ const AddVideoCard = ({
                     ))) && (
                   <DropDownEdit
                     data={data}
-                    iconColor="white"
+                    iconColor='white'
                     activities={activities}
                     isActivityCard={isActivityCard}
                     setModalShow={setModalShow}
@@ -249,22 +249,22 @@ const AddVideoCard = ({
           </div>
           <div
             onClick={() => openEditor()}
-            className="addvideo-card-title"
+            className='addvideo-card-title'
           >
             <h2 dangerouslySetInnerHTML={{ __html: data.title }} />
             {/* {selectedProjectstoAdd?.includes(data.id) && addToProjectCheckbox && '*'} */}
           </div>
         </div>
-        <div className="addvideo-card-detail">
+        <div className='addvideo-card-detail'>
           <p>{data.description?.slice(0, 50)}</p>
         </div>
         {isActivityCard && (
           <>
-            <div className="activity-update-lib">
-              <div className="activity-update">
+            <div className='activity-update-lib'>
+              <div className='activity-update'>
                 Updated: {data.updated_at.split("T")[0]}
               </div>
-              <div className="activity-lib">
+              <div className='activity-lib'>
                 Library Status:{" "}
                 <span>
                   {
@@ -280,13 +280,13 @@ const AddVideoCard = ({
           </>
         )}
 
-        <div className="addvideo-card-add-share">
-          <div className="btn-box">
+        <div className='addvideo-card-add-share'>
+          <div className='btn-box'>
             {isActivityCard ? (
               <>
-                <div className="addvideo-activity-menu-option">
+                <div className='addvideo-activity-menu-option'>
                   <div
-                    className="activity-request-tag"
+                    className='activity-request-tag'
                     onClick={() => {
                       if (
                         data.indexing_text === "NOT REQUESTED" &&
@@ -305,27 +305,27 @@ const AddVideoCard = ({
                     />
                     <span>{data.indexing_text}</span>
                   </div>
-                  <div className="addvideo-card-add-share-options-parent ">
+                  <div className='addvideo-card-add-share-options-parent '>
                     <div
-                      className="addvideo-card-add-share-options hover-apply"
+                      className='addvideo-card-add-share-options hover-apply'
                       onClick={() => {
                         setCurrentActivity(data.id);
                         setModalShow(true);
                       }}
                     >
                       <ViewMdSvg primaryColor={primaryColor} />
-                      <span className="textinButton">Preview</span>
+                      <span className='textinButton'>Preview</span>
                     </div>
                     {permission?.["Independent Activity"]?.includes(
                       "independent-activity:edit-author"
                     ) && (
                       <>
                         <div
-                          className="addvideo-card-add-share-options hover-apply"
+                          className='addvideo-card-add-share-options hover-apply'
                           onClick={() => openEditor()}
                         >
                           <EditMdSvg primaryColor={primaryColor} />
-                          <span className="textinButton">Edit</span>
+                          <span className='textinButton'>Edit</span>
                         </div>
                       </>
                     )}
@@ -333,7 +333,7 @@ const AddVideoCard = ({
                     {data.shared && (
                       <>
                         <div
-                          className="addvideo-card-add-share-options hover-apply"
+                          className='addvideo-card-add-share-options hover-apply'
                           onClick={() => {
                             if (
                               window.gapi &&
@@ -353,7 +353,7 @@ const AddVideoCard = ({
                           <ShareLinkMdSvg
                             primaryColor={primaryColor}
                           />
-                          <span className="textinButton">
+                          <span className='textinButton'>
                             Sharing
                           </span>
                         </div>
@@ -430,7 +430,7 @@ const AddVideoCard = ({
             ) : (
               <>
                 <div
-                  className="addvideo-card-add-share-options-ind"
+                  className='addvideo-card-add-share-options-ind'
                   onClick={() => {
                     setCurrentActivity(data.id);
                     setModalShow(true);
@@ -438,7 +438,7 @@ const AddVideoCard = ({
                 >
                   <ViewMdSvg
                     primaryColor={primaryColor}
-                    className="mr-6"
+                    className='mr-6'
                   />
                   View &nbsp;&nbsp;&nbsp;
                 </div>
@@ -449,7 +449,7 @@ const AddVideoCard = ({
                   }}
                 />
                 <div
-                  className="addvideo-card-add-share-options-ind"
+                  className='addvideo-card-add-share-options-ind'
                   onClick={async () => {
                     toast.dismiss();
                     toast.info("Loading Activity ...", {
@@ -507,7 +507,7 @@ const AddVideoCard = ({
                 >
                   <EditMdSvg
                     primaryColor={primaryColor}
-                    className="mr-6"
+                    className='mr-6'
                   />
                   Edit &nbsp;&nbsp;&nbsp;
                 </div>
@@ -516,8 +516,8 @@ const AddVideoCard = ({
           </div>
         </div>
         {selectionStatus && (
-          <div className="addvideo-selection-box">
-            <input type="checkbox" />
+          <div className='addvideo-selection-box'>
+            <input type='checkbox' />
             <span>Select</span>
           </div>
         )}

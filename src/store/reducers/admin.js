@@ -39,6 +39,8 @@ const INITIAL_STATE = {
   roleAddDynamicPermission: null,
   ltiToolsReloadStatus: false,
   subjectsAddStatus: false,
+  allC2EPublishers: [],
+  allStores: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -48,6 +50,41 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         activeForm: action.payload,
       };
+    case actionTypes.SET_ALL_STORES:
+      return {
+        ...state,
+        allStores: action.payload,
+      };
+
+    case actionTypes.SET_C2E_PUBLISHER:
+      return {
+        ...state,
+        allC2EPublishers: action.payload,
+      };
+
+    case actionTypes.ADD_C2E_PUBLISHER:
+      return {
+        ...state,
+        allC2EPublishers: [action.payload, ...state.allC2EPublishers],
+      };
+    case actionTypes.UPDATE_C2E_PUBLISHER:
+      return {
+        ...state,
+        allC2EPublishers: state.allC2EPublishers.map((data) => {
+          if (data.id === action.payload.id) {
+            return action.payload;
+          }
+          return data;
+        }),
+      };
+    case actionTypes.REMOVE_C2E_PUBLISHER:
+      return {
+        ...state,
+        allC2EPublishers: state.allC2EPublishers?.filter(
+          (data) => data.id !== action.payload
+        ),
+      };
+
     case actionTypes.SET_ALL_IV:
       return {
         ...state,

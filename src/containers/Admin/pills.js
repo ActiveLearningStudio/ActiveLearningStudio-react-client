@@ -44,6 +44,7 @@ import {
   getActivityLayout,
   teamsActionAdminPanel,
   getOrganizationMedaiSource,
+  getAllC2EPublisher,
 } from "store/actions/admin";
 import {
   allBrightCove,
@@ -136,6 +137,7 @@ export default function Pills(props) {
   const [defaultSso, setDefaultSso] = useState(null);
   const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState("");
   const [ltiTool, setLtiTool] = useState(null);
+  const [c2ePublisher, setc2ePublisher] = useState(null);
   const [ltiToolFilterBy, setLtiToolFilterBy] = useState("");
   const [activityItemFilterBy, setActivityItemFilterBy] = useState(
     ""
@@ -209,6 +211,7 @@ export default function Pills(props) {
       }
     }
   };
+
   const searchQueryChangeHandler = async ({ target }) => {
     if (target.value.trim().length) {
       if (!!alphaNumeric(target.value)) {
@@ -581,6 +584,7 @@ export default function Pills(props) {
       dispatch(updatePageNumber(activePage));
     }
   }, [type, subTypeState, activePage, size, activeOrganization]);
+
   useEffect(() => {
     if (
       type === "Activities" &&
@@ -685,6 +689,15 @@ export default function Pills(props) {
         allBrightCove(activeOrganization?.id, size, activePage || 1)
       );
     }
+    if (type === "LMS") {
+      dispatch(
+        getAllC2EPublisher(
+          activeOrganization?.id,
+          size,
+          activePage || 1
+        )
+      );
+    }
   }, [type, size, activePage, activeOrganization?.id]);
 
   useEffect(() => {
@@ -692,6 +705,12 @@ export default function Pills(props) {
       setLtiTool(dataRedux.admin.ltiTools);
     }
   }, [dataRedux.admin.ltiTools]);
+
+  useEffect(() => {
+    if (dataRedux.admin?.allC2EPublishers) {
+      setc2ePublisher(dataRedux.admin.allC2EPublishers);
+    }
+  }, [dataRedux.admin.allC2EPublishers]);
 
   useEffect(() => {
     if (dataRedux.admin.defaultSso) {
@@ -1743,7 +1762,7 @@ export default function Pills(props) {
   return (
     <Tabs
       defaultActiveKey={modules?.filter((data) => !!data)[0]}
-      id="controlled-tab-example"
+      id='controlled-tab-example'
       activeKey={key}
       onSelect={(key) => {
         setSearchQuery("");
@@ -1783,14 +1802,14 @@ export default function Pills(props) {
         ?.filter((data) => !!data)
         ?.map((asset) => (
           <Tab key={asset} eventKey={asset} title={asset}>
-            <div key={asset} className="module-content-inner">
+            <div key={asset} className='module-content-inner'>
               {type === "Users" && subTypeState === "All Users" && (
                 <Starter
                   paginationCounter={true}
                   search={true}
                   print={false}
-                  btnText="Add user"
-                  btnAction="create_user"
+                  btnText='Add user'
+                  btnAction='create_user'
                   importUser={true}
                   filter={false}
                   tableHead={columnData.userall}
@@ -1820,13 +1839,13 @@ export default function Pills(props) {
                     paginationCounter={false}
                     search={false}
                     print={false}
-                    btnText="Add Role"
-                    btnAction="add_role"
+                    btnText='Add Role'
+                    btnAction='add_role'
                     importUser={false}
                     filter={false}
                     subTypeState={subTypeState}
                     tableHead={[]}
-                    subType="Manage Roles"
+                    subType='Manage Roles'
                     sortCol={[]}
                     handleSort={handleSort}
                     data={[]}
@@ -1843,8 +1862,8 @@ export default function Pills(props) {
                 <Starter
                   search={true}
                   print={false}
-                  btnText="Add Organization"
-                  btnAction="add_org"
+                  btnText='Add Organization'
+                  btnAction='add_org'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.organization}
@@ -1871,8 +1890,8 @@ export default function Pills(props) {
                   subType={"LMS settings"}
                   search={true}
                   print={false}
-                  btnText="Add LMS settings"
-                  btnAction="add_lms"
+                  btnText='Add LMS settings'
+                  btnAction='add_lms'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.lmssettings}
@@ -1896,8 +1915,8 @@ export default function Pills(props) {
                   subType={"BrightCove"}
                   search={true}
                   print={false}
-                  btnText="Add New Entry"
-                  btnAction="add_brightcove"
+                  btnText='Add New Entry'
+                  btnAction='add_brightcove'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.IntegrationBrightCove}
@@ -1976,7 +1995,7 @@ export default function Pills(props) {
                     type={type}
                     setActivePage={setActivePage}
                     activePage={activePage}
-                    subType="Exported Projects"
+                    subType='Exported Projects'
                     setCurrentTab={setCurrentTab}
                     searchQueryProject={searchQueryProject}
                     setSearchQueryProject={setSearchQueryProject}
@@ -2075,8 +2094,8 @@ export default function Pills(props) {
                     searchActivitiesQueryHandler={
                       searchActivitiesQueryHandler
                     }
-                    btnText="Add Activity Type"
-                    btnAction="add_activity_type"
+                    btnText='Add Activity Type'
+                    btnAction='add_activity_type'
                     data={activityTypes}
                     type={type}
                     setActivePage={setActivePage}
@@ -2105,8 +2124,8 @@ export default function Pills(props) {
                     searchActivitiesQueryHandler={
                       searchActivitiesQueryHandler
                     }
-                    btnText="Add Activity Item"
-                    btnAction="add_activity_item"
+                    btnText='Add Activity Item'
+                    btnAction='add_activity_item'
                     data={activityItems}
                     type={type}
                     setActivePage={setActivePage}
@@ -2137,8 +2156,8 @@ export default function Pills(props) {
                     searchActivitiesQueryHandler={
                       searchActivitiesQueryHandler
                     }
-                    btnText="Add a new subject"
-                    btnAction="add_subject"
+                    btnText='Add a new subject'
+                    btnAction='add_subject'
                     data={subjects}
                     type={type}
                     setActivePage={setActivePage}
@@ -2168,8 +2187,8 @@ export default function Pills(props) {
                     searchActivitiesQueryHandler={
                       searchActivitiesQueryHandler
                     }
-                    btnText="Add a new education level"
-                    btnAction="add_education_level"
+                    btnText='Add a new education level'
+                    btnAction='add_education_level'
                     data={educationLevel}
                     type={type}
                     setActivePage={setActivePage}
@@ -2199,8 +2218,8 @@ export default function Pills(props) {
                     searchActivitiesQueryHandler={
                       searchActivitiesQueryHandler
                     }
-                    btnText="Add a new author tag"
-                    btnAction="add_author_tag"
+                    btnText='Add a new author tag'
+                    btnAction='add_author_tag'
                     data={authorTag}
                     type={type}
                     setActivePage={setActivePage}
@@ -2226,8 +2245,8 @@ export default function Pills(props) {
                     // searchQueryActivities={searchQueryActivities}
                     // setSearchQueryActivities={setSearchQueryActivities}
                     // searchActivitiesQueryHandler={searchActivitiesQueryHandler}
-                    btnText="Add activity layout"
-                    btnAction="add_activity_layout"
+                    btnText='Add activity layout'
+                    btnAction='add_activity_layout'
                     data={activityLayout}
                     type={type}
                     setActivePage={setActivePage}
@@ -2256,8 +2275,8 @@ export default function Pills(props) {
                   setSize={setSize}
                   search={true}
                   print={false}
-                  btnText="Add Default SSO settings"
-                  btnAction="add_default_sso"
+                  btnText='Add Default SSO settings'
+                  btnAction='add_default_sso'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.defaultsso}
@@ -2281,8 +2300,8 @@ export default function Pills(props) {
                   subType={"LTI Tools"}
                   search={true}
                   print={false}
-                  btnText="Create New LTI Tool"
-                  btnAction="add_lti_tool"
+                  btnText='Create New LTI Tool'
+                  btnAction='add_lti_tool'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.ltitool}
@@ -2310,12 +2329,12 @@ export default function Pills(props) {
                   search={true}
                   print={false}
                   btnText="Add Publisher's Config Key"
-                  btnAction="add_publisher"
+                  btnAction='add_publisher'
                   importUser={false}
                   filter={false}
                   tableHead={columnData.c2ePublisher}
                   handleSort={handleSort}
-                  data={ltiTool}
+                  data={c2ePublisher}
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}

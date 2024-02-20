@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import Switch from "react-switch";
 import adminapi from "../../../services/admin.service";
 import { getGlobalColor } from "containers/App/DynamicBrandingApply";
+import { action } from "@storybook/addon-actions";
 
 export default function CreatePublisher(prop) {
   const { editMode, clone } = prop;
@@ -29,12 +30,12 @@ export default function CreatePublisher(prop) {
 
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
-    <div className="create-form lms-admin-form">
+    <div className='create-form lms-admin-form'>
       <Formik
         initialValues={{
-          c2e_name: "",
-          c2e_publisher_url: "",
-          c2e_api_secret: "",
+          name: editMode ? activeEdit?.name : "",
+          url: editMode ? activeEdit?.url : "",
+          key: editMode ? activeEdit?.key : "",
 
           activity_visibility: false,
           playlist_visibility: false,
@@ -42,23 +43,23 @@ export default function CreatePublisher(prop) {
         }}
         validate={(values) => {
           const errors = {};
-          if (!values.c2e_name) {
-            errors.c2e_name = "required";
+          if (!values.name) {
+            errors.name = "required";
           }
-          if (!values.c2e_publisher_url) {
-            errors.c2e_publisher_url = "required";
+          if (!values.url) {
+            errors.url = "required";
           }
-          if (!values.c2e_api_secret) {
-            errors.c2e_api_secret = "required";
+          if (!values.key) {
+            errors.key = "required";
           }
           return errors;
         }}
         onSubmit={async (values) => {
           if (editMode && !clone) {
             Swal.fire({
-              title: "Users",
+              title: "Publishers",
               icon: "info",
-              text: "Updating User Publisher Config Key...",
+              text: "Updating C2E Publisher Config Key...",
               allowOutsideClick: false,
               onBeforeOpen: () => {
                 Swal.showLoading();
@@ -66,15 +67,20 @@ export default function CreatePublisher(prop) {
               button: false,
             });
 
-            const result = adminapi.updateLmsProject(
+            const result = adminapi.updatePublisherList(
               organization?.activeOrganization?.id,
               activeEdit?.id,
               values
             );
             result.then((res) => {
+              dispatch({
+                type: "UPDATE_C2E_PUBLISHER",
+                payload: res?.data,
+              });
+              dispatch(removeActiveAdminForm());
               Swal.fire({
                 icon: "success",
-                text: "Publisher's Config key edited successfully",
+                text: "C2E's Config key edited successfully",
                 confirmButtonText: "Close",
                 customClass: {
                   confirmButton: "confirmation-close-btn",
@@ -83,9 +89,9 @@ export default function CreatePublisher(prop) {
             });
           } else {
             Swal.fire({
-              title: "Users",
+              title: "Publishers",
               icon: "info",
-              text: "Creating new user...",
+              text: "Creating new C2E Publisher...",
 
               allowOutsideClick: false,
               onBeforeOpen: () => {
@@ -93,11 +99,20 @@ export default function CreatePublisher(prop) {
               },
               button: false,
             });
-            const result = adminapi.createLmsProject(
+            const result = adminapi.createPublisherList(
               organization?.activeOrganization?.id,
-              values
+              {
+                ...values,
+                "organization id":
+                  organization?.activeOrganization?.id,
+              }
             );
             result.then((res) => {
+              dispatch({
+                type: "ADD_C2E_PUBLISHER",
+                payload: res?.data || {},
+              });
+              dispatch(removeActiveAdminForm());
               Swal.fire({
                 icon: "success",
                 text: "Publisher's Config key added successfully",
@@ -121,68 +136,62 @@ export default function CreatePublisher(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <div className="lms-form">
+            <div className='lms-form'>
               <h2 style={{ marginBottom: "45px" }}>
                 {editMode ? (clone ? "Add " : "Edit ") : "Add "}
                 Publisher's Config Key
               </h2>
 
-              <div className="create-form-inputs-group">
+              <div className='create-form-inputs-group'>
                 {/* Left container */}
                 <div>
-                  <div className="form-group-create">
+                  <div className='form-group-create'>
                     <h3>Name</h3>
                     <input
-                      type="c2e_name"
-                      name="c2e_name"
+                      type='text'
+                      name='name'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.c2e_name}
+                      value={values.name}
                     />
-                    <div className="error">
-                      {errors.c2e_name &&
-                        touched.c2e_name &&
-                        errors.c2e_name}
+                    <div className='error'>
+                      {errors.name && touched.name && errors.name}
                     </div>
                   </div>
-                  <div className="form-group-create">
+                  <div className='form-group-create'>
                     <h3>Publisher URL</h3>
                     <input
-                      type="c2e_publisher_url"
-                      name="c2e_publisher_url"
+                      type='url'
+                      name='url'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.c2e_publisher_url}
+                      value={values.url}
                     />
-                    <div className="error">
-                      {errors.c2e_publisher_url &&
-                        touched.c2e_publisher_url &&
-                        errors.c2e_publisher_url}
+                    <div className='error'>
+                      {errors.url && touched.url && errors.url}
                     </div>
                   </div>
 
-                  <div className="form-group-create">
+                  <div className='form-group-create'>
                     <h3>API Secret </h3>
                     <input
-                      type="c2e_api_secret"
-                      name="c2e_api_secret"
+                      type='key'
+                      name='key'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.c2e_api_secret}
+                      value={values.key}
                     />
-                    <div className="error">
-                      {errors.c2e_api_secret &&
-                        touched.c2e_api_secret &&
-                        errors.c2e_api_secret}
+                    <div className='error'>
+                      {errors.key && touched.key && errors.key}
                     </div>
                   </div>
 
-                  <div className="form-group-create">
+                  <div className='form-group-create'>
                     <h3>Visibility</h3>
-                    <div className="create-form-inputs-toggles">
+                    <div className='create-form-inputs-toggles'>
                       <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
+                        className='custom-toggle-button'
+                        id='custom-toggle-button-id-br-style'
                       >
                         <Switch
                           checked={checkedActivity}
@@ -193,20 +202,20 @@ export default function CreatePublisher(prop) {
                               !checkedActivity
                             );
                           }}
-                          className="react-switch"
+                          className='react-switch'
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor="#888"
+                          offColor='#888'
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor="#666"
+                          offHandleColor='#666'
                         />
                         <h3>Activity</h3>
                       </div>
                       <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
+                        className='custom-toggle-button'
+                        id='custom-toggle-button-id-br-style'
                       >
                         <Switch
                           checked={checkedPlaylist}
@@ -217,20 +226,20 @@ export default function CreatePublisher(prop) {
                               !checkedPlaylist
                             );
                           }}
-                          className="react-switch"
+                          className='react-switch'
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor="#888"
+                          offColor='#888'
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor="#666"
+                          offHandleColor='#666'
                         />
                         <h3>Playlist</h3>
                       </div>
                       <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
+                        className='custom-toggle-button'
+                        id='custom-toggle-button-id-br-style'
                       >
                         <Switch
                           checked={checkedProject}
@@ -241,14 +250,14 @@ export default function CreatePublisher(prop) {
                               !checkedProject
                             );
                           }}
-                          className="react-switch"
+                          className='react-switch'
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor="#888"
+                          offColor='#888'
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor="#666"
+                          offHandleColor='#666'
                         />
                         <h3>Project</h3>
                       </div>
@@ -256,11 +265,11 @@ export default function CreatePublisher(prop) {
                   </div>
                 </div>
               </div>
-              <div className="button-group">
-                <button type="submit">Save</button>
+              <div className='button-group'>
+                <button type='submit'>Save</button>
                 <button
-                  type="button"
-                  className="cancel"
+                  type='button'
+                  className='cancel'
                   onClick={() => {
                     dispatch(removeActiveAdminForm());
                   }}
