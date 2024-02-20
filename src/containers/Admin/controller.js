@@ -1495,7 +1495,7 @@ function Controller(props) {
           )}
         {!!btnText &&
           type === "LMS" &&
-          subType === "C2Es" &&
+          subType === "C2E Publisher" &&
           permission?.Organization.includes(
             "organization:create-all-setting"
           ) && (

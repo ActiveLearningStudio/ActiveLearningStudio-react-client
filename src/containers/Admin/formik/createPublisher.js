@@ -30,7 +30,7 @@ export default function CreatePublisher(prop) {
 
   const primaryColor = getGlobalColor("--main-primary-color");
   return (
-    <div className='create-form lms-admin-form'>
+    <div className="create-form lms-admin-form">
       <Formik
         initialValues={{
           name: editMode ? activeEdit?.name : "",
@@ -136,62 +136,62 @@ export default function CreatePublisher(prop) {
           /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <div className='lms-form'>
+            <div className="lms-form">
               <h2 style={{ marginBottom: "45px" }}>
                 {editMode ? (clone ? "Add " : "Edit ") : "Add "}
                 Publisher's Config Key
               </h2>
 
-              <div className='create-form-inputs-group'>
+              <div className="create-form-inputs-group">
                 {/* Left container */}
                 <div>
-                  <div className='form-group-create'>
+                  <div className="form-group-create">
                     <h3>Name</h3>
                     <input
-                      type='text'
-                      name='name'
+                      type="text"
+                      name="name"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.name}
                     />
-                    <div className='error'>
+                    <div className="error">
                       {errors.name && touched.name && errors.name}
                     </div>
                   </div>
-                  <div className='form-group-create'>
+                  <div className="form-group-create">
                     <h3>Publisher URL</h3>
                     <input
-                      type='url'
-                      name='url'
+                      type="url"
+                      name="url"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.url}
                     />
-                    <div className='error'>
+                    <div className="error">
                       {errors.url && touched.url && errors.url}
                     </div>
                   </div>
 
-                  <div className='form-group-create'>
-                    <h3>API Secret </h3>
+                  <div className="form-group-create">
+                    <h3>API Key </h3>
                     <input
-                      type='key'
-                      name='key'
+                      type="key"
+                      name="key"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.key}
                     />
-                    <div className='error'>
+                    <div className="error">
                       {errors.key && touched.key && errors.key}
                     </div>
                   </div>
 
-                  <div className='form-group-create'>
+                  <div className="form-group-create">
                     <h3>Visibility</h3>
-                    <div className='create-form-inputs-toggles'>
+                    <div className="create-form-inputs-toggles">
                       <div
-                        className='custom-toggle-button'
-                        id='custom-toggle-button-id-br-style'
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
                       >
                         <Switch
                           checked={checkedActivity}
@@ -202,20 +202,20 @@ export default function CreatePublisher(prop) {
                               !checkedActivity
                             );
                           }}
-                          className='react-switch'
+                          className="react-switch"
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor='#888'
+                          offColor="#888"
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor='#666'
+                          offHandleColor="#666"
                         />
                         <h3>Activity</h3>
                       </div>
                       <div
-                        className='custom-toggle-button'
-                        id='custom-toggle-button-id-br-style'
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
                       >
                         <Switch
                           checked={checkedPlaylist}
@@ -226,20 +226,20 @@ export default function CreatePublisher(prop) {
                               !checkedPlaylist
                             );
                           }}
-                          className='react-switch'
+                          className="react-switch"
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor='#888'
+                          offColor="#888"
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor='#666'
+                          offHandleColor="#666"
                         />
                         <h3>Playlist</h3>
                       </div>
                       <div
-                        className='custom-toggle-button'
-                        id='custom-toggle-button-id-br-style'
+                        className="custom-toggle-button"
+                        id="custom-toggle-button-id-br-style"
                       >
                         <Switch
                           checked={checkedProject}
@@ -250,14 +250,14 @@ export default function CreatePublisher(prop) {
                               !checkedProject
                             );
                           }}
-                          className='react-switch'
+                          className="react-switch"
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          offColor='#888'
+                          offColor="#888"
                           onColor={primaryColor}
                           onHandleColor={primaryColor}
-                          offHandleColor='#666'
+                          offHandleColor="#666"
                         />
                         <h3>Project</h3>
                       </div>
@@ -265,11 +265,11 @@ export default function CreatePublisher(prop) {
                   </div>
                 </div>
               </div>
-              <div className='button-group'>
-                <button type='submit'>Save</button>
+              <div className="button-group">
+                <button type="submit">Save</button>
                 <button
-                  type='button'
-                  className='cancel'
+                  type="button"
+                  className="cancel"
                   onClick={() => {
                     dispatch(removeActiveAdminForm());
                   }}

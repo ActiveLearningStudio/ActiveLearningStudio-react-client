@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Modal } from "react-responsive-modal";
+import { Modal } from "react-bootstrap";
 import {
   faEllipsisV,
   faCopy,
@@ -18,7 +18,7 @@ import {
   faLock,
   faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { getAllStores } from "store/actions/admin";
+import { getAllStores, getAllRoyalites } from "store/actions/admin";
 import { deleteVideo, cloneh5pvideo } from "store/actions/videos";
 import {
   deleteIndActivity,
@@ -53,6 +53,8 @@ import StoreSvg from "iconLibrary/dropDown/StoreSvg";
 import CapSvg from "iconLibrary/dropDown/CapSvg";
 import ReorderSvg from "iconLibrary/dropDown/ReorderSvg";
 import DollarSvg from "iconLibrary/dropDown/DollarSvg";
+import cross from "assets/images/cross-icon.png";
+import dotsloader from "assets/images/dotsloader.gif";
 
 const DropDownEdit = ({
   iconColor,
@@ -71,15 +73,16 @@ const DropDownEdit = ({
   const { activeOrganization } = useSelector(
     (state) => state.organization
   );
-  const { allC2EPublishers, allStores } = useSelector(
+  const { allC2EPublishers, allStores, allRoyalties } = useSelector(
     (state) => state.admin
   );
   const [visibilityTypeArray, setVisibilityTypeArray] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedStore, setSelectedStore] = useState("");
-  const [selectedBox, setSelectedBox] = useState("");
+  const [selectedBox, setSelectedBox] = useState("first-box");
   const [showBoxContainer, setShowBoxContainer] = useState(true);
   const [activeC2EPublisher, setActiveC2EPublisher] = useState(true);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   // console.log("activities", data);
   const primaryColor = getGlobalColor("--main-primary-color");
@@ -111,15 +114,36 @@ const DropDownEdit = ({
   const handleBoxRadioChange = (boxName) => {
     setSelectedBox(boxName);
   };
+  const handlePublishClick = async () => {
+    setLoading(true);
+    const result = await adminService.publishC2EToStore(
+      activeC2EPublisher.id,
+      data.id,
+      selectedStore
+    );
+    if (result?.message) {
+      Swal.fire({
+        title: "Successfully Published!",
+        text: result.message,
+        icon: "success",
+        showCancelButton: true,
+        cancelButtonText: "Close",
+        confirmButtonColor: "#084892",
+        cancelButtonColor: "#d33",
+      });
+    }
+    setShowBoxContainer(false);
+    setLoading(false);
+  };
   useEffect(() => {
     setVisibilityTypeArray(
       activeOrganization?.allowed_visibility_type_id
     );
   }, [activeOrganization]);
   return (
-    <div className='curriki-utility-activity-dropdown'>
-      <Dropdown className='activity-dropdown check '>
-        <Dropdown.Toggle className='activity-dropdown-btn'>
+    <div className="curriki-utility-activity-dropdown">
+      <Dropdown className="activity-dropdown check ">
+        <Dropdown.Toggle className="activity-dropdown-btn">
           <FontAwesomeIcon
             icon={faEllipsisV}
             style={{
@@ -225,19 +249,19 @@ const DropDownEdit = ({
                 </div>
               </Dropdown.Item> */}
                 {/*  */}
-                <li className='dropdown-submenu send'>
-                  <a tabIndex='-1'>
+                <li className="dropdown-submenu send">
+                  <a tabIndex="-1">
                     <ShareLinkSmSvg
                       primaryColor={primaryColor}
-                      className='mr-2'
+                      className="mr-2"
                     />
                     Sharing
                   </a>
-                  <div className='faAngleRight-dropdown'>
+                  <div className="faAngleRight-dropdown">
                     <RightAngleSmSvg primaryColor={primaryColor} />
                   </div>
 
-                  <ul className='dropdown-menu check '>
+                  <ul className="dropdown-menu check ">
                     {data.shared ? (
                       <>
                         <li
@@ -333,7 +357,7 @@ const DropDownEdit = ({
                     >
                       <DuplicateSmSvg
                         primaryColor={primaryColor}
-                        className='mr-2'
+                        className="mr-2"
                       />
                       Duplicate
                     </Dropdown.Item>
@@ -342,24 +366,24 @@ const DropDownEdit = ({
                 {permission?.["Independent Activity"]?.includes(
                   "independent-activity:view-library-preference-options"
                 ) && (
-                  <li className='dropdown-submenu send'>
+                  <li className="dropdown-submenu send">
                     <a
-                      tabIndex='-1'
+                      tabIndex="-1"
                       style={{
                         whiteSpace: "nowrap",
                       }}
                     >
                       <LibraryStatusSmSvg
                         primaryColor={primaryColor}
-                        className='mr-2'
+                        className="mr-2"
                       />
                       Library preference
                     </a>
-                    <div className='faAngleRight-dropdown'>
+                    <div className="faAngleRight-dropdown">
                       <RightAngleSmSvg primaryColor={primaryColor} />
                     </div>
 
-                    <ul className='dropdown-menu check'>
+                    <ul className="dropdown-menu check">
                       {visibilityTypeArray?.map((element) => (
                         <li
                           onClick={() => {
@@ -393,25 +417,25 @@ const DropDownEdit = ({
                     </ul>
                   </li>
                 )}
-                <li className='dropdown-submenu send'>
-                  <a tabIndex='-1'>
+                <li className="dropdown-submenu send">
+                  <a tabIndex="-1">
                     <ExportSmSvg
                       primaryColor={primaryColor}
-                      className='mr-2'
+                      className="mr-2"
                     />
                     Export
                   </a>
-                  <div className='faAngleRight-dropdown'>
+                  <div className="faAngleRight-dropdown">
                     <RightAngleSmSvg primaryColor={primaryColor} />
                   </div>
 
-                  <ul className='dropdown-menu check'>
+                  <ul className="dropdown-menu check">
                     {permission?.Activity?.includes(
                       "activity:view-export-xapi-option"
                     ) && (
                       <li>
                         <a
-                          target='_blank'
+                          target="_blank"
                           onClick={() => {
                             dispatch(shareEnableLink(data.id));
                           }}
@@ -556,7 +580,7 @@ const DropDownEdit = ({
             >
               <DuplicateSmSvg
                 primaryColor={primaryColor}
-                className='mr-2'
+                className="mr-2"
               />
               Duplicate
             </Dropdown.Item>
@@ -585,7 +609,7 @@ const DropDownEdit = ({
               >
                 <DeleteSmSvg
                   primaryColor={primaryColor}
-                  className='mr-2'
+                  className="mr-2"
                 />
                 Delete
               </Dropdown.Item>
@@ -610,7 +634,7 @@ const DropDownEdit = ({
             >
               <DeleteSmSvg
                 primaryColor={primaryColor}
-                className='mr-2'
+                className="mr-2"
               />
               Delete
             </Dropdown.Item>
@@ -620,55 +644,55 @@ const DropDownEdit = ({
             permission?.["Independent Activity"]?.includes(
               "independent-activity:edit-author"
             ) && (
-              <li className='dropdown-submenu send'>
-                <a tabIndex='-1' className='dropdown-item'>
+              <li className="dropdown-submenu send">
+                <a tabIndex="-1" className="dropdown-item">
                   <svg
-                    width='14'
-                    height='14'
-                    viewBox='0 0 14 14'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='menue-img'
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="menue-img"
                   >
                     <path
-                      d='M10.583 4.52941C11.5495 4.52941 12.333 3.73933 12.333 2.76471C12.333 1.79009 11.5495 1 10.583 1C9.61651 1 8.83301 1.79009 8.83301 2.76471C8.83301 3.73933 9.61651 4.52941 10.583 4.52941Z'
+                      d="M10.583 4.52941C11.5495 4.52941 12.333 3.73933 12.333 2.76471C12.333 1.79009 11.5495 1 10.583 1C9.61651 1 8.83301 1.79009 8.83301 2.76471C8.83301 3.73933 9.61651 4.52941 10.583 4.52941Z"
                       stroke={primaryColor}
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d='M3.41602 8.5631C4.38251 8.5631 5.16602 7.77302 5.16602 6.7984C5.16602 5.82378 4.38251 5.03369 3.41602 5.03369C2.44952 5.03369 1.66602 5.82378 1.66602 6.7984C1.66602 7.77302 2.44952 8.5631 3.41602 8.5631Z'
+                      d="M3.41602 8.5631C4.38251 8.5631 5.16602 7.77302 5.16602 6.7984C5.16602 5.82378 4.38251 5.03369 3.41602 5.03369C2.44952 5.03369 1.66602 5.82378 1.66602 6.7984C1.66602 7.77302 2.44952 8.5631 3.41602 8.5631Z"
                       stroke={primaryColor}
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d='M10.583 13.0001C11.5495 13.0001 12.333 12.21 12.333 11.2354C12.333 10.2608 11.5495 9.4707 10.583 9.4707C9.61651 9.4707 8.83301 10.2608 8.83301 11.2354C8.83301 12.21 9.61651 13.0001 10.583 13.0001Z'
+                      d="M10.583 13.0001C11.5495 13.0001 12.333 12.21 12.333 11.2354C12.333 10.2608 11.5495 9.4707 10.583 9.4707C9.61651 9.4707 8.83301 10.2608 8.83301 11.2354C8.83301 12.21 9.61651 13.0001 10.583 13.0001Z"
                       stroke={primaryColor}
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d='M5.27148 7.96411L9.06593 10.3722'
+                      d="M5.27148 7.96411L9.06593 10.3722"
                       stroke={primaryColor}
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d='M9.06037 3.72876L5.27148 6.13683'
+                      d="M9.06037 3.72876L5.27148 6.13683"
                       stroke={primaryColor}
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                   &nbsp; Publish
                 </a>
-                <ul className='dropdown-menu check'>
+                <ul className="dropdown-menu check">
                   {activeOrganization?.gcr_activity_visibility && (
                     <li
                       onClick={() => {
@@ -697,17 +721,21 @@ const DropDownEdit = ({
                     permission?.["Independent Activity"]?.includes(
                       "independent-activity:edit-author"
                     ) &&
-                    allC2EPublishers?.map((data) => {
+                    allC2EPublishers?.map((publisher) => {
+                      console.log(allC2EPublishers);
                       return (
                         <a
                           className
                           onClick={() => {
                             handlePublishC2EClick();
-                            setActiveC2EPublisher(data);
-                            dispatch(getAllStores(data.id));
+                            setActiveC2EPublisher(publisher);
+                            dispatch(getAllStores(publisher.id));
+                            dispatch(
+                              getAllRoyalites(publisher.id, data.id)
+                            );
                           }}
                         >
-                          {data?.name}
+                          {publisher?.name}
                         </a>
                       );
                     })}
@@ -718,167 +746,134 @@ const DropDownEdit = ({
       </Dropdown>
       {/* Modal */}
       <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        center
-        className='modal-style'
+        show={showModal}
+        centered
+        size="xl"
+        className="review-modal"
       >
-        <div className='c2e-modal-content'>
-          <h3>Review & Publish</h3>
+        <div className="c2e-modal-content">
+          <div className="heading-modal">
+            <h3>Review & Publish</h3>
+            <img
+              src={cross}
+              alt="cross-icon"
+              width={18}
+              height={18}
+              onClick={handleCancelClick}
+            />
+          </div>
+
           <h6>
             {showBoxContainer
               ? "Step 3: Choose Destination"
               : "Step 4: Review Pricing"}
           </h6>
         </div>
-        {showBoxContainer ? (
-          <div className='box-container'>
-            <div
-              className={`first-box ${
-                selectedBox === "first-box" ? "selected" : ""
-              }`}
-              onClick={() => handleBoxRadioChange("first-box")}
-            >
-              <div className='box-inner'>
-                <StoreSvg
-                  primaryColor={
-                    selectedBox === "first-box" ? primaryColor : ""
-                  }
-                />
-                <p>Publish to Marketplace</p>
-              </div>
+        <Modal.Body>
+          {showBoxContainer ? (
+            <div className="box-container">
+              <div
+                className={`first-box ${
+                  selectedBox === "first-box" ? "selected" : ""
+                }`}
+                onClick={() => handleBoxRadioChange("first-box")}
+              >
+                <div className="box-inner">
+                  <StoreSvg
+                    primaryColor={
+                      selectedBox === "first-box" ? primaryColor : ""
+                    }
+                  />
+                  <p>Publish to Marketplace</p>
+                </div>
 
-              <div className='radio-buttons'>
-                {allStores?.map((data) => {
+                <div className="radio-buttons">
+                  {allStores?.map((data) => {
+                    return (
+                      <label>
+                        <input
+                          type="radio"
+                          name="store"
+                          value={data.id}
+                          checked={selectedStore === data.id}
+                          onChange={handleRadioChange}
+                        />
+                        &nbsp;&nbsp;{data.name}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="">
+              <div>
+                <h6 className="title">Title</h6>
+                <h6 className="book_title">{data?.title}</h6>
+              </div>
+              <div className="all-chap">
+                {allRoyalties?.map((royal) => {
                   return (
-                    <label>
-                      <input
-                        type='radio'
-                        name='store'
-                        value={data.id}
-                        checked={selectedStore === data.id}
-                        onChange={handleRadioChange}
-                      />
-                      &nbsp;&nbsp;{data.name}
-                    </label>
+                    <div className="chap-price">
+                      <div className="chapter">
+                        <ReorderSvg />
+                        <DollarSvg />
+                        <h6 className="chap_title">{royal.name}</h6>
+                      </div>
+                      <h6 className="chap_title">
+                        ${royal?.royalty?.amount}
+                      </h6>
+                    </div>
                   );
                 })}
               </div>
-            </div>
-            <div
-              className={`second-box ${
-                selectedBox === "second-box" ? "selected" : ""
-              }`}
-              onClick={() => handleBoxRadioChange("second-box")}
-            >
-              <div className='box-inner'>
-                <CapSvg
-                  primaryColor={
-                    selectedBox === "second-box" ? primaryColor : ""
-                  }
-                />
-                <p>Publish to Player</p>
-              </div>
-
-              <div className='radio-buttons'>
-                <label>
-                  <input
-                    type='radio'
-                    name='store'
-                    value='LMS 1'
-                    checked={selectedStore === "LMS 1"}
-                    onChange={handleRadioChange}
-                    disabled={selectedBox !== "second-box"}
-                  />
-                  &nbsp;&nbsp;LMS 1
-                </label>
-                <label>
-                  <input
-                    type='radio'
-                    name='store'
-                    value='LMS 2'
-                    checked={selectedStore === "LMS 2"}
-                    onChange={handleRadioChange}
-                    disabled={selectedBox !== "second-box"}
-                  />
-                  &nbsp;&nbsp;LMS 2
-                </label>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className=''>
-            <div>
-              <h6 className='title'>Title</h6>
-              <h6 className='book_title'>Computer Science 01</h6>
-            </div>
-            <div className='chap-price'>
-              <div className='chapter'>
-                <ReorderSvg />
-                <DollarSvg />
-                <h6 className='chap_title'>
-                  Chapter 1: The Language of Anatomy & Physiology
+              <div className="total-price">
+                <p>Total Licensing Costs:</p>
+                <h6 className="chap_title">
+                  $
+                  {allRoyalties?.reduce((sum, data) => {
+                    return (sum = sum + data?.royalty?.amount);
+                  }, 0)}
                 </h6>
               </div>
-              <h6 className='chap_title'>$1.20</h6>
             </div>
-            <div className='chap-price'>
-              <div className='chapter'>
-                <ReorderSvg />
-                <DollarSvg />
-                <h6 className='chap_title'>
-                  Chapter 1: The Language of Anatomy & Physiology
-                </h6>
-              </div>
-              <h6 className='chap_title'>$1.20</h6>
-            </div>
-            <div className='total-price'>
-              <p>Total Licensing Costs:</p>
-              <h6 className='chap_title'>$3.00</h6>
-            </div>
-          </div>
-        )}
-
+          )}
+        </Modal.Body>
         {/*Buttons */}
-        <div className='buttons'>
-          <Buttons
-            text='Cancel'
-            secondary={true}
-            hover={true}
-            onClick={handleCancelClick}
-          />
-          <div className='two-buttons'>
+        <div className="buttons">
+          {showBoxContainer ? (
+            <Buttons
+              text="Cancel"
+              secondary={true}
+              hover={true}
+              onClick={handleCancelClick}
+            />
+          ) : (
+            <Buttons
+              text="Back"
+              secondary={true}
+              hover={true}
+              onClick={() => {
+                setShowBoxContainer(true);
+              }}
+            />
+          )}
+          <div className="two-buttons">
             {showBoxContainer ? (
               <Buttons
-                text='Next'
+                text="Next"
                 primary={true}
                 hover={true}
                 onClick={handleNextClick}
               />
+            ) : loading ? (
+              <img src={dotsloader} width={16} height={16} />
             ) : (
               <Buttons
-                text='Publish'
+                text="Publish"
                 primary={true}
                 hover={true}
-                onClick={async () => {
-                  const result = await adminService.publishC2EToStore(
-                    activeC2EPublisher.id,
-                    data.id,
-                    selectedStore
-                  );
-                  if (result.message) {
-                    Swal.fire({
-                      title: "Successfully Published!",
-                      text: result.message,
-                      icon: "success",
-                      showCancelButton: true,
-                      cancelButtonText: "Close",
-                      confirmButtonColor: "#084892",
-                      cancelButtonColor: "#d33",
-                    });
-                  }
-                  setShowBoxContainer(false);
-                }}
+                onClick={handlePublishClick}
               />
             )}
           </div>

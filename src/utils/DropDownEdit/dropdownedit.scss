@@ -82,7 +82,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 134px;
+  margin-top: 50px;
   .two-buttons {
     display: flex;
     flex-direction: row;
@@ -163,4 +163,15 @@
 .radio-buttons {
   display: flex;
   flex-direction: column;
+}
+
+.heading-modal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.all-chap {
+  height: 350px;
+  overflow: auto;
 }

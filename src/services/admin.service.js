@@ -944,6 +944,15 @@ const getAllStores = (id) =>
       // errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
+const getAllRoyality = (publishId, activityId) =>
+  httpService
+    .get(
+      `/${apiVersion}/c2e/publishers/${publishId}/independent-activities/${activityId}/publish-media`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+    });
 
 const publishC2EToStore = (publishId, activityId, storeId) =>
   httpService
@@ -979,6 +988,7 @@ const updatePublisherList = (subOrgId, id, data) =>
     });
 
 export default {
+  getAllRoyality,
   publishC2EToStore,
   getAllStores,
   getPublisherList,

@@ -492,7 +492,20 @@ export const getAllStores = (id) => async (dispatch) => {
   });
   return result;
 };
+export const getAllRoyalites = (publishId, activityId) => async (
+  dispatch
+) => {
+  const result = await adminService.getAllRoyality(
+    publishId,
+    activityId
+  );
 
+  dispatch({
+    type: actionTypes.SET_ALL_ROYALTIES,
+    payload: result,
+  });
+  return result;
+};
 export const updateC2EPublisher = (orgId, id, data) => async (
   dispatch
 ) => {

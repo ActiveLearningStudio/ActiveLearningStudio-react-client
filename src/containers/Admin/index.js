@@ -397,7 +397,7 @@ function AdminPanel({ showSSO }) {
                             ) && "Microsoft Teams",
                             permission?.Organization?.includes(
                               "organization:view-all-setting"
-                            ) && "C2Es",
+                            ) && "C2E Publisher",
                           ]}
                           type="LMS"
                         />

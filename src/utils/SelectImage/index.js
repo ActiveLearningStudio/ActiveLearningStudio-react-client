@@ -85,7 +85,17 @@ const SelectImage = (props) => {
         {...props}
         mediaSources={mediaSources}
       /> */}
-      <SearchVideoModal
+      {/*<SearchVideoModal
+        show={show}
+        handleClose={() => {
+          setShow(false);
+          if (containerType === "Activity") {
+            setshowSmythsonianModal(false);
+          }
+        }}
+        {...props}
+      />*/}
+      <AddWiley
         show={show}
         handleClose={() => {
           setShow(false);

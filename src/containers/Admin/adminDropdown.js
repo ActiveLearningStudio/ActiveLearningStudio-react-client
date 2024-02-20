@@ -100,10 +100,10 @@ const AdminDropdown = (props) => {
   return (
     <>
       <Dropdown
-        drop='start'
-        className='project-dropdown check d-flex  align-items-center text-added-project-dropdown'
+        drop="start"
+        className="project-dropdown check d-flex  align-items-center text-added-project-dropdown"
       >
-        <Dropdown.Toggle className='project-dropdown-btn project d-flex justify-content-center align-items-center'>
+        <Dropdown.Toggle className="project-dropdown-btn project d-flex justify-content-center align-items-center">
           {/* <FontAwesomeIcon
           icon="ellipsis-v"
           style={{
@@ -117,7 +117,7 @@ const AdminDropdown = (props) => {
           <MenuLgSvg primaryColor={primaryColor} />
         </Dropdown.Toggle>
 
-        <Dropdown.Menu className='menu'>
+        <Dropdown.Menu className="menu">
           {type === "Organization" && (
             <>
               {" "}
@@ -136,7 +136,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -180,7 +180,7 @@ const AdminDropdown = (props) => {
                   >
                     <ManageMdSvg
                       primaryColor={primaryColor}
-                      className='menue-img'
+                      className="menue-img"
                     />
                     Manage
                   </Dropdown.Item>
@@ -191,7 +191,7 @@ const AdminDropdown = (props) => {
               ) && (
                 <>
                   <Dropdown.Item
-                    to='#'
+                    to="#"
                     onClick={() => {
                       Swal.fire({
                         title: "Are you sure?",
@@ -226,7 +226,7 @@ const AdminDropdown = (props) => {
                   >
                     <DeleteSmSvg
                       primaryColor={primaryColor}
-                      className='menue-img'
+                      className="menue-img"
                     />
                     Delete
                   </Dropdown.Item>
@@ -265,7 +265,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Export} alt="Preview" className="menue-img" /> */}
                   <ExportSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Export
                 </Dropdown.Item>
@@ -284,7 +284,7 @@ const AdminDropdown = (props) => {
                 >
                   <ShareLinkSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Get shared link
                 </Dropdown.Item>
@@ -305,7 +305,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -314,7 +314,7 @@ const AdminDropdown = (props) => {
                 "organization:delete-project"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     Swal.fire({
                       title: "Are you sure?",
@@ -364,7 +364,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -380,7 +380,7 @@ const AdminDropdown = (props) => {
               >
                 <PreviewSmSvg
                   primaryColor={primaryColor}
-                  className='menue-img'
+                  className="menue-img"
                 />
                 Preview
               </Dropdown.Item>
@@ -412,7 +412,7 @@ const AdminDropdown = (props) => {
                 >
                   <ExportSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Export
                 </Dropdown.Item>
@@ -432,7 +432,7 @@ const AdminDropdown = (props) => {
                 >
                   <ShareLinkSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Get Shared Link
                 </Dropdown.Item>
@@ -441,7 +441,7 @@ const AdminDropdown = (props) => {
                 "independent-activity:delete"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     Swal.fire({
                       title: "Are you sure?",
@@ -469,7 +469,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -500,7 +500,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -509,7 +509,7 @@ const AdminDropdown = (props) => {
                 "organization:edit-activity-item"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     Swal.fire({
                       title: "Are you sure?",
@@ -565,7 +565,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -596,7 +596,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -605,7 +605,7 @@ const AdminDropdown = (props) => {
                 "organization:delete-activity-type"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     Swal.fire({
                       title: "Are you sure?",
@@ -661,7 +661,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -687,7 +687,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -742,7 +742,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -769,7 +769,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -825,7 +825,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -850,7 +850,7 @@ const AdminDropdown = (props) => {
                   {/* <img src={Edit} alt="Preview" className="menue-img" /> */}
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -905,7 +905,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -931,7 +931,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -987,7 +987,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -1008,7 +1008,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -1022,7 +1022,7 @@ const AdminDropdown = (props) => {
                   >
                     <RemoveSmSvg
                       primaryColor={primaryColor}
-                      className='menue-img'
+                      className="menue-img"
                     />
                     Remove
                   </Dropdown.Item>
@@ -1035,7 +1035,7 @@ const AdminDropdown = (props) => {
                 "organization:edit-lms-setting"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     dispatch({
                       type: "SET_ACTIVE_EDIT",
@@ -1046,7 +1046,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   &nbsp;&nbsp;Edit&nbsp;&nbsp;
                 </Dropdown.Item>
@@ -1055,7 +1055,7 @@ const AdminDropdown = (props) => {
                 "organization:edit-lms-setting"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     dispatch({
                       type: "SET_ACTIVE_EDIT",
@@ -1066,7 +1066,7 @@ const AdminDropdown = (props) => {
                 >
                   <CloneSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   &nbsp;&nbsp;Clone&nbsp;&nbsp;
                 </Dropdown.Item>
@@ -1075,7 +1075,7 @@ const AdminDropdown = (props) => {
                 "organization:delete-lms-setting"
               ) && (
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     Swal.fire({
                       title: "Are you sure?",
@@ -1127,7 +1127,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   &nbsp;&nbsp;Delete&nbsp;&nbsp;
                 </Dropdown.Item>
@@ -1149,7 +1149,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -1208,7 +1208,7 @@ const AdminDropdown = (props) => {
                   >
                     <DeleteSmSvg
                       primaryColor={primaryColor}
-                      className='menue-img'
+                      className="menue-img"
                     />
                     Delete
                   </Dropdown.Item>
@@ -1233,7 +1233,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -1315,14 +1315,14 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
               )}
             </>
           )}
-          {type === "LMS" && subType === "C2Es" && (
+          {type === "LMS" && subType === "C2E Publisher" && (
             <>
               {permission?.Organization.includes(
                 "organization:edit-all-setting"
@@ -1338,7 +1338,7 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
@@ -1402,7 +1402,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -1426,13 +1426,13 @@ const AdminDropdown = (props) => {
                 >
                   <EditDpDnMdSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Edit
                 </Dropdown.Item>
 
                 <Dropdown.Item
-                  to='#'
+                  to="#"
                   onClick={() => {
                     dispatch({
                       type: "SET_ACTIVE_EDIT",
@@ -1443,7 +1443,7 @@ const AdminDropdown = (props) => {
                 >
                   <CloneSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Clone
                 </Dropdown.Item>
@@ -1492,7 +1492,7 @@ const AdminDropdown = (props) => {
                 >
                   <DeleteSmSvg
                     primaryColor={primaryColor}
-                    className='menue-img'
+                    className="menue-img"
                   />
                   Delete
                 </Dropdown.Item>
@@ -1514,7 +1514,7 @@ const AdminDropdown = (props) => {
               >
                 <EditDpDnMdSvg
                   primaryColor={primaryColor}
-                  className='menue-img'
+                  className="menue-img"
                 />
                 Edit
               </Dropdown.Item>
@@ -1538,7 +1538,7 @@ const AdminDropdown = (props) => {
               >
                 <DeleteSmSvg
                   primaryColor={primaryColor}
-                  className='menue-img'
+                  className="menue-img"
                 />
                 Delete
               </Dropdown.Item>

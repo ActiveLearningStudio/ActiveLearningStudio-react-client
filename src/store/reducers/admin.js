@@ -41,6 +41,7 @@ const INITIAL_STATE = {
   subjectsAddStatus: false,
   allC2EPublishers: [],
   allStores: [],
+  allRoyalties: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -54,6 +55,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         allStores: action.payload,
+      };
+
+    case actionTypes.SET_ALL_ROYALTIES:
+      return {
+        ...state,
+        allRoyalties: action.payload,
       };
 
     case actionTypes.SET_C2E_PUBLISHER:
