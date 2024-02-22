@@ -723,7 +723,6 @@ const DropDownEdit = ({
                       "independent-activity:edit-author"
                     ) &&
                     allC2EPublishers?.map((publisher) => {
-                      console.log(allC2EPublishers);
                       return (
                         <a
                           className

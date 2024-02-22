@@ -37,6 +37,8 @@ const SearchVideoModal = ({
   const [TabValue, setTabValue] = useState(0);
   const [activeListButton, setActiveListButton] = useState("list");
   const [videoListData, setVideoListData] = useState([]);
+  // const [listData, setListData] = useState([]);
+  // const [searchQuery, setSearchQuery] = useState("");
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -45,17 +47,27 @@ const SearchVideoModal = ({
   const handleChange = (event) => {
     setMediaType(event.target.value);
   };
-
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  // const filteredList = listData.filter((item) =>
+  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
   const handlePost = async () => {
     // First GEt API call
     const url = new URL(
       process.env.REACT_APP_VIDEO_IDS +
-        "/suborganization/1/get-bc-account-list"
+        "suborganization/1/get-bc-account-list"
     );
     try {
+      // const token = localStorage.getItem("auth_token");
+      // if (!token) {
+      //   throw new Error("Auth token not found");
+      // }
       const response = await fetch(url, {
         method: "GET",
         headers: {
+          // Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
@@ -63,6 +75,9 @@ const SearchVideoModal = ({
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      // const data = await response.json();
+      // console.log("VideoData:", data.data);
+      // setListData(data.data);
       const data = await response.json();
       const orgId = data?.data?.[0]?.organization_id;
       const accId = data?.data?.[0]?.id;
@@ -92,7 +107,7 @@ const SearchVideoModal = ({
       console.log("PlaylistIds:", playlistId);
       const allPlaylistId = playlistId?.data?.map((item) => item?.id);
 
-      //Videos API call
+      // Videos API call
       const allVideoListData = [];
 
       for (const playlistId of allPlaylistId) {
@@ -174,6 +189,8 @@ const SearchVideoModal = ({
             <input
               type="search"
               className="inpur-search"
+              // value={searchQuery}
+              // // onChange={handleSearchChange}
               placeholder="The Scientific Revolution + Telescope (1608) - Allowed closer observ.."
             />
             <img
@@ -303,6 +320,53 @@ const SearchVideoModal = ({
                   </div>
                 );
               })}
+              {/*  {filteredList.map((item, index) => {
+                console.log("itemmmm", item.organization.image);
+                const imageUrl = item?.organization?.image;
+                return (
+                  <div key={index} className="video-list-container">
+                    <div className="data-container">
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <div style={{ width: "75px" }}>
+                          <img src={imageUrl} alt="org-image" />
+                        </div>
+
+                        <div className="inner-data-container">
+                          <HeadingThree
+                            text={item.name}
+                            className="video-title"
+                          />
+                          <p className="video-description">
+                            {item.description}
+                          </p>
+                          <p className="video-description">
+                            License:{" "}
+                            <span style={{ color: "#063A75" }}>
+                              {item.license
+                                ? item.license
+                                : "Creative Commons"}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        className="advanced-filter"
+                        onClick={() => {}}
+                      >
+                        <img src={EyeIcon} alt="eyeIcon" />
+                        Preview
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}   */}
             </CustomTabPanel>
           </Box>
         </div>
@@ -312,7 +376,7 @@ const SearchVideoModal = ({
             text="Cancel"
             secondary
             height="36px"
-            onClick={() => {}}
+            onClick={handleClose}
           />
           <Buttons
             className="advanced-filter"

@@ -8,7 +8,7 @@ import "./style.scss";
 
 import dragImage from "../../assets/images/Icons-explanatory-activity.png";
 import DragDropImage from "./DragDropImage";
-import AddWiley from "./wileyModal";
+import AddWiley from "./brightcoveModal";
 import SearchVideoModal from "components/models/searchVideoModal";
 
 const SelectImage = (props) => {
@@ -74,7 +74,7 @@ const SelectImage = (props) => {
           </div>
         </DragDropImage>
       </div>
-      {/*<Modal
+      <Modal
         show={show}
         handleClose={() => {
           setShow(false);
@@ -84,8 +84,14 @@ const SelectImage = (props) => {
         }}
         {...props}
         mediaSources={mediaSources}
-      /> */}
+      />
       {/*<SearchVideoModal
+        show={show}
+        handleClose={() => {
+          setShow(false);
+        }}
+      />*/}
+      {/*<AddWiley
         show={show}
         handleClose={() => {
           setShow(false);
@@ -95,16 +101,6 @@ const SelectImage = (props) => {
         }}
         {...props}
       />*/}
-      <AddWiley
-        show={show}
-        handleClose={() => {
-          setShow(false);
-          if (containerType === "Activity") {
-            setshowSmythsonianModal(false);
-          }
-        }}
-        {...props}
-      />
     </>
   );
 };

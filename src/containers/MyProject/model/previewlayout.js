@@ -10,6 +10,7 @@ import H5PImageUploadContainer from "components/H5PImageUploadContainer";
 import cross from "assets/images/cross-icon.png";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
+import BrightcoveModal from "utils/SelectImage/brightcoveModal";
 
 const PreviewLayoutModel = (props) => {
   const {
@@ -51,6 +52,14 @@ const PreviewLayoutModel = (props) => {
   const [
     showH5PImageUploadDialog,
     setShowH5PImageUploadDialog,
+  ] = useState(false);
+  const [
+    showBrightcoveBrowseVideosDialog,
+    setShowBrightcoveBrowseVideosDialog,
+  ] = useState(false);
+  const [
+    showBrightcoveBrowseVideosDetails,
+    setShowBrightcoveBrowseVideosDetails,
   ] = useState(false);
   const [
     H5PImageUploadDialogDetails,
@@ -172,6 +181,36 @@ const PreviewLayoutModel = (props) => {
     setH5PImageUploadDialogDetails(e.detail);
     setShowH5PImageUploadDialog(true);
   };
+  const handlelaunchBrightcoveBrowseVideosDialog = (e) => {
+    if (e === "close") {
+      return setShowBrightcoveBrowseVideosDialog(false);
+    }
+    const data = {
+      callback: (callBackdata) => {
+        console.log(callBackdata);
+        parent.params.video.brightcoveVideoID =
+          callBackdata.brightcoveVideoID;
+        // this.setActive();
+      },
+    };
+    const event = new CustomEvent(
+      "launchBrightcoveBrowseVideosDialog",
+      { detail: data }
+    );
+
+    setShowBrightcoveBrowseVideosDetails(e.detail);
+    setShowBrightcoveBrowseVideosDialog(true);
+  };
+
+  const addVideo = (values) => {
+    console.log(showBrightcoveBrowseVideosDetails);
+    showBrightcoveBrowseVideosDetails.callback(() => (data) => {
+      console.log(data);
+    });
+    // showBrightcoveBrowseVideosDetails.detail.callback({
+    //   brightcoveVideoID: values?.id,
+    // });
+  };
 
   useEffect(() => {
     window.addEventListener(
@@ -195,6 +234,19 @@ const PreviewLayoutModel = (props) => {
       window.removeEventListener(
         "launchH5PImageUploadDialog",
         handleH5PImageUploadDialogEvent
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(
+      "launchBrightcoveBrowseVideosDialog",
+      handlelaunchBrightcoveBrowseVideosDialog
+    );
+    return () => {
+      window.removeEventListener(
+        "launchBrightcoveBrowseVideosDialog",
+        handlelaunchBrightcoveBrowseVideosDialog
       );
     };
   }, []);
@@ -589,6 +641,15 @@ const PreviewLayoutModel = (props) => {
           layout={selectedLayout}
           details={H5PImageUploadDialogDetails}
           closeModal={() => handleH5PImageUploadDialogEvent("close")}
+        />
+      )}
+      {showBrightcoveBrowseVideosDialog && (
+        <BrightcoveModal
+          show={showBrightcoveBrowseVideosDialog}
+          handleClose={() =>
+            handlelaunchBrightcoveBrowseVideosDialog("close")
+          }
+          addVideo={addVideo}
         />
       )}
     </>

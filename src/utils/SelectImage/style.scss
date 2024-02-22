@@ -95,7 +95,7 @@
 .add-video-form-tabs {
   .main-tabs {
     border-bottom: 1px solid $curriki-main-blue;
-    width: max-content;
+    width: 100% !important;
 
     .nav-item {
       margin-top: 24px;
@@ -137,6 +137,50 @@
     color: $curriki-main-blueb3;
     border-bottom: 4px solid $curriki-main-blueb3;
   }
+}
+.search-container {
+  width: 100%;
+  height: 32px;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .inpur-search {
+    color: #063a75;
+    width: 100%;
+    border: none;
+    outline: none;
+    &::placeholder {
+      color: #767676 !important;
+    }
+  }
+}
+.wiley-modal {
+  z-index: 9999 !important;
+  background: #0848928f;
+}
+.brightcove-tab {
+  overflow: auto;
+  height: 400px;
+}
+.title-close-button {
+  color: #1e1e1e;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.loader-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 .modal-content {
   padding: 25px;
