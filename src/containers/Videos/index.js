@@ -56,7 +56,7 @@ import {
   getAllStores,
 } from "store/actions/admin";
 
-const ImgLoader = () => <img src={loader} alt='loader' />;
+const ImgLoader = () => <img src={loader} alt="loader" />;
 
 // eslint-disable-next-line react/prop-types
 const Index = ({ activities }) => {
@@ -237,8 +237,8 @@ const Index = ({ activities }) => {
           }
         >
           <FontAwesomeIcon
-            icon='times'
-            className='cross-all-pop'
+            icon="times"
+            className="cross-all-pop"
             onClick={() => {
               Swal.fire({
                 text:
@@ -262,7 +262,7 @@ const Index = ({ activities }) => {
               });
             }}
           />
-          <div className='inner-form-content'>
+          <div className="inner-form-content">
             {screenStatus === "AddVideo" && (
               <AddVideo
                 setScreenStatus={setScreenStatus}
@@ -292,7 +292,19 @@ const Index = ({ activities }) => {
           </div>
         </div>
       )}
-      <div className='myvideomain'>
+      <div
+        onClick={() => {
+          setOpenVideo(!openMyVideo);
+          setScreenStatus("AddVideo");
+          dispatch({
+            type: "SET_ACTIVE_VIDEO_SCREEN",
+            payload: "",
+          });
+        }}
+      >
+        test
+      </div>
+      <div className="myvideomain">
         <div
           className={`content-wrapper ${
             hideShowSideBar == true ? "expend-content-menu" : ""
@@ -301,7 +313,7 @@ const Index = ({ activities }) => {
         >
           <div
             style={{ paddingBottom: " 66px" }}
-            className='inner-content m-auto'
+            className="inner-content m-auto"
           >
             {permission?.[
               activities ? "Independent Activity" : "Video"
@@ -311,8 +323,8 @@ const Index = ({ activities }) => {
                 : "video:view"
             ) ? (
               <>
-                <div className='topHeading-video-detail'>
-                  <div className='topHeading'>
+                <div className="topHeading-video-detail">
+                  <div className="topHeading">
                     <div>
                       <TopHeading
                         description={currentOrganization.name}
@@ -335,19 +347,19 @@ const Index = ({ activities }) => {
                             ? "My Activities"
                             : "My interactive videos"
                         }
-                        color='#084892'
+                        color="#084892"
                         className={
                           currentOrganization &&
                           "video-top-heading-custom"
                         }
                       />
                     </div>
-                    <div className='search-bar-btn'>
+                    <div className="search-bar-btn">
                       {/* Search Start */}
                       {activities && (
-                        <div className='project-headline'>
-                          <div className='search-main-relaced'>
-                            <div className='search-div'>
+                        <div className="project-headline">
+                          <div className="search-main-relaced">
+                            <div className="search-div">
                               {/* <SearchForm activities /> */}
                             </div>
                           </div>
@@ -405,18 +417,18 @@ const Index = ({ activities }) => {
                       </div> */}
                     </div>
                   </div>
-                  <div className='top-video-detail'>
-                    <div className='video-detail'>
+                  <div className="top-video-detail">
+                    <div className="video-detail">
                       {/* <HeadingText text={activities ? '' : 'Create and organize your activities into projects to create complete courses.'} color="#515151" /> */}
                     </div>
                   </div>
                 </div>
                 {!activities ? (
-                  <div className='video-cards-top-search-filter'>
-                    <div className='search-bar'>
+                  <div className="video-cards-top-search-filter">
+                    <div className="search-bar">
                       <input
-                        className=''
-                        type='text'
+                        className=""
+                        type="text"
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
@@ -430,7 +442,7 @@ const Index = ({ activities }) => {
                             }
                           }
                         }}
-                        placeholder='Search My Videos...'
+                        placeholder="Search My Videos..."
                       />
                       <SearchInputMdSvg
                         primaryColor={primaryColor}
@@ -448,12 +460,12 @@ const Index = ({ activities }) => {
                         }}
                       />
                     </div>
-                    <div className='activity-counter'>
-                      <div className='pagination-counter drop-counter '>
+                    <div className="activity-counter">
+                      <div className="pagination-counter drop-counter ">
                         My Interactive per page
                         <span>
                           <Dropdown>
-                            <Dropdown.Toggle id='dropdown-basic'>
+                            <Dropdown.Toggle id="dropdown-basic">
                               10
                             </Dropdown.Toggle>
 
@@ -474,12 +486,12 @@ const Index = ({ activities }) => {
                       "query"
                     )) && (
                     <>
-                      <div className='video-cards-top-search-filter'>
-                        <div className='search-bar-clear-btn'>
-                          <div className='search-bar'>
+                      <div className="video-cards-top-search-filter">
+                        <div className="search-bar-clear-btn">
+                          <div className="search-bar">
                             <input
-                              className=''
-                              type='text'
+                              className=""
+                              type="text"
                               value={searchQuery}
                               onChange={(e) => {
                                 setSearchQuery(e.target.value);
@@ -496,7 +508,7 @@ const Index = ({ activities }) => {
                                   );
                                 }
                               }}
-                              placeholder='Search My Activities...'
+                              placeholder="Search My Activities..."
                             />
                             <SearchInputMdSvg
                               primaryColor={primaryColor}
@@ -518,8 +530,8 @@ const Index = ({ activities }) => {
                           </div>
                           <div>
                             <Buttons
-                              text='Clear'
-                              className='clr-btn'
+                              text="Clear"
+                              className="clr-btn"
                               onClick={() => {
                                 setSearchQuery("");
                                 setActiveScreenPage(null);
@@ -536,8 +548,8 @@ const Index = ({ activities }) => {
                           </div>
                         </div>
 
-                        <div className='searc_bar_move_activities'>
-                          <div className='move_activities'>
+                        <div className="searc_bar_move_activities">
+                          <div className="move_activities">
                             {/* <ReactJoyride
                               callback={(data) => {
                                 const { status, type } = data;
@@ -579,7 +591,7 @@ const Index = ({ activities }) => {
                             <OverlayTriggerPop
                               showMessage={"left"}
                               icon={faExclamationCircle}
-                              className='mr-3'
+                              className="mr-3"
                             >
                               Click on this checkbox and select
                               activities which you want to add to My
@@ -587,9 +599,9 @@ const Index = ({ activities }) => {
                               sharing should be disabled and library
                               preference should be private.
                             </OverlayTriggerPop>
-                            <label className='cutom_checkbox'>
+                            <label className="cutom_checkbox">
                               <input
-                                type='checkbox'
+                                type="checkbox"
                                 onChange={() => {
                                   setRun(!run);
                                   setAddToProjectCheckbox(
@@ -602,14 +614,14 @@ const Index = ({ activities }) => {
                             </label>
 
                             <p
-                              className='move_text'
-                              id='move_text_id_branding'
+                              className="move_text"
+                              id="move_text_id_branding"
                             >
                               Move To Project
                             </p>
                           </div>
                           {addToProjectCheckbox && (
-                            <div className='next_btn_activity'>
+                            <div className="next_btn_activity">
                               <Buttons
                                 disabled={
                                   !selectedProjectstoAdd.length
@@ -618,10 +630,10 @@ const Index = ({ activities }) => {
                                   !selectedProjectstoAdd.length
                                 }
                                 primary
-                                text='Continue'
+                                text="Continue"
                                 iconColor={primaryColor}
-                                width='111px'
-                                height='32px'
+                                width="111px"
+                                height="32px"
                                 hover
                                 onClick={() =>
                                   setModalShowClone(true)
@@ -634,7 +646,7 @@ const Index = ({ activities }) => {
                     </>
                   )
                 )}
-                <div className='my-interactive-videos'>
+                <div className="my-interactive-videos">
                   {!!activescreenType ? (
                     !activescreenType?.data?.length ? (
                       <>
@@ -643,18 +655,18 @@ const Index = ({ activities }) => {
                             {allActivities?.links?.first?.includes(
                               "query"
                             ) ? (
-                              <Alert variant='danger'>
+                              <Alert variant="danger">
                                 No results found.
                               </Alert>
                             ) : (
                               <StartingPage
                                 welcome="Let's Build a CurrikiStudio Activity!"
-                                createBtnTitle='Create New Activity'
-                                createTitle='Create your first learning activity.'
+                                createBtnTitle="Create New Activity"
+                                createTitle="Create your first learning activity."
                                 createDetail='We have a library of over 40 "interactive-by-design" learning activities to create immersive learning experiences.'
-                                helpBtnTitle='Help Center'
-                                helpTitle='How to start?'
-                                type='activity'
+                                helpBtnTitle="Help Center"
+                                helpTitle="How to start?"
+                                type="activity"
                                 primaryColor={primaryColor}
                                 onClick={() => {
                                   dispatch({
@@ -686,17 +698,17 @@ const Index = ({ activities }) => {
                             {allVideos?.links?.first?.includes(
                               "query"
                             ) ? (
-                              <Alert variant='danger'>
+                              <Alert variant="danger">
                                 No results found.
                               </Alert>
                             ) : (
                               <StartingPage
-                                welcome=''
-                                createBtnTitle='Create New Video'
-                                createTitle='Start creating awesome interactive videos.'
-                                createDetail='Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired.'
-                                helpBtnTitle='Help center'
-                                helpTitle='How to start?'
+                                welcome=""
+                                createBtnTitle="Create New Video"
+                                createTitle="Start creating awesome interactive videos."
+                                createDetail="Make your video engaging for your viewers and gather information Interactive video has over xx interactions that can be added to video, It allows you move forward or back and provide grading if desired."
+                                helpBtnTitle="Help center"
+                                helpTitle="How to start?"
                                 primaryColor={primaryColor}
                                 onClick={() => {
                                   setOpenVideo(!openMyVideo);
@@ -712,9 +724,9 @@ const Index = ({ activities }) => {
                         )}
                       </>
                     ) : (
-                      <div className='video-cards-contianer'>
-                        <div className='video-cards-detail'>
-                          <div className='row'>
+                      <div className="video-cards-contianer">
+                        <div className="video-cards-detail">
+                          <div className="row">
                             {/* Adding New Design Add  */}
 
                             {activities ? (
@@ -724,7 +736,7 @@ const Index = ({ activities }) => {
                                 "independent-activity:edit-author"
                               ) && (
                                 <div
-                                  className='Add-video-interaction-section'
+                                  className="Add-video-interaction-section"
                                   onClick={() => {
                                     dispatch({
                                       type: actionTypes.CLEAR_STATE,
@@ -756,7 +768,7 @@ const Index = ({ activities }) => {
                               )
                             ) : (
                               <div
-                                className='Add-video-interaction-section'
+                                className="Add-video-interaction-section"
                                 onClick={() => {
                                   setOpenVideo(!openMyVideo);
                                   setScreenStatus("AddVideo");
@@ -788,7 +800,7 @@ const Index = ({ activities }) => {
                                       setOpenVideo={setOpenVideo}
                                       title={activityData.title}
                                       data={activityData}
-                                      className='card-spacing'
+                                      className="card-spacing"
                                       activities={activities}
                                       isActivityCard
                                       permission={permission}
@@ -825,7 +837,7 @@ const Index = ({ activities }) => {
                                       setOpenVideo={setOpenVideo}
                                       title={video.title}
                                       data={video}
-                                      className='card-spacing'
+                                      className="card-spacing"
                                       sethideallothers={
                                         sethideallothers
                                       }
@@ -835,7 +847,7 @@ const Index = ({ activities }) => {
                                 ))}
                           </div>
                           {allVideos?.data && !activities && (
-                            <div style={{}} className='admin-panel '>
+                            <div style={{}} className="admin-panel ">
                               <Pagination
                                 activePage={ActivePage}
                                 pageRangeDisplayed={5}
@@ -862,7 +874,7 @@ const Index = ({ activities }) => {
                     )
                   ) : (
                     <div
-                      className='d-flex '
+                      className="d-flex "
                       style={{ marginTop: "40px" }}
                     >
                       <br />
@@ -874,7 +886,7 @@ const Index = ({ activities }) => {
                 </div>
               </>
             ) : (
-              <Alert variant='danger'>
+              <Alert variant="danger">
                 You are not authorized to view this page.
               </Alert>
             )}
@@ -883,7 +895,7 @@ const Index = ({ activities }) => {
               ActivePage !== 1 &&
               islazyLoader &&
               activities && (
-                <div className='col-md-12 text-center mt-4'>
+                <div className="col-md-12 text-center mt-4">
                   <ImgLoader />
                 </div>
               )}
@@ -896,7 +908,7 @@ const Index = ({ activities }) => {
         onHide={() => setModalShow(false)}
         activity={currentActivity}
         showvideoH5p
-        activeType='demo'
+        activeType="demo"
         activities={activities}
       />
       <MyVerticallyCenteredModal
@@ -904,8 +916,8 @@ const Index = ({ activities }) => {
         selectedProjectstoAdd={selectedProjectstoAdd}
         show={modalShowClone}
         onHide={() => setModalShowClone(false)}
-        className='clone-lti'
-        clone=''
+        className="clone-lti"
+        clone=""
       />
       <GoogleModel
         playlistId={999999} // pass just for showing activity selectbox on google share popup

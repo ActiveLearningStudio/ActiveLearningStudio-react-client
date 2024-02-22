@@ -11,7 +11,7 @@ import HeadingThree from "utils/HeadingThree/headingthree";
 import dotsloader from "../../assets/images/dotsloader.gif";
 import { getBrightCoveVideo } from "services/videos.services";
 
-const BrightcoveModal = ({ show, handleClose, addVideo }) => {
+const BrightcoveModal = ({ show, handleClose, details }) => {
   const [videoData, setVideoData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -115,18 +115,21 @@ const BrightcoveModal = ({ show, handleClose, addVideo }) => {
                             <p className="video-description">
                               {video?.description}
                             </p>
-                            <p className="video-description">
+                            {/* <p className="video-description">
                               License:{" "}
                               <span style={{ color: "#063A75" }}>
                                 {"Creative Commons"}
                               </span>
-                            </p>
+                            </p> */}
                           </div>
                         </div>
                         <button
                           className="advanced-filter"
                           onClick={() => {
-                            addVideo(video);
+                            details.callback({
+                              brightcoveVideoID: video.id,
+                            });
+                            handleClose();
                           }}
                         >
                           <img src={EyeIcon} alt="eyeIcon" />

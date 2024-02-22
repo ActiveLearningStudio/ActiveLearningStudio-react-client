@@ -185,18 +185,18 @@ const PreviewLayoutModel = (props) => {
     if (e === "close") {
       return setShowBrightcoveBrowseVideosDialog(false);
     }
-    const data = {
-      callback: (callBackdata) => {
-        console.log(callBackdata);
-        parent.params.video.brightcoveVideoID =
-          callBackdata.brightcoveVideoID;
-        // this.setActive();
-      },
-    };
-    const event = new CustomEvent(
-      "launchBrightcoveBrowseVideosDialog",
-      { detail: data }
-    );
+    // const data = {
+    //   callback: (callBackdata) => {
+    //     console.log(callBackdata);
+    //     parent.params.video.brightcoveVideoID =
+    //       callBackdata.brightcoveVideoID;
+    //     // this.setActive();
+    //   },
+    // };
+    // const event = new CustomEvent(
+    //   "launchBrightcoveBrowseVideosDialog",
+    //   { detail: data }
+    // );
 
     setShowBrightcoveBrowseVideosDetails(e.detail);
     setShowBrightcoveBrowseVideosDialog(true);
@@ -646,6 +646,7 @@ const PreviewLayoutModel = (props) => {
       {showBrightcoveBrowseVideosDialog && (
         <BrightcoveModal
           show={showBrightcoveBrowseVideosDialog}
+          details={showBrightcoveBrowseVideosDetails}
           handleClose={() =>
             handlelaunchBrightcoveBrowseVideosDialog("close")
           }
