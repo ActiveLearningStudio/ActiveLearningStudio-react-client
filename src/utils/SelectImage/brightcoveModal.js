@@ -175,6 +175,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                             >
                               <img
                                 src={video?.images?.thumbnail?.src}
+                                crossorigin="anonymous"
                                 alt="video-image"
                                 style={{
                                   width: "120px",
