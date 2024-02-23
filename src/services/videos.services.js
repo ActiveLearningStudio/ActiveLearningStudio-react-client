@@ -20,14 +20,17 @@ const getAll = (orgId, page = 1, size = 16, search) =>
     });
 
 export const getBrightCoveVideo = (
-  orgId = 1,
-  page = 1,
-  size = 16,
-  search
+  limit = 10,
+  offset = 0,
+  search = "",
+  orgId = 1
 ) =>
   httpService
     .post(
-      `/${apiVersion}/c2e/media-catalog/brightcove/suborganizations/${orgId}/videos`
+      `/${apiVersion}/c2e/media-catalog/brightcove/suborganizations/${orgId}/videos`,
+      {
+        query_param: `limit=${limit}&offset=${offset}&query=-tags:curriki ${search}`,
+      }
     )
     .then(({ data }) => data)
     .catch((err) => {

@@ -157,6 +157,55 @@
     }
   }
 }
+.pagination-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8rem;
+}
+.pagination-button {
+  color: #094892;
+  border: none;
+  background-color: #fff;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0.5rem;
+}
+
+.pagination-button-alignmnet {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-container {
+  text-align: center;
+  margin-top: 8rem;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  color: #094892;
+  margin-bottom: 10px;
+}
+
+.try-again {
+  background-color: #f7fafe;
+  color: #094892;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .wiley-modal {
   z-index: 9999 !important;
   background: #0848928f;
