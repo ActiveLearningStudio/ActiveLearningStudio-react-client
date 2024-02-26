@@ -11,6 +11,7 @@ import EyeIcon from "assets/images/svg/eye.svg";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import dotsloader from "../../assets/images/dotsloader.gif";
 import { getBrightCoveVideo } from "services/videos.services";
+import Pagination from "react-js-pagination";
 
 const BrightcoveModal = ({ show, handleClose, details }) => {
   const [videoData, setVideoData] = useState([]);
@@ -18,7 +19,6 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   const [isloading, setisLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [currentCount, setCurrentCount] = useState(0);
   const [isError, setError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
@@ -30,33 +30,6 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
 
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
-
-  //to handle the previous page click
-  const handlePrevPage = async () => {
-    setisLoading(true);
-    if (currentPage > 1) {
-      const page = currentPage - 1;
-      const offset = (page - 1) * 10;
-      setCurrentCount(offset);
-
-      await fetchData(Limit, offset);
-
-      setCurrentPage(page);
-    }
-  };
-
-  //to handle the next page click
-
-  const handleNextPage = async () => {
-    setisLoading(true);
-
-    const page = currentPage + 1;
-    setCurrentPage(page);
-    const offset = (page - 1) * 10;
-    setCurrentCount(offset);
-
-    await fetchData(Limit, offset);
-  };
 
   const fetchData = async (limit, offset) => {
     try {
@@ -81,22 +54,27 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
     }
   };
   const handleClearSearch = async () => {
-    setSearchQuery("");
     setSearchValue("");
+    setSearchQuery("");
     setisLoading(true);
-    await fetchData(Limit, 0);
-    setError(false);
+    setCurrentPage(1);
   };
   useEffect(() => {
-    const getData = async () => await fetchData(Limit, 0);
-
+    const getData = async () =>
+      await fetchData(Limit, (currentPage - 1) * Limit);
     getData();
-  }, [searchValue]);
+  }, [searchValue, currentPage]);
 
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
+  const handleSearch = async (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.length === 0) {
+      setSearchValue("");
+    }
   };
-
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   const paragraphColor = getGlobalColor(
     "--main-paragraph-text-color"
   );
@@ -135,7 +113,12 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
               />
             )}
             <img
-              onClick={() => setSearchValue(searchQuery)}
+              onClick={() => {
+                if (searchQuery) {
+                  setSearchValue(searchQuery);
+                  setisLoading(true);
+                }
+              }}
               src={searchIcon}
               alt="search"
               style={{ marginLeft: "10px" }}
@@ -216,30 +199,15 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                         );
                       })}
                     </div>
-                    <div className="pagination-button-alignmnet">
-                      {(currentPage - 1) * Limit < Limit ? (
-                        <div></div>
-                      ) : (
-                        <button
-                          id="1"
-                          onClick={handlePrevPage}
-                          className=" pagination-button"
-                        >
-                          Prev Page
-                        </button>
-                      )}
-                      {currentCount + Limit < totalCount ? (
-                        <button
-                          id="2"
-                          onClick={handleNextPage}
-                          className=" pagination-button"
-                        >
-                          Next Page
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={Limit}
+                      totalItemsCount={totalCount}
+                      pageRangeDisplayed={5}
+                      onChange={handlePageChange}
+                      itemClass="page-item"
+                      linkClass="page-link"
+                    />
                   </>
                 )}
               </Tab>
