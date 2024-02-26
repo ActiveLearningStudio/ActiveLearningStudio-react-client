@@ -74,6 +74,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    setisLoading(true);
   };
   const paragraphColor = getGlobalColor(
     "--main-paragraph-text-color"
