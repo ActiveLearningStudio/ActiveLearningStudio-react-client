@@ -130,7 +130,7 @@ const ActivityShared = (props) => {
               setAuthorized(true);
             });
         } else {
-          loadH5pResourceSettingsShared(match.params.activityId)
+          loadH5pResourceSettingsShared(match.params.activityId, query.token, query.ceeid)
             .then(async (data) => {
               if (data) {
                 setSelectedPlaylist(data);
