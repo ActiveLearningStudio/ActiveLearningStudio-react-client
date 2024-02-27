@@ -118,7 +118,7 @@ const ActivityShared = (props) => {
       } else if (!window.location.pathname.includes('/preview')) {
         if (query.type === 'ind') {
           indResourceService
-            .h5pResourceSettingsSharedIndActivity(match.params.activityId)
+            .h5pResourceSettingsSharedIndActivity(match.params.activityId, query.token, query.ceeid)
             .then(async (data) => {
               if (data && !data?.errors) {
                 h5pInsertion(data);

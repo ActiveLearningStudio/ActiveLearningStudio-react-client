@@ -344,10 +344,10 @@ const h5pResourceSettingsOpen = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pResourceSettingsShared = (activityId) =>
+const h5pResourceSettingsShared = (activityId, token = null, ceeId = null) =>
   httpService
     .get(
-      `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`
+      `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared?token=${token}&ceeid=${ceeId}`
     )
     .then(({ data }) => data)
     .catch((err) => {
