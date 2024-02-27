@@ -1513,6 +1513,26 @@ function Controller(props) {
               </button>
             </div>
           )}
+        {!!btnText &&
+          type === "LMS" &&
+          subType === "Media Catalog" &&
+          permission?.Organization.includes(
+            "organization:create-all-setting"
+          ) && (
+            <div className="btn-text">
+              <button
+                type="button"
+                onClick={() => {
+                  if (btnAction === "add_media_catalog") {
+                    dispatch(setActiveAdminForm("add_media_catalog"));
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon="plus" />
+                {btnText}
+              </button>
+            </div>
+          )}
 
         {!!btnText &&
           type === "LMS" &&

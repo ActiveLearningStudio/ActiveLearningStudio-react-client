@@ -482,7 +482,24 @@ export const getAllC2EPublisher = (orgId) => async (dispatch) => {
   });
   return result;
 };
-
+export const getAllMediaCatalogList = (orgId) => async (dispatch) => {
+  const res = await adminService.getCatalogList(orgId);
+  dispatch({
+    type: actionTypes.SET_MEDIA_CATALOG,
+    payload: res?.data,
+  });
+  return res;
+};
+export const deleteMediaCatalogAction = (orgId, id) => async (
+  dispatch
+) => {
+  const result = await adminService.deleteMediaCatalog(orgId, id);
+  dispatch({
+    type: actionTypes.REMOVE_MEDIA_CATALOG,
+    payload: res?.message?.data,
+  });
+  return result;
+};
 export const getAllStores = (id) => async (dispatch) => {
   const result = await adminService.getAllStores(id);
   console.log(result);

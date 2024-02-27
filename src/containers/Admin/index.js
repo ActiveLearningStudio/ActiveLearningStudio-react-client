@@ -45,6 +45,7 @@ import { getAllIV } from "store/actions/resource";
 
 import EditSmSvg from "iconLibrary/mainContainer/EditSmSvg";
 import CreatePublisher from "./formik/createPublisher";
+import CreateMediaCatalog from "./formik/createMediaCatalog";
 
 function AdminPanel({ showSSO }) {
   const history = useHistory();
@@ -398,6 +399,9 @@ function AdminPanel({ showSSO }) {
                             permission?.Organization?.includes(
                               "organization:view-all-setting"
                             ) && "C2E Publisher",
+                            permission?.Organization?.includes(
+                              "organization:view-all-setting"
+                            ) && "Media Catalog",
                           ]}
                           type="LMS"
                         />
@@ -615,6 +619,20 @@ function AdminPanel({ showSSO }) {
             <div className="form-new-popup-admin">
               <div className="inner-form-content">
                 <CreatePublisher mode={activeForm} editMode />
+              </div>
+            </div>
+          )}
+          {activeForm === "add_media_catalog" && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <CreateMediaCatalog mode={activeForm} />
+              </div>
+            </div>
+          )}
+          {activeForm === "edit_media_catalog" && (
+            <div className="form-new-popup-admin">
+              <div className="inner-form-content">
+                <CreateMediaCatalog mode={activeForm} editMode />
               </div>
             </div>
           )}

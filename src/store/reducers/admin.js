@@ -62,7 +62,33 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         allRoyalties: action.payload,
       };
-
+    case actionTypes.ADD_MEDIA_CATALOG:
+      return {
+        ...state,
+        allMediaCatalog: [action.payload, ...state.allMediaCatalog],
+      };
+    case actionTypes.SET_MEDIA_CATALOG:
+      return {
+        ...state,
+        allMediaCatalog: action.payload,
+      };
+    case actionTypes.REMOVE_MEDIA_CATALOG:
+      return {
+        ...state,
+        allMediaCatalog: state.allMediaCatalog?.filter(
+          (data) => data.id !== action.payload
+        ),
+      };
+    case actionTypes.UPDATE_MEDIA_CATALOG:
+      return {
+        ...state,
+        allMediaCatalog: state.allMediaCatalog.map((data) => {
+          if (data.id === action.payload.id) {
+            return action.payload;
+          }
+          return data;
+        }),
+      };
     case actionTypes.SET_C2E_PUBLISHER:
       return {
         ...state,

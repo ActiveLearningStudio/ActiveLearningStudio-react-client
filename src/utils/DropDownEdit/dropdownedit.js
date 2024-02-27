@@ -111,6 +111,7 @@ const DropDownEdit = ({
   const handleRadioChange = (event) => {
     setSelectedStore(event.target.value);
   };
+  const isNextButtonDisabled = !selectedStore;
   const handleBoxRadioChange = (boxName) => {
     setSelectedBox(boxName);
   };
@@ -821,7 +822,12 @@ const DropDownEdit = ({
                         <h6 className="chap_title">{royal.name}</h6>
                       </div>
                       <h6 className="chap_title">
-                        ${royal?.royalty?.amount}
+                        {royal?.royalty?.currency === "EURO"
+                          ? "€"
+                          : royal?.royalty?.currency === "USD"
+                          ? "$"
+                          : ""}
+                        {royal?.royalty?.amount}
                       </h6>
                     </div>
                   );
@@ -830,7 +836,11 @@ const DropDownEdit = ({
               <div className="total-price">
                 <p>Total Licensing Costs:</p>
                 <h6 className="chap_title">
-                  $
+                  {allRoyalties[0]?.royalty?.currency === "EURO"
+                    ? "€"
+                    : allRoyalties[0]?.royalty?.currency === "USD"
+                    ? "$"
+                    : ""}
                   {allRoyalties?.reduce((sum, data) => {
                     return (sum = sum + data?.royalty?.amount);
                   }, 0)}
@@ -865,6 +875,7 @@ const DropDownEdit = ({
                 primary={true}
                 hover={true}
                 onClick={handleNextClick}
+                disabled={isNextButtonDisabled}
               />
             ) : loading ? (
               <img src={dotsloader} width={16} height={16} />

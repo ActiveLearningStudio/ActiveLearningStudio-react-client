@@ -1409,6 +1409,102 @@ const AdminDropdown = (props) => {
               )}
             </>
           )}
+          {type === "LMS" && subType === "Media Catalog" && (
+            <>
+              {permission?.Organization.includes(
+                "organization:edit-all-setting"
+              ) && (
+                <Dropdown.Item
+                  onClick={() => {
+                    dispatch({
+                      type: "SET_ACTIVE_EDIT",
+                      payload: row,
+                    });
+                    dispatch(
+                      setActiveAdminForm("edit_media_catalog")
+                    );
+                  }}
+                >
+                  <EditDpDnMdSvg
+                    primaryColor={primaryColor}
+                    className="menue-img"
+                  />
+                  Edit
+                </Dropdown.Item>
+              )}
+              {permission?.Organization.includes(
+                "organization:delete-all-setting"
+              ) && (
+                <Dropdown.Item
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#084892",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Delete it",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire({
+                          title: `C2E Media Catalog`,
+                          icon: "info",
+                          text: `Deleting Media Catalog...`,
+                          allowOutsideClick: false,
+                          onBeforeOpen: () => {
+                            Swal.showLoading();
+                          },
+                          button: false,
+                        });
+                        const response = adminService.deleteMediaCatalog(
+                          activeOrganization?.id,
+                          row?.id
+                        );
+                        response
+                          .then((res) => {
+                            console.log(res);
+                            dispatch({
+                              type: "REMOVE_MEDIA_CATALOG",
+                              payload: res?.message?.data,
+                            });
+                            Swal.fire({
+                              icon: "success",
+                              text:
+                                res?.message?.message ||
+                                "Media Catalog deleted!",
+                              confirmButtonText: "Close",
+                              customClass: {
+                                confirmButton:
+                                  "confirmation-close-btn",
+                              },
+                            });
+
+                            const filterLMS = localStateData.filter(
+                              (each) => each.id != row.id
+                            );
+                            setLocalStateData(filterLMS);
+                            dispatch({
+                              type:
+                                actionTypes.LTI_TOOLS_PAGINATION_UPDATE,
+                              payload: "DECREMENT",
+                              id: row.id,
+                            });
+                          })
+                          .catch((err) => console.log(err));
+                      }
+                    });
+                  }}
+                >
+                  <DeleteSmSvg
+                    primaryColor={primaryColor}
+                    className="menue-img"
+                  />
+                  Delete
+                </Dropdown.Item>
+              )}
+            </>
+          )}
           {type === "LMS" &&
             subType === "BrightCove" &&
             permission?.Organization.includes(

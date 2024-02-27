@@ -1945,6 +1945,48 @@ function Table(props) {
                   </td>
                 </tr>
               ))}
+            {type === "LMS" &&
+              subType === "Media Catalog" &&
+              (localStateData ? (
+                localStateData?.length > 0 ? (
+                  localStateData?.map((row, counter) => (
+                    <tr key={counter} className="admin-panel-rows">
+                      <td>{row.name}</td>
+                      <td>{row.url}</td>
+                      <td>{row.description}</td>
+                      <td>{row.media_source_id}</td>
+                      <td>
+                        <div className="admin-panel-dropdown">
+                          <div>
+                            <AdminDropdown
+                              type={type}
+                              subType="Media Catalog"
+                              row={row}
+                              activePage={activePage}
+                              localStateData={localStateData}
+                              setLocalStateData={setLocalStateData}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11">
+                      <Alert variant="warning">
+                        No C2E Publisher Found.
+                      </Alert>
+                    </td>
+                  </tr>
+                )
+              ) : (
+                <tr>
+                  <td colSpan="11">
+                    <Alert variant="primary">Loading...</Alert>
+                  </td>
+                </tr>
+              ))}
             {type === "Teams" &&
               (Object.keys(data).length > 0 ? (
                 data?.data?.length > 0 ? (

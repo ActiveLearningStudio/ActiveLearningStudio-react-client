@@ -45,6 +45,7 @@ import {
   teamsActionAdminPanel,
   getOrganizationMedaiSource,
   getAllC2EPublisher,
+  getAllMediaCatalogList,
 } from "store/actions/admin";
 import {
   allBrightCove,
@@ -138,6 +139,7 @@ export default function Pills(props) {
   const [defaultSsoFilterBy, setDefaultSsoFilterBy] = useState("");
   const [ltiTool, setLtiTool] = useState(null);
   const [c2ePublisher, setc2ePublisher] = useState(null);
+  const [c2eMediaCatalog, setC2eMediaCatalog] = useState(null);
   const [ltiToolFilterBy, setLtiToolFilterBy] = useState("");
   const [activityItemFilterBy, setActivityItemFilterBy] = useState(
     ""
@@ -698,6 +700,9 @@ export default function Pills(props) {
         )
       );
     }
+    if (type === "LMS") {
+      dispatch(getAllMediaCatalogList(activeOrganization?.id));
+    }
   }, [type, size, activePage, activeOrganization?.id]);
 
   useEffect(() => {
@@ -711,6 +716,12 @@ export default function Pills(props) {
       setc2ePublisher(dataRedux.admin.allC2EPublishers);
     }
   }, [dataRedux.admin.allC2EPublishers]);
+
+  useEffect(() => {
+    if (dataRedux.admin?.allMediaCatalog) {
+      setC2eMediaCatalog(dataRedux.admin.allMediaCatalog);
+    }
+  }, [dataRedux.admin.allMediaCatalog]);
 
   useEffect(() => {
     if (dataRedux.admin.defaultSso) {
@@ -2335,6 +2346,30 @@ export default function Pills(props) {
                   tableHead={columnData.c2ePublisher}
                   handleSort={handleSort}
                   data={c2ePublisher}
+                  type={type}
+                  setActivePage={setActivePage}
+                  activePage={activePage}
+                  searchQueryChangeHandlerLtiTool={
+                    searchQueryChangeHandlerLtiTool
+                  }
+                  searchLtiquery={searchLtiquery}
+                />
+              )}
+              {type === "LMS" && subTypeState === "Media Catalog" && (
+                <Starter
+                  paginationCounter={true}
+                  size={size}
+                  setSize={setSize}
+                  subType={"Media Catalog"}
+                  search={true}
+                  print={false}
+                  btnText="Add Media Catalog"
+                  btnAction="add_media_catalog"
+                  importUser={false}
+                  filter={false}
+                  tableHead={columnData.c2eMediaCatalog}
+                  handleSort={handleSort}
+                  data={c2eMediaCatalog}
                   type={type}
                   setActivePage={setActivePage}
                   activePage={activePage}

@@ -913,7 +913,48 @@ const updateAllDynamicPermisison = (subOrgId, data) =>
       errorCatcher(err.response.data);
       Promise.reject(err.response.data);
     });
-
+const createMediaCatalog = (subOrgId, data) =>
+  httpService
+    .post(
+      `/${apiVersion}/c2e/media-catalog/suborganizations/${subOrgId}/settings`,
+      data
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const getCatalogList = (subOrgId) =>
+  httpService
+    .get(
+      `/${apiVersion}/c2e/media-catalog/suborganizations/${subOrgId}/settings`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const deleteMediaCatalog = (subOrgId, id) =>
+  httpService
+    .remove(
+      `/${apiVersion}/c2e/media-catalog/suborganizations/${subOrgId}/settings/${id}`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
+const updateMediaCatalog = (subOrgId, id, data) =>
+  httpService
+    .put(
+      `/${apiVersion}/c2e/media-catalog/suborganizations/${subOrgId}/settings/${id}`,
+      data
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      errorCatcher(err.response.data);
+      Promise.reject(err.response.data);
+    });
 const getPublisherList = (subOrgId, data) =>
   httpService
     .get(
@@ -988,6 +1029,10 @@ const updatePublisherList = (subOrgId, id, data) =>
     });
 
 export default {
+  createMediaCatalog,
+  getCatalogList,
+  deleteMediaCatalog,
+  updateMediaCatalog,
   getAllRoyality,
   publishC2EToStore,
   getAllStores,
