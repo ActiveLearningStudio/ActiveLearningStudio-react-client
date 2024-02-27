@@ -270,8 +270,8 @@ export const loadH5pResourceSettings = (activityId) =>
   resourceService.h5pResourceSettings(activityId);
 export const loadH5pResourceSettingsOpen = (activityId) =>
   resourceService.h5pResourceSettingsOpen(activityId);
-export const loadH5pResourceSettingsShared = (activityId) =>
-  resourceService.h5pResourceSettingsShared(activityId);
+export const loadH5pResourceSettingsShared = (activityId, token = null, ceeId = null) =>
+  resourceService.h5pResourceSettingsShared(activityId, token, ceeId);
 export const loadH5pResourceSettingsEmbed = (activityId) =>
   resourceService.h5pResourceSettingsEmbed(activityId);
 
