@@ -157,7 +157,7 @@ const getIndex = (activtyId, indexId) =>
     });
 const h5pResourceSettingsSharedIndActivity = (activityId, token = null, ceeId = null) =>
   httpService
-    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings-shared?token=${token}&ceeid=${ceeId}`)
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings-shared?token=${encodeURIComponent(token)}&ceeid=${ceeId}`)
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);
