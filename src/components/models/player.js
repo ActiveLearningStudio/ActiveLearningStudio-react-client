@@ -15,6 +15,7 @@ const ownStyles = {
     ...ReactReaderStyle.arrow,
     color: "#fff",
     background: "#084892",
+    zIndex: 1111,
   },
   tocButton: {
     ...ReactReaderStyle.tocButton,

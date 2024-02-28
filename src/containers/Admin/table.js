@@ -1953,8 +1953,8 @@ function Table(props) {
                     <tr key={counter} className="admin-panel-rows">
                       <td>{row.name}</td>
                       <td>{row.url}</td>
-                      <td>{row.description}</td>
-                      <td>{row.media_source_id}</td>
+                      <td>{row.api_setting_id}</td>
+
                       <td>
                         <div className="admin-panel-dropdown">
                           <div>

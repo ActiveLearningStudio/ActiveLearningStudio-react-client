@@ -33,14 +33,14 @@ export default function CreateMediaCatalog(prop) {
         initialValues={{
           name: editMode ? activeEdit?.name : "",
           url: editMode ? activeEdit?.url : "",
+          email: editMode ? activeEdit?.email : "",
           description: editMode ? activeEdit?.description : "",
           media_source_id: editMode
             ? activeEdit?.media_source_id
             : "",
-
-          activity_visibility: false,
-          playlist_visibility: false,
-          projectr_visibility: false,
+          api_setting_id: editMode ? activeEdit?.api_setting_id : "",
+          client_key: editMode ? activeEdit?.client_key : "",
+          secret_key: editMode ? activeEdit?.secret_key : "",
         }}
         validate={(values) => {
           const errors = {};
@@ -77,19 +77,21 @@ export default function CreateMediaCatalog(prop) {
               values
             );
             result.then((res) => {
-              dispatch({
-                type: "UPDATE_MEDIA_CATALOG",
-                payload: res?.data,
-              });
-              dispatch(removeActiveAdminForm());
-              Swal.fire({
-                icon: "success",
-                text: res?.message,
-                confirmButtonText: "Close",
-                customClass: {
-                  confirmButton: "confirmation-close-btn",
-                },
-              });
+              if (res) {
+                dispatch({
+                  type: "UPDATE_MEDIA_CATALOG",
+                  payload: res?.data,
+                });
+                dispatch(removeActiveAdminForm());
+                Swal.fire({
+                  icon: "success",
+                  text: res?.message,
+                  confirmButtonText: "Close",
+                  customClass: {
+                    confirmButton: "confirmation-close-btn",
+                  },
+                });
+              }
             });
           } else {
             Swal.fire({
@@ -112,19 +114,21 @@ export default function CreateMediaCatalog(prop) {
               }
             );
             result.then((res) => {
-              dispatch({
-                type: "ADD_MEDIA_CATALOG",
-                payload: res?.data || {},
-              });
-              dispatch(removeActiveAdminForm());
-              Swal.fire({
-                icon: "success",
-                text: res?.message,
-                confirmButtonText: "Close",
-                customClass: {
-                  confirmButton: "confirmation-close-btn",
-                },
-              });
+              if (res) {
+                dispatch({
+                  type: "ADD_MEDIA_CATALOG",
+                  payload: res?.data || {},
+                });
+                dispatch(removeActiveAdminForm());
+                Swal.fire({
+                  icon: "success",
+                  text: res?.message,
+                  confirmButtonText: "Close",
+                  customClass: {
+                    confirmButton: "confirmation-close-btn",
+                  },
+                });
+              }
             });
           }
         }}
@@ -176,6 +180,64 @@ export default function CreateMediaCatalog(prop) {
                     </div>
                   </div>
                   <div className="form-group-create">
+                    <h3>Email</h3>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                    />
+                    <div className="error">
+                      {errors.email && touched.email && errors.email}
+                    </div>
+                  </div>
+                  <div className="form-group-create">
+                    <h3>API Setting Id</h3>
+                    <input
+                      type="text"
+                      name="api_setting_id"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.api_setting_id}
+                    />
+                    <div className="error">
+                      {errors.api_setting_id &&
+                        touched.api_setting_id &&
+                        errors.api_setting_id}
+                    </div>
+                  </div>
+                  <div className="form-group-create">
+                    <h3>Client Key</h3>
+                    <input
+                      type="text"
+                      name="client_key"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.client_key}
+                    />
+                    <div className="error">
+                      {errors.client_key &&
+                        touched.client_key &&
+                        errors.client_key}
+                    </div>
+                  </div>
+                  <div className="form-group-create">
+                    <h3>Secret Key</h3>
+                    <input
+                      type="text"
+                      name="secret_key"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.secret_key}
+                    />
+                    <div className="error">
+                      {errors.secret_key &&
+                        touched.secret_key &&
+                        errors.secret_key}
+                    </div>
+                  </div>
+                  <div className="form-group-create">
                     <h3>Media Source Id</h3>
                     <input
                       type="media_source_id"
@@ -204,84 +266,6 @@ export default function CreateMediaCatalog(prop) {
                       {errors.description &&
                         touched.description &&
                         errors.description}
-                    </div>
-                  </div>
-
-                  <div className="form-group-create">
-                    <h3>Visibility</h3>
-                    <div className="create-form-inputs-toggles">
-                      <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
-                      >
-                        <Switch
-                          checked={checkedActivity}
-                          onChange={() => {
-                            setCheckedActivty(!checkedActivity);
-                            setFieldValue(
-                              "activity_visibility",
-                              !checkedActivity
-                            );
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor={primaryColor}
-                          onHandleColor={primaryColor}
-                          offHandleColor="#666"
-                        />
-                        <h3>Activity</h3>
-                      </div>
-                      <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
-                      >
-                        <Switch
-                          checked={checkedPlaylist}
-                          onChange={() => {
-                            setCheckedPlaylist(!checkedPlaylist);
-                            setFieldValue(
-                              "playlist_visibility",
-                              !checkedPlaylist
-                            );
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor={primaryColor}
-                          onHandleColor={primaryColor}
-                          offHandleColor="#666"
-                        />
-                        <h3>Playlist</h3>
-                      </div>
-                      <div
-                        className="custom-toggle-button"
-                        id="custom-toggle-button-id-br-style"
-                      >
-                        <Switch
-                          checked={checkedProject}
-                          onChange={() => {
-                            setCheckedProject(!checkedProject);
-                            setFieldValue(
-                              "project_visibility",
-                              !checkedProject
-                            );
-                          }}
-                          className="react-switch"
-                          handleDiameter={30}
-                          uncheckedIcon={false}
-                          checkedIcon={false}
-                          offColor="#888"
-                          onColor={primaryColor}
-                          onHandleColor={primaryColor}
-                          offHandleColor="#666"
-                        />
-                        <h3>Project</h3>
-                      </div>
                     </div>
                   </div>
                 </div>
