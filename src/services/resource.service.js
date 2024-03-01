@@ -346,7 +346,7 @@ const h5pResourceSettingsOpen = (activityId) =>
 
 const h5pResourceSettingsShared = (activityId, token = null, ceeId = null) => {
   if (token && ceeId) {
-    httpService
+    return httpService
     .get(
       `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared?token=${token}&ceeid=${ceeId}`
     )
@@ -355,7 +355,7 @@ const h5pResourceSettingsShared = (activityId, token = null, ceeId = null) => {
       return Promise.reject(err.response.data);
     })
   } else {
-    httpService
+    return httpService
     .get(
       `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`
     )
