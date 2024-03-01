@@ -344,15 +344,27 @@ const h5pResourceSettingsOpen = (activityId) =>
     .then(({ data }) => data)
     .catch((err) => Promise.reject(err.response.data));
 
-const h5pResourceSettingsShared = (activityId, token = null, ceeId = null) =>
-  httpService
+const h5pResourceSettingsShared = (activityId, token = null, ceeId = null) => {
+  if (token && ceeId) {
+    httpService
     .get(
       `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared?token=${token}&ceeid=${ceeId}`
     )
     .then(({ data }) => data)
     .catch((err) => {
       return Promise.reject(err.response.data);
-    });
+    })
+  } else {
+    httpService
+    .get(
+      `/${apiVersion}/activities/${activityId}/h5p-resource-settings-shared`
+    )
+    .then(({ data }) => data)
+    .catch((err) => {
+      return Promise.reject(err.response.data);
+    })
+  }
+};
 
 const h5pResourceSettingsEmbed = (activityId) =>
   httpService
