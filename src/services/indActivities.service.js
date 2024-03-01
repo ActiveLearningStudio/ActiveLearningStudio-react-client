@@ -155,14 +155,25 @@ const getIndex = (activtyId, indexId) =>
       errorCatcher(err.response.data);
       return Promise.reject(err.response.data);
     });
-const h5pResourceSettingsSharedIndActivity = (activityId, token = null, ceeId = null) =>
-  httpService
+const h5pResourceSettingsSharedIndActivity = (activityId, token = null, ceeId = null) => {
+  if (token && ceeId) {
+    httpService
     .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings-shared?token=${encodeURIComponent(token)}&ceeid=${ceeId}`)
     .then(({ data }) => data)
     .catch((err) => {
       Promise.reject(err.response.data);
       return err.response.data;
     });
+  } else {
+    httpService
+    .get(`/${apiVersion}/independent-activities/${activityId}/h5p-resource-settings-shared`)
+    .then(({ data }) => data)
+    .catch((err) => {
+      Promise.reject(err.response.data);
+      return err.response.data;
+    });
+  }
+}
 
 export default {
   create,
