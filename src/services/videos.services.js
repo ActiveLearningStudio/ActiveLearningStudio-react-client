@@ -29,7 +29,10 @@ export const getBrightCoveVideo = (
     .post(
       `/${apiVersion}/c2e/media-catalog/brightcove/suborganizations/${orgId}/videos`,
       {
-        query_param: `limit=${limit}&offset=${offset}&query=-tags:curriki ${search}`,
+        query_param: !search
+          ? `limit=${limit}&offset=${offset}&query=-tags:curriki ${search}`
+          : undefined,
+        srt_search: search ? search : undefined,
       }
     )
     .then(({ data }) => data)

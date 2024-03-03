@@ -10,6 +10,8 @@ import crossIcon from "../../assets/images/svg/cross-icon.svg";
 import EyeIcon from "assets/images/svg/eye.svg";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import dotsloader from "../../assets/images/dotsloader.gif";
+import video from "../../assets/video/welcome.mp4";
+import multimedia from "../../assets/images/multimedia-icon-overlay.png";
 import { getBrightCoveVideo } from "services/videos.services";
 import Pagination from "react-js-pagination";
 
@@ -21,15 +23,16 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   const [totalCount, setTotalCount] = useState(0);
   const [isError, setError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [previewVideo, setPreviewVideo] = useState("");
 
   const Limit = 6;
 
-  function millisecondsToMinutesAndSeconds(ms) {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = ((ms % 60000) / 1000).toFixed(0);
+  // function millisecondsToMinutesAndSeconds(ms) {
+  //   const minutes = Math.floor(ms / 60000);
+  //   const seconds = ((ms % 60000) / 1000).toFixed(0);
 
-    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  }
+  //   return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  // }
 
   const fetchData = async (limit, offset) => {
     try {
@@ -79,6 +82,25 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   const paragraphColor = getGlobalColor(
     "--main-paragraph-text-color"
   );
+  function parseTimeString(timeString) {
+    console.log(timeString);
+    if (timeString) {
+      var timeParts = timeString?.split(":");
+      var hours = parseInt(timeParts[0], 10);
+      var minutes = parseInt(timeParts[1], 10);
+      var secondsAndMilliseconds = timeParts[2].split(".");
+      var seconds = parseInt(secondsAndMilliseconds[0], 10);
+
+      return (
+        (hours ? hours + " hours " : "") +
+        (minutes ? minutes + " minutes " : "") +
+        seconds +
+        " seconds"
+      );
+    } else {
+      return "";
+    }
+  }
   return (
     <>
       <Modal
@@ -91,130 +113,194 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
         centered
       >
         <div className="title-close-button">
-          <div className="">Add Brightcove video</div>
+          <div className="">
+            {previewVideo
+              ? previewVideo?.name + " ( Preview ) "
+              : "Videos Catalog"}
+          </div>
           <CloseSmSvg
-            onClick={handleClose}
+            onClick={() => {
+              setPreviewVideo();
+              handleClose();
+            }}
             primaryColor={paragraphColor}
           />
         </div>
-        <div className="add-video-form">
-          <div className="search-container">
-            <input
-              type="text"
-              className="inpur-search"
-              value={searchQuery}
-              onChange={handleSearch}
-              placeholder="Search video..."
-            />
-            {searchQuery && (
-              <img
-                src={crossIcon}
-                alt="cross"
-                onClick={handleClearSearch}
-              />
-            )}
-            <img
-              onClick={() => {
-                if (searchQuery) {
-                  setSearchValue(searchQuery);
-                  setisLoading(true);
-                }
-              }}
-              src={searchIcon}
-              alt="search"
-              style={{ marginLeft: "10px" }}
-            />
+        {previewVideo ? (
+          <div>
+            <div className="videoPreviewC2E">
+              <video controls>
+                <source src={video} type="video/mp4" />
+              </video>
+              <div className="flex">
+                <button
+                  className="curriki-utility curriki-theme-hover"
+                  onClick={() => {
+                    setPreviewVideo();
+                  }}
+                >
+                  {" "}
+                  Back
+                </button>
+                <button className="curriki-utility curriki-theme-hover">
+                  {" "}
+                  Add Clip
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="add-video-form-tabs">
-            <Tabs className="main-tabs" id="controlled-tab-example">
-              <Tab
-                eventKey="Brightcove"
-                title="BrightCove"
-                className="brightcove-tab"
-              >
-                {isloading ? (
-                  <div className=" pagination-div">
-                    <img
-                      src={dotsloader}
-                      alt=""
-                      className="loader"
-                      style={{ width: "8%" }}
-                    />
-                  </div>
-                ) : videoData?.length == 0 ? (
-                  <Alert variant="warning">No Videos Found</Alert>
-                ) : (
-                  <>
-                    <div key={"1"} className="video-list-container">
-                      {videoData?.map((video, index) => {
-                        return (
-                          <div className="data-container" key={index}>
+        ) : (
+          <div className="add-video-form">
+            <div className="search-container">
+              <input
+                type="text"
+                className="inpur-search"
+                value={searchQuery}
+                onChange={handleSearch}
+                placeholder="search for clips..."
+              />
+              {searchQuery && (
+                <img
+                  src={crossIcon}
+                  alt="cross"
+                  onClick={handleClearSearch}
+                />
+              )}
+              <img
+                onClick={() => {
+                  if (searchQuery) {
+                    setSearchValue(searchQuery);
+                    setisLoading(true);
+                  }
+                }}
+                src={searchIcon}
+                alt="search"
+                style={{ marginLeft: "10px" }}
+              />
+            </div>
+            <div className="add-video-form-tabs">
+              <Tabs className="main-tabs" id="controlled-tab-example">
+                <Tab
+                  eventKey="Brightcove"
+                  title="Video Clips"
+                  className="brightcove-tab"
+                >
+                  {isloading ? (
+                    <div className=" pagination-div">
+                      <img
+                        src={dotsloader}
+                        alt=""
+                        className="loader"
+                        style={{ width: "8%" }}
+                      />
+                    </div>
+                  ) : videoData?.length == 0 ? (
+                    <Alert variant="warning">No Videos Found</Alert>
+                  ) : (
+                    <>
+                      <div key={"1"} className="video-list-container">
+                        {videoData?.map((video, index) => {
+                          return (
                             <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                gap: "8px",
-                              }}
+                              className="data-container"
+                              key={index}
                             >
-                              <img
-                                src={video?.images?.thumbnail?.src}
-                                crossorigin="anonymous"
-                                alt="video-image"
+                              <div
                                 style={{
-                                  width: "120px",
-                                  height: "90px",
-                                  padding: "5px",
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  gap: "8px",
                                 }}
-                              />
-                              <div className="inner-data-container">
-                                <HeadingThree
-                                  text={video?.name}
-                                  className="video-title"
+                              >
+                                <img
+                                  src={video?.images?.thumbnail?.src}
+                                  crossorigin="anonymous"
+                                  alt="video-image"
+                                  style={{
+                                    width: "120px",
+                                    height: "90px",
+                                    padding: "5px",
+                                  }}
                                 />
+                                <div className="inner-data-container">
+                                  <HeadingThree
+                                    text={video?.name}
+                                    className="video-title"
+                                  />
 
-                                <p className="video-description">
-                                  {video?.description}
-                                </p>
-                                <p className="video-description">
+                                  <p className="video-description">
+                                    {video?.description}
+                                  </p>
+
+                                  {!!video?.srt_content &&
+                                    video.srt_content
+                                      ?.split(",")
+                                      ?.map((data) => {
+                                        if (!data) return;
+                                        return (
+                                          <div className="meta">
+                                            <span>
+                                              Clip starts at :{" "}
+                                            </span>
+                                            <p>
+                                              {parseTimeString(
+                                                data?.split("-")?.[1]
+                                              )}
+                                            </p>
+                                            <img
+                                              onClick={() => {
+                                                setPreviewVideo(
+                                                  video
+                                                );
+                                              }}
+                                              src={multimedia}
+                                            />
+                                          </div>
+                                        );
+                                      })}
+                                  {/* <p className="video-description">
                                   duration:
                                   {millisecondsToMinutesAndSeconds(
                                     video?.duration
                                   )}
-                                </p>
+                                </p> */}
+                                </div>
                               </div>
+                              <button
+                                className="advanced-filter"
+                                onClick={() => {
+                                  details.callback({
+                                    brightcoveVideoID: video.id,
+                                  });
+                                  handleClose();
+                                }}
+                              >
+                                <img src={EyeIcon} alt="eyeIcon" />
+                                Add
+                              </button>
                             </div>
-                            <button
-                              className="advanced-filter"
-                              onClick={() => {
-                                details.callback({
-                                  brightcoveVideoID: video.id,
-                                });
-                                handleClose();
-                              }}
-                            >
-                              <img src={EyeIcon} alt="eyeIcon" />
-                              Add
-                            </button>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <Pagination
-                      activePage={currentPage}
-                      itemsCountPerPage={Limit}
-                      totalItemsCount={totalCount}
-                      pageRangeDisplayed={5}
-                      onChange={handlePageChange}
-                      itemClass="page-item"
-                      linkClass="page-link"
-                    />
-                  </>
-                )}
-              </Tab>
-            </Tabs>
+                          );
+                        })}
+                      </div>
+                      {!searchValue && (
+                        <Pagination
+                          activePage={currentPage}
+                          itemsCountPerPage={Limit}
+                          totalItemsCount={totalCount}
+                          pageRangeDisplayed={5}
+                          onChange={handlePageChange}
+                          itemClass="page-item"
+                          linkClass="page-link"
+                        />
+                      )}
+                    </>
+                  )}
+                </Tab>
+              </Tabs>
+            </div>
           </div>
-        </div>
+        )}
       </Modal>
     </>
   );
