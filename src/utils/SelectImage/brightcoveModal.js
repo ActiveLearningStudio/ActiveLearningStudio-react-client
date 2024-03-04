@@ -1,5 +1,5 @@
 /* eslint-disable  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Tabs, Tab, Alert } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import CloseSmSvg from "iconLibrary/mainContainer/CloseSmSvg";
@@ -10,7 +10,7 @@ import crossIcon from "../../assets/images/svg/cross-icon.svg";
 import EyeIcon from "assets/images/svg/eye.svg";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import dotsloader from "../../assets/images/dotsloader.gif";
-import video from "../../assets/video/welcome.mp4";
+import videoUrl from "../../assets/video/welcome.mp4";
 import multimedia from "../../assets/images/multimedia-icon-overlay.png";
 import { getBrightCoveVideo } from "services/videos.services";
 import Pagination from "react-js-pagination";
@@ -24,7 +24,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   const [isError, setError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [previewVideo, setPreviewVideo] = useState("");
-
+  const playerRef = useRef(null);
   const Limit = 6;
 
   // function millisecondsToMinutesAndSeconds(ms) {
@@ -101,6 +101,17 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
       return "";
     }
   }
+  function getTotalSecondsFromTime(timeString) {
+    const [hours, minutes, seconds] = timeString
+      .split(":")
+      .map(parseFloat);
+    const [secondsPart, millisecondsPart] = String(seconds)?.split(
+      "."
+    );
+    const totalSeconds =
+      hours * 3600 + minutes * 60 + parseFloat(secondsPart);
+    return Math.floor(totalSeconds - 10);
+  }
   return (
     <>
       <Modal
@@ -116,7 +127,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
           <div className="">
             {previewVideo
               ? previewVideo?.name + " ( Preview ) "
-              : "Videos Catalog"}
+              : "Video Catalog"}
           </div>
           <CloseSmSvg
             onClick={() => {
@@ -127,14 +138,36 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
           />
         </div>
         {previewVideo ? (
-          <div>
-            <div className="videoPreviewC2E">
-              <video controls>
-                <source src={video} type="video/mp4" />
-              </video>
+          <div className="videoPreviewC2E">
+            <iframe
+              controls={true}
+              src={`https://players.brightcove.net/${previewVideo.account_id}/default_default/index.html?videoId=${previewVideo.id}#t=${previewVideo?.startTime}`}
+              width="720"
+              height="420"
+              allow="encrypted-media"
+            />
+            <div className="videoPreviewFooter">
+              <div className="timeInput-container">
+                <div className="clip-inputs">
+                  <span>Clip starts at : </span>
+                  <input
+                    type="text"
+                    className="timerInput"
+                    placeholder="start clip"
+                  />
+                </div>
+                <div className="clip-inputs">
+                  <span>Clip end at : </span>
+                  <input
+                    type="text"
+                    className="timerInput"
+                    placeholder="End clip"
+                  />
+                </div>
+              </div>
               <div className="flex">
                 <button
-                  className="curriki-utility curriki-theme-hover"
+                  className="curriki-utility curriki-theme-hover backPreview"
                   onClick={() => {
                     setPreviewVideo();
                   }}
@@ -142,7 +175,15 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                   {" "}
                   Back
                 </button>
-                <button className="curriki-utility curriki-theme-hover">
+                <button
+                  className="curriki-utility curriki-theme-hover"
+                  onClick={() => {
+                    details.callback({
+                      brightcoveVideoID: previewVideo.id,
+                    });
+                    handleClose();
+                  }}
+                >
                   {" "}
                   Add Clip
                 </button>
@@ -250,9 +291,14 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                                             </p>
                                             <img
                                               onClick={() => {
-                                                setPreviewVideo(
-                                                  video
-                                                );
+                                                setPreviewVideo({
+                                                  ...video,
+                                                  startTime: getTotalSecondsFromTime(
+                                                    data?.split(
+                                                      "-"
+                                                    )?.[1]
+                                                  ),
+                                                });
                                               }}
                                               src={multimedia}
                                             />
