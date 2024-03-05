@@ -145,6 +145,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
               width="720"
               height="420"
               allow="encrypted-media"
+              crossorigin="anonymous"
             />
             <div className="videoPreviewFooter">
               <div className="timeInput-container">
@@ -153,7 +154,8 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                   <input
                     type="text"
                     className="timerInput"
-                    placeholder="start clip"
+                    pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"
+                    placeholder="HH:MM:SS"
                   />
                 </div>
                 <div className="clip-inputs">
@@ -161,7 +163,8 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                   <input
                     type="text"
                     className="timerInput"
-                    placeholder="End clip"
+                    pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"
+                    placeholder="HH:MM:SS"
                   />
                 </div>
               </div>
