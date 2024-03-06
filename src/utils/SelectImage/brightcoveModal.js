@@ -76,6 +76,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
     if (query.length === 0) {
       setSearchValue("");
     }
+    setCurrentPage(1);
   };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
