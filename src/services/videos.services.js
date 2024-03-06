@@ -23,16 +23,18 @@ export const getBrightCoveVideo = (
   limit = 10,
   offset = 0,
   search = "",
+  showSrt,
   orgId = 1
 ) =>
   httpService
     .post(
       `/${apiVersion}/c2e/media-catalog/brightcove/suborganizations/${orgId}/videos`,
       {
-        query_param: !search
-          ? `limit=${limit}&offset=${offset}&query=-tags:curriki ${search}`
-          : undefined,
-        srt_search: search ? search : undefined,
+        query_param:
+          !search || !showSrt
+            ? `limit=${limit}&offset=${offset}&query=-tags:curriki ${search}`
+            : undefined,
+        srt_search: showSrt === true && search ? search : undefined,
       }
     )
     .then(({ data }) => data)

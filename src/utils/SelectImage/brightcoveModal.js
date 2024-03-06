@@ -1,5 +1,5 @@
 /* eslint-disable  */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Alert } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import CloseSmSvg from "iconLibrary/mainContainer/CloseSmSvg";
@@ -10,7 +10,6 @@ import crossIcon from "../../assets/images/svg/cross-icon.svg";
 import EyeIcon from "assets/images/svg/eye.svg";
 import HeadingThree from "utils/HeadingThree/headingthree";
 import dotsloader from "../../assets/images/dotsloader.gif";
-import videoUrl from "../../assets/video/welcome.mp4";
 import multimedia from "../../assets/images/multimedia-icon-overlay.png";
 import { getBrightCoveVideo } from "services/videos.services";
 import Pagination from "react-js-pagination";
@@ -24,7 +23,8 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   const [isError, setError] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [previewVideo, setPreviewVideo] = useState("");
-  const playerRef = useRef(null);
+  const [clipStartTime, setClipStartTime] = useState("");
+  const [clipEndTime, setClipEndTime] = useState("");
   const Limit = 6;
 
   // function millisecondsToMinutesAndSeconds(ms) {
@@ -34,12 +34,14 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
   //   return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   // }
 
+  const srtSearch = details.supportStartEndTime;
   const fetchData = async (limit, offset) => {
     try {
       const data = await getBrightCoveVideo(
         limit,
         offset,
-        searchQuery
+        searchQuery,
+        srtSearch
       );
       setVideoData(data.data);
       setisLoading(false);
@@ -83,7 +85,6 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
     "--main-paragraph-text-color"
   );
   function parseTimeString(timeString) {
-    console.log(timeString);
     if (timeString) {
       var timeParts = timeString?.split(":");
       var hours = parseInt(timeParts[0], 10);
@@ -111,6 +112,24 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
     const totalSeconds =
       hours * 3600 + minutes * 60 + parseFloat(secondsPart);
     return Math.floor(totalSeconds - 10);
+  }
+  function convertTimeToSeconds(timeString) {
+    const [hours, minutes, seconds] = timeString
+      .split(":")
+      .map(parseFloat);
+    const totalTimeinSec =
+      hours * 3600 + minutes * 60 + parseFloat(seconds);
+    return Math.ceil(totalTimeinSec);
+  }
+
+  function handleStartTimeChange(e) {
+    const timeInSeconds = convertTimeToSeconds(e.target.value);
+    setClipStartTime(timeInSeconds);
+  }
+
+  function handleEndTimeChange(e) {
+    const timeInSeconds = convertTimeToSeconds(e.target.value);
+    setClipEndTime(timeInSeconds);
   }
   return (
     <>
@@ -156,6 +175,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                     className="timerInput"
                     pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"
                     placeholder="HH:MM:SS"
+                    onChange={handleStartTimeChange}
                   />
                 </div>
                 <div className="clip-inputs">
@@ -165,6 +185,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                     className="timerInput"
                     pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}"
                     placeholder="HH:MM:SS"
+                    onChange={handleEndTimeChange}
                   />
                 </div>
               </div>
@@ -183,6 +204,8 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                   onClick={() => {
                     details.callback({
                       brightcoveVideoID: previewVideo.id,
+                      startVideoAt: clipStartTime,
+                      endVideoAt: clipEndTime,
                     });
                     handleClose();
                   }}
@@ -332,7 +355,7 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                           );
                         })}
                       </div>
-                      {!searchValue && (
+                      {srtSearch && !searchValue ? (
                         <Pagination
                           activePage={currentPage}
                           itemsCountPerPage={Limit}
@@ -342,6 +365,18 @@ const BrightcoveModal = ({ show, handleClose, details }) => {
                           itemClass="page-item"
                           linkClass="page-link"
                         />
+                      ) : !srtSearch ? (
+                        <Pagination
+                          activePage={currentPage}
+                          itemsCountPerPage={Limit}
+                          totalItemsCount={totalCount}
+                          pageRangeDisplayed={5}
+                          onChange={handlePageChange}
+                          itemClass="page-item"
+                          linkClass="page-link"
+                        />
+                      ) : (
+                        ""
                       )}
                     </>
                   )}
