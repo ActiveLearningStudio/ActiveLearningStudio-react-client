@@ -1259,9 +1259,11 @@
       .layout-formik-select {
         margin-top: 16px;
         display: flex;
+        flex-wrap: wrap;
         .formik-select {
           max-width: 168px;
           flex: 1;
+          margin-top: 8px;
           .formik-select-title {
             margin: 0;
           }
@@ -1316,6 +1318,9 @@
     // display: flex;
     button {
       margin-top: 50px;
+    }
+    @media screen and (max-width: 920px) {
+      left: 60%;
     }
   }
 }

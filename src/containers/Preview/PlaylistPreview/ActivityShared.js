@@ -220,9 +220,7 @@ const ActivityShared = (props) => {
   return (
     <section className="curriki-playlist-preview">
       {h5pAssets && <H5PAssetLoader h5pAssets={h5pAssets} currikiH5PWrapper={currikiH5PWrapper} activityId={h5pAssets?.activity?.id} />}
-      <div className="project-share-preview-nav">
-        <img src={HeaderLogo} />
-      </div>
+
       {query.view === 'playlist' ? (
         <div className="curriki-playlist-preview-container">
           <div className="activity-preview-with-playlist-container">
