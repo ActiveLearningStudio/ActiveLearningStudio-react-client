@@ -171,6 +171,9 @@ const MsTeamSummaryPage = loadable(() =>
 const MsTeamsActivityContainer = loadable(() =>
   import("../containers/LMS/MsTeams/MsTeamsActivityContainer")
 );
+const C2EPlayerActivity = loadable(() =>
+  import("../containers/LMS/C2EPlayer/C2EPlayerActivity")
+);
 let intialLoad = 0;
 
 const AppRouter = (props) => {
@@ -326,6 +329,11 @@ const AppRouter = (props) => {
           exact
           path="/genericlms/:lmsName/lmsurl/:lmsUrl/client/:lmsClientId/lmscourse/:lmsCourseId/lmsunit/:lmsUnitId/activity/:activityId"
           component={GenericLMSActivityPage}
+        />
+        <OpenRoute
+          exact
+          path="/c2e/stream/:activityId"
+          component={C2EPlayerActivity}
         />
         <OpenRoute
           exact
