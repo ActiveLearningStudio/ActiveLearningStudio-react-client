@@ -80,7 +80,6 @@ const C2EActivity = ({ match }) => {
     // Loops until it finds H5P object
     const checkXapi = setInterval(() => {
       if (xAPILoaded) {
-        console.log('Loaded hit, returning');
         return;
       }
 
@@ -88,7 +87,7 @@ const C2EActivity = ({ match }) => {
       if (!x.H5P) return;
       if (!x.H5P.externalDispatcher) return;
 
-      console.log('AE H5P ready');
+      console.log('H5P ready');
       clearInterval(checkXapi);
       setTimeout(() => { setXAPILoaded(true); });
     });
@@ -98,18 +97,16 @@ const C2EActivity = ({ match }) => {
   useEffect(() => {
     console.log('AE entered hook func');
     if (!xAPILoaded || xAPIEventHooked) {
-      console.log('hit over here');
       return;
     }
 
     const x = document.getElementsByClassName('h5p-iframe')[0].contentWindow;
     if (!x.H5P.externalDispatcher) {
-      console.log('AE missing dispatcher');
+      console.log('missing dispatcher');
       return;
     }
-    console.log('AE found dispatcher, trying to hook');
+
     x.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('AE running listener');
       if (event.ignoreStatement) {
         return;
       }
@@ -142,7 +139,6 @@ const C2EActivity = ({ match }) => {
         sendStatementEvent(JSON.stringify(xapiData));
       }
     });
-    console.log('AE maybe hooked?');
     setXAPIEventHooked(true);
   }, [xAPILoaded, match.path, match.params, activityId]);
 
