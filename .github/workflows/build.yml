@@ -1,0 +1,87 @@
+# build.yml
+on:
+  # pull_request:
+  #   paths:
+  #   - "**"
+  push:
+    # paths:
+    # - "**"
+    branches:         # array of glob patterns matching against refs/heads. Optional; defaults to all
+    - develop          # triggers on pushes that contain changes in develop
+    - staging          # triggers on pushes that contain changes in staging
+    - master          # triggers on pushes that contain changes in master
+
+name: Build
+
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html
+env:
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_DEFAULT_OUTPUT: ${{ vars.AWS_DEFAULT_OUTPUT }}
+  AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_USERNAME: ${{vars.ECR_USERNAME}}
+  CONTAINER_IMAGE_DEVELOP: studio-client:develop
+  AWS_ACCOUNT_ID: ${{vars.AWS_ACCOUNT_ID}}
+  DEV_SSH_HOST: ${{secrets.DEV_SSH_HOST}}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  DOMAIN: ${{ vars.DOMAIN }}
+
+
+jobs:
+  build-and-push:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Setup ECR
+      run: |
+        # Login to AWS ECR
+        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username $ECR_USERNAME --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+    - name: Build and tag the image
+      run: |
+        # Build and tag the image
+
+        
+
+        if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
+          docker build \
+          -t $CONTAINER_IMAGE_DEVELOP \
+          -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE_DEVELOP --build-arg DOMAIN=$DOMAIN ./
+
+        elif [ ${{ github.ref }} = 'refs/heads/master' ]; then
+          echo "In Master"
+        else
+          echo "No specific config."
+        fi
+        
+
+    - name: Push Image
+      run: |
+        # Push image to AWS ECR
+        
+        if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE_DEVELOP
+        elif [ ${{ github.ref }} = 'refs/heads/master' ]; then
+          echo "In Master"
+        else
+          echo "No specific config."
+        fi
+
+    - name: Deploy
+      run: |
+        # Deploy to Instance
+        echo "$SSH_PRIVATE_KEY" | base64 -d > ssh_key.pem
+        chmod 600 ssh_key.pem
+        
+        if [ ${{ github.ref }} = 'refs/heads/develop' ]; then
+          ssh -o StrictHostKeyChecking=no -i ssh_key.pem ${DEV_SSH_HOST} "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username $ECR_USERNAME --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com && cd /curriki && docker service update currikistack_currikiprod-client --with-registry-auth"
+        elif [ ${{ github.ref }} = 'refs/heads/master' ]; then
+          echo "In Master"
+        else
+          echo "No specific config."
+        fi
+        
